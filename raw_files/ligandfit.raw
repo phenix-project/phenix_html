@@ -1,0 +1,256 @@
+
+<REMARK PHENIX TITLE START -- Put your title here>
+
+
+<H4><U>Automated ligand fitting with LigandFit</U></H4> 
+
+
+<REMARK PHENIX TITLE END>
+
+<REMARK PHENIX BODY START  -- Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+      <P><H5><U><B>Author(s)</B></U></H5><P>
+<LI>LigandFit Wizard: Tom Terwilliger
+<LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
+<LI>RESOLVE: Tom Terwilliger
+</LI>
+
+      <P><H5><U>Purpose</U></H5><P>
+
+<P><H5>Purpose of the LigandFit Wizard</H5><P>
+
+<P>The LigandFit Wizard carries out fitting of flexible ligands to
+electron density maps.  
+
+      <P><H5><U>Usage</U></H5><P>
+<P>The LigandFit Wizard can be run from the PHENIX GUI, from the command-line, 
+and from keyworded script files.  All three versions are identical except
+in the way that they take commands from the user. 
+See 
+<a href="RunningWizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a> 
+for details of how to run a Wizard.
+The command-line version will be described here.
+<P>
+<P><H5>How the LigandFit Wizard works:</H5><P>
+<P>
+<P>The LigandFit wizard  provides a command-line and
+graphical user interface allowing the user to identify a datafile 
+containing crystallographic structure factor information, an
+optional PDB file with a partial model of the structure without the ligand,
+and a PDB file containing the ligand to be fit (in an allowed but arbitrary
+conformation). 
+<P>The wizard checks the data files for consistency and then calls
+the RESOLVE software to carry out the fitting of the ligand into the
+electron-density map. The map used is normally a difference map, with F=FP-FC.
+It can also be an Fobs map (calulated from FP with phases PHIC from the input
+partial model), or an arbitrary map, calculated with FP PHI and FOM.
+
+<P>The ligand fitting is done by RESOLVE in a three-stage process. First,
+the largest contiguous region of density in the map not already occupied
+by the model is identified. The ligand will be placed in this density. (If 
+desired, the location of the ligand can instead be defined by the user as 
+near a certain residue or near specified coordinates. )
+Next, many possible placements of the largest rigid sub-fragments of 
+the ligand are found within this region of high density.  Third, each of
+these placements is taken as a starting point for fitting the remainder of
+the ligand. All these ligand fits are scored based on the fit to the density,
+and the best-fitting placement is written out.
+
+<P>The output of the wizard consists of a fitted ligand in PDB format and a
+summary of the quality of the fit. Multiple copies of a ligand can be fit to a
+single map in an automated fashion using the LigandFit wizard as well.
+
+<P><H5>How to run the LigandFit Wizard:</H5><P>
+<P>  Running the LigandFit Wizard is easy.  For example, 
+from the command-line you can type:
+<PRE><FONT face=courier>phenix.ligandfit data=datafile.mtz model=partial_model.pdb ligand=ligand.pdb
+</FONT></PRE>
+<P>The LigandFit Wizard will carry out ligand fitting of the
+ligand in ligand.pdb based on the
+structure factor amplitudes in datafile.mtz, calculating phases based
+on partial-model.pdb.  All rotatable bonds will be identified and allowed
+to take stereochemically reasonable orientations.
+
+<P><H5>What the LigandFit wizard needs to run:</H5><P>
+
+    The ligandfit wizard needs:
+<P><LI>(1) a datafile (w1.sca or data=w1.sca); this can be any format
+<P><LI>(2) a PDB file with your model without ligand (model=partial.pdb)
+<P><LI>(3) a file with information about your ligand (ligand=side.pdb)
+
+<P>The ligand file can be a PDB file with 1 stereochemically acceptable
+    conformation of your ligand. It can alternatively be a file containing
+    a SMILES string, in which case the starting ligand conformation will be
+    generated with the PHENIX elbow routine.
+
+<P>The command_line ligandfit interpreter will guess which file is your
+    data file but you have to tell it which file is the model and which is
+    the ligand.
+
+<P><H5>Specifying which columns of data to use from input data files</H5><P>
+<P>If one or more of your data files has column names that the Wizard
+cannot identify automatically, you can specify them yourself. You
+will need to provide one column "name" for each expected column of data,
+with "None" for anything that is missing.
+
+<P>For example, if your data file data.mtz has columns FP SIGFP 
+then you might specify
+<PRE><FONT face=courier>data=data.mtz
+input_labels="FP SIGFP"
+</FONT></PRE>
+
+<P>You can find out all the possible label strings in a data file that
+you might use by typing:
+<PRE><FONT face=courier>phenix.autosol display_labels=data.mtz  # display all labels for data.mtz
+</FONT></PRE>
+
+<P>You can specify many more parameters as well. See the list of
+keywords, defaults and descriptions at the end of this page and
+also general information about running Wizards at
+<a href="RunningWizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a> 
+for how to do this.  Some of the most common parameters are:
+<PRE><FONT face=courier>data=w1.sca       # data file
+partial_model=coords.pdb  # starting model without ligand
+ligand=ligand.pdb # any stereochemically allowed conformation of your ligand
+resolution=3     # dmin of 3 A
+quick=False      # specify if you want to look hard for a good conformation
+ligand_cc_min=0.75   # quit if the CC of ligand to map is 0.75 or better
+number_of_ligands=3  # find 3 copies of the ligand
+n_group_search=3     # try 3 different fragments of the ligand in initial search
+resolve_command="'ligand_start side.pdb'" # build ligand superimposing on side.pdb
+</FONT></PRE>
+
+<P><H5><I>Output files from LigandFit</I></H5><P>
+<P>When you run LigandFit the output files will be in a subdirectory with
+your run number:
+<PRE><FONT face=courier>LigandFit_run_1_/   # subdirectory with results
+</PRE></FONT>
+
+<P><LI>A summary file listing the results of the run and
+the other files produced:
+<PRE><FONT face=courier>LigandFit_summary.dat  # overall summary
+</PRE></FONT>
+
+<P><LI>A file that lists all parameters and knowledge accumulated
+by the Wizard during the run (some parts are binary and are not printed)
+<PRE><FONT face=courier>LigandFit_Facts.dat   # all Facts about the run
+</PRE></FONT>
+
+<P><LI>A warnings file listing any warnings about the run
+<PRE><FONT face=courier>LigandFit_warnings  # any warnings
+</PRE></FONT>
+
+<P><LI>A PDB file with the fitted ligand (in this case the first copy of ligand
+number 1):
+<PRE><FONT face=courier>ligand_fit_1_1.pdb
+</PRE></FONT>
+
+<P><LI>A log file with the fitting of the ligand:
+<PRE><FONT face=courier>ligand_1_1.log
+</PRE></FONT>
+
+<P><LI>A log file with the fit of the ligand to the map:
+<PRE><FONT face=courier>ligand_cc_1_1.log
+</PRE></FONT>
+
+<P><LI>Map coefficients for the map used for fitting:
+<PRE><FONT face=courier>resolve_map.mtz
+</PRE></FONT>
+</LI>
+
+      <P><H5><U>Examples</U></H5><P>
+<P><H5> Sample command_line inputs: </H5><P>
+
+<P><LI>Standard run of ligandfit (generate map from model and data file)
+<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb
+</FONT></PRE>
+
+<P><LI>Build into a map from pre-determined coefficients
+<PRE><FONT face=courier>phenix.ligandfit data=perfect.mtz lig_map_type=map   \
+   model=partial.pdb ligand=side.pdb
+</FONT></PRE>
+
+<P><LI>Quick run of ligandfit
+<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb quick=True
+</FONT></PRE>
+
+<P><LI>Place ligand near residue 94 of chain ""
+<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
+   ligand_near_chain="" ligand_near_res=92
+</FONT></PRE>
+
+<P><LI>Use start.pdb as a template for some of the atoms in the ligand; build
+the remainder of the ligand, fixing the coordinates of the corresponding
+atoms:
+<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
+   resolve_command="'ligand_start start.pdb'"  # NOTE ' and " quotes necessary
+</FONT></PRE>
+Note that the formatting is slightly tricky and requires the two different
+quotation marks on either end of the command. This is an example of passing a
+specific keyword to RESOLVE.
+
+</LI>
+      <P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><LI>The ligand to be searched for must have at least 3 atoms.
+
+<P><LI>If a ring in the ligand can have more than one conformation
+(e.g., chair or boat conformation) then you need to do separate runs
+for each conformation of the ring (rings are taken as fixed units 
+in LigandFit).
+
+<P><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
+the LigandFit wizard is limited by the memory in your computer and the
+binaries used. The Wizard is supplied with regular-size ("", size=6), 
+giant ("_giant", size=12), huge ("_huge", size=18) and extra_huge
+("_extra_huge", size=36).  Larger-size versions can be obtained on
+request.
+
+<P><LI>The LigandFit Wizard can take most settings of most space groups,
+however it can only use the hexagonal setting of rhombohedral space groups 
+(eg., #146 R3:H or #155 R32:H), and it cannot use space groups 114-119 (not
+found in macromolecular crystallography) even in the standard setting 
+due to difficulties with the use of asuset in the version of ccp4 libraries 
+used in PHENIX for these settings and space groups.
+
+<P><LI>The PHENIX Wizards will automatically read some parameters from
+previous runs of the same and any other Wizard in the same directory. 
+The parameters that are set this way are:
+
+<PRE><FONT face=courier>chain_type
+dmin
+expt_type
+find_ncs
+input_seq_file
+ligand_solutions
+mad_ha_type
+mask_type
+ncs_copies
+residues
+resolution
+semet
+solvent_fraction
+thorough_denmod
+truncate_ha_sites_in_resolve
+use_met_in_align
+</FONT></PRE>
+
+Setting defaults for these parameters in this way is usually helpful, but 
+if you set them in one run it is important to keep in mind that the value 
+you have set them to will become the default for future runs in that 
+directory (unless you delete that run).  If there are multiple runs 
+in which a parameter is set, then the one that was started last sets 
+the default for that parameter.
+</LI>
+
+      <P><H5><U>Literature</U></H5><P>
+      <P><H5><U>Additional information</U></H5><P>
+
+
+<REMARK PHENIX BODY END>

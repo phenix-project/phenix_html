@@ -1,0 +1,556 @@
+
+<REMARK PHENIX TITLE START -- Put your title here>
+
+
+<H4><U>Iterative model-building, density modification and refinement
+with AutoBuild</U></H4>
+
+
+<REMARK PHENIX TITLE END>
+
+<REMARK PHENIX BODY START  -- Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+      <P><H5><U>Author(s)</U></H5><P>
+<LI>AutoBuild Wizard: Tom Terwilliger
+<LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
+<LI>phenix.refine: Ralf W. Grosse-Kunstleve, Peter Zwart and Paul D. Adams
+<LI>RESOLVE: Tom Terwilliger
+<LI>TEXTAL: Kreshna Gopal, Thomas Ioerger, Rita Pai, Tod Romo, James Sacchettini, Erik McKee, Lalji Kanbi
+<LI>mmtbx.xtriage: Peter Zwart
+</LI>
+
+      <P><H5><U>Purpose</U></H5><P>
+
+<P><H5>Purpose of the AutoBuild Wizard</H5><P>
+
+<P>The purpose of the AutoBuild Wizard is to provide a highly automated system
+for model rebuilding and completion. The Wizard design allows the user to
+specify data files and parameters through an interactive GUI, or alternatively
+through keyworded scripts. The AutoBuild Wizard begins with datafiles with
+structure factor amplitudes and uncertainties, along with either experimental
+phase information or a starting model, carries out cycles of model-building
+and refinement alternating with model-based density modification, and
+producing a relatively complete atomic model. 
+
+<P>The AutoBuild Wizard uses RESOLVE, TEXTAL, xtriage and 
+phenix.refine to build an atomic model, refine it, and improve
+it with iterative density modification, refinement, and model-building
+<P>The Wizard begins with either experimental phases (i.e., from AutoSol)
+or with an atomic model that can be used to generate calculated phases.
+The AutoBuild Wizard produces a refined model that can be nearly complete
+if the data are strong and the resolution is about 2.5 A or better. At
+lower resolutions (2.5 - 3 A) the model may be less complete and at 
+resolutions > 3A the model may be quite incomplete and not well
+refined.
+<P> The AutoBuild Wizard can be used to generate OMIT maps (simple omit,
+SA-omit, iterative-build omit) that can cover the entire unit cell or
+specific residues in a PDB file.
+<P> The AutoBuild Wizard can generate a set of models compatible with
+experimental data (multiple_models)
+
+      <P><H5><U>Usage</U></H5><P>
+<P>The AutoBuild Wizard can be run from the PHENIX GUI, from the command-line, 
+and from keyworded script files.  All three versions are identical except
+in the way that they take commands from the user. 
+See 
+<a href="RunningWizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a> 
+for details of how to run a Wizard.
+The command-line version will be described here.
+<P>
+<P><H5>How the AutoBuild Wizard works:</H5><P>
+<P>
+
+<P>The AutoBuild Wizard begins with experimental structure factor amplitudes,
+along with either experimental or modelp-based estimates of crystallographic
+phases. The phase information is improved by using statistical density
+modification to improve the correlation of NCS-related density in the map (if
+present) and to improve the match of the distribution of electron densities in
+the map with those expected from a model map. This improved map is then used
+to build and refine an atomic model. 
+
+<P>In subsequent cycles, the models from previous cycles are used as a source of
+phase information in statistical density modification, iteratively improving
+the quality of the map used for model-building. 
+
+<P>Additionally, during the first few cycles additional phase information is
+obtained by detecting and enhancing (1) the presence of commonly-found local
+patterns of density in the map, and (2) the presence of density in the shape
+of helices and strands. The final model obtained is analyzed for residue-based
+map correlation and density at the coordinates of individual atoms, and an
+analysis including a summary of atoms and residues that are in strong,
+moderate, or weak density and out of density is provided.
+
+<P><H5>Automation, user control and ease of use</H5><P>
+
+<P>The AutoBuild Wizard has been designed for ease of use combined with maximal
+user control, with as many parameters set automatically by the Wizard as
+possible, but maintaining parameters accessible to the user through a GUI and
+through keyword-based scripts. The Wizard uses the input/output routines of
+the cctbx library, allowing data files of many different formats so that the
+user does not have to convert their data to any particular format before using
+the Wizard. Use of the phenix.refine refinement package in the AutoBuild
+Wizard allows a high degree of automation of refinement so that the neither
+user nor Wizard is required to specify parameters for refinement. The
+phenix.refine package automatically includes a bulk solvent model and
+automatically places solvent molecules.
+
+<P><H5>Core modules in the AutoBuild Wizard</H5><P>
+
+<P>The five core modules in the AutoBuild Wizard are 
+
+<P><LI>(1) building a new model into an electron density map 
+
+<P><LI>(2) rebuilding an existing model 
+
+<P><LI>(3) refinement 
+
+<P><LI>(4) iterative model- building beginning from experimental phase
+information, and 
+
+<P><LI>(5) iterative model-building beginning from a model. </LI>
+
+<P>The standard procedures available in the AutoBuild Wizard that are based on
+these modules include: 
+
+<P><LI>(a) model-building and completion starting from experimental phases, 
+
+<P><LI>(b) rebuilding a model from scratch, with or without experimental phase
+information, and 
+
+<P><LI>(c) rebuilding a model in place, maintaining connectivity and sequence
+register. </LI>
+
+<P>Starting from a set of experimental phases and structure factor amplitudes,
+normally procedure (a) is carried out, and then the resulting model is rebuilt
+with procedure (b). 
+
+<P>Starting from a model (e.g., from molecular replacement) and experimental
+structure factor amplitudes, procedure (c) is normally carried out if the
+starting model differs less than about 5% in sequence from the desired model,
+and otherwise procedure (b) is used.
+
+<P>
+<P><H5>How to run the AutoBuild Wizard:</H5><P>
+<P>  Running the AutoBuild Wizard is easy.  For example, 
+from the command-line you can type:
+<PRE><FONT face=courier>phenix.autobuild data=w1.sca seq.dat coords=coords.pdb
+</FONT></PRE>
+<P>The AutoBuild Wizard will carry out iterative model-building,
+density modification and refinement based on the data in w1.sca and
+the model in coords.pdb, editing the model as necessary to match the
+sequence in seq.dat.
+
+<P><H5>What the AutoBuild wizard needs to run:</H5><P>
+<P><LI>(1) a data file, optionally with phases and HL coeffs and freeR flag
+    (w1.sca or data=w1.sca)
+<LI>(2) a sequence file (seq.dat or seq_file=seq.dat) or a model
+(coords.pdb or model=coords.pdb)
+</LI>
+<P><H5>...and optional files:</H5><P>
+<LI>(3) coefficients for a starting map (map_file=resolve.mtz)
+<LI>(4) a file for refinement (refinement_file=exptl_fob_freeR_flags.mtz)
+<LI>(5) a high-resolution datafile (hires_file=high_res.sca)
+</LI>
+
+<P><H5>Specifying which columns of data to use from input data files</H5><P>
+<P>If one or more of your data files has column names that the Wizard
+cannot identify automatically, you can specify them yourself. You
+will need to provide one column "name" for each expected column of data,
+with "None" for anything that is missing.
+
+<P>For example, if your data file ref.mtz has columns FP SIGFP and FreeR
+then you might specify
+<PRE><FONT face=courier>refinement_file=ref.mtz
+input_refinement_labels="FP SIGFP None None None None None None FreeR"
+</FONT></PRE>
+
+<P>The keywords for labels and anticipated input labels (program labels) are:
+
+<PRE><FONT face=courier>input_labels (for data file): FP SIGFP PHIB FOM HLA HLB HLC HLD FreeR_flag
+input_refinement_labels: FP SIGFP FreeR_flag
+input_map_labels: FP SIGFP PHIB FOM
+input_hires_labels: FP SIGFP FreeR_flag
+</FONT></PRE>
+
+<P>You can find out all the possible label strings in a data file that
+you might use by typing:
+<PRE><FONT face=courier>phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
+</FONT></PRE>
+
+<P><H5>Specifying other general parameters</H5><P>
+<P>You can specify many more parameters as well. See the list of
+keywords, defaults and descriptions at the end of this page and
+also general information about running Wizards at
+<a href="RunningWizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a> 
+for how to do this.  Some of the most common parameters are:
+<PRE><FONT face=courier>data=w1.sca       # data file
+model=coords.pdb  # starting model
+seq_file=seq.dat  # sequence file
+map_file=map_coeffs.mtz # coefficients for a starting map for building
+resolution=3     # dmin of 3 A
+s_annealing=True  # use simulated annealing refinement at start of each cycle
+n_cycle_build_max=5  # max number of build cycles (starting from experimental phases)
+n_cycle_rebuild_max=5  # max number of rebuild cycles (starting from a model)
+</FONT></PRE>
+
+<P><H5>Specifying phenix.refine parameters</H5><P>
+<P>You can control phenix.refine parameters that are not specified
+directly by AutoBuild using a refinement parameters (.eff) file:
+<PRE><FONT face=courier>refine_eff_file=refinement_params.eff    # set any phenix.refine params not set by AutoBuild
+</FONT></PRE>
+Note that any parameters that are set directly by AutoBuild override your 
+inputs from the refine_eff_file. These parameters are listed below.
+
+<P>Parameters that are set using AutoBuild Wizard keywords (overwriting
+any values provided by user in input_eff_file)
+
+<table nosave "" border "1" cols "3" width "92%" cellpadding "5px">
+<tbody>
+
+<tr>
+ <td><B>phenix.refine keyword</B> </td>
+ <td><B>Wizard keyword(s) and notes</B> </td>
+</tr>
+
+<tr>
+ <td> refinement.main.number_of_macro_cycles </td>
+ <td> ncycle_refine </td>
+</tr>
+
+<tr>
+ <td> refinement.main.simulated_annealing </td>
+ <td>s_annealing (only applies to 1st refinement in rebuild.
+   SA in any other refinements controlled by input_eff_file, if any) </td>
+</tr>
+
+<tr>
+ <td> refinement.ncs.find_automatically </td>
+ <td> refine_with_ncs=True turns on automatic ncs search </td>
+</tr>
+
+<tr>
+ <td> refinement.main.ncs </td>
+ <td> refine_with_ncs=True turns on ncs </td>
+</tr>
+
+<tr>
+ <td> refinement.ncs.coordinate_sigma </td>
+ <td> Normally not set by Wizard. However if the Wizard keyword 
+ncs_refine_coord_sigma_from_rmsd is True then the ncs coordinate sigma 
+is equal to ncs_refine_coord_sigma_from_rmsd_ratio times the rmsd among ncs 
+copies </td>
+</tr>
+
+<tr>
+ <td> refinement.main.random_seed </td>
+ <td> i_ran_seed sets the random seed at the beginning of a Wizard...
+this affects refinement.main.random_seed but does not set it to
+the value of i_ran_seed (because i_ran_seed gets updated by several
+different routines)</td>
+</tr>
+
+<tr>
+ <td> refinement.main.ordered_solvent </td>
+ <td> place_waters=True will set ordered_solvent to True. Note that
+  this only has an effect if the value of the resolution cutoff for
+ adding waters (refinement.ordered_solvent.low_resolution)
+ is higher than the resolution used for refinement.  </td>
+</tr>
+
+<tr>
+ <td> refinement.main.ordered_solvent </td>
+ <td> place_waters_in_combine=True will set ordered_solvent to True, only
+ applying this to the final combination step of multiple-model
+ generation. Note that
+  this only has an effect if the value of the resolution cutoff for
+ adding waters (refinement.ordered_solvent.low_resolution)
+ is higher than the resolution used for refinement.  </td>
+</tr>
+
+<tr>
+ <td> refinement.ordered_solvent.low_resolution </td>
+ <td> ordered_solvent_low_resolution=3.0 (default) will set the
+  resolution cutoff for adding waters 
+(refinement.ordered_solvent.low_resolution) to 3 A. If the resolution
+used for refinement is larger than the value of ordered_solvent_low_resolution
+then ordered solvent is not added. </td>
+</tr>
+
+<tr>
+ <td>refinement.main.use_experimental_phases </td>
+ <td>use_mlhl=True will set refinement.main.use_experimental_phases to True</td>
+</tr>
+
+<tr>
+ <td> refinement.refine.strategy   </td>
+ <td> The Wizard keywords refine refine_b refine_xyz all affect 
+refinement.refine.strategy. If refine=True then refinement is carried out. If
+refine_b=True (default) isotropic displacement factors are refined.
+If refine_xyz=True (default) coordinates are refined.</td>
+</tr>
+
+<tr>
+ <td> refinement.main.occupancy_max       </td>
+ <td> max_occ=1.0 sets the value of refinement.main.occupancy_max to 1.0. 
+Default is to do nothing and use the default from phenix.refine (1.0) </td>
+</tr>
+
+<tr>
+ <td> refinement.refine.occupancies.individual </td>
+ <td> The combination of Wizard keywords of semet=True and
+refine_se_occ=True will add "(name SE)" to the value of
+refinement.refine.occupancies.individual. You can provide other names of
+atoms to have occupancies refined as well.
+ </td>
+</tr>
+
+<tr>
+ <td> refinement.main.high_resolution    </td>
+ <td> Either of the Wizard keywords refinement_resolution and resolution 
+will set the value of refinement.main.high_resolution, with 
+refinement_resolution being used if available.  </td>
+</tr>
+
+</tbody>
+</table>
+
+<P>The following parameters controlling phenix.refine output
+are set directly in AutoBuild and cannot be set by the user
+<LI> refinement.output.write_eff_file
+<LI> refinement.output.write_geo_file
+<LI> refinement.output.write_def_file
+<LI> refinement.output.write_maps
+<LI> refinement.output.write_map_coefficients
+</LI>
+
+<P><H5>Specifying resolve/resolve_pattern parameters</H5><P>
+<P>Similarly, you can control resolve and resolve_pattern parameters. For these
+parameters, your inputs will not be overridden by AutoBuild. 
+The format is a little tricky: you have to put two sets of 
+quotes around the command like this:
+<PRE><FONT face=courier>resolve_command="'resolution 200 3'"    # NOTE ' and " quotes
+</FONT></PRE>
+This will put the text
+<PRE><FONT face=courier>resolution 200 3
+</FONT></PRE>
+at the end of every temporary command file created to run resolve.
+(This is why it is not overridden by AutoBuild commands; they will all come 
+before your commands in the resolve command file.) Note that 
+some commands in resolve may be incompatible with this usage.
+
+<P><H5>Including ligand coordinates in AutoBuild</H5><P>
+<P>You can tell AutoBuild to add the contents of any PDB file to the
+current version of the structure just before refinement, so all the refined
+models produced contain whatever AutoBuild has built, plus the contents of
+this PDB file. This can be done through the GUI, the command-line, or
+a script. In the command-line version you do this with something like:
+<PRE><FONT face=courier>input_lig_file=my_ligand.pdb
+</FONT></PRE>
+<P>If the PDB file contains a ligand, you may need to tell phenix.refine
+about the geometry of this ligand. In that case you will want to run
+elbow.builder to create a cif definition file for this ligand:
+<PRE><FONT face=courier>elbow.builder my_ligand.pdb --id=LIG
+</FONT></PRE>
+where LIG is the 3-letter ID code that you use in my_ligand.pdb
+to identify your ligand.
+
+<P>Then you can use the keyword "cif_def_files_list" to 
+tell AutoBuild about this ligand:
+<PRE><FONT face=courier>cif_def_files_list=elbow.LIG.my_ligand.pdb.cif
+</FONT></PRE>
+
+<P><H5><I>Output files from AutoBuild</I></H5><P>
+<P>When you run AutoBuild the output files will be in a subdirectory with
+your run number:
+<PRE><FONT face=courier>AutoBuild_run_1_/   # subdirectory with results
+</PRE></FONT>
+
+<P><LI>A summary file listing the results of the run and
+the other files produced:
+<PRE><FONT face=courier>AutoBuild_summary.dat  # overall summary
+</PRE></FONT>
+
+<P><LI>A warnings file listing any warnings about the run
+<PRE><FONT face=courier>AutoBuild_warnings  # any warnings
+</PRE></FONT>
+
+<P><LI>A file that lists all parameters and knowledge accumulated
+by the Wizard during the run (some parts are binary and are not printed)
+<PRE><FONT face=courier>AutoBuild_Facts.dat   # all Facts about the run
+</PRE></FONT>
+
+<P><LI>Final refined model
+<PRE><FONT face=courier>overall_best.pdb
+</PRE></FONT>
+
+<P><LI>Final map coefficients used to build refined model. Use FP PHIM FOMM in
+maps. Normally this is a density-modified map from resolve. See also the
+map coefficients from phenix.refine below.
+<PRE><FONT face=courier>overall_best.mtz
+</PRE></FONT>
+
+<P><LI>Final sigmaA-weighted 2mFo-DFc and Fo-Fc map coefficients from 
+phenix.refine based on overall_best.pdb final model. The map coefficients
+are 2FOFCWT PH2FOFCWT for the 2mFo-DFc map and FOFC and PHFOFC for the Fo-Fc
+difference map.  See also the map coefficients from density modification above.
+<PRE><FONT face=courier>overall_best_refine_map_coeffs.mtz
+</PRE></FONT>
+
+<P><LI>MTZ file with FP, phases and HL coeffs if present, and freeR_flags
+used in refinement
+<PRE><FONT face=courier>exptl_fobs_phases_freeR_flags.mtz
+</PRE></FONT>
+
+<P><LI>Final log file for model-building
+<PRE><FONT face=courier>overall_best.log
+</PRE></FONT>
+
+<P><LI>Final log file for refinement
+<PRE><FONT face=courier>overall_best.log_refine
+</PRE></FONT>
+
+<P><LI>Evaluation of fit of model to map
+<PRE><FONT face=courier>overall_best.log_eval
+</PRE></FONT>
+
+<P><LI>Summary of NCS information
+<PRE><FONT face=courier>ncs_info.ncs
+</PRE></FONT>
+</LI>
+
+      <P><H5><U>Examples</U></H5><P>
+
+<P><LI><P><H5>Run AutoBuild automatically after AutoSol</H5><P>
+<PRE><FONT face=courier>phenix.autobuild after_autosol
+</FONT></PRE>
+
+<P><LI><P><H5>Run AutoBuild beginning with experimental data</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=solve_1.mtz seq_file=seq.dat
+</FONT></PRE>
+
+<P><LI><P><H5>Merge in hires data</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=solve_2.mtz hires_file=w1.sca  seq_file=seq.dat
+</FONT></PRE>
+
+<P><LI><P><H5>Make a SA-omit map around atoms in target.pdb</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb omit_box_pdb=target.pdb   composite_omit_type=sa_omit
+</FONT></PRE>
+
+<P><LI><P><H5>Make a simple composite omit map</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb composite_omit_type=simple_omit
+</FONT></PRE>
+
+<P><LI><P><H5>Make an iterative-build omit map around atoms in target.pdb</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=target.pdb \
+   composite_omit_type=iterative_build_omit
+</FONT></PRE>
+
+<P><LI><P><H5>Make a sa-omit map around residues 3 and 4 in chain A of coords.pdb</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=coords.pdb \
+   omit_res_start_list=3 omit_res_end_list=4 omit_chain_list=A   \
+   composite_omit_type=sa_omit
+</FONT></PRE>
+
+<P><LI><P><H5>Create one very good rebuilt model</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
+  multiple_models_number=1 n_cycle_rebuild_max=5
+</FONT></PRE>
+
+<P><LI><P><H5>Create 20 very good rebuilt models</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
+   multiple_models_number=20 n_cycle_rebuild_max=5
+</FONT></PRE>
+
+<P><LI><P><H5>Build an RNA chain</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=solve_1.mtz seq_file=seq.dat chain_type=RNA
+</FONT></PRE>
+
+<P><LI><P><H5>Build a DNA chain</H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=solve_1.mtz seq_file=seq.dat chain_type=DNA
+</FONT></PRE>
+
+<P><LI><P><H5>Just make maps; don't do any building. </H5><P>
+<PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb n_cycle_rebuild_max=1 \
+maps_only=True     
+</FONT></PRE>
+</LI>
+
+      <P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>General limitations:</H5><P>
+
+<P><LI>The AutoBuild model-building can only build one type of chain at a 
+time (default chain_type='PROTEIN'; other choices are RNA and DNA).  If you
+supply a PDB file containing more than one type of chain for rebuilding, 
+then all the residues that are not that type of chain are ignored.  
+<P>You can include more than one type of chain in rebuilding by supplying 
+one type of chains as ligands with input_lig_file and rebuilding another
+type:
+<PRE><FONT face=courier>chain_type=PROTEIN  # build only protein
+input_lig_file=MyDNA.pdb  # just read in DNA coordinates and include in refinement
+</FONT></PRE>
+In this case only protein chains will be built, but the DNA coordinates in
+MyDNA.pdb will be included in all refinements and will be written out
+to the final coordinate file.  This process may require some editing of the
+PDB files by hand because when you use the input_lig_file procedure, any
+atoms in the input_lig_file that overlap with an atom built automatically
+are skipped. This means that if protein chains are accidentally built in the
+region where DNA is located, then these incorrect protein chains will remain
+and some of the DNA atoms will not be written out.
+</LI>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
+the AutoBuild wizard is limited by the memory in your computer and the
+binaries used. The Wizard is supplied with regular-size ("", size=6), 
+giant ("_giant", size=12), huge ("_huge", size=18) and extra_huge
+("_extra_huge", size=36).  Larger-size versions can be obtained on
+request.
+
+<P><LI>The AutoBuild Wizard can take most settings of most space groups,
+however it can only use the hexagonal setting of rhombohedral space groups 
+(eg., #146 R3:H or #155 R32:H), and it cannot use space groups 114-119 (not
+found in macromolecular crystallography) even in the standard setting 
+due to difficulties with the use of asuset in the version of ccp4 libraries 
+used in PHENIX for these settings and space groups.
+
+<P><LI>The PHENIX Wizards will automatically read some parameters from
+previous runs of the same and any other Wizard in the same directory. 
+The parameters that are set this way are:
+
+<PRE><FONT face=courier>chain_type
+dmin 
+expt_type 
+find_ncs 
+input_seq_file 
+ligand_solutions 
+mad_ha_type 
+mask_type 
+ncs_copies 
+residues 
+resolution 
+semet 
+solvent_fraction 
+thorough_denmod 
+truncate_ha_sites_in_resolve 
+use_met_in_align
+</FONT></PRE>
+
+Setting defaults for these parameters in this way is usually helpful, but 
+if you set them in one run it is important to keep in mind that the value 
+you have set them to will become the default for future runs in that 
+directory (unless you delete that run).  If there are multiple runs 
+in which a parameter is set, then the one that was started last sets 
+the default for that parameter.
+</LI>
+
+      <P><H5><U>Literature</U></H5><P>
+      <P><H5><U>Additional information</U></H5><P>
+
+
+<REMARK PHENIX BODY END>

@@ -1,0 +1,76 @@
+
+<REMARK PHENIX TITLE START -- Put your title here>
+
+
+<H4><U>Superimposing two PDB files with 
+    lsq_superpose_pdbs</U></H4>
+
+
+<REMARK PHENIX TITLE END>
+
+<REMARK PHENIX BODY START  -- Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<LI>Sequence alignment: Tom Ioerger
+<LI>lsq_superpose_pdbs: Peter Zwart
+<LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
+<LI>find_domain: Peter Zwart
+</LI>
+
+<P><H5><U>Purpose</U></H5><P>
+
+The lsq_superpose_pdbs method is a tool for superimposing one PDB model on another and writing out the
+superimposed model.
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How lsq_superpose_pdbs works:</H5><P>
+
+lsq_superpose_pdbs carries out three steps:
+
+<LI>(1) A sequence alligment using all protein residues from both structures (ligands and waters are discarded).
+
+<LI>(2) A least squares superposition of the two pdb files given the computed alignment.
+
+<LI>(3) Locating subdomains of the two protein that improve the superposition score. This feature is handy when the 
+        proteins in question has a hinge region or various flexible loops that would bias the superpositioning.
+  
+<P><H5><I>Output files from lsq_superpose_pdbs</I></H5><P>
+
+<LI>Model from step 2. Output name controlled by key <FONT face=courier>super.moved</FONT>.  Default is <FONT face=courier>moved.pdb</FONT>
+<LI>Models from step 3. Output rootname controlled by key <FONT face=courier>super.domain_finding_parameters.root_name</FONT>. Deafault is <FONT face=courier>inv_dom</FONT>
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of lsq_superpose_pdbs:</H5><P>
+
+  Running the lsq_superpose_pdbs is easy.  From the command-line you can 
+type:
+<PRE><FONT face=courier>phenix.lsq_superpose_pdbs fixed.pdb moving.pdb
+</FONT></PRE>
+
+This will produce the following file:
+<PRE><FONT face=courier>moved.pdb
+</FONT></PRE>
+
+Sequence alignment and domain finding parameters can be changed from the command line:
+
+<PRE><FONT face=courier>phenix.lsq_superpose_pdbs fixed.pdb moving.pdb alignment_parameters.gap_opening_penalty=100 gap_extension_penalty=5 domain_finding_parameters.match_radius=2.0
+</FONT></PRE>
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<LI>DNA and RNA are ignored.
+</LI>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<REMARK PHENIX BODY END>

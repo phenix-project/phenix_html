@@ -1,0 +1,414 @@
+
+<REMARK PHENIX TITLE START -- Put your title here>
+
+
+<H4><U> Running a Wizard from a GUI, the command-line, or a script
+</H4></U> 
+
+
+<REMARK PHENIX TITLE END>
+
+<REMARK PHENIX BODY START  -- Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+      <P><H5><U>Author(s)</U></H5><P>
+<P><LI> AutoSol Wizard: Tom Terwilliger
+<P><LI> PHENIX GUI and PDS Server: Nigel W. Moriarty
+</LI>
+
+      <P><H5><U>Purpose</U></H5><P>
+<P>Any Wizard can be run from the PHENIX GUI, from the command-line, 
+and from keyworded script files.  All three versions are identical except
+in the way that they take commands from the user. 
+<P>This page describes how to run a Wizard and what a Wizard does in general. 
+The specific Wizard help pages describe the details of each PHENIX Wizard.
+
+      <P><H5><U>Usage</U></H5><P>
+<P><H5><CENTER>Wizard data directories, sub-directories, Facts, and the
+PDS (Project Data Storage)</H5><P></CENTER>
+<P>
+<P><LI>The directory that you are in when you start up PHENIX is 
+your working directory.
+<P><LI>Each run of a Wizard will have all output data in a subdirectory of
+your working directory named like this (for AutoSol run 3):
+<PRE><FONT face=courier>AutoSol_run_3_/
+</FONT></PRE>
+<P><LI>This subdirectory will have one or more temporary directories:
+<PRE><FONT face=courier>AutoSol_run_3_/TEMP0/
+</FONT></PRE>
+which contain intermediate files.  These temporary
+directories will be deleted when
+the Wizard is finished (unless you set the parameter clean_up to False)
+<P><LI>For OMIT and MULTIPLE-MODEL runs, the final OMIT maps and multiple
+models will be in a subdirectory of your run directory:
+<PRE><FONT face=courier>AutoSol_run_3_/OMIT/
+AutoSol_run_3_/MULTIPLE_MODELS/
+</FONT></PRE>
+<P><LI>All the parameter values as well as any other information that a 
+Wizard generates during its run is stored in the PDS (Project Data
+Storage) and/or the Wizard Facts.  The Facts are values of parameters
+and pointers to files in the PDS.  The Facts keep track of the current
+knowledge available to the Wizard.  Each time a step is completed by
+a Wizard, the new Facts are saved (overwriting old ones for that run).
+As the Facts define the state of the Wizard, the Wizard can be restarted
+any time by loading the appropriate set of Facts.
+
+<P><LI>The PDS (Project data storage) will be in your working directory:
+<PRE><FONT face=courier>./PDS/
+</FONT></PRE>
+The PDS contains the output of each of your runs for all
+Wizards and a record of all the Facts
+(parameters and data) for each run. If you delete a run, the corresponding
+entries in the PDS are also deleted. You can copy the PDS from one place to 
+another
+
+<P><H5><CENTER>Running a Wizard from a GUI</H5><P></CENTER>
+<P>
+<P><H5> Basic operation of a Wizard from the GUI </H5><P>
+<P><LI> Start up the PHENIX GUI in your working directory by typing "phenix"
+<P><LI>Launch a Wizard from the PHENIX GUI by double-clicking on the
+name of the Wizard ("AutoSol") 
+under "Wizards" in the Strategy Interface of the main GUI.
+<P><LI>The Wizard will come up in  a blue window and will 
+open a grey Parameters window asking you for information on what files to use
+and what to do.
+<P><LI>Enter the file names and make choices as necessary (NOTE: to select a
+file click on the yellow box to the right of the file entry field. To add a 
+new file entry field click on the "Parameter group options" tab if present).
+<P><LI> Proceed to the next window by clicking "Continue" in the upper left
+corner of the grey Parameters window.
+<P><LI>The Wizard will guide you through the necessary inputs, then it will
+continue on its own until it is finished.
+<P><LI>When the Wizard is done, you can double-click on the Display icon
+(the little magnifying glass on the upper left of the blue Wizard window)
+to show a list of files and maps that can be displayed. (NOTE:
+The Display Options window is updated when you open it.  Once this
+window is open you cannot open it again until you close it.  Sometimes this
+window may be behind other windows and this will prevent you from
+opening it again.)
+<P><LI>You can open the Parameters window any time the Wizard is stopped by
+clicking on the Parameters icon (4 little lines in the upper left corner 
+of the blue Wizard window).  This allows you to carry out some of the
+more advanced options below.
+<P><LI>Your output log file will be in a file called "AutoSol.1.output" for
+an AutoSol run.  You can also see the same file by clicking on the "LOG" button
+at the lower right of the blue or green window.
+</LI>
+<P><H5> Keeping track of multiple runs of a Wizard from the GUI </H5><P>
+<P><LI>You can run more than one Wizard job at a time if you want. Each run of a
+Wizard is put in a separate sub-directory (e.g., "AutoSol_run_1_").
+<P><LI> When you start a Wizard, it will start a <B>new</B> run of that Wizard.
+<P><LI>If you want to go back to a previous run, you can use the Run Control and
+Run Number selections near the bottom of any Parameters window (NOTE: to open the parameters window click on the lines at the upper left of the blue Wizard
+window). Select goto_run and choose a run number to go to. 
+<P><LI>If you want to copy a previous run and go on, use the Run Control and Run 
+Number selections and select copy_run and choose a run number to copy. The
+Wizard will create a new run (with number equal to the highest previous number
+plus one) and carry on with it.
+<P><LI>To see what runs are available, select View or Delete Runs in the 
+Navigate tab at the lower left of any Parameters window.
+<P><LI>If you want to stop the Wizard, hit the PAUSE button on the green Wizard 
+window (the Wizard is green when running, blue or purple when stopped). NOTE:
+this may take a little time, particularly if Phaser or HYSS or phenix.refine
+are running. In those cases if you really want to stop the Wizard right away,
+got to "Strategy" and then select "Stop Strategy" and it will be stopped.
+</LI>
+<P><H5> Setting parameters of a Wizard from the GUI </H5><P>
+<P><LI>You can set any parameter in a Wizard by selecting the 
+variable in the Choose Variable to Set tab. The next time you click
+Continue, the Wizard will save all the current inputs as usual, and
+then instead of going on to the next step, it will open a window asking
+you for the new value of that variable.  When you enter it and press
+Continue, the Wizard will continue on with what it was doing, but with 
+this new value.
+<P><LI>NOTE that some parameters (e.g., resolution) may affect many steps.
+If a prior step is affected by a parameter that is changed, the Wizard
+does not go back and change it. If you want the parameter change to affect
+something that has already been done, you need to re-run the corresponding
+step.
+<P><LI>NOTE that you can set any SOLVE, RESOLVE or RESOLVE_PATTERN keyword
+in PHENIX using the "resolve_command", "solve_command" or "resolve_pattern_command" keywords.  These can be set in the GUI from the Choose Variable
+pull-down menu. You just type in the command to the entry form like this:
+(for resolve_command): 
+<PRE><FONT face=courier>ligand_start start.pdb
+</FONT></PRE>
+</LI>
+<P><H5> Navigating steps in a Wizard from the GUI </H5><P>
+<P><LI>When the Wizard is done or Paused, you can select any available
+step in the Navigate tab at the middle bottom of any Parameter window.
+This tells the Wizard to get any necessary inputs for 
+that step and to then carry it out.
+
+<P><LI> The Wizards normally start out in Manual mode (one step at a time,
+asking user for inputs). Once the necessary inputs are entered, the
+Wizard enters Automatic mode (no more asking for inputs until something
+required is missing).  You can control this by specifying Manual
+or Automatic in the Auto/Manual tab at the bottom right of any Wizard.
+</LI>
+<P><H5><CENTER>Running a Wizard from the command-line</H5><P></CENTER>
+<P><H5> Basic operation of a Wizard from the command-line</H5><P>
+<P>
+<P><LI> You can run a wizard from the command line like this (autosol is 
+the AutoSol wizard):
+<PRE><FONT face=courier>phenix.autosol data=w1.sca seq_file=seq.dat 2 Se
+</FONT></PRE>
+
+<P><LI>The command_line interpreter will try to interpret obvious 
+information (2 means sites=2, Se means atom_type=Se) and will run the 
+wizard. 
+<P><LI>To see all the information about this wizard and the
+keywords that you can set for this wizard, type:
+<PRE><FONT face=courier>phenix.autosol --help all
+</FONT></PRE>
+<P><LI>If you want to stop a Wizard, you can create a file "STOPWIZARD" and
+put it in the subdirectory (i.e., AutoSol_2_/) where the Wizard is running.
+This is like hitting the PAUSE button on the GUI and stops the wizard cleanly.
+</LI>
+<P><H5> Keeping track of multiple runs of a Wizard from the command-line</H5><P>
+
+<P><LI>When you start a Wizard from the command line, the default is
+to start a <B>new</B> run of that Wizard.
+<P><LI>To see all the available runs of this Wizard, type:
+<PRE><FONT face=courier>phenix.autosol show_runs
+</FONT></PRE>
+<P><LI>To delete runs 1,2 and 4-7 of this Wizard, type something like this:
+<PRE><FONT face=courier>phenix.autosol delete_runs="1 2 4-7"
+</FONT></PRE>
+Note that the group of numbers is enclosed in quotes (").  This tells the
+input parser (iotbx.phil) that all these numbers go with the one keyword
+of delete_runs. Note also that there are no spaces around the "=" sign!
+
+<P><LI>To go back to run 2 and carry on (remembering all previous inputs
+and possibly adding new ones, in this case setting the resolution) type 
+something like:
+<PRE><FONT face=courier>phenix.autosol run=2 resolution=3.0
+</FONT></PRE>
+<P><LI>To carry on with the current highest-numbered run
+(remembering all previous inputs
+and possibly adding new ones, in this case setting the resolution) type 
+something like:
+<PRE><FONT face=courier>phenix.autosol carry_on resolution=3.0
+</FONT></PRE>
+
+<P><LI>To copy run 2 to a <B>new</B> run and carry on from there
+(remembering all previous inputs
+and possibly adding new ones, in this case setting the resolution) type 
+something like:
+<PRE><FONT face=courier>phenix.autosol copy_run=2 resolution=3.0
+</FONT></PRE>
+</LI>
+<P><H5> Setting parameters of a Wizard from the command-line</H5><P>
+<P>When you run a Wizard from the command-line, two files are produced
+and put in the subdirectory of the Wizard (e.g., AutoBuild_run_3_/).
+<P><LI>A parameters (".eff") file will be produced that you can 
+edit to rerun the Wizard:
+<PRE><FONT face=courier>phenix.autosol autosol.eff
+</FONT></PRE>
+This autosol.eff file (for AutoSol) contains the values of all the AutoSol
+parameters at the time of starting the Wizard. 
+
+<P><LI> A script file (".inp") with inputs in the format for running from a 
+script is produced that you can edit and use like this: 
+<PRE><FONT face=courier>phenix.runWizard AutoSol AutoSol.inp
+</FONT></PRE>
+
+<P><LI> To get keyword help on a specific keyword you can type:
+<PRE><FONT face=courier>phenix.autosol --help data  # get help on the keyword data for autosol
+</FONT></PRE>
+
+<P><LI> To show current Facts (values of all parameters) for highest_numbered run:
+<PRE><FONT face=courier>phenix.autosol show_facts
+</FONT></PRE>
+
+<P><LI> To show current Facts (values of all parameters) for run 3:
+<PRE><FONT face=courier>phenix.autosol run=3 show_facts
+</FONT></PRE>
+<P><LI> To show current summary:
+<PRE><FONT face=courier>phenix.autosol show_summary 
+</FONT></PRE>
+
+<P><LI>NOTE that you can set any SOLVE, RESOLVE or RESOLVE_PATTERN keyword
+in PHENIX using the "resolve_command", "solve_command" or 
+"resolve_pattern_command" keywords from the command line. The format is
+a little tricky: you have to put two sets of quotes around the command like
+this:
+<PRE><FONT face=courier>resolve_command="'ligand_start start.pdb'"    # NOTE ' and " quotes
+</FONT></PRE>
+This will put the text 
+<PRE><FONT face=courier>ligand_start start.pdb
+</FONT></PRE>
+at the end of every temporary command file created to run resolve.
+</LI>
+
+<P> <P><H5><CENTER>Running a Wizard from a script</H5><P></CENTER>
+<P><H5> Basic operation of a Wizard from a script</H5><P>
+<P>
+<P><LI> You can run a wizard from a script like this 
+(AutoSol wizard):
+<PRE><FONT face=courier>phenix.runWizard AutoSol autosol.inp
+</FONT></PRE>
+The script file (autosol.inp) should contain keyword entries telling
+the Wizard what to do. 
+<P><LI>The keywords that can be set in a script file include (nearly) all the
+keywords for for command-line running, plus a set of control keywords for
+running from a script. To see all the basic commands for a wizard, make a
+script (e.g., keywords.inp) that says:
+<PRE><FONT face=courier>list_keywords
+</FONT></PRE>
+and then type:
+<PRE><FONT face=courier>phenix.runWizard AutoSol keywords.inp
+</FONT></PRE>
+<P><LI>For help on a Wizard, your script file should say:
+<PRE><FONT face=courier>help
+</FONT></PRE>
+
+<P><LI>Unlike running from the command-line, the order of entries in a 
+script file can make a difference. For example you can specify a group
+of inputs for one dataset and then start a new dataset. 
+
+<P><LI>If you want to stop a Wizard, you can create a file "STOPWIZARD" and
+put it in the subdirectory (i.e., AutoSol_2_/) where the Wizard is running.
+This is like hitting the PAUSE button on the GUI and stops the wizard cleanly.
+</LI>
+
+<P><H5> Keeping track of multiple runs of a Wizard from a script</H5><P>
+
+<P><LI>When you start a Wizard from the command line, the default is
+to start a <B>new</B> run of that Wizard.
+<P><LI>To see all the available runs of this Wizard, delete some runs,
+carry on with run 3, or copy run 4 into a new run, your script should say
+one of the following:
+<PRE><FONT face=courier>show_runs
+delete_run_list 1 2 3-5
+run 3
+copy_run 4
+</FONT></PRE>
+</LI>
+
+<P><H5> Setting parameters of a Wizard from a script</H5><P>
+<P><LI>You can set nearly any parameter using keywords from a script. 
+For example:
+<PRE><FONT face=courier>resolution 2.5
+</FONT></PRE>
+will set the overall high-resolution cutoff to 2.5 A.
+<P>
+<P><H5>Useful script commands</H5><P>
+
+<PRE><FONT face=courier>help  # print out this help message 
+
+show_runs # list all the runs that are saved
+
+delete_runs 1 2 3-5 9:12 # delete runs 1 2 3-5 9-12
+
+carry_on # continue on with the highest-numbered run
+
+run 5 # continue with run 5
+
+copy_run 5 # make a new copy of run 5 (with number equal
+   # to highest existing run number +1) and continue
+   # with this new copy.
+
+run_only DumpFacts # list current values of all parameters and stop
+
+run_only nothing # do nothing and stop
+
+list_keywords # list all the keywords and their possible values
+
+run_list method_1 method_2 # run these methods and anything
+    # that follows automatically
+
+run_only method_1 method_2 # run just these methods and stop
+user_command method_1 
+
+list_methods # list all methods that can be run with run_list
+
+</FONT></PRE>
+<P> These are a good way to run Wizards initially, and also a good way
+to change some parameters after stopping a run
+<P> Note: these all have the form:
+<PRE><FONT face=courier>keyword parameter
+</FONT></PRE>
+<P>where the parameter must be enclosed in quotes if it is a string
+ containing blanks. If the keyword contains the text "list" or the words
+ "dataset_", "cell" or "input_labels" then the
+ parameter can be a list of items,
+ separated by blanks:
+<PRE><FONT face=courier> 
+cell 40 50 40 90 90 90
+</FONT></PRE>
+<P> An empty list is
+ indicated by "[]" <P>
+
+<P><LI>NOTE that you can set any SOLVE, RESOLVE or RESOLVE_PATTERN keyword
+in PHENIX using the "resolve_command", "solve_command" or 
+"resolve_pattern_command" keywords from a script. The format is
+different than from the command-line: you don't have to put quotes around
+around the command:
+<PRE><FONT face=courier>resolve_command ligand_start start.pdb # NOTE: quotes not necessary for script
+</FONT></PRE>
+<P>This will put the text 
+<PRE><FONT face=courier>ligand_start start.pdb
+</FONT></PRE>
+at the end of every temporary command file created to run resolve.
+</LI>
+
+<P><H5>Specific limitations and problems:</H5><P>
+<P><LI>
+In the GUI version of Wizards,
+The Display Options window is updated only when you open it.  Further, 
+once this window is open you cannot open it again until you close it.  
+Sometimes this window may be behind other windows and this will 
+prevent you from opening it again until you close the open window.
+</LI>
+
+<P><LI> The Wizards use file names based on the names of your input files, but
+they do not differentiate between files with the same name coming from 
+different directories. Consequently you should not use two files with 
+different contents but with the same file name as inputs to a Wizard, even
+if they come from separate starting directories.
+
+<P><LI>The command-line version of AutoSol cannot be used for MIR or for 
+combining multiple datasets.  The script and GUI versions can be used
+instead for these cases.
+
+<P><LI>
+You should not work on the same
+run in two ways at the same time.  This can lead to unpredictable results
+because the two runs will really be the same run and the data and
+databases for the two runs will be overwriting each other.
+This means you need to be careful that if you goto_run 1 of a Wizard
+in one window that you do not also goto_run 1 of the same Wizard 
+in another window. 
+On the other hand, it is perfectly fine to work on run 1 of a Wizard in
+one window and run 2 of the same Wizard in another window.
+
+<P><LI>The PHENIX Wizards can take most settings of most space groups, 
+however they can only use the hexagonal setting of rhombohedral space 
+groups (eg., #146 R3:H or #155 R32:H), and  cannot use space groups 114-119 
+(not found in macromolecular crystallography) even in the standard setting 
+due to difficulties with the use of asuset in the version of ccp4 libraries 
+used in PHENIX for these settings and space groups. 
+
+<P><LI>The PHENIX Wizards will automatically read some parameters from
+previous runs of the same and any other Wizard in the same directory. 
+The parameters that are set this way are:
+
+dmin expt_type find_ncs input_seq_file ligand_solutions mad_ha_type 
+mask_type ncs_copies residues resolution semet solvent_fraction 
+thorough_denmod truncate_ha_sites_in_resolve use_met_in_align .
+
+Setting defaults for these parameters in this way is usually helpful, but 
+if you set them in one run it is important to keep in mind that the value 
+you have set them to will become the default for future runs in that 
+directory (unless you delete that run).  If there are multiple runs 
+in which a parameter is set, then the one that was started last sets 
+the default for that parameter.
+
+</LI>
+
+      <P><H5><U>Literature</U></H5><P>
+      <P><H5><U>Additional information</U></H5><P>
+
+
+<REMARK PHENIX BODY END>
