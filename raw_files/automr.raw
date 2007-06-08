@@ -201,7 +201,7 @@ with "None" for anything that is missing.
 <P>For example, if your data file data.mtz has columns F SIGF 
 then you might specify
 <PRE><FONT face=courier>data=data.mtz
-input_labels="F SIGF"
+input_label_string="F SIGF"
 </FONT></PRE>
 
 <P>You can find out all the possible label strings in a data file that
@@ -221,8 +221,8 @@ seq_file=seq.dat  # sequence file
 </FONT></PRE>
 
       <P><H5><U>Examples</U></H5><P>
-<P><H5> Sample command_line inputs: </H5><P>
 
+<P><H5>Standard AutoMR run with coords.pdb native.sca </H5><P>
 <P>Run AutoMR using coords.pdb as search model, native.sca as data, 
 assume RMS between coords.pdb and true model is about 0.85 A, the
 sequence of true model is seq.dat and there are 1 copies in the unit cell:
@@ -230,11 +230,37 @@ sequence of true model is seq.dat and there are 1 copies in the unit cell:
     n_cycle_rebuild_max=2 n_cycle_build_max=2
 </FONT></PRE>
 
+<P><H5>Specifying data columns </H5><P>
+<P>Run AutoMR as above, but specify the data columns explicitly:
+<PRE><FONT face=courier>phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
+    data=data.mtz input_label_string="F SIGF"  \ 
+    n_cycle_rebuild_max=2 n_cycle_build_max=2 
+</FONT></PRE>
+Note that the data columns are specified by a string that includes both
+F and SIGF : "F SIGF".  The string must match some set of data labels
+that can be extracted automatically from your data file.
+You can  find the possible values of this string as described above 
+with 
+<PRE><FONT face=courier>"phenix.automr display_labels=data.mtz".
+</FONT></PRE>
+
+<P><H5>Specifying a refinement file for AutoBuild</H5><P>
+<P>Run AutoMR as above, but specify a refinement file that is different from
+the file used for the MR search:
+<PRE><FONT face=courier>phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
+    data=data.mtz input_label_string="F SIGF"  \ 
+    autobuild_input_refinement_file=refinement.mtz \
+    autobuild_input_refinement_labels="FP SIGFP FreeR_flag"  \ 
+    n_cycle_rebuild_max=2 n_cycle_build_max=2 
+</FONT></PRE>
+Note that the
+
+<P><H5>AutoMR searching for 2 components</H5><P>
 <P>Run AutoMR on a structure with 2 components. Define the components of
 the asymmetric unit with sequence files (beta.seq and blip.seq) and
 number of copies of each component (1).  Define the search models
 with PDB files and estimated RMS from true structures.
-<PRE><FONT face=courier>phenix.automr data=beta_blip_P3221.mtz input_labels="Fobs Sigma"  \
+<PRE><FONT face=courier>phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
  resolution=0.0 resolution_build=3.0                               \
  component_1.component_type=protein component_1.seq_file=beta.seq  \
  component_1.component_copies=1                                    \
@@ -245,12 +271,13 @@ with PDB files and estimated RMS from true structures.
  n_cycle_rebuild_max=1
 </FONT></PRE>
 
+<P><H5>Specifying molecular masses of 2 components</H5><P>
 <P>Run AutoMR as in the previous example, except specify the components
 of the asymmetric unit with molecular masses (30000 and 20000), 
 and define the search models
 with PDB files and percent sequence identity with the true structures
 (50% and 60%).
-<PRE><FONT face=courier>phenix.automr data=beta_blip_P3221.mtz input_labels="Fobs Sigma"  \
+<PRE><FONT face=courier>phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
  resolution=0.0 resolution_build=3.0                               \
  component_1.component_type=protein component_1.mass=30000  \
  component_1.component_copies=1                                    \

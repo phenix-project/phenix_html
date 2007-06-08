@@ -391,18 +391,33 @@ due to difficulties with the use of asuset in the version of ccp4 libraries
 used in PHENIX for these settings and space groups. 
 
 <P><LI>The PHENIX Wizards will automatically read some parameters from
-previous runs of the same and any other Wizard in the same directory. 
+previous runs of the same and any other Wizard in the same directory.
 The parameters that are set this way are:
 
-dmin expt_type find_ncs input_seq_file ligand_solutions mad_ha_type 
-mask_type ncs_copies residues resolution semet solvent_fraction 
-thorough_denmod truncate_ha_sites_in_resolve use_met_in_align .
+<PRE><FONT face=courier>
+chain_type
+dmin
+expt_type
+find_ncs
+input_seq_file
+ligand_solutions
+mad_ha_type
+mask_type
+ncs_copies
+residues
+resolution
+semet
+solvent_fraction
+thorough_denmod
+truncate_ha_sites_in_resolve
+use_met_in_align
+</FONT></PRE>
 
-Setting defaults for these parameters in this way is usually helpful, but 
-if you set them in one run it is important to keep in mind that the value 
-you have set them to will become the default for future runs in that 
-directory (unless you delete that run).  If there are multiple runs 
-in which a parameter is set, then the one that was started last sets 
+Setting defaults for these parameters in this way is usually helpful, but
+if you set them in one run it is important to keep in mind that the value
+you have set them to will become the default for future runs in that
+directory (unless you delete that run).  If there are multiple runs
+in which a parameter is set, then the one that was started last sets
 the default for that parameter.
 
 </LI>
