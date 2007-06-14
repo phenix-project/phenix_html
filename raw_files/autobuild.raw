@@ -457,10 +457,11 @@ used in refinement
 
 <P><LI><P><H5>Create one very good rebuilt model</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
+  multiple_models_starting_resolution=0. include_input_model=True \
   multiple_models_number=1 n_cycle_rebuild_max=5
 </FONT></PRE>
 
-<P><LI><P><H5>Create 20 very good rebuilt models</H5><P>
+<P><LI><P><H5>Create 20 very good rebuilt models that are as different as possible</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
    multiple_models_number=20 n_cycle_rebuild_max=5
 </FONT></PRE>

@@ -253,7 +253,20 @@ the file used for the MR search:
     autobuild_input_refinement_labels="FP SIGFP FreeR_flag"  \ 
     n_cycle_rebuild_max=2 n_cycle_build_max=2 
 </FONT></PRE>
-Note that the
+Note that the commands input_refinement_file and input_refinement_labels are
+preceded by autobuild_ . These commands and others with this prefix are
+passed on to AutoBuild.
+
+<P><H5>Passing any commands to AutoBuild</H5><P>
+<p>You can pass any AutoBuild commands on to AutoBuild, even if they
+are not already defined for you in AutoMR. To add the 
+ommands semet=True and refine=False: 
+<PRE><FONT face=courier>phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
+    data=data.mtz input_label_string="F SIGF"  \ 
+    autobuild_input_list_add='semet refine'  \
+    autobuild_semet=True \
+    autobuild_refine=False
+</FONT></PRE>
 
 <P><H5>AutoMR searching for 2 components</H5><P>
 <P>Run AutoMR on a structure with 2 components. Define the components of
