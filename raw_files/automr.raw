@@ -267,6 +267,12 @@ ommands semet=True and refine=False:
     autobuild_semet=True \
     autobuild_refine=False
 </FONT></PRE>
+Notes. This applies only to command-line operation of AutoMR.
+Note that any keywords that are used in both AutoBuild and AutoMR will apply to 
+both if you specify them in autobuild_input_list_add. For example if you 
+set the resolution in AutoBuild with autobuild_input_list_add=resolution and
+autobuild_resolution=2.6 then this resolution will apply to both AutoMR and
+AutoBuild.
 
 <P><H5>AutoMR searching for 2 components</H5><P>
 <P>Run AutoMR on a structure with 2 components. Define the components of
