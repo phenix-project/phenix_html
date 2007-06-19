@@ -357,11 +357,49 @@ elbow.builder to create a cif definition file for this ligand:
 </FONT></PRE>
 where LIG is the 3-letter ID code that you use in my_ligand.pdb
 to identify your ligand.
-
 <P>Then you can use the keyword "cif_def_files_list" to 
 tell AutoBuild about this ligand:
 <PRE><FONT face=courier>cif_def_files_list=elbow.LIG.my_ligand.pdb.cif
 </FONT></PRE>
+
+<P><H5>Specifying arbitrary commands and cif files for phenix.refine </H5><P>
+<P>You can tell AutoBuild to apply any set of cif definitions to the model
+during refinement by using a combination of specification files and the
+commands cif_def_files_list and refine_eff_file_list:
+<PRE><FONT face=courier>refine_eff_file_list=link.eff cif_def_file_list=link.cif
+</FONT></PRE>
+This example comes from the phenix.refine manual page in which a link is 
+specified in a cif definition file link.cif:
+<PRE><FONT face=courier> data_mod_5pho
+#
+loop_
+_chem_mod_atom.mod_id
+_chem_mod_atom.function
+_chem_mod_atom.atom_id
+_chem_mod_atom.new_atom_id
+_chem_mod_atom.new_type_symbol
+_chem_mod_atom.new_type_energy
+_chem_mod_atom.new_partial_charge
+ 5pho     add      .      O5T    O    OH      .
+loop_
+_chem_mod_bond.mod_id
+_chem_mod_bond.function
+_chem_mod_bond.atom_id_1
+_chem_mod_bond.atom_id_2
+_chem_mod_bond.new_type
+_chem_mod_bond.new_value_dist
+_chem_mod_bond.new_value_dist_esd
+ 5pho     add      O5T     P         coval        1.520    0.020
+</FONT></PRE>
+<P>and this is applied with a parameters file link.eff:
+<PRE><FONT face=courier> refinement.pdb_interpretation.apply_cif_modification
+{
+  data_mod = 5pho
+  residue_selection = resname GUA and name O5T
+}
+</FONT></PRE>
+<P>You can have any number of cif files and parameters files.
+
 
 <P><H5><I>Output files from AutoBuild</I></H5><P>
 <P>When you run AutoBuild the output files will be in a subdirectory with
@@ -439,32 +477,60 @@ used in refinement
 <P><LI><P><H5>Make a SA-omit map around atoms in target.pdb</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb omit_box_pdb=target.pdb   composite_omit_type=sa_omit
 </FONT></PRE>
+Coefficients for the output omit map will be in the  file
+resolve_composite_map.mtz in the subdirectory OMIT/ .
+An additional map coefficients file omit_region.mtz will show you the
+region that has been omitted.
 
 <P><LI><P><H5>Make a simple composite omit map</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb composite_omit_type=simple_omit
 </FONT></PRE>
+Coefficients for the output omit map will be in the  file
+resolve_composite_map.mtz in the subdirectory OMIT/ .
 
 <P><LI><P><H5>Make an iterative-build omit map around atoms in target.pdb</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=target.pdb \
    composite_omit_type=iterative_build_omit
 </FONT></PRE>
+Coefficients for the output omit map will be in the  file
+resolve_composite_map.mtz in the subdirectory OMIT/ .
+An additional map coefficients file omit_region.mtz will show you the
+region that has been omitted.
 
 <P><LI><P><H5>Make a sa-omit map around residues 3 and 4 in chain A of coords.pdb</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=coords.pdb \
    omit_res_start_list=3 omit_res_end_list=4 omit_chain_list=A   \
    composite_omit_type=sa_omit
 </FONT></PRE>
+Coefficients for the output omit map will be in the  file
+resolve_composite_map.mtz in the subdirectory OMIT/ .
 
 <P><LI><P><H5>Create one very good rebuilt model</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
-  multiple_models_starting_resolution=0. include_input_model=True \
+  include_input_model=True  \
   multiple_models_number=1 n_cycle_rebuild_max=5
 </FONT></PRE>
+The final model will be in the file MULTIPLE_MODELS/all_models.pdb (this
+file will contain just one model).
+<p>
+Note that this procedure will keep the sequence that is present in coords.pdb.
+If instead you supply a sequence file and specify edit_pdb=True, 
+it will edit the sequence of coords.pdb to match your sequence file 
+and discard any residues that do not match.
+<p>Note also that if include_input_model=True then no randomization cycle
+will be carried out and multiple_models_starting_resolution is ignored.
+
 
 <P><LI><P><H5>Create 20 very good rebuilt models that are as different as possible</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
    multiple_models_number=20 n_cycle_rebuild_max=5
 </FONT></PRE>
+The 20 models will be in the file MULTIPLE_MODELS/all_models.pdb.
+This procedure is useful for generating an ensemble of models that are 
+each individually consistent with the data, and yet are diverse. The variation
+among these models is an indication of the uncertainty in each of the models.
+Note that the ensemble of models is not a representation of the ensemble of
+structures that is truly present in the crystal.
 
 <P><LI><P><H5>Build an RNA chain</H5><P>
 <PRE><FONT face=courier>phenix.autobuild data=solve_1.mtz seq_file=seq.dat chain_type=RNA
