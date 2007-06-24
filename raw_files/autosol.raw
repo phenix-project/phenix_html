@@ -38,7 +38,7 @@ preliminary model.
 and from keyworded script files.  All three versions are identical except
 in the way that they take commands from the user. 
 See 
-<a href="RunningWizards.htm">
+<a href="running-wizards.htm">
 Running a Wizard from a GUI, the command-line, or a script</a> 
 for details of how to run a Wizard.
 The command-line version will be described here, except for MIR and multiple
@@ -251,7 +251,7 @@ f_double_prime values are set explicitly
 <P>You can specify many more parameters as well. See  the list of
 keywords, defaults and descriptions at the end of this page and
 also general information about running Wizards at
-<a href="RunningWizards.htm">
+<a href="running-wizards.htm">
 Running a Wizard from a GUI, the command-line, or a script</a> 
 for how to do this.  Some of the most common parameters are:
 <PRE><FONT face=courier>sites=3     # 3 sites
@@ -322,7 +322,8 @@ printed out for you so that you can just paste the one you want in.
 for each wavelength.  It also must be clear what datafile goes with which
 wavelength. If you input an MTZ file with multiple datasets, then the order
 of those datasets is assumed to be the same as the order of the wavelengths.
-You may want to split such an MTZ file into separate files for each dataset
+You may want to either select particular datasets from your MTZ file
+(see below) or split such an MTZ file into separate files for each dataset
 if this does not work in the way you expect.
 <PRE><FONT face=courier>phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
 peak.data=w1.sca   peak.f_prime=-8   peak.f_double_prime=4.5 \
@@ -357,6 +358,19 @@ whether to use anomalous differences (or just isomorphous differences):
 </FONT></PRE>
 This will set the heavy-atom type to Iodine, look for 2 sites, and include
 anomalous differences.
+
+<P><H5>SAD with more than one anomalously-scattering atom </H5><P>
+<P>You can tell the AutoSol wizard to look for more than one anomalously-
+scattering atom. Specify one atom type (Se) in the usual way. Then specify 
+any additional ones like this:
+<PRE><FONT face=courier>mad_ha_add_list Br Pt
+mad_ha_add_f_prime_list -7 -10
+mad_ha_add_f_double_prime_list 4.2 12
+</FONT></PRE>
+There must be the same number of entries in each of these three keyword
+lists. During phasing Phaser will try to add whichever atom types 
+best fit the scattering from each new site. This option is available
+for SAD phasing only.
 
 <P><H5>MIR dataset: </H5><P>
 <P> An MIR dataset is a set of more than one datasets. This cannot
