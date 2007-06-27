@@ -12,7 +12,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U>Author(s)</U></H5><P>
-<LI>AutoSol Wizard: Tom Terwilliger
+<UL><LI>AutoSol Wizard: Tom Terwilliger
 <LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
 <LI>HYSS: Ralf W. Grosse-Kunstleve and Paul D. Adams
 <LI>Phaser: Randy Read, Airlie McCoy and Laurant Storoni
@@ -21,7 +21,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <LI>TEXTAL: K. Gopal, T.R. Ioerger, R.K. Pai, T.D. Romo, J.C. Sacchettini
 <LI>phenix.refine: Ralf W. Grosse-Kunstleve, Peter Zwart and Paul D. Adams
 <LI>mmtbx.xtriage: Peter Zwart
-</LI>
+</UL>
 
       <P><H5><U>Purpose</U></H5><P>
 The AutoSol Wizard uses HYSS, SOLVE, Phaser, RESOLVE, TEXTAL, xtriage and 
@@ -96,14 +96,14 @@ experimental data if any of the files in the first dataset read in have a very
 strong anisotropy. You can tell the Wizard how much anisotropy there must be
 using the keywords
 
-<PRE><FONT face=courier>correct_aniso=True  # (if True or False then always or never apply correction)
+<PRE style="face=courier">correct_aniso=True  # (if True or False then always or never apply correction)
 
 delta_b_for_auto_correct_aniso=20  # correct if range of anisotropic B 
                                    #is greater than 20
 
 ratio_b_for_auto_correct_aniso=1.5  #correct if the ratio of the largest 
                                   #to smallest anisotropic B is greater than 1.5
-</FONT></PRE>
+</PRE>
 <P>If an anisotropy correction is applied then a separate 
 refinement file must be specified if refinement is to be carried out. 
 This is because it is best to
@@ -149,7 +149,7 @@ experimental phases.
 density modification provides an estimate of structure factors that is
 (mostly) independent of the measured structure factors, so the R-factor
 between FC and Fobs is a good measure of the quality of experimental phases.
-<P>(3) The skew (third moment or normalized <rho**3>) of the density in an
+<P>(3) The skew (third moment or normalized &lt;rho**3&gt;) of the density in an
 electron density map is a good measure of its quality, because a random 
 map has a skew of zero (density histograms look like a Gaussian), while a
 good map has a very positive skew (density histograms very strong near zero,
@@ -164,8 +164,8 @@ indicator of the internal consistency of a solution. This score is not
 normalized by the SD of randomized phase sets (as that has no meaning; rather
 a standard SD=0.05 is used).
 <P>The Z-score for one criterion for a particular solution is given by,
-<PRE><FONT face=courier>Z= (Score - mean_random_solution_score)/(SD_of_random_solution_scores)
-</FONT></PRE>
+<PRE style="face=courier">Z= (Score - mean_random_solution_score)/(SD_of_random_solution_scores)
+</PRE>
 where Score is the score for this solution, mean_random_solution_score is
 the mean score for a solution with randomized  phases, and 
 SD_of_random_solution_scores is the standard deviation of the scores of
@@ -187,74 +187,74 @@ with RESOLVE or with TEXTAL.  The refinement is carried out with phenix.refine.
 <P><H5><I>Output files from AutoSol</I></H5><P>
 <P>When you run AutoSol the output files will be in a subdirectory with
 your run number: 
-<PRE><FONT face=courier>AutoSol_run_1_/
-</PRE></FONT>
+<PRE style="face=courier">AutoSol_run_1_/
+</PRE>
 <P>The key output files that are produced are:
 
-<P><LI>A summary file listing the results of the run and 
+<P><UL><LI>A summary file listing the results of the run and 
 the other files produced:
-<PRE><FONT face=courier>AutoSol_summary.dat  # overall summary
-</PRE></FONT>
+<PRE style="face=courier">AutoSol_summary.dat  # overall summary
+</PRE>
 
 <P><LI>A warnings file listing any warnings about the run
-<PRE><FONT face=courier>AutoSol_warnings  # any warnings
-</PRE></FONT>
+<PRE style="face=courier">AutoSol_warnings  # any warnings
+</PRE>
 
 <P><LI>A file that lists all parameters and knowledge accumulated
 by the Wizard during the run (some parts are binary and are not printed)
-<PRE><FONT face=courier>AutoSol_Facts.dat   # all Facts about the run
-</PRE></FONT>
+<PRE style="face=courier">AutoSol_Facts.dat   # all Facts about the run
+</PRE>
 
 <P><LI>NCS information  (if any)
-<PRE><FONT face=courier>AutoSol_15.ncs   # NCS information. The number is the solution number
-</PRE></FONT>
+<PRE style="face=courier">AutoSol_15.ncs   # NCS information. The number is the solution number
+</PRE>
 
 <P><LI>Experimental phases and HL coefficients
-<PRE><FONT face=courier>solve_15.mtz  # either solve or phaser depending on which was run
+<PRE style="face=courier">solve_15.mtz  # either solve or phaser depending on which was run
 phaser_15.mtz
-</PRE></FONT>
+</PRE>
 
 <P><LI>Density-modified phases from RESOLVE
-<PRE><FONT face=courier>current_cycle_map_coeffs.mtz  # map coefficients (density modified phases)
+<PRE style="face=courier">current_cycle_map_coeffs.mtz  # map coefficients (density modified phases)
 resolve_15.mtz   # density-modified phases; same as above
-</PRE></FONT>
+</PRE>
 For either of these, use FP PHIM FOMM for PHI F FOM.
 
 <P><LI>An mtz file for use in refinement
-<PRE><FONT face=courier>exptl_fobs_phases_freeR_flags_15.mtz  # F Sigma HL coeffs, freeR-flags for refinement
-</PRE></FONT>
+<PRE style="face=courier">exptl_fobs_phases_freeR_flags_15.mtz  # F Sigma HL coeffs, freeR-flags for refinement
+</PRE>
 
 <P><LI>Heavy atom sites in PDB format
-<PRE><FONT face=courier>ha_15.pdb_formatted.pdb
-</PRE></FONT>
+<PRE style="face=courier">ha_15.pdb_formatted.pdb
+</PRE>
 
 <P><LI>Current preliminary model and evaluation of model
-<PRE><FONT face=courier>current_cycle.pdb
+<PRE style="face=courier">current_cycle.pdb
 current_cycle_eval.log
-</PRE></FONT>
+</PRE>
 
-</LI>
+</UL>
 
 <P><H5>How to run the AutoSol Wizard:</H5><P>
 <P>  Running the AutoSol Wizard is easy.  From the command-line you can 
 type:
-<PRE><FONT face=courier>phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
-</FONT></PRE>
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
+</PRE>
 <P>The AutoSol Wizard will assume that w1.sca is a datafile (because it
 ends in .sca and is a file) and that seq.dat is a sequence file, that there
 are 2 heavy-atom sites, and that the heavy-atom is Se. The f_prime and
 f_double_prime values are set explicitly
 <P> You can also specify each of these things directly:
-<PRE><FONT face=courier>phenix.autosol data=w1.sca seq_file=seq.dat sites=2 \
+<PRE style="face=courier">phenix.autosol data=w1.sca seq_file=seq.dat sites=2 \
    atom_type=Se f_prime=-8 f_double_prime=4.5
-</FONT></PRE>
+</PRE>
 <P>You can specify many more parameters as well. See  the list of
 keywords, defaults and descriptions at the end of this page and
 also general information about running Wizards at
 <a href="running-wizards.htm">
 Running a Wizard from a GUI, the command-line, or a script</a> 
 for how to do this.  Some of the most common parameters are:
-<PRE><FONT face=courier>sites=3     # 3 sites
+<PRE style="face=courier">sites=3     # 3 sites
 sites_file=sites.pdb  # ha sites in PDB or fractional xyz format
 atom_type=Se   # Se is the heavy-atom
 seq_file=seq.dat   # sequence file (1-aa code, separate chains with >>>>)
@@ -262,12 +262,12 @@ quick=True  # try to find sites quickly
 data=w1.sca  # input datafile
 f_prime=-5  # f-prime value for SAD
 f_double_prime=4.5  # f-double-prime value for SAD
-</FONT></PRE>
+</PRE>
 
       <P><H5><U>Examples</U></H5><P>
 <P><H5>SAD dataset:</H5><P>
-<PRE><FONT face=courier>phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
-</FONT></PRE>
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
+</PRE>
 The sequence file is used to estimate the solvent content of the
 crystal and for model-building.
 Note that for a SAD dataset the value of f_prime and f_double_prime are not 
@@ -276,24 +276,24 @@ the refined occupancies of heavy-atom sites might be 1/2 their correct
 values.
 
 <P><H5>SAD dataset specifying solvent fraction:</H5><P>
-<PRE><FONT face=courier>phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
     solvent_fraction=0.45
-</FONT></PRE>
+</PRE>
 This will force the solvent fraction to be 0.45.  This illustrates a
 general feature of the Wizards: they will try to estimate values of
 parameters, but if you input them directly, they will use your input
 values.
 
 <P><H5>SAD dataset without model-building:</H5><P>
-<PRE><FONT face=courier>phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
     build=False
-</FONT></PRE>
+</PRE>
 This will carry out the usual structure solution, but will skip model-building
 
 <P><H5>SAD dataset, building RNA instead of protein:</H5><P>
-<PRE><FONT face=courier>phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
     build=False chain_type=RNA
-</FONT></PRE>
+</PRE>
 This will carry out the usual structure solution, but will build an RNA
 chain.  For DNA, specify chain_type=DNA.  You can only build one type of
 chain at a time in the AutoSol Wizard. To build protein and DNA, use 
@@ -304,9 +304,9 @@ and with chain_type=DNA.
 <P><H5>SAD dataset, selecting a particular dataset from an MTZ file:</H5><P>
 If you have an input MTZ file with more than one anomalous dataset, you can 
 type something like:
-<PRE><FONT face=courier>phenix.autosol w1.mtz seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.mtz seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
 labels='F SIGF DANO SIGDANO'
-</FONT></PRE>
+</PRE>
 This will carry out the usual structure solution, but will choose the
 input data columns based on the  labels: 'F SIGF DANO SIGDANO'. If you run the
 AutoSol Wizard with SAD data and an MTZ file containing more than one
@@ -314,8 +314,8 @@ anomalous dataset and don't tell it which one to use,
 all possible values of labels are 
 printed out for you so that you can just paste the one you want in.
 <P>You can also find out all the possible label strings to use by typing:
-<PRE><FONT face=courier>phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
-</FONT></PRE>
+<PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
+</PRE>
 
 <P><H5>MAD dataset: </H5><P>
 <P>The inputs for a MAD dataset need to specify f_prime and f_double_prime
@@ -325,37 +325,37 @@ of those datasets is assumed to be the same as the order of the wavelengths.
 You may want to either select particular datasets from your MTZ file
 (see below) or split such an MTZ file into separate files for each dataset
 if this does not work in the way you expect.
-<PRE><FONT face=courier>phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
+<PRE style="face=courier">phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
 peak.data=w1.sca   peak.f_prime=-8   peak.f_double_prime=4.5 \
 infl.data=w2.sca   infl.f_prime=-9   infl.f_double_prime=1.9 \
 high.data=w3.sca   high.f_prime=-5   high.f_double_prime=3.0 
-</FONT></PRE>
+</PRE>
 
 <P><H5>MAD dataset, selecting particular datasets from an MTZ file:</H5><P>
 This is similar to the case for SAD data.If you have an input MTZ file with more than one anomalous dataset, you can 
 type something like:
-<PRE><FONT face=courier>phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
+<PRE style="face=courier">phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
 peak.data=all_data.mtz   peak.f_prime=-8   peak.f_double_prime=4.5 \
 high.data=all_data.mtz   high.f_prime=-5   high.f_double_prime=3.0 \
 peak.labels='Fpeak SIGFpeak DANOpeak SIGDANOpeak' \
 high.labels='Fhigh SIGFhigh DANOhigh SIGDANOhigh' 
-</FONT></PRE>
+</PRE>
 This will carry out the usual structure solution, but will choose the
 input peak data columns based on the  
 labels: 'Fpeak SIGFpeak DANOpeak SIGDANOpeak', and the high data 
 from the ones labelled 'Fhigh SIGFhigh DANOhigh SIGDANOhigh'. 
 <P>As in the SAD case, you can find out all the possible 
 label strings to use by typing:
-<PRE><FONT face=courier>phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
-</FONT></PRE>
+<PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
+</PRE>
 
 <P><H5>SIR dataset: </H5><P>
 <P>The standard inputs for an SIR dataset are the native and derivative, the
 sequence file, the heavy-atom type, and the number of sites, as well as
 whether to use anomalous differences (or just isomorphous differences):
-<PRE><FONT face=courier>phenix.autosol native.data=native.sca deriv.data=deriv.sca \
+<PRE style="face=courier">phenix.autosol native.data=native.sca deriv.data=deriv.sca \
    deriv.ha_type=I deriv.sites=2 deriv.inano=inano
-</FONT></PRE>
+</PRE>
 This will set the heavy-atom type to Iodine, look for 2 sites, and include
 anomalous differences.
 
@@ -363,10 +363,10 @@ anomalous differences.
 <P>You can tell the AutoSol wizard to look for more than one anomalously-
 scattering atom. Specify one atom type (Se) in the usual way. Then specify 
 any additional ones like this:
-<PRE><FONT face=courier>mad_ha_add_list Br Pt
+<PRE style="face=courier">mad_ha_add_list Br Pt
 mad_ha_add_f_prime_list -7 -10
 mad_ha_add_f_double_prime_list 4.2 12
-</FONT></PRE>
+</PRE>
 There must be the same number of entries in each of these three keyword
 lists. During phasing Phaser will try to add whichever atom types 
 best fit the scattering from each new site. This option is available
@@ -377,7 +377,7 @@ for SAD phasing only.
 be readily expressed in the command-line inputs, but you can specify it easily
 with the PHENIX AutoSol GUI or with a script. In a script file you can say:
 <P>
-<PRE><FONT face=courier>cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
+<PRE style="face=courier">cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
 resolution 2.8                             #  Resolution 
 expt_type       sir                        # MIR dataset is set of SIR datasets
 input_seq_file sequence.dat
@@ -394,7 +394,7 @@ nat_der_list    Native Hg
 inano_list      noinano inano              
 n_ha_list       0    5  
 #########################################
-</FONT></PRE>
+</PRE>
 <P>The script file carries out steps in the order that they are input. This
 allows us to read in one entire dataset, save it, then read in another one.
 The AutoSol Wizard will solve each dataset and then combine them and phase
@@ -407,7 +407,7 @@ for the various derivatives.
 an MIR dataset in the AutoSol Wizard.  You specify each dataset separately,
 and put "start" and "read_another_dataset" between the datasets:
 <P>
-<PRE><FONT face=courier>cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
+<PRE style="face=courier">cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
 resolution 2.8                             #  Resolution 
 input_seq_file sequence.dat
 ############## DATASET 1 ################
@@ -423,7 +423,7 @@ expt_type       sad                        # our second dataset is SAD
 input_file_list  hgki_rd_1.sca             # anom diffs for SAD dataset
 mad_ha_n  5                                # 5 sites
 #########################################
-</FONT></PRE>
+</PRE>
 <P>The SIR and SAD datasets will be solved separately (but whichever
 one is solved first will use difference Fourier or anomalous difference 
 Fourier's to locate sites for the other. Then phases will be combined
@@ -436,7 +436,7 @@ will be density modified.
 
 <P><H5>Specific limitations and problems:</H5><P>
 
-<P><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
+<P><UL><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
 the AutoSol wizard is limited by the memory in your computer and the
 binaries used. The Wizard is supplied with regular-size ("", size=6), 
 giant ("_giant", size=12), huge ("_huge", size=18) and extra_huge
@@ -462,7 +462,7 @@ used in PHENIX for these settings and space groups.
 previous runs of the same and any other Wizard in the same directory. 
 The parameters that are set this way are:
 
-<PRE><FONT face=courier>chain_type
+<PRE style="face=courier">chain_type
 dmin
 expt_type
 find_ncs
@@ -478,7 +478,7 @@ solvent_fraction
 thorough_denmod
 truncate_ha_sites_in_resolve
 use_met_in_align
-</FONT></PRE>
+</PRE>
 
 Setting defaults for these parameters in this way is usually helpful, but 
 if you set them in one run it is important to keep in mind that the value 
@@ -487,7 +487,7 @@ directory (unless you delete that run).  If there are multiple runs
 in which a parameter is set, then the one that was started last sets 
 the default for that parameter.
 
-</LI>
+</UL>
 
       <P><H5><U>Literature</U></H5><P>
       <P><H5><U>Additional information</U></H5><P>

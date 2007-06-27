@@ -1,7 +1,9 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<!--REMARK PHENIX HEADER START -- do not edit this section...edit PHENIX BODY -->
+<!--REMARK PHENIX HEADER START  do not edit this section...edit PHENIX BODY -->
 <head>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.2900.3059" name=GENERATOR>
 <STYLE type=text/css>.noline {
 	COLOR: #000000; TEXT-DECORATION: none
 }
@@ -17,9 +19,9 @@ Phenix documentation
   <TR>
     <TD align=left width=180 rowSpan=2><A 
       href="http://www.phenix-online.org/"><IMG 
-      src="icons/phenix-logo.jpg" border=0></A></TD></TR>
+      alt="phenix_logo" src="icons/phenix-logo.jpg" border=0></A></TD></TR>
   <TR>
-    <TD vAlign=bottom align=left><FONT face=Helvetica,Arial 
+    <TD vAlign=bottom align=left><FONT face="Helvetica,Arial" 
       size=2><U><I><B>P</B>ython-based <B>H</B>ierarchical <B>EN</B>vironment 
       for <B>I</B>ntegrated <B>X</B>tallography 
 </I></U></FONT></TD></TR></TBODY></TABLE>
@@ -27,7 +29,7 @@ Phenix documentation
 <TABLE width=670 border=0>
   <TBODY>
   <TR>
-    <TD vAlign=center colSpan=2 height=10><FONT face=Helvetica,Arial 
+    <TD vAlign=middle colSpan=2 height=10><FONT face="Helvetica,Arial" 
       size=1>&nbsp;</FONT></TD></TR>
   <TR>
     <TD align=left>
@@ -36,16 +38,16 @@ Phenix documentation
 <!--REMARK PHENIX HEADER END-->
 
 
-<!--REMARK PHENIX TITLE START -- Put your title here-->
+<!--REMARK PHENIX TITLE START  Put your title here-->
 
 
-<H4><U> Running SOLVE/RESOLVE in PHENIX </H4></U> 
+<H4><U> Running SOLVE/RESOLVE in PHENIX </U></H4> 
 
 
 <!--REMARK PHENIX TITLE END-->
 
 
-<!--REMARK PHENIX TABLE OF CONTENTS START -- do not edit this section-->
+<!--REMARK PHENIX TABLE OF CONTENTS START  do not edit this section-->
 <dl>
 
 <dt><a href="#anch2">Author(s)</a></dt>
@@ -60,91 +62,92 @@ Phenix documentation
 <dt><a href="#anch18">Additional information</a></dt></dl>
 <!--REMARK PHENIX TABLE OF CONTENTS END-->
 
-<a name="anch21" id="<P><a"></a><P><a name="anch1" id="anch1"></a>
+<P><a name="anch1" id="anch1"></a>
 
-<!--REMARK PHENIX BODY START  -- Put your text here. 
+<!--REMARK PHENIX BODY START   Put your text here. 
 Anything enclosed in header html H4 H5 etc will go in the table of contents-->
 
 
       
-<P><a name="anch2" id="Author(s)"></a>
-<H5><U>Author(s)</U></H5>
-<P><a name="anch3" id="Author(s)"></a>
+<P><a name="anch2" id="Author_s_"></a>
+</p><H5><U>Author(s)</U></H5>
+<P><a name="anch3" id="Author_s__2"></a>
 
-
-<P><a name="anch4" id="Author(s)"></a>
-<LI> SOLVE/RESOLVE: Tom Terwilliger
-</LI>
+</p>
+<P><a name="anch4" id="Author_s__3"></a>
+</p><UL><LI> SOLVE/RESOLVE: Tom Terwilliger
+</UL>
 
       
 <P><a name="anch5" id="Purpose"></a>
-<H5><U>Purpose</U></H5>
-<P><a name="anch6" id="Purpose"></a>
+</p><H5><U>Purpose</U></H5>
+<P><a name="anch6" id="Purpose_2"></a>
 
-
-<P><a name="anch7" id="Purpose"></a>
+</p>
+<P><a name="anch7" id="Purpose_3"></a>
 SOLVE and RESOLVE can be run directly in the PHENIX environment.  This
 feature is normally only for advanced SOLVE/RESOLVE users who want to access
 the keywords in SOLVE/RESOLVE directly.
 
-      
+      </p>
 <P><a name="anch8" id="Usage"></a>
-<H5><U>Usage</U></H5>
-<P><a name="anch9" id="Usage"></a>
+</p><H5><U>Usage</U></H5>
+<P><a name="anch9" id="Usage_2"></a>
 
-
-<P><a name="anch10" id="Running SOLVE/RESOLVE from the command-line or in a script."></a>
-<H5><CENTER>Running SOLVE/RESOLVE from the command-line or in a script.
+</p>
+<P><a name="anch10" id="Running_SOLVE_RESOLVE_from_the_command-line_or_in_a_script_"></a>
+</p><H5>Running SOLVE/RESOLVE from the command-line or in a script.
 </H5>
-<P><a name="anch11" id="Running SOLVE/RESOLVE from the command-line or in a script."></a>
-</CENTER>
+<P><a name="anch11" id="Running_SOLVE_RESOLVE_from_the_command-line_or_in_a_script__2"></a>
 
-<P><a name="anch12" id="Running SOLVE/RESOLVE from the command-line or in a script."></a>
+</p>
+<P><a name="anch12" id="Running_SOLVE_RESOLVE_from_the_command-line_or_in_a_script__3"></a>
 
-
-<P><a name="anch13" id="Running SOLVE/RESOLVE from the command-line or in a script."></a>
-<LI>You can run solve with the command:
-<PRE><FONT face=courier>phenix.solve
-</FONT></PRE>
+</p>
+<P><a name="anch13" id="Running_SOLVE_RESOLVE_from_the_command-line_or_in_a_script__4"></a>
+</p><UL><LI>You can run solve with the command:
+<PRE style="face=courier">phenix.solve
+</PRE>
 This command will set the environmental variables CCP4_OPEN, SYMOP, SYMLIB,
 and SOLVEDIR and will run solve.  If you want to run a different size of
 solve, then you can specify:
-<PRE><FONT face=courier>phenix.solve --giant
-</FONT></PRE>
+<PRE style="face=courier">phenix.solve --giant
+</PRE>
 For a bigger version still, choose --huge, for biggest, --extra_huge.
 
 
-<P><a name="anch14" id="Running SOLVE/RESOLVE from the command-line or in a script."></a>
-<LI>Running resolve or resolve_pattern is similar:
-<PRE><FONT face=courier>phenix.resolve
+<P><a name="anch14" id="Running_SOLVE_RESOLVE_from_the_command-line_or_in_a_script__5"></a>
+</p><LI>Running resolve or resolve_pattern is similar:
+<PRE style="face=courier">phenix.resolve
 phenix.resolve_pattern
-</FONT></PRE>
+</PRE>
 
 
-<P><a name="anch15" id="Running SOLVE/RESOLVE from the command-line or in a script."></a>
-<LI>Running solve/resolve from a command file is simple. Here is a command
+<P><a name="anch15" id="Running_SOLVE_RESOLVE_from_the_command-line_or_in_a_script__6"></a>
+</p><LI>Running solve/resolve from a command file is simple. Here is a command
 file to run resolve:
-<PRE><FONT face=courier>phenix.resolve&lt;&lt;EOD
+<PRE style="face=courier">phenix.resolve&lt;&lt;EOD
 hklin solve.mtz
 labin FP=FP SIGFP=SIGFP PHIB=PHIB FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD
 solvent_content 0.43
 database 5
 EOD
-</FONT></PRE>
+</PRE>
+</LI></UL>
 
       
 <P><a name="anch16" id="Literature"></a>
-<H5><U>Literature</U></H5>
-<P><a name="anch17" id="Literature"></a>
+</p><H5><U>Literature</U></H5>
+<P><a name="anch17" id="Literature_2"></a>
 
-      
-<P><a name="anch18" id="Additional information"></a>
-<H5><U>Additional information</U></H5>
-<P><a name="anch19" id="Additional information"></a>
+      </p>
+<P><a name="anch18" id="Additional_information"></a>
+</p><H5><U>Additional information</U></H5>
+<P><a name="anch19" id="Additional_information_2"></a>
 
 
-
-<P><a name="anch20" id="Additional information"></a>
+</p>
+<P><a name="anch20" id="Additional_information_3"></a>
 All the solve/resolve keywords are available in the PHENIX versions
 of solve and resolve. See the full documentation for solve/resolve at
 <A href="http://solve.lanl.gov/" > http://solve.lanl.gov/ </A>.
@@ -152,9 +155,10 @@ of solve and resolve. See the full documentation for solve/resolve at
 
 <!--REMARK PHENIX BODY END-->
 
-<!--REMARK PHENIX KEYWORDS START -- This is auto-generated if you provide
+<!--REMARK PHENIX KEYWORDS START  This is auto-generated if you provide
   a method, otherwise you can paste in here-->
 
 <!--REMARK PHENIX KEYWORDS END-->
 
+</TABLE></BODY>
 

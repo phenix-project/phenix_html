@@ -12,11 +12,11 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U><B>Author(s)</B></U></H5><P>
-<LI>Phaser: Randy Read, Airlie McCoy and Laurant Storoni
+<UL><LI>Phaser: Randy Read, Airlie McCoy and Laurant Storoni
 <LI>AutoMR Wizard: Tom Terwilliger, Laurent Storoni, Randy Read, and Airlie McCoy
 <LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
 <LI>mmtbx.xtriage: Peter Zwart
-</LI>
+</UL>
 
       <P><H5><U>Purpose</U></H5><P>
 
@@ -103,28 +103,28 @@ has additional residues.
 <P><H5><I>Output files from AutoMR</I></H5><P>
 <P>When you run AutoMR the output files will be in a subdirectory with
 your run number:
-<PRE><FONT face=courier>AutoMR_run_1_/   # subdirectory with results
-</PRE></FONT>
+<PRE style="face=courier">AutoMR_run_1_/   # subdirectory with results
+</PRE>
 
-<P><LI>A summary file listing the results of the run and
+<P><UL><LI>A summary file listing the results of the run and
 the other files produced:
-<PRE><FONT face=courier>AutoMR_summary.dat  # overall summary
-</PRE></FONT>
+<PRE style="face=courier">AutoMR_summary.dat  # overall summary
+</PRE>
 
 <P><LI>A warnings file listing any warnings about the run
-<PRE><FONT face=courier>AutoMR_warnings  # any warnings
-</PRE></FONT>
+<PRE style="face=courier">AutoMR_warnings  # any warnings
+</PRE>
 
 <P><LI>A file that lists all parameters and knowledge accumulated
 by the Wizard during the run (some parts are binary and are not printed)
-<PRE><FONT face=courier>AutoMR_Facts.dat   # all Facts about the run
-</PRE></FONT>
+<PRE style="face=courier">AutoMR_Facts.dat   # all Facts about the run
+</PRE>
 
 <P><LI>Molecular replacement model, structure factors, and map coefficients:
-<PRE><FONT face=courier>MR.1.pdb
+<PRE style="face=courier">MR.1.pdb
 MR.1.mtz
 MR.MAP_COEFFS.1.mtz
-</PRE></FONT>
+</PRE>
 The AutoMR wizard writes out MR.1.pdb and MR.1.mtz and
 MR.MAP_COEFFS.1.mtz well as output log files. The MR.1.pdb file will contain
 all the components of your MR solution. If there are multiple PDB files in an
@@ -133,7 +133,7 @@ MR.1.pdb. If there are multiple copies of a model, the chains are lettered
 sequentially A B C... The MR.1.mtz file contains the data from your input file
 to the full resolution available. The MR.MAP_COEFFS.1.mtz file contains
 sigmaA-weighted 2Fo-Fc map coefficients based on the rigid-body-refined model.
-</LI>
+</UL>
 <P><B>Model rebuilding</B>. 
 After PHASER molecular replacement the AutoMR Wizard loads
 the AutoBuild Wizard and sets the defaults based on the MR solution that has
@@ -146,8 +146,8 @@ MR.MAP_COEFFS.1.mtz.
 <P><H5>How to run the AutoMR Wizard:</H5><P>
 <P>  Running the AutoMR Wizard is easy.  For example, 
 from the command-line you can type:
-<PRE><FONT face=courier>phenix.automr native.sca search.pdb RMS=0.8 mass=23000 copies=1
-</FONT></PRE>
+<PRE style="face=courier">phenix.automr native.sca search.pdb RMS=0.8 mass=23000 copies=1
+</PRE>
 <P>The AutoMR Wizard will find the best location and orientation of
 the search model search.pdb in the unit cell based on the data in native.sca, 
 assuming that the RMSD between the correct model and search.pdb is about
@@ -155,31 +155,31 @@ assuming that the RMSD between the correct model and search.pdb is about
 is 1 copy of this model in the asymmetric unit.
 
 <P><H5>Components, copies, search models, and ensembles</H5><P>
-<P><LI>Your structure is composed of one or more <B>components</B> such as a 
+<P><UL><LI>Your structure is composed of one or more <B>components</B> such as a 
 20Kd subunit with sequence seq-of-20Kd-subunit.
 <P><LI>There may be one or more <B>copies</B> of each <B>component</B>  
 in your structure.
 <P><LI>You can search for the location(s) of a <B>component</B> with a 
 <B>search model</B> that consists of a single structure or 
 an <B>ensemble</B> of structures.
-</LI>
+</UL>
 
 <P><H5>What the AutoMR wizard needs to run:</H5><P>
 <P>In a simple case where you have one search model and are looking for 
 N copies of this model in your structure, you need:
-<P><LI>(1) a datafile name (native.sca or data=native.sca)
+<P><UL><LI>(1) a datafile name (native.sca or data=native.sca)
 <P><LI>(2) a search model (search_model.pdb or coords=search_model.pdb)
 <P><LI>(3) a how similar the search model is to your structure (
 RMS=0.8 or identity=75)
 <P><LI>(4) information about the contents of the asymmetric unit:
    (mass=23000 or seq_file=seq.dat)  and (copies=1)
-</LI>
+</UL>
 
 <P>It may be advantageous to search using an ensemble of similar 
 structures, rather than a single structure.
 If you have an ensemble of search models to search for, then specify it as
-<PRE><FONT face=courier>coords='model_1.pdb model_2.pdb model_3.pdb'
-</FONT></PRE>
+<PRE style="face=courier">coords='model_1.pdb model_2.pdb model_3.pdb'
+</PRE>
 <P>In this case you need to give the RMS or identity for each model:
 identity='45 40 35'.  Each of the models in the ensemble must be in the
 same orientation as the others, so that the ensemble of models can be placed
@@ -188,9 +188,9 @@ as a group in the unit cell.
 <P>If you are searching for more than one ensemble, or if there is more
 than one component in the a.u., then use the full syntax and specify them as
 (NOTE copies becomes copies_to_find or component_copies):
-<PRE><FONT face=courier>ensemble_1.coords=s1.pdb ensemble_1.RMS=0.8 ensemble_1.copies_to_find=1 \
+<PRE style="face=courier">ensemble_1.coords=s1.pdb ensemble_1.RMS=0.8 ensemble_1.copies_to_find=1 \
    component_1.mass=23000 component_1.component_copies=1
-</FONT></PRE>
+</PRE>
 
 <P><H5>Specifying which columns of data to use from input data files</H5><P>
 <P>If one or more of your data files has column names that the Wizard
@@ -200,14 +200,14 @@ with "None" for anything that is missing.
 
 <P>For example, if your data file data.mtz has columns F SIGF 
 then you might specify
-<PRE><FONT face=courier>data=data.mtz
+<PRE style="face=courier">data=data.mtz
 input_label_string="F SIGF"
-</FONT></PRE>
+</PRE>
 
 <P>You can find out all the possible label strings in a data file that
 you might use by typing:
-<PRE><FONT face=courier>phenix.autosol display_labels=data.mtz  # display all labels for data.mtz
-</FONT></PRE>
+<PRE style="face=courier">phenix.autosol display_labels=data.mtz  # display all labels for data.mtz
+</PRE>
 
 <P>You can specify many more parameters as well. See the list of
 keywords, defaults and descriptions at the end of this page and
@@ -215,10 +215,10 @@ also general information about running Wizards at
 <a href="running-wizards.htm">
 Running a Wizard from a GUI, the command-line, or a script</a> 
 for how to do this.  Some of the most common parameters are:
-<PRE><FONT face=courier>data=w1.sca       # data file
+<PRE style="face=courier">data=w1.sca       # data file
 model=coords.pdb  # starting model
 seq_file=seq.dat  # sequence file
-</FONT></PRE>
+</PRE>
 
       <P><H5><U>Examples</U></H5><P>
 
@@ -226,33 +226,33 @@ seq_file=seq.dat  # sequence file
 <P>Run AutoMR using coords.pdb as search model, native.sca as data, 
 assume RMS between coords.pdb and true model is about 0.85 A, the
 sequence of true model is seq.dat and there are 1 copies in the unit cell:
-<PRE><FONT face=courier>phenix.automr coords.pdb native.sca RMS=0.85 seq.dat copies=1  \
+<PRE style="face=courier">phenix.automr coords.pdb native.sca RMS=0.85 seq.dat copies=1  \
     n_cycle_rebuild_max=2 n_cycle_build_max=2
-</FONT></PRE>
+</PRE>
 
 <P><H5>Specifying data columns </H5><P>
 <P>Run AutoMR as above, but specify the data columns explicitly:
-<PRE><FONT face=courier>phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
+<PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
     data=data.mtz input_label_string="F SIGF"  \ 
     n_cycle_rebuild_max=2 n_cycle_build_max=2 
-</FONT></PRE>
+</PRE>
 Note that the data columns are specified by a string that includes both
 F and SIGF : "F SIGF".  The string must match some set of data labels
 that can be extracted automatically from your data file.
 You can  find the possible values of this string as described above 
 with 
-<PRE><FONT face=courier>"phenix.automr display_labels=data.mtz".
-</FONT></PRE>
+<PRE style="face=courier">"phenix.automr display_labels=data.mtz".
+</PRE>
 
 <P><H5>Specifying a refinement file for AutoBuild</H5><P>
 <P>Run AutoMR as above, but specify a refinement file that is different from
 the file used for the MR search:
-<PRE><FONT face=courier>phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
+<PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
     data=data.mtz input_label_string="F SIGF"  \ 
     autobuild_input_refinement_file=refinement.mtz \
     autobuild_input_refinement_labels="FP SIGFP FreeR_flag"  \ 
     n_cycle_rebuild_max=2 n_cycle_build_max=2 
-</FONT></PRE>
+</PRE>
 Note that the commands input_refinement_file and input_refinement_labels are
 preceded by autobuild_ . These commands and others with this prefix are
 passed on to AutoBuild.
@@ -261,12 +261,12 @@ passed on to AutoBuild.
 <p>You can pass any AutoBuild commands on to AutoBuild, even if they
 are not already defined for you in AutoMR. To add the 
 ommands semet=True and refine=False: 
-<PRE><FONT face=courier>phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
+<PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
     data=data.mtz input_label_string="F SIGF"  \ 
     autobuild_input_list_add='semet refine'  \
     autobuild_semet=True \
     autobuild_refine=False
-</FONT></PRE>
+</PRE>
 Notes. This applies only to command-line operation of AutoMR.
 Note that any keywords that are used in both AutoBuild and AutoMR will apply to 
 both if you specify them in autobuild_input_list_add. For example if you 
@@ -279,7 +279,7 @@ AutoBuild.
 the asymmetric unit with sequence files (beta.seq and blip.seq) and
 number of copies of each component (1).  Define the search models
 with PDB files and estimated RMS from true structures.
-<PRE><FONT face=courier>phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
+<PRE style="face=courier">phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
  resolution=0.0 resolution_build=3.0                               \
  component_1.component_type=protein component_1.seq_file=beta.seq  \
  component_1.component_copies=1                                    \
@@ -288,7 +288,7 @@ with PDB files and estimated RMS from true structures.
  ensemble_1.coords=beta.pdb ensemble_1.RMS=0.85 ensemble_1.copies_to_find=1 \
  ensemble_2.coords=blip.pdb ensemble_2.RMS=0.90 ensemble_2.copies_to_find=1 \
  n_cycle_rebuild_max=1
-</FONT></PRE>
+</PRE>
 
 <P><H5>Specifying molecular masses of 2 components</H5><P>
 <P>Run AutoMR as in the previous example, except specify the components
@@ -296,7 +296,7 @@ of the asymmetric unit with molecular masses (30000 and 20000),
 and define the search models
 with PDB files and percent sequence identity with the true structures
 (50% and 60%).
-<PRE><FONT face=courier>phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
+<PRE style="face=courier">phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
  resolution=0.0 resolution_build=3.0                               \
  component_1.component_type=protein component_1.mass=30000  \
  component_1.component_copies=1                                    \
@@ -305,21 +305,21 @@ with PDB files and percent sequence identity with the true structures
  ensemble_1.coords=beta.pdb ensemble_1.identity=50 ensemble_1.copies_to_find=1 \
  ensemble_2.coords=blip.pdb ensemble_2.identity=60 ensemble_2.copies_to_find=1 \
  n_cycle_rebuild_max=1
-</FONT></PRE>
+</PRE>
 
       <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems:</H5><P>
-<LI>
+<UL><LI>
 <P>The AutoBuild Wizard can build PROTEIN, RNA, or DNA, but it can only
 build one at a time.  If your MR model contains more than one type of chain,
 then you will need to run AutoBuild separately from AutoMR and
 specify one of them with input_lig_file and the type
 of chain to build with chain_type:
-<PRE><FONT face=courier> 
+<PRE style="face=courier"> 
 input_lig_file=ProteinPartofMRmodel.pdb
 chain_type=DNA
-</FONT></PRE>
+</PRE>
 
 <P><LI> If you use an ensemble as a search model, the output structure will
 contain just the first member of the ensemble, so you may wish to put
@@ -337,7 +337,7 @@ used in PHENIX for these settings and space groups.
 previous runs of the same and any other Wizard in the same directory. 
 The parameters that are set this way are:
 
-<PRE><FONT face=courier>chain_type
+<PRE style="face=courier">chain_type
 dmin
 expt_type
 find_ncs
@@ -353,7 +353,7 @@ solvent_fraction
 thorough_denmod
 truncate_ha_sites_in_resolve
 use_met_in_align
-</FONT></PRE>
+</PRE>
 
 Setting defaults for these parameters in this way is usually helpful, but 
 if you set them in one run it is important to keep in mind that the value 
@@ -361,7 +361,7 @@ you have set them to will become the default for future runs in that
 directory (unless you delete that run).  If there are multiple runs 
 in which a parameter is set, then the one that was started last sets 
 the default for that parameter.
-</LI>
+</UL>
 
       <P><H5><U>Literature</U></H5><P>
       <P><H5><U>Additional information</U></H5><P>

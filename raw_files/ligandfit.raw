@@ -12,10 +12,10 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U><B>Author(s)</B></U></H5><P>
-<LI>LigandFit Wizard: Tom Terwilliger
+<UL><LI>LigandFit Wizard: Tom Terwilliger
 <LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
 <LI>RESOLVE: Tom Terwilliger
-</LI>
+</UL>
 
       <P><H5><U>Purpose</U></H5><P>
 
@@ -66,8 +66,8 @@ single map in an automated fashion using the LigandFit wizard as well.
 <P><H5>How to run the LigandFit Wizard:</H5><P>
 <P>  Running the LigandFit Wizard is easy.  For example, 
 from the command-line you can type:
-<PRE><FONT face=courier>phenix.ligandfit data=datafile.mtz model=partial_model.pdb ligand=ligand.pdb
-</FONT></PRE>
+<PRE style="face=courier">phenix.ligandfit data=datafile.mtz model=partial_model.pdb ligand=ligand.pdb
+</PRE>
 <P>The LigandFit Wizard will carry out ligand fitting of the
 ligand in ligand.pdb based on the
 structure factor amplitudes in datafile.mtz, calculating phases based
@@ -77,7 +77,7 @@ to take stereochemically reasonable orientations.
 <P><H5>What the LigandFit wizard needs to run:</H5><P>
 
     The ligandfit wizard needs:
-<P><LI>(1) a datafile (w1.sca or data=w1.sca); this can be any format
+<P><UL><LI>(1) a datafile (w1.sca or data=w1.sca); this can be any format
 <P><LI>(2) a PDB file with your model without ligand (model=partial.pdb)
 <P><LI>(3) a file with information about your ligand (ligand=side.pdb)
 
@@ -98,14 +98,14 @@ with "None" for anything that is missing.
 
 <P>For example, if your data file data.mtz has columns FP SIGFP 
 then you might specify
-<PRE><FONT face=courier>data=data.mtz
+<PRE style="face=courier">data=data.mtz
 input_labels="FP SIGFP"
-</FONT></PRE>
+</PRE>
 
 <P>You can find out all the possible label strings in a data file that
 you might use by typing:
-<PRE><FONT face=courier>phenix.autosol display_labels=data.mtz  # display all labels for data.mtz
-</FONT></PRE>
+<PRE style="face=courier">phenix.autosol display_labels=data.mtz  # display all labels for data.mtz
+</PRE>
 
 <P>You can specify many more parameters as well. See the list of
 keywords, defaults and descriptions at the end of this page and
@@ -113,7 +113,7 @@ also general information about running Wizards at
 <a href="running-wizards.htm">
 Running a Wizard from a GUI, the command-line, or a script</a> 
 for how to do this.  Some of the most common parameters are:
-<PRE><FONT face=courier>data=w1.sca       # data file
+<PRE style="face=courier">data=w1.sca       # data file
 partial_model=coords.pdb  # starting model without ligand
 ligand=ligand.pdb # any stereochemically allowed conformation of your ligand
 resolution=3     # dmin of 3 A
@@ -122,83 +122,83 @@ ligand_cc_min=0.75   # quit if the CC of ligand to map is 0.75 or better
 number_of_ligands=3  # find 3 copies of the ligand
 n_group_search=3     # try 3 different fragments of the ligand in initial search
 resolve_command="'ligand_start side.pdb'" # build ligand superimposing on side.pdb
-</FONT></PRE>
+</PRE>
 
 <P><H5><I>Output files from LigandFit</I></H5><P>
 <P>When you run LigandFit the output files will be in a subdirectory with
 your run number:
-<PRE><FONT face=courier>LigandFit_run_1_/   # subdirectory with results
-</PRE></FONT>
+<PRE style="face=courier">LigandFit_run_1_/   # subdirectory with results
+</PRE>
 
 <P><LI>A summary file listing the results of the run and
 the other files produced:
-<PRE><FONT face=courier>LigandFit_summary.dat  # overall summary
-</PRE></FONT>
+<PRE style="face=courier">LigandFit_summary.dat  # overall summary
+</PRE>
 
 <P><LI>A file that lists all parameters and knowledge accumulated
 by the Wizard during the run (some parts are binary and are not printed)
-<PRE><FONT face=courier>LigandFit_Facts.dat   # all Facts about the run
-</PRE></FONT>
+<PRE style="face=courier">LigandFit_Facts.dat   # all Facts about the run
+</PRE>
 
 <P><LI>A warnings file listing any warnings about the run
-<PRE><FONT face=courier>LigandFit_warnings  # any warnings
-</PRE></FONT>
+<PRE style="face=courier">LigandFit_warnings  # any warnings
+</PRE>
 
 <P><LI>A PDB file with the fitted ligand (in this case the first copy of ligand
 number 1):
-<PRE><FONT face=courier>ligand_fit_1_1.pdb
-</PRE></FONT>
+<PRE style="face=courier">ligand_fit_1_1.pdb
+</PRE>
 
 <P><LI>A log file with the fitting of the ligand:
-<PRE><FONT face=courier>ligand_1_1.log
-</PRE></FONT>
+<PRE style="face=courier">ligand_1_1.log
+</PRE>
 
 <P><LI>A log file with the fit of the ligand to the map:
-<PRE><FONT face=courier>ligand_cc_1_1.log
-</PRE></FONT>
+<PRE style="face=courier">ligand_cc_1_1.log
+</PRE>
 
 <P><LI>Map coefficients for the map used for fitting:
-<PRE><FONT face=courier>resolve_map.mtz
-</PRE></FONT>
-</LI>
+<PRE style="face=courier">resolve_map.mtz
+</PRE>
+</UL>
 
       <P><H5><U>Examples</U></H5><P>
 <P><H5> Sample command_line inputs: </H5><P>
 
-<P><LI>Standard run of ligandfit (generate map from model and data file)
-<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb
-</FONT></PRE>
+<P><UL><LI>Standard run of ligandfit (generate map from model and data file)
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb
+</PRE>
 
 <P><LI>Build into a map from pre-determined coefficients
-<PRE><FONT face=courier>phenix.ligandfit data=perfect.mtz lig_map_type=map   \
+<PRE style="face=courier">phenix.ligandfit data=perfect.mtz lig_map_type=map   \
    model=partial.pdb ligand=side.pdb
-</FONT></PRE>
+</PRE>
 
 <P><LI>Quick run of ligandfit
-<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb quick=True
-</FONT></PRE>
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb quick=True
+</PRE>
 
 <P><LI>Place ligand near residue 94 of chain ""
-<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
    ligand_near_chain="" ligand_near_res=92
-</FONT></PRE>
+</PRE>
 
 <P><LI>Use start.pdb as a template for some of the atoms in the ligand; build
 the remainder of the ligand, fixing the coordinates of the corresponding
 atoms:
-<PRE><FONT face=courier>phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
    resolve_command="'ligand_start start.pdb'"  # NOTE ' and " quotes necessary
-</FONT></PRE>
+</PRE>
 Note that the formatting is slightly tricky and requires the two different
 quotation marks on either end of the command. This is an example of passing a
 specific keyword to RESOLVE.
 
-</LI>
+</UL>
       <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems:</H5><P>
 
-<P><LI>The ligand to be searched for must have at least 3 atoms.
+<P><UL><LI>The ligand to be searched for must have at least 3 atoms.
 
 <P><LI>If a ring in the ligand can have more than one conformation
 (e.g., chair or boat conformation) then you need to do separate runs
@@ -223,7 +223,7 @@ used in PHENIX for these settings and space groups.
 previous runs of the same and any other Wizard in the same directory. 
 The parameters that are set this way are:
 
-<PRE><FONT face=courier>chain_type
+<PRE style="face=courier">chain_type
 dmin
 expt_type
 find_ncs
@@ -239,7 +239,7 @@ solvent_fraction
 thorough_denmod
 truncate_ha_sites_in_resolve
 use_met_in_align
-</FONT></PRE>
+</PRE>
 
 Setting defaults for these parameters in this way is usually helpful, but 
 if you set them in one run it is important to keep in mind that the value 
@@ -247,7 +247,7 @@ you have set them to will become the default for future runs in that
 directory (unless you delete that run).  If there are multiple runs 
 in which a parameter is set, then the one that was started last sets 
 the default for that parameter.
-</LI>
+</UL>
 
       <P><H5><U>Literature</U></H5><P>
       <P><H5><U>Additional information</U></H5><P>

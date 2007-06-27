@@ -13,11 +13,11 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U>Author(s)</U></H5><P>
-<LI>find_ncs: Tom Terwilliger
+<UL><LI>find_ncs: Tom Terwilliger
 <LI>simple_ncs_from_pdb : Tom Terwilliger
 <LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
 <LI>find_domain: Peter Zwart
-</LI>
+</UL>
 
       <P><H5><U>Purpose</U></H5><P>
 The find_ncs method identifies NCS in either (a) the chains in a PDB
@@ -30,89 +30,89 @@ resolve, and the AutoSol and AutoBuild Wizards.
 <P><H5>How find_ncs works:</H5><P>
 
 <P>The basic steps that the find_ncs carries out are:
-<P><LI>(1) Decide whether to use simple_ncs_from_pdb (used if the
+<P><UL><LI>(1) Decide whether to use simple_ncs_from_pdb (used if the
   input file contains chains from a PDB file) or RESOLVE NCS identification
   (used if the input file contains heavy-atom sites)
 <P><LI>(2) call either simple_ncs_from_pdb or RESOLVE to identify NCS
 <P><LI>(3) Evaluate the NCS by calculating the correlation of NCS-related
     electron density based on the input map coefficients mtz file.
 <P><LI>(4) Report the NCS operators and correlations
-</LI>
+</UL>
 <P><H5><I>Output files from find_ncs</I></H5><P>
 
 <P>The output files that are produced are:
 
-<P><LI>NCS operators written in format for phenix.refine
-<PRE><FONT face=courier>find_ncs.ncs
-</PRE></FONT>
+<P><UL><LI>NCS operators written in format for phenix.refine
+<PRE style="face=courier">find_ncs.ncs
+</PRE>
 
 <P><LI>NCS operators written in format for the PHENIX Wizards
-<PRE><FONT face=courier>find_ncs.ncs_spec
-</PRE></FONT>
-</LI>
+<PRE style="face=courier">find_ncs.ncs_spec
+</PRE>
+</UL>
 
 <P><H5><I>What find_ncs needs:</I></H5><P>
 <P>find_ncs needs a file containing NCS information and a file with map 
 coefficients.  
 <P> The file with NCS information can be...
-<P><LI> a PDB file with a model (find_ncs will call simple_ncs_from_pdb to
+<P><UL><LI> a PDB file with a model (find_ncs will call simple_ncs_from_pdb to
 extract NCS operators from the chains in your model)
 <P><LI> a PDB file with heavy-atom sites (find_ncs will call RESOLVE to
 find NCS operators from your heavy-atom sites)
 <P><LI> an NCS definitions file written by a PHENIX wizard (e.g., 
  AutoSol_1.ncs_spec, produced by AutoSol)
 <P><LI> a RESOLVE log file containing formatted NCS operators
-</LI>
+</UL>
 <P>The file with map coefficients can be any MTZ file with coefficients for
 a map. If find_ncs does not choose the correct columns automatically, 
 then you can specify them with a command like:
-<PRE><FONT face=courier> labin="labin FP=FP PHIB=PHIB FOM=FOM "
-</PRE></FONT>
+<PRE style="face=courier"> labin="labin FP=FP PHIB=PHIB FOM=FOM "
+</PRE>
 
 <P> If you have no map coefficients yet (you just have some sites and want
 to get operators, for example), you can tell find_ncs to ignore the map with:
-<PRE><FONT face=courier>  ncs_parameters.force_ncs=True </PRE></FONT>
+<PRE style="face=courier">  ncs_parameters.force_ncs=True </PRE>
 
       <P><H5><U>Examples</U></H5><P>
 
 <P><H5>Standard run of find_ncs:</H5><P>
 <P>  Running find_ncs is easy.  From the command-line you can 
 type:
-<PRE><FONT face=courier>phenix.find_ncs MM-all.pdb MM-all.mtz
-</FONT></PRE>
+<PRE style="face=courier">phenix.find_ncs MM-all.pdb MM-all.mtz
+</PRE>
 
 <P>This will produce the following output:
-<PRE><FONT face=courier>Getting column labels from MM-all.mtz for input map file
+<PRE style="face=courier">Getting column labels from MM-all.mtz for input map file
 FILE TYPE:  ccp4_mtz
 All labels:  ['FP', 'SIGFP', 'PHIC', 'FOM']
 Labin line will be:  labin FP=FP PHIB=PHIC FOM=FOM
 To change it modify this: params.ncs.labin="labin FP=FP PHIB=PHIC FOM=FOM "
-</FONT></PRE>
+</PRE>
 <P>This is the map that will be used to evaluate NCS
-<PRE><FONT face=courier>Reading NCS information from:  MM-all.pdb
+<PRE style="face=courier">Reading NCS information from:  MM-all.pdb
 Copying  MM-all.mtz  to  temp_dir/MM-all.mtz
 This PDB file contains 2  chains and  636  total residues
 and  636  C-alpha or P atoms  and  4740  total atoms
 NCS will be found using the chains in this PDB file
 Chains in this PDB file:  ['M', 'Z']
-</FONT></PRE>
+</PRE>
 <P>Two chains were found in the file MM-all.pdb, chain M and chain Z
-<PRE><FONT face=courier>GROUPS BASED ON QUICK COMPARISON: []
+<PRE style="face=courier">GROUPS BASED ON QUICK COMPARISON: []
 Looking for invariant domains for ...: ['M', 'Z'] [[[2, 138], [193, 373]], [[2, 138], [193, 373]]]
-</FONT></PRE>
+</PRE>
 <P>Residues 2-138, 193-373, matched between the two chains
-<PRE><FONT face=courier>Copying  MM-all.mtz  to  temp_dir/MM-all.mtz
+<PRE style="face=courier">Copying  MM-all.mtz  to  temp_dir/MM-all.mtz
 Copying  temp_dir/NCS_correlation.log  to  NCS_correlation.log
 Log file for NCS correlation is in  NCS_correlation.log
 List of refined NCS correlations:  [1.0, 0.80000000000000004]
-</FONT></PRE>
+</PRE>
 <P>There were two separate groups of residues that had different NCS
 relationships. Residues 193-373 of each chain were in one group, and 
 residues  2-138 in each chain were in the other group.
 <P>The electron density map had a correlation between the two NCS-related
 chains of 1.0 for the first group, and 0.8 for the second
 <P> The NCS operators for each are listed.
-<PRE><FONT face=courier>GROUP 1
+<PRE style="face=courier">GROUP 1
 Summary of NCS group with 2 operators:
 ID of chain/residue where these apply: [['M', 'Z'], [[[193, 373]], [[193, 373]]]]
 RMSD (A) from chain M:  0.0  0.0
@@ -159,14 +159,14 @@ ROTA 1:    0.3702   -0.9275   -0.0516
 ROTA 2:   -0.8933   -0.3402   -0.2938
 ROTA 3:    0.2549    0.1548   -0.9545
 TRANS:     1.7147   -0.6936    7.2172
-</FONT></PRE>
+</PRE>
 
       <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems:</H5><P>
 
-<P><LI>None
-</LI>
+<P><UL><LI>None
+</UL>
 
       <P><H5><U>Literature</U></H5><P>
       <P><H5><U>Additional information</U></H5><P>

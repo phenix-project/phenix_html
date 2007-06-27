@@ -2,7 +2,7 @@
 <!--REMARK PHENIX TITLE START  Put your title here>
 
 
-<H4><U> Running SOLVE/RESOLVE in PHENIX </H4></U> 
+<H4><U> Running SOLVE/RESOLVE in PHENIX </U></H4> 
 
 
 <!--REMARK PHENIX TITLE END-->
@@ -12,8 +12,8 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U>Author(s)</U></H5><P>
-<P><LI> SOLVE/RESOLVE: Tom Terwilliger
-</LI>
+<P><UL><LI> SOLVE/RESOLVE: Tom Terwilliger
+</UL>
 
       <P><H5><U>Purpose</U></H5><P>
 <P>SOLVE and RESOLVE can be run directly in the PHENIX environment.  This
@@ -21,34 +21,35 @@ feature is normally only for advanced SOLVE/RESOLVE users who want to access
 the keywords in SOLVE/RESOLVE directly.
 
       <P><H5><U>Usage</U></H5><P>
-<P><H5><CENTER>Running SOLVE/RESOLVE from the command-line or in a script.
-</H5><P></CENTER>
+<P><H5>Running SOLVE/RESOLVE from the command-line or in a script.
+</H5><P>
 <P>
-<P><LI>You can run solve with the command:
-<PRE><FONT face=courier>phenix.solve
-</FONT></PRE>
+<P><UL><LI>You can run solve with the command:
+<PRE style="face=courier">phenix.solve
+</PRE>
 This command will set the environmental variables CCP4_OPEN, SYMOP, SYMLIB,
 and SOLVEDIR and will run solve.  If you want to run a different size of
 solve, then you can specify:
-<PRE><FONT face=courier>phenix.solve --giant
-</FONT></PRE>
+<PRE style="face=courier">phenix.solve --giant
+</PRE>
 For a bigger version still, choose --huge, for biggest, --extra_huge.
 
 <P><LI>Running resolve or resolve_pattern is similar:
-<PRE><FONT face=courier>phenix.resolve
+<PRE style="face=courier">phenix.resolve
 phenix.resolve_pattern
-</FONT></PRE>
+</PRE>
 
 
 <P><LI>Running solve/resolve from a command file is simple. Here is a command
 file to run resolve:
-<PRE><FONT face=courier>phenix.resolve&lt;&lt;EOD
+<PRE style="face=courier">phenix.resolve&lt;&lt;EOD
 hklin solve.mtz
 labin FP=FP SIGFP=SIGFP PHIB=PHIB FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD
 solvent_content 0.43
 database 5
 EOD
-</FONT></PRE>
+</PRE>
+</LI></UL>
 
       <P><H5><U>Literature</U></H5><P>
       <P><H5><U>Additional information</U></H5><P>

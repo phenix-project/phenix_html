@@ -13,10 +13,10 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U>Author(s)</U></H5><P>
-<LI>simple_ncs_from_pdb : Tom Terwilliger
+<UL><LI>simple_ncs_from_pdb : Tom Terwilliger
 <LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
 <LI>find_domain: Peter Zwart
-</LI>
+</UL>
 
       <P><H5><U>Purpose</U></H5><P>
 The simple_ncs_from_pdb method identifies NCS in the chains in a PDB
@@ -28,7 +28,7 @@ resolve, and the AutoSol and AutoBuild Wizards.
 <P><H5>How simple_ncs_from_pdb works:</H5><P>
 
 <P>The basic steps that the simple_ncs_from_pdb carries out are:
-<P><LI>(1) Identify sets of chains in the PDB file that have the same 
+<P><UL><LI>(1) Identify sets of chains in the PDB file that have the same 
 sequences. These are potential NCS-related chains.
 <P><LI>(2) Determine which chains in a group actually are related by NCS within
    a given tolerance (max_rmsd, typically  2 A)
@@ -36,7 +36,7 @@ sequences. These are potential NCS-related chains.
    break the chains into domains that do follow NCS if necessary.
 <P><LI>(4) Determine the NCS operators for all chains in each NCS group or
  domain
-</LI>
+</UL>
 
 <P><H5>Additional notes on how simple_ncs_from_pdb works:</H5><P>
 
@@ -81,38 +81,38 @@ domains each get a separate NCS group.
 
 <P>The output files that are produced are:
 
-<P><LI>NCS operators written in format for phenix.refine
-<PRE><FONT face=courier>simple_ncs_from_pdb.ncs
-</PRE></FONT>
+<P><UL><LI>NCS operators written in format for phenix.refine
+<PRE style="face=courier">simple_ncs_from_pdb.ncs
+</PRE>
 
 <P><LI>NCS operators written in format for the PHENIX Wizards
-<PRE><FONT face=courier>simple_ncs_from_pdb.ncs_spec
-</PRE></FONT>
-</LI>
+<PRE style="face=courier">simple_ncs_from_pdb.ncs_spec
+</PRE>
+</UL>
 
       <P><H5><U>Examples</U></H5><P>
 
 <P><H5>Standard run of simple_ncs_from_pdb:</H5><P>
 
 Running simple_ncs_from pdb is easy. For example, you can type:
-<PRE><FONT face=courier>phenix.simple_ncs_from_pdb anb.pdb
-</FONT></PRE>
+<PRE style="face=courier">phenix.simple_ncs_from_pdb anb.pdb
+</PRE>
 <P>Simple_ncs_from_pdb will analyze the chains in anb.pdb and identify
 any NCS that exists. For this sample run the following output is produced:
 
-<PRE><FONT face=courier>Chains in this PDB file:  ['A', 'N', 'B']
+<PRE style="face=courier">Chains in this PDB file:  ['A', 'N', 'B']
 GROUPS BASED ON QUICK COMPARISON: [['A', 'B']]
 Looking for invariant domains for ...: ['A', 'N', 'B'] [[[2, 525]], 
 [[2, 259], [290, 525]], [[20, 525]]]
 
-</FONT></PRE>
+</PRE>
 <P> There were 3 chains in the PDB file A, N and B.  Chains A and B were very
 similar and clearly related by NCS. This relationship was found in a quick
 comparison.  Chain N had the same sequence as A and B, but was not in 
 the identical comparison. Searching for domains that did have NCS among all
 three chains produced three domains, represented below by 4 NCS groups:
 
-<PRE><FONT face=courier>
+<PRE style="face=courier">
 GROUP 1
 Summary of NCS group with 3 operators:
 ID of chain/residue where these apply: [['A', 'N', 'B'], [[[2, 5], [20, 35], 
@@ -124,7 +124,7 @@ ID of chain/residue where these apply: [['A', 'N', 'B'], [[[2, 5], [20, 35],
 RMSD (A) from chain A:  0.0  1.09  0.07
 Number of residues matching chain A:[215, 215, 194]
 Source of NCS info: anb.pdb
-</FONT></PRE>
+</PRE>
 <P>The residues in chains A, B, and N in this group are 2-5, 20-35, 60-76,
  78-107, 110-137, 401-431, 433-483, 485-516 and 520-525.  Note that these 
 are not all contiguous. These are all the residues that all have the same
@@ -132,7 +132,7 @@ relationships among the 3 chains. The RMSD of  CA atoms between chains A and N
 is 1.09 A and between A and B is 0.07 A.
 <P> The NCS operators relating these domains are given below.
 
-<PRE><FONT face=courier>
+<PRE style="face=courier">
 OPERATOR 1
 CENTER:   29.9208  -53.3304  -13.4779
 
@@ -258,20 +258,20 @@ TRANS:    70.4964   42.5349    0.0067
 NCS operators written in format for resolve to: simple_ncs_from_pdb.resolve
 NCS operators written in format for phenix.refine to: simple_ncs_from_pdb.ncs
 NCS written as ncs object information to: simple_ncs_from_pdb.ncs_spec
-</FONT></PRE>
+</PRE>
 
       <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems:</H5><P>
 
-<P><LI>If user specifies chains to be in a suggested NCS group, 
+<P><UL><LI>If user specifies chains to be in a suggested NCS group, 
 but they are too dissimilar as a whole (rmsd > max_rmsd_use) then 
 the group is rejected even if some fragment of the chains could be
 similar.
 <P><LI>Chain specification from suggested_ncs_groups could in principle be
 have than one chain in one group...and simple_ncs_from_pdb can only use
 suggested groups that consist of N copies of single chains.
-</LI>
+</UL>
 
       <P><H5><U>Literature</U></H5><P>
       <P><H5><U>Additional information</U></H5><P>
