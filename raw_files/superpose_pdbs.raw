@@ -3,7 +3,7 @@
 
 
 <H4><U>Superimposing two PDB files with 
-    lsq_superpose_pdbs</U></H4>
+    superpose_pdbs</U></H4>
 
 
 <!--REMARK PHENIX TITLE END-->
@@ -15,7 +15,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P><H5><U>Author(s)</U></H5><P>
 
 <UL><LI>Sequence alignment: Tom Ioerger
-<LI>lsq_superpose_pdbs: Peter Zwart
+<LI>superpose_pdbs: Peter Zwart
 <LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
 <LI>find_domain: Peter Zwart
 </LI>
@@ -23,14 +23,14 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 <P><H5><U>Purpose</U></H5><P>
 
-The lsq_superpose_pdbs method is a tool for superimposing one PDB model on another and writing out the
+The superpose_pdbs method is a tool for superimposing one PDB model on another and writing out the
 superimposed model.
 
 <P><H5><U>Usage</U></H5><P>
 
-<P><H5>How lsq_superpose_pdbs works:</H5><P>
+<P><H5>How superpose_pdbs works:</H5><P>
 
-lsq_superpose_pdbs carries out three steps:
+superpose_pdbs carries out three steps:
 
 <UL><LI>(1) A sequence alligment using all protein residues from both structures (ligands and waters are discarded).
 
@@ -40,7 +40,7 @@ lsq_superpose_pdbs carries out three steps:
         proteins in question has a hinge region or various flexible loops that would bias the superpositioning.
 </LI></UL>
   
-<P><H5><I>Output files from lsq_superpose_pdbs</I></H5><P>
+<P><H5><I>Output files from superpose_pdbs</I></H5><P>
 
 <UL><LI>Model from step 2. Output name controlled by key 
 <FONT face=courier>super.moved</FONT>.  Default is <FONT face=courier>moved.pdb</FONT>
@@ -51,11 +51,11 @@ lsq_superpose_pdbs carries out three steps:
 
 <P><H5><U>Examples</U></H5><P>
 
-<P><H5>Standard run of lsq_superpose_pdbs:</H5><P>
+<P><H5>Standard run of superpose_pdbs:</H5><P>
 
-  Running the lsq_superpose_pdbs is easy.  From the command-line you can 
+  Running the superpose_pdbs is easy.  From the command-line you can 
 type:
-<PRE style="face=courier">phenix.lsq_superpose_pdbs fixed.pdb moving.pdb
+<PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb
 </PRE>
 
 This will produce the following file:
@@ -64,7 +64,7 @@ This will produce the following file:
 
 Sequence alignment and domain finding parameters can be changed from the command line:
 
-<PRE style="face=courier">phenix.lsq_superpose_pdbs fixed.pdb moving.pdb alignment_parameters.gap_opening_penalty=100 gap_extension_penalty=5 domain_finding_parameters.match_radius=2.0
+<PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb alignment_parameters.gap_opening_penalty=100 gap_extension_penalty=5 domain_finding_parameters.match_radius=2.0
 </PRE>
 
 <P><H5><U>Possible Problems</U></H5><P>
