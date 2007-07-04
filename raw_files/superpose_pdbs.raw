@@ -15,7 +15,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P><H5><U>Author(s)</U></H5><P>
 
 <UL><LI>Sequence alignment: Tom Ioerger
-<LI>superpose_pdbs: Peter Zwart
+<LI>superpose_pdbs: Peter Zwart, Pavel Afonine 
 <LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
 <LI>find_domain: Peter Zwart
 </LI>
@@ -30,24 +30,13 @@ superimposed model.
 
 <P><H5>How superpose_pdbs works:</H5><P>
 
-superpose_pdbs carries out three steps:
-
-<UL><LI>(1) A sequence alligment using all protein residues from both structures (ligands and waters are discarded).
-
-<LI>(2) A least squares superposition of the two pdb files given the computed alignment.
-
-<LI>(3) Locating subdomains of the two protein that improve the superposition score. This feature is handy when the 
-        proteins in question has a hinge region or various flexible loops that would bias the superpositioning.
-</LI></UL>
+superpose_pdbs performes a least squares superposition of the two selected parts 
+from two pdb files. Also, if requested it does sequesnce alignement and if 
+successfull uses this information in LS fitting.  
   
 <P><H5><I>Output files from superpose_pdbs</I></H5><P>
 
-<UL><LI>Model from step 2. Output name controlled by key 
-<FONT face=courier>super.moved</FONT>.  Default is <FONT face=courier>moved.pdb</FONT>
-<LI>Models from step 3. Output rootname controlled by key 
-<FONT face=courier>super.domain_finding_parameters.root_name</FONT>. Default is 
-<FONT face=courier>inv_dom</FONT>
-</LI></UL>
+A PDB file with fitted model. 
 
 <P><H5><U>Examples</U></H5><P>
 
@@ -62,7 +51,7 @@ This will produce the following file:
 <PRE style="face=courier">moved.pdb
 </PRE>
 
-Sequence alignment and domain finding parameters can be changed from the command line:
+Parameters can be changed from the command line:
 
 <PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb alignment_parameters.gap_opening_penalty=100 gap_extension_penalty=5 domain_finding_parameters.match_radius=2.0
 </PRE>
@@ -71,7 +60,7 @@ Sequence alignment and domain finding parameters can be changed from the command
 
 <P><H5>Specific limitations and problems:</H5><P>
 
-<UL><LI>DNA and RNA are ignored.
+<UL><LI>
 </LI></UL>
 
 <P><H5><U>Literature</U></H5><P>
