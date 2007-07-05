@@ -1,0 +1,286 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--REMARK PHENIX HEADER START  do not edit this section...edit PHENIX BODY -->
+<head>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.2900.3059" name=GENERATOR>
+<STYLE type=text/css>.noline {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+</STYLE>
+<title >
+Phenix documentation
+</title >
+</head>
+<BODY >
+<!-- title bar -->
+<TABLE width=670 border=0>
+  <TBODY>
+  <TR>
+    <TD align=left width=180 rowSpan=2><A 
+      href="http://www.phenix-online.org/"><IMG 
+      alt="phenix_logo" src="icons/phenix-logo.jpg" border=0></A></TD></TR>
+  <TR>
+    <TD vAlign=bottom align=left><FONT face="Helvetica,Arial" 
+      size=2><U><I><B>P</B>ython-based <B>H</B>ierarchical <B>EN</B>vironment 
+      for <B>I</B>ntegrated <B>X</B>tallography 
+</I></U></FONT></TD></TR></TBODY></TABLE>
+
+<TABLE width=670 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=middle colSpan=2 height=10><FONT face="Helvetica,Arial" 
+      size=1>&nbsp;</FONT></TD></TR>
+  <TR>
+    <TD align=left>
+
+
+<!--REMARK PHENIX HEADER END-->
+
+
+<!--REMARK PHENIX TITLE START  Put your title here-->
+
+
+<H4><U>Tutorial 1: Solving a structure with SAD data</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+
+<!--REMARK PHENIX TABLE OF CONTENTS START  do not edit this section-->
+<dl>
+
+<dt><a href="#anch2">Introduction</a></dt>
+
+<dt><a href="#anch4">Setting up to run PHENIX</a></dt>
+
+<dt><a href="#anch6">Running the demo p9 data with AutoSol</a></dt>
+<dd><a href="#anch14">Where are my files?</a></dd>
+<dd><a href="#anch17">What parameters did I use?</a></dd>
+<dd><a href="#anch19">The AutoSol log file</a></dd>
+
+<dt><a href="#anch22">Examples</a></dt>
+
+<dt><a href="#anch24">Additional information</a></dt></dl>
+<!--REMARK PHENIX TABLE OF CONTENTS END-->
+
+<P><a name="anch1" id="anch1"></a>
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents-->
+
+
+
+<P><a name="anch2" id="Introduction"></a>
+</p><H5><U>Introduction</U></H5>
+<P><a name="anch3" id="Introduction_2"></a>
+
+
+This tutorial will use some very strong SAD data (peak wavelength from 
+an IF5A dataset diffracting to 1.7 A) as an example of how to solve a
+SAD dataset with AutoSol.
+
+</p>
+<P><a name="anch4" id="Setting_up_to_run_PHENIX"></a>
+</p><H5><U>Setting up to run PHENIX</U></H5>
+<P><a name="anch5" id="Setting_up_to_run_PHENIX_2"></a>
+
+If PHENIX is already installed and your environment is all set, then
+if you type:
+</p><PRE style="face=courier">echo $PHENIX</PRE>
+then you should get back something like this:
+<PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+If instead you get:
+<PRE style="face=courier">PHENIX: undefined variable</PRE>
+then you need to set up your PHENIX environment. See the
+<a href="install.htm" >PHENIX installation</a> page for 
+details of how to do this. 
+If you are using the C-shell environment (<B>csh</B>) then all you will need 
+to do is add one line to your <B>.cshrc</B> (or equivalent) file that
+looks like this:
+<PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+(except that the path in this statement will be where <B>your</B> PHENIX is
+installed). Then the next time you log in <B>$PHENIX</B> will be defined.
+
+
+<P><a name="anch6" id="Running_the_demo_p9_data_with_AutoSol"></a>
+</p><H5><U>Running the demo p9 data with AutoSol</U></H5>
+<P><a name="anch7" id="Running_the_demo_p9_data_with_AutoSol_2"></a>
+
+To run AutoSol on the demo p9 data, make yourself a <B>tutorials</B>
+directory and <B>cd</B> into that directory:
+</p><PRE style="face=courier">mkdir tutorials
+cd tutorials </PRE>
+Now  use the phenix command:
+<PRE style="face=courier">phenix.run_example p9-sad </PRE>
+to solve the p9 structure with AutoSol. This command will
+copy the directory <B>$PHENIX/examples/p9-sad</B>
+to your current directory (<B>tutorials</B>) 
+and call it <B>tutorials/p9-sad/</B>
+. Then it will run AutoSol using the command file 
+<B>run.csh</B> 
+that is present in this <B>tutorials/p9-sad/</B> directory.
+
+<P><a name="anch8" id="Running_the_demo_p9_data_with_AutoSol_3"></a>
+This command file <B>run.csh</B> is simple. It says:
+
+</p><PRE style="face=courier">
+#!/bin/csh
+phenix.autosol  seq_file=seq.dat sites=4 atom_type=Se  data=p9_se_w2.sca  \
+sg=&quot;I4&quot; cell=&quot;113.949 113.949  32.474 90.000  90.000  90.00&quot;  \
+resolution=2.4 thoroughness=quick
+</PRE>
+The first line (<B>#!/bin/csh</B>) tells the system to interpret the remainder of the text in
+the file using the C-shell (<B>csh</B>).
+<P><a name="anch9" id="Running_the_demo_p9_data_with_AutoSol_4"></a>
+
+The command <B>phenix.autosol</B> runs the 
+command-line version of AutoSol.  The arguments on the command line 
+tell AutoSol about the sequence file  
+(<B>seq_file=seq.dat</B>), the number of
+sites to look for (<B>sites=4</B>), 
+and the atom type (<B>atom_type=Se</B>).  (Note that each of these is
+specified with an <B>=</B> sign, and that there are no spaces
+around the <B>=</B> sign.)
+The Phaser
+heavy-atom refinement and model completion algorithm used in the AutoSol
+SAD phasing will add additional sites if warranted. 
+</p>
+<P><a name="anch10" id="Running_the_demo_p9_data_with_AutoSol_5"></a>
+Note the backslash &quot;\&quot; at the end of some of the lines in the
+<B>phenix.autosol</B> command. This tells the C-shell (which interprets
+everything in this file) that the next line is a continuation of the
+current line. There must be no characters (not even a space) after
+the backslash for this to work.
+</p>
+<P><a name="anch11" id="Running_the_demo_p9_data_with_AutoSol_6"></a>
+The SAD data to be used
+to solve the structure is in the datafile
+<B>p9_se_w2.sca</B>.  This datafile is in
+Scalepack unmerged format, which means that there may be multiple 
+instances of each reflection and the cell parameters are not in the file,
+so we need to provide the cell parameters with the command,
+<B> cell=&quot;113.949 113.949  32.474 90.000  90.000  90.00&quot;</B>.  
+(Note that the
+cell parameters are surrounded by quotation marks. That tells
+the parser that these are all together.)
+In this example, the space group in the 
+<B>p9_se_w2.sca</B> file is 
+<B>I41</B>, but the correct space group is
+<B>I4</B>,  so we need to tell AutoSol the
+correct space group with 
+<B>sg=&quot;I4&quot;</B>.
+</p>
+<P><a name="anch12" id="Running_the_demo_p9_data_with_AutoSol_7"></a>
+The resolution of the data in 
+<B>p9_se_w2.sca</B>  is to 1.74 A, but in this
+example we would like to solve the structure quickly, so we have cut the
+resolution back with the commands
+<B>resolution=2.4</B> and
+<B>thoroughness=quick</B>.  
+The <B>quick</B> command sets several defaults
+to give a less comprehensive search for heavy-atom sites and a less thorough
+model-building than if you use  the default of
+<B>thoroughness=thorough</B>.  
+</p>
+<P><a name="anch13" id="Running_the_demo_p9_data_with_AutoSol_8"></a>
+Although the <B>phenix.run_example p9-sad</B> command has just run
+AutoSol from a script (<B>run.csh</B>), you can run AutoSol yourself from
+the command line with the same <B>phenix.autosol seq_file= ...</B> command.
+You can also run AutoSol from a GUI, or by putting commands in another
+type of script file. All these possibilities are described in 
+<a href="running-wizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a>.
+
+</p>
+<P><a name="anch14" id="Where_are_my_files?"></a>
+</p><H5>Where are my files?</H5>
+<P><a name="anch15" id="Where_are_my_files?_2"></a>
+
+Once you have started AutoSol or another Wizard, an <B>output directory</B> will
+be created in your current (working) directory. The first time you run
+AutoSol in this directory, this <B>output directory</B> will be
+called <B>AutoSol_run_1_</B> (or <B>AutoSol_run_1_/</B>, where the slash at
+the end just indicates that this is a directory).  All of the output
+from run <B>1</B> of AutoSol will be in this directory. If you run 
+AutoSol again, a new subdirectory called <B>AutoSol_run_2_</B> will be created.
+</p>
+<P><a name="anch16" id="Where_are_my_files?_3"></a>
+Inside the directory <B>AutoSol_run_1_</B> there will be one or more
+temporary directories such as <B>TEMP0</B> created while the Wizard is
+running. The files in this temporary directory may be useful sometimes in
+figuring out what the Wizard is doing (or not doing!). By default these
+directories are emptied when the Wizard finishes (but you can keep their
+contents with the command <B>clean_up=False</B> if you want.)
+
+</p>
+<P><a name="anch17" id="What_parameters_did_I_use?"></a>
+</p><H5>What parameters did I use?</H5>
+<P><a name="anch18" id="What_parameters_did_I_use?_2"></a>
+
+Once the AutoSol wizard has started (when run from the command line), a 
+<B>parameters file</B>
+called <B>autosol.eff</B> will be created in your <B>output directory</B>
+(e.g., <B>AutoSol_run_1_/autosol.eff</B>).  This <B>parameters file</B>
+has a header that says what command you used to run AutoSol, and it contains
+all the starting values of all parameters for this run (including the 
+defaults for all the parameters that you did not set).
+
+The <B>autosol.eff</B> file is good for more than just looking at the
+values of parameters, though. If you copy this file to a new one
+(for example <B>autosol_hires.eff</B>) and edit it to change the values of
+some of the parameters (<B>resolution=1.74</B>) then you can re-run
+AutoSol with the new values of your parameters like this:
+</p><PRE style="face=courier">phenix.autosol autosol_hires.eff</PRE>
+This command will do everything just the same as in your first run but
+use all the data to 1.74 A.
+
+
+<P><a name="anch19" id="The_AutoSol_log_file"></a>
+</p><H5><I>The AutoSol log file</I></H5>
+<P><a name="anch20" id="The_AutoSol_log_file_2"></a>
+
+While the AutoSol wizard is running, there are several places you can
+look to see what is going on. The most important one is the overall
+log file for the AutoSol run. This log file is located in:
+</p><PRE style="face=courier">AutoSol_run_1_/AutoSol_run_1_1.log</PRE>
+for run <B>1</B> of AutoSol.  (The second <B>1</B> in this log file
+name will be incremented if you stop this run in the middle and
+restart it with a command like <B>phenix.autosol run=1</B>).
+
+<P><a name="anch21" id="The_AutoSol_log_file_3"></a>
+
+The <B>AutoSol_run_1_1.log</B> file is a running summary of what the
+AutoSol Wizard is doing.  Here are a few of the key sections of that log file
+for the <B>p9</B> SAD dataset.
+
+</p><UL>
+<LI>
+</LI></UL>
+
+
+<P><a name="anch22" id="Examples"></a>
+</p><H5><U>Examples</U></H5>
+<P><a name="anch23" id="Examples_2"></a>
+
+
+</p>
+<P><a name="anch24" id="Additional_information"></a>
+</p><H5><U>Additional information</U></H5>
+<P><a name="anch25" id="Additional_information_2"></a>
+
+For details about the AutoSol Wizard, see <a href="autosol.htm"> 
+Automated structure solution with AutoSol</a>.  For help on running
+Wizards, see <a href="running-wizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a>.
+
+
+<!--REMARK PHENIX BODY END-->
+
+<!--REMARK PHENIX KEYWORDS START  This is auto-generated if you provide
+  a method, otherwise you can paste in here-->
+
+<!--REMARK PHENIX KEYWORDS END-->
+
+</TABLE></BODY>
+
