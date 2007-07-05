@@ -41,7 +41,7 @@ Phenix documentation
 <!--REMARK PHENIX TITLE START  Put your title here-->
 
 
-<H4><U>Tutorial 1: Solving a structure with SAD data</U></H4>
+<p></p><H5><U>Tutorial 1: Solving a structure with SAD data</U></H5><p>
 
 
 <!--REMARK PHENIX TITLE END-->
@@ -57,11 +57,19 @@ Phenix documentation
 <dt><a href="#anch6">Running the demo p9 data with AutoSol</a></dt>
 <dd><a href="#anch14">Where are my files?</a></dd>
 <dd><a href="#anch17">What parameters did I use?</a></dd>
-<dd><a href="#anch19">The AutoSol log file</a></dd>
+<dd><a href="#anch19">Reading the log files for your AutoSol run file</a></dd>
+<dd><a href="#anch23"> Summary of the command-line arguments</a></dd>
+<dd><a href="#anch27"> ImportRawData.  </a></dd>
+<dd><a href="#anch30">Using the datafiles converted to premerged format.</a></dd>
+<dd><a href="#anch33">Guessing cell contents</a></dd>
+<dd><a href="#anch36">Running phenix.xtriage</a></dd>
+<dd><a href="#anch39">Testing for anisotropy in the data</a></dd>
+<dd><a href="#anch42">Choosing datafiles with high signal-to-noise</a></dd>
+<dd><a href="#anch45">Running HYSS to find heavy-atom substructure</a></dd>
+<dd><a href="#anch48">Scoring heavy-atom solutions</a></dd>
+<dd><a href="#anch51">Final phasing with Phaser</a></dd>
 
-<dt><a href="#anch22">Examples</a></dt>
-
-<dt><a href="#anch24">Additional information</a></dt></dl>
+<dt><a href="#anch53">Additional information</a></dt></dl>
 <!--REMARK PHENIX TABLE OF CONTENTS END-->
 
 <P><a name="anch1" id="anch1"></a>
@@ -70,13 +78,13 @@ Phenix documentation
 Anything enclosed in header html H4 H5 etc will go in the table of contents-->
 
 
-
+</p>
 <P><a name="anch2" id="Introduction"></a>
 </p><H5><U>Introduction</U></H5>
 <P><a name="anch3" id="Introduction_2"></a>
 
 
-This tutorial will use some very strong SAD data (peak wavelength from 
+This tutorial will use some very good SAD data (peak wavelength from 
 an IF5A dataset diffracting to 1.7 A) as an example of how to solve a
 SAD dataset with AutoSol.
 
@@ -135,7 +143,10 @@ the file using the C-shell (<B>csh</B>).
 <P><a name="anch9" id="Running_the_demo_p9_data_with_AutoSol_4"></a>
 
 The command <B>phenix.autosol</B> runs the 
-command-line version of AutoSol.  The arguments on the command line 
+command-line version of AutoSol (see 
+<a href="autosol.htm">Automated Structure Solution using AutoSol</a> for
+all the details about AutoSol including a full list of keywords).
+The arguments on the command line 
 tell AutoSol about the sequence file  
 (<B>seq_file=seq.dat</B>), the number of
 sites to look for (<B>sites=4</B>), 
@@ -193,9 +204,9 @@ type of script file. All these possibilities are described in
 Running a Wizard from a GUI, the command-line, or a script</a>.
 
 </p>
-<P><a name="anch14" id="Where_are_my_files?"></a>
+<P><a name="anch14" id="Where_are_my_files_"></a>
 </p><H5>Where are my files?</H5>
-<P><a name="anch15" id="Where_are_my_files?_2"></a>
+<P><a name="anch15" id="Where_are_my_files__2"></a>
 
 Once you have started AutoSol or another Wizard, an <B>output directory</B> will
 be created in your current (working) directory. The first time you run
@@ -205,7 +216,7 @@ the end just indicates that this is a directory).  All of the output
 from run <B>1</B> of AutoSol will be in this directory. If you run 
 AutoSol again, a new subdirectory called <B>AutoSol_run_2_</B> will be created.
 </p>
-<P><a name="anch16" id="Where_are_my_files?_3"></a>
+<P><a name="anch16" id="Where_are_my_files__3"></a>
 Inside the directory <B>AutoSol_run_1_</B> there will be one or more
 temporary directories such as <B>TEMP0</B> created while the Wizard is
 running. The files in this temporary directory may be useful sometimes in
@@ -214,9 +225,9 @@ directories are emptied when the Wizard finishes (but you can keep their
 contents with the command <B>clean_up=False</B> if you want.)
 
 </p>
-<P><a name="anch17" id="What_parameters_did_I_use?"></a>
+<P><a name="anch17" id="What_parameters_did_I_use_"></a>
 </p><H5>What parameters did I use?</H5>
-<P><a name="anch18" id="What_parameters_did_I_use?_2"></a>
+<P><a name="anch18" id="What_parameters_did_I_use__2"></a>
 
 Once the AutoSol wizard has started (when run from the command line), a 
 <B>parameters file</B>
@@ -236,9 +247,12 @@ This command will do everything just the same as in your first run but
 use all the data to 1.74 A.
 
 
-<P><a name="anch19" id="The_AutoSol_log_file"></a>
-</p><H5><I>The AutoSol log file</I></H5>
-<P><a name="anch20" id="The_AutoSol_log_file_2"></a>
+<P><a name="anch19" id="Reading_the_log_files_for_your_AutoSol_run_file"></a>
+</p><H5><I>Reading the log files for your AutoSol run file</I></H5>
+<P><a name="anch20" id="Reading_the_log_files_for_your_AutoSol_run_file_2"></a>
+
+</p>
+<P><a name="anch21" id="Reading_the_log_files_for_your_AutoSol_run_file_3"></a>
 
 While the AutoSol wizard is running, there are several places you can
 look to see what is going on. The most important one is the overall
@@ -248,26 +262,288 @@ for run <B>1</B> of AutoSol.  (The second <B>1</B> in this log file
 name will be incremented if you stop this run in the middle and
 restart it with a command like <B>phenix.autosol run=1</B>).
 
-<P><a name="anch21" id="The_AutoSol_log_file_3"></a>
+<P><a name="anch22" id="Reading_the_log_files_for_your_AutoSol_run_file_4"></a>
 
 The <B>AutoSol_run_1_1.log</B> file is a running summary of what the
-AutoSol Wizard is doing.  Here are a few of the key sections of that log file
-for the <B>p9</B> SAD dataset.
-
-</p><UL>
-<LI>
-</LI></UL>
-
-
-<P><a name="anch22" id="Examples"></a>
-</p><H5><U>Examples</U></H5>
-<P><a name="anch23" id="Examples_2"></a>
-
+AutoSol Wizard is doing.  Here are a few of the key sections of the log
+files produced for the <B>p9</B> SAD dataset.
 
 </p>
-<P><a name="anch24" id="Additional_information"></a>
+<P><a name="anch23" id="Summary_of_the_command-line_arguments"></a>
+</p><H5> Summary of the command-line arguments</H5>
+<P><a name="anch24" id="Summary_of_the_command-line_arguments_2"></a>
+
+</p>
+<P><a name="anch25" id="Summary_of_the_command-line_arguments_3"></a>
+  Near the top of the log file 
+you will find:
+</p><PRE style="face=courier">------------------------------------------------------------
+Starting AutoSol with the command:
+
+phenix.autosol seq_file=seq.dat sites=4 atom_type=Se data=p9_se_w2.sca sg=I4   \
+cell='113.949 113.949  32.474 90.000  90.000  90.00' resolution=2.4   \
+thoroughness=quick
+</PRE>
+
+<P><a name="anch26" id="Summary_of_the_command-line_arguments_4"></a>
+This is just a repeat of how you ran AutoSol; you can copy it and paste it 
+into the command line to repeat this run.
+
+</p>
+<P><a name="anch27" id="ImportRawData__"></a>
+</p><H5> ImportRawData.  </H5>
+<P><a name="anch28" id="ImportRawData___2"></a>
+
+</p>
+<P><a name="anch29" id="ImportRawData___3"></a>
+
+The input data file <B>p9_se_w2.sca</B> is in unmerged
+Scalepack format. The AutoSol wizard converts everything to premerged
+Scalepack format before proceeding. Here is where the AutoSol Wizard
+identifies the format and then calls the ImportRawData Wizard:
+</p><PRE style="face=courier">HKLIN ENTRY:  p9_se_w2.sca
+FILE TYPE scalepack_no_merge_original_index
+GUESS FILE TYPE MERGE TYPE sca unmerged
+LABELS['I', 'SIGI']
+CONTENTS: ['p9_se_w2.sca', 'sca', 'unmerged', 'I 41', None, None, ['I', 'SIGI']]
+Converting the files ['p9_se_w2.sca'] to sca format before proceeding
+Running import directly...
+WIZARD:  ImportRawData
+PHENIX VERSION:  1.3b  of  27-06-2007
+</PRE>
+
+
+<P><a name="anch30" id="Using_the_datafiles_converted_to_premerged_format_"></a>
+</p><H5>Using the datafiles converted to premerged format.</H5>
+<P><a name="anch31" id="Using_the_datafiles_converted_to_premerged_format__2"></a>
+
+</p>
+<P><a name="anch32" id="Using_the_datafiles_converted_to_premerged_format__3"></a>
+
+After completing the ImportRawData step, the AutoSol Wizard goes back to
+the beginning, but uses the newly-converted file <B>p9_se_w2_PHX.sca</B>:
+</p><PRE style="face=courier">HKLIN ENTRY:  AutoSol_run_1_/p9_se_w2_PHX.sca
+FILE TYPE scalepack_merge
+GUESS FILE TYPE MERGE TYPE sca premerged
+LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
+Unit cell: (113.949, 113.949, 32.474, 90, 90, 90)
+Space group: I 4 (No. 79)
+CONTENTS: ['AutoSol_run_1_/p9_se_w2_PHX.sca', 'sca', 'premerged', 'I 4', 
+[113.949, 113.949, 32.473999999999997, 90.0, 90.0, 90.0], 
+1.7443432606877809, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
+Total of 1 input data files
+</PRE>
+
+
+<P><a name="anch33" id="Guessing_cell_contents"></a>
+</p><H5>Guessing cell contents</H5>
+<P><a name="anch34" id="Guessing_cell_contents_2"></a>
+
+</p>
+<P><a name="anch35" id="Guessing_cell_contents_3"></a>
+  The AutoSol Wizard uses the sequence information
+in your sequence file (<B>seq.dat</B>) and the cell parameters and space
+group to guess the number of NCS copies and the solvent fraction, and the
+number of total methionines (approximately equal to the number of heavy-atom
+sites for SeMet proteins):
+</p><PRE style="face=courier"> AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Tue Jul  3 20:38:55 2007
+
+Solvent fraction and resolution and ha types/scatt fact
+This is the last dataset to scale
+Guessing setup for scaling dataset 1
+SG I 4
+cell [113.949, 113.949, 32.473999999999997, 90.0, 90.0, 90.0]
+Number of residues in unique chains in seq file: 139
+Unit cell: (113.949, 113.949, 32.474, 90, 90, 90)
+Space group: I 4 (No. 79)
+CELL VOLUME :421654.580793
+N_EQUIV:8
+GUESS OF NCS COPIES: 1
+SOLVENT FRACTION ESTIMATE: 0.64
+Total residues:139
+Total Met:4
+resolution estimate: 2.4
+</PRE>
+
+
+<P><a name="anch36" id="Running_phenix_xtriage"></a>
+</p><H5>Running phenix.xtriage</H5>
+<P><a name="anch37" id="Running_phenix_xtriage_2"></a>
+
+</p>
+<P><a name="anch38" id="Running_phenix_xtriage_3"></a>
+  The AutoSol Wizard automatically 
+runs phenix.xtriage on each of your input datafiles to analyze them
+for twinning, outliers, translational symmetry, and other special 
+conditions that you should be aware of.  You can read more about
+xtriage in <a href="xtriage.htm">Data quality assessment 
+with phenix.xtriage</a>.  Part of the summary output from xtriage for this
+dataset looks like this:
+</p><PRE style="face=courier"> The largest off-origin peak in the Patterson function is 6.49% of the
+height of the origin peak. No significant pseudotranslation is detected.
+
+The results of the L-test indicate that the intensity statistics
+behave as expected. No twinning is suspected.
+</PRE>
+
+
+<P><a name="anch39" id="Testing_for_anisotropy_in_the_data"></a>
+</p><H5>Testing for anisotropy in the data</H5>
+<P><a name="anch40" id="Testing_for_anisotropy_in_the_data_2"></a>
+
+</p>
+<P><a name="anch41" id="Testing_for_anisotropy_in_the_data_3"></a>
+  The AutoSol Wizard tests
+for anisotropy by determining the range of effective anisotropic B values
+along the principal lattice directions. If this range is large and the ratio
+of the largest to the smallest value is also large then the data are by default
+corrected to make the anisotropy small 
+(see <a href="autosol.htm#anch26">
+Analyzing and scaling the data</a>
+in the AutoSol web page for more discussion
+of the anisotropy correction). In the <B>p9</B> case, the range of
+anisotropic B values is small and no correction is made:
+</p><PRE style="face=courier">Range of aniso B:  15.67 26.14
+Not using aniso-corrected data files as the range of aniso b  is only  
+10.47  and 'correct_aniso' is not set
+</PRE>
+
+
+<P><a name="anch42" id="Choosing_datafiles_with_high_signal-to-noise"></a>
+</p><H5>Choosing datafiles with high signal-to-noise</H5>
+<P><a name="anch43" id="Choosing_datafiles_with_high_signal-to-noise_2"></a>
+
+</p>
+<P><a name="anch44" id="Choosing_datafiles_with_high_signal-to-noise_3"></a>
+  During scaling,
+the AutoSol Wizard estimates the signal-to-noise in each datafile and
+the resolution where there is significant signal-to-noise (above 0.3:1
+signal-to-noise).  You can see this analysis in the log file 
+<B>dataset_scale_1.log</B> for dataset 1.  In this case, 
+the signal-to-noise is 1.4 to a resolution of 2.4 A:
+</p><PRE style="face=courier">FILE DATA:AutoSol_run_1_/p9_se_w2_PHX.sca sn: 1.420786
+</PRE>
+
+<P><a name="anch45" id="Running_HYSS_to_find_heavy-atom_substructure"></a>
+</p><H5>Running HYSS to find heavy-atom substructure</H5>
+<P><a name="anch46" id="Running_HYSS_to_find_heavy-atom_substructure_2"></a>
+
+</p>
+<P><a name="anch47" id="Running_HYSS_to_find_heavy-atom_substructure_3"></a>
+ The HYSS (hybrid substructure
+search) procedure for heavy-atom searching uses a combination of a Patterson
+search for 2-site solutions with direct methods recycling. The search ends
+when the same solution is found beginning with several different starting
+points.  The HYSS log files are named after the datafile that they
+are based on and the type of differences (ano, iso) that are being used.
+In this <B>p9</B> SAD dataset, the HYSS logfile is 
+<B>p9_se_w2_PHX.sca_ano_1.sca_hyss.log</B>.  The key part of this HYSS log file
+is:
+</p><PRE style="face=courier"> Entering search loop:
+
+p = peaklist index in Patterson map
+f = peaklist index in two-site translation function
+cc = correlation coefficient after extrapolation scan
+r = number of dual-space recycling cycles
+cc = final correlation coefficient
+
+p=000 f=000 cc=0.391 r=015 cc=0.531 [ best cc: 0.531 ]
+p=000 f=001 cc=0.381 r=015 cc=0.534 [ best cc: 0.534 0.531 ]
+Number of matching sites of top 2 structures: 5
+</PRE>
+Here a correlation coefficient of 0.5 is very good (0.1 is hopeless,
+0.2 is possible, 0.3 is good) and 5 sites were found that matched in
+the first two tries. The program continues until 5 structures all have
+matching sites, then ends and prints out the final correlations, after
+taking the top 4 sites.
+
+
+<P><a name="anch48" id="Scoring_heavy-atom_solutions"></a>
+</p><H5>Scoring heavy-atom solutions</H5>
+<P><a name="anch49" id="Scoring_heavy-atom_solutions_2"></a>
+
+</p>
+<P><a name="anch50" id="Scoring_heavy-atom_solutions_3"></a>
+ The AutoSol Wizard scores heavy-atom
+solutions based on four criteria. The first two are from
+density modification. One of these is 
+the correlation of the experimental phases with the map-probability phases
+obtained in statistical density modification (<B>CC</B>). Good values for
+this criteria are usually in the range of 0.4-0.6. The second is the R-factor
+during the first cycle of density modification (<B>RFACTOR</B>). Good values
+for this are anything less than 0.6.  The third criterion is the skew
+of the electron density in the map (<B>SKEW</B>). 
+Good values for the skew are anything
+greater than 0.1. Typically in a SAD structure determination, the heavy-atom
+solution with the correct hand has a positive skew and the one with the 
+inverse hand has a negative skew. The last criterion is the figure of merit
+of phasing (<B>FOM</B>), 
+essentially a measure of the consistency of the data and
+the heavy-atom model. For SAD datasets, Phaser is used for calculating
+phases. For a SAD dataset, a figure of merit of 0.3 is
+acceptable, 0.4 is fine and anything above 0.5 is very good.
+ The scores are listed in the AutoSol log file:
+</p><PRE style="face=courier">
+Scoring for this solution now...
+
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.6133949
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4781331
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2482638
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.547
+
+Total Z-score: 19.9095885
+
+</PRE>
+The <B>Z-score</B> is a measure of how 
+different the scores for this solution are
+from those of a random set of phases.  In this run we have chosen the 
+<B>quick</B> option, so the scores for random solutions are taken from a table.
+If we had chosen <B>thorough</B> then a set of randomized solutions would
+be constructed by randomizing phases from the first solution tested. Then
+the scores for each criterion and each randomized solution  would be
+obtained. The Z-score for one solution based on one criterion would then
+be the number of standard deviations that this solution is
+above the mean of scores for randomized solutions. Then the total Z-score
+is the sum of the 4 Z-scores for this solution.  The total Z-score gives an
+idea of how different this solution is from a totally random solution (in 
+this case, about 19 standard deviations from the mean of random solutions.) 
+
+
+<P><a name="anch51" id="Final_phasing_with_Phaser"></a>
+</p><H5>Final phasing with Phaser</H5>
+<P><a name="anch52" id="Final_phasing_with_Phaser_2"></a>
+
+Once the best heavy-atom solution or solutions are chosen based on 
+<B>Z-scores</B>, these are used in a final round of phasing with
+Phaser (for SAD phasing). The log file from phasing for solution <B>1</B> is in
+<B>phaser_1.log</B>.  Here is the final part of the output from this log file,
+showing the refined coordinates, occupancies, thermal (B) factors for
+the 4 sites, along with the refined scattering factors (in this case
+only f&quot; is refined), and the final figure of merit of phasing (0.548):
+</p><PRE style="face=courier">
+   Atom Parameters: 4 atoms in list
+        X      Y      Z      O      B      (AnisoB) M Atomtype
+   #1   -0.180  0.113  0.290  1.198   22.8 ( ---- ) 1 SE
+   #2   -0.738 -0.186  0.760  1.034   23.0 (+22.49) 1 SE
+   #3   -0.706 -0.165  0.697  1.080   28.6 (+25.88) 1 SE
+   #5    0.027  0.758  0.875  0.186   23.8 ( ---- ) 1 SE
+
+   Scattering Parameters:
+    Atom             f&quot;           (f&rsquo;)
+      SE         5.2396        -8.0000
+
+   Figures of Merit
+   ----------------
+   Bin Resolution   Acentric     Centric      Single       Total
+                    Number FOM   Number FOM   Number FOM   Number FOM
+   ALL  28.49- 2.40   7502 0.598    874 0.147     51 0.059   8427 0.548
+</PRE>
+This
+
+
+<P><a name="anch53" id="Additional_information"></a>
 </p><H5><U>Additional information</U></H5>
-<P><a name="anch25" id="Additional_information_2"></a>
+<P><a name="anch54" id="Additional_information_2"></a>
 
 For details about the AutoSol Wizard, see <a href="autosol.htm"> 
 Automated structure solution with AutoSol</a>.  For help on running
