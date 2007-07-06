@@ -1,0 +1,129 @@
+<!--REMARK PHENIX TITLE START  Put your title here-->
+
+
+<p></p><H5><U>PHENIX html documentation procedures</U></H5>
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+<H5><U>Generating current PHENIX html documents</U></H5>
+<p>
+To create the current PHENIX html, get into the directory <b>$PHENIX/phenix_html</b>
+and type:
+</p><PRE style="face=courier">
+phenix.python $PHENIX/phenix/phenix/utilities/toc_and_index.py
+</PRE>
+<p>You can also do the same thing with a regression test:
+</p><PRE style="face=courier">
+$PHENIX/phenix_regression/phenix_doc/test_phenix_html.csh
+</PRE>
+<p>Either of these will read the list of files in <b>html.list</b>, use the
+raw <b>xxx.htm_raw</b> files in <b>raw_files</b> as templates and any python
+<b>master_params</b> specified in <b>html.list</b> to create a new set of
+<b>.htm</b> files in <b>$PHENIX/phenix_html</b>.
+</p><p>NOTE: Do not edit the files in <b>$PHENIX/phenix_html</b>, only the files
+in <b>$PHENIX/phenix_html/raw_files</b>.  The ones in <b>$PHENIX/phenix_html</b> are
+overwritten every time you generate the current PHENIX html.
+</p>
+
+<H5><U>Creating and validating a new PHENIX html document</U></H5>
+To create a new html document, you need to:
+<OL>
+<LI>Copy any of the files in <b>$PHENIX/phenix_html/raw_files</b> to a new file
+name of your choice (<b>$PHENIX/phenix_html/raw_files/mydoc.raw</b>)
+ with ending <b>.raw</b>. A good template to use 
+is <b>$PHENIX/phenix_html/raw_files/ligandfit.raw</b> because it is 
+not very large and it is easy to edit.
+</LI>
+<LI><b>$PHENIX/phenix_html/raw_files/mydoc.raw</b> will have just 2 
+sections you should edit. One is the
+title section which you can edit with your title and which is marked with:
+<PRE style="face=courier">
+Put your title here
+
+&lt;H4&gt;&lt;U&gt;Automated ligand fitting with LigandFit&lt;/U&gt;&lt;/H4&gt;
+
+</PRE>
+<p>The other is the body of the document where you can put any valid HTML that
+you want. This is indicated by:
+</p><PRE style="face=courier">
+&lt;!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents&gt;
+</PRE>
+<p>There are several special rules however:
+</p>
+<UL>
+<LI>Use the headings in the template files.  The headings
+<PRE style="face=courier">
+&lt;P&gt;&lt;H5&gt;&lt;U&gt;&lt;B&gt;Top Level&lt;/B&gt;&lt;/U&gt;&lt;/H5&gt;&lt;P&gt;
+&lt;P&gt;&lt;H5&gt;&lt;U&gt;Top Level&lt;/U&gt;&lt;/H5&gt;&lt;P&gt;
+</PRE>
+will be used as a top-level headers.  The heading
+<PRE style="face=courier">
+&lt;P&gt;&lt;H5&gt;Second Level&lt;/H5&gt;&lt;P&gt;
+</PRE>
+will be used as a second-level header.  
+</LI>
+
+<LI>All headings will be used in indexing your page. All the top-level and second-level
+headers (above) will be used to create a table of contents for your page.
+</LI>
+
+</UL>
+
+<LI>Add a line to the file <b>$PHENIX/phenix_html/html.list</b> to specify your
+new <b>$PHENIX/phenix_html/raw_files/mydoc.raw</b> file and whether it is to be
+associated with any python file containing a <b>master_params</b> variable. Here
+is part of <b>$PHENIX/phenix_html/html.list</b>:
+<PRE style="face=courier">
+#.html file                     path                   python file w/o .py
+
+tutorial_mad.htm                None                    None
+refinement.htm                  phenix                  refinement
+autobuild.htm                   phenix.command_line     autobuild
+</PRE>
+Add another line here with the name of the html file to be 
+created in <b>$PHENIX/phenix_html/</b> (substituting <b>.htm</b> for the
+<b>.raw</b> ending of your <b>$PHENIX/phenix_html/raw_files/mydoc.raw</b> file).
+The path is the path to a <b>.py</b> file for which you want to generate all
+the keywords. For example, <b>autobuild.py</b> is in the directory
+<b>$PHENIX/phenix/phenix/commmand_line</b> and is associated with the
+<b>.raw</b> file <b>$PHENIX/phenix_html/raw_files/autobuild.raw</b>, and the final
+document is in <b>$PHENIX/phenix_html/autobuild.htm</b>.
+ The python file w/o .py is the name of that python file.  This
+python file must have the variable <b>master_params</b> defining the parameters
+for this script.
+</LI>
+<LI>Edit the PHENIX home page <b>$PHENIX/phenix_html/phenix_documentation.html</b>
+to create a link to your page if necessary.
+</LI>
+<LI>Create a new version of the documentation with
+<PRE style="face=courier">
+phenix.python $PHENIX/phenix/phenix/utilities/toc_and_index.py
+</PRE>
+</LI>
+<LI>Look at  your newly-created <b>mydoc.htm</b> that is 
+in <b>$PHENIX/phenix_html/mydoc.htm</b> with firefox or another browser
+and edit it as necessary.
+</LI>
+<LI>Validate your newly-created <b>mydoc.htm</b>  with
+the web service at <a href="validator.w3.org">validator.w3.org</a>. 
+NOTE: Be sure to edit your <b>$PHENIX/phenix_html/raw_files/mydoc.raw</b> file 
+and not the processed <b>mydoc.htm</b> file! You should
+get rid of all the errors except the ones at the very end that say
+<PRE style="face=courier">
+document type does not allow element "FONT" here.
+</PRE>
+
+</LI>
+
+
+</OL>
+
+
+<!--REMARK PHENIX BODY END-->
+
+</TABLE></BODY>
+
