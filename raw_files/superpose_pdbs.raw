@@ -2,58 +2,55 @@
 <!--REMARK PHENIX TITLE START  Put your title here>
 
 
-<H4><U>Superimposing two PDB files with 
+<H4><U>Superimposing two PDB files with
     superpose_pdbs</U></H4>
 
 
 <!--REMARK PHENIX TITLE END-->
 
-<!--REMARK PHENIX BODY START   Put your text here. 
+<!--REMARK PHENIX BODY START   Put your text here.
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
 <P><H5><U>Author(s)</U></H5><P>
 
-<UL><LI>Sequence alignment: Tom Ioerger
-<LI>superpose_pdbs: Peter Zwart, Pavel Afonine 
+<UL>
+<LI>superpose_pdbs: Peter Zwart, Pavel Afonine
 <LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
-<LI>find_domain: Peter Zwart
-</LI>
-</UL>
+</LI></UL>
 
 <P><H5><U>Purpose</U></H5><P>
 
-The superpose_pdbs method is a tool for superimposing one PDB model on another and writing out the
-superimposed model.
+superpose_pdbs is a command line tool for superimposing one PDB model on another
+and writing out the superimposed model.
 
 <P><H5><U>Usage</U></H5><P>
 
 <P><H5>How superpose_pdbs works:</H5><P>
 
-superpose_pdbs performes a least squares superposition of the two selected parts 
-from two pdb files. Also, if requested it does sequesnce alignement and if 
-successfull uses this information in LS fitting.  
-  
+superpose_pdbs performes a least-squares superposition of the two selected parts
+from two pdb files. The number of selected atoms in fixed and moving structures
+must be equal. Note that selected atoms are the atoms used to find the
+superposition operators while these operators are applied to the whole moving
+structure.
+
 <P><H5><I>Output files from superpose_pdbs</I></H5><P>
 
-A PDB file with fitted model. 
+A PDB file with fitted model.
 
 <P><H5><U>Examples</U></H5><P>
 
 <P><H5>Standard run of superpose_pdbs:</H5><P>
 
-  Running the superpose_pdbs is easy.  From the command-line you can 
+  Running the superpose_pdbs is easy.  From the command-line you can
 type:
 <PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb
 </PRE>
 
-This will produce the following file:
-<PRE style="face=courier">moved.pdb
-</PRE>
-
 Parameters can be changed from the command line:
 
-<PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb alignment_parameters.gap_opening_penalty=100 gap_extension_penalty=5 domain_finding_parameters.match_radius=2.0
+<PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb
+selection_fixed="chain A and name CA" selection_moving="chain B and name CA"
 </PRE>
 
 <P><H5><U>Possible Problems</U></H5><P>
@@ -61,6 +58,8 @@ Parameters can be changed from the command line:
 <P><H5>Specific limitations and problems:</H5><P>
 
 <UL><LI>
+Different number of atoms in selection_fixed and selection_moving, more than one
+model in one PDB file (separated with MODEL-ENDMDL)
 </LI></UL>
 
 <P><H5><U>Literature</U></H5><P>
