@@ -28,7 +28,7 @@ and writing out the superimposed model.
 
 <P><H5>How superpose_pdbs works:</H5><P>
 
-superpose_pdbs performes a least-squares superposition of the two selected parts
+superpose_pdbs performes a least-squares superposition of two selected parts
 from two pdb files. The number of selected atoms in fixed and moving structures
 must be equal. Note that selected atoms are the atoms used to find the
 superposition operators while these operators are applied to the whole moving
@@ -42,15 +42,14 @@ A PDB file with fitted model.
 
 <P><H5>Standard run of superpose_pdbs:</H5><P>
 
-  Running the superpose_pdbs is easy.  From the command-line you can
+  Running the superpose_pdbs is easy. From the command-line you can
 type:
 <PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb
 </PRE>
 
 Parameters can be changed from the command line:
 
-<PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb
-selection_fixed="chain A and name CA" selection_moving="chain B and name CA"
+<PRE style="face=courier">phenix.superpose_pdbs fixed.pdb moving.pdb selection_fixed="chain A and name CA" selection_moving="chain B and name CA"
 </PRE>
 
 <P><H5><U>Possible Problems</U></H5><P>
@@ -58,8 +57,10 @@ selection_fixed="chain A and name CA" selection_moving="chain B and name CA"
 <P><H5>Specific limitations and problems:</H5><P>
 
 <UL><LI>
-Different number of atoms in selection_fixed and selection_moving, more than one
-model in one PDB file (separated with MODEL-ENDMDL)
+Different number of atoms in selection_fixed and selection_moving.
+</LI></UL>
+<UL><LI>
+More than one model in one PDB file (separated with MODEL-ENDMDL)
 </LI></UL>
 
 <P><H5><U>Literature</U></H5><P>
