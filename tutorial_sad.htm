@@ -68,8 +68,14 @@ Phenix documentation
 <dd><a href="#anch45">Running HYSS to find heavy-atom substructure</a></dd>
 <dd><a href="#anch48">Scoring heavy-atom solutions</a></dd>
 <dd><a href="#anch51">Final phasing with Phaser</a></dd>
+<dd><a href="#anch53">Statistical density modification with RESOLVE</a></dd>
+<dd><a href="#anch59">Generation of FreeR flags</a></dd>
+<dd><a href="#anch62">Model-building with RESOLVE</a></dd>
+<dd><a href="#anch66">The AutoSol_summary.dat summary file</a></dd>
+<dd><a href="#anch68">How do I know if I have a good solution?</a></dd>
+<dd><a href="#anch71">What to do next</a></dd>
 
-<dt><a href="#anch53">Additional information</a></dt></dl>
+<dt><a href="#anch75">Additional information</a></dt></dl>
 <!--REMARK PHENIX TABLE OF CONTENTS END-->
 
 <P><a name="anch1" id="anch1"></a>
@@ -86,7 +92,10 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents-->
 
 This tutorial will use some very good SAD data (peak wavelength from 
 an IF5A dataset diffracting to 1.7 A) as an example of how to solve a
-SAD dataset with AutoSol.
+SAD dataset with AutoSol. It is designed to be read all the way through,
+giving pointers for you along the way. Once you have read it all and run
+the example data and looked at the output files, you will be in 
+a good position to run your own data through AutoSol.
 
 </p>
 <P><a name="anch4" id="Setting_up_to_run_PHENIX"></a>
@@ -538,12 +547,327 @@ only f&quot; is refined), and the final figure of merit of phasing (0.548):
                     Number FOM   Number FOM   Number FOM   Number FOM
    ALL  28.49- 2.40   7502 0.598    874 0.147     51 0.059   8427 0.548
 </PRE>
-This
 
 
-<P><a name="anch53" id="Additional_information"></a>
+<P><a name="anch53" id="Statistical_density_modification_with_RESOLVE"></a>
+</p><H5>Statistical density modification with RESOLVE</H5>
+<P><a name="anch54" id="Statistical_density_modification_with_RESOLVE_2"></a>
+
+</p>
+<P><a name="anch55" id="Statistical_density_modification_with_RESOLVE_3"></a>
+After SAD phases are calculated with Phaser, the AutoSol Wizard
+uses RESOLVE density modification to improve the quality of the
+electron density map.  The statistical density modification 
+in RESOLVE takes advantage of the flatness of the solvent region
+and the expected distribution of electron density in the region
+containing the macromolecule, as well as any NCS that can be found
+from the heavy-atom substructure. The weighted structure factors and
+phases (FWT, PHWT) from Phaser are used to calculate the starting
+map for RESOLVE, and the experimental structure factor amplitudes (FP)
+and SAD Hendrickson-Lattman coefficients from Phaser are used
+in the density modification process. The output from RESOLVE for solution 1
+can be found in <B>resolve_1.log</B>.  Here are key sections of this
+output. 
+</p>
+<P><a name="anch56" id="Statistical_density_modification_with_RESOLVE_4"></a>
+First, the plot of how many points in the &quot;protein&quot; region
+of the map have each possible value of electron density. The
+plot below is normalized so that a density of zero is the mean of 
+the solvent region, and the standard deviation of the density in the
+map is 1.0. A perfect map has a lot of points with density slightly less
+than zero on this scale (the points between atoms) and a few points
+with very high density (the points near atoms), and no points with very
+negative density.  Such a map has a very high skew (think 
+&quot;skewed off to the right&quot;. This map is good, with a positive
+skew, though it is not perfect.
+(so
+</p><PRE style="face=courier">
+
+ Plot of Observed (o) and model (x) electron density distributions for protein
+ region, where the model distribution is given by,
+  p_model(beta*(rho+offset)) = p_ideal(rho)
+ and then convoluted with a gaussian with width of sigma
+ where sigma, offset and beta are given below under "Error estimate."
+
+                          0.03..................................................
+                              .                   .                            .
+                              .                   .                            .
+                              .             xxxxxx.                            .
+                              .            xooooooxxxo                         .
+                              .          xxoo     . xxo                        .
+                              .         xo        .   xxo                      .
+                p(rho)        .       oxx         .     xxo                    .
+                              .       xx          .       xooo                 .
+                              .     xx            .        xxxoo               .
+                              .    xx             .           xxx              .
+                              .   xx              .              xxxo          .
+                              .  xx               .                 xxx        .
+                              xxx                 .                    xxxxx   .
+                              x                   .                       oxxxxx
+                         0.0  x...............................................ox
+
+                             -2        -1         0         1         2        3
+
+                                  normalized rho (0 = mean of solvent region)
+
+</PRE>
+
+<P><a name="anch57" id="Statistical_density_modification_with_RESOLVE_5"></a>
+After density modification is complete, this plot becomes much more like
+one from a perfect structure:
+</p><PRE style="face=courier">
+                          0.03..................................................
+                              .                   .                            .
+                              .                   .                            .
+                              .          xxxxxx   .                            .
+                              .         xoooooxxo .                            .
+                              .        x        xo.                            .
+                              .       x          xoo                           .
+                p(rho)        .     ox            xxo                          .
+                              .     x             . xoo                        .
+                              .    x              .  xxxo                      .
+                              .   ox              .     xxxxo                  .
+                              .  ox               .        xxxxxxxx            .
+                              . xx                .            o oxxxxxxx      .
+                              xxo                 .                    ooxxxxxoo
+                              x                   .                           xo
+                         0.0  o................................................x
+
+                             -2        -1         0         1         2        3
+
+                                  normalized rho (0 = mean of solvent region)
+
+</PRE>
+
+<P><a name="anch58" id="Statistical_density_modification_with_RESOLVE_6"></a>
+The key statistic from this RESOLVE density modification is the R-factor
+for comparison of observed structure factor amplitudes (FP) with those
+calculated from the density modification procedure (FC).
+In this <B>p9</B> SAD phasing the R-factor is very low: 
+</p><PRE style="face=courier">
+ Overall R-factor for FC vs FP: 0.239 for       8437 reflections
+</PRE>
+An acceptable value is anything below 0.35; below 0.30 is good.
+
+
+<P><a name="anch59" id="Generation_of_FreeR_flags"></a>
+</p><H5>Generation of FreeR flags</H5>
+<P><a name="anch60" id="Generation_of_FreeR_flags_2"></a>
+
+</p>
+<P><a name="anch61" id="Generation_of_FreeR_flags_3"></a>
+The AutoSol Wizard will create a set of free R flags indicating which 
+reflections are not to be used in refinement. By default 5% of reflections
+are reserved for this test set. 
+If you want to supply a reflection file <B>hires.mtz></B> that has 
+higher resolution than the data used to solve the structure, 
+or has a test set already marked,
+then you can do this with the keyword <B>input_refinement_file=hires.mtz</B>.
+
+The files to be used for model-building
+and refinement are listed in the AutoSol log file:
+</p><PRE style="face=courier"> Generating FreeR flags...
+Saving  exptl_fobs_phases_freeR_flags_1.mtz  for refinement
+THE FILE AutoSol_run_1_/resolve_1.mtz will be used for model-building
+THE FILE exptl_fobs_phases_freeR_flags_1.mtz will be used for refinement
+</PRE>
+
+
+<P><a name="anch62" id="Model-building_with_RESOLVE"></a>
+</p><H5>Model-building with RESOLVE</H5>
+<P><a name="anch63" id="Model-building_with_RESOLVE_2"></a>
+
+</p>
+<P><a name="anch64" id="Model-building_with_RESOLVE_3"></a>
+The AutoSol Wizard by default uses RESOLVE to build an atomic model
+of your structure.  It will guess from your sequence file whether the 
+structure is protein or RNA or DNA (but you can tell it if you want
+with (<B>chain_type=PROTEIN</B>). The model-building carried out in
+the AutoSol Wizard is essentially the same as one cycle of
+model-building with the AutoBuild Wizard (see the web page
+<a href="autobuild.htm">
+Automated Model Building and Rebuilding with AutoBuild</a>, 
+except that if you specify
+<B>thoroughness=quick</B> as we have in this example, the model-building is
+done less comprehensively to speed things up.
+
+</p>
+<P><a name="anch65" id="Model-building_with_RESOLVE_4"></a>
+In this case the model-building produces an initial model with 111 
+residues built and side chains assigned to 66, and which refines to
+an R-factor of 0.35 and a free R-factor of 0.39:
+</p><PRE style="face=courier"> Model 1: Residues built=111  placed=66  Chains=7  Model-map CC=0.64
+Refining model:  Build_1.pdb
+Residue  MSE  106  replaced with MSE
+Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.35/0.39
+</PRE>
+After one model completion cycle (including extending ends of chains,
+fitting loops, and building outside the region already built, the best
+model built has 113 residues built, all assigned to sequence:
+<PRE style="face=courier"> Model 7: Residues built=113  placed=113  Chains=0  Model-map CC=0.78
+Refining model:  model_with_loops_8.pdb
+Residue  MSE  94  replaced with MSE
+Residue  MSE  96  replaced with MSE
+Residue  MSE  106  replaced with MSE
+Refined model: AutoSol_run_1_/TEMP0/refine_7.pdb  R/Rfree=0.26/0.31
+</PRE>
+This refined initial model is written out to <B>refine_7.pdb</B> in
+the output directory.
+
+
+<P><a name="anch66" id="The_AutoSol_summary_dat_summary_file"></a>
+</p><H5>The AutoSol_summary.dat summary file</H5>
+<P><a name="anch67" id="The_AutoSol_summary_dat_summary_file_2"></a>
+
+A quick summary of the results of your AutoSol run is in the
+<B>AutoSol_summary.dat</B> file in your output directory.  This file lists the
+key files that were produced in your run of AutoSol (all these are in the
+output directory) and some of the key statistics for the run, including
+the scores for the heavy-atom substructure and the model-building and 
+refinement statistics.  These statistics are listed for all the solutions
+obtained, with the highest-scoring solutions first.  Here is part of the
+summary for this <B>p9</B> SAD dataset:
+</p><PRE style="face=courier"> -----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
+
+ *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
+
+Solution # 1   SCORE:19.9095885 Dataset #1   FOM: 0.55 ----------------
+
+Solution 1 using HYSS on AutoSol_run_1_/p9_se_w2_PHX.sca_ano_1.sca. Dataset #1
+Dataset number: 1
+Dataset type: sad
+Datafiles used: ['AutoSol_run_1_/p9_se_w2_PHX.sca']
+Sites: 4 (Already used for Phasing at resol of 2.4)      Refined Sites: 4
+NCS information  in: AutoSol_1.ncs_spec
+Experimental phases in: phaser_1.mtz
+Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_1.mtz
+Density-modified phases in: resolve_1.mtz
+HA sites (PDB format) in: ha_1.pdb_formatted.pdb
+Sequence file in: seq.dat
+Model in: refine_7.pdb
+  Residues built: 113
+  Side-chains built: 113
+  Chains: 0
+  Overall model-map correlation: 0.78
+  R/R-free: 0.26/0.31
+Scaling logfile in: dataset_1_scale.log
+HYSS logfile in: p9_se_w2_PHX.sca_ano_1.sca_hyss.log
+Phasing logfile in: phaser_1.log
+Density modification logfile in: resolve_1.log
+Build logfile in: model_with_loops_8.log
+
+ Score type:        CC       RFACTOR       SKEW       FOM
+Raw scores:       0.613        0.478        0.248        0.547  
+Z-scores:         1.567        2.437        4.965       10.940  
+
+Refined heavy atom sites (fractional): 
+xyz      -0.180      0.113      0.290 
+xyz      -0.738     -0.186      0.760 
+xyz      -0.707     -0.165      0.696 
+xyz       0.027      0.759      0.875 
+
+</PRE>
+
+<P><a name="anch68" id="How_do_I_know_if_I_have_a_good_solution_"></a>
+</p><H5>How do I know if I have a good solution?</H5>
+<P><a name="anch69" id="How_do_I_know_if_I_have_a_good_solution__2"></a>
+
+</p>
+<P><a name="anch70" id="How_do_I_know_if_I_have_a_good_solution__3"></a>
+Here are some of the things to look for to tell if you have obtained a 
+correct solution:
+</p><UL>
+<LI>How much of the model was built? More than 60% is good.  If less than 
+25% of the model is built, then it may be entirely incorrect. Have a
+look at the model. If you see clear sets of parallel or antiparallel strands,
+or if you see helices and strands with the expected relationships,
+your model is going to be correct. If you see a lot of short fragments
+everywhere, your model and solution is going to be incorrect.
+How many side-chains were fitted to density? More than 25% is ok, 
+more than 50% is very good. 
+</LI>
+<LI>What is the R-factor of the model? For a solution at moderate to high
+resolution (2.5 A or better) the R-factor should be in the low 30's to be very 
+good. For lower-resolution data, an R-factor in the low 40's is probably
+largely correct but the model is not very good.
+</LI1>
+<LI1>What was the overall signal-to-noise in the data? Above 1 is good, below 0.5 is very low.
+</LI1>
+<LI>What are the individual Z-scores for your top solution? For a good
+solution they are all positive, and at least several have a value of at least 2.
+</LI>
+<LI>What is the overall Z-score of your top solution. Z-scores of less than
+5 are very dubious; those greater than 100 are very likely to be good; those
+in between are ok.
+</LI>
+<LI>What is the difference in Z-score between the top solution and its
+inverse? If this is large (at least 2) that is a good sign.
+</LI>
+</UL>
+
+
+<P><a name="anch71" id="What_to_do_next"></a>
+</p><H5>What to do next</H5>
+<P><a name="anch72" id="What_to_do_next_2"></a>
+
+</p>
+<P><a name="anch73" id="What_to_do_next_3"></a>
+Once you have run AutoSol and have obtained a good solution and model,
+the next thing to do is to run the AutoBuild Wizard.  If you run it
+in the same directory where you ran AutoSol, the AutoBuild Wizard will pick
+up where the AutoSol Wizard left off and carry out iterative model-building,
+density modification and refinement to improve your model and map. 
+See the web page <a href="autobuild.htm">
+Automated Model Building and Rebuilding with AutoBuild</a> for details on
+how to run AutoBuild.
+</p>
+<P><a name="anch74" id="What_to_do_next_4"></a>
+If you do not obtain a good solution, then it's not time to give
+up yet. There are a number of standard things to try that may improve the
+structure determination. Here are a few that you should always try:
+</p><UL>
+<LI>Have a careful look at all the output files. Work your way through
+the main log file (e.g., <B>AutoSol_run_1_1.log</B>) and all the
+other principal log files  in order beginning with 
+scaling (<B>dataset_1_scale.log</B>), then looking at  heavy-atom
+searching (<B>p9_se_w2_PHX.sca_ano_1.sca_hyss.log</B>),  phasing
+(e.g., <B>phaser_1.log</B> or <B>phaser_xx.log</B> depending on
+which solution <B>xx</B> was the top solution) and density modification (e.g., 
+<B>resolve_xx.log</B>).  Is there anything 
+strange or unusual in any of them that may give you a clue as to
+what to try next?  For example did the phasing work well (high figure of
+merit) yet the density modification failed? (Perhaps the hand is incorrect).
+Was the solvent content estimated correctly? (You can specify it yourself
+if you want).  What does the xtriage output say? Is there twinning or
+strong translational symmetry? Are there problems with reflections near
+ice rings? Are there many outlier reflections?
+</LI>
+<LI>Try a different resolution cutoff.  For example 0.5 A lower resolution than
+you tried before.  Often the highest-resolution shells have little useful
+information for structure solution (though the data may be useful in
+refinement and density modification).
+</LI>
+<LI>Try a different rejection criterion for outliers. The default is
+<B>ratio_out=3.0</B> (toss reflections with delta F more than 3 times the
+rms delta F of all reflections in the shell).  Try instead <B>ratio_out=5.0</B>
+to keep everything.
+</LI>
+<LI>If the heavy-atom substructure search did not yield plausible
+solutions, try searching with HYSS using the command-line interface, and
+vary the resolution and number of sites you look for. Can you find a solution
+that has a higher <B>CC</B> than the one found in AutoSol? If so, you can
+read your solution in to AutoSol with <B>sites_file=my_sites.pdb</B>.
+</LI>
+<LI>Was an anisotropy correction applied in AutoSol? If there is 
+some anisotropy but no correction was applied, you can force AutoSol to 
+apply the correction with <B>correct_aniso=True</B>.
+</LI>
+</UL>
+
+
+<P><a name="anch75" id="Additional_information"></a>
 </p><H5><U>Additional information</U></H5>
-<P><a name="anch54" id="Additional_information_2"></a>
+<P><a name="anch76" id="Additional_information_2"></a>
 
 For details about the AutoSol Wizard, see <a href="autosol.htm"> 
 Automated structure solution with AutoSol</a>.  For help on running
