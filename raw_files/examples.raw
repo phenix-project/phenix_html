@@ -1,0 +1,58 @@
+<!--REMARK PHENIX TITLE START  Put your title here-->
+
+
+<p></p><H5><U>PHENIX Examples</U></H5>
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+<H5>Where can I find sample data?</H5>
+<p>You can find sample data in the directories located in:
+<b>$PHENIX/examples</b>. Additionally there is sample MR data
+ in <b>$PHENIX/phaser/tutorial</b>.
+</p>
+<H5>Can I easily run a Wizard with some sample data?</H5>
+<p>You can run sample data with a Wizard with a simple command. To run
+<b>p9-sad</b> sample data with the AutoSol wizard, you type:
+</p><PRE style="face=courier">phenix.run_example  p9-sad </PRE>
+<p>This command copies the <b>$PHENIX/examples/p9-sad</b> directory to 
+your working directory and executes the commands in the file 
+<b>run.csh</b>.</p>
+
+<H5>What sample data are available to run automatically?</H5>
+<p>You can see which sample data are set up to run automatically
+by typing: 
+</p><PRE style="face=courier">phenix.run_example  --help </PRE>
+<p>This command lists all the directories in <b>$PHENIX/examples/</b> that
+have a command file <b>run.csh</b> ready to use. For example:
+</p><PRE style="face=courier">phenix.run_example  --help 
+
+PHENIX run_example script. Fri Jul  6 12:07:08 MDT 2007
+
+Use: phenix.run_example example_name [--all] [--overwrite]
+Data will be copied from PHENIX examples into subdirectories
+of this working directory
+If --all is set then all examples will be run (takes a long time!)
+If --overwrite is set then the script will overwrite subdirectories
+
+List of available examples:  1J4R-ligand a2u-globulin-mr gene-5-mad 
+p9-build p9-sad 
+
+</PRE>
+
+<H5>Are any of the sample datasets annotated?</H5>
+<p>The PHENIX tutorials listed on the main
+<a href="phenix_documentation.html">PHENIX </a>
+web page will walk you through sample datasets, telling
+you what to look for in the output files. For example, the
+<A href="tutorial_sad.htm">Tutorial 1: Solving a structure using SAD data</A>
+tutorial uses the <b>p9-sad</b> dataset as example. It tells you how to
+run this example data in AutoSol and how to interpret the results.
+</p>
+ 
+<!--REMARK PHENIX BODY END-->
+
+</TABLE></BODY>
+
