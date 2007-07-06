@@ -2,7 +2,7 @@
 <!--REMARK PHENIX TITLE START  Put your title here-->
 
 
-<p><H5><U>Tutorial 1: Solving a structure with MAD data</U></H5></p><p>
+<p><H5><U>Tutorial 2: Solving a structure with MAD data</U></H5></p><p>
 
 
 <!--REMARK PHENIX TITLE END-->
@@ -46,7 +46,10 @@ To run AutoSol on the demo gene-5 data, make yourself a <b>tutorials</b>
 directory and <b>cd</b> into that directory:
 </p><PRE style="face=courier">mkdir tutorials
 cd tutorials </PRE>
-Now  use the phenix command:
+Now  type the phenix command:
+</p><PRE style="face=courier">phenix.run_example --help </PRE>
+to list the available examples.  Choosing <b>gene-5-mad</b> for this
+tutorial, you can now use the phenix command:
 </p><PRE style="face=courier">phenix.run_example gene-5-mad </PRE>
 to solve the gene-5 structure with AutoSol. This command will
 copy the directory <b>$PHENIX/examples/gene-5-mad</b>
