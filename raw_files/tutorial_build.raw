@@ -49,16 +49,16 @@ directory and <b>cd</b> into that directory:
 cd tutorials </PRE>
 Now  type the phenix command:
 </p><PRE style="face=courier">phenix.run_example --help </PRE>
-to list the available examples.  Choosing <b>p9-build-mad</b> for this
+to list the available examples.  Choosing <b>p9-build</b> for this
 tutorial, you can now use the phenix command:
-</p><PRE style="face=courier">phenix.run_example p9-build-mad </PRE>
+</p><PRE style="face=courier">phenix.run_example p9-build </PRE>
 to solve the p9-build structure with AutoBuild. This command will
-copy the directory <b>$PHENIX/examples/p9-build-mad</b>
+copy the directory <b>$PHENIX/examples/p9-build</b>
 to your current directory (<b>tutorials</b>) 
-and call it <b>tutorials/p9-build-mad/</b>
+and call it <b>tutorials/p9-build/</b>
 . Then it will run AutoBuild using the command file 
 <b>run.csh</b> 
-that is present in this <b>tutorials/p9-build-mad/</b> directory.
+that is present in this <b>tutorials/p9-build/</b> directory.
 </p><p>This command file <b>run.csh</b> is simple. It says:
 
 </p><PRE style="face=courier">
@@ -96,7 +96,7 @@ are in the datafile <b>p9-solve.mtz</b>. This is an <b>mtz</b> file which is a
 binary file that contains summary information about the dataset as well as the
 reflection data.
  
-</p><p>Although the <b>phenix.run_example p9-build-mad</b> command has just run
+</p><p>Although the <b>phenix.run_example p9-build</b> command has just run
 AutoBuild from a script (<b>run.csh</b>), you can run AutoBuild yourself from
 the command line with the same <b>phenix.autobuild seq_file= ...</b> command.
 You can also run AutoBuild from a GUI, or by putting commands in another
