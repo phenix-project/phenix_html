@@ -1,0 +1,1025 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here-->
+
+
+<p><H5><U>Tutorial 2: Solving a structure with MIR data</U></H5></p><p>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H5 H5 etc will go in the table of contents-->
+
+
+<p><H5><U>Introduction</U></H5></p><p>
+
+This tutorial will use some very good MIR data (Native and 5 derivatives from 
+a rh-dehalogenase protein MIR dataset analyzed at 2.8 A) 
+as an example of how to solve a
+MIR dataset with AutoSol. It is designed to be read all the way through,
+giving pointers for you along the way. Once you have read it all and run
+the example data and looked at the output files, you will be in 
+a good position to run your own data through AutoSol.
+
+</p><p><H5><U>Setting up to run PHENIX</U></H5></p><p>
+If PHENIX is already installed and your environment is all set, then
+if you type:
+</p><PRE style="face=courier">echo $PHENIX</PRE>
+then you should get back something like this:
+</p><PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+If instead you get:
+</p><PRE style="face=courier">PHENIX: undefined variable</PRE>
+then you need to set up your PHENIX environment. See the
+<a href="install.htm" >PHENIX installation</a> page for 
+details of how to do this. 
+If you are using the C-shell environment (<b>csh</b>) then all you will need 
+to do is add one line to your <b>.cshrc</b> (or equivalent) file that
+looks like this:
+</p><PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+(except that the path in this statement will be where <b>your</b> PHENIX is
+installed). Then the next time you log in <b>$PHENIX</b> will be defined.
+
+
+
+
+</p><p><H5><U>Running the demo rh-dehalogenase data with AutoSol</U></H5></p><p>
+To run AutoSol on the demo rh-dehalogenase data, make yourself a <b>tutorials</b>
+directory and <b>cd</b> into that directory:
+</p><PRE style="face=courier">mkdir tutorials
+cd tutorials </PRE>
+Now  type the phenix command:
+</p><PRE style="face=courier">phenix.run_example --help </PRE>
+to list the available examples.  Choosing <b>rh-dehalogenase-mir</b> for this
+tutorial, you can now use the phenix command:
+</p><PRE style="face=courier">phenix.run_example rh-dehalogenase-mir </PRE>
+to solve the rh-dehalogenase structure with AutoSol. This command will
+copy the directory <b>$PHENIX/examples/rh-dehalogenase-mir</b>
+to your current directory (<b>tutorials</b>) 
+and call it <b>tutorials/rh-dehalogenase-mir/</b>
+. Then it will run AutoSol using the command file 
+<b>run.csh</b> 
+that is present in this <b>tutorials/rh-dehalogenase-mir/</b> directory.
+</p><p>Running an MIR dataset is a little different than running a MAD
+or SAD or SIR dataset because you cannot use the standard command-line
+control for MIR. Instead you have to run a script. It is not hard, just 
+different. (You can do all of those other things from a script too, it's just
+even easier to do them from the command-line).
+</p><p>This command file <b>run.csh</b> is simple. It says:
+
+</p><PRE style="face=courier">
+#!/bin/csh
+#!/bin/csh
+echo "Running AutoSol on rhodococcus dehalogenase data..."
+echo "NOTE: command-line not available for MIR..using script instead"
+phenix.runWizard AutoSol Facts.list
+</PRE>
+The first line (<b>#!/bin/csh</b>) tells the system 
+to interpret the remainder of the text in
+the file using the C-shell (<b>csh</b>).</p><p>
+The command <b>phenix.autosol</b> runs the 
+command-line version of AutoSol (see 
+<a href="autosol.htm">Automated Structure Solution using AutoSol</a> for
+all the details about AutoSol including a full list of keywords).
+</p><p>
+The second line says to run the AutoSol Wizard, and use the contents of 
+the file Facts.list as parameters.
+</p><p>Now let&rsquo;s look at the Facts.list file. Here is the first 
+relevant part of the file:
+</p><PRE style="face=courier">
+
+cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
+resolution 2.8                             #  Resolution
+
+expt_type       sir                        # MIR dataset is set of SIR datasets
+
+input_file_list  rt_rd_1.sca auki_rd_1.sca # list of input .sca files
+                                           #  Native deriv 1
+
+nat_der_list    Native  Au                 # identify files in input_file_list
+                                           # as Native or the heavy-atom name
+                                           # such as se.
+
+inano_list      noinano inano              # inano/noinano/anoonly: identify
+                                           # if ano diffs to be used for derivs
+
+n_ha_list       0    5                     # number of heavy-atoms for each
+                                           # file for mir/sir  (0 for native)
+
+
+</PRE>
+<p>This part of the script tells AutoSol about the resolution, the data files
+for the first native-derivative combination, and the heavy atoms for these
+files (Native and Au), and whether anomalous differences are to be included
+for each (noinano for Native means do not include them; inano for the 
+Au derivative means do include them for this derivative), and the number of 
+heavy-atoms in each file (0 for the Native, 5 for the derivative).
+</p><p>Note that this first native-derivative combination in this MIR dataset
+is being treated as an SIRAS dataset.  This is the way the AutoSol Wizard 
+works for MIR. The individual derivatives are all solved separately (except using
+difference Fouriers to phase one derivative using a solution from another). Then
+when all are finished all the SIR or SIRAS datasets are phased all together 
+with SOLVE Bayesian correlated phasing.  This approach works well because  
+a substructure determination is done separately for each 
+derivative, and if any one of them works well, then all the derivatives
+can be solved.
+</p><p>The MIR script then continues with data for the second, third... derivatives.
+These parts of the script all look like this:
+</p><PRE style="face=courier">
+############## NEW DATASET ################
+run_list        start                      # run "start" method.
+                                           # read in datafiles for this dataset
+
+run_list        read_another_dataset       # starting a new dataset here
+
+
+input_file_list  rt_rd_1.sca hgki_rd_1.sca # list of input .sca files
+                                           #  Native deriv 1
+
+nat_der_list    Native Hg                  # identify files in input_file_list
+                                           # as Native or the heavy-atom name
+                                           # such as se.
+
+inano_list      noinano inano              # inano/noinano/anoonly: identify
+                                           # if ano diffs to be used for derivs
+
+n_ha_list       0    5                     # number of heavy-atoms for each
+                                           # file for mir/sir  (0 for native)
+</PRE>
+<p>Here the <b>run_list start </b> line is a command to AutoSol. It means 
+&quot;run the following list of AutoSol methods: start &quot; .  So the
+AutoSol Wizard runs the &quot;start&quot; method and stops. This basically reads
+in the datafiles from the previous dataset. The next line says to read another
+dataset.  Now we are ready to provide the data for the second native-derivative
+combination, again as an SIR dataset.  We provide the same native as before 
+(although we don't have to) and a new derivative, this time an Hg derivative,
+again with anomalous data.
+</p><p>This procedure is repeated for each derivative.  The AutoSol Wizard will
+then scale all the datasets and find heavy-atom solutions for some of them
+by direct methods, then use difference Fouriers to find the solutions for the
+others.
+
+</p><p>Although the <b>phenix.run_example rh-dehalogenase-mir</b> command has just run
+AutoSol from a script (<b>run.csh</b>), you can run AutoSol yourself from
+this script  with the same <b>phenix.runWizard AutoSol Facts.list </b> command.
+You can also run AutoSol from a GUI.  All these possibilities are described in 
+<a href="running-wizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a>.
+</p>
+
+</p><p><H5>Where are my files?</H5></p><p>
+Once you have started AutoSol or another Wizard, an <b>output directory</b> will
+be created in your current (working) directory. The first time you run
+AutoSol in this directory, this <b>output directory</b> will be
+called <b>AutoSol_run_1_</b> (or <b>AutoSol_run_1_/</b>, where the slash at
+the end just indicates that this is a directory).  All of the output
+from run <b>1</b> of AutoSol will be in this directory. If you run 
+AutoSol again, a new subdirectory called <b>AutoSol_run_2_</b> will be created.
+<p>Inside the directory <b>AutoSol_run_1_</b> there will be one or more
+temporary directories such as <b>TEMP0</b> created while the Wizard is
+running. The files in this temporary directory may be useful sometimes in
+figuring out what the Wizard is doing (or not doing!). By default these
+directories are emptied when the Wizard finishes (but you can keep their
+contents with the command <b>clean_up=False</b> if you want.)
+</p>
+
+</p><p><H5>What parameters did I use?</H5></p><p>
+When the AutoSol wizard runs from a script it does not write out a 
+parameters file. The parameters from your <b>Facts.list</b> are echoed
+in the AutoSol log file, but otherwise the <b>Facts.list</b> is your record
+of what the parameters used were.
+</p>
+
+<p><H5><I>Reading the log files for your AutoSol run file</I></H5></p>
+<p>
+While the AutoSol wizard is running, there are several places you can
+look to see what is going on. The most important one is the overall
+log file for the AutoSol run. This log file is located in:
+</p><PRE style="face=courier">AutoSol_run_1_/AutoSol_run_1_1.log</PRE>
+for run <b>1</b> of AutoSol.  (The second <b>1</b> in this log file
+name will be incremented if you stop this run in the middle and
+restart it with a command like <b>phenix.autosol run=1</b>).</p>
+<p>
+The <b>AutoSol_run_1_1.log</b> file is a running summary of what the
+AutoSol Wizard is doing.  Here are a few of the key sections of the log
+files produced for the <b>rh-dehalogenase</b> MIR dataset.
+</p>
+
+<p><H5> Summary of the command-line arguments</H5></p>
+<p>  Near the top of the log file 
+you will find:
+</p><PRE style="face=courier">
+READING FACTS FROM Facts.list
+NEW FACT from Facts.list :cell [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0]
+NEW FACT from Facts.list :resolution 2.8
+NEW FACT from Facts.list :expt_type sir
+NEW FACT from Facts.list :input_file_list ['rt_rd_1.sca', 'auki_rd_1.sca']
+NEW FACT from Facts.list :nat_der_list ['Native', 'Au']
+NEW FACT from Facts.list :inano_list ['noinano', 'inano']
+NEW FACT from Facts.list :n_ha_list [0, 5]
+NEW FACT from Facts.list :run_list ['start']
+
+</PRE>
+<p>This is just a repeat of the parameters in your <b>Facts.list</b> script.
+The last fact is the &quot;run_list start&quot; command, which tells the 
+AutoSol Wizard to read in the data (recall that we put in this command after
+each native-derivative combination so the Wizard could read it in as an SIR
+dataset).
+</p>
+
+<p><H5>Reading the datafiles.</H5></p>
+<p>
+The AutoSol Wizard will read in your datafiles and check their contents, printing
+out a summary for each one.  This is done one dataset at a time (each 
+native-derivative pair) until all have been read in. Here is the summary for the
+first derivative:
+</p><PRE style="face=courier">
+HKLIN ENTRY:  rt_rd_1.sca
+FILE TYPE scalepack_no_merge_original_index
+GUESS FILE TYPE MERGE TYPE sca unmerged
+LABELS['I', 'SIGI']
+CONTENTS: ['rt_rd_1.sca', 'sca', 'unmerged', 'P 21 21 2', None, None, ['I', 'SIGI']]
+Not checking SG as cell or sg not yet defined
+SG from  rt_rd_1.sca  is:  P 21 21 2
+HKLIN ENTRY:  auki_rd_1.sca
+FILE TYPE scalepack_no_merge_original_index
+GUESS FILE TYPE MERGE TYPE sca unmerged
+LABELS['I', 'SIGI']
+CONTENTS: ['auki_rd_1.sca', 'sca', 'unmerged', 'P 21 21 21', None, None, ['I', 'SIGI']]
+Converting the files ['rt_rd_1.sca', 'auki_rd_1.sca'] to sca format before proceeding
+</PRE>
+<p><H5> ImportRawData.  </H5></p>
+The input data files <b>rt_rd_1.sca</b> and <b>auki_rd_1.sca</b> are in unmerged
+Scalepack format. The AutoSol wizard converts everything to premerged
+Scalepack format before proceeding. Here is where the AutoSol Wizard
+identifies the format and then calls the ImportRawData Wizard:
+</p><PRE style="face=courier">
+Running import directly...
+WIZARD:  ImportRawData
+</PRE>
+<p>followed eventually by...
+</p><PRE style="face=courier">
+List of output files :
+File 1: rt_rd_1_PHX.sca
+File 2: auki_rd_1_PHX.sca
+</PRE>
+<p>These output files are in premerged Scalepack format.
+
+</p><p>After completing the ImportRawData step, the AutoSol Wizard goes back to
+the beginning, but uses the newly-converted files <b>rt_rd_1_PHX.sca</b> and
+<b> auki_rd_1_PHX.sca</b>:
+</p><PRE style="face=courier">
+HKLIN ENTRY:  AutoSol_run_1_/rt_rd_1_PHX.sca
+FILE TYPE scalepack_merge
+GUESS FILE TYPE MERGE TYPE sca premerged
+LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
+Unit cell: (93.796, 79.849, 43.108, 90, 90, 90)
+Space group: P 21 21 2 (No. 18)
+CONTENTS: ['AutoSol_run_1_/rt_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0], 2.4307589843043771, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
+HKLIN ENTRY:  AutoSol_run_1_/auki_rd_1_PHX.sca
+FILE TYPE scalepack_merge
+GUESS FILE TYPE MERGE TYPE sca premerged
+LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
+Unit cell: (93.796, 79.849, 43.108, 90, 90, 90)
+Space group: P 21 21 2 (No. 18)
+CONTENTS: ['AutoSol_run_1_/auki_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0], 2.430806639777233, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
+Total of 2 input data files
+['AutoSol_run_1_/rt_rd_1_PHX.sca', 'AutoSol_run_1_/auki_rd_1_PHX.sca']
+</PRE>
+
+</p>
+<p><H5>Guessing cell contents</H5></p>
+<p>  The AutoSol Wizard uses the sequence information
+in your sequence file (<b>sequence.dat</b>) and the cell parameters and space
+group to guess the number of NCS copies and the solvent fraction.
+</p><PRE style="face=courier"> 
+AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Sun Jul  8 16:59:54 2007
+
+Solvent fraction and resolution and ha types/scatt fact
+Guessing setup for scaling dataset 1
+SG P 21 21 2
+cell [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0]
+Number of residues in unique chains in seq file: 294
+Unit cell: (93.796, 79.849, 43.108, 90, 90, 90)
+Space group: P 21 21 2 (No. 18)
+CELL VOLUME :322858.090387
+N_EQUIV:4
+GUESS OF NCS COPIES: 1
+SOLVENT FRACTION ESTIMATE: 0.51
+Total residues:294
+Total Met:6
+resolution estimate: 2.8
+
+</PRE>
+
+<p><H5>Running phenix.xtriage</H5></p>
+<p>  The AutoSol Wizard automatically 
+runs phenix.xtriage on each of your input datafiles to analyze them
+for twinning, outliers, translational symmetry, and other special 
+conditions that you should be aware of.  You can read more about
+xtriage in <a href="xtriage.htm">Data quality assessment 
+with phenix.xtriage</a>.  Part of the summary output from xtriage for this
+dataset looks like this:
+</p><PRE style="face=courier"> 
+No (pseudo)merohedral twin laws were found.
+
+
+Patterson analyses
+  - Largest peak height   : 6.467
+   (correpsonding p value : 6.082e-01)
+
+
+The largest off-origin peak in the Patterson function is 6.47% of the
+height of the origin peak. No significant pseudotranslation is detected.
+
+The results of the L-test indicate that the intensity statistics
+behave as expected. No twinning is suspected.
+
+</PRE>
+<p>In this space group (P21 21 2) with the cell dimensions in this structure,
+there are no ways to create a twinned crystal, so you do not have to worry
+about twinning.  There is also no large off-origin peak in the native Patterson,
+so there does not appear to be any translational pseudo-symmetry.</p>
+
+<p><H5>Testing for anisotropy in the data</H5></p>
+<p>  After all the SIR datasets are read in, the AutoSol Wizard tests
+for anisotropy by determining the range of effective anisotropic B values
+along the principal lattice directions. If this range is large and the ratio
+of the largest to the smallest value is also large then the data are by default
+corrected to make the anisotropy small 
+(see <a href="autosol.htm#anch26">
+Analyzing and scaling the data</a>
+in the AutoSol web page for more discussion
+of the anisotropy correction). In the <b>rh-dehalogenase</b> case, the range of
+anisotropic B values is small and no correction is made:
+</p><PRE style="face=courier">
+Range of aniso B:  15.15 21.06
+Not using aniso-corrected data files as the range of aniso b  is only  5.91  and 'correct_aniso' is not set
+</PRE>
+Note that if any one of the datafiles in a MIR dataset has a high anisotropy,
+then by default all of them will be corrected for anisotropy.
+
+<p><H5>Scaling MIR data</H5></p>
+The AutoSol Wizard uses SOLVE localscaling to scale MIR data.  The procedure is
+basically to scale all the data to the native. 
+During this process outliers that deviate from the reference values
+by more that <b>ratio_out</b> (default=3)  standard deviations 
+(using all data in the appropriate resolution shell to estimate the SD) are rejected.
+
+<p><H5>Running HYSS to find heavy-atom substructure</H5></p>
+<p> The HYSS (hybrid substructure
+search) procedure for heavy-atom searching uses a combination of a Patterson
+search for 2-site solutions with direct methods recycling. The search ends
+when the same solution is found beginning with several different starting
+points.  The HYSS log files are named after the datafile that they
+are based on and the type of differences (ano, iso) that are being used.
+In this <b>rh-dehalogenase</b> MIR dataset, the HYSS logfile for the
+Au derivative is
+<b>auki_rd_1_PHX.sca_iso_1.sca_hyss.log</b>.  The key part of this HYSS log file
+is:
+</p><PRE style="face=courier">
+Entering search loop:
+
+p = peaklist index in Patterson map
+f = peaklist index in two-site translation function
+cc = correlation coefficient after extrapolation scan
+r = number of dual-space recycling cycles
+cc = final correlation coefficient
+
+p=000 f=000 cc=0.155 r=015 cc=0.286 [ best cc: 0.286 ]
+p=000 f=001 cc=0.155 r=015 cc=0.286 [ best cc: 0.286 0.286 ]
+Number of matching sites of top 2 structures: 8
+p=000 f=002 cc=0.152 r=015 cc=0.286 [ best cc: 0.286 0.286 0.286 ]
+Number of matching sites of top 2 structures: 8
+Number of matching sites of top 3 structures: 8
+p=001 f=000 cc=0.173 r=015 cc=0.286 [ best cc: 0.286 0.286 0.286 0.286 ]
+Number of matching sites of top 2 structures: 8
+Number of matching sites of top 3 structures: 8
+Number of matching sites of top 4 structures: 8
+
+</PRE>
+Here a correlation coefficient of 0.5 is very good (0.1 is hopeless,
+0.2 is possible, 0.3 is good) and 8 sites were found that matched in
+the first two tries. The program continues until 5 structures all have
+matching sites, then ends and prints out the final correlations, after
+taking the top 5 sites.
+
+<p><H5>Finding the hand and scoring heavy-atom solutions</H5></p>
+<p> In many space groups either hand of the heavy-atom substructure is a possible
+solution, and both must be tested by calculating phases and examining the 
+electron density map and by carrying out density modification, as they will give 
+the same statistics for all heavy-atom analysis and phasing steps. In this
+example the space group is <b>P21212</b> and both hands of the heavy-atom substructure
+do need to be tested. Note that in chiral space groups (those that have a 
+handedness such as <b>P61</b>, both hands of the <b>space group</b> must 
+be tested. At present you need to do this yourself, running AutoSol separately
+for both space groups (i.e. <b>P61</b> and <b>P65</b>).
+</p>
+<p> The AutoSol Wizard scores heavy-atom
+solutions based on four criteria. The first two are from
+density modification. One of these is 
+the correlation of the experimental phases with the map-probability phases
+obtained in statistical density modification (<b>CC</b>). Good values for
+this criteria are usually in the range of 0.4-0.6. The second is the R-factor
+during the first cycle of density modification (<b>RFACTOR</b>). Good values
+for this are anything less than 0.6.  The third criterion is the skew
+of the electron density in the map (<b>SKEW</b>). 
+Good values for the skew are anything
+greater than 0.1. In a MIR structure determination, the heavy-atom
+solution with the correct hand may have  a more positive skew and the one with the 
+inverse hand. The last criterion is the figure of merit
+of phasing (<b>FOM</b>), 
+essentially a measure of the consistency of the data and
+the heavy-atom model. For MIR datasets, SOLVE is used for calculating
+phases. For a MIR dataset, a figure of merit of 0.5 is
+acceptable, 0.6 is fine and anything above 0.7 is very good.
+ The scores are listed in the AutoSol log file:
+</p><PRE style="face=courier">
+Evaluating solution 1
+</PRE>
+<p>and then after some analysis of random solutions...
+</p><PRE style="face=courier">
+
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.3112427
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.6219324
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.063086487
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.39
+
+SCORING TABLE 0 MEAN : 0.2226933  SD: 0.0203041521839
+SCORING TABLE 1 MEAN : 0.616432316667  SD: 0.0065241101629
+SCORING TABLE 2 MEAN : 0.00449461028333  SD: 0.0158383115198
+SCORING TABLE 3 MEAN : 0.0  SD: 0.05
+
+Total Z-score: 15.0174842126
+
+</PRE>
+<p>This is a pretty poor solution, with a low correlation of density
+between map-probability phases from density modification and the original
+experimental phases (0.31), a high R-factor for density modification
+(0.62), a low (though positive) skew (0.06), and a moderate figure
+of merit (0.39)>
+</p><p>
+The <b>Z-score</b> is a measure of how 
+different the scores for this solution are
+from those of a random set of phases.  In this run we have chosen the 
+<b>thorough</b> option, so the scores for random solutions were
+ constructed by randomizing phases from the first solution tested. Then
+the scores for each criterion and each randomized solution were 
+obtained. The Z-score for one solution based on one criterion was then 
+the number of standard deviations that this solution is
+above the mean of scores for randomized solutions. The mean for each
+score is given above under <b>SCORING TABLE 0 MEAN</b> for the four
+different criteria. The total Z-score
+is the sum of the 4 Z-scores for this solution.  The total Z-score gives an
+idea of how different this solution is from a totally random solution (in 
+this case, about 15 standard deviations from the mean of random solutions.) 
+</p><p>In this case the datasets used to find heavy-atom substructures
+were the isomorphous differences for each derivative
+For each dataset one solution was found, and that solution and its inverse
+were scored.  The scores were (skipping extra text below):
+</p><PRE style="face=courier">
+SCORING SOLUTION 1: Solution 1 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. 
+Dataset #1, with 5 sites
+Total Z-score: 15.0174842126
+
+SCORING SOLUTION 2: Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. 
+Dataset #1, with 5 sites
+Total Z-score: 26.2703497059
+
+SCORING SOLUTION 3: Solution 3 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. 
+Dataset #2, with 5 sites
+Total Z-score: 29.9017541599
+
+SCORING SOLUTION 4: Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
+Dataset #2, with 5 sites
+Total Z-score: 63.0261758148
+
+SCORING SOLUTION 5: Solution 5 using HYSS on AutoSol_run_1_/hgi2_rd_1_PHX.sca_iso_4.sca. 
+Dataset #4, with 5 sites
+Total Z-score: 15.2858496369
+
+SCORING SOLUTION 6: Solution  6 using HYSS on AutoSol_run_1_/hgi2_rd_1_PHX.sca_iso_4.sca and taking inverse. 
+Dataset #4, with 5 sites
+Total Z-score: 16.2365813265
+
+SCORING SOLUTION 7: Solution 7 using HYSS on AutoSol_run_1_/smac_1_PHX.sca_iso_5.sca. 
+Dataset #5, with 3 sites
+Total Z-score: 6.63438239846
+
+SCORING SOLUTION 8: Solution  8 using HYSS on AutoSol_run_1_/smac_1_PHX.sca_iso_5.sca and taking inverse. 
+Dataset #5, with 3 sites
+Total Z-score: 20.6244179856
+
+</PRE>
+</p><p>In this case the best score was solution 4, based on the HGKI
+derivative and taking the inverse of the heavy-atom sites, with a
+Z-score of 63. The Z-score from the opposite hand was just 29,
+and so the hand was clear.
+
+<p><H5>Finding origin shifts between heavy-atom solutions for
+different derivatives and combining phases </H5></p>
+<p>Depending on the space group, there may be a few or
+infinitely many totally equivalent heavy-atom substructures for a 
+particular native-derivative pair.  These are related to each other
+by translations that can be thought of as offsets of the origins
+for the two substructures.  The AutoSol Wizard identifies the allowed
+offsets for the space group. Then it aligns the solutions from different
+derivatives by finding the origin offset that maximizes the correlation
+of electron density in the native Fouriers for the two.  Then it
+combines the phases from the two using addition of Hendrickson-Lattman
+coefficients.  These combined phases are then used to score the
+phasing obtained by combining the two derivatives.  The best combinations
+are iteratively combined until all available derivatives are considered
+and combined in an optimal fashion. Once an optimal set of derivatives and 
+sites is found, SOLVE Bayesian correlated phasing is used to
+calculate a final set of native phases from the native and all the
+derivatives at once. Here is the best pair of derivatives from this
+first cycle:
+</p><PRE style="face=courier">
+Getting origin shift for 2 mapped on to 4
+Phases from solution 4:solve_4.mtz
+Phases from solution 2:solve_2.mtz
+Merged ha files in ha_4_2.pdb
+Merged files in merged_4_2.mtz
+FOM solution 4: 0.56    FOM solution 2: 0.44    Correlation of maps: 0.249    Ideal map correlation: 0.2464
+
+RESULT: FOM solution 4: 0.56    FOM solution 2: 0.44    Correlation of maps: 0.249    Ideal map correlation: 0.2464
+ Origin offset of solution 2: [-0.5, 0.0, 0.0]
+</PRE>
+<p>Here solutions 2 and 4 ahve a map correlation of 0.25, just about the
+same as expected based on the FOM of the two solutions (0.56 and .44)
+and assuming random errors.  The two solutions differ by an origin
+shift of 0.5 along x.
+</p><p>The two solutions are then phased as a group to use as the
+basis for density modification:
+</p><PRE style="face=courier">
+Merging a set of solutions and phasing the group with SOLVE
+List of solutions to merge
+SOL:  4 : Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2
+Native is :  AutoSol_run_1_/rt_rd_1_PHX.sca
+SOL:  2 : Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. Dataset #1
+Native is :  AutoSol_run_1_/rt_rd_1_PHX.sca
+Number of derivatives:  2
+</PRE>
+However in this case after phasing with the two derivatives together, the
+score is not improved over the HGKI derivative by itself:
+</p><PRE style="face=courier">
+ PHASED SOLUTION: Solution 9 based on MIR phasing starting from solutions 4 (dataset #2)  and 2 (dataset #1)
+
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.4500604
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5492675
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.1624269
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.57
+
+Total Z-score: 42.8644574912
+
+</PRE>
+<p>This is a better solution than the first one, with a moderate
+ correlation of density
+between map-probability phases from density modification and the original
+experimental phases (0.45), a lower R-factor for density modification
+(0.55), a better skew (0.16), and a better figure
+of merit (0.57)>
+<p>As the original HGKI solution was the best, it is used for density
+modification and finding additional sites:
+</p><PRE style="face=courier">
+SOLUTION USED TO START DEN MOD:
+Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2
+HKLIN: solve_4.mtz
+Testing density modification with mask_type = wang
+RFACTOR:  0.2475
+Best mask type so far is  wang
+Testing density modification with mask_type = histograms
+RFACTOR:  0.2553
+</PRE>
+<p>Note that two types of masks (<b>wang</b> and <b>histograms</b>) are
+tested in the density modification procedure. This is because sometimes
+one method for identification of the solvent region is better than
+the other. The <b>wang</b> method chooses the solvent region as those
+points surrounded by regions of low variation. The histograms method
+chooses points instead based on the similarity of the histograms
+of density nearby to those of idealized solvent and protein regions.
+The R-factor for density modification is used to choose which
+is working best in this case (the <b>wang</b> method).
+
+<p><H5>Finding additional sites by density modification and 
+heavy-atom difference Fouriers</H5></p>
+<p>When AutoSol is used with the default keyword of <b>thoroughness=thorough</b> as
+in this example, additional heavy-atom sites are found by phasing using the 
+current model, carrying out density modification to improve the phases, and using
+the improved phases along with isomorphous differences
+and the phase difference between
+the heavy atoms and the non-heavy atoms 
+to calculate Fourier maps showing the positions of the
+heavy atoms. The top peaks in these maps are used as trial heavy-atom
+sites (if they are not already part of the heavy-atom model.
+</p><p>In this example solution 4 from derivative 2
+is used for this phasing/density modification/Fourier
+procedure. Sites are are found for <b>all</b> the derivatives and 
+new solutions are created and scored using the top sites for each derivative.
+None of these new solutions has a score higher than the original HGKI
+derivative, but one of the  combination is now better:
+
+</p><PRE style="face=courier">
+ NEW SOLUTION: 21
+Saved mir_fpfm.scl in PDS
+Saved mir_fbar.scl in PDS
+Saved mir_fbar.mtz in PDS
+Reformatting  ha_21.pdb  and putting it in  ha_21.pdb_formatted.pdb
+
+ PHASED SOLUTION: Solution 21 based on MIR phasing starting from solutions 4 (dataset #2)  and 12 (dataset #1)
+
+MARKING DUPLICATES FROM solutions
+
+Number of scoring criteria:  4
+
+Evaluate_solution
+
+
+Scoring for this solution now...
+
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.6533058
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4493593
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.417136
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.64
+
+Total Z-score: 85.6700228188
+
+</PRE>
+<p>This is quite a good solution, with high 
+ correlation of density
+between map-probability phases from density modification and the original
+experimental phases (0.65), a low R-factor for density modification
+(0.45), a high skew (0.42), and a good figure
+of merit (0.64)>
+This solution is the best
+overall and is used for final phasing and density modification.
+Notice that it only contains two of the five derivatives.  The merging procedure
+identifies which combinations of derivatives give the best phasing, and
+all the other derivatives are ignored.
+
+<p><H5>Final phasing with SOLVE</H5></p>
+Once the best heavy-atom solution or solutions are chosen based on 
+<b>Z-scores</b>, these are used in a final round of phasing with
+SOLVE (for MIR phasing). The log file from phasing for solution <b>21</b> is in
+<b>solve_21.prt</b>. 
+The
+heavy-atom model is refined and phases are calculated with Bayesian correlated
+MIR phasing. An important part of this phasing method is a statistical
+method of taking into account the correlation of non-isomorphism among
+derivatives. The extent of this correlation is listed in the 
+<b>solve_21.prt</b> summary file:
+</p><PRE style="face=courier">
+ DERIVATIVE:            1
+ CENTRIC REFLECTIONS:
+ DMIN:            ALL     10.22   6.41   4.99   4.23   3.73   3.37   3.10   2.89
+ RMS errors correlated and uncorrelated with others in group:
+      Correlated:   51.1   64.3   52.2   42.9   52.6   58.9   56.8   40.9   26.4
+    Uncorrelated:   32.7   34.6   29.4   41.6   23.6   27.6    4.6   37.9   46.6
+
+ Correlation of errors with other derivs:
+ DERIV 2:           0.57   0.68   0.62   0.45   0.55   0.66   0.65   0.51   0.28
+
+</PRE>
+<p>Here the centric reflections in derivative 1 have non-isomorphism
+errors related to those in derivative 2, with a correlation coefficient
+overall of 0.57. another way to look at this is that the RMS correlated
+error is 51.1 and the RMS uncorrelated (random) error is just 32.7.  That
+means that a big part of the errors are correlated, and should be treated
+as such.
+The final occupancies and coordinates are listed at the end:
+</p><PRE style="face=courier">
+
+</p><PRE style="face=courier">PARAMETER SHIFTS FOR DERIV  1 : set 1 
+                         SCALE FACTOR     OVERALL B
+ CURRENT VALUES:          0.9685          0.0000
+                    SITE  ATOM       OCCUP     X       Y       Z         B
+ CURRENT VALUES:      1    Hg       0.3587  0.7222  0.2799  0.4213    6.2541
+ CURRENT VALUES:      2    Hg       0.3862  0.1884  0.1574  0.4392   30.8420
+ CURRENT VALUES:      3    Hg       0.2914  0.7366  0.2517  0.4165    8.5235
+ CURRENT VALUES:      4    Hg       0.2864  0.7111  0.2957  0.4698    8.0632
+
+PARAMETER SHIFTS FOR DERIV  2 : set 2 
+                         SCALE FACTOR     OVERALL B
+ CURRENT VALUES:          0.9648          0.0000
+                    SITE  ATOM       OCCUP     X       Y       Z         B
+ CURRENT VALUES:      1    Au       0.3923  0.2086  0.1866  0.4628   20.2014
+ CURRENT VALUES:      2    Au       0.3014  0.3615  0.3381  0.4843   14.7380
+ CURRENT VALUES:      3    Au       0.5414  0.7124  0.2832  0.4320   32.2650
+ CURRENT VALUES:      4    Au       0.1402  0.1826  0.1607  0.4459   19.4977
+
+</PRE>
+In this case the occupancies of the top sites are about 1/3, which
+is fine for MIR (particularly with such heavy atoms as Hg and Au).
+</p>
+
+<p><H5>Statistical density modification with RESOLVE</H5></p>
+<p>After MIR phases are calculated with SOLVE, the AutoSol Wizard
+uses RESOLVE density modification to improve the quality of the
+electron density map.  The statistical density modification 
+in RESOLVE takes advantage of the flatness of the solvent region
+and the expected distribution of electron density in the region
+containing the macromolecule, as well as any NCS that can be found
+from the heavy-atom substructure. The weighted structure factors and
+phases (FP, PHIB) from SOLVE are used to calculate the starting
+map for RESOLVE, and the experimental structure factor amplitudes (FP)
+and MIR Hendrickson-Lattman coefficients from SOLVE are used
+in the density modification process. The output from RESOLVE for solution 21
+can be found in <b>resolve_21.log</b>.  Here are key sections of this
+output. </p>
+<p>First, the plot of how many points in the &quot;protein&quot; region
+of the map have each possible value of electron density. The
+plot below is normalized so that a density of zero is the mean of 
+the solvent region, and the standard deviation of the density in the
+map is 1.0. A perfect map has a lot of points with density slightly less
+than zero on this scale (the points between atoms) and a few points
+with very high density (the points near atoms), and no points with very
+negative density.  Such a map has a very high skew (think 
+&quot;skewed off to the right&quot;. This map is good, with a positive
+skew, though it is not perfect.
+(so
+</p><PRE style="face=courier">
+
+ Plot of Observed (o) and model (x) electron density distributions for protein
+ region, where the model distribution is given by,
+  p_model(beta*(rho+offset)) = p_ideal(rho)
+ and then convoluted with a gaussian with width of sigma
+ where sigma, offset and beta are given below under "Error estimate."
+
+
+                          0.03..................................................
+                              .                   .                            .
+                              .                   .                            .
+                              .              xxxxxx                            .
+                              .             xxo   oxx                          .
+                              .            xoo    .oxo                         .
+                              .           xo      .  xxoo                      .
+                p(rho)        .          x        .    xo                      .
+                              .          x        .     xxo                    .
+                              .         x         .       xxo                  .
+                              .       ox          .         xxo                .
+                              .      oxx          .           xxxx             .
+                              .     oxx           .              xxxx          .
+                              .   oxx             .                oxxxx       .
+                              .ooxxx              .                   ooxxxxxx .
+                         0.0  xxx..........................................ooxxx
+
+                             -2        -1         0         1         2        3
+
+                                  normalized rho (0 = mean of solvent region)
+ -------------------------------------------------------------------------------
+
+</PRE>
+<p>After density modification, the curve is more ideal, with a very strong
+positive skew:
+</p><PRE style="face=courier">
+
+                          0.03..................................................
+                              .                   .                            .
+                              .                   .                            .
+                              .          oo x     .                            .
+                              .          xxxxxxx  .                            .
+                              .         xo  o oox .                            .
+                              .        xo       oxxo                           .
+                p(rho)        .     o x           .xxo                         .
+                              .     xx            .  xo                        .
+                              .    xx             .  oxxooo                    .
+                              .   ox              .     xxxxooo o              .
+                              .  xx               .         xxxxxxxxoo         .
+                              .oxo                .                 xxxxxx o   .
+                              xx                  .                      oxxxxxx
+                              x                   .                          oox
+                         0.0  o................................................x
+
+                             -2        -1         0         1         2        3
+
+                                  normalized rho (0 = mean of solvent region)
+
+
+</PRE>
+<p>The key statistic from this RESOLVE density modification is the R-factor
+for comparison of observed structure factor amplitudes (FP) with those
+calculated from the density modification procedure (FC).
+In this <b>rh-dehalogenase</b> MIR phasing the R-factor is very low: 
+</p><PRE style="face=courier">
+Overall R-factor for FC vs FP: 0.254 for       8313 reflections
+</PRE>
+An acceptable value is anything below 0.35; below 0.30 is good.
+
+
+<p><H5>Generation of FreeR flags</H5></p>
+<p>The AutoSol Wizard will create a set of free R flags indicating which 
+reflections are not to be used in refinement. By default 5% of reflections
+are reserved for this test set. 
+If you want to supply a reflection file <b>hires.mtz</b> that has 
+higher resolution than the data used to solve the structure, 
+or has a test set already marked,
+then you can do this with the keyword <b>input_refinement_file=hires.mtz</b>.
+
+The files to be used for model-building
+and refinement are listed in the AutoSol log file:
+</p><PRE style="face=courier"> 
+Generating FreeR flags...
+Saving  exptl_fobs_phases_freeR_flags_21.mtz  for refinement
+THE FILE AutoSol_run_1_/resolve_21.mtz will be used for model-building
+THE FILE exptl_fobs_phases_freeR_flags_21.mtz will be used for refinement
+
+</PRE>
+
+<p><H5>Model-building with RESOLVE</H5></p>
+<p>The AutoSol Wizard by default uses RESOLVE to build an atomic model
+of your structure.  It will guess from your sequence file whether the 
+structure is protein or RNA or DNA (but you can tell it if you want
+with (<b>chain_type=PROTEIN</b>). The model-building carried out in
+the AutoSol Wizard is essentially the same as one cycle of
+model-building with the AutoBuild Wizard (see the web page
+<a href="autobuild.htm">
+Automated Model Building and Rebuilding with AutoBuild</a>.
+(If you specify
+<b>thoroughness=quick</b> the model-building is
+done less comprehensively to speed things up.)
+</p>
+<p>In this case three initial models are built. 
+The model-building produces an initial model with 239
+residues built and side chains assigned to 159, and which refines to
+an R-factor of 0.37 and a free R-factor of 0.43. The next two models built
+have similar numbers of residues built, and are not refined:
+</p><PRE style="face=courier"> 
+iBuilding 3 RESOLVE models...
+Model 1: Residues built=239  placed=159  Chains=12  Model-map CC=0.62
+Refining model:  Build_1.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.37/0.43
+
+Model 2: Residues built=246  placed=115  Chains=19  Model-map CC=0.60
+Model 3: Residues built=229  placed=117  Chains=18  Model-map CC=0.59
+
+</PRE>
+
+<p>After one model completion cycle (including merging these three initial
+models together, extending ends of chains,
+fitting loops, and building outside the region already built, the best
+model built has 281 residues built, 281 assigned to sequence:
+</p><PRE style="face=courier"> 
+Model 9: Residues built=286  placed=282  Chains=1  Model-map CC=0.78
+Refining model:  model_with_loops_10.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.19/0.25
+
+</PRE>
+
+This refined initial model is written out to <b>refine_9.pdb</b> in
+the output directory.
+
+<p><H5>The AutoSol_summary.dat summary file</H5></p>
+A quick summary of the results of your AutoSol run is in the
+<b>AutoSol_summary.dat</b> file in your output directory.  This file lists the
+key files that were produced in your run of AutoSol (all these are in the
+output directory) and some of the key statistics for the run, including
+the scores for the heavy-atom substructure and the model-building and 
+refinement statistics.  These statistics are listed for all the solutions
+obtained, with the highest-scoring solutions first.  Here is part of the
+summary for this <b>rh-dehalogenase</b> MIR dataset:
+</p><PRE style="face=courier"> 
+
+-----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
+
+ *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
+
+
+
+Solution # 21   SCORE:85.6700228188 Dataset #0   FOM: 0.64 ----------------
+
+Solution 21 based on MIR phasing starting from solutions 4 (dataset #2)  and 12 (dataset #1)
+This solution is a composite of solutions:  4 12 (Already used for Phasing at resol of 2.8)   Refined Sites: 4
+NCS information  in: AutoSol_21.ncs_spec
+Experimental phases in: solve_21.mtz
+Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_21.mtz
+Density-modified phases in: resolve_21.mtz
+HA sites (PDB format) in: ha_21.pdb_formatted.pdb
+Sequence file in: sequence.dat
+Model in: refine_9.pdb
+  Residues built: 286
+  Side-chains built: 282
+  Chains: 1
+  Overall model-map correlation: 0.78
+  R/R-free: 0.19/0.25
+Phasing logfile in: solve_21.prt
+Density modification logfile in: resolve_21.log
+Build logfile in: model_with_loops_10.log
+
+ Score type:        CC       RFACTOR       SKEW       FOM
+Raw scores:       0.653        0.449        0.417        0.640
+Z-scores:        21.208       25.609       26.053       12.800
+
+Refined heavy atom sites (fractional):
+deriv 1
+xyz       0.722      0.280      0.421
+xyz       0.188      0.157      0.439
+xyz       0.737      0.252      0.416
+xyz       0.711      0.296      0.470
+deriv 2
+xyz       0.209      0.187      0.463
+xyz       0.361      0.338      0.484
+xyz       0.712      0.283      0.432
+xyz       0.183      0.161      0.446
+
+</PRE>
+<p><H5>How do I know if I have a good solution?</H5></p>
+<p>Here are some of the things to look for to tell if you have obtained a 
+correct solution:
+<UL>
+<LI>How much of the model was built? More than 60% is good.  If less than 
+25% of the model is built, then it may be entirely incorrect. Have a
+look at the model. If you see clear sets of parallel or antiparallel strands,
+or if you see helices and strands with the expected relationships,
+your model is going to be correct. If you see a lot of short fragments
+everywhere, your model and solution is going to be incorrect.
+How many side-chains were fitted to density? More than 25% is ok, 
+more than 50% is very good. 
+</LI>
+<LI>What is the R-factor of the model? For a solution at moderate to high
+resolution (2.5 A or better) the R-factor should be in the low 30's to be very 
+good. For lower-resolution data, an R-factor in the low 40's is probably
+largely correct but the model is not very good.
+</LI>
+<LI>What are the individual Z-scores for your top solution? For a good
+solution they are all positive, and at least several have a value of at least 2.
+</LI>
+<LI>What is the overall Z-score of your top solution. Z-scores of less than
+5 are very dubious; those greater than 100 are very likely to be good; those
+in between are ok.
+</LI>
+<LI>What is the difference in Z-score between the top solution and its
+inverse? If this is large (at least 2) that is a good sign.
+</LI>
+</UL>
+
+
+<p><H5>What to do next</H5></p>
+<p>Once you have run AutoSol and have obtained a good solution and model,
+the next thing to do is to run the AutoBuild Wizard.  If you run it
+in the same directory where you ran AutoSol, the AutoBuild Wizard will pick
+up where the AutoSol Wizard left off and carry out iterative model-building,
+density modification and refinement to improve your model and map. 
+See the web page <a href="autobuild.htm">
+Automated Model Building and Rebuilding with AutoBuild</a> for details on
+how to run AutoBuild.
+
+</p><p>If you do not obtain a good solution, then it's not time to give
+up yet. There are a number of standard things to try that may improve the
+structure determination. Here are a few that you should always try:
+<UL>
+<LI>Have a careful look at all the output files. Work your way through
+the main log file (e.g., <b>AutoSol_run_1_1.log</b>) and all the
+other principal log files  in order beginning with 
+scaling (<b>dataset_1_scale.log</b>), then looking at  heavy-atom
+searching (e.g., <b>auki_rd_1_PHX.sca_iso_1.sca_hyss.log</b>),  phasing
+(e.g., <b>solve_21.log</b> or <b>solve_xx.log</b> depending on
+which solution <b>xx</b> was the top solution) and density modification (e.g., 
+<b>resolve_xx.log</b>).  Is there anything 
+strange or unusual in any of them that may give you a clue as to
+what to try next?  For example did the phasing work well (high figure of
+merit) yet the density modification failed? (Perhaps the hand is incorrect).
+Was the solvent content estimated correctly? (You can specify it yourself
+if you want).  What does the xtriage output say? Is there twinning or
+strong translational symmetry? Are there problems with reflections near
+ice rings? Are there many outlier reflections?
+</LI>
+<LI>Try a different resolution cutoff.  For example 0.5 A lower resolution than
+you tried before.  Often the highest-resolution shells have little useful
+information for structure solution (though the data may be useful in
+refinement and density modification).
+</LI>
+<LI>Try a different rejection criterion for outliers. The default is
+<b>ratio_out=3.0</b> (toss reflections with delta F more than 3 times the
+rms delta F of all reflections in the shell).  Try instead <b>ratio_out=5.0</b>
+to keep everything.
+</LI>
+<LI>If the heavy-atom substructure search did not yield plausible
+solutions, try searching with HYSS using the command-line interface, and
+vary the resolution and number of sites you look for. Can you find a solution
+that has a higher <b>CC</b> than the one found in AutoSol? If so, you can
+read your solution in to AutoSol with <b>sites_file=my_sites.pdb</b>.
+</LI>
+<LI>Was an anisotropy correction applied in AutoSol? If there is 
+some anisotropy but no correction was applied, you can force AutoSol to 
+apply the correction with <b>correct_aniso=True</b>.
+</LI>
+<LI>Try the space group with the opposite hand, if it exists. AutoSol does not
+(yet) automatically check space group <b>P61</b> if you specify <b>P65</b>, so you
+need to do this yourself.
+</LI>
+<LI>Try related space groups. If you are not positive that your space group
+is P212121, then try other possibilities with different or no screw axes.
+</LI>
+
+</UL>
+
+
+</p><p><H5><U>Additional information</U></H5></p><p>
+For details about the AutoSol Wizard, see <a href="autosol.htm"> 
+Automated structure solution with AutoSol</a>.  For help on running
+Wizards, see <a href="running-wizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a>.
+</p>
+
+
+<!--REMARK PHENIX BODY END-->

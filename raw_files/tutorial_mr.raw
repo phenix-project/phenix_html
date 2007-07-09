@@ -1,0 +1,323 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here-->
+
+<p><H5><U>Tutorial 5: Solving a structure with MR data</U></H5></p><p>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H5 H5 etc will go in the table of contents-->
+
+
+<p><H5><U>Introduction</U></H5></p><p>
+
+
+This tutorial will use the structure of a2u-globulin-mr using a search model
+with 63% sequence identity as an example of how to solve a
+MR dataset with the AutoMR Wizard. It is designed to be read all the way through,
+giving pointers for you along the way. Once you have read it all and run
+the example data and looked at the output files, you will be in
+a good position to run your own data through AutoMR.
+
+</p><p><H5><U>Setting up to run PHENIX</U></H5></p><p>
+If PHENIX is already installed and your environment is all set, then
+if you type:
+</p><PRE style="face=courier">echo $PHENIX</PRE>
+then you should get back something like this:
+</p><PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+If instead you get:
+</p><PRE style="face=courier">PHENIX: undefined variable</PRE>
+then you need to set up your PHENIX environment. See the
+<a href="install.htm" >PHENIX installation</a> page for 
+details of how to do this. 
+If you are using the C-shell environment (<b>csh</b>) then all you will need 
+to do is add one line to your <b>.cshrc</b> (or equivalent) file that
+looks like this:
+</p><PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+(except that the path in this statement will be where <b>your</b> PHENIX is
+installed). Then the next time you log in <b>$PHENIX</b> will be defined.
+
+
+</p><p><H5><U>Running the demo a2u-globulin-mr data with AutoMR</U></H5></p><p>
+To run AutoMR on the demo a2u-globulin-mr data, make yourself a <b>tutorials</b>
+directory and <b>cd</b> into that directory:
+</p><PRE style="face=courier">mkdir tutorials
+cd tutorials </PRE>
+Now  type the phenix command:
+</p><PRE style="face=courier">phenix.run_example --help </PRE>
+to list the available examples.  Choosing <b>a2u-globulin-mr</b> for this
+tutorial, you can now use the phenix command:
+</p><PRE style="face=courier">phenix.run_example a2u-globulin-mr </PRE>
+to solve the a2u-globulin-mr structure with AutoMR. This command will
+copy the directory <b>$PHENIX/examples/a2u-globulin-mr</b>
+to your current directory (<b>tutorials</b>) 
+and call it <b>tutorials/a2u-globulin-mr/</b>
+. Then it will run AutoMR using the command file 
+<b>run.csh</b> 
+that is present in this <b>tutorials/a2u-globulin-mr/</b> directory.
+</p><p>This command file <b>run.csh</b> is simple. It says:
+
+</p><PRE style="face=courier">
+#!/bin/csh
+echo "Running AutoMR on a2u-globulin data without building..."
+phenix.automr mup_search.pdb scale.mtz mass=18000. resolution=2.5 \
+    component_type=protein RMS=1.0 sequence.dat copies=4  \
+    sg=p212121 cell="106.820   62.340  114.190  90.00  90.00  90.00" \
+    build=False
+
+</PRE>
+The first line (<b>#!/bin/csh</b>) tells the system to interpret the remainder of the text in
+the file using the C-shell (<b>csh</b>).</p><p>
+The command <b>phenix.automr</b> runs the 
+command-line version of AutoMR (see 
+<a href="automr.htm">Automated Molecular Replacement using AutoMR</a> for
+all the details about AutoMR including a full list of keywords).
+The arguments on the command line 
+tell AutoMR about the search model (<b>mup_search.pdb</b>),
+the datafile with structure factors (<b>scale.mtz</b>),
+the molecular mass of the molecule that we are searching for 
+(<b>mass=18000.</b>), and the
+the resolution (<b>resolution=2.5</b>).
+Then the command continues with telling AutoMR that the component we
+are searching for is protein (<b>component_type=protein</b>) and that
+the search model has an estimated RMS difference from the true structure
+of about 1.0 A (<b>RMS=1.0</b>).  Next 
+the sequence file  
+(<b>sequence.dat</b>) is specified along with the number of
+copies of the search model to look for (<b>copies=4</b>).
+Then the space group and cell dimensions are specified (these could
+also have been simply read from the data file). Finally the Wizard is
+told not to rebuild the model after MR with <b>rebuild_after_mr=False</b>
+</p><p>Note that each of these is
+specified with an <b>=</b> sign, and that there are no spaces
+around the <b>=</b> sign.
+
+<p>Note the backslash &quot;\&quot; at the end of some of the lines in the
+<b>phenix.automr</b> command. This tells the C-shell (which interprets
+everything in this file) that the next line is a continuation of the
+current line. There must be no characters (not even a space) after
+the backslash for this to work.</p>
+
+<p>Although the <b>phenix.run_example a2u-globulin-mr</b> command has just run
+AutoMR from a script (<b>run.csh</b>), you can run AutoMR yourself from
+the command line with the same <b>phenix.automr seq_file= ...</b> command.
+You can also run AutoMR from a GUI, or by putting commands in another
+type of script file. All these possibilities are described in 
+<a href="running-wizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a>.
+</p>
+
+</p><p><H5>Where are my files?</H5></p><p>
+Once you have started AutoMR or another Wizard, an <b>output directory</b> will
+be created in your current (working) directory. The first time you run
+AutoMR in this directory, this <b>output directory</b> will be
+called <b>AutoMR_run_1_</b> (or <b>AutoMR_run_1_/</b>, where the slash at
+the end just indicates that this is a directory).  All of the output
+from run <b>1</b> of AutoMR will be in this directory. If you run 
+AutoMR again, a new subdirectory called <b>AutoMR_run_2_</b> will be created.
+<p>Inside the directory <b>AutoMR_run_1_</b> there will be one or more
+temporary directories such as <b>TEMP0</b> created while the Wizard is
+running. The files in this temporary directory may be useful sometimes in
+figuring out what the Wizard is doing (or not doing!). By default these
+directories are emptied when the Wizard finishes (but you can keep their
+contents with the command <b>clean_up=False</b> if you want.)
+</p>
+
+</p><p><H5>What parameters did I use?</H5></p><p>
+Once the AutoMR wizard has started (when run from the command line), a 
+<b>parameters file</b>
+called <b>automr.eff</b> will be created in your <b>output directory</b>
+(e.g., <b>AutoMR_run_1_/automr.eff</b>).  This <b>parameters file</b>
+has a header that says what command you used to run AutoMR, and it contains
+all the starting values of all parameters for this run (including the 
+defaults for all the parameters that you did not set).
+</p>
+The <b>automr.eff</b> file is good for more than just looking at the
+values of parameters, though. If you copy this file to a new one
+(for example <b>automr_hires.eff</b>) and edit it to change the values of
+some of the parameters (<b>resolution=3.0</b>) then you can re-run
+AutoMR with the new values of your parameters like this:
+</p><PRE style="face=courier">phenix.automr automr_hires.eff</PRE>
+This command will do everything just the same as in your first run but
+use only the data to 3.0 A.
+</p>
+
+<p><H5><I>Reading the log files for your AutoMR run file</I></H5></p>
+<p>
+While the AutoMR wizard is running, there are several places you can
+look to see what is going on. The most important one is the overall
+log file for the AutoMR run. This log file is located in:
+</p><PRE style="face=courier">AutoMR_run_1_/AutoMR_run_1_1.log</PRE>
+for run <b>1</b> of AutoMR.  (The second <b>1</b> in this log file
+name will be incremented if you stop this run in the middle and
+restart it with a command like <b>phenix.automr run=1</b>).</p>
+<p>
+The <b>AutoMR_run_1_1.log</b> file is a running summary of what the
+AutoMR Wizard is doing.  Here are a few of the key sections of the log
+files produced for the <b>a2u-globulin-mr</b> MR dataset.
+</p>
+
+<p><H5> Summary of the command-line arguments</H5></p>
+<p>  Near the top of the log file 
+you will find:
+</p><PRE style="face=courier">------------------------------------------------------------
+Starting AutoMR with the command:
+phenix.automr coords=mup_search.pdb data=scale.mtz mass=18000. resolution=2.5 \
+component_type=protein RMS=1.0 seq_file=sequence.dat   \
+input_seq_file=sequence.dat copies=4 sg=p212121   \
+cell='106.820   62.340  114.190  90.00  90.00  90.00' rebuild_after_mr=False
+
+</PRE>
+<p>This is just a repeat of how you ran AutoMR; you can copy it and paste it 
+into the command line to repeat this run.
+</p>
+
+
+<p><H5>Running Phaser molecular replacement</H5></p>
+<p>  The AutoMR Wizard will take the information you have
+input and use it to run Phaser molecular replacement algorithm:
+</p><PRE style="face=courier"> AutoMR_auto_MR  AutoMR  Run 1 Tue Jul  3 10:40:54 2007
+</PRE>
+<p>This is followed by a summary of some of the input information:
+</p><PRE style="face=courier">
+
+CRITERIA FOR PHASER MR RUN:
+
+sg : P 21 21 21
+selection_criteria : Percent_of_best
+selection_criteria_value : 75
+all_plausible_sg_list : ['P 2 2 2', 'P 2 2 21', 'P 21 2 2', 'P 2 21 2', 
+'P 21 21 2', 'P 2 21 21', 'P 21 2 21', 'P 21 21 21']
+use_all_plausible_sg : No
+overlap_allowed : 0
+DICTENS: {'n1': [['mup_search.pdb', 'RMS', 1.0]]}
+PDBList entry:  n1 mup_search.pdb RMS 1.0
+...
+HALL:   P 2ac 2ab
+CELL:  (106.81999999999999, 62.340000000000003, 114.19, 90.0, 90.0, 90.0)
+ENSEMBLE  0 : n1
+ENSEMBLE  1 : n1
+ENSEMBLE  2 : n1
+ENSEMBLE  3 : n1
+
+ENSEMBLE: n1 , 1 PDB file(s)
+</PRE>
+<p>Here the list of all plausible space groups are those with the same symmetry
+in reciprocal space as the one you have input, and hence these might be the
+correct space group.  (If you are not sure which one is correct, then
+you can tell AutoMR to try all of these with <b>use_all_plausible_sg=Yes</b>).
+</p>
+<p>The AutoMR wizard then runs Phaser, and the log file for this is in
+<b>MR.log</b>. The summary is written to your AutoMR log file. It starts
+out with a list of steps to be carried out:
+</p><PRE style="face=courier">
+
+   Steps:
+      Anisotropy correction
+      Fast Rotation Function
+      Fast Translation Function
+      Packing
+      Refinement (if data higher resolution than search resolution)
+
+   Number of search ensembles = 4
+      #1: Ensemble n1
+      #2: Ensemble n1
+      #3: Ensemble n1
+      #4: Ensemble n1
+   Number of permutations of search ensembles = 1
+
+   One test space group
+     P 21 21 21
+
+</PRE>
+<p>Phaser then carries out each of these steps. The final summary is:
+</p><PRE style="face=courier">
+OUTPUT FILES
+------------
+
+   No script files output
+   /net/cci-filer1/vol1/tmp/terwill/from_firebird/PHENIX/structure_lib_tests/MR/a2u-g
+   lobulin/run_070307_new/AutoMR_run_1_/MR.1.pdb
+   /net/cci-filer1/vol1/tmp/terwill/from_firebird/PHENIX/structure_lib_tests/MR/a2u-g
+   lobulin/run_070307_new/AutoMR_run_1_/MR.1.mtz
+</PRE>
+<p>followed by the final log likelihood gain (positive is good, anything over 100
+is fine, and a very strong solution will be over 1000) and
+orientations for each of the 4 molecules:
+</p><PRE style="face=courier">
+Solutions:
+=====================
+Solution #1:  Likelihood Gain 1515.40
+ENSE n1 - EULER   13.586,  27.090, 136.982 - FRAC    0.241,   0.059,  -0.021
+ENSE n1 - EULER  244.504, 120.777,  50.080 - FRAC   -0.096,   0.198,   0.115
+ENSE n1 - EULER  356.247, 165.868, 313.627 - FRAC    0.217,   0.279,  -0.085
+ENSE n1 - EULER  111.633,  65.228, 215.295 - FRAC   -0.073,   0.399,   0.038
+
+
+</PRE>
+
+
+<p><H5>The AutoMR_summary.dat summary file</H5></p>
+A quick summary of the results of your AutoMR run is in the
+<b>AutoMR_summary.dat</b> file in your output directory.  This file lists the
+key files that were produced in your run of AutoMR (all these are in the
+output directory) and some of the key statistics for the run, including
+the overall log-likelihood gain.
+summary for this <b>a2u-globulin-mr</b> MR dataset:
+</p><PRE style="face=courier"> 
+**************** SOLUTION MR *******
+
+ Log likelihood gain for solution MR: 1515.3987
+ Output PDB files for solution MR: MR.1.pdb
+ Output MTZ files for solution MR: MR.1.mtz
+ Output log file for solution MR: MR.log
+ Output summary file for solution MR: MR.sum
+
+</PRE>
+<p><H5>How do I know if I have a good solution?</H5></p>
+<p>Here are some of the things to look for to tell if you have obtained a 
+correct solution:
+<UL>
+<LI>Was a solution found?  If not, then check first if you have asked 
+for the correct number of molecules.
+</LI>
+<LI>What is the log likelihood gain of the final solution? You want a high positive
+number, with 100 ok and 1000 very strong.
+</LI>
+</UL>
+
+
+<p><H5>What to do next</H5></p>
+<p>Once you have run AutoMR and have obtained a good solution and model,
+the next thing to do is to run the AutoBuild Wizard.  If you run it
+in the same directory where you ran AutoMR, the AutoBuild Wizard will pick
+up where the AutoMR Wizard left off and carry out iterative model-building,
+density modification and refinement to improve your model and map. 
+See the web page <a href="autobuild.htm">
+Automated Model Building and Rebuilding with AutoBuild</a> for details on
+how to run AutoBuild.
+</p><p>If you do not obtain a good solution, then it's not time to give
+up yet. There are a number of standard things to try that may improve the
+structure determination. Here are a few that you should always try:
+<UL>
+<LI>Have a careful look at all the output files. Work your way through
+the main log file (e.g., <b>AutoMR_run_1_1.log</b>) and the
+Phaser log file 
+(<b>MR.log</b>).  Is there anything 
+strange or unusual in any of them that may give you a clue as to
+what to try next?  
+</LI>
+</LI>
+</UL>
+
+
+</p><p><H5><U>Additional information</U></H5></p><p>
+For details about the AutoMR Wizard, see <a href="automr.htm"> 
+Automated structure solution with AutoMR</a>.  For help on running
+Wizards, see <a href="running-wizards.htm">
+Running a Wizard from a GUI, the command-line, or a script</a>.
+</p>
+
+
+<!--REMARK PHENIX BODY END-->
