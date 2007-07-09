@@ -237,14 +237,16 @@ HKLIN ENTRY:  rt_rd_1.sca
 FILE TYPE scalepack_no_merge_original_index
 GUESS FILE TYPE MERGE TYPE sca unmerged
 LABELS['I', 'SIGI']
-CONTENTS: ['rt_rd_1.sca', 'sca', 'unmerged', 'P 21 21 2', None, None, ['I', 'SIGI']]
+CONTENTS: ['rt_rd_1.sca', 'sca', 'unmerged', 'P 21 21 2', None, None, 
+['I', 'SIGI']]
 Not checking SG as cell or sg not yet defined
 SG from  rt_rd_1.sca  is:  P 21 21 2
 HKLIN ENTRY:  auki_rd_1.sca
 FILE TYPE scalepack_no_merge_original_index
 GUESS FILE TYPE MERGE TYPE sca unmerged
 LABELS['I', 'SIGI']
-CONTENTS: ['auki_rd_1.sca', 'sca', 'unmerged', 'P 21 21 21', None, None, ['I', 'SIGI']]
+CONTENTS: ['auki_rd_1.sca', 'sca', 'unmerged', 'P 21 21 21', None, None, 
+['I', 'SIGI']]
 Converting the files ['rt_rd_1.sca', 'auki_rd_1.sca'] to sca format before proceeding
 </PRE>
 <p><H5> ImportRawData.  </H5></p>
@@ -274,14 +276,18 @@ GUESS FILE TYPE MERGE TYPE sca premerged
 LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
 Unit cell: (93.796, 79.849, 43.108, 90, 90, 90)
 Space group: P 21 21 2 (No. 18)
-CONTENTS: ['AutoSol_run_1_/rt_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0], 2.4307589843043771, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
+CONTENTS: ['AutoSol_run_1_/rt_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', 
+[93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0],
+ 2.4307589843043771, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
 HKLIN ENTRY:  AutoSol_run_1_/auki_rd_1_PHX.sca
 FILE TYPE scalepack_merge
 GUESS FILE TYPE MERGE TYPE sca premerged
 LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
 Unit cell: (93.796, 79.849, 43.108, 90, 90, 90)
 Space group: P 21 21 2 (No. 18)
-CONTENTS: ['AutoSol_run_1_/auki_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0], 2.430806639777233, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
+CONTENTS: ['AutoSol_run_1_/auki_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', 
+[93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0], 
+2.430806639777233, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
 Total of 2 input data files
 ['AutoSol_run_1_/rt_rd_1_PHX.sca', 'AutoSol_run_1_/auki_rd_1_PHX.sca']
 </PRE>
@@ -687,7 +693,6 @@ error is 51.1 and the RMS uncorrelated (random) error is just 32.7.  That
 means that a big part of the errors are correlated, and should be treated
 as such.
 The final occupancies and coordinates are listed at the end:
-</p><PRE style="face=courier">
 
 </p><PRE style="face=courier">PARAMETER SHIFTS FOR DERIV  1 : set 1 
                          SCALE FACTOR     OVERALL B
@@ -1022,4 +1027,4 @@ Running a Wizard from a GUI, the command-line, or a script</a>.
 </p>
 
 
-<!--REMARK PHENIX BODY END-->
+	<!--REMARK PHENIX BODY END-->
