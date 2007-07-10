@@ -1,4 +1,6 @@
 NOTE: the sort order of reject and two_word must match
-the type of sorting done with an SGI with the command
-sort reject.unsorted > reject
+Use 
+phenix.python  sort_lines.py reject.unsorted > reject
+
+to do this.
 
