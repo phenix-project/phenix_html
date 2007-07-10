@@ -64,7 +64,6 @@ that is present in this <b>tutorials/a2u-globulin-rebuild/</b> directory.
 
 </p><PRE style="face=courier">
 #!/bin/csh
-#!/bin/csh
 echo "Running AutoBuild on a2u-globulin MR data "
 phenix.autobuild mup_mr_solution.pdb a2u-sigmaa.mtz a2u-globulin.seq  \
 input_map_file=a2u-sigmaa.mtz input_map_labels="FWT PHIC"
@@ -375,7 +374,7 @@ Warning: some residues not rebuilt successfully...
 using original coordinates for: {'C': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 156, 157],
  'B': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'D': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
 </PRE>
-<p>and these residues (the N-termainal 10 residues of chains B, C,
+<p>and these residues (the N-terminal 10 residues of chains B, C,
 and D) and the C-terminal 2 residues of chain C) should probably not be used
 in the model.
 </p><p>

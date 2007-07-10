@@ -76,7 +76,7 @@ all the details about LigandFit including a full list of keywords).
 </p><p>
 The arguments on the command line 
 tell LigandFit about the data file  
-(<b>data=1J4R.mtz</b>), the model without ligand (<b>moel=1J4R_no_ligand.pdb</b>),
+(<b>data=1J4R.mtz</b>), the model without ligand (<b>model=1J4R_no_ligand.pdb</b>),
 and the ligand (<b>ligand=1J4R_random.pdb</b>).
  (Note that each of these is specified with an <b>=</b> sign, 
 and that there are no spaces around the <b>=</b> sign.)
@@ -313,7 +313,7 @@ phenix.ligandfit data=map_coeffs.mtz lig_map_type=map   \
 
 </p><p><H5><U>Additional information</U></H5></p><p>
 For details about the LigandFit Wizard, see <a href="ligandfit.htm"> 
-Automated Model building and Rebuilding using LigandFit</a>.  For help on running
+Automated Ligand Fitting using LigandFit</a>.  For help on running
 Wizards, see <a href="running-wizards.htm">
 Running a Wizard from a GUI, the command-line, or a script</a>.
 </p>

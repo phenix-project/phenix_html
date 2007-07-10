@@ -521,7 +521,7 @@ derivative and taking the inverse of the heavy-atom sites, with a
 Z-score of 63. The Z-score from the opposite hand was just 29,
 and so the hand was clear.
 
-<p><H5>Finding origin shifts between heavy-atom solutions for
+<p><H5>Finding origin shifts between heavy-atom solutions for 
 different derivatives and combining phases </H5></p>
 <p>Depending on the space group, there may be a few or
 infinitely many totally equivalent heavy-atom substructures for a 
@@ -862,12 +862,11 @@ Model 3: Residues built=229  placed=117  Chains=18  Model-map CC=0.59
 <p>After one model completion cycle (including merging these three initial
 models together, extending ends of chains,
 fitting loops, and building outside the region already built, the best
-model built has 281 residues built, 281 assigned to sequence:
+model built has 280 residues built, 260 assigned to sequence:
 </p><PRE style="face=courier"> 
-Model 9: Residues built=286  placed=282  Chains=1  Model-map CC=0.78
+Model 9: Residues built=280  placed=260  Chains=1  Model-map CC=0.77
 Refining model:  model_with_loops_10.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.19/0.25
-
+Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.23/0.28
 </PRE>
 
 This refined initial model is written out to <b>refine_9.pdb</b> in
@@ -889,26 +888,26 @@ summary for this <b>rh-dehalogenase</b> MIR dataset:
  *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
 
 
-
 Solution # 21   SCORE:85.6700228188 Dataset #0   FOM: 0.64 ----------------
 
 Solution 21 based on MIR phasing starting from solutions 4 (dataset #2)  and 12 (dataset #1)
-This solution is a composite of solutions:  4 12 (Already used for Phasing at resol of 2.8)   Refined Sites: 4
+This solution is a composite of solutions:  4 12 (Already used for Phasing at resol of 2.8)      Refined Sites: 4
 NCS information  in: AutoSol_21.ncs_spec
 Experimental phases in: solve_21.mtz
 Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_21.mtz
 Density-modified phases in: resolve_21.mtz
 HA sites (PDB format) in: ha_21.pdb_formatted.pdb
 Sequence file in: sequence.dat
-Model in: refine_9.pdb
-  Residues built: 286
-  Side-chains built: 282
-  Chains: 1
-  Overall model-map correlation: 0.78
-  R/R-free: 0.19/0.25
+Model in: refine_14.pdb
+  Residues built: 284
+  Side-chains built: 284
+  Chains: 0
+  Overall model-map correlation: 0.79
+  R/R-free: 0.2/0.25
 Phasing logfile in: solve_21.prt
 Density modification logfile in: resolve_21.log
-Build logfile in: model_with_loops_10.log
+Build logfile in: model_with_loops_15.log
+
 
  Score type:        CC       RFACTOR       SKEW       FOM
 Raw scores:       0.653        0.449        0.417        0.640
@@ -927,6 +926,7 @@ xyz       0.712      0.283      0.432
 xyz       0.183      0.161      0.446
 
 </PRE>
+
 <p><H5>How do I know if I have a good solution?</H5></p>
 <p>Here are some of the things to look for to tell if you have obtained a 
 correct solution:
