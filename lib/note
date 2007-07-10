@@ -1,6 +1,9 @@
-NOTE: the sort order of reject and two_word must match
-Use 
-phenix.python  sort_lines.py reject.unsorted > reject
+To get a list of all the keywords in the index:
 
-to do this.
+cat ../phenix_index.htm | grep '<LI>' | grep -v '<LI><A' > list1.dat
+...and edit list1.dat , removing all ok words and the <LI> for all, and then
+put it in skip.dat
+ 
+cat reject skip.dat > all_bad.unsorted
+phenix.python  sort_lines.py all_bad.unsorted > reject
 
