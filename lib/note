@@ -1,3 +1,7 @@
+A list of good keywords is in good_list.  You might
+want to find all the keywords that are new that are not in this list and
+add all the bad ones to reject.
+
 To get a list of all the keywords in the index:
 
 cat ../phenix_index.htm | grep '<LI>' | grep -v '<LI><A' > list1.dat
