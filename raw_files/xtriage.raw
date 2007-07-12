@@ -1,19 +1,15 @@
 
-<!--REMARK PHENIX TITLE START  Put your title here>
-
+<!--REMARK PHENIX TITLE START-->
 
 <H4><U>Analysis of structure factors with xtriage</U></H4>
 
-
 <!--REMARK PHENIX TITLE END-->
 
-<!--REMARK PHENIX BODY START   Put your text here. 
-Anything enclosed in header html H4 H5 etc will go in the table of contents>
-
+<!--REMARK PHENIX BODY START-->
 
 <P><H5><U>Author(s)</U></H5><P>
-
-<UL><LI>xtriage: Peter Zwart
+<UL>
+<LI>xtriage: Peter Zwart
 <LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
 </UL>
 
@@ -25,37 +21,857 @@ the user should be aware of.
 
 <P><H5><U>Usage</U></H5><P>
 
-<P><H5>How xtriage works:</H5><P>
+<P><H5>How xtriage works</H5><P>
 
-<UL><LI>(1) 
+Basic sanity checks performed by xtriage are
+<UL>
+<LI> Wilson plot sanity
+<LI> Probabalistic Matthews analyses
+<LI> Data strength analyses
+<LI> Ice ring analyses
+<LI> Twinning analyses
+<LI> Reference analyses (determines possible reindexing. optional)
+<LI> Detwinning and data massaging (optional)
+</UL>
 
-<P><H5><I>Output files from xtriage</I></H5><P>
+<P><H5>Output files from xtriage</H5><P>
 
-<LI>(1)
+<LI>(1) A log file that contains all the screen output plus some ccp4 style graphs
+<LI>(2) optional: an mtz file with massaged data
+
+
+
+<P><H5>Xtriage keywords in detail</H5><P>
+
+<p><strong>Scope</strong>: <em>parameters.asu_contents</em></p>
+<pre>
+keys: * n_residues :: Number of residues per monomer/unit
+      * n_bases :: Number of nucleotides per monomer/unit
+      * n_copies_per_asu :: Number of copies in the ASU.
+</pre>
+<p>These keywords control the determination of the absolute scale.
+If the number of residues/bases is not specified, a solvent content of 50%
+is assumed.</p>
+<p><strong>Scope</strong>: <em>parameters.misc_twin_parameters.missing_symmetry</em></p>
+<pre class="literal-block">
+keys: * tanh_location :: tanh decision rule parameter
+      * tanh_slope :: tanh decision rule parameter
+</pre>
+<p>The <tt class="docutils literal"><span class="pre">tanh_location</span></tt> and <tt class="docutils literal"><span class="pre">tanh_slope</span></tt> parameter control what R-value is
+considered to be low enough to be considered a 'proper' symmetry operator.
+the <tt class="docutils literal"><span class="pre">tanh_location</span> <span class="pre">parameter</span></tt> corresponds to the inflection point of the
+approximate step function. Increasing <tt class="docutils literal"><span class="pre">tanh_location</span></tt> will result in large
+R-value thresholds. <tt class="docutils literal"><span class="pre">tanh_slope</span></tt> is set to 50 and should be okai.</p>
+<p><strong>Scope</strong>: <em>parameters.misc_twin_parameters.twinning_with_ncs</em></p>
+<pre class="literal-block">
+keys: * perform_test :: can be set to True or False
+      * n_bins :: Number of bins in determination of D_ncs
+</pre>
+<p>The perform_test is by default set to False. Setting it to True triggers the
+determination of the twin fraction while taking into account NCS parallel to
+the twin axis.</p>
+<p><strong>Scope</strong>: <em>parameters.misc_twin_parameters.twin_test_cuts</em></p>
+<pre class="literal-block">
+keys: * high_resolution : high resolution for twin tests
+      * low_resolution: low resolution for twin tests
+      * isigi_cut: I/sig(I) threshold in automatic determination
+                   of high resolutiuon limit
+      * completeness_cut: completeness threshold in automatic
+                          determination of high resolutiuon limit
+</pre>
+<p>The automatic determination of the resolution limit for the twinning test
+is determined on the basis of the completeness after removing intensities for
+which I/sigI &lt isigi_cut. The lowest limit obtain in this way is 3.5A.
+The value determined by the automatic procedure can be overruled by specification
+of the high_resolution keyword. The low resolution is set to 10A by default.</p>
+<p><strong>Scope</strong>: <em>parameters.reporting</em></p>
+<pre class="literal-block">
+keys: * verbose :: verbosity level.
+      * log :: log file name
+      * ccp4_style_graphs :: Either True or False. Determines whether or
+                             not ccp4 style logfgra plots are written to the
+                             log file
+</pre>
+<p><strong>Scope</strong>: <em>xray_data</em></p>
+<pre class="literal-block">
+keys: * file_name :: file name with xray data.
+      * obs_labels :: labels for observed data is format is mtz or XPLOR/CNS
+      * calc_labels :: optional; labels for calculated data
+      * unit_cell :: overrides unit cell in reflection file (if present)
+      * space_group :: overrides space group in reflection file (if present)
+      * high_resolution :: High resolution limit of the data
+      * low_resolution :: Low resolution limit of the data
+</pre>
+<p>Note that the matching of specified and present labels involves a sub-string matching
+algorithm.</p>
+<p><strong>Scope</strong>: <em>optional</em></p>
+<pre class="literal-block">
+keys: * hklout :: output mtz file
+      * twinning.action :: Whether to detwin the data
+      * twinning.twin_law :: using this twin law (h,k,l or x,y,z notation)
+      * twinning.fraction :: The detwinning fraction.
+      * b_value :: the resulting Wilson B value
+</pre>
+<p>The output mtz file contains an anisotropy corrected mtz file, with
+suspected outliers removed.
+The data is put scaled and has the specified Wilson B value.
+These options have an associated expert level of 10, and are not shown by
+default. Specification of the expert level on the command line as 'level=100'
+will show all available options.</p>
+
+<P><H5>Interpreting Xtriage output</H5><P>
+<p>Typing:</p>
+<pre class="literal-block">
+%mmtbx.xtriage some_data.sca residues=290 log=some_data.log
+</pre>
+<p>results in the following output (parts omitted).</p>
+<p><em>Matthews analyses</em></p>
+<p>First, a cell contents
+analyses is performed. Matthews coefficients, solvent content and solvent
+content probabilities are listed, and the most likely composition is guessed</p>
+<pre class="literal-block">
+Matthews coefficient and Solvent content statistics
+----------------------------------------------------------------
+| Copies | Solvent content | Matthews Coef. | P(solvent cont.) |
+|--------|-----------------|----------------|------------------|
+|      1 |      0.705      |      4.171     |       0.241      |
+|      2 |      0.411      |      2.085     |       0.750      |
+|      3 |      0.116      |      1.390     |       0.009      |
+----------------------------------------------------------------
+|              Best guess :    2  copies in the asu            |
+----------------------------------------------------------------
+</pre>
+<p><em>Data strength</em></p>
+<p>The next step, the strength of the data is gauged by determining the
+completeness of the in resolution bins after application of several I/sigI cut
+off values</p>
+<pre class="literal-block">
+Completeness and data strength analyses
+
+  The following table lists the completeness in various resolution
+  ranges, after applying a I/sigI cut. Miller indices for which
+  individual I/sigI values are larger than the value specified in
+  the top row of the table, are retained, while other intensities
+  are discarded. The resulting completeness profiles are an indication
+  of the strength of the data.
+
+----------------------------------------------------------------------------------------
+| Res. Range   | I/sigI&gt;1  | I/sigI&gt;2  | I/sigI&gt;3  | I/sigI&gt;5  | I/sigI&gt;10 | I/sigI&gt;15 |
+----------------------------------------------------------------------------------------
+| 19.87 - 7.98 | 96.4%     | 95.3%     | 94.5%     | 93.6%     | 91.7%     | 89.3%     |
+|  7.98 - 6.40 | 99.2%     | 98.2%     | 97.1%     | 95.5%     | 90.9%     | 84.7%     |
+|  6.40 - 5.61 | 97.8%     | 95.4%     | 93.3%     | 87.1%     | 76.6%     | 66.8%     |
+|  5.61 - 5.11 | 98.2%     | 95.9%     | 94.0%     | 87.9%     | 74.1%     | 58.0%     |
+|  5.11 - 4.75 | 97.9%     | 96.2%     | 94.5%     | 91.1%     | 79.2%     | 62.5%     |
+|  4.75 - 4.47 | 97.4%     | 95.4%     | 93.1%     | 88.9%     | 76.6%     | 56.9%     |
+|  4.47 - 4.25 | 96.5%     | 94.5%     | 92.1%     | 88.0%     | 75.3%     | 56.5%     |
+|  4.25 - 4.07 | 96.6%     | 94.0%     | 91.2%     | 85.4%     | 69.3%     | 44.9%     |
+|  4.07 - 3.91 | 95.6%     | 92.1%     | 87.8%     | 80.1%     | 61.9%     | 34.8%     |
+|  3.91 - 3.78 | 94.3%     | 89.6%     | 83.7%     | 71.1%     | 48.7%     | 20.5%     |
+|  3.78 - 3.66 | 95.7%     | 90.9%     | 85.6%     | 71.5%     | 42.4%     | 14.8%     |
+|  3.66 - 3.56 | 91.6%     | 85.0%     | 78.0%     | 63.3%     | 34.1%     | 9.5%      |
+|  3.56 - 3.46 | 89.8%     | 80.4%     | 70.2%     | 52.8%     | 22.2%     | 3.8%      |
+|  3.46 - 3.38 | 87.4%     | 76.3%     | 64.6%     | 46.7%     | 15.5%     | 1.7%      |
+----------------------------------------------------------------------------------------
+</pre>
+<p>This analyses is also used in the automatic determinination of the high
+resolution limit used in the intensity statistics and twin analyses.</p>
+<p><em>Absolute, likelihood based Wilson scaling</em></p>
+<p>The (anisotropic) B value of the data is determined using a likelihood based
+approach. The resulting B value/tensor is reported:</p>
+<pre class="literal-block">
+Maximum likelihood isotropic Wilson scaling
+ML estimate of overall B value of sec17.sca:i_obs,sigma:
+75.85 A**(-2)
+Estimated -log of scale factor of sec17.sca:i_obs,sigma:
+-2.50
+
+
+Maximum likelihood anisotropic Wilson scaling
+ML estimate of overall B_cart value of sec17.sca:i_obs,sigma:
+68.92,  0.00,  0.00
+       68.92,  0.00
+              91.87
+Equivalent representation as U_cif:
+ 0.87, -0.00, -0.00
+        0.87,  0.00
+               1.16
+
+ML estimate of  -log of scale factor of sec17.sca:i_obs,sigma:
+-2.50
+Correcting for anisotropy in the data
+</pre>
+<p>A large spread in (especially the diagonal) values indicates anisotropy. The
+anisotropy is corrected for. This clears up intensity statistics.</p>
+<p><em>Low resolution completeness analyses</em></p>
+<p>Mosty data processing software do not provide a clear picture of the
+completeness of the data at low resolution. For this reason,
+<em>xtriage</em> lists the completeness of the data up to 5 Angstrom:</p>
+<pre class="literal-block">
+Low resolution completeness analyses
+
+ The following table shows the completeness
+ of the data to 5 Angstrom.
+unused:         - 19.8702 [  0/68 ] 0.000
+bin  1: 19.8702 - 10.3027 [425/455] 0.934
+bin  2: 10.3027 -  8.3766 [443/446] 0.993
+bin  3:  8.3766 -  7.3796 [446/447] 0.998
+bin  4:  7.3796 -  6.7336 [447/449] 0.996
+bin  5:  6.7336 -  6.2673 [450/454] 0.991
+bin  6:  6.2673 -  5.9080 [428/429] 0.998
+bin  7:  5.9080 -  5.6192 [459/466] 0.985
+bin  8:  5.6192 -  5.3796 [446/450] 0.991
+bin  9:  5.3796 -  5.1763 [437/440] 0.993
+bin 10:  5.1763 -  5.0006 [460/462] 0.996
+unused:  5.0006 -         [  0/0  ]
+</pre>
+<p>This analyses allows one to quickly see if there is any unually low
+completeness at low resolution, for instance due to mising overloads.</p>
+<p><em>Wilson plot analyses</em></p>
+<p>A Wilson plot analyses <em>a la</em> ARP/wARP is carried out, albeit with a slightly
+different standard curve:</p>
+<pre class="literal-block">
+Mean intensity analyses
+ Analyses of the mean intensity.
+ Inspired by: Morris et al. (2004). J. Synch. Rad.11, 56-59.
+ The following resolution shells are worrisome:
+------------------------------------------------
+| d_spacing | z_score | compl. | &lt;Iobs&gt;/&lt;Iexp&gt; |
+------------------------------------------------
+|    5.773  |   7.95  |   0.99 |     0.658     |
+|    5.423  |   8.62  |   0.99 |     0.654     |
+|    5.130  |   6.31  |   0.99 |     0.744     |
+|    4.879  |   5.36  |   0.99 |     0.775     |
+|    4.662  |   4.52  |   0.99 |     0.803     |
+|    3.676  |   5.45  |   0.99 |     1.248     |
+------------------------------------------------
+
+ Possible reasons for the presence of the reported
+ unexpected low or elevated mean intensity in
+ a given resolution bin are :
+ - missing overloaded or weak reflections
+ - suboptimal data processing
+ - satelite (ice) crystals
+ - NCS
+ - translational pseudo symmetry (detected elsewhere)
+ - outliers (detected elsewhere)
+ - ice rings (detected elsewhere)
+ - other problems
+ Note that the presence of abnormalities
+ in a certain region of reciprocal space might
+ confuse the data validation algorithm throughout
+ a large region of reciprocal space, even though
+ the data is acceptable in those areas.
+</pre>
+<p>A very long list of warnings could indicate a serious problem with your data.
+Decisions on whether or not the data is useful, should be cut or should thrown
+away alltogether, is not straightforward and falls beyond the scope of
+<em>xtriage</em>.</p>
+<p><em>Outlier detection and rejection</em></p>
+<p>Possible outliers are detected on the basis Wilson statistics:</p>
+<pre class="literal-block">
+Possible outliers
+ Inspired by: Read, Acta Cryst. (1999). D55, 1759-1764
+
+Acentric reflections:
+
+-----------------------------------------------------------------
+| d_space |      H     K     L |  |E|  | p(wilson) | p(extreme) |
+-----------------------------------------------------------------
+|   3.716 |      8,    6,   31 |  3.52 |  4.06e-06 |   5.87e-02 |
+-----------------------------------------------------------------
+
+p(wilson)  : 1-(1-exp[-|E|^2])
+p(extreme) : 1-(1-exp[-|E|^2])^(n_acentrics)
+p(wilson) is the probability that an E-value of the specified
+value would be observed when it would selected at random from
+the given data set.
+p(extreme) is the probability that the largest |E| value is
+larger or equal than the observed largest |E| value.
+
+Both measures can be used for outlier detection. p(extreme)
+takes into account the size of the dataset.
+</pre>
+<p>Outliers are removed from the dataset in the further analyses.
+Note that if pseudo translational symmetry is present, a large number of
+'outliers' will be present.</p>
+<p><em>Ice ring detection</em></p>
+<p>Ice rings in the data are detected by analysing the completeness and the mean
+intensity:</p>
+<pre class="literal-block">
+Ice ring related problems
+
+ The following statistics were obtained from ice-ring
+ insensitive resolution ranges
+  mean bin z_score      : 3.47
+      ( rms deviation   : 2.83 )
+  mean bin completeness : 0.99
+     ( rms deviation   : 0.00 )
+
+ The following table shows the z-scores
+ and completeness in ice-ring sensitive areas.
+ Large z-scores and high completeness in these
+ resolution ranges might be a reason to re-assess
+ your data processsing if ice rings were present.
+
+------------------------------------------------
+| d_spacing | z_score | compl. | Rel. Ice int. |
+------------------------------------------------
+|    3.897  |   0.12  |   0.97 |     1.000     |
+|    3.669  |   0.96  |   0.95 |     0.750     |
+|    3.441  |   2.14  |   0.94 |     0.530     |
+------------------------------------------------
+
+ Abnormalities in mean intensity or completeness at
+ resolution ranges with a relative ice ring intensity
+ lower then 0.10 will be ignored.
+
+ At 3.67 A there is an lower occupancy
+  then expected from the rest of the data set.
+  Even though the completeness is lower as expected,
+  the mean instensity is still reasonable at this resolution
+
+ At 3.44 A there is an lower occupancy
+  then expected from the rest of the data set.
+  Even though the completeness is lower as expected,
+  the mean instensity is still reasonable at this resolution
+
+ There were  2 ice ring related warnings
+ This could indicate the presence of ice rings.
+</pre>
+<p><em>Anomalous signal</em></p>
+<p>If the input reflection file contains separate intensities for each Friedel mate,
+a quality measure of the anomalous signal is reported:</p>
+<pre class="literal-block">
+Analyses of anomalous differences
+
+  Table of measurability as a function of resolution
+
+  The measurability is defined as the fraction of
+  Bijvoet related intensity differences for which
+  |delta_I|/sigma_delta_I &gt; 3.0
+  min[I(+)/sigma_I(+), I(-)/sigma_I(-)] &gt; 3.0
+  holds.
+  The measurability provides an intuitive feeling
+  of the quality of the data, as it is related to the
+  number of reliable Bijvoet differences.
+  When the data is processed properly and the standard
+  deviations have been estimated accurately, values larger
+  than 0.05 are encouraging.
+
+unused:         - 19.8704 [   0/68  ]
+bin  1: 19.8704 -  7.0211 [1551/1585]  0.1924
+bin  2:  7.0211 -  5.6142 [1560/1575]  0.0814
+bin  3:  5.6142 -  4.9168 [1546/1555]  0.0261
+bin  4:  4.9168 -  4.4729 [1563/1582]  0.0081
+bin  5:  4.4729 -  4.1554 [1557/1577]  0.0095
+bin  6:  4.1554 -  3.9124 [1531/1570]  0.0083
+bin  7:  3.9124 -  3.7178 [1541/1585]  0.0069
+bin  8:  3.7178 -  3.5569 [1509/1552]  0.0028
+bin  9:  3.5569 -  3.4207 [1522/1606]  0.0085
+bin 10:  3.4207 -  3.3032 [1492/1574]  0.0044
+unused:  3.3032 -         [   0/0   ]
+
+ The anomalous signal seems to extend to about 5.9 A
+ (or to 5.2 A, from a more optimistic point of view)
+ The quoted resolution limits can be used as a guideline
+ to decide where to cut the resolution for phenix.hyss
+ As the anomalous signal is not very strong in this dataset
+ substructire solution via SAD might prove to be a challenge.
+ Especially if only low resolution reflections are used,
+ the resulting substructures could contain a significant amount of
+ of false positives.
+</pre>
+<p><em>Determination of twin laws</em></p>
+<p>Twin laws are found using a modifed le-Page algorithm and classified as
+merohedral and pseudo merohedral:</p>
+<pre class="literal-block">
+Determining possible twin laws.
+
+The following twin laws have been found:
+
+-------------------------------------------------------------------------------
+| Type | Axis   | R metric (%) | delta (le Page) | delta (Lebedev) | Twin law
+|
+-------------------------------------------------------------------------------
+|   M  | 2-fold | 0.000        | 0.000           | 0.000           | -h,k,-l
+|
+-------------------------------------------------------------------------------
+M:  Merohedral twin law
+PM: Pseudomerohedral twin law
+
+  1 merohedral twin operators found
+  0 pseudo-merohedral twin operators found
+In total,   1 twin operator were found
+</pre>
+<p>Non-merohedral (reticular) twinning is not considered. The <tt class="docutils literal"><span class="pre">R-metric</span></tt> is equal
+to :</p>
+<blockquote>
+Sum (M_i-N_i)^2 / Sum M_i^2</blockquote>
+<p>M_i are elements of the original metric tensor and N_i are elements of
+the metric tensor after 'idealising' the unit cell, in compliance with the
+restrictions the twin law poses on the lattice if it would be a 'true'
+symmetry operator.</p>
+<p>The <tt class="docutils literal"><span class="pre">delta</span> <span class="pre">le-Page</span></tt> is the familiar obliquity. The <tt class="docutils literal"><span class="pre">delta</span> <span class="pre">Lebedev</span></tt> is
+a twin law quality measure developed by A. Lebedev
+(Lebedev, Vagin &amp; Murshudov; Acta Cryst. (2006). D62, 83-95.).</p>
+<p>Note that for merohedral twin laws, all quality indicators are 0.
+For non-merohedral twin laws, this value is larger or euqal to zero.
+If a twin law is classified as non-merohedral, but has a <tt class="docutils literal"><span class="pre">delta</span> <span class="pre">le-page</span></tt>
+equal to zero, the twin law is sometimes referred to as a <em>metric merohedric twin
+law</em>.</p>
+<p><em>Locating translational pseudo synmmetry (TPS)</em></p>
+<p>TPS is located by inspecting a low resolution Patterson function.
+Peaks and their significance levels are reported:</p>
+<pre class="literal-block">
+Largest patterson peak with length larger then 15 Angstrom
+
+Frac. coord.        :   0.027    0.057    0.345
+Distance to origin  :  17.444
+Height (origin=100) :   3.886
+p_value(height)     :   9.982e-01
+
+  The reported p_value has the following meaning:
+    The probability that a peak of the specified height
+    or larger is found in a Patterson function of a
+    macro molecule that does not have any translational
+    pseudo symmetry is equal to  9.982e-01
+    p_values smaller then 0.05 might indicate
+    weak translation pseudo symmetry, or the self vector of
+    a large anomalous scatterer such as Hg, whereas values
+    smaller then 1e-3 are a very strong indication for
+    the presence of translational pseudo symmetry.
+</pre>
+<p><em>Moments of the observed intensities</em></p>
+<p>The moment of the observed intensity/amplitude distribution, are reported, as
+well as their expected values:</p>
+<pre class="literal-block">
+Wilson ratio and moments
+
+Acentric reflections
+   &lt;I^2&gt;/&lt;I&gt;^2    :1.955   (untwinned: 2.000; perfect twin 1.500)
+   &lt;F&gt;^2/&lt;F^2&gt;    :0.796   (untwinned: 0.785; perfect twin 0.885)
+   &lt;|E^2 - 1|&gt;    :0.725   (untwinned: 0.736; perfect twin 0.541)
+
+
+Centric reflections
+   &lt;I^2&gt;/&lt;I&gt;^2    :2.554   (untwinned: 3.000; perfect twin 2.000)
+   &lt;F&gt;^2/&lt;F^2&gt;    :0.700   (untwinned: 0.637; perfect twin 0.785)
+   &lt;|E^2 - 1|&gt;    :0.896   (untwinned: 0.968; perfect twin 0.736)
+</pre>
+<p>Significant departure from the ideal values could indicate the presence of
+twinning or pseudo translations. For instance, an &lt;I^2&gt;/&lt;I&gt;^2 value
+significantly lower than 2.0, might point to twinning, whereas a value
+significantly larger than 2.0, might point towards pseudo translational
+symmetry.</p>
+<p><em>Cumulative intensity distribution</em></p>
+<p>The cumulative intensity distribution is reported:</p>
+<pre class="literal-block">
+-----------------------------------------------
+|  Z  | Nac_obs | Nac_theo | Nc_obs | Nc_theo |
+-----------------------------------------------
+| 0.0 |   0.000 |    0.000 |  0.000 |   0.000 |
+| 0.1 |   0.081 |    0.095 |  0.168 |   0.248 |
+| 0.2 |   0.167 |    0.181 |  0.292 |   0.345 |
+| 0.3 |   0.247 |    0.259 |  0.354 |   0.419 |
+| 0.4 |   0.321 |    0.330 |  0.420 |   0.474 |
+| 0.5 |   0.392 |    0.394 |  0.473 |   0.520 |
+| 0.6 |   0.452 |    0.451 |  0.521 |   0.561 |
+| 0.7 |   0.506 |    0.503 |  0.570 |   0.597 |
+| 0.8 |   0.552 |    0.551 |  0.603 |   0.629 |
+| 0.9 |   0.593 |    0.593 |  0.636 |   0.657 |
+| 1.0 |   0.635 |    0.632 |  0.673 |   0.683 |
+-----------------------------------------------
+| Maximum deviation acentric      :  0.015    |
+| Maximum deviation centric       :  0.080    |
+|                                             |
+| &lt;NZ(obs)-NZ(twinned)&gt;_acentric  : -0.004    |
+| &lt;NZ(obs)-NZ(twinned)&gt;_centric   : -0.039    |
+-----------------------------------------------
+</pre>
+<p>The N(Z) test is related to the moments based test discussed above.
+Nac_obs is the observed cumulative distribution of normalized intensities of
+the acentric data, and uses the full distribution rather then just a moment.</p>
+<p>The effects of twinning shows itself for Nac_obs having a more sigmoidal
+character. In the case of pseudo centering, Nac_obs will tend towards Nc_theo.</p>
+<p><em>The L test</em></p>
+<p>The <tt class="docutils literal"><span class="pre">L-test</span></tt> is an intensity statistic developed by Padilla and Yeates (Acta
+Cryst. (2003), D59: 1124-1130) and is reasonably robust in the presence of
+anisotropy and pseudo centering, especially if the miller indices are partitioned
+properly. Partitioning is carried out on the basis of a Patterson analyses. A
+significant deviation of both <cite>&lt;|L|&gt;</cite> and <cite>&lt;L^2&gt;</cite> from the expected values
+indicate twinning or other problems:</p>
+<pre class="literal-block">
+ L test for acentric data
+
+ using difference vectors (dh,dk,dl) of the form:
+(2hp,2kp,2lp)
+  where hp, kp, and lp are random signed integers such that
+  2 &lt;= |dh| + |dk| + |dl| &lt;= 8
+
+  Mean |L|   :0.482  (untwinned: 0.500; perfect twin: 0.375)
+  Mean  L^2  :0.314  (untwinned: 0.333; perfect twin: 0.200)
+
+  The distribution of |L| values indicates a twin fraction of
+  0.00. Note that this estimate is not as reliable as obtained
+  via a Britton plot or H-test if twin laws are available.
+</pre>
+<p>Whether or not the <cite>&lt;|L|&gt;</cite> and <cite>&lt;L^2&gt;</cite> differ significantly from the
+expected values, is shown in the final summary (see below).</p>
+<p><em>Analyses of twin laws</em></p>
+<p>Twin law specific tests (Britton, H and RvsR) are performed:</p>
+<pre class="literal-block">
+Results of the H-test on a-centric data:
+
+ (Only 50.0% of the strongest twin pairs were used)
+
+mean |H| : 0.183   (0.50: untwinned; 0.0: 50% twinned)
+mean H^2 : 0.055   (0.33: untwinned; 0.0: 50% twinned)
+Estimation of twin fraction via mean |H|: 0.317
+Estimation of twin fraction via cum. dist. of H: 0.308
+
+
+Britton analyses
+
+  Extrapolation performed on  0.34 &lt; alpha &lt; 0.495
+  Estimated twin fraction: 0.283
+  Correlation: 0.9951
+
+R vs R statistic:
+  R_abs_twin = &lt;|I1-I2|&gt;/&lt;|I1+I2|&gt;
+  Lebedev, Vagin, Murshudov. Acta Cryst. (2006). D62, 83-95
+
+   R_abs_twin observed data   : 0.193
+   R_abs_twin calculated data : 0.328
+
+  R_sq_twin = &lt;(I1-I2)^2&gt;/&lt;(I1+I2)^2&gt;
+   R_sq_twin observed data    : 0.044
+   R_sq_twin calculated data  : 0.120
+
+
+
+Maximum Likelihood twin fraction determination
+    Zwart, Read, Grosse-Kunstleve &amp; Adams, to be published.
+
+   The estimated twin fraction is equal to 0.227
+</pre>
+<p>These tests allow one to estuimate the twin fraction and (if calculated data is
+provided) determine if rotational pseudo symmetry is present.
+Another otion (albeit more computationally expensive), is to estimate the
+correlation between error free, untwinned, twin related normalized
+intensities (use the key <tt class="docutils literal"><span class="pre">perform=True</span></tt> on the command line)</p>
+<pre class="literal-block">
+Estimation of twin fraction, while taking into account the
+effects of possible NCS parallel to the twin axis.
+    Zwart, Read, Grosse-Kunstleve &amp; Adams, to be published.
+
+  A parameters D_ncs will be estimated as a function of resolution,
+  together with a global twin fraction.
+  D_ncs is an estimate of the correlation coefficient between
+  untwinned, error-free, twin related, normalized intensities.
+  Large values (0.95) could indicate an incorrect point group.
+  Value of D_ncs larger than say, 0.5, could indicate the presence
+  of NCS. The twin fraction should be smaller or similar to other
+  estimates given elsewhere.
+
+  The refinement can take some time.
+  For numerical stability issues, D_ncs is limited between 0 and 0.95.
+  The twin fraction is allowed to vary between 0 and 0.45.
+  Refinement cycle numbers are printed out to keep you entertained.
+
+. . . .   5  . . . .  10  . . . .  15  . . . .  20  . . . .  25  . . . .  30
+. . . .  35  . . . .  40  . . . .  45  . . . .  50  . . . .  55  . . . .  60
+. . . .  65  . . . .  70  . . . .  75  . . .
+
+  Cycle :  78
+  -----------
+  Log[likelihood]:       22853.700
+  twin fraction: 0.201
+  D_ncs in resolution ranges:
+     9.8232 -- 4.5978 :: 0.830
+     4.5978 -- 3.7139 :: 0.775
+     3.7139 -- 3.2641 :: 0.745
+     3.2641 -- 2.9747 :: 0.746
+     2.9747 -- 2.7666 :: 0.705
+     2.7666 -- 2.6068 :: 0.754
+     2.6068 -- 2.4784 :: 0.735
+
+ The correlation of the calculated F^2 should be similar to
+ the estimated values.
+
+ Observed correlation between twin related, untwinned calculated F^2
+ in resolutiuon ranges, as well as ewstimates D_ncs^2 values:
+ Bin    d_max     d_min     CC_obs   D_ncs^2
+  1)    9.8232 -- 4.5978 ::  0.661    0.689
+  2)    4.5978 -- 3.7139 ::  0.544    0.601
+  3)    3.7139 -- 3.2641 ::  0.650    0.556
+  4)    3.2641 -- 2.9747 ::  0.466    0.557
+  5)    2.9747 -- 2.7666 ::  0.426    0.497
+  6)    2.7666 -- 2.6068 ::  0.558    0.569
+  7)    2.6068 -- 2.4784 ::  0.531    0.540
+</pre>
+The twin fraction obtained via this method is usually lower than what is obtained by refinement. The estimated correlation coefficient (D_ncs^2)
+between the twin related F^2 values, is however reasonably accurate.
+
+
+<p><em>Exploring higher metric symmetry</em></p>
+<p>The fact that a twin law is present, could indicate that the data was
+incorreclty processed as well. The example below, shows a P41212 dataset
+processed in P1:</p>
+<pre class="literal-block">
+Exploring higher metric symmetry
+
+Point group of data as discted by the space group is P 1
+  the point group in the niggli setting is P 1
+The point group of the lattice is P 4 2 2
+A summary of R values for various possible point groups follow.
+
+-----------------------------------------------------------------------------------------------
+| Point group              | mean R_used | max R_used | mean R_unused | min R_unused | choice |
+-----------------------------------------------------------------------------------------------
+| P 1                      | None        | None       | 0.022         | 0.017        |        |
+| P 4 2 2                  | 0.022       | 0.025      | None          | None         | &lt;---   |
+| P 1 2 1                  | 0.017       | 0.017      | 0.026         | 0.024        |        |
+| Hall:  C 2y (x-y,x+y,z)  | 0.025       | 0.025      | 0.022         | 0.017        |        |
+| P 4                      | 0.025       | 0.028      | 0.025         | 0.025        |        |
+| Hall:  C 2 2 (x-y,x+y,z) | 0.024       | 0.025      | 0.017         | 0.017        |        |
+| Hall:  C 2y (x+y,-x+y,z) | 0.024       | 0.024      | 0.023         | 0.017        |        |
+| P 1 1 2                  | 0.028       | 0.028      | 0.021         | 0.017        |        |
+| P 2 1 1                  | 0.027       | 0.027      | 0.022         | 0.017        |        |
+| P 2 2 2                  | 0.023       | 0.028      | 0.025         | 0.025        |        |
+-----------------------------------------------------------------------------------------------
+
+R_used: mean and maximum R value for symmetry operators *used* in this point group
+R_unused: mean and minimum R value for symmetry operators *not used* in this point group
+The likely point group of the data is:  P 4 2 2
+</pre>
+<p>As in iotbx.ehms, the possible spacegroups are listed as well (not shown here).</p>
+<p><em>Twin analyses summary</em></p>
+<p>The results of the twin analyses are sumarized. Typical outputs look as
+follows for cases of wrong symmetry, twin laws but no suspected twinnnig and twinned data
+respectively.</p>
+<p>Wrong symmetry:</p>
+<pre class="literal-block">
+-------------------------------------------------------------------------------
+Twinning and intensity statistics summary (acentric data):
+
+Statistics independent of twin laws
+  - &lt;I^2&gt;/&lt;I&gt;^2 : 2.104
+  - &lt;F&gt;^2/&lt;F^2&gt; : 0.770
+  - &lt;|E^2-1|&gt;   : 0.757
+  - &lt;|L|&gt;, &lt;L^2&gt;: 0.512, 0.349
+       Multivariate Z score L-test: 2.777
+       The multivariate Z score is a quality measure of the given
+       spread in intensities. Good to reasonable data is expected
+       to have a Z score lower than 3.5.
+       Large values can indicate twinning, but small values do not
+       neccesarily exclude it.
+
+
+Statistics depending on twin laws
+------------------------------------------------------
+| Operator | type | R obs. | Britton alpha | H alpha |
+------------------------------------------------------
+| k,h,-l   |  PM  | 0.025  | 0.458         | 0.478   |
+| -h,k,-l  |  PM  | 0.017  | 0.459         | 0.487   |
+| -k,h,l   |  PM  | 0.024  | 0.458         | 0.478   |
+| -k,-h,-l |  PM  | 0.024  | 0.458         | 0.478   |
+| -h,-k,l  |  PM  | 0.028  | 0.458         | 0.476   |
+| h,-k,-l  |  PM  | 0.027  | 0.458         | 0.477   |
+| k,-h,l   |  PM  | 0.024  | 0.457         | 0.478   |
+------------------------------------------------------
+
+Patterson analyses
+  - Largest peak height   : 6.089
+   (correpsonding p value : 6.921e-01)
+
+
+The largest off-origin peak in the Patterson function is 6.09% of the
+height of the origin peak. No significant pseudotranslation is detected.
+
+The results of the L-test indicate that the intensity statistics
+behave as expected. No twinning is suspected.
+The symmetry of the lattice and intensity however suggests that the
+input space group is too low. See the relevant sections of the log
+file for more details on your choice of space groups.
+As the symmetry is suspected to be incorrect, it is advicable to reconsider
+data processing.
+-------------------------------------------------------------------------------
+</pre>
+<p>Twin laws present but no suspected twinning:</p>
+<pre class="literal-block">
+-------------------------------------------------------------------------------
+Twinning and intensity statistics summary (acentric data):
+
+Statistics independent of twin laws
+  - &lt;I^2&gt;/&lt;I&gt;^2 : 1.955
+  - &lt;F&gt;^2/&lt;F^2&gt; : 0.796
+  - &lt;|E^2-1|&gt;   : 0.725
+  - &lt;|L|&gt;, &lt;L^2&gt;: 0.482, 0.314
+       Multivariate Z score L-test: 1.225
+       The multivariate Z score is a quality measure of the given
+       spread in intensities. Good to reasonable data is expected
+       to have a Z score lower than 3.5.
+       Large values can indicate twinning, but small values do not
+       neccesarily exclude it.
+
+
+Statistics depending on twin laws
+------------------------------------------------------
+| Operator | type | R obs. | Britton alpha | H alpha |
+------------------------------------------------------
+| -h,k,-l  |   M  | 0.455  | 0.016         | 0.035   |
+------------------------------------------------------
+
+Patterson analyses
+  - Largest peak height   : 3.886
+   (correpsonding p value : 9.982e-01)
+
+
+The largest off-origin peak in the Patterson function is 3.89% of the
+height of the origin peak. No significant pseudotranslation is detected.
+
+The results of the L-test indicate that the intensity statistics
+behave as expected. No twinning is suspected.
+Even though no twinning is suspected, it might be worthwhile carrying out
+a refinement using a dedicated twin target anyway, as twinned structures with
+low twin fractions are difficult to distinguish from non-twinned structures.
+
+
+-------------------------------------------------------------------------------
+</pre>
+<p>Twinned data:</p>
+<pre class="literal-block">
+-------------------------------------------------------------------------------
+Twinning and intensity statistics summary (acentric data):
+
+Statistics independent of twin laws
+  - &lt;I^2&gt;/&lt;I&gt;^2 : 1.587
+  - &lt;F&gt;^2/&lt;F^2&gt; : 0.871
+  - &lt;|E^2-1|&gt;   : 0.568
+  - &lt;|L|&gt;, &lt;L^2&gt;: 0.387, 0.212
+       Multivariate Z score L-test: 11.589
+       The multivariate Z score is a quality measure of the given
+       spread in intensities. Good to reasonable data is expected
+       to have a Z score lower than 3.5.
+       Large values can indicate twinning, but small values do not
+       neccesarily exclude it.
+
+
+Statistics depending on twin laws
+------------------------------------------------------
+| Operator | type | R obs. | Britton alpha | H alpha |
+------------------------------------------------------
+| -l,-k,-h |  PM  | 0.170  | 0.330         | 0.325   |
+------------------------------------------------------
+
+Patterson analyses
+  - Largest peak height   : 7.300
+   (correpsonding p value : 4.454e-01)
+
+
+The largest off-origin peak in the Patterson function is 7.30% of the
+   height of the origin peak. No significant pseudotranslation is detected.
+
+The results of the L-test indicate that the intensity statistics
+are significantly different then is expected from good to reasonable,
+untwinned data.
+As there are twin laws possible given the crystal symmetry, twinning could
+be the reason for the departure of the intensity statistics from normality.
+It might be worthwhile carrying refinement with a twin specific target
+function.
+-------------------------------------------------------------------------------
+</pre>
+<p>In the summary, the significance of the departure of the values of the L-test
+from normality are stated. The multivariate Z-score (also known as the Mahalanobis
+distance) is used for this purpose.</p>
+
+
+
 
 <P><H5><U>Examples</U></H5><P>
 
-<P><H5>Standard run of xtriage:</H5><P>
+<P><H5>Standard run of xtriage</H5><P>
 
-  Running xtriage is easy.  From the command-line you can 
-type:
-<PRE style="face=courier">phenix.xtriage data.sca
-</PRE>
+  Running xtriage is easy.  From the command-line you can type:
+<PRE><FONT face=courier>phenix.xtriage data.sca
+</FONT></PRE>
+When an MTZ or CNS file is used, labels have to be specified:
+<PRE><FONT face=courier>
+phenix.xtriage file=my_brilliant_data.mtz obs_labels='F(+),SIGF(+),F(-),SIGF(-)'
+</FONT></PRE>
 
-This will produce the following file:
-<PRE style="face=courier">()
-</PRE>
+In order to perform a Matthews analyses, it might be usefull to specify the number of
+residues/nucleotides in the crystalized macromolecule:
+<PRE><FONT face=courier>phenix.xtriage data.sca n_residues=230 n_bases=25
+</FONT></PRE>
+
+By default, the screen output plus additional ccp4 style graphs (viewable with the ccp4 programs loggraph) are echoed to a file named <FONT face=courier>logfile.log</FONT>.
+
+The command line arguments and all other defaults settings are sumarized in a PHIL parameter
+data block given at the beginning of the logfile / screen output:
+
+<PRE class="literal-block"><FONT face=courier>
+scaling.input {
+  parameters {
+    asu_contents {
+      n_residues = None
+      n_bases = None
+      n_copies_per_asu = None
+    }
+    misc_twin_parameters {
+      missing_symmetry {
+        tanh_location = 0.08
+        tanh_slope = 50
+      }
+      twinning_with_ncs {
+        perform_analyses = False
+        n_bins = 7
+      }
+      twin_test_cuts {
+        low_resolution = 10
+        high_resolution = None
+        isigi_cut = 3
+        completeness_cut = 0.85
+      }
+    }
+    reporting {
+      verbose = 1
+      log = &quot;logfile.log&quot;
+      ccp4_style_graphs = True
+    }
+  }
+  xray_data {
+    file_name = &quot;some_data.sca&quot;
+    obs_labels = None
+    calc_labels = None
+    unit_cell = 64.5 69.5 45.5 90 104.3 90
+    space_group = &quot;P 1 21 1&quot;
+    high_resolution = None
+    low_resolution = None
+  }
+}
+</FONT></PRE>
+
+The defaults are good for most applications.
+
+
 
 <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>Specific limitations and problems:</H5><P>
+<P><H5>Specific limitations and problems</H5><P>
 
-<LI>(1)
-</UL>
+<LI>Xtriage doesn't deal with data in centric space groups
+</LI>
 
 <P><H5><U>Literature</U></H5><P>
+<blockquote>
+<ul class="simple">
+<li><a class="reference" href="http://www.ccp4.ac.uk/newsletters/newsletter42/articles/CCP4_2005_PHZ_RWGK_PDA.doc">CCP4 newsletter No. 42, Summer 2005: Characterization of X-ray data sets</a></li>
+<li><a class="reference" href="http://www.ccp4.ac.uk/newsletters/newsletter43/articles/PHZ_RWGK_PDA.pdf">CCP4 newsletter No. 43, Winter 2005: Xtriage and Fest: automatic assessment of X-ray data and substructure structure factor estimation</a></li>
+</ul>
+</blockquote>
 
 <P><H5><U>Additional information</U></H5><P>
-
 
 <!--REMARK PHENIX BODY END-->
