@@ -594,6 +594,14 @@ are skipped. This means that if protein chains are accidentally built in the
 region where DNA is located, then these incorrect protein chains will remain
 and some of the DNA atoms will not be written out.
 
+<LI>The AutoBuild Wizard cannot build modified residues.  If you supply
+a model with modified residues, these will be excised and the chain will
+be broken at that point. You can supply such residues as ligands with
+the input_lig_file procedure if you want.
+</LI>
+<LI>The AutoBuild Wizard will not build very short chains unless you
+set the variable grep_ca_length (default=4) to a smaller number. The
+shortest chain that will be built is group_ca_length.
 </LI>
 </UL>
 
