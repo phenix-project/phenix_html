@@ -1,0 +1,72 @@
+
+
+<!-- REMARK PHENIX TITLE START  Put your title here-->
+
+
+<H4><U>MolProbity - An Active Validation Tool</U></H4> 
+
+
+<!-- REMARK PHENIX TITLE END-->
+
+<!-- REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents-->
+
+<br>
+<P><H5>Authors</H5><P>
+<p style="margin: 0 0 0 5px;">
+	MolProbity is a web application that integrates validation programs from the Richardson lab at Duke University.
+</p>
+<ul style="list-style-type: none; margin: 0 0 20px 20px;">
+	<li>Ian Davis, principal author: PHP/Java web service; KiNG; Ramachandran &amp; Rotamer; Dangle</li>
+	<li>Vincent Chen: extensions to KiNG &amp; MolProbity</li>
+	<li>	Mike Word: Reduce; Probe; Clashlist</li>
+	<li>	Dave Richardson: kinemages; Mage; Prekin; Suitename</li>
+	<li>	Xueyi Wang: RNABC</li>
+	<li>	Jack Snoeyink &amp; Andrew Leaver-Fay: Reduce update</li>
+	<li>	Bryan Arendall: webmaster; databases</li>
+</ul>
+
+<P><H5>Purpose</H5><P>
+<p style="margin: 0 0 0 5px;">
+	MolProbity provides the user with an expert-system consultation about the accuracy of a macromolecular structure model, diagnosing local problems and enabling their correction.  It combines all atom contact analysis with updated versions of more traditional tools for validating geometry and dihedral-angle combinations.  MolProbity is most complete for crystal structures of proteins and RNA, but also handles DNA, ligands, and NMR ensembles.  It works best as an <b>active</b> validation tool - used as soon as a model is available and during each rebuild/refine loop, not just at the end to provide global statistics before deposition.  It produces coordinates, graphics, and numerical evaluations that integrate with either manual or automated use in systems such as PHENIX, KiNG, or Coot.
+</p>
+ 
+<P><H5>Usage</H5><P>
+<p style="margin: 0 0 0 5px;">
+	The integrated MolProbity web application is at <a href="http://molprobity.biochem.duke.edu/">http://molprobity.biochem.duke.edu/</a>.  The user is guided through a work-flow that typically consists of:
+</p>
+<ol style="list-style-type: decimal; margin: 0 0 20px 15px;"> 
+	<li>Fetch or upload model(s) </li>
+	<li>Add &amp; optimize H atoms, with correction of Asn/Gln/His flips</li>
+	<li>Calculate per-residue &amp; global quality analyses: </li>
+	<ol style="list-style-type: lower-alpha; margin: 0 0 0 10px;"> 
+		<li>all-atom steric clashes </li>
+		<li>geometry (e.g., Cbeta or ribose pucker ideality) </li>
+		<li>Ramachandran, sidechain rotamer, or RNA backbone outliers </li>
+		<li>global MolProbity score </li>
+	</ol>
+	<li>	View multi-criterion chart and/or on-line 3D KiNG graphics summaries</li>
+	<li>	[Optional features, e.g. interface analysis; load maps for on-line viewing; Coot to-do list]</li>
+	<li>	Download coordinate &amp; graphics files for further work on local corrections</li>
+</ol>
+<p style="margin: 10px 0 0 5px;">
+	An increasingly broad subset of MolProbity functionalities are integrated directly into PHENIX for use in refinement, Resolve, and wizard decisions.  Phenix.reduce provides optimized hydrogen addition, phenix.probe and quick_clashlist.py provide all-atom clash analysis, and python versions of the Ramachandran and rotamer scores are available in the mmtbx.  Interactive all-atom contact dots are also available in Coot.
+</p>
+
+<P><H5>Possible Problems</H5><P>
+<p style="margin: 0 0 0 5px;">
+	Web usage requires Java, Javascript, and a modern web browser.
+</p>
+<p style="margin: 10px 0 0 5px;">
+	MolProbity provides reasonable session protection, but if security or large-scale usage are at issue, you can install MP to run on your own Linux or Mac computer provided that the computer has a web server (Apache), the PHP scripting language, JAVA, and a few common Unix utility programs.  For more information, follow the "Download MolProbity" link on the MP main page.
+</p>
+
+<P><H5>Literature</H5><P>
+<ul style="list-style-type: none; margin: 0 0 0 15px;">
+	<li style="margin: 0 0 10px 0;"><b>MolProbity: all-atom contacts and structure validation for proteins and nucleic acids</b> I. W. Davis, A. Leaver-Fay, V. B. Chen, J. N. Block, G. J. Kapral, X. Wang, L. W. Murray, W. B. Arendall, III, J. Snoeyink, J. S. Richardson, and D. C. Richardson. <i>Nucl. Acids Res.</i> <b>35</b>: W375-W383 (2007)</li>
+	<li style="margin: 0 0 10px 0;"><b>Visualizing and Quantifying Molecular Goodness-of-Fit: Small-probe Contact Dots with Explicit Hydrogen Atoms.</b> J. M. Word, S. C. Lovell, T. H. LaBean, H. C. Taylor, M. E. Zalis, B. K. Presley, J. S. Richardson, and D. C. Richardson. <i>JMB</i> <b>285</b>, 1711-33 (1999)</li>
+	<li style="margin: 0 0 10px 0;"><b>Structure Validation by C&#945; Geometry: &#966;,&#968; and C&#946; Deviation.</b> S.C. Lovell, I.W. Davis, W.B. Arendall III, P.I.W. de Bakker, J.M. Word, M.G. Prisant, J.S. Richardson, and D.C. Richardson. <i>Proteins: Structure, Function and Genetics</i> <b>50</b>, 437-450 (2003)</li>
+	<li style="margin: 0 0 10px 0;"><b>A test of enhancing model accuracy in high-throughput crystallography.</b> W.B. Arendall III, W. Tempel, J.S. Richardson, W. Zhou, S. Wang, I.W. Davis, Z.-J. Liu, J.P. Rose, W.M. Carson, M. Luo, D.C. Richardson, and B-C. Wang. <i>Journal of Structural and Functional Genomics</i> <b>6</b>, 1-11 (2005)</li>
+</ul>
+
+<!-- REMARK PHENIX BODY END-->
