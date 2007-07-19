@@ -1,0 +1,281 @@
+
+<!--REMARK PHENIX TITLE START-->
+<H4><U> Structure factor file manipulations with Xmanip </U></H4>
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START-->
+
+<P><H5><U>Author(s)</U></H5><P>
+<UL>
+<LI>Xmanip: Peter Zwart
+<LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
+</UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+Manipulation of reflection data and models
+
+<P><H5><U>Usage</U></H5><P>
+<P><H5>Command line interface</H6></P>
+
+<FONT face=courier>xmanip</FONT> can be invoked via the command line interface with instructions given in a specific definition file:
+<PRE>
+  phenix.xmanip params.def
+</PRE>
+The full set of definitions can be obtained by typing:
+<PRE>
+  phenix.xmanip
+</PRE>
+which results in::
+<PRE>
+  xmanip {
+    input {
+      unit_cell = None
+      space_group = None
+      xray_data {
+        file_name = None
+        labels = None
+        label_appendix = None
+        name = None
+        write_out = None
+      }
+      model {
+        file_name = None
+      }
+    }
+    parameters {
+      action = reindex manipulate_pdb *manipulate_miller
+      reindex {
+        standard_laws = niggli *reference_setting invert user_supplied
+        user_supplied_law = "h,k,l"
+      }
+      manipulate_miller {
+        task = get_dano get_diso lsq_scale sfcalc *custom None
+        output_label_root = "FMODEL"
+        get_dano {
+          input_data = None
+        }
+        get_diso {
+          native = None
+          derivative = None
+          use_intensities = True
+          use_weights = True
+          scale_weight = True
+        }
+        lsq_scale {
+          input_data_1 = None
+          input_data_2 = None
+          use_intensities = True
+          use_weights = True
+          scale_weight = True
+        }
+        sfcalc {
+          fobs = None
+          output = *2mFo-DFc mFo-DFc complex_fcalc abs_fcalc intensities
+          use_bulk_and_scale = *as_estimated user_upplied
+          bulk_and_scale_parameters {
+            d_min = 2
+            overall {
+              b_cart {
+                b_11 = 0
+                b_22 = 0
+                b_33 = 0
+                b_12 = 0
+                b_13 = 0
+                b_23 = 0
+              }
+              k_overall = 0.1
+            }
+            solvent {
+              k_sol = 0.3
+              b_sol = 56
+            }
+          }
+        }
+        custom{
+          code = print >> out, "hello world"
+        }
+      }
+
+      manipulate_pdb{
+        task = apply_operator *set_b
+        apply_operator{
+          operator = "x,y,z"
+          invert=False
+          concatenate_model=False
+          chain_id_increment=1
+        }
+        set_b{
+          b_iso = 30
+        }
+      }
+    }
+    output {
+      logfile = "xmanip.log"
+      hklout = "xmanip.mtz"
+      xyzout = "xmanip.pdb"
+    }
+  }
+</PRE>
+
+Detailed explanation of the scopes follow below.
+
+
+<P><H5>Parameters and definitions</H5></P>
+
+The <B>xmanip.input</B> scope defines which files and which data <FONT FACE=courier>xmanip</FONT> reads in::
+<PRE>
+    input {
+      unit_cell = None        # unit cell. Specify when not in reflection or pdb files
+      space_group = None      # space group. Specify when not in reflection or pdb files
+      xray_data {
+        file_name = None      # File from which data will be read
+        labels = None         # Labels to read in.
+        label_appendix = None # Label appendix: when writing out the new mtz file, this appendix will be added to the current label.
+        name = None           # A data set name. Useful for manipulation
+        write_out = None      # Determines if this dataset will be written to the final mtz file
+      }
+      model {
+        file_name = None      # An input pdb file
+      }
+    }
+</PRE>
+One can define as many sub-scopes of xray_data as desired (see examples).
+
+
+The specific tasks of <FONT FACE=courier>xmanip</FONT> are controlled by the <b>xmanip.parameters.action</b> key. Possible options are:
+<UL>
+<LI> <i>reindex</i>
+<LI> <i>manipulate_pdb</i>
+<LI> <i>manipulate_miller</i>
+</UL>
+
+<b>Reindexing</b>: reindexing of a data set (and a model) is controlled by the <b>xmanip.parameters.reindex</b> scope. Standard laws are available:
+<UL>
+<LI> <i>niggli</i>: Brings unit cell to the niggli setting.
+<LI> <i>reference_setting</i>: Brings space group to the reference setting
+<LI> <i>invert</i>: Inverts a dataset
+<LI> <i>user_supplied</i>: A user supplied reindexing law is used, specified by <i>reindex.user_supplied_law</i>
+</UL>
+
+<b>manipulate_pdb</b>: A pdb file can be modified by either applying a symmetry operator to the coordinates (select the <i>apply_operator</i> task from the
+<i>manipulate_pdb.task</i> list. The operator needs to be specified by </i>apply_operator.operator</i>. Setting <i>apply_operator.invert</i> to <FONT FACE=courier>true</FONT> will invert the supplied operator. One can choose to put out the newly generated chain with the original chain (set <FONT FACE=courier>concatenate_model = True</FONT>). The new chain ID can be controlled with the <i>chain_id_increment</i> parameter.
+
+<b>manipulate miller</b>: Reflection data can be manipulate in various ways:
+<UL>
+<LI> <i>get_dano</i>: Get anomalous differences from the data set with name specified by <i>manipulate_miller.get_dano.input_data</i>.
+<LI> <i>get_diso</i>: Get ismorphous differences (derivative-native) from the data sets speficfied hy the names <i>manipulate_miller.get_diso.native</i> and <i>manipulate_miller.get_diso.derivative</i>. Least squares scaling of the derivative to the native can be done on intensities (<FONT FACE=courier>use_intensities=True</FONT>), with or without using sigmas (<i>use_weights</i>) and by scaling the weights if desired (recommended).
+<LI> <i>lsq_scale</i> : As above, no isomorphous difference are computed, <i>only input_data_2</i> is scaled and returned.
+<LI>  <i>sfcalc</i>: Structure factor calculation. Requiers a pdb file to be read in. Possible ouput coefficients are
+<LI>  <i>2mFo-DFc</i> (Fobs requiered. specify <i>sfcalc.fobs</i>).
+<LI>  <i>mFo-DFc</i>  (Fobs requiered. specify <i>sfcalc.fobs</i>).
+<LI>  <i>complex_fcalc</i> (FC,PHIC)
+<LI>  <i>abs_fcalc</i> (FC)
+<LI>  <i>intensities</i> (FC^2)
+</UL>
+    bulk solvent and scaling parameters will be either estimated from observed data if supplied, or set by the user (using keywords in the <i>bulk_and_scale_parameters</i> scope)
+  <UL><LI> <i>custom</i>: If <i>custom</i> is selected, all data names for the xray data will become variable names accesible via the <i>custom</i> interface. The ``custom`` interface allows one to write a small piece of python code that directly works with the python objects themself. Basic knowledge of the cctbx and python are needed to bring this to a fruitfull ending. Please contact the authors for detailed help if requiered. An example is given in the example section.
+</UL>
+
+<P><H5><U>Examples</U></H5></P>
+<PRE>
+Reindexing a data set and model ::
+
+  xmanip {
+    input {
+      xray_data {
+        file_name = mydata.mtz
+        labels = FOBS,SIGFOBS
+        write_out = True
+      }
+      xray_data {
+        file_name = mydata.mtz
+        labels = R_FREE_FLAG
+        write_out = True
+      }
+      model {
+        file_name = mymodel.pdb
+      }
+    }
+    parameters {
+      action = reindex
+      reindex {
+        standard_laws = *niggli
+        user_supplied_law = "h,k,l"
+      }
+    }
+    output {
+      logfile = "xmanip.log"
+      hklout = "reindex.mtz"
+      xyzout = "reindex.pdb"
+    }
+  }
+
+
+Applying a symmetry operator to a pdb file ::
+
+
+  xmanip {
+    input {
+      model {
+        file_name = mymodel.pdb
+      }
+    }
+    parameters {
+      action = manipulate_pdb
+      manipulate_pdb {
+        task = apply_operator
+        apply_operator{
+          operator = "x+1/3,y-2/3,z+1/8"
+        }
+      }
+    }
+    output {
+      logfile = "xmanip.log"
+      xyzout = "shifted.pdb"
+    }
+  }
+
+
+Printing out some usefull information for an mtz file ::
+
+  xmanip {
+    input {
+      xray_data {
+        file_name = mydata.mtz
+        labels = FOBS,SIGFOBS
+        name = fobs
+      }
+    }
+    parameters {
+      action = custom
+      custom{
+        code = """
+  print >> out, "Printing d_spacings, epsilons and intensities"
+  #change amplitude to intensities
+  fobs = fobs.f_as_f_sq()
+  #get epsilons
+  epsilons = fobs.epsilons().data().as_double()
+  #get d spacings
+  d_hkl = fobs.d_spacings().data()
+  #print the lot to a file
+  output_file = open("jiffy_result.txt", 'w')
+  for ii, eps, dd in zip( fobs.data(), epsilons, d_hkl):
+    print >> output_file, ii, eps, dd
+  print >> out, "Done"
+               """
+      }
+    }
+  }
+</PRE>
+
+
+<P><H5><U>Possible Problems</U></H5></P>
+
+None
+
+<P><H5><U>Literature</U></H5></P>
+
+None
+
+<P><H5><U>Additional information</U></H5></P>
