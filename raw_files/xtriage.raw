@@ -202,7 +202,8 @@ ML estimate of  -log of scale factor of sec17.sca:i_obs,sigma:
 Correcting for anisotropy in the data
 </pre>
 <p>A large spread in (especially the diagonal) values indicates anisotropy. The
-anisotropy is corrected for. This clears up intensity statistics.</p>
+anisotropy is corrected for use in the subsequent
+analyses. This clears up intensity statistics.</p>
 <p><em>Low resolution completeness analyses</em></p>
 <p>Mosty data processing software do not provide a clear picture of the
 completeness of the data at low resolution. For this reason,
@@ -265,7 +266,7 @@ Mean intensity analyses
 </pre>
 <p>A very long list of warnings could indicate a serious problem with your data.
 Decisions on whether or not the data is useful, should be cut or should thrown
-away alltogether, is not straightforward and falls beyond the scope of
+away altogether, is not straightforward and falls beyond the scope of
 <em>xtriage</em>.</p>
 <p><em>Outlier detection and rejection</em></p>
 <p>Possible outliers are detected on the basis Wilson statistics:</p>

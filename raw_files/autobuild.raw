@@ -36,7 +36,7 @@ phase information or a starting model, carries out cycles of model-building
 and refinement alternating with model-based density modification, and
 producing a relatively complete atomic model. 
 
-<P>The AutoBuild Wizard uses RESOLVE, TEXTAL, xtriage and 
+<P>The AutoBuild Wizard uses RESOLVE, (optionally also TEXTAL), xtriage and 
 phenix.refine to build an atomic model, refine it, and improve
 it with iterative density modification, refinement, and model-building
 <P>The Wizard begins with either experimental phases (i.e., from AutoSol)
@@ -135,7 +135,7 @@ with procedure (b).
 
 <P>Starting from a model (e.g., from molecular replacement) and experimental
 structure factor amplitudes, procedure (c) is normally carried out if the
-starting model differs less than about 5% in sequence from the desired model,
+starting model differs less than about 50% in sequence from the desired model,
 and otherwise procedure (b) is used.
 
 <P>
@@ -220,8 +220,8 @@ directly by AutoBuild using a refinement parameters (.eff) file:
 Note that any parameters that are set directly by AutoBuild override your 
 inputs from the refine_eff_file. These parameters are listed below.
 
-<P>Parameters that are set using AutoBuild Wizard keywords (overwriting
-any values provided by user in input_eff_file)
+<P>Refinement parameters that must be set using AutoBuild Wizard 
+keywords (overwriting any values provided by user in input_eff_file)
 
 <table border="1" width="92%" cellpadding="5px">
 <tbody>
@@ -318,8 +318,8 @@ Default is to do nothing and use the default from phenix.refine (1.0) </td>
  <td> refinement.refine.occupancies.individual </td>
  <td> The combination of Wizard keywords of semet=True and
 refine_se_occ=True will add "(name SE)" to the value of
-refinement.refine.occupancies.individual. You can provide other names of
-atoms to have occupancies refined as well.
+refinement.refine.occupancies.individual. You can add to your
+.eff file other names of atoms to have occupancies refined as well.
  </td>
 </tr>
 
@@ -447,7 +447,7 @@ by the Wizard during the run (some parts are binary and are not printed)
 <LI>Final map coefficients used to build refined model. Use FP PHIM FOMM in
 maps. Normally this is a density-modified map from resolve. See also the
 map coefficients from phenix.refine below.
-<PRE style="face=courier">overall_best.mtz
+<PRE style="face=courier">overall_best_denmod_map_coeffs.mtz
 </PRE>
 
 <LI>Final sigmaA-weighted 2mFo-DFc and Fo-Fc map coefficients from 
@@ -536,9 +536,10 @@ The final model will be in the file MULTIPLE_MODELS/all_models.pdb (this
 file will contain just one model).
 <p>
 Note that this procedure will keep the sequence that is present in coords.pdb.
-If instead you supply a sequence file and specify edit_pdb=True, 
-it will edit the sequence of coords.pdb to match your sequence file 
-and discard any residues that do not match.
+If you supply a sequence file it will edit the sequence of coords.pdb 
+to match your sequence file and discard any residues that do not match.
+(If you want to input a sequence file but not edit the sequence in coords.pdb
+and not discard any non-matching residues, then specify also edit_pdb=False.)
 <p>Note also that if include_input_model=True then no randomization cycle
 will be carried out and multiple_models_starting_resolution is ignored.
 

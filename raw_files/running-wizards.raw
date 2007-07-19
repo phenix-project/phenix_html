@@ -161,6 +161,7 @@ wizard.
 keywords that you can set for this wizard, type:
 <PRE style="face=courier">phenix.autosol --help all
 </PRE>
+
 <P><LI>If you want to stop a Wizard, you can create a file "STOPWIZARD" and
 put it in the subdirectory (i.e., AutoSol_2_/) where the Wizard is running.
 This is like hitting the PAUSE button on the GUI and stops the wizard cleanly.
@@ -227,6 +228,22 @@ script is produced that you can edit and use like this:
 <P><LI> To show current summary:
 <PRE style="face=courier">phenix.autosol show_summary 
 </PRE>
+
+<P><LI>
+When you use a keyword like <b>data=</b> you need to give
+enough information to specify this keyword uniquely.  You can see all
+the keywords for each PHENIX Wizard or tool at the end of the
+documentation for that Wizard or tool. This will have entries like this 
+(for AutoSol):
+<PRE style="face=courier">
+<b>autosol</b>
+       sites= None Number of heavy-atom sites. (Command-line only)
+</PRE>
+which describes the keyword <b>sites</b> in the <b>scope</b> defined by 
+<b>autosol</b>.  You can explicitly specify this on the command line with:
+<PRE style="face=courier">autosol.sites=3 </PRE>
+which in this case is entirely the same as
+<PRE style="face=courier">sites=3 </PRE>
 
 <P><LI>NOTE that you can set any SOLVE, RESOLVE or RESOLVE_PATTERN keyword
 in PHENIX using the "resolve_command", "solve_command" or 

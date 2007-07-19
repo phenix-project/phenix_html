@@ -43,7 +43,7 @@ optional PDB file with a partial model of the structure without the ligand,
 and a PDB file containing the ligand to be fit (in an allowed but arbitrary
 conformation). 
 <P>The wizard checks the data files for consistency and then calls
-the RESOLVE software to carry out the fitting of the ligand into the
+RESOLVE to carry out the fitting of the ligand into the
 electron-density map. The map used is normally a difference map, with F=FP-FC.
 It can also be an Fobs map (calulated from FP with phases PHIC from the input
 partial model), or an arbitrary map, calculated with FP PHI and FOM.
