@@ -1,0 +1,1411 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>eLBOW - <I>electronic</I> Ligand Builder and Optimisation Workbench</U></H4> 
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+<H4><U>
+<I>electronic</I> Ligand Builder and Optimisation Workbench (eLBOW)
+</U></H4>
+
+<dl>
+
+<dt><a href="../elbow/docs/index_image.html">More detailed website</a></dt>
+</dl>
+
+<H5><U>Author</U></H5>
+Nigel W. Moriarty
+
+<H5><U>Purpose</U></H5>
+
+Automate the generation of geometry restraint information for
+refinement of novel ligands and improved geometry restraint
+information for standard ligands.
+
+A protein crystal can contain more than just protein and other simple
+molecules that most refinement programs can interpret.  An unusual
+molecule can be included in the refinement via eLBOW from a number of
+chemical inputs.  The geometry can be optimised using various levels
+of chemical knowledge including a semi-empirical quantum mechanical
+method known as AM1.
+
+<P>Input formats include
+<LI>SMILES string
+<LI>PDB (Protein Data Bank)
+<LI>MolFiles (V2000, V3000 and SDFiles)
+<LI>TRIPOS MOL2
+<LI>XYZ 
+<LI>certain CIF files
+<LI>GAMESS input and output files
+</LI>
+
+<P>Output formats include
+<LI>PDB (Protein Data Bank)
+<LI>CIF restraint file
+</LI>
+
+
+eLBOW contains a number of programs. All
+programs have been written to allow command-line control and script
+access to the objects and algorithm.  The main program is run thus:
+
+<PRE><FONT face=courier>elbow.builder [options] input_file.ext
+</FONT></PRE>
+
+or in a Python script
+
+<PRE><FONT face=courier>from elbow.command_line import builder
+
+molecule = builder.run("input_file.ext", **kwds)
+</FONT></PRE>
+
+where the options are passed as a dictionary. The return object can be
+interogated for information via the class methods.
+
+Output files from both techniques include a PDB file of the final
+geometry and a CIF file that contains the geometry restraint
+information for refinement.  Other files are output as appropriate,
+such as edits and CIF files for linking the ligand to the protein.  A
+final file contains the serialised data of the molecule in the Python
+pickle format.
+
+<H5><U>Examples</U></H5>
+
+<H5>Using SMILES string from internal database</H5>
+
+To run eLBOW on an internal SMILES string
+<PRE><FONT face=courier>elbow.builder --key=ATP [options]
+</FONT></PRE>
+
+<H5>PDB input</H5>
+
+To run eLBOW on a PDB file (containing one molecule)
+<PRE><FONT face=courier>elbow.builder input_file.pdb
+</FONT></PRE>
+
+To run eLBOW on a PDB file containing protein and ligands.  This will only
+process the ligands that are unknown to phenix.refine.
+<PRE><FONT face=courier>elbow.builder input_file.pdb --do-all
+</FONT></PRE>
+
+To run eLBOW on a PDB file specifying a residue 
+<PRE><FONT face=courier>elbow.builder input_file.pdb --residue LIG
+</FONT></PRE>
+
+To use the atom names from a PDB file
+ <PRE><FONT face=courier>elbow.builder --smiles O --template input_file.pdb
+</FONT></PRE>
+
+<H5>SMILES input</H5>
+
+To run eLBOW on a SMILES string
+<PRE><FONT face=courier>elbow.builder --smiles="CCO"
+</FONT></PRE>
+
+or
+
+<PRE><FONT face=courier>elbow.builder --smiles="input_file.smi"
+</FONT></PRE>
+
+<H5>Other input</H5>
+
+To run eLBOW on other supported input formats
+<PRE><FONT face=courier>elbow.builder input_file.ext
+</FONT></PRE>
+
+<H5>Geometry optimisation</H5>
+
+eLBOW performs a simple force-field geometry optimisation by default, however
+an AM1 geometry optimisation can be performed as follows.
+<PRE><FONT face=courier>elbow.builder input_file.pdb --opt
+</FONT></PRE>
+
+To start from a specific geometry for the optimisation
+<PRE><FONT face=courier>elbow.builder --initial_geometry input_file.pdb --opt
+</FONT></PRE>
+
+To use a seperately installed GAMESS and do a HF/3-21G geometry optimisation
+<PRE><FONT face=courier>elbow.builder input_file.pdb --gamess --basis="3-21G"
+</FONT></PRE>
+
+To not optimise, but use the input geomtery as the final geometry
+<PRE><FONT face=courier>elbow.builder --final_geometry input_file.pdb
+</FONT></PRE>
+
+<H5>Output</H5>
+
+To choice the base name of the output files
+<PRE><FONT face=courier>elbow.builder input_file.pdb --output="output"
+</FONT></PRE>
+
+To change the three letter ID
+<PRE><FONT face=courier>elbow.builder input_file.pdb --id=NEW
+</FONT></PRE>
+
+To change other attributes
+<PRE><FONT face=courier>elbow.builder input_file.pdb --pdb-assign "resSeq=3 b=100"
+</FONT></PRE>
+
+<p>Some of the attributes.
+<LI>Residue name : resname
+<LI>Chain ID : chain, chainid
+<LI>Residue sequence ID : resseq, resid
+<LI>Alternative location ID : altid, altloc
+<LI>Insert code : icode
+<LI>Occupancy : occ, occupancy
+<LI>Temperature factor : b, tempfactor
+<LI>Segment ID : segid, segID
+</LI>
+
+<P>To output MOL2 format
+<PRE><FONT face=courier>elbow.builder input_file.pdb --tripos
+</FONT></PRE>
+
+To output PDB Ligand output
+<PRE><FONT face=courier>elbow.builder input_file.pdb --pdb-ligand
+</FONT></PRE>
+
+<H5><U>Additional programs</U></H5>
+
+<LI>elbow.become_expert
+<LI>elbow.become_novice
+<LI>elbow.get_smiles
+<LI>elbow.get_pdb
+<LI>elbow.compare_two_molecules
+<LI>elbow.join_cif_files
+<LI>elbow.join_pdb_files
+<LI>elbow.join_mol2_files
+<LI>elbow.print_sequence
+<LI>elbow.check_residues_against_monomer_lib
+<LI>elbow.metal_coordination : Generate edits for metal coordination
+<LI>elbow.link_edits : Generate edits from PDB LINK records
+<LI>elbow.defaults : Generate a eLBOW defaults file
+</LI>
+
+<H5><U>Literature</U></H5>
+
+<H5><U>Additional information</U></H5>
+
+
+  <H5>Novice options
+  </H5>
+  <table nosave="" border="1" cols="3" width="92%" cellpadding="5px">
+<tbody>
+
+<tr>
+<td>
+<P>
+  <FONT size=2 face=Helvetica,Arial > Option </FONT>
+</td>
+
+<td>
+<P>
+  <FONT size=2 face=Helvetica,Arial > Default & choices </FONT>
+</td>
+
+<td>
+<P>
+  <FONT size=2 face=Helvetica,Arial > Description of inputs and uses </FONT>
+</td>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--version
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+show program's version number and exit
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--help
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+show this help message and exit
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--long-help
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+show even more help and exit
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--smiles
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use the passed SMILES
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--file
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use file for chemical input
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--key
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use SMILES from smilesDB for chemical input
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--keys
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+display smiles DB
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--pipe
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+read input from standard in
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--residue
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use only this residue from the PDB file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--chain
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use only this chain from the PDB file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--all-residues
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+retain all residues in a PDB file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--name
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+name of ligand to be used in various output files
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--sequence
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use sequence (limited to 20 residues and no semi-empirical optimisation)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--read-only
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+read the input but don't do any processing
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--opt
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use the best optimisation method available (currently AM1)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--template
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use file for naming of atoms e.g. PDB file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--mopac
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use MOPAC  for quantum chemistry calculations (requires MOPAC be installed)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--gamess
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use GAMESS for quantum chemistry calculations  (requires GAMESS be installed)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--gaussian
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use Gaussian for quantum chemistry calculations (requires Gaussian be installed)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--final-geometry
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use this file to obtain final geometry
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--initial-geometry
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use this file to obtain the intital geometry for QM
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--restart
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+restart the optimisation with lowest previous geometry
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--opt-steps
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+60, "positive integer"
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+optimisation steps (currently for ELBOW opt only)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--opt-tol
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+default, loose, tight
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+optimisation tolerance = loose, default or tight
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--ignore-chiral
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+ignore the chirality in the SMILES string
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--memory
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+1Gb, "positive integer", "n Gb", "n Mb"
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+maximum memory mostly for quantum method
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--method
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+"AM1"
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+run QM optimisation with this method, if possible
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--basis
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+"AM1"
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+run QM with this basis, if possible
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--random-seed
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+random number seed
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--quiet
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+less print out
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--silent
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+almost complete silence
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--view
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+viewing software command
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--pymol
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use PyMOL from the PHENIX install to view geometries
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--overwrite
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+clobber any existing output files
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--bonding
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+file that specifies the bond of the input molecule
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--id
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+"LIG"
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+three letter code used in the CIF output
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--xyz
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+output is also written in XYZ format
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--tripos
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+output is also written in TRIPOS format
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--pdb-ligand
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+output is also written in PDB ligand format
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--output
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+"algorithm determination"
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+name for output files
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--pickle
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use a pickle file to reload the topological information
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--do-all
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+process all molecules in a PDB, TRIPOS or SDF file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--clean
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+DELETES "unnecessary" output files (dangerous)
+</FONT>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+  
+  <H5>Expert options
+  </H5>
+  <table nosave="" border="1" cols="3" width="92%" cellpadding="5px">
+<tbody>
+
+<tr>
+<td>
+<P>
+  <FONT size=2 face=Helvetica,Arial > Option </FONT>
+</td>
+
+<td>
+<P>
+  <FONT size=2 face=Helvetica,Arial > Default & choices </FONT>
+</td>
+
+<td>
+<P>
+  <FONT size=2 face=Helvetica,Arial > Description of inputs and uses </FONT>
+</td>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--newton-raphson
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use Newton-Raphson optimisation
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--gdiis
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use GDIIS optimisation
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--quicca
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use QUICCA optimisation
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use user defined for quantum chemistry calculations
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt-input-filename
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+input filename
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt-xyz2input
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+converts xyz file to QM program input
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt-xyz-filename
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+xyz filename
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt-script-filename
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+run script filename
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt-program
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+QM optimisation program run script or program invocation command
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt-output-filename
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+output filename
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--user-opt-output2xyz
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+converts QM program output to xyz file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--add-hydrogens
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+"algorithm determination", True, False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+override the automatic hydrogen addition
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--write-hydrogens
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+True, False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+override the automatic writing of hydrogens to PDB and CIF files
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--auto-bond-cutoff
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+2.0, "float between 0.5 and 3"
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+set the max bondlength for auto bond detection
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--pdb-assign
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+set the atom attributes in the PDB file
+</FONT>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+  
+<!--REMARK PHENIX BODY END-->
+
+<!--REMARK PHENIX KEYWORDS START  This is auto-generated if you provide
+  a method, otherwise you can paste in here-->
+
+<!--REMARK PHENIX KEYWORDS END-->
