@@ -62,7 +62,7 @@ Running a Wizard from a GUI, the command-line, or a script</a>
 for details of how to run a Wizard.
 The command-line version will be described here.
 <P>
-<P><H5>How the AutoBuild Wizard works:</H5><P>
+<P><H5>How the AutoBuild Wizard works</H5><P>
 <P>
 
 <P>The AutoBuild Wizard begins with experimental structure factor amplitudes,
@@ -139,7 +139,7 @@ starting model differs less than about 50% in sequence from the desired model,
 and otherwise procedure (b) is used.
 
 <P>
-<P><H5>How to run the AutoBuild Wizard:</H5><P>
+<P><H5>How to run the AutoBuild Wizard</H5><P>
 <P>  Running the AutoBuild Wizard is easy.  For example, 
 from the command-line you can type:
 <PRE style="face=courier">phenix.autobuild data=w1.sca seq.dat coords=coords.pdb
@@ -149,7 +149,7 @@ density modification and refinement based on the data in w1.sca and
 the model in coords.pdb, editing the model as necessary to match the
 sequence in seq.dat.
 
-<P><H5>What the AutoBuild wizard needs to run:</H5><P>
+<P><H5>What the AutoBuild wizard needs to run</H5><P>
 
 <UL><LI>(1) a data file, optionally with phases and HL coeffs and freeR flag
     (w1.sca or data=w1.sca)
@@ -159,7 +159,7 @@ sequence in seq.dat.
 </UL>
 
 
-<P><H5>...and optional files:</H5><P>
+<P><H5>...and optional files</H5><P>
 
 <UL><LI>(3) coefficients for a starting map (map_file=resolve.mtz)
 <LI>(4) a file for refinement (refinement_file=exptl_fobs_freeR_flags.mtz)
@@ -573,7 +573,7 @@ maps_only=True
 
       <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>General limitations:</H5><P>
+<P><H5>General limitations</H5><P>
 
 
 <UL><LI>The AutoBuild model-building can only build one type of chain at a 
@@ -606,7 +606,7 @@ shortest chain that will be built is group_ca_length.
 </LI>
 </UL>
 
-<P><H5>Specific limitations and problems:</H5><P>
+<P><H5>Specific limitations and problems</H5><P>
 
 
 <UL><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 

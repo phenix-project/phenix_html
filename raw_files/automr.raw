@@ -143,7 +143,7 @@ to start the model-rebuilding with the map coefficients from
 MR.MAP_COEFFS.1.mtz.
 
 <P>
-<P><H5>How to run the AutoMR Wizard:</H5><P>
+<P><H5>How to run the AutoMR Wizard</H5><P>
 <P>  Running the AutoMR Wizard is easy.  For example, 
 from the command-line you can type:
 <PRE style="face=courier">phenix.automr native.sca search.pdb RMS=0.8 mass=23000 copies=1
@@ -164,7 +164,7 @@ in your structure.
 an <B>ensemble</B> of structures.
 </UL>
 
-<P><H5>What the AutoMR wizard needs to run:</H5><P>
+<P><H5>What the AutoMR wizard needs to run</H5><P>
 <P>In a simple case where you have one search model and are looking for 
 N copies of this model in your structure, you need:
 <P><UL><LI>(1) a datafile name (native.sca or data=native.sca)
@@ -309,7 +309,7 @@ with PDB files and percent sequence identity with the true structures
 
       <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>Specific limitations and problems:</H5><P>
+<P><H5>Specific limitations and problems</H5><P>
 <UL><LI>
 <P>The AutoBuild Wizard can build PROTEIN, RNA, or DNA, but it can only
 build one at a time.  If your MR model contains more than one type of chain,

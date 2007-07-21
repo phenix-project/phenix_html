@@ -44,7 +44,7 @@ for details of how to run a Wizard.
 The command-line version will be described here, except for MIR and multiple
 datasets, which can only be run with the GUI or with a script.
 <P>
-<P><H5>How the AutoSol Wizard works:</H5><P>
+<P><H5>How the AutoSol Wizard works</H5><P>
 <P>The basic steps that the AutoSol Wizard carries out are
 described below. They are: Setting up inputs,
 Analyzing and scaling the data, Finding heavy-atom 
@@ -60,7 +60,7 @@ are grouped into Datasets and solutions are stored in Solution objects.
 <P>(3) how many sites to look for (2 or sites=2)
 <P>(4) what the anomalously-scattering atom is (Se or atom_type=Se)
 <P>(5) If you have SAD or MAD data, then it is helpful to add 
-f_prime and f_doubleprime for each wavelength.
+f_prime and f_double_prime for each wavelength.
 <P> You can also specify many other parameters, including resolution,
 number of sites, whether to search in a thorough or quick fashion, how
 thoroughly to build a model, etc. If you have a heavy-atom solution 
@@ -83,6 +83,10 @@ Solutions) and those that are combinations of datasets (Composite Solutions).
 "Primary" Solutions have information on the datafiles that were part of the
 dataset and on the heavy-atom sites for this dataset. Composite Solutions are
 simply sets of Primary Solutions, with associated origin shifts.
+The hand of the heavy-atom or anomalously-scattering atom substructure
+is part of a Solution, so if you have two datatsets, each with two Solutions
+related by inversion, then AutoSol would normally construct four different
+Composite Solutions from these and score each one as described below.
 
 <P><H5><I>Analyzing and scaling the data</I></H5><P>
 <P>The AutoSol Wizard analyzes input datasets with iotbx.xtriage to 
@@ -142,8 +146,14 @@ into a single overall score.
 <P>(1) Correlation of map-phased electron density map with experimentally-
 phased map (CC). The statistical density modification in RESOLVE allows the 
 calculation of map-based phases that are (mostly) independent of the 
-experimental phases. Consequently the correlation between these two phase
-sets (or the corresponding maps) is a good indication of the quality of the
+experimental phases. The phase information in statistical density 
+modification comes from two sources: your experimental phases and 
+maximization of the agreement of the map with expectations (such as
+a flat solvent region). Normally the 
+phase probabilities from these two sources are merged together, yielding 
+your density-modified phases. This score is calculated based on the 
+correlation of the phase information from these two sources before
+combining them, and is a good indication of the quality of the
 experimental phases. 
 <P>(2) The R-factor for density modification (R-Factor). Statistical 
 density modification provides an estimate of structure factors that is
@@ -157,7 +167,7 @@ but many points with very high density).
 <P>(4) Non-crystallographic symmetry (NCS overlap).  The presence of 
 NCS in a map is a nearly-positive indication that the map is good, or has
 some correct features. The AutoSol Wizard uses symmetry in heavy-atom
-sites to suggest NCSA, and RESOLVE identifies the actual correlation of
+sites to suggest NCS, and RESOLVE identifies the actual correlation of
 NCS-related density for the NCS overlap score.
 <P>(5) Figure of merit (FOM). The figure of merit of phasing is a good 
 indicator of the internal consistency of a solution. This score is not
@@ -235,7 +245,7 @@ current_cycle_eval.log
 
 </UL>
 
-<P><H5>How to run the AutoSol Wizard:</H5><P>
+<P><H5>How to run the AutoSol Wizard</H5><P>
 <P>  Running the AutoSol Wizard is easy.  From the command-line you can 
 type:
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
@@ -265,7 +275,7 @@ f_double_prime=4.5  # f-double-prime value for SAD
 </PRE>
 
       <P><H5><U>Examples</U></H5><P>
-<P><H5>SAD dataset:</H5><P>
+<P><H5>SAD dataset</H5><P>
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
 </PRE>
 The sequence file is used to estimate the solvent content of the
@@ -275,7 +285,7 @@ critical. If you are off by a factor of 2 on  f_double_prime,
 the refined occupancies of heavy-atom sites might be 1/2 their correct
 values.
 
-<P><H5>SAD dataset specifying solvent fraction:</H5><P>
+<P><H5>SAD dataset specifying solvent fraction</H5><P>
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
     solvent_fraction=0.45
 </PRE>
@@ -284,13 +294,13 @@ general feature of the Wizards: they will try to estimate values of
 parameters, but if you input them directly, they will use your input
 values.
 
-<P><H5>SAD dataset without model-building:</H5><P>
+<P><H5>SAD dataset without model-building</H5><P>
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
     build=False
 </PRE>
 This will carry out the usual structure solution, but will skip model-building
 
-<P><H5>SAD dataset, building RNA instead of protein:</H5><P>
+<P><H5>SAD dataset, building RNA instead of protein</H5><P>
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
     build=False chain_type=RNA
 </PRE>
@@ -301,7 +311,7 @@ the AutoBuild Wizard and run it first with chain_type=PROTEIN, then
 run it again specifying the protein model as input_lig_file=proteinmodel.pdb
 and with chain_type=DNA.
 
-<P><H5>SAD dataset, selecting a particular dataset from an MTZ file:</H5><P>
+<P><H5>SAD dataset, selecting a particular dataset from an MTZ file</H5><P>
 If you have an input MTZ file with more than one anomalous dataset, you can 
 type something like:
 <PRE style="face=courier">phenix.autosol w1.mtz seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
@@ -317,7 +327,7 @@ printed out for you so that you can just paste the one you want in.
 <PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
 </PRE>
 
-<P><H5>MAD dataset: </H5><P>
+<P><H5>MAD dataset</H5><P>
 <P>The inputs for a MAD dataset need to specify f_prime and f_double_prime
 for each wavelength.  It also must be clear what datafile goes with which
 wavelength. If you input an MTZ file with multiple datasets, then the order
@@ -331,7 +341,7 @@ infl.data=w2.sca   infl.f_prime=-9   infl.f_double_prime=1.9 \
 high.data=w3.sca   high.f_prime=-5   high.f_double_prime=3.0 
 </PRE>
 
-<P><H5>MAD dataset, selecting particular datasets from an MTZ file:</H5><P>
+<P><H5>MAD dataset, selecting particular datasets from an MTZ file</H5><P>
 This is similar to the case for SAD data.If you have an input MTZ file with more than one anomalous dataset, you can 
 type something like:
 <PRE style="face=courier">phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
@@ -349,7 +359,7 @@ label strings to use by typing:
 <PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
 </PRE>
 
-<P><H5>SIR dataset: </H5><P>
+<P><H5>SIR dataset</H5><P>
 <P>The standard inputs for an SIR dataset are the native and derivative, the
 sequence file, the heavy-atom type, and the number of sites, as well as
 whether to use anomalous differences (or just isomorphous differences):
@@ -362,17 +372,18 @@ anomalous differences.
 <P><H5>SAD with more than one anomalously-scattering atom </H5><P>
 <P>You can tell the AutoSol wizard to look for more than one anomalously-
 scattering atom. Specify one atom type (Se) in the usual way. Then specify 
-any additional ones like this:
-<PRE style="face=courier">mad_ha_add_list Br Pt
-mad_ha_add_f_prime_list -7 -10
-mad_ha_add_f_double_prime_list 4.2 12
+any additional ones like this if you are running AutoSol from the
+command line:
+<PRE style="face=courier">mad_ha_add_list="Br Pt"
+mad_ha_add_f_prime_list=" -7 -10"
+mad_ha_add_f_double_prime_list=" 4.2 12"
 </PRE>
 There must be the same number of entries in each of these three keyword
 lists. During phasing Phaser will try to add whichever atom types 
 best fit the scattering from each new site. This option is available
 for SAD phasing only.
 
-<P><H5>MIR dataset: </H5><P>
+<P><H5>MIR dataset</H5><P>
 <P> An MIR dataset is a set of more than one datasets. This cannot
 be readily expressed in the command-line inputs, but you can specify it easily
 with the PHENIX AutoSol GUI or with a script. In a script file you can say:
@@ -402,7 +413,7 @@ the combined datset with SOLVE Bayesian correlated phasing, taking into
 account any correlations among the non-isomorphism and heavy-atom sites 
 for the various derivatives. 
 
-<P><H5>SIR + SAD datasets: </H5><P>
+<P><H5>SIR + SAD datasets</H5><P>
 <P> A combination of SIR and SAD datasets is almost the same as
 an MIR dataset in the AutoSol Wizard.  You specify each dataset separately,
 and put "start" and "read_another_dataset" between the datasets:
@@ -432,9 +443,9 @@ will be density modified.
 
       <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>General limitations:</H5><P>
+<P><H5>General limitations</H5><P>
 
-<P><H5>Specific limitations and problems:</H5><P>
+<P><H5>Specific limitations and problems</H5><P>
 
 <P><UL><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
 the AutoSol wizard is limited by the memory in your computer and the

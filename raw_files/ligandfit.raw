@@ -34,7 +34,7 @@ Running a Wizard from a GUI, the command-line, or a script</a>
 for details of how to run a Wizard.
 The command-line version will be described here.
 <P>
-<P><H5>How the LigandFit Wizard works:</H5><P>
+<P><H5>How the LigandFit Wizard works</H5><P>
 <P>
 <P>The LigandFit wizard  provides a command-line and
 graphical user interface allowing the user to identify a datafile 
@@ -63,7 +63,7 @@ and the best-fitting placement is written out.
 summary of the quality of the fit. Multiple copies of a ligand can be fit to a
 single map in an automated fashion using the LigandFit wizard as well.
 
-<P><H5>How to run the LigandFit Wizard:</H5><P>
+<P><H5>How to run the LigandFit Wizard</H5><P>
 <P>  Running the LigandFit Wizard is easy.  For example, 
 from the command-line you can type:
 <PRE style="face=courier">phenix.ligandfit data=datafile.mtz model=partial_model.pdb ligand=ligand.pdb
@@ -74,7 +74,7 @@ structure factor amplitudes in datafile.mtz, calculating phases based
 on partial-model.pdb.  All rotatable bonds will be identified and allowed
 to take stereochemically reasonable orientations.
 
-<P><H5>What the LigandFit wizard needs to run:</H5><P>
+<P><H5>What the LigandFit wizard needs to run</H5><P>
 
     The ligandfit wizard needs:
 <P><UL><LI>(1) a datafile (w1.sca or data=w1.sca); this can be any format
@@ -163,7 +163,7 @@ number 1):
 </UL>
 
       <P><H5><U>Examples</U></H5><P>
-<P><H5> Sample command_line inputs: </H5><P>
+<P><H5> Sample command_line inputs</H5><P>
 
 <P><UL><LI>Standard run of ligandfit (generate map from model and data file)
 <PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb
@@ -196,7 +196,7 @@ specific keyword to RESOLVE.
 </UL>
       <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>Specific limitations and problems:</H5><P>
+<P><H5>Specific limitations and problems</H5><P>
 
 <P><UL><LI>The ligand to be searched for must have at least 3 atoms.
 

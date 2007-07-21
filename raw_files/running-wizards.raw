@@ -128,11 +128,15 @@ does not go back and change it. If you want the parameter change to affect
 something that has already been done, you need to re-run the corresponding
 step.
 <P><LI>NOTE that you can set any SOLVE, RESOLVE or RESOLVE_PATTERN keyword
-in PHENIX using the "resolve_command", "solve_command" or "resolve_pattern_command" keywords.  These can be set in the GUI from the Choose Variable
+when you are running a Wizard using the "resolve_command", "solve_command" or "resolve_pattern_command" keywords.  These can be set in the GUI from the Choose Variable
 pull-down menu. You just type in the command to the entry form like this:
 (for resolve_command): 
-<PRE style="face=courier">ligand_start start.pdb
+<PRE style="face=courier">res_start 4.0
 </PRE>
+telling resolve in this case to start out density modification at a resolution
+of 4 A.
+This allows you to control what solve, resolve and resolve_pattern do more
+finely than you otherwise can in the Wizards.
 </UL>
 <P><H5> Navigating steps in a Wizard from the GUI </H5><P>
 <P><UL><LI>When the Wizard is done or Paused, you can select any available
@@ -326,7 +330,8 @@ copy_run 5 # make a new copy of run 5 (with number equal
    # to highest existing run number +1) and continue
    # with this new copy.
 
-run_only DumpFacts # list current values of all parameters and stop
+run 2
+run_only DumpFacts # list current values of all parameters in run 2 and stop
 
 run_only nothing # do nothing and stop
 
