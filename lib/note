@@ -1,6 +1,27 @@
 A list of good keywords is in good_list.  You might
 want to find all the keywords that are new that are not in this list and
-add all the bad ones to reject.
+add all the bad ones to reject.  You can do this with:
+
+---------------------------
+phenix.python new.py > skip.dat
+
+which will write out all the NEW words in the index to skip.dat, and ALL the
+words in the index to "all_list".  
+
+If you are all done, copy all_list to good_list.  Otherwise...
+
+Delete all the GOOD ones from skip.dat and  then  sort them with:
+
+
+cat reject skip.dat > all_bad.unsorted
+phenix.python  sort_lines.py all_bad.unsorted > reject
+
+
+Then run 
+phenix.python new.py > skip.dat
+again and copy all_list to good_list.
+
+------------------------
 
 To get a list of all the keywords in the index:
 
