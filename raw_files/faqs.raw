@@ -1,0 +1,107 @@
+<!--REMARK PHENIX TITLE START  Put your title here-->
+
+
+<p></p><H5><U>PHENIX FAQS</U></H5>
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<H5>How should I cite PHENIX?</H5>
+<p>
+If you use PHENIX please cite:
+</p><p>
+Adams, P.D., Grosse-Kunstleve, R.W., Hung, L.-W., Ioerger, T.R., McCoy, A.J.,
+Moriarty, N.W., Read, R.J., Sacchettini, J.C., Sauter, N.K., Terwilliger, T.C.
+(2002). PHENIX: building new software for automated crystallographic structure
+determination. Acta Cryst. D58, 1948-1954.
+
+</p>
+
+<H5>What do I do if the PHENIX GUI hangs?</H5>
+<p>If the GUI hangs (windows do not respond or windows display partially) then
+you may want to try and kill it by clicking on the upper right corner ,
+or right-clicking on the top bar of the GUI and closing it. If those fail,
+you can control-C in the window where you started up the GUI.
+In either case, you can restart the GUI by typing <b>phenix</b> again. You
+may find it necessary to start phenix up, then close it down nicely with
+Project/Exit, and restart it (this gets rid of some files that are deleted
+when the GUI closes normally).  You may also occasionally find it necessary
+to kill any jobs that are still running by running <b>top</b> and
+noticing if there are python or resolve or solve jobs running that were
+part of your PHENIX job, then using <b>k</b> to kill those jobs while
+running top.
+</p>
+
+<H5>Why does the GUI Parameters window say "Invalid input parameters...do you want to continue?"</H5>
+<p>This happens if something in the window isn't correct. If no colored entry fields come up, have a look at the bottom where it says NAVIGATE  SET VARIABLE AUTO MANUAL.  The entry forms under these words should read:
+"Choose method to run"  "Choose variable to set" and "Manual" (or "Automatic")
+unless you have intentionally set them.
+If that isn't it, look carefully at all the entries and make sure that they
+are of the type that is expected (file name, number, etc).  If that doesn't
+work, just click YES and carry on.
+</p>
+
+<H5>How do I stop a Wizard?</H5>
+<p>You can stop a Wizard in two ways. For a "soft" stop, press the "Pause" button
+if you are running from the GUI, or create a file with the name STOPWIZARD in
+the directory where the Wizard is running (i.e., create
+ AutoBuild_run_4_/STOPWIZARD to stop run 4 of the AutoBuild Wizard).
+For a hard stop from the GUI, you can select "Strategy" on the top line of
+the GUI and then select "Stop Strategy" at the bottom of the choices. That
+kills the Wizard and all associated jobs.  You can still go on from there;
+select the Parameters window (the lines at the upper left of the now-yellow
+GUI window) and choose what to do next.
+</p>
+
+
+<H5>Where can I find sample data?</H5>
+<p>You can find sample data in the directories located in:
+<b>$PHENIX/examples</b>. Additionally there is sample MR data
+ in <b>$PHENIX/phaser/tutorial</b>.
+</p>
+<H5>Can I easily run a Wizard with some sample data?</H5>
+<p>You can run sample data with a Wizard with a simple command. To run
+<b>p9-sad</b> sample data with the AutoSol wizard, you type:
+</p><PRE style="face=courier">phenix.run_example  p9-sad </PRE>
+<p>This command copies the <b>$PHENIX/examples/p9-sad</b> directory to 
+your working directory and executes the commands in the file 
+<b>run.csh</b>.</p>
+
+<H5>What sample data are available to run automatically?</H5>
+<p>You can see which sample data are set up to run automatically
+by typing: 
+</p><PRE style="face=courier">phenix.run_example  --help </PRE>
+<p>This command lists all the directories in <b>$PHENIX/examples/</b> that
+have a command file <b>run.csh</b> ready to use. For example:
+</p><PRE style="face=courier">phenix.run_example  --help 
+
+PHENIX run_example script. Fri Jul  6 12:07:08 MDT 2007
+
+Use: phenix.run_example example_name [--all] [--overwrite]
+Data will be copied from PHENIX examples into subdirectories
+of this working directory
+If --all is set then all examples will be run (takes a long time!)
+If --overwrite is set then the script will overwrite subdirectories
+
+List of available examples:  1J4R-ligand a2u-globulin-mr gene-5-mad 
+p9-build p9-sad 
+
+</PRE>
+
+<H5>Are any of the sample datasets annotated?</H5>
+<p>The PHENIX tutorials listed on the main
+<a href="phenix_documentation.html">PHENIX </a>
+web page will walk you through sample datasets, telling
+you what to look for in the output files. For example, the
+<A href="tutorial_sad.htm">Tutorial 1: Solving a structure using SAD data</A>
+tutorial uses the <b>p9-sad</b> dataset as example. It tells you how to
+run this example data in AutoSol and how to interpret the results.
+</p>
+ 
+<!--REMARK PHENIX BODY END-->
+
+</TABLE></BODY>
+
