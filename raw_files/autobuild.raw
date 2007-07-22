@@ -588,8 +588,9 @@ input_lig_file=MyDNA.pdb  # just read in DNA coordinates and include in refineme
 </PRE>
 In this case only protein chains will be built, but the DNA coordinates in
 MyDNA.pdb will be included in all refinements and will be written out
-to the final coordinate file.  This process may require some editing of the
-PDB files by hand because when you use the input_lig_file procedure, any
+to the final coordinate file.  This process is likely to require 
+substantial editing of the PDB files by hand because when you use 
+the input_lig_file procedure, any
 atoms in the input_lig_file that overlap with an atom built automatically
 are skipped. This means that if protein chains are accidentally built in the
 region where DNA is located, then these incorrect protein chains will remain
