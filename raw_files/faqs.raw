@@ -20,6 +20,7 @@ determination. Acta Cryst. D58, 1948-1954.
 
 </p>
 
+
 <H5>What do I do if the PHENIX GUI hangs?</H5>
 <p>If the GUI hangs (windows do not respond or windows display partially) then
 you may want to try and kill it by clicking on the upper right corner ,
@@ -99,6 +100,12 @@ you what to look for in the output files. For example, the
 <A href="tutorial_sad.htm">Tutorial 1: Solving a structure using SAD data</A>
 tutorial uses the <b>p9-sad</b> dataset as example. It tells you how to
 run this example data in AutoSol and how to interpret the results.
+</p>
+
+<H5>Why does the AutoBuild Wizard say it is doing 2 rebuild cycles but I specified one?</H5>
+<p>The AutoBuild wizard adds a cycle just before the rebuild cycles in which
+nothing happens except refinement and grouping of models from any previous
+build cycles.
 </p>
  
 <!--REMARK PHENIX BODY END-->
