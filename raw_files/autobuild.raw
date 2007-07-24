@@ -588,13 +588,15 @@ input_lig_file=MyDNA.pdb  # just read in DNA coordinates and include in refineme
 </PRE>
 In this case only protein chains will be built, but the DNA coordinates in
 MyDNA.pdb will be included in all refinements and will be written out
-to the final coordinate file.  This process is likely to require 
-substantial editing of the PDB files by hand because when you use 
-the input_lig_file procedure, any
-atoms in the input_lig_file that overlap with an atom built automatically
-are skipped. This means that if protein chains are accidentally built in the
-region where DNA is located, then these incorrect protein chains will remain
-and some of the DNA atoms will not be written out.
+to the final coordinate file.  You may wish to add the keyword:
+<PRE style="face=courier">keep_pdb_atoms=False  #keep the ligand atoms if model (pdb) and ligand overlap</PRE>
+which will tell AutoBuild that the ligand (DNA) atoms are to be kept if the
+model that is being built (protein) overlaps with it. (The default is to keep 
+the model that is being built and to discard any ligand atoms that overlap).
+<p> This whole process is likely to require substantial editing of the 
+PDB files by hand because when you build DNA, a lot of chains are going to
+be built into the protein region, and when you build protein, it is going to
+be accidentally built into the DNA.
 
 <LI>The AutoBuild Wizard cannot build modified residues.  If you supply
 a model with modified residues, these will be excised and the chain will
