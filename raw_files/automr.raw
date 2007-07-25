@@ -259,7 +259,10 @@ passed on to AutoBuild.
 
 <P><H5>Passing any commands to AutoBuild</H5><P>
 <p>You can pass any AutoBuild commands on to AutoBuild, even if they
-are not already defined for you in AutoMR. To add the 
+are not already defined for you in AutoMR. Use the
+command <b>autobuild_input_list_add</b> to add a command, and then
+apply that command by adding &quot;autobuild_&quot; to the beginning of
+the command name. For example, to add the 
 commands semet=True and refine=False: 
 <PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
     data=data.mtz input_label_string="F SIGF"  \ 
@@ -325,6 +328,11 @@ chain_type=DNA
 contain just the first member of the ensemble, so you may wish to put
 the member that is likely to be the most similar to the true structure as
 the first one in your ensemble.
+
+<P><LI> If you run AutoMR from the GUI and continue on to AutoBuild,
+and then select &quot;Start run over (delete everything for this run)&quot;
+it will delete your AutoBuild <b>and</b> your AutoMR run and start your
+AutoMR run all over.
 
 <P><LI>The AutoMR Wizard can take most settings of most space groups,
 however it can only use the hexagonal setting of rhombohedral space groups 

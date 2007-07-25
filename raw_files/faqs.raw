@@ -36,9 +36,9 @@ part of your PHENIX job, then using <b>k</b> to kill those jobs while
 running top.
 </p>
 
-<H5>Why does the GUI Parameters window say "Invalid input parameters...do you want to continue?"</H5>
+<H5>Why does the GUI Parameters window say <b>Invalid input parameters...do you want to continue?</b></H5>
 <p>This happens if something in the window isn't correct. If no colored entry fields come up, have a look at the bottom where it says NAVIGATE  SET VARIABLE AUTO MANUAL.  The entry forms under these words should read:
-"Choose method to run"  "Choose variable to set" and "Manual" (or "Automatic")
+&quot;Choose method to run&quot;  &quot;Choose variable to set&quot; and &quot;Manual&quot; (or &quot;Automatic&quot;)
 unless you have intentionally set them.
 If that isn't it, look carefully at all the entries and make sure that they
 are of the type that is expected (file name, number, etc).  If that doesn't
@@ -46,12 +46,12 @@ work, just click YES and carry on.
 </p>
 
 <H5>How do I stop a Wizard?</H5>
-<p>You can stop a Wizard in two ways. For a "soft" stop, press the "Pause" button
+<p>You can stop a Wizard in two ways. For a &quot;soft&quot; stop, press the &quot;Pause&quot; button
 if you are running from the GUI, or create a file with the name STOPWIZARD in
 the directory where the Wizard is running (i.e., create
  AutoBuild_run_4_/STOPWIZARD to stop run 4 of the AutoBuild Wizard).
-For a hard stop from the GUI, you can select "Strategy" on the top line of
-the GUI and then select "Stop Strategy" at the bottom of the choices. That
+For a hard stop from the GUI, you can select &quot;Strategy&quot; on the top line of
+the GUI and then select &quot;Stop Strategy&quot; at the bottom of the choices. That
 kills the Wizard and all associated jobs.  You can still go on from there;
 select the Parameters window (the lines at the upper left of the now-yellow
 GUI window) and choose what to do next.
@@ -108,6 +108,68 @@ nothing happens except refinement and grouping of models from any previous
 build cycles.
 </p>
  
+<H5>Why does the AutoBuild Wizard say <b>Sorry, you need to 
+define FP in labin</b> but AutoMR was able to read my data file just fine?</H5>
+<p>When you run AutoMR and let it continue on to the AutoBuild Wizard
+automatically, the AutoBuild wizard guesses the input file contents 
+separately from AutoMR.  Usually it can guess correctly, but if it 
+cannot then you can tell it what the labels for FP SIGFP FreeR_flag are
+like this:
+</p><PRE style="face=courier">autobuild_input_labels="myFP mySIGFP myFreeR_flag"
+</PRE>
+where you can say <b>None</b> for anything that you do not want to define.
+This has an effect that is identical to specifying <b>input_labels</b> 
+directly when you run AutoBuild.
+</p>
+
+<H5>Why does the AutoBuild Wizard just stop after a few seconds?</H5>
+<p>When you run AutoBuild from the command line
+it writes the output to a file and says something
+like:
+</p><PRE style="face=courier">Sending output to  AutoBuild_run_3_/AutoBuild_run_3_1.log </PRE>
+Usually if something goes wrong with the inputs then it will give you
+an error message right on the screen. However a few types of errors are only
+written to the log file, so if AutoBuild just stops after a few seconds,
+have a look at this log file and it should have an error message at the
+end of the file.  
+</p>
+
+<H5>What is an R-free flags mismatch?</H5>
+When you run AutoBuild or phenix.refine you may get this error message or
+a similar one:
+</p><PRE style="face=courier"> ************************************************************
+Failed to carry out AutoBuild_build_cycle:
+Please resolve the R-free flags mismatch.
+************************************************************
+</PRE>
+Phenix.refine keeps track of which reflections are used as the test set
+(i.e., not used in refinement but only in estimation of overall parameters).
+The test set identity is saved as a hex-digest and written to the output
+PDB file produced by phenix.refine as a REMARK record:
+</p><PRE style="face=courier">  REMARK r_free_flags.md5.hexdigest 41aea2bced48fbb0fde5c04c7b6fb64</PRE>
+Then when phenix.refine reads a PDB file and a set of data, it checks to make
+sure that the same test set is about to be used in refinement as it was
+in the previous refinement of this model.  If it does not, you get the
+error message about an R-free flags mismatch.  
+<p>Sometimes the  R-free flags mismatch error is telling you something 
+important: you need to make sure that the same test set is used throughout
+refinement. In this case, you might need to change the data file you are using
+to match the one previously used with this PDB file. Alternatively you might
+need to start your refinement over with the desired data and test set.
+<p>Other times the warning is not applicable.  If you have two datasets with
+the same test set, but one dataset has one extra reflection that contains 
+no data, only indices, then the two datasets will have different hex digests
+even though they are for all practical purposes equivalent. In this case 
+you would want to ignore the hex-digest warning.
+<p>If you get an  R-free flags mismatch error,
+you can tell the AutoBuild Wizard to ignore the warning with :
+</p><PRE style="face=courier">skip_hexdigest=True</PRE>
+and you can tell phenix.refine to ignore it with:
+</p><PRE style="face=courier">refinement.input.r_free_flags.ignore_pdb_hexdigest=True</PRE>
+You can also simply delete the REMARK record from your PDB file if you wish 
+to ignore the hex-digest warnings.
+<p>
+</p> 
 <!--REMARK PHENIX BODY END-->
 
 </TABLE></BODY>
