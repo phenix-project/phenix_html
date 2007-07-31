@@ -30,6 +30,9 @@ def run(args):
     if (   line == "</body>"
         or line == '<hr class="docutils footer" />'):
       break
+    if (line.startswith('<div class="image">')):
+      print line
+      continue
     if (line.startswith("<div ")):
       continue
     if (line == "</div>"):
