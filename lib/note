@@ -17,7 +17,8 @@ cat reject skip.dat > all_bad.unsorted
 phenix.python  sort_lines.py all_bad.unsorted > reject
 
 
-Then run 
+Then run the indexing all over again...and after that:
+
 phenix.python new.py > skip.dat
 again and copy all_list to good_list.
 
