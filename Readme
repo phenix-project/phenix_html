@@ -1,0 +1,59 @@
+
+Building the PHENIX documentation 
+=================================
+
+Paul Adams, July 2007.
+
+The process for building the complete documentation is as follows:
+
+1. Convert any .pre files in the rst_files directory to .txt
+   (restructured text) files. [at present this is only done for
+   phenix.refine]
+
+2. Generate regular HTML files from .txt (restructured text) files in
+   the rst_files directory.
+
+3. Convert the restructured text derived HTML files to .raw files (by
+   removing headers and footers). These .raw files then need to be
+   moved to the raw_files directory.
+
+4. Convert the .raw files in the raw_files directory to final .htm
+   files, while also adding tables-of-contents and creating an overall
+   index.
+
+Note that the last step relies on information in the html.list
+file. If you add a new restructured text file, or .raw file you shoudl
+update the html.list file appropriately. If you generate a new .raw
+file in the raw_files directory (either by hand, or from a
+restructured text file) you should check this file into the SVN - this
+will allow others to run the toc_and_index.py without running the
+commands to deal with the restructured text.
+
+This is all done automatically by the PHENIX installer. To perform
+these steps manually, in the context of a PHENIX installation you
+should:
+
+1.
+
+cd phenix_html/rst_files
+phenix.python ../scripts/create_refinement_txt.py
+
+2.
+
+foreach file ( `ls *.txt` ) 
+  docutils.rst2html $file > $file:r.html
+end
+
+3.
+
+foreach file ( `ls *.html` )
+  phenix.python ../scripts/raw_from_rst_html.py $file > $file:r.raw
+  if ( ! $status ) then
+    mv $file:r.raw ../raw_files
+  endif
+end
+
+4.
+
+cd ..
+phenix.python $PHENIX/phenix/phenix/utilities/toc_and_index.py
