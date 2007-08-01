@@ -1,0 +1,17 @@
+refinement {
+  main {
+    fake_f_obs = True
+  }
+  modify_start_model {
+    selection = "chain A"
+    sites {
+      shake = 0.5
+    }
+  }
+  fake_f_obs {
+    k_sol = 0.35
+    b_sol = 45.0
+    b_cart = 1.25 3.78 1.25 0.0 0.0 0.0
+    scale = 358.0
+  }
+}

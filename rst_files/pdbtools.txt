@@ -1,0 +1,35 @@
+phenix.pdbtools: tools for PDB file manipulations
+-------------------------------------------------
+
+**Purpose**
+
+phenix.pdbtools is a command line tool to perform simple maipulations on a
+structure in PDB file such as:
+
+- shaking of coordinates (adding a random shift to coordinates)
+- rotation-translation shift of coordinates
+- shaking of occupancies
+- shaking of ADP
+- shifting of ADP (adding a constant value)
+- scaling of ADP (multiplying by a constant value)
+- setting a value to ADP
+- converting to isotropic
+- converting to anisotropic
+- removing selected part of a model
+
+All operations above can be performed on a whole model or any selected part.
+
+**How to run**
+
+phenix.pdbtools is run from the command line::
+
+  % phenix.pdbtools [options] [pdb_file] [parameter_file]
+
+**To get information about command line options type**::
+
+  % phenix.pdbtools
+
+**To see all default parameters**::
+
+  % phenix.pdbtools --show-defaults=all
+

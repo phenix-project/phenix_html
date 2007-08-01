@@ -1,0 +1,8 @@
+refinement.refine.anomalous_scatterers {
+  group {
+    selection = name BR
+    f_prime = -5
+    f_double_prime = 2
+    refine = f_prime *f_double_prime
+  }
+}

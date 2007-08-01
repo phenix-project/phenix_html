@@ -1,0 +1,17 @@
+refinement {
+  bulk_solvent_and_scale {
+    k_sol_b_sol_grid_search = False
+    minimization_k_sol_b_sol = False
+    minimization_b_cart = False
+    fix_k_sol = 0.45
+    fix_b_sol = 56.0
+    fix_b_cart {
+      u11 = 1.2
+      u22 = 2.3
+      u33 = 3.6
+      u12 = 0.0
+      u13 = 0.0
+      u23 = 0.0
+    }
+  }
+}

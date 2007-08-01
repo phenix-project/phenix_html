@@ -1,0 +1,25 @@
+refinement.main {
+   number_of_macro_cycles=4
+   high_resolution=2.5
+}
+refinement.refine {
+  strategy = *individual_sites \
+              rigid_body \
+             *individual_adp \
+              group_adp \
+             *tls \
+              individual_occupancies \
+              group_occupancies \
+              group_anomalous \
+              none
+  adp {
+    tls = "chain A"
+    tls = "chain B"
+  }
+}
+refinement.target_weights {
+  wxc_scale=3
+   wxu_scale=5
+}
+refinement.output.prefix=my_best_model
+refinement.simulated_annealing.start_temperature=5000

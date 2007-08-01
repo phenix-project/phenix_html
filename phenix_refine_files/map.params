@@ -1,0 +1,12 @@
+refinement {
+  electron_density_map {
+    map_types = *k*Fobs-n*Fmodel *2m*Fobs-D*Fmodel *m*Fobs-D*Fmodel
+    k = 1
+    n = 1
+    grid_resolution_factor = 1/4.
+    region = *selection cell
+    atom_selection = name CA or name N or name C
+    apply_sigma_scaling = False
+    apply_volume_scaling = True
+  }
+}

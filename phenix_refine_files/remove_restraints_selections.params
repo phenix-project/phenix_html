@@ -1,0 +1,8 @@
+refinement {
+  geometry_restraints.remove {
+    angles = chain B
+    dihedrals = name CA
+    chiralities = all
+    planarities = None
+  }
+}

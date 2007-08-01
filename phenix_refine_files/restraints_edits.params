@@ -1,0 +1,27 @@
+refinement.geometry_restraints.edits {
+  zn_selection = chain X and resname ZN and resid 200 and name ZN
+  his117_selection = chain X and resname HIS and resid 117 and name NE2
+  asp130_selection = chain X and resname ASP and resid 130 and name OD1
+  bond {
+    action = *add
+    atom_selection_1 = $zn_selection
+    atom_selection_2 = $his117_selection
+    distance_ideal = 2.1
+    sigma = 0.02
+  }
+  bond {
+    action = *add
+    atom_selection_1 = $zn_selection
+    atom_selection_2 = $asp130_selection
+    distance_ideal = 2.1
+    sigma = 0.02
+  }
+  angle {
+    action = *add
+    atom_selection_1 = $his117_selection
+    atom_selection_2 = $zn_selection
+    atom_selection_3 = $asp130_selection
+    angle_ideal = 109.47
+    sigma = 5
+  }
+}
