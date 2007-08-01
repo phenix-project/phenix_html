@@ -325,7 +325,7 @@ don't rebuild it yet:
 phases are in <b>AutoMR_run_1_/MR.1.mtz</b>.  Use these phases as input
 to AutoSol, along with some weak SAD data, still not building any new models:
 <PRE style="face=courier"> phenix.autosol data=infl.sca \
- input_phase_file=MR.1.mtz input_phase_labels="F PHIC FOM"   \
+ input_phase_file=AutoMR_run_1_/MR.1.mtz input_phase_labels="F PHIC FOM"   \
 seq_file=sequence.dat build=False
 </PRE>
 <p> note that we have specified the data columns for F PHI and FOM in the
