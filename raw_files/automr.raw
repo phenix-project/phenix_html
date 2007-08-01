@@ -334,7 +334,7 @@ you leave out FOM it will set it to zero). </p>
 <p>AutoSol will write an MTZ file with experimental phases to <b>phaser_xx.mtz</b> where xx depends on how many solutions are considered during the run.  The
 next command for running AutoBuild  you will need to edit depending 
 on the value of xx:
-<PRE style="face=courier"> phenix.autobuild data=AutoSol_run_1_/phaser_8.mtz \
+<PRE style="face=courier"> phenix.autobuild data=AutoSol_run_1_/phaser_2.mtz \
   model=AutoMR_run_1_/MR.1.pdb seq_file=sequence.dat rebuild_in_place=False
 </PRE>
 <p>AutoBuild will now take the phases from your AutoSol run and combine them
