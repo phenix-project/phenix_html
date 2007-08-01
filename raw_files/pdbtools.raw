@@ -1,0 +1,41 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>TITLE</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<h1 class="title">phenix.pdbtools: tools for PDB file manipulations</h1>
+<p><strong>Purpose</strong></p>
+<p>phenix.pdbtools is a command line tool to perform simple maipulations on a
+structure in PDB file such as:</p>
+<ul>
+<li>shaking of coordinates (adding a random shift to coordinates)</li>
+<li>rotation-translation shift of coordinates</li>
+<li>shaking of occupancies</li>
+<li>shaking of ADP</li>
+<li>shifting of ADP (adding a constant value)</li>
+<li>scaling of ADP (multiplying by a constant value)</li>
+<li>setting a value to ADP</li>
+<li>converting to isotropic</li>
+<li>converting to anisotropic</li>
+<li>removing selected part of a model</li>
+</ul>
+<p>All operations above can be performed on a whole model or any selected part.</p>
+<p><strong>How to run</strong></p>
+<p>phenix.pdbtools is run from the command line:</p>
+<pre class="literal-block">
+% phenix.pdbtools [options] [pdb_file] [parameter_file]
+</pre>
+<p><strong>To get information about command line options type</strong>:</p>
+<pre class="literal-block">
+% phenix.pdbtools
+</pre>
+<p><strong>To see all default parameters</strong>:</p>
+<pre class="literal-block">
+% phenix.pdbtools --show-defaults=all
+</pre>
+<!--REMARK PHENIX BODY END-->
