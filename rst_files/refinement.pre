@@ -1304,7 +1304,7 @@ The default is ``n_gaussian``. To switch to different table::
   % phenix.refine data.hkl model.pdb scattering_table=neutron
 
 Suppressing the output of certain files
-**************************************
+***************************************
 
 The following command will tell phenix,refine to not write .eff, .geo, .def,
 maps and map coefficients files::
