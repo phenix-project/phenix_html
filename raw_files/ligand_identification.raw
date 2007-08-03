@@ -23,6 +23,8 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 <P>The Resolve_ligand_identification task carries out fitting of a library of <a href="ligand_identification.htm#anch49">200 most frequently observed ligands</a> in the PDB  to a given electron density map. The program also conducts the analysis and ranking of the ligand fitting results.  
 
+<P>The current Resolve_ligand_identification task work with the ligand library provided with the Phenix program by default.  It is also capable of fitting and ranking ligands in a custom PDB library provided by the users. 
+
       <P><H5><U>Usage</U></H5><P>
 <P>The Resolve_ligand_identification task can be run from the PHENIX GUI as a stand-alone strategy, or as a task in  a multi-task strategy.   
 <P>
@@ -36,7 +38,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
 <P><H5>How to run the Resolve_ligand_identification task</H5><P>
-<P>  An example 'ligand identification' strategy is located in the 'ligands' section in the Phenix strategy menu.  Follow the directions and helps in the GUI.
+<P>  An example 'ligand identiofication' strategy is located in the 'ligands' section in the Phenix strategy menu.  Follow the directions and helps in the GUI.
 
 
 <P><H5>What the Resolve_ligand_identification task needs to run:</H5><P>
@@ -78,13 +80,13 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 </UL>
 
       <P><H5><U>Examples</U></H5><P>
-<P>  An example 'ligand identification' strategy is located in the 'ligands' section of the Phenix strategy menu.
+<P>  An example 'ligand identiofication' strategy is located in the 'ligands' section of the Phenix strategy menu.
 
       <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems:</H5><P>
 
-<P><UL><LI>The current Resolve_ligand_identification task work exclusively with the ligand library provided with the Phenix program.  A new version capable of fitting and ranking ligands in a custom library is being implemented and tested.  Please send inquiries to the authors if you need to have this functionality before its release.
+<P><UL><LI>The current Resolve_ligand_identification task work with the ligand library provided with the Phenix program by default.  It is also capable of fitting and ranking ligands in a custom PDB library provided by the users.  The ligand atoms in the user-provided PDBs should be under 'HETATM' records.
 
 <P><LI> Other Resolve related limitations please refer to the document of the <a href="ligandfit.htm">LigandFit wizard.</a>
 
