@@ -10,7 +10,7 @@
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 <H4><U>
-<I>>PHENIX Graphical User Interface
+<I>PHENIX Graphical User Interface</I>
 </U></H4>
 
 <H5><U>Author</U></H5>
@@ -23,6 +23,12 @@ PHENIX package.  In particular, the concept of a wizard that guides the
 user through the complex process of solving a protein structure, is a
 powerful tool.
 
+<H5><U>Screen Shots</U></H5>
+
+<img src="images/phenix_gui_main.png">
+<P>
+<img src="images/phenix_gui_parameters.png">
+
 <H5><U>Wizards</U></H5>
 
 Wizards can be loaded by double clicking on the Wizard menu to the left of
@@ -31,7 +37,7 @@ from the user.  Details on wizards are given elsewhere.
 
 <H5><U>Strategies</U></H5>
 
-The main window of the PHENIX GUI is the strategy canvas.
+<P>The main window of the PHENIX GUI is the strategy canvas.
 The strategy canvas allows the user to construct a strategy from the
 tasks in the menu in the left window.  Choosing a task from the menu
 will attach that task to the mouse.  The mouse will change to a hand icon
@@ -40,14 +46,14 @@ inside the canvas will place the task on the closest grid point.  Help
 on tasks can be obtained by right-clicking on the task menu item to
 reveal a pop-up menu.
 
-A similar situation exists for the strategy menu.  Choosing a strategy
+<P>A similar situation exists for the strategy menu.  Choosing a strategy
 will load it into a new strategy canvas.  These strategies are loaded
 with the default task inputs providing a "clean slate" strategy for
 user customization.  Right-clicking will reveal a pop-up menu for
 strategy loading option including overwriting the current strategy or
 adding to the current strategy.
 
-Tasks can be moved in one of two ways.  The first involves using the
+<P>Tasks can be moved in one of two ways.  The first involves using the
 left mouse button to click-drag-drop the task.  This must be done in
 the title panel of the task.  The second option is useful in
 situations where there is a delay between the mouse action and the GUI
@@ -56,47 +62,47 @@ Moving a task can be achieve by right mouse clicking on the title
 panel and then right clicking where the task should be re-located.
 The mouse cursor will change to indicate the attachment of the task.
 
-Each task has up to five buttons along the top of the title panel.  The
+<P>Each task has up to five buttons along the top of the title panel.  The
 right most button deletes the task from the canvas.  The left most button
 is a toggle to indicate which task to commence the calculation.  The
 remaining three buttons are present if the appropriate function is available
 for that task.
 
-The upper-most task in the above figure displays all five buttons.
+<P>The upper-most task in the above figure displays all five buttons.
 The second button is the task parameter button. A dialog is displayed
 that allows the user to edit the input and output of that task.  The
 number and type of information is dependent on the task.
 
-The third button is the display button.  This launches the appropriate
+<P>The third button is the display button.  This launches the appropriate
 windows for display the results of a task.  For example, the 'import
 pdb' task will display the PDB header information in a text control or
 the molecule in a molecular graphical interface program PyMOL.
 
-The fourth button is the help button.  Help for the task is displayed
+<P>The fourth button is the help button.  Help for the task is displayed
 via this option.
 
-Two tasks can be linked by moving the lower panels of one task over
+<P>Two tasks can be linked by moving the lower panels of one task over
 the title panel of another.  There can be any number of connection panels
 associated with a task.  Logical operations can be provided to choose the 
 appropriate linkage to follow.
 
-The connection between tasks is not data flow but time flow.  Each
+<P>The connection between tasks is not data flow but time flow.  Each
 task obtains its data from the PHENIX Data Storage Server and sends
 its output data to the PDS server.  Subsequent tasks can get data
 sent to the PDS server by previous tasks.
 
-The colors of the task indicate the activity of the strategy.  A
+<P>The colors of the task indicate the activity of the strategy.  A
 purple task means that it has finished running.  The green task is the
 currently running task and blue indicates a task that hasn't been run.
 Red indicates a task that failed during calculation and yellow is used
 when a strategy run is stopped by the user.
 
-The task menu on the left side of the strategy canvas is divided into
+<P>The task menu on the left side of the strategy canvas is divided into
 sub-menus. The ``development`` sub-menu contains experimental tasks.
 The ``examples`` sub-menu has some demonstrative tasks.  The remaining
 sub-menus are self explanatory.
 
-The overview window in the bottom left corner allows navigation of the
+<P>The overview window in the bottom left corner allows navigation of the
 canvas when large strategies are used.
 
 <!--REMARK PHENIX BODY END-->
