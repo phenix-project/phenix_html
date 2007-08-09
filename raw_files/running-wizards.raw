@@ -2,8 +2,7 @@
 <!--REMARK PHENIX TITLE START  Put your title here>
 
 
-<H4><U> Running a Wizard from a GUI, the command-line, or a script
-</U></H4>
+<H4><U> Using the PHENIX Wizards </U></H4>
 
 
 <!--REMARK PHENIX TITLE END-->
@@ -23,6 +22,36 @@ and from keyworded script files.  All three versions are identical except
 in the way that they take commands from the user. 
 <P>This page describes how to run a Wizard and what a Wizard does in general. 
 The specific Wizard help pages describe the details of each PHENIX Wizard.
+
+      <P><H5><U>Overview of Structure Determination with the PHENIX Wizards </U></H5><P>
+<P>You can use the AutoSol Wizard to solve structures by SAD, MAD, SIR/SIRAS, 
+and MIR/MIRAS. The AutoMR Wizard can solve a structure by MR.  The AutoMR and
+AutoSol Wizards together can carry out MRSAD.  
+The AutoSol Wizard can also combine SAD, MAD, SIR, and MIR  datasets and solve
+the structure using all available data.
+</P><P>Once you have experimental or MR phases, you can carry out iterative 
+model-building, density modification, and refinement with the AutoBuild Wizard
+to improve your model.  Finally you can use the rebuild_in_place feature of the
+AutoBuild Wizard to make one very good final model.
+</P><P> If your structure contains ligands, you can place them using the 
+LigandFit Wizard</p>
+</P><P>This help page describes how to run the Wizards from a GUI,
+the command-line, or a script.  The individual Wizard documentation pages
+describe the strategies and commands for each Wizard:
+        <UL>
+          <LI><A
+          href="autosol.htm">Automated
+          Structure Solution using AutoSol</A>
+          <LI><A
+          href="automr.htm">Automated
+          Molecular Replacement using AutoMR</A>
+          <LI><A
+          href="autobuild.htm">Automated
+          Model Building and Rebuilding using AutoBuild</A>
+          <LI><A
+          href="ligandfit.htm">Automated
+          Ligand Fitting using LigandFit</A> </LI></UL>
+
 
       <P><H5><U>Usage</U></H5><P>
 <P><H5>Wizard data directories, sub-directories, Facts, and the
