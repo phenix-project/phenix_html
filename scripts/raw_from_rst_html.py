@@ -1,10 +1,12 @@
 import sys
 
-raw_header = """\
+raw_header_1 = """\
 <!--REMARK PHENIX TITLE START  Put your title here>
 
 
-<H4><U>TITLE</U></H4>
+<H4><U>"""
+
+raw_header_2 = """</U></H4>
 
 
 <!--REMARK PHENIX TITLE END-->
@@ -19,19 +21,31 @@ raw_footer = """\
 
 def run(args):
   assert len(args) == 1
+
+  lines_init = iter(open(args[0]).read().splitlines())
+  for line in lines_init:
+    if (line.startswith('<h1 class="title">')):
+      line = line[18:]
+      line = line[:line.rfind("<")]
+      title = line
+
   lines = iter(open(args[0]).read().splitlines())
   for line in lines:
     if (line == "<body>"):
       break
   else:
     raise RuntimeError("<body> line not found.")
-  sys.stdout.write(raw_header)
+  sys.stdout.write(raw_header_1)
+  sys.stdout.write(title)
+  sys.stdout.write(raw_header_2)
   for line in lines:
     if (   line == "</body>"
         or line == '<hr class="docutils footer" />'):
       break
     if (line.startswith('<div class="image">')):
       print line
+      continue
+    if (line.startswith('<h1 class="title">')):
       continue
     if (line.startswith("<div ")):
       continue
