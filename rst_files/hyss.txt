@@ -1,6 +1,9 @@
--------------
+==========================
+Hybrid Substructure Search
+==========================
+
 HySS overview
--------------
+=============
 
 The HySS (Hybrid Substructure Search) submodule of the Phenix package
 is a highly-automated procedure for the location of anomalous
@@ -57,7 +60,6 @@ References:
 To contact us send email to help@phenix-online.org or
 bugs@phenix-online.org.
 
-=============
 HySS examples
 =============
 
@@ -73,7 +75,6 @@ reflection data. HySS reads the following formats directly:
   - CNS reflection files
   - SHELX reflection files with amplitudes
 
-===============
 nsf_d2_peak.sca
 ===============
 
@@ -185,7 +186,6 @@ ends with::
 The resulting coordinate files can be used for phasing and density
 modification with other programs.
 
-============
 gere_MAD.mtz
 ============
 
@@ -199,7 +199,6 @@ signal and finishes after about 34 seconds (2.8GHz Pentium 4 Linux),
 writing out the 12 (or sometimes only 11) sites in the various file
 formats.
 
-=======
 mbp.hkl
 =======
 
@@ -216,7 +215,6 @@ HySS reads the reflection data from the ``mbp.hkl`` file. The
 for unit cell parameters and a space group symbol. HySS
 finishes after about 26 seconds (2.8GHz Pentium 4 Linux).
 
-====================
 Command line options
 ====================
 
@@ -340,7 +338,6 @@ show the following::
 
 HySS will go on searching for 12 sites.
 
-==================
 If things go wrong
 ==================
 
@@ -373,12 +370,11 @@ to solve the substructure with other programs we would like to
 investigate. Please send email to bugs@phenix-online.org.
 
 
-==================
 Auxiliary programs
 ==================
 
-iotbx.emma
-----------
+phenix.emma
+-----------
 
 *EMMA* stands for *Euclidean Model Matching* and is the algorithm used
 by HySS to superimpose two putative solutions and to derive the
@@ -431,8 +427,8 @@ back to see the best match.
 <http://cci.lbl.gov/cctbx/emma.html>`_.
 
 
-mmtbx.xtriage
--------------
+phenix.xtriage
+--------------
 
 If HySS cannot solve the structure in default mode it may be worth
 looking at some statistics of the reflection data using the
