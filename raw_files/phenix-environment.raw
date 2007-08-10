@@ -1,0 +1,94 @@
+
+
+<!-- REMARK PHENIX TITLE START  Put your title here-->
+
+
+<H4><U>The PHENIX environment</U></H4> 
+
+
+<!-- REMARK PHENIX TITLE END-->
+
+<!-- REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents-->
+
+<H5><U>Setting up your environment</U></H5>
+
+<p>Once you have successfully installed PHENIX, to set up your
+environment please source the phenix_env file in the phenix
+installation directory (for example):</p>
+<pre>
+% source /usr/local/phenix-&lt;version&gt;/phenix_env [csh/tcsh users]
+</pre>
+<p>or</p>
+<pre>
+% . /usr/local/phenix-&lt;version&gt;/phenix_env.sh [sh/bash users]
+</pre>
+<p>To run jobs remotely, you need to source the phenix_env in the
+.cshrc (or equivalent) file.</p>
+
+<p>The following environmental variables should now be defined (here
+with example values):
+
+<ul>
+<li>PHENIX=/usr/local/phenix
+<li>PHENIX_INSTALLER_DATE=080920070957
+<li>PHENIX_VERSION=1.3b
+<li>PHENIX_RELEASE_TAG=final
+<li>PHENIX_ENVIRONMENT=1
+<li>PHENIX_MTYPE=intel-linux-2.6-x86_64
+<li>PHENIX_MVERSION=linux
+<li>PHENIX_USE_MTYPE=intel-linux-2.6-x86_64
+</ul>
+
+<p> It is not necessary (or useful) to define environmental variables
+for SOLVE/RESOLVE for PHENIX. If you have them set in your environment
+they are ignored by PHENIX.
+
+<H5><U>Documentation</U></H5>
+
+<p>You can find documentation in the PHENIX GUI (under the Help
+menu). Alternatively, you can use a web browser to view the
+documentation supplied with PHENIX, by typing:</p>
+
+<pre>
+% phenix.doc
+</pre>
+
+<p>If this doesn't work then you can point a web browser to your PHENIX
+installation (for example):</p>
+
+<pre>
+% firefox /usr/local/phenix-&lt;version&gt;/doc/index.html
+</pre>
+
+<p>or:</p>
+
+<pre>
+% mozilla $PHENIX/doc/index.html
+</pre>
+
+<p>You can also visit the PHENIX Wiki:</p>
+
+<pre>
+http://www.phenix-online.org/phenix_wiki
+</pre>
+
+<p>For license information please see the LICENSE file.</p>
+<p>For the source of the components see SOURCES.</p>
+
+<H5><U>Help</U></H5>
+
+<p>You can join the PHENIX bulletin board and/or view the archives:</p>
+
+<pre>
+http://www.phenix-online.org/mailman/listinfo/phenixbb
+</pre>
+
+<p>Alternatively you can send email to:</p>
+
+<pre>
+bugs&#64;phenix-online.org  (if you think you've found a bug)
+help&#64;phenix-online.org  (if you'd like to ask us questions)
+</pre>
+
+<!-- REMARK PHENIX BODY END-->

@@ -1,0 +1,127 @@
+
+<!-- REMARK PHENIX TITLE START  Put your title here-->
+
+
+<H4><U>Running PHENIX</U></H4> 
+
+
+<!-- REMARK PHENIX TITLE END-->
+
+<!-- REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents-->
+
+<p>Different user interfaces are required depending on the needs of a
+diverse user community. There are currently three different user
+interfaces, each described below.
+
+<H5><U>Command Line Interface</U></H5>
+
+<P>For a number of applications a command-line interface is most
+effective. This is particularly the case when rapid results are
+required, such as data quality assessment and twinning analysis, or
+substructure solution at the synchrotron beam line. Tools that
+facilitate the ease of use at the early stages of structure solution,
+such as data analyses (phenix.xtriage), substructure solution
+(phenix.hyss) and reflection file manipulations such as the generation
+of a test set, reindexing and merging of data
+(iotbx.reflection_file_converter) are available via simple command
+line interfaces. Another major application that is controlled via the
+command line interface is phenix.refine.
+
+<p>To illustrate the command line interface, the command used to run the
+program that carries out a data quality and twinning analyses is:
+
+<pre>phenix.xtriage my_data.sca [options]</pre>
+
+<p>Further options can be given on the command line, or can be specified
+via a parameter file:
+
+<pre>phenix.xtriage my_parameters.def</pre>
+
+<p>A similar interface is used for macromolecular refinement:
+
+<pre>phenix.refine my_model.pdb my_data.mtz</pre>
+
+<P>Although SCALEPACK and MTZ formats are indicated in the above example,
+reflection file formats such as D*TREK, CNS/XPLOR or SHELX can be
+used, as the format is detected automatically.  
+
+<P>Help for all command line applications can be obtained by use of the
+flag --help :
+
+<pre>phenix.refine --help</pre>
+
+<p>There are also many other command line tools (described in detail elsewhere in this
+documentation). If you use a shell with command completion, you can type the first
+part of a command, hit the command list key (&lt;ctrl&gt;-D in tcsh) and see
+a list of the available commands. For example, this is the start of the list of
+commands that begin with phenix:</p>
+<pre>
+phenix.autobuild                     
+phenix.autobuild_1.3b               
+phenix.automr                        
+phenix.automr_1.3b                  
+phenix.autosol                       
+phenix.autosol_1.3b                 
+phenix.doc                           
+phenix.doc_1.3b                     
+</pre>
+<p>Note: all commands have their regular name and name qualified with the
+version. You can always use the version-qualified name to ensure which
+version of a command you are using (in case you have multiple versions
+of PHENIX or related applications installed).</p>
+
+<H5><U>The PHENIX GUI</U></H5>
+
+<p>To run the PHENIX Graphical Interface:</p>
+<pre>
+% phenix &amp;
+</pre>
+<p> Please see the other documentation files to get more details about
+the <a href="phenix_gui.htm">PHENIX GUI</a>.
+
+<H5><U>Tasks and Strategies</U></H5>
+
+<P>The PHENIX strategy interface (in the GUI) provides a way to
+construct complex networks of tasks to perform a higher-level
+function. For example, the steps required to go from initial data to a
+first electron density map in a SAD experiment can be broken down into
+well-defined tasks (available from the task window in the GUI) which
+can be reused in other procedures. Instead of requiring the user to
+run these tasks in the correct order they are connected together by
+the software developer, and can thus be run in an automated
+way. However, because the connection between tasks is dynamic they can
+be reconfigured or modified, and new tasks introduced as necessary if
+problems occur. This provides the flexibility of user input and
+control, while still permitting complete automation when
+decision-making algorithms are incorporated into the environment. The
+tasks and their connection into strategies rely on the use of plain
+text task files written using the Python scripting language. This
+enables the computational algorithms to be used easily in a
+non-graphical environment. The PHENIX GUI permits strategies to be
+visualized and manipulated. These manipulations include loading a
+strategy distributed with PHENIX, customizing and saving it for future
+recall.  Current tasks and strategies available include:
+
+<ul>
+<li>Density modification; Carries out a single run of RESOLVE
+<li>Substructure solution; Runs phenix.hyss
+<li>Molecular replacement; Computes rotation and translation functions with PHASER. 
+<li>Model building; Using TEXTAL or RESOLVE.
+<li>Ligand identification; Using RESOLVE.
+</ul>
+
+<H5><U>Wizards</U></H5>
+
+<P> The decision-making in strategies is local, with decisions being made
+at the end of each task to determine the next path in the
+network. Crystallographers typically make decisions in a very similar
+way during structure solution; a program is run, the outputs manually
+inspected and a decision made about the next step in the process. By
+contrast, a wizard provides a user interface that can make more global
+decisions, by considering all of the available information at each
+step in the process. Wizards can be run from both the command line and
+the PHENIX GUI. Please see the <a href="running-wizards.htm">Wizard
+documentation</a> for more details.
+
+<!-- REMARK PHENIX BODY END-->

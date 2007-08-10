@@ -1,0 +1,99 @@
+
+<!-- REMARK PHENIX TITLE START  Put your title here-->
+
+
+<H4><U>Installation</U></H4> 
+
+
+<!-- REMARK PHENIX TITLE END-->
+
+<!-- REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents-->
+
+<p>You should obtain the latest distribution of PHENIX including the
+binary bundles for your machine architectures. Unpack the tar file:</p>
+<pre>
+% tar xvf phenix-installer-&lt;version&gt;-&lt;platform&gt;.tar
+</pre>
+<p>Change to the installer directory:</p>
+<pre>
+% cd phenix-installer-&lt;version&gt;
+</pre>
+<p>To install:</p>
+<pre>
+% ./install       [will install in /usr/local/phenix-&lt;version&gt; by default,
+                   requires root permissions]
+
+% ./install --prefix=&lt;directory&gt;  [will make &lt;directory&gt;/phenix-&lt;version&gt; and install there]
+</pre>
+<p>Note: &lt;directory&gt; must be a absolute path (i.e. starts with a /). A
+relative path starting with ../ will not work correctly.</p>
+<p>Note: on Mac OS-X systems the binary installation must be installed in /usr/local. </p>
+
+<p>Installation of the binary version of PHENIX requires no compilation, only 
+the generation of some data files, so you will probably have to wait about 
+30 minutes for the installation to complete (depending on the performance of
+your installation platform).</p>
+
+<p>PHENIX is supported on most common Linux platforms and Mac OS-X
+
+<p>Currently, the following Redhat Linux platforms are tested, and therefore
+supported for the distribution:</p>
+<ul class="simple">
+<li>Redhat 8.0</li>
+<li>Redhat 9.0</li>
+<li>Redhat Enterprise Workstation 3 [+/- x86_64]</li>
+<li>Redhat Enterprise Server 4.2 [+/- x86_64]</li>
+<li>Fedora Core 3 [+/- x86_64]</li>
+<li>Fedora Core 5 [+/- x86_64]</li>
+<li>Fedora Core 6 [+/- x86_64]</li>
+</ul>
+<p>Redhat versions prior to 8.0 are not supported.</p>
+<p>PHENIX should install on other Linux platforms such as Mandrake, or SuSe.</p>
+<p>There are 4 different Linux installations available, based on the
+version of the kernel (2.4 or 2.6) and the CPU type (ix86 or
+x86_64). If it isn't clear which you need then type this command on
+the machine in question:</p>
+<blockquote>
+% uname -rm</blockquote>
+<p>The first item is the kernel version, the second is the machine
+hardware. Please download the appropriate installer based on this
+table:</p>
+<p>
+<table border="1">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr><td rowspan="2">Hardware</td>
+<td colspan="2" align="center">Kernel</td>
+</tr>
+<tr><td align="center">2.4</td>
+<td align="center">2.6</td>
+</tr>
+<tr><td>ix86</td>
+<td>intel-linux-2.4</td>
+<td>intel-linux-2.6</td>
+</tr>
+<tr><td>x86_64</td>
+<td>intel-linux-2.4-x86_64</td>
+<td>intel-linux-2.6-x86_64</td>
+</tr>
+</tbody>
+</table>
+<p>Currently, the following other platforms are supported for the distribution:</p>
+<ul>
+<li>Mac OS-X (Intel and PPC)</li>
+</ul>
+<p>For license information please see <tt><span class="pre">LICENSE</span></tt> file.</p>
+<p>For source of components see <tt><span class="pre">SOURCES</span></tt>.</p>
+</div>
+<div class="section">
+<h4>Space requirements</h4>
+<p>For the complete PHENIX installation you will need approximately 1.5GB
+of disk space.</p>
+</div>
+
+<!-- REMARK PHENIX BODY END-->
