@@ -1,22 +1,15 @@
-
 <!--REMARK PHENIX TITLE START  Put your title here>
 
 
-<H4><U> phenix.pdbtools: tools for PDB file manipulations </U></H4> 
+<H4><U>phenix.pdbtools: tools for PDB file manipulations</U></H4>
 
 
 <!--REMARK PHENIX TITLE END-->
 
-<!--REMARK PHENIX BODY START   Put your text here. 
+<!--REMARK PHENIX BODY START   Put your text here.
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
-
-
-      <P><H5><U>Author(s)</U></H5><P>
-<P><UL><LI> PDBTOOLS: Peter Zwart 
-</UL>
-
-      <P><H5><U>Purpose</U></H5><P>
-<p>phenix.pdbtools is a command line tool to perform simple manipulations on a
+<p><strong>Purpose</strong></p>
+<p>phenix.pdbtools is a command line tool to perform simple maipulations on a
 structure in PDB file such as:</p>
 <ul>
 <li>shaking of coordinates (adding a random shift to coordinates)</li>
@@ -30,11 +23,8 @@ structure in PDB file such as:</p>
 <li>converting to anisotropic</li>
 <li>removing selected part of a model</li>
 </ul>
-
 <p>All operations above can be performed on a whole model or any selected part.</p>
-
-
-      <P><H5><U>Usage</U></H5><P>
+<p><strong>How to run</strong></p>
 <p>phenix.pdbtools is run from the command line:</p>
 <pre class="literal-block">
 % phenix.pdbtools [options] [pdb_file] [parameter_file]
@@ -47,9 +37,4 @@ structure in PDB file such as:</p>
 <pre class="literal-block">
 % phenix.pdbtools --show-defaults=all
 </pre>
-
-
-      <P><H5><U>Literature</U></H5><P>
-      <P><H5><U>Additional information</U></H5><P>
-
 <!--REMARK PHENIX BODY END-->

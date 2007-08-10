@@ -1,14 +1,14 @@
 <!--REMARK PHENIX TITLE START  Put your title here>
 
 
-<H4><U>TITLE</U></H4>
+<H4><U>Hybrid Substructure Search</U></H4>
 
 
 <!--REMARK PHENIX TITLE END-->
 
 <!--REMARK PHENIX BODY START   Put your text here.
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
-<h1 class="title">HySS overview</h1>
+<P><H5><U><B>HySS overview</B></U></H5><P>
 <p>The HySS (Hybrid Substructure Search) submodule of the Phenix package
 is a highly-automated procedure for the location of anomalous
 scatterers in macromolecular structures. HySS starts with the
@@ -348,7 +348,7 @@ Writing SHELXD ins file: mbp_anom_diffs.ins
 to solve the substructure with other programs we would like to
 investigate. Please send email to <a class="reference" href="mailto:bugs&#64;phenix-online.org">bugs&#64;phenix-online.org</a>.</p>
 <P><H5><U><B>Auxiliary programs</B></U></H5><P>
-<P><H5><U><B>iotbx.emma</B></U></H5><P>
+<P><H5><U><B>phenix.emma</B></U></H5><P>
 <p><em>EMMA</em> stands for <em>Euclidean Model Matching</em> and is the algorithm used
 by HySS to superimpose two putative solutions and to derive the
 consensus model. The same algorithm is also available through the
@@ -393,7 +393,7 @@ the output goes to the screen don't let yourself get distracted if you
 see a large number of <tt class="docutils literal"><span class="pre">Singles</span></tt> near the end of the output. Scroll
 back to see the best match.</p>
 <p><em>Emma</em> is also available <a class="reference" href="http://cci.lbl.gov/cctbx/emma.html">via a web interface</a>.</p>
-<P><H5><U><B>mmtbx.xtriage</B></U></H5><P>
+<P><H5><U><B>phenix.xtriage</B></U></H5><P>
 <p>If HySS cannot solve the structure in default mode it may be worth
 looking at some statistics of the reflection data using the
 <tt class="docutils literal"><span class="pre">mmtbx.xtriage</span></tt> command.
