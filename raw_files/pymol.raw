@@ -1,0 +1,115 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U> PyMOL in PHENIX</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+      <P><H5><U>Author(s)</U></H5><P>
+<P><UL><LI> PyMOL: 
+PyMOL executables are kindly supplied by Warren DeLano for distribution 
+in PHENIX.
+</UL>
+
+      <P><H5><U>Starting PyMOL</U></H5><P>
+<P>Normally you will start PyMOL in PHENIX after one of the PHENIX Wizards 
+has finished. In this case if you click on the magnifying glass on the
+Wizard screen, and select one of the choices that displays a structure
+with PyMOL, then PyMOL will automatically be launched with the appropriate
+PDB and map files.
+</P> <P> You can also start PyMOL by clicking on the PyMOL button on the
+PHENIX GUI. In this case you'll need to read in maps and models yourself.
+You can read in  a model to PyMOL by typing
+<PRE style="face=courier">load overall_best.pdb
+</PRE>
+in the PyMOL Tcl/Tk GUI window or at the PyMOL prompt in the PyMOL display
+window.
+
+      <P><H5><U>Setting up your view in PyMOL</U></H5><P>
+<p>Here are some simple controls that let you choose what you see in PyMOL, assuming
+that you have a model (pdb_1) and a map (map_1) or maps loaded.
+
+<UL>
+<LI>
+Click a few times on &quot;pdb_1&quot; you will see the model turn off and
+on. Same for &quot;contour_1.5&quot;.  
+Similarly &quot;all&quot; turns everything on and off, and &quot;map_1&quot; 
+turns the unit cell box (which may not be visible in your viewer) on and off.
+</LI>
+
+<LI>
+To the right of  &quot;pdb_1&quot; you will see buttons labelled
+ &quot;A&quot; &quot;S&quot; &quot;H&quot; &quot;L&quot; and &quot;C&quot;.
+Click on each one and you'll see what they do:
+  <UL>
+    <LI> &quot;A&quot;  : Actions. lets you recenter, delete the object, and more </LI>
+    <LI> &quot;S&quot; : Show. For a model you may want to show sticks for clarity.  </LI>
+    <LI> &quot;H&quot; : Hide. Undoes show.  </LI>
+    <LI> &quot;L&quot; : Label. Choose what labels to display </LI>
+    <LI> &quot;C&quot; : Color. Choose colors.  </LI>
+  </UL>
+</LI>
+
+<LI>
+The little table in the lower right of the PyMOL display window
+shows what each mouse button does.  If you have a
+3-button (2 buttons and a roller) mouse, then
+hold the left button down and move the mouse
+to rotate; right button down and move the mouse to
+change the size; both buttons down and move the
+mouse to move the center.
+</LI>
+<LI>
+If you accidentally click the wrong buttons
+and some new object appears on the screen that
+you do not want, click on the &quot;A&quot; botton
+for the new object and select &quot;delete&quot;
+to get rid of it.
+</LI>
+</UL>
+
+      <P><H5><U>Useful PyMOL commands</U></H5><P>
+
+Here are a few useful PyMOL commands that you can type in the PyMOL window
+or in the PyMOL Tcl/Tk GUI window.
+
+<UL>
+<LI> Read in a pdb file named &quot;overall_best.pdb&quot;:
+<PRE style="face=courier">load overall_best.pdb </PRE> </LI>
+
+<LI> Read in a xplor-style map named &quot;map_1.xplor&quot; and contour it
+at a level of 1.5: 
+<PRE style="face=courier">
+load map_1.xplor
+isomesh contour_1, map_1, 1.5
+ </PRE> </LI>
+
+<LI> Create a new set of contours at a level of 2.5 for a map
+called &quot;map_1&quot; that has already been loaded:
+<PRE style="face=courier">
+isomesh contour_1, map_1, 2.5
+ </PRE> </LI>
+
+<LI> Get PyMOL help;
+<PRE style="face=courier">
+help
+ </PRE> </LI>
+
+<LI> Get PyMOL help on the command &quot;isomesh&quot; 
+<PRE style="face=courier">
+help isomesh
+ </PRE> </LI>
+
+</UL>
+
+      <P><H5><U>Additional information</U></H5><P>
+You can get the documentation for PyMOL at 
+<a href="http://pymol.sourceforge.net/html/"> pymol.sourceforge.net/html/ </a>
+
+<!--REMARK PHENIX BODY END-->
