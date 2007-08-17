@@ -122,7 +122,7 @@ will show all available options.</p>
 <P><H5>Interpreting Xtriage output</H5><P>
 <p>Typing:</p>
 <pre class="literal-block">
-%mmtbx.xtriage some_data.sca residues=290 log=some_data.log
+%phenix.xtriage some_data.sca residues=290 log=some_data.log
 </pre>
 <p>results in the following output (parts omitted).</p>
 <p><em>Matthews analysis</em></p>
@@ -645,7 +645,7 @@ R_used: mean and maximum R value for symmetry operators *used* in this point gro
 R_unused: mean and minimum R value for symmetry operators *not used* in this point group
 The likely point group of the data is:  P 4 2 2
 </pre>
-<p>As in iotbx.explore_metric_symmetry, the possible space groups are listed as well (not shown here).</p>
+<p>As in phenix.explore_metric_symmetry, the possible space groups are listed as well (not shown here).</p>
 <p><em>Twin analysis summary</em></p>
 <p>The results of the twin analysis are summarized. Typical outputs look as
 follows for cases of wrong symmetry, twin laws but no suspected twinning and twinned data

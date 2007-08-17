@@ -660,10 +660,10 @@ Here f' is fixed at -5 (note the missing ``*`` in front of ``f_prime``
 in the ``refine`` definition), and the refinement of f" is initialized
 at 2.
 
-The ``cctbx.form_factor_query`` command is available for obtaining
+The ``phenix.form_factor_query`` command is available for obtaining
 estimates of f' and f" given an element type and a wavelength, e.g.::
 
-  % cctbx.form_factor_query element=Br wavelength=0.8
+  % phenix.form_factor_query element=Br wavelength=0.8
 
   Information from Sasaki table about Br (Z = 35) at 0.8 A
   fp:  -1.0333
@@ -671,7 +671,7 @@ estimates of f' and f" given an element type and a wavelength, e.g.::
 
 Run without arguments for usage information::
 
-  % cctbx.form_factor_query
+  % phenix.form_factor_query
 
 Using NCS restraints in refinement
 **********************************

@@ -20,7 +20,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <LI>RESOLVE: Tom Terwilliger
 <LI>TEXTAL: K. Gopal, T.R. Ioerger, R.K. Pai, T.D. Romo, J.C. Sacchettini
 <LI>phenix.refine: Ralf W. Grosse-Kunstleve, Peter Zwart and Paul D. Adams
-<LI>mmtbx.xtriage: Peter Zwart
+<LI>phenix.xtriage: Peter Zwart
 </UL>
 
       <P><H5><U>Purpose</U></H5><P>
@@ -89,7 +89,7 @@ related by inversion, then AutoSol would normally construct four different
 Composite Solutions from these and score each one as described below.
 
 <P><H5><I>Analyzing and scaling the data</I></H5><P>
-<P>The AutoSol Wizard analyzes input datasets with iotbx.xtriage to 
+<P>The AutoSol Wizard analyzes input datasets with phenix.xtriage to 
 identify twinning and other conditions that may require special care. The 
 data is scaled with SOLVE. For MAD data, FA values are calculated as well.
 
@@ -458,7 +458,7 @@ combining multiple datasets.  The script and GUI versions can be used
 instead for these cases.
 <P><LI>The command-line and script versions of AutoSol cannot be used 
 to select out more than one dataset from a single datafile. You will 
-need to use the GUI version or iotbx.reflection_file_converter for these
+need to use the GUI version or phenix.reflection_file_converter for these
 cases.
 <P><LI>The AutoSol Wizard can take a maximum of 6 derivatives for MIR.
 

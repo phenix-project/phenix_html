@@ -379,10 +379,10 @@ phenix.emma
 *EMMA* stands for *Euclidean Model Matching* and is the algorithm used
 by HySS to superimpose two putative solutions and to derive the
 consensus model. The same algorithm is also available through the
-external ``iotbx.emma`` command-line interface. Enter ``iotbx.emma``
+external ``phenix.emma`` command-line interface. Enter ``phenix.emma``
 without arguments to obtain the help page::
 
-   usage: iotbx.emma [options] reference_coordinates reference_coordinates other_coordinates
+   usage: phenix.emma [options] reference_coordinates reference_coordinates other_coordinates
 
    options:
      -h, --help            show this help message and exit
@@ -395,7 +395,7 @@ without arguments to obtain the help page::
      --diffraction_index_equivalent
                            Use only if models are diffraction-index equivalent.
 
-   Example: iotbx.emma model1.pdb model2.sdb
+   Example: phenix.emma model1.pdb model2.sdb
 
 The command takes two coordinate files in various formats (.pdb, CNS
 .sdb, SOLVE output, SHELX .ins) and compares the structures taking the
@@ -412,9 +412,9 @@ It can be used to extract symmetry information from external files such
 as input files for other programs (CNS, SHELX, SOLVE, ...) or
 reflection files. However, the ``--symmetry`` option is only required
 if the information about the unit cell and the space group is missing
-in both coordinate files given to ``iotbx.emma``.
+in both coordinate files given to ``phenix.emma``.
 
-``iotbx.emma`` conducts an exhaustive search and, in contrast to HySS,
+``phenix.emma`` conducts an exhaustive search and, in contrast to HySS,
 displays all possible matches. The match with the largest number of
 matching sites is shown first, the match with the smallest number of
 matching sites is shown last (often just one site). Therefore you have
@@ -432,17 +432,17 @@ phenix.xtriage
 
 If HySS cannot solve the structure in default mode it may be worth
 looking at some statistics of the reflection data using the
-``mmtbx.xtriage`` command.
-Please refer to the dedicated mmtbx.xtriage_ documentation.
+``phenix.xtriage`` command.
+Please refer to the dedicated phenix.xtriage_ documentation.
 
 
-iotbx.reflection_statistics
----------------------------
+phenix.reflection_statistics
+----------------------------
 
 Comparisions between multiple datasets are available via the
-``iotbx.reflection_statistics`` command::
+``phenix.reflection_statistics`` command::
 
-  usage: iotbx.reflection_statistics [options] reflection_file [...]
+  usage: phenix.reflection_statistics [options] reflection_file [...]
 
   options:
     -h, --help            show this help message and exit
@@ -457,7 +457,7 @@ Comparisions between multiple datasets are available via the
                           Low resolution limit (maximum d-spacing, d_max)
     --bins=INT            Number of bins
 
-  Example: iotbx.reflection_statistics data1.mtz data2.sca
+  Example: phenix.reflection_statistics data1.mtz data2.sca
 
 This utility reads one or more reflection files in any of the formats
 listed near the top of the document. For each of the datasets found in
@@ -513,38 +513,8 @@ than 0.30. For example::
 In this case the correlation drops below 0.30 between 3.46 and 3.25 Angstrom.
 This suggests to run HySS with ``--resolution=3.5``.
 
-
-A note on naming of the commands
---------------------------------
-
-One may wonder about the naming of the commands, ``phenix.hyss``,
-``iotbx.emma``, ``iotbx.reflection_statistics``.
-
-The ``h`` in *Phenix* stands for *hierarchical*. In practice this means
-that Phenix is organized in a hierarchy of modules. For example, Phenix
-makes use of the Open Source Input-Output Toolbox, ``iotbx``.  The
-``iotbx.emma`` and ``iotbx.reflection_statistics`` commands are
-strictly speaking not part of Phenix, they are just used by Phenix and
-are distributed with Phenix only to maximize convenience.  We could
-copy the commands into Phenix and name them ``phenix.emma`` and
-``phenix.reflection_statistics``, but then we would have the confusion
-that two identical commands have two different names. Since the ``iotbx``
-is Open Source it may in the future be used in, and distributed with,
-other applications. If everybody copied and renamed the commands it
-would quickly get very confusing indeed. Therefore we prefer to keep
-the association of the commands transparent.
-
-The naming also enables a practical advantage in popular Unix shells
-such as tcsh or bash: to get a listing of all phenix commands in tcsh
-enter ``phenix`` and then press ``<Ctrl-D>``, to see all iotbx commands
-enter ``iotbx<Ctrl-D>``, etc. In bash press the ``<Tab>`` key twice to
-get a similar result. I.e. you just have to remember what package
-a command is in. The complete list of choices and the exact spelling
-can easily be obtained by hitting ``<Ctrl-D>`` or ``<Tab>``.
-
-
 .. _`CCI Apps binary bundles`: http://www.phenix-online.org/download/cci_apps/
-.. _mmtbx.xtriage: http://www.phenix-online.org/download/documentation/cci_apps/mmtbx.xtriage/mmtbx.xtriage.html
+.. _phenix.xtriage: http://www.phenix-online.org/download/documentation/cci_apps/phenix.xtriage/phenix.xtriage.html
 .. _1NSF: http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=1NSF
 .. _CCP4: http://www.ccp4.ac.uk/
 .. _CNS: http://cns.csb.yale.edu/
