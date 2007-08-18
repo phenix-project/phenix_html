@@ -1,0 +1,32 @@
+=======================================================
+phenix.reduce: tool for adding hydrogens to a PDB model
+=======================================================
+
+**Purpose**
+
+phenix.reduce is a command line tool for adding hydrogens to a PDB
+structure file. Hydrogens are added in standardized geometry with optimization
+of the orientations of OH, SH, NH3+, Met methyls, Asn and Gln sidechain amides,
+and His rings. Both proteins and nucleic acids can be processed. HET groups can
+also be processed as long as the atom connectivity is provided. The program is
+described in Word, et al.(1999). J. Mol. Biol. 285, 1733-1745. For more
+information visit: http://kinemage.biochem.duke.edu/software/reduce.php
+
+**How to run**
+
+phenix.reduce is run from the command line::
+
+  % phenix.reduce [pdb_file] [options]
+
+**To get information about command line options type**::
+
+  % phenix.reduce
+
+or for a longer list::
+
+  % phenix.reduce -h
+
+**Hydrogens in refinement**
+
+Please refer to phenix.refine documentation to see how hydrogen atoms are used
+in structure refinement.
