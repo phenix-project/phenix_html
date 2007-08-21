@@ -1,0 +1,56 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Euclidian Model Matching</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<p><strong>phenix.emma</strong></p>
+<p><em>EMMA</em> stands for <em>Euclidean Model Matching</em> and is the algorithm used
+by HySS to superimpose two putative solutions and to derive the
+consensus model. The same algorithm is also available through the
+external <tt class="docutils literal"><span class="pre">phenix.emma</span></tt> command-line interface. Enter <tt class="docutils literal"><span class="pre">phenix.emma</span></tt>
+without arguments to obtain the help page:</p>
+<pre class="literal-block">
+usage: phenix.emma [options] reference_coordinates reference_coordinates other_coordinates
+
+options:
+  -h, --help            show this help message and exit
+  --unit_cell=10,10,20,90,90,120|FILENAME
+                        External unit cell parameters
+  --space_group=P212121|FILENAME
+                        External space group symbol
+  --symmetry=FILENAME   External file with symmetry information
+  --tolerance=FLOAT     match tolerance
+  --diffraction_index_equivalent
+                        Use only if models are diffraction-index equivalent.
+
+Example: phenix.emma model1.pdb model2.sdb
+</pre>
+<p>The command takes two coordinate files in various formats (.pdb, CNS
+.sdb, SOLVE output, SHELX .ins) and compares the structures taking the
+space group symmetry, the allowed origin shifts and the hand ambiguity
+into account. The output is similar to the <tt class="docutils literal"><span class="pre">Match</span> <span class="pre">summary</span></tt> shown
+above in the example HySS output.</p>
+<p>The <tt class="docutils literal"><span class="pre">match</span> <span class="pre">tolerance</span></tt> defaults to 3 Angstrom. For structures obtained
+with very low resolution data it may be necessary to specify a different
+tolerance, e.g. <tt class="docutils literal"><span class="pre">--tolerance=5</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">--symmetry</span></tt> option works just like it does for <tt class="docutils literal"><span class="pre">phenix.hyss</span></tt>.
+It can be used to extract symmetry information from external files such
+as input files for other programs (CNS, SHELX, SOLVE, ...) or
+reflection files. However, the <tt class="docutils literal"><span class="pre">--symmetry</span></tt> option is only required
+if the information about the unit cell and the space group is missing
+in both coordinate files given to <tt class="docutils literal"><span class="pre">phenix.emma</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">phenix.emma</span></tt> conducts an exhaustive search and, in contrast to HySS,
+displays all possible matches. The match with the largest number of
+matching sites is shown first, the match with the smallest number of
+matching sites is shown last (often just one site). Therefore you have
+to look at the beginning of the output to see the best match. I.e. if
+the output goes to the screen don't let yourself get distracted if you
+see a large number of <tt class="docutils literal"><span class="pre">Singles</span></tt> near the end of the output. Scroll
+back to see the best match.</p>
+<p><em>Emma</em> is also available <a class="reference" href="http://cci.lbl.gov/cctbx/emma.html">via a web interface</a>.</p>
+<!--REMARK PHENIX BODY END-->
