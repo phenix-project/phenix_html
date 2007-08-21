@@ -713,10 +713,10 @@ refinement.refine.anomalous_scatterers {
 <p>Here f' is fixed at -5 (note the missing <tt class="docutils literal"><span class="pre">*</span></tt> in front of <tt class="docutils literal"><span class="pre">f_prime</span></tt>
 in the <tt class="docutils literal"><span class="pre">refine</span></tt> definition), and the refinement of f&quot; is initialized
 at 2.</p>
-<p>The <tt class="docutils literal"><span class="pre">cctbx.form_factor_query</span></tt> command is available for obtaining
+<p>The <tt class="docutils literal"><span class="pre">phenix.form_factor_query</span></tt> command is available for obtaining
 estimates of f' and f&quot; given an element type and a wavelength, e.g.:</p>
 <pre class="literal-block">
-% cctbx.form_factor_query element=Br wavelength=0.8
+% phenix.form_factor_query element=Br wavelength=0.8
 
 Information from Sasaki table about Br (Z = 35) at 0.8 A
 fp:  -1.0333
@@ -724,7 +724,7 @@ fdp: 2.9928
 </pre>
 <p>Run without arguments for usage information:</p>
 <pre class="literal-block">
-% cctbx.form_factor_query
+% phenix.form_factor_query
 </pre>
 <P><H5><U><B>Using NCS restraints in refinement</B></U></H5><P>
 <p>phenix.refine can find NCS automatically or use NCS selections defined by the
@@ -1781,7 +1781,7 @@ displacements&quot;. (in preparation for Acta Cryst. D).</li>
 <li>Bulk-solvent modeling and anisotropic scaling:<ul>
 <li>S. Sheriff &amp; W.A. Hendrickson. Acta Cryst. (1987). A43, 118-121.
 &quot;Description of overall anisotropy in diffraction from macromolecular crystals&quot;</li>
-<li>Jiang, J.-S. &amp; Brünger, A. T. (1994). J. Mol. Biol. 243, 100-115.
+<li>Jiang, J.-S. &amp; Br¸nger, A. T. (1994). J. Mol. Biol. 243, 100-115.
 &quot;Protein hydration observed by X-ray diffraction. Solvation properties of
 penicillopepsin and neuraminidase crystal structures.&quot;</li>
 <li>A. Fokine &amp; A. Urzhumtsev. Acta Cryst. (2002). D58, 1387-1392.
@@ -1808,23 +1808,23 @@ individual bonds in proteins in conventional difference maps&quot;</li>
 </ul>
 </li>
 <li>Dynamics, simulated annealing:<ul>
-<li>Brünger, A.T., Kuriyan, J., Karplus, M. (1987). Science. 235, 458-460.
+<li>Br¸nger, A.T., Kuriyan, J., Karplus, M. (1987). Science. 235, 458-460.
 &quot;Crystallographic R factor refinement by molecular dynamics&quot;</li>
-<li>Adams, P.D., Pannu, N.S., Read, R.J. &amp; Brünger, A.T. (1997). Proc. Natl.
+<li>Adams, P.D., Pannu, N.S., Read, R.J. &amp; Br¸nger, A.T. (1997). Proc. Natl.
 Acad. Sci. 94, 5018-5023. &quot;Cross-validated maximum likelihood enhances
 crystallographic simulated annealing refinement&quot;</li>
-<li>L.M. Rice, Y. Shamoo &amp; A.T. Brünger. J. Appl. Cryst. (1998). 31, 798-805.
+<li>L.M. Rice, Y. Shamoo &amp; A.T. Br¸nger. J. Appl. Cryst. (1998). 31, 798-805.
 &quot;Phase Improvement by Multi-Start Simulated Annealing Refinement and
 Structure-Factor Averaging&quot;</li>
-<li>Brünger, A.T &amp; Adams, P.D. (2002). Acc. Chem. Res. 35, 404-412.
+<li>Br¸nger, A.T &amp; Adams, P.D. (2002). Acc. Chem. Res. 35, 404-412.
 &quot;Molecular dynamics applied to X-ray structure refinement&quot;</li>
 </ul>
 </li>
 <li>Target weights calculation:<ul>
-<li>Brünger, A.T., Karplus, M. &amp; Petsko, G.A. (1989). Acta Cryst. A45, 50-61.
+<li>Br¸nger, A.T., Karplus, M. &amp; Petsko, G.A. (1989). Acta Cryst. A45, 50-61.
 &quot;Crystallographic refinement by simulated annealing: application to crambin&quot;</li>
-<li>Brünger, A.T. (1992). Nature (London), 355, 472-474. &quot;The free R value: a novel statistical quantity for assessing the accuracy of crystal structures&quot;</li>
-<li>Adams, P.D., Pannu, N.S., Read, R.J. &amp; Brünger, A.T. (1997). Proc. Natl.
+<li>Br¸nger, A.T. (1992). Nature (London), 355, 472-474. &quot;The free R value: a novel statistical quantity for assessing the accuracy of crystal structures&quot;</li>
+<li>Adams, P.D., Pannu, N.S., Read, R.J. &amp; Br¸nger, A.T. (1997). Proc. Natl.
 Acad. Sci. 94, 5018-5023. &quot;Cross-validated maximum likelihood enhances
 crystallographic simulated annealing refinement&quot;</li>
 </ul>
