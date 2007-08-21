@@ -376,142 +376,30 @@ Auxiliary programs
 phenix.emma
 -----------
 
-*EMMA* stands for *Euclidean Model Matching* and is the algorithm used
-by HySS to superimpose two putative solutions and to derive the
-consensus model. The same algorithm is also available through the
-external ``phenix.emma`` command-line interface. Enter ``phenix.emma``
-without arguments to obtain the help page::
-
-   usage: phenix.emma [options] reference_coordinates reference_coordinates other_coordinates
-
-   options:
-     -h, --help            show this help message and exit
-     --unit_cell=10,10,20,90,90,120|FILENAME
-                           External unit cell parameters
-     --space_group=P212121|FILENAME
-                           External space group symbol
-     --symmetry=FILENAME   External file with symmetry information
-     --tolerance=FLOAT     match tolerance
-     --diffraction_index_equivalent
-                           Use only if models are diffraction-index equivalent.
-
-   Example: phenix.emma model1.pdb model2.sdb
-
-The command takes two coordinate files in various formats (.pdb, CNS
-.sdb, SOLVE output, SHELX .ins) and compares the structures taking the
-space group symmetry, the allowed origin shifts and the hand ambiguity
-into account. The output is similar to the ``Match summary`` shown
-above in the example HySS output.
-
-The ``match tolerance`` defaults to 3 Angstrom. For structures obtained
-with very low resolution data it may be necessary to specify a different
-tolerance, e.g. ``--tolerance=5``.
-
-The ``--symmetry`` option works just like it does for ``phenix.hyss``.
-It can be used to extract symmetry information from external files such
-as input files for other programs (CNS, SHELX, SOLVE, ...) or
-reflection files. However, the ``--symmetry`` option is only required
-if the information about the unit cell and the space group is missing
-in both coordinate files given to ``phenix.emma``.
-
-``phenix.emma`` conducts an exhaustive search and, in contrast to HySS,
-displays all possible matches. The match with the largest number of
-matching sites is shown first, the match with the smallest number of
-matching sites is shown last (often just one site). Therefore you have
-to look at the beginning of the output to see the best match. I.e. if
-the output goes to the screen don't let yourself get distracted if you
-see a large number of ``Singles`` near the end of the output. Scroll
-back to see the best match.
-
-*Emma* is also available `via a web interface
-<http://cci.lbl.gov/cctbx/emma.html>`_.
+*EMMA* stands for *Euclidean Model Matching* which allows two sets of
+coordinates to be superimposed as best as possible given symmetry and
+origin choices. See the ``phenix.emma`` <emma.htm>`_ documentation for
+more details.
 
 
 phenix.xtriage
 --------------
 
-If HySS cannot solve the structure in default mode it may be worth
-looking at some statistics of the reflection data using the
-``phenix.xtriage`` command.
-Please refer to the dedicated phenix.xtriage_ documentation.
+The ``phenix.xtriage`` program performs an extensive suite of tests to
+assess the quality of a data set. It is a good idea to always run this
+program before substructure location or any other steps of structure
+solution. See the ``phenix.xtriage`` <xtriage.htm>'_ documentation for
+more details.
 
 
 phenix.reflection_statistics
 ----------------------------
 
-Comparisions between multiple datasets are available via the
-``phenix.reflection_statistics`` command::
+Comparision between multiple datasets is available using the
+``phenix.reflection_statistics`` command. See the
+``phenix.reflection_statistics`` <reflection_statistics.htm>'_
+documentation for more details.
 
-  usage: phenix.reflection_statistics [options] reflection_file [...]
-
-  options:
-    -h, --help            show this help message and exit
-    --unit_cell=10,10,20,90,90,120|FILENAME
-                          External unit cell parameters
-    --space_group=P212121|FILENAME
-                          External space group symbol
-    --symmetry=FILENAME   External file with symmetry information
-    --quick               Do not compute statistics between pairs of data arrays
-    --resolution=FLOAT    High resolution limit (minimum d-spacing, d_min)
-    --low_resolution=FLOAT
-                          Low resolution limit (maximum d-spacing, d_max)
-    --bins=INT            Number of bins
-
-  Example: phenix.reflection_statistics data1.mtz data2.sca
-
-This utility reads one or more reflection files in any of the formats
-listed near the top of the document. For each of the datasets found in
-the reflection files the output shows a block like the following::
-
-  Miller array info: gere_MAD.mtz:FSEinfl,SIGFSEinfl,DSEinfl,SIGDSEinfl
-  Observation type: xray.reconstructed_amplitude
-  Type of data: double, size=20994
-  Type of sigmas: double, size=20994
-  Number of Miller indices: 20994
-  Anomalous flag: 1
-  Unit cell: (108.742, 61.679, 71.652, 90, 97.151, 90)
-  Space group: C 1 2 1 (No. 5)
-  Systematic absences: 0
-  Centric reflections: 0
-  Resolution range: 24.7492 2.74876
-  Completeness in resolution range: 0.873513
-  Completeness with d_max=infinity: 0.872315
-  Bijvoet pairs: 10497
-  Lone Bijvoet mates: 0
-  Anomalous signal: 0.1065
-
-This is followed by a listing of the completeness and the anomalous
-signal in resolution bins (the number of bins and the resolution range
-may be adjusted with the options shown above).
-
-*Unless* the ``--quick`` option is specified the output will also show
-the correlations between the datasets and, if applicable, between the
-anomalous differences, both as overall values and in bins. The
-correlation between anomalous differences is often a very powerful
-indicator for the resolution up to which the anomalous signal is useful
-for substructure determination. In general one should use reflection
-data only up to the resolution to which the correlation is better
-than 0.30. For example::
-
-  Anomalous difference correlation of:
-    gere_MAD.mtz:F(+)SEinfl,SIGF(+)SEinfl,F(-)SEinfl,SIGF(-)SEinfl
-    gere_MAD.mtz:F(+)SElrm,SIGF(+)SElrm,F(-)SElrm,SIGF(-)SElrm
-  Overall correlation:  0.390
-  unused:              d >   24.7502:  0.000
-  bin  1:   24.7502 >= d >    5.8979:  0.874
-  bin  2:    5.8979 >= d >    4.6917:  0.702
-  bin  3:    4.6917 >= d >    4.1017:  0.647
-  bin  4:    4.1017 >= d >    3.7281:  0.483
-  bin  5:    3.7281 >= d >    3.4616:  0.346
-  bin  6:    3.4616 >= d >    3.2580:  0.188
-  bin  7:    3.2580 >= d >    3.0952:  0.189
-  bin  8:    3.0952 >= d >    2.9607:  0.138
-  bin  9:    2.9607 >= d >    2.8469:  0.138
-  bin 10:    2.8469 >= d >    2.7488:  0.136
-  unused:    2.7488 >  d            :  0.000
-
-In this case the correlation drops below 0.30 between 3.46 and 3.25 Angstrom.
-This suggests to run HySS with ``--resolution=3.5``.
 
 .. _`CCI Apps binary bundles`: http://www.phenix-online.org/download/cci_apps/
 .. _phenix.xtriage: http://www.phenix-online.org/download/documentation/cci_apps/phenix.xtriage/phenix.xtriage.html

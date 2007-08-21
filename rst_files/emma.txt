@@ -1,0 +1,57 @@
+========================
+Euclidian Model Matching
+========================
+
+phenix.emma
+===========
+
+*EMMA* stands for *Euclidean Model Matching* and is the algorithm used
+by HySS to superimpose two putative solutions and to derive the
+consensus model. The same algorithm is also available through the
+external ``phenix.emma`` command-line interface. Enter ``phenix.emma``
+without arguments to obtain the help page::
+
+   usage: phenix.emma [options] reference_coordinates reference_coordinates other_coordinates
+
+   options:
+     -h, --help            show this help message and exit
+     --unit_cell=10,10,20,90,90,120|FILENAME
+                           External unit cell parameters
+     --space_group=P212121|FILENAME
+                           External space group symbol
+     --symmetry=FILENAME   External file with symmetry information
+     --tolerance=FLOAT     match tolerance
+     --diffraction_index_equivalent
+                           Use only if models are diffraction-index equivalent.
+
+   Example: phenix.emma model1.pdb model2.sdb
+
+The command takes two coordinate files in various formats (.pdb, CNS
+.sdb, SOLVE output, SHELX .ins) and compares the structures taking the
+space group symmetry, the allowed origin shifts and the hand ambiguity
+into account. The output is similar to the ``Match summary`` shown
+above in the example HySS output.
+
+The ``match tolerance`` defaults to 3 Angstrom. For structures obtained
+with very low resolution data it may be necessary to specify a different
+tolerance, e.g. ``--tolerance=5``.
+
+The ``--symmetry`` option works just like it does for ``phenix.hyss``.
+It can be used to extract symmetry information from external files such
+as input files for other programs (CNS, SHELX, SOLVE, ...) or
+reflection files. However, the ``--symmetry`` option is only required
+if the information about the unit cell and the space group is missing
+in both coordinate files given to ``phenix.emma``.
+
+``phenix.emma`` conducts an exhaustive search and, in contrast to HySS,
+displays all possible matches. The match with the largest number of
+matching sites is shown first, the match with the smallest number of
+matching sites is shown last (often just one site). Therefore you have
+to look at the beginning of the output to see the best match. I.e. if
+the output goes to the screen don't let yourself get distracted if you
+see a large number of ``Singles`` near the end of the output. Scroll
+back to see the best match.
+
+*Emma* is also available `via a web interface
+<http://cci.lbl.gov/cctbx/emma.html>`_.
+
