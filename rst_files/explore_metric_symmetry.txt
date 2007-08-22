@@ -1,0 +1,106 @@
+Explore Metric Symmetry
+=======================
+
+
+Purpose
+-------
+``iotbx.explore_metric_symmetry`` is a program that allows a user to quickly
+determine the symmetry of the lattice, given a unit cell, and determine
+relations between various possible point groups.
+
+Another use of ``iotbx.explore_metric_symmetry`` is in the comparison of
+related unit cells, that are related by a linear recombination of their basis
+vectors.
+
+
+Keywords
+--------
+
+A list of keywords and concise help can be obtained by typing: ``iotbx.explore_metric_symmetry`` ::
+ 
+  options:
+    -h, --help            show this help message and exit
+    --unit_cell=10,10,20,90,90,120|FILENAME
+                          External unit cell parameters
+    --space_group=P212121|FILENAME
+                          External space group symbol
+    --symmetry=FILENAME   External file with symmetry information
+    --max_delta=FLOAT     Maximum delta/obliquity used in determining the
+                          lattice symmetry, using a modified Le-Page algorithm.
+                          Default is 5.0 degrees
+    --start_from_p1       Reduce to Niggli cell and forget the input space group
+                          before higher metric symmetry is sought.
+    --graph=GRAPH         A graphical representation of the graph will be
+                          written out. Requires Graphviz to be installed and in
+                          path.
+    --centring_type=CENTRING_TYPE
+                          Centring type, choose from P,A,B,C,I,R,F
+    --other_unit_cell=10,20,30,90,103.7,90
+                          Other unit cell, for unit cell comparison
+    --other_space_group=OTHER_SPACE_GROUP
+                          space group for other_unit_cell, for unit cell
+                          comparison
+    --other_centring_type=OTHER_CENTRING_TYPE
+                          Centring type, choose from P,A,B,C,I,R,F
+    --no_point_group_graph
+                          Do not carry out the construction of a point group
+                          graph.
+    --relative_length_tolerance=FLOAT
+                          Tolerance for unit cell lengths to be considered
+                          equal-ish.
+    --absolute_angle_tolerance=FLOAT
+                          Angular tolerance in unit cell comparison
+    --max_order=INT       Maximum volume change for target cell
+
+  Explore Metric Symmetry. A list of possible unit cells and space groups
+  is given for the given specified unit cell and space group combination.
+
+
+The keywords ``unit_cell``, ``space_group`` (or ``centring_type``) define the
+crystal symmetry for which a point group graph is constructed.
+
+The keyword ``max_delta`` sets the tolerance used the in determination of the lattice
+symmetry.
+
+the keyword ``start_from_p1`` in combination with the space group is equivalent
+to specification of the ``centring_type`` only.
+
+If `graphviz`_ is installed, an a png file with the point group graph can be
+constructed by specifying the filename of the png graph with the keyword
+``graph``.
+
+If a second crystal is specified by the keywords ``other_unit_cell``,
+``other_space_group`` (or ``other_centring_type``) the unit cells will be
+compared. Using linear combinations of the smallest unit cell, possible
+matches for the large unit cell are sought.
+If desired, the larger unit cell can be expanded as well using the keyword
+``max_order``.
+
+The tolerances in the unit cell comparison can be changed form their defaults 
+(10% on the lengths and 20 degrees on the angles)  
+using the keywords ``relative_length_tolerance`` and ``absolute_angle_tolerance``.
+
+Construction of a point group graph can be skipped using the key
+``no_point_group_graph``. 
+
+
+Examples
+--------
+
+Constructing a point group graph given some basic information::
+
+  iotbx.explore_metric_symmetry --unit_cell="20,30,40,90,90,90" --centring_type=P
+
+All point groups between ``P 1`` and ``P 2 2 2`` will be listed
+ 
+Comparing two related unit cells can be done using::
+
+  iotbx.explore_metric_symmetry --unit_cell="20,30,40,90,90,90" --centring_type=P --other_unit_cell="40,80,60,90,90,90" --other_centring_type=F
+ 
+
+
+
+
+
+
+.. _`graphviz` : http://graphviz.org/
