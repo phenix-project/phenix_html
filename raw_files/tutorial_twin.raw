@@ -1,0 +1,215 @@
+<!--REMARK PHENIX TITLE START -->
+<H3><U>Refinement of twinned data</U></H3>
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START-->
+<P><H4>Introduction</H4></P>
+This tutorial describes the detection of twinning with <I>phenix.xtriage</I> and subsequent refinement with <I>phenix.refine</I>
+
+<P><H5>Background and nomenclature</H5></P>
+
+Twinning is a phenomenon in which the crystal used in data collection is a composition of several distinct domains who orientation differ, but are related by known (and predictable) operators. The net effect of the presence of multiple lattices is that the recorded data is the sum of a number of diffraction patterns.
+
+This tutorial deals with the case when the twinned crystal consists of two domains. This type of twinning is know as <I>hemihedral</I> twinning. The twinning can be either <I>merohedral</I> (M; the twin related lattices overlap exactly) or <I>pseudo-merohedral</I> (PM; the twin related lattices overlap almost exactly). Classification of the type of twinning (M or PM) can be performed on the basis of group theoretical arguments and is done in <I>phenix.xtriage</I>.
+<P></P>
+X-ray data collected from a hemihedrally twinned specimen is effectively the sum of <B>two</B> diffraction patterns. The relative size of the smallest crystal domain to the whole crystal is known as the <I>twin fraction</I>, often denoted by &alpha. The operator that relates overlapping miller indices, is know as the <I>twin law</I>. 
+
+<P></P>
+As mentioned in the previous section, the effect of twinning on the X-ray data, is that the intensity for a given miller index as seen on the detector has two non-equal contributors:
+
+<P>J(<B>H</B>)  = (1-&alpha)I(<B>H</B>)  + (&alpha)*I(<B>RH</B>)     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp [eq. 1a]</P>
+<P>J(<B>RH</B>) = (1-&alpha)I(<B>RH</B>) + (&alpha)*I(<B>H</B>)      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp [eq. 1b]</P> 
+
+In the previous expressions, the intensities I of the miller index <B>H</B> and its twin mate <B>RH</B> build up a single intensity J. The twin law is denoted by <B>R</B> and is used to find the <B>RH</B>, twin related index of <B>H</B>. The twin law <B>R</B> is usually written down in algebraic terms: (k,h,-l).
+
+<P><H5>Detection of twinning with <I>phenix.xtriage</I></H5></P> 
+
+The presence of twinning usually reveals itself by intensity statistics that do not fall with the range expected for untwinned data.
+<I>phenix.xtriage</I> reports a number of intensity statistics:
+<UL>
+<LI> &lt I <sup>2</sup> &gt / &lt I &gt<sup>2</sup>  </LI>
+<LI> &lt F &gt <sup>2</sup> / &lt F <sup>2</sup> &gt  </LI>
+<LI> &lt | E <sup>2</sup> -1 | &gt </LI>
+<LI> an NZ plot</LI>
+<LI> &lt |L| &gt </LI>
+</UL> 
+
+Expected values for the above statistics and their 'allowed' ranges for untwinned data are know from a data bases analysis. The results of the <B>L-test</B> are used in xtriage to auto-detect twinning. 
+
+<P><H5>Examples</H5></P>
+Typing
+<PRE>
+phenix.xtriage porin.cv xray_data.unit_cell=104.4,104.4,124.25,90,90,120 xray_data.space_group=R3
+</PRE>
+gives (parts omitted):
+<PRE>
+
+Determining possible twin laws.
+
+The following twin laws have been found:
+
+----------------------------------------------------------------------------------------------------------------
+| Type | Axis   | R metric (%) | delta (le Page) | delta (Lebedev) | Twin law                                  |
+----------------------------------------------------------------------------------------------------------------
+|   M  | 2-fold | 0.000        | 0.000           | 0.000           | -h-k,k,-l                                 |
+|  PM  | 2-fold | 2.476        | 1.548           | 0.022           | -h,2/3*h+1/3*k-2/3*l,-2/3*h-4/3*k-1/3*l   |
+|  PM  | 4-fold | 2.476        | 1.548           | 0.022           | h+k,-2/3*h-1/3*k+2/3*l,2/3*h-2/3*k+1/3*l  |
+|  PM  | 2-fold | 2.476        | 1.548           | 0.022           | -h,1/3*h-1/3*k+2/3*l,2/3*h+4/3*k+1/3*l    |
+|  PM  | 3-fold | 2.476        | 1.032           | 0.022           | h+k,-1/3*h-2/3*k-2/3*l,-2/3*h+2/3*k-1/3*l |
+|  PM  | 4-fold | 2.476        | 1.548           | 0.022           | -k,1/3*h+2/3*k+2/3*l,-4/3*h-2/3*k+1/3*l   |
+|  PM  | 3-fold | 2.476        | 1.032           | 0.022           | -k,-1/3*h+1/3*k-2/3*l,4/3*h+2/3*k-1/3*l   |
+----------------------------------------------------------------------------------------------------------------
+M:  Merohedral twin law
+PM: Pseudomerohedral twin law 
+
+  1 merohedral twin operators found 
+  6 pseudo-merohedral twin operators found
+In total,   7 twin operator were found
+
+
+.
+.
+.
+.
+
+
+-------------------------------------------------------------------------------
+Twinning and intensity statistics summary (acentric data):
+
+Statistics independent of twin laws
+  - &lt I^2 &gt / &lt I &gt ^2 : 1.667
+  - &lt F &gt ^2/ &lt F^2 &gt : 0.857
+  - &lt |E^2-1| &gt   : 0.609
+  - &lt |L| &gt , &lt L^2 &gt: 0.401, 0.225
+       Multivariate Z score L-test: 8.174 
+       The multivariate Z score is a quality measure of the given
+       spread in intensities. Good to reasonable data is expected
+       to have a Z score lower than 3.5. 
+       Large values can indicate twinning, but small values do not
+       necessarily exclude it. 
+
+
+Statistics depending on twin laws
+--------------------------------------------------------------------------------------------------
+| Operator                                  | type | R obs. | Britton alpha | H alpha | ML alpha |
+--------------------------------------------------------------------------------------------------
+| -h-k,k,-l                                 |   M  | 0.195  | 0.292         | 0.315   | 0.304    |
+| -h,2/3*h+1/3*k-2/3*l,-2/3*h-4/3*k-1/3*l   |  PM  | 0.420  | 0.068         | 0.069   | 0.022    |
+| h+k,-2/3*h-1/3*k+2/3*l,2/3*h-2/3*k+1/3*l  |  PM  | 0.410  | 0.079         | 0.084   | 0.022    |
+| -h,1/3*h-1/3*k+2/3*l,2/3*h+4/3*k+1/3*l    |  PM  | 0.419  | 0.070         | 0.069   | 0.022    |
+| h+k,-1/3*h-2/3*k-2/3*l,-2/3*h+2/3*k-1/3*l |  PM  | 0.413  | 0.078         | 0.079   | 0.022    |
+| -k,1/3*h+2/3*k+2/3*l,-4/3*h-2/3*k+1/3*l   |  PM  | 0.415  | 0.070         | 0.075   | 0.022    |
+| -k,-1/3*h+1/3*k-2/3*l,4/3*h+2/3*k-1/3*l   |  PM  | 0.415  | 0.074         | 0.077   | 0.022    |
+--------------------------------------------------------------------------------------------------
+
+Patterson analysis
+  - Largest peak height   : 5.689
+   (corresponding p value : 7.822e-01)
+
+
+The largest off-origin peak in the Patterson function is 5.69% of the 
+height of the origin peak. No significant pseudo translation is detected.
+
+The results of the L-test indicate that the intensity statistics
+are significantly different then is expected from good to reasonable,
+untwinned data.
+As there are twin laws possible given the crystal symmetry, twinning could
+be the reason for the departure of the intensity statistics from normality.
+It might be worthwhile carrying out refinement with a twin specific target function.
+
+-------------------------------------------------------------------------------
+</PRE>
+
+As listed clearly in the summary states above, the data is suspected to be twinned. Given the relatively large tolerances in finding twin laws, seven twin laws are found. Six of them are pseudo merohedral, one of them is merohedral. Looking at the R-value analysis in the last table (column <FONT FACE=COURIER>R-obs</FONT>), the merohedral twin law is the most likely in this case, as this merging R-value is lower then any of the other R values reported. 
+
+<P><H5>A quick model based twinning analysis</H5></P>
+In most cases, the presence of twinning does not impede structure solution via molecular replacement (or sometimes even S/MAD). If a molecular replacement solution is available testing which twin law is the most likely can be done via
+
+<PRE>
+mmtbx.twin_map_tools xray_data.file=porin.cv model=porin.pdb unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
+</PRE>
+
+The latter tool performs bulk solvent scaling and R-value calculation for all possible twin laws in the given crystal setting. In this particular case, the twin law <FONT face=COURIER>(-h-k,k,-l)</FONT> is the most likely, as it produces the R-value and lowest refinement target value out of the 7 listed twin listed (0.19 vs 0.25).
+ 
+<P><H5>Selection of a cross validation set</H5></P>
+
+Although the given reflection file in this tutorial already has an assigned test set for cross validation purposes, assigning it properly is relatively important.
+When the data is twinned, each observed reflection has a contribution of two (with hemihedral twinning) non-twinned components. When a test set is designed, care must be taken that <I>free</I> and <I>work</I> reflections are not related by a twin law. The R-free set assignment in <I>phenix.refine</I> and <I>iotbx.reflection_file_converter</I> is designed with this in mind: the free reflections are chosen to obey the highest possible symmetry of the lattice.
+ 
+Choosing a free set with <I>phenix.refine</I> is as simple as including the keywords
+<PRE>
+generate_r_free_flags=True
+</PRE>
+on the command line
+
+
+<P><H5>Refinement protocols</H5></P>
+Within phenix, various refinement protocols can be followed. A few typical examples will be shown below.
+
+
+<P><H6>Restrained refinement of positional and atomic displacement parameters</H6></P>
+Standard restrained refinement of positional and atomic displacement parameters is invoked via
+<PRE>
+phenix.refine porin.cv porin.pdb twin_law="-h-k,k,-l" unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
+</PRE>
+Refinement is performed in macro cycles, in which either positions, atomic displacement parameters or twin and bulk solvent parameters are refined.
+
+<P><H6>Rigid body refinement</H6></P>
+The command 
+<PRE>
+phenix.refine porin.cv porin.pdb twin_law="-h-k,k,-l" strategy=rigid_body unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
+</PRE>
+will perform rigid body refinement using the twin target function.
+
+<P><H6>TLS</H6></P>
+For tls refinement, it is advisable to construct a small parameter file that contains TLS definitions:
+
+<PRE>
+refinement.refine {
+  strategy = *individual_sites rigid_body *individual_adp group_adp *tls \
+             individual_occupancies group_occupancies group_anomalous none
+  adp {
+    tls = "chain A"
+  }
+}
+refinement.twinning {
+  twin_law = "-h-k,k,-l"
+}
+</PRE>
+Saving these parameters as <I>tls.def</I> one can run
+<PRE>
+phenix.refine porin.cv porin.pdb tls.def unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
+</PRE>
+
+<P><H6>Water picking</H6></P>
+Ordered solvent can be picked as a part of the refined procedure, more details are available from the phenix.refine manual.
+Note that the (difference) map used by phenix.refine, is constructed using detwinned data (see below). 
+Including water picking in refinement can be carried out as follows:
+<PRE>
+phenix.refine porin.cv porin.pdb twin_law="-h-k,k,-l" ordered_solvent=True unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
+</PRE>
+ 
+<P><H5>Map inspection</H5></P>
+Electron density maps during twin refinement are constructed using detwinned data. Choice of map coefficients and detwinning mode, is controlled by a set of parameters as shown below:
+<PRE>
+refinement.twinning {
+  twin_law = "-h-k,k,-l"
+  detwin {
+    mode = algebraic proportional *auto
+    local_scaling = False
+    map_types {
+      twofofc = *two_m_dtfo_d_fc two_dtfo_fc
+      fofc = *m_dtfo_d_fc gradient m_gradient
+      aniso_correct = False
+    }
+  }
+}
+</PRE>
+By default, data is detwinned using algebraic techniques, unless the twin fraction is above 45%, in which case detwinning is performed using proportionality of twin related Icalc values.
+Detwinning using the proportionality option, results in maps that are more biased towards the model, resulting in seemingly cleaner, but in the end less informative maps.
+The <I>2mFo-dFc</I> map coefficients can be chosen to have sigmaA weighting (two_m_dtfo_d_fc) or not (two_dtfo_fc). IN both cases, the map coefficients correspond to the 'untwinned' data.
+
+A difference map can be constructed using either sigmaA weighted detwinned data (m_dtfo_d_fc), a sigmaA weighted gradient map (m_gradient) or a plain gradient map (gradient). The default is m_dtfo_d_fc but can be changed to gradient or m_gradient if desired.
+ 
+
+<!--REMARK PHENIX BODY END-->
