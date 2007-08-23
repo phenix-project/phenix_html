@@ -126,7 +126,7 @@ As listed clearly in the summary states above, the data is suspected to be twinn
 In most cases, the presence of twinning does not impede structure solution via molecular replacement (or sometimes even S/MAD). If a molecular replacement solution is available testing which twin law is the most likely can be done via
 
 <PRE>
-mmtbx.twin_map_tools xray_data.file=porin.cv model=porin.pdb unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
+phenix.twin_map_utils xray_data.file=porin.cv model=porin.pdb unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
 </PRE>
 
 The latter tool performs bulk solvent scaling and R-value calculation for all possible twin laws in the given crystal setting. In this particular case, the twin law <FONT face=COURIER>(-h-k,k,-l)</FONT> is the most likely, as it produces the R-value and lowest refinement target value out of the 7 listed twin listed (0.19 vs 0.25).
