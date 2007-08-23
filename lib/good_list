@@ -51,6 +51,7 @@ atomic
 atoms_placed
 atoms_total
 atomtype
+auto_mr
 autobuild
 autobuild_
 autobuild_debug
@@ -273,6 +274,7 @@ edit_pdb
 edited_pdb
 eigen_mean
 eigen_min
+elbow_defaults
 electron density
 electron_density_map
 element_symbol
@@ -328,6 +330,7 @@ find_invariant_domain
 find_invariant_domains
 find_ncs
 first_macro_cycle_only
+fisher
 fit_loops
 fit_phi_inc
 fit_phi_range
@@ -337,6 +340,7 @@ fix_k_sol
 fix_scale_for_calc_option
 fix_wxc
 fix_wxu
+fix_xh_distances
 fix_xyz
 fix_xyz_after_denmod
 fixscattfactors
@@ -487,8 +491,10 @@ inverse
 iobs
 iotbx
 isigi_cut
+isomesh
 isotropic
 iterative_build_omit
+jiffy_result
 join_cif_files
 join_mol2_files
 join_pdb_files
@@ -620,7 +626,7 @@ mbp_anom_diffs
 mean_random_solution_score
 mean_shift_for_mask_update
 methionines
-miller_aray
+miller_array
 min_contig_length
 min_cross_distance
 min_distance_sym_equiv
@@ -809,6 +815,7 @@ outliers
 output_atom_name
 output_chain_id
 output_dir
+output_file
 output_label_root
 output_residue_name
 overall_best
@@ -848,8 +855,16 @@ phasing_method
 phenix_doc
 phenix_documentation
 phenix_env
+phenix_environment
 phenix_html
+phenix_installer_date
+phenix_mtype
+phenix_mversion
 phenix_regression
+phenix_release_tag
+phenix_use_mtype
+phenix_version
+phenix_wiki
 place_waters
 place_waters_in_combine
 plain_pairs_radius
@@ -864,6 +879,7 @@ probabilistic
 protocol
 pseudomerohedral
 pseudotranslation
+publications
 quality_factor
 quantum
 quick_build
@@ -871,6 +887,7 @@ quick_clashlist
 quick_search
 r32
 r_free
+r_free_flag
 r_free_flags
 ramachandran
 random_seed
@@ -890,10 +907,12 @@ rebuild_in_place
 rebuild_res_end_list
 rebuild_res_start_list
 rebuild_side_chains
+recenter
 recommended_resolution
 reconstructed_amplitude
 recycling
 redo_side_chains
+reduced
 reference_coordinates
 reference_setting
 reference_xray_structure
@@ -1050,6 +1069,7 @@ solvedir
 solvent_content
 solvent_fraction
 solvent_radius
+sourceforge
 space_group
 speed
 sphere_radius
@@ -1087,7 +1107,6 @@ tanh_slope
 target_name
 target_weights
 target_weights_only
-temparature
 temperature
 temperature factor
 test_aniso_correct
@@ -1108,6 +1127,7 @@ track_libs
 translate
 translate_cns_dna_rna_residue_names
 translation
+translational ncs
 truncate
 truncate_ha_sites_in_resolve
 tutorial
@@ -1150,6 +1170,7 @@ use_sampling_sum_weights
 use_sigma_scaled_maps
 use_u_local_only
 use_weights
+use_xn_grads_filtering
 user_b_iso
 user_command
 user_supplied
@@ -1175,6 +1196,7 @@ weight_list
 weight_seq_list
 weights
 where_mon_lib_list_cif
+wiki
 wildcard
 wilson_b_weight
 wilson_b_weight_auto
