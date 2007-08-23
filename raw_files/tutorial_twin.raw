@@ -134,7 +134,7 @@ The latter tool performs bulk solvent scaling and R-value calculation for all po
 <P><H5>Selection of a cross validation set</H5></P>
 
 Although the given reflection file in this tutorial already has an assigned test set for cross validation purposes, assigning it properly is relatively important.
-When the data is twinned, each observed reflection has a contribution of two (with hemihedral twinning) non-twinned components. When a test set is designed, care must be taken that <I>free</I> and <I>work</I> reflections are not related by a twin law. The R-free set assignment in <I>phenix.refine</I> and <I>iotbx.reflection_file_converter</I> is designed with this in mind: the free reflections are chosen to obey the highest possible symmetry of the lattice.
+When the data is twinned, each observed reflection has a contribution of two (with hemihedral twinning) non-twinned components. When a test set is designed, care must be taken that <I>free</I> and <I>work</I> reflections are not related by a twin law. The R-free set assignment in <I>phenix.refine</I> and <I>phenix.reflection_file_converter</I> is designed with this in mind: the free reflections are chosen to obey the highest possible symmetry of the lattice.
  
 Choosing a free set with <I>phenix.refine</I> is as simple as including the keywords
 <PRE>
@@ -213,3 +213,4 @@ A difference map can be constructed using either sigmaA weighted detwinned data 
  
 
 <!--REMARK PHENIX BODY END-->
+
