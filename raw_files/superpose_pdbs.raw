@@ -15,8 +15,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P><H5><U>Author(s)</U></H5><P>
 
 <UL>
-<LI>superpose_pdbs: Peter Zwart, Pavel Afonine
-<LI>Phil command interpreter: Ralf  W. Grosse-Kunstleve
+<LI>superpose_pdbs: Peter Zwart, Pavel Afonine, Ralf W. Grosse-Kunstleve
 </LI></UL>
 
 <P><H5><U>Purpose</U></H5><P>
@@ -29,10 +28,14 @@ and writing out the superimposed model.
 <P><H5>How superpose_pdbs works:</H5><P>
 
 superpose_pdbs performes a least-squares superposition of two selected parts
-from two pdb files. The number of selected atoms in fixed and moving structures
-must be equal. Note that selected atoms are the atoms used to find the
-superposition operators while these operators are applied to the whole moving
-structure.
+from two pdb files. If no selections is provided for fixed and moving models
+the whole content of both input PDB files is used for superposition. If the
+number of atoms in fixed and moving models is different and the models contain
+amino-acid residues then the sequence alignement is performed and the matching
+residues (CA atoms by default, can be changed by the user) are used for
+superposition. Note that selected (and/or matching) atoms are the atoms used to
+find the superposition operators while these operators are applied to the whole
+moving structure.
 
 <P><H5><I>Output files from superpose_pdbs</I></H5><P>
 
@@ -57,7 +60,9 @@ Parameters can be changed from the command line:
 <P><H5>Specific limitations and problems:</H5><P>
 
 <UL><LI>
-Different number of atoms in selection_fixed and selection_moving.
+Different number of atoms in selection_fixed and selection_moving in case when
+no sequence alignement can be performed (the molecules contain no amino-acid
+residues) or sequence alignement failed to find matching residues.
 </LI></UL>
 <UL><LI>
 More than one model in one PDB file (separated with MODEL-ENDMDL)
