@@ -142,7 +142,7 @@ and otherwise procedure (b) is used.
 <P><H5>How to run the AutoBuild Wizard</H5><P>
 <P>  Running the AutoBuild Wizard is easy.  For example, 
 from the command-line you can type:
-<PRE style="face=courier">phenix.autobuild data=w1.sca seq.dat coords=coords.pdb
+<PRE style="face=courier">phenix.autobuild data=w1.sca seq.dat model=coords.pdb
 </PRE>
 <P>The AutoBuild Wizard will carry out iterative model-building,
 density modification and refinement based on the data in w1.sca and
