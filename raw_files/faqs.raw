@@ -79,6 +79,49 @@ phases).  There is a set of sample commands to do it in the
 documentation.
 </p>
  
+<H5>What can I do if a Wizard says 
+<b> this version does not seem big enough</b>? </H5>
+
+<p>The Wizards try to automatically determine the size of solve or resolve,
+but if your data is very high resolution or a very large unit cell, you
+can get the message:
+
+</p><PRE style="face=courier"> ***************************************************
+ Sorry, this version does not seem big enough...
+ (Current value of isizeit is  30)
+ Unfortunately your computer will only accept a size of  30
+ with your current settings.
+ You might try cutting back the resolution
+ You might try "coarse_grid" to reduce memory
+ You might try "unlimit" allow full use of memory
+ ***************************************************
+</PRE>
+<p>You cannot get rid of this problem by specifying the resolution with
+</p><PRE style="face=courier">resolution=4.0
+</PRE>
+because the Wizards use the resolution cutoff you specify in all calculations,
+but the high-res data is still carried along. 
+</p>
+
+<p>The easiest solution to this problem is to edit your data file to have lower-
+resolution data. You can do it like this:
+</p>
+<PRE style="face=courier">phenix.reflection_file_converter huge.sca --sca=big.sca --resolution=4.0
+</PRE>
+</p>
+<p>A second solution is to tell the Wizard to ignore the high-res data 
+explicitly with:
+<PRE style="face=courier">
+resolution=4.0 \
+resolve_command="'resolution 200 4.0'" \
+solve_command="'resolution 200 4.0'" \
+resolve_pattern_command="'resolution 200 4.0'"
+</PRE>
+Note the two sets of quotes; both are required for this command-line input.
+These commands are applied after all other inputs in resolve/solve/resolve_pattern
+and therefore all data outside these limits will be ignored. 
+</p>
+
 <H5>Why does the AutoBuild Wizard say <b>Sorry, you need to 
 define FP in labin</b> but AutoMR was able to read my data file just fine?</H5>
 <p>When you run AutoMR and let it continue on to the AutoBuild Wizard
@@ -180,4 +223,6 @@ to ignore the hex-digest warnings.
 <p>
 </p> 
 <!--REMARK PHENIX BODY END-->
+
+</TABLE></BODY>
 
