@@ -300,10 +300,11 @@ You can apply <b>phenix.refine</b> to your data file and your
 model without ligand and it will create a map_coeffs.mtz output file that has
 sigmaA-weighted map coefficients that should optimally show the placement of 
 your ligand. If this map looks better than the <b>resolve_map.mtz</b>, then
-you can read in the coefficients like this, where the command <b>lig_map_type=map</b>
+you can read in the coefficients like this, where the command 
+<b>lig_map_type=fo-fc_difference_map</b>
 tells the wizard to read in the map coefficients directly from the data file:
 </p><PRE style="face=courier"> 
-phenix.ligandfit data=map_coeffs.mtz lig_map_type=map   \
+phenix.ligandfit data=map_coeffs.mtz lig_map_type=fo-fc_difference_map   \
    model=partial.pdb ligand=side.pdb
 </PRE>
 </LI>
