@@ -370,8 +370,8 @@ a script. In the command-line version you do this with something like:
 </PRE>
 <P>If the PDB file contains a ligand, you may need to tell phenix.refine
 about the geometry of this ligand. In that case you will want to run
-elbow.builder to create a cif definition file for this ligand:
-<PRE style="face=courier">elbow.builder my_ligand.pdb --id=LIG
+phenix.elbow to create a cif definition file for this ligand:
+<PRE style="face=courier">phenix.elbow my_ligand.pdb --id=LIG
 </PRE>
 where LIG is the 3-letter ID code that you use in my_ligand.pdb
 to identify your ligand.

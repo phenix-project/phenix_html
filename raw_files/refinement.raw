@@ -1076,13 +1076,13 @@ listing the problem atoms. If this happened, it is necessary to obtain a cif
 file (parameter file, describing unknown molecule) by either making it
 manually or having eLBOW program to generate it:</p>
 <pre class="literal-block">
-elbow.builder model.pdb --do-all --output=all_ligands
+phenix.elbow model.pdb --do-all --output=all_ligands
 </pre>
 <p>this will ask eLBOW to inspect the model_new.pdb file, find all unknown
 items in it and create one cif file for them <tt class="docutils literal"><span class="pre">all_ligands.cif</span></tt>.
 Alternatively, one can specify a three-letters name for the unknown residue:</p>
 <pre class="literal-block">
-elbow.builder model.pdb --residue=MAN --output=man
+phenix.elbow model.pdb --residue=MAN --output=man
 </pre>
 <p>Once the cif file is created, the new run of phenix.refine will be:</p>
 <pre class="literal-block">

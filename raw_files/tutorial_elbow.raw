@@ -17,6 +17,15 @@ Anything enclosed in header html H5 H5 etc will go in the table of contents-->
 This tutorial will demonstrate how to perform a structure refinement including
 a ligand.
 
+<p><H5><U>Setup</U></H5></p><p>
+
+You can create a subdirectory, 'elbow_tutorial', and copy the files required
+for this tutorial using the command:
+
+<PRE style="face=courier">
+elbow.setup_tutorial
+</PRE>
+
 <p><H5><U>When do we need restraints for a ligand?</U></H5></p><p>
 
 A structure refinement requires that all atoms have energy types associated
@@ -51,7 +60,7 @@ Clearly, we need to generate restraints for the ligand ABN which is in the PDB
 file. We commence by using the following command:
 
 <PRE style="face=courier">
-elbow.builder 1utn.pdb
+phenix.elbow 1utn.pdb
 </PRE>
 
 which prints out a list of the HETATM molecules in the PDB file.
@@ -87,7 +96,7 @@ As the print out says, all of the residues not in the internal library can be
 processed using 
 
 <PRE style="face=courier">
-elbow.builder 1utn.pdb --do-all
+phenix.elbow 1utn.pdb --do-all
 </PRE>
 
 Because the residue TRS is in the internal library, only ABN is processed. The
@@ -96,7 +105,7 @@ After checking the geometry in the PDB file, we repeat the calculation using
 the --opt to optimise the geometry using the semi-empirical AM1 method, thus:
 
 <PRE style="face=courier">
-elbow.builder 1utn.pdb --do-all
+phenix.elbow 1utn.pdb --do-all
 </PRE>
 
 The resulting file, elbow.1utn_pdb.all.cif, is ready for use with 
@@ -107,14 +116,14 @@ phenix.refine.
 To demonstrate the use of a SMILES string, we can get the SMILES string for 
 ABN from the MSDChem website.  We can now run using the SMILES string:
 <PRE style="face=courier">
-elbow.builder --smiles "NCc1ccccc1"
+phenix.elbow --smiles "NCc1ccccc1"
 </PRE>
 The resulting output, elbow.cif and elbow.pdb, have the default residue name,
 LIG, and atom names.  In order to match the atoms in the refinement, we can
 use the PDB to obtain the atom names via the --template option and the
 --residue option:
 <PRE style="face=courier">
-elbow.builder --smiles "NCc1ccccc1" --template 1utn.pdb --residue ABN --opt
+phenix.elbow --smiles "NCc1ccccc1" --template 1utn.pdb --residue ABN --opt
 </PRE>
 The resulting output files have the AM1 optimised geometry (--opt), the atom
 names from the PDB file and the correct connectivity from the SMILES string.

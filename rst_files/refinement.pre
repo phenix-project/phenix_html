@@ -1015,13 +1015,13 @@ Examples of frequently used refinement protocols, common problems
    file (parameter file, describing unknown molecule) by either making it
    manually or having eLBOW program to generate it::
 
-       elbow.builder model.pdb --do-all --output=all_ligands
+       phenix.elbow model.pdb --do-all --output=all_ligands
 
    this will ask eLBOW to inspect the model_new.pdb file, find all unknown
    items in it and create one cif file for them ``all_ligands.cif``.
    Alternatively, one can specify a three-letters name for the unknown residue::
 
-       elbow.builder model.pdb --residue=MAN --output=man
+       phenix.elbow model.pdb --residue=MAN --output=man
 
    Once the cif file is created, the new run of phenix.refine will be::
 
