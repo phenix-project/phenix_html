@@ -143,7 +143,7 @@ LINK        CA    CA A6000                 OE2 GLU A  80     1555   1555
 
 Running:
 <PRE style="face=courier">
-elbow.link_edits 1utn.pdb
+phenix.link_edits 1utn.pdb
 </PRE>
 results in the "edits" being written to 1utn_pdb.edits.  THe "edits" are a
 one-to-one correspondence of the LINK records and a bond "edit".
@@ -154,7 +154,7 @@ Conviently, the LINK records were contained in the PDB file used in this
 example.  More likely, the linking information is not available.  The "edits"
 can be obtained using:
 <PRE style="face=courier">
-elbow.metal_coordination 1utn.pdb
+phenix.metal_coordination 1utn.pdb
 </PRE>
 The "edits" are written to elbow.edits and contain both bond and angle "edits".
 
