@@ -90,13 +90,6 @@ molecular replacement process.
 part of an ensemble is to the structure that is in your crystal. You can
 specify either sequence identity, or expected rmsd. 
 
-<P>
-NOTE: For best results with AutoBuild each contiguous segment in your PDB file
-will need to be aligned to your sequence without insertions or deletions
-(some mismatches are ok, the number allowed is defined by the parameter
-"min_seq_identity_percent") You may wish to edit your PDB file to remove loops
-not in your sequence file and to add BREAK records where your sequence file
-has additional residues. 
 
 <P><B>Output of AutoMR</B>
 
@@ -112,7 +105,7 @@ the other files produced:
 </PRE>
 
 <P><LI>A warnings file listing any warnings about the run
-<PRE style="face=courier">AutoMR_warnings  # any warnings
+<PRE style="face=courier">AutoMR_warnings.dat  # any warnings
 </PRE>
 
 <P><LI>A file that lists all parameters and knowledge accumulated
@@ -152,7 +145,9 @@ from the command-line you can type:
 the search model search.pdb in the unit cell based on the data in native.sca, 
 assuming that the RMSD between the correct model and search.pdb is about
 0.8 A, that the molecular mass of the true model is 23000 and that there
-is 1 copy of this model in the asymmetric unit.
+is 1 copy of this model in the asymmetric unit. Once the AutoMR Wizard has
+found a solution, it will automatically call the AutoBuild Wizard and
+rebuild the model.
 
 <P><H5>Components, copies, search models, and ensembles</H5><P>
 <P><UL><LI>Your structure is composed of one or more <B>components</B> such as a 
@@ -233,7 +228,7 @@ sequence of true model is seq.dat and there are 1 copies in the unit cell:
 <P><H5>Specifying data columns </H5><P>
 <P>Run AutoMR as above, but specify the data columns explicitly:
 <PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
-    data=data.mtz input_label_string="F SIGF"  \ 
+    data=data.mtz input_label_string="F SIGF"  \
     n_cycle_rebuild_max=2 n_cycle_build_max=2 
 </PRE>
 Note that the data columns are specified by a string that includes both
@@ -248,9 +243,9 @@ with
 <P>Run AutoMR as above, but specify a refinement file that is different from
 the file used for the MR search:
 <PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
-    data=data.mtz input_label_string="F SIGF"  \ 
+    data=data.mtz input_label_string="F SIGF"  \
     autobuild_input_refinement_file=refinement.mtz \
-    autobuild_input_refinement_labels="FP SIGFP FreeR_flag"  \ 
+    autobuild_input_refinement_labels="FP SIGFP FreeR_flag"  \
     n_cycle_rebuild_max=2 n_cycle_build_max=2 
 </PRE>
 Note that the commands input_refinement_file and input_refinement_labels are
@@ -265,7 +260,7 @@ apply that command by adding &quot;autobuild_&quot; to the beginning of
 the command name. For example, to add the 
 commands semet=True and refine=False: 
 <PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
-    data=data.mtz input_label_string="F SIGF"  \ 
+    data=data.mtz input_label_string="F SIGF"  \
     autobuild_input_list_add='semet refine'  \
     autobuild_semet=True \
     autobuild_refine=False
