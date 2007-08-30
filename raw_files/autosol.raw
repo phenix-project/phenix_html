@@ -302,7 +302,7 @@ This will carry out the usual structure solution, but will skip model-building
 
 <P><H5>SAD dataset, building RNA instead of protein</H5><P>
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
-    build=False chain_type=RNA
+    chain_type=RNA
 </PRE>
 This will carry out the usual structure solution, but will build an RNA
 chain.  For DNA, specify chain_type=DNA.  You can only build one type of

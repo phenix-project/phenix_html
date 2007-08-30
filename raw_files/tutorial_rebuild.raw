@@ -298,6 +298,7 @@ behave as expected. No twinning is suspected.
 <p><H5>Generation of FreeR flags</H5></p>
 <p>The AutoBuild Wizard will create a set of free R flags indicating which 
 reflections are not to be used in refinement. By default 5% of reflections
+(up to a maximum of 2000)
 are reserved for this test set. 
 If you supply a reflection file with free R flags already set, then they
 will be used.  If you want to supply a file <b>ref.mtz</b>specifically 

@@ -288,6 +288,11 @@ AutoBuild Wizard, including your ligands with <b>input_lig_file=myligand.pdb</b>
 </p><p>If you do not obtain a good fit of your ligand to the map, there are a 
 few things you should check:
 <UL>
+<LI>Does your starting model have solvent molecules where the ligand needs
+to be placed?  If so, then you will need to remove these before LigandFit
+can fit the ligand there.  The LigandFit Wizard excludes all locations that
+are occupied by atoms in the starting model.
+</LI>
 <LI>Have a careful look at all the output files. Work your way through
 the main log file (e.g., <b>LigandFit_run_1_1.log</b>). 
 Is there anything 

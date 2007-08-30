@@ -300,7 +300,8 @@ at the end of every temporary command file created to run resolve.
 <PRE style="face=courier">phenix.runWizard AutoSol autosol.inp
 </PRE>
 The script file (autosol.inp) should contain keyword entries telling
-the Wizard what to do. 
+the Wizard what to do.  The output will be written to the log file
+(e.g., <b>AutoSol_run_1_/AutoSol_run_1_1.log</b>).
 <P><LI>The keywords that can be set in a script file include (nearly) all the
 keywords for for command-line running, plus a set of control keywords for
 running from a script. To see all the basic commands for a wizard, make a
@@ -310,6 +311,9 @@ script (e.g., keywords.inp) that says:
 and then type:
 <PRE style="face=courier">phenix.runWizard AutoSol keywords.inp
 </PRE>
+The keywords will be written to the log file 
+(e.g., <b>AutoSol_run_1_/AutoSol_run_1_1.log</b>).
+
 <P><LI>For help on a Wizard, your script file should say:
 <PRE style="face=courier">help
 </PRE>
@@ -345,6 +349,10 @@ For example:
 will set the overall high-resolution cutoff to 2.5 A.
 <P>
 <P><H5>Useful script commands</H5><P>
+
+<P> With the exception of <b>show_runs</b> and  <b>delete_runs</b>, the
+output for each of these commands is written to the log file
+(e.g., <b>AutoSol_run_1_/AutoSol_run_1_1.log</b>).
 
 <PRE style="face=courier">help  # print out this help message 
 

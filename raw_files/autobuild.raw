@@ -564,8 +564,7 @@ structures that is truly present in the crystal.
 </PRE>
 
 <LI><H5>Just make maps; don't do any building. </H5><P>
-<PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb n_cycle_rebuild_max=1 \
-maps_only=True     
+<PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb maps_only=True     
 </PRE>
 </LI>
 </UL>

@@ -335,7 +335,7 @@ FILE DATA:infl.sca sn: 0.5159167
 order of datasets for trying phasing:['FA.sca', 'peak.sca', 'high.sca', 'infl.sca']
 </PRE>
 
-<p><H5>Running HYSS to find heavy-atom substructure</H5></p>
+<p><H5>Running HYSS to find the heavy-atom substructure</H5></p>
 <p> The HYSS (hybrid substructure
 search) procedure for heavy-atom searching uses a combination of a Patterson
 search for 2-site solutions with direct methods recycling. The search ends
@@ -526,7 +526,6 @@ with very high density (the points near atoms), and no points with very
 negative density.  Such a map has a very high skew (think 
 &quot;skewed off to the right&quot;. This map is good, with a positive
 skew, though it is not perfect.
-(so
 </p><PRE style="face=courier">
 
  Plot of Observed (o) and model (x) electron density distributions for protein
@@ -599,6 +598,7 @@ An acceptable value is anything below 0.35; below 0.30 is good.
 <p><H5>Generation of FreeR flags</H5></p>
 <p>The AutoSol Wizard will create a set of free R flags indicating which 
 reflections are not to be used in refinement. By default 5% of reflections
+(up to a maximum of 2000)
 are reserved for this test set. 
 If you want to supply a reflection file <b>hires.mtz</b> that has 
 higher resolution than the data used to solve the structure, 
