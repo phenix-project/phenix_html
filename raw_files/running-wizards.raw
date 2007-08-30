@@ -19,7 +19,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
       <P><H5><U>Purpose</U></H5><P>
 <P>Any Wizard can be run from the PHENIX GUI, from the command-line, 
 and from keyworded script files.  All three versions are identical except
-in the way that they take commands from the user. 
+in the way that they take commands and keywords from the user. 
 <P>This page describes how to run a Wizard and what a Wizard does in general. 
 The specific Wizard help pages describe the details of each PHENIX Wizard.
 
@@ -129,6 +129,9 @@ at the lower right of the blue or green window.
 <P><UL><LI>You can run more than one Wizard job at a time if you want. Each run of a
 Wizard is put in a separate sub-directory (e.g., "AutoSol_run_1_").
 <P><LI> When you start a Wizard, it will start a <B>new</B> run of that Wizard.
+<P><LI> If you want to continue on with the highest-numbered run of a Wizard,
+you can start the Wizard with the <b>continue</b> button for that Wizard 
+(for example the <b>continue_AutoSol</b> button).
 <P><LI>If you want to go back to a previous run, you can use the Run Control and
 Run Number selections near the bottom of any Parameters window (NOTE: to open the parameters window click on the lines at the upper left of the blue Wizard
 window). Select goto_run and choose a run number to go to. 
@@ -293,6 +296,60 @@ at the end of every temporary command file created to run resolve.
 </UL>
 
 <P> <P><H5>Running a Wizard from a script</H5><P>
+<P><H5> Differences between running from the command line and running a script</H5><P>
+<P>Command-line
+<P>Scripts are an easy way to run a Wizard and are recommended for any users.
+The command starts with <b>phenix.</b> plus the name of the Wizard in lower-case
+letters (<b>phenix.autosol</b>). Following this, all of the keywords are on the
+same line (or on continuation lines) and values are assigned with an 
+&quot;=&quot; sign. 
+The order of keywords makes no difference running from the command line. A simple 
+command is:
+<PRE style="face=courier">phenix.autosol data=w1.sca seq_file=seq.dat  sites=2 atom_type=Se
+</PRE>
+
+
+<P>Scripts
+<p>Normally scripts are for advanced users only (for running MIR or multiple
+datasets, you have to use the GUI or a script, however).
+A script can contain both commands and keywords. Keywords are read in until a
+command is found, then the command is executed, then additional keywords are read
+in until another command is found, and so on. If the script file contains only 
+keywords and no commands, then the keywords are read in and used 
+as input to the Wizard, in just the same way as running from the command line.
+In a script file, each line can contain a command or keyword and optional values for the
+command or keyword, separated by spaces. 
+<p>The keywords for scripts are a subset of keywords for the command-line. This is
+because the command-line interpreter has a number of special keywords 
+(essentially shortcuts) to make typing at the command-line easier. 
+A sample script file &quot;autosol.inp&quot; that contains the same information as the
+command-line command shown above (but with the full keyword names, not the command-line
+shortcuts) is: 
+<PRE style="face=courier"># autosol.inp
+# script file with inputs for AutoSol Wizard.
+# run with: phenix.runWizard AutoSol autosol.inp
+#
+input_file_list w1.sca   # script keyword is input_file_list not data
+input_seq_file seq.dat   # script keyword is input_seq_file not seq_file
+mad_ha_n 2               # script keyword is mad_ha_n not sites
+mad_ha_type Se           # script keyword is mad_ha_type not atom_type
+#
+# end of autosol.inp
+</PRE>
+which you can run with:
+<PRE style="face=courier">phenix.runWizard AutoSol autosol.inp
+</PRE>
+<P>NOTE: The script interpreter will accept <b>any</b> keywords and values.
+If the keyword is not recognized, then it will write a warning to
+the log file, but it will not stop.  This means that if you use the 
+wrong name for a keyword, you will only find this out by looking
+at the beginning of the log file. The utility of this feature is that
+keywords set the value of the corresponding variable in the Wizard. If
+you know what you are doing, you can set any variable in the Wizard in 
+this way, whether or not it is a keyword.
+
+
+
 <P><H5> Basic operation of a Wizard from a script</H5><P>
 <P>
 <P><UL><LI> You can run a wizard from a script like this 
@@ -302,9 +359,9 @@ at the end of every temporary command file created to run resolve.
 The script file (autosol.inp) should contain keyword entries telling
 the Wizard what to do.  The output will be written to the log file
 (e.g., <b>AutoSol_run_1_/AutoSol_run_1_1.log</b>).
-<P><LI>The keywords that can be set in a script file include (nearly) all the
-keywords for for command-line running, plus a set of control keywords for
-running from a script. To see all the basic commands for a wizard, make a
+<P><LI>The keywords that can be set in a script file include most of the
+keywords for for command-line running, plus a set of control commands for
+running from a script. To see all the basic keywords for a wizard, make a
 script (e.g., keywords.inp) that says:
 <PRE style="face=courier">list_keywords
 </PRE>
