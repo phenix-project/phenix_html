@@ -179,7 +179,7 @@ number 1):
 <PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb quick=True
 </PRE>
 
-<P><LI>Place ligand near residue 94 of chain "A"
+<P><LI>Place ligand near residue 94 of chain "A" from partial.pdb
 <PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
    ligand_near_chain="A" ligand_near_res=92
 </PRE>
