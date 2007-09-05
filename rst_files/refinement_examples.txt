@@ -1,0 +1,238 @@
+Structure refinement examples
+*****************************
+
+A set of structure refinement examples using phenix.refine.
+
+Authors
+-------
+
+- Examples compilation: Pavel Afonine (PAfonine@lbl.gov), Ralf Grosse-Kunstleve
+- Atomic models and data: CCI Structure Library (Paul Adams, PDAdams@lbl.gov),
+  PDB
+
+Quick Facts
+-----------
+
+- All necessary files to run structure refinement examples with phenix.refine
+  are located in refinement_examples directory;
+- Each sub-directory example_xx contains all task files (command and
+  parameter files) necessary to run an example;
+- Data and model files are located in data sub-directory;
+- Some examples are quick to run and some could take an hour or more
+  (depending on computer);
+- To run the examples: a) copy the entire refinement_examples directory to
+  where you plan to run the examples, b) go to any of sub-directories
+  example_xx and execute a run file. This will start the selected refinement
+  example, wait until it's finished and inspect the output files.
+- The actual R-factors resulted from running these examples may slightly vary
+  from listed below due to potential differences in hardware and software
+  (different versions of compilers or PHENIX).
+
+Examples
+--------
+
+**Refinement of lysozyme structure at 1.5 A**
+
+  In this series of examples we review the simple refinement with all default
+  parameters, automatic picking and refinement of solvent molecules, switching
+  from isotropic to anisotropic ADP refinement, practice monitoring of Rfactors
+  change during refinement and experience the effect of adding and refinement of
+  hydrogen atoms.
+
+  **example_1a:** The simplest possible refinement mode: refinement with all
+  default parameters. This includes 3 macro-cycles of bulk-solvent and
+  anisotropic scaling, coordinates and individual isotropic B-factors refinement.
+
+    Final: R-work = 0.2773 R-free = 0.3153
+
+  The start model does not contain any water molecules placed into it. Next
+  example demonstrates how to add and refine ordered solvent.
+
+  **example_1b:** Same refinement run as in example_1a with automatic water
+  picking and refinement.
+
+    Final: R-work = 0.2198 R-free = 0.2574
+
+  Automatic water picking and refinement dropped the R-factors by ~6%. At 1.5 A
+  resolution it's worth of trying to refine all well ordered non-solvent and
+  non-hydrogen atoms as anisotropic.
+
+  **example_1c:** Same refinement run as in example_1b with all non-water atoms
+  refined anisotropically.
+
+    Final: R-work = 0.2134 R-free = 0.2559
+
+  Refinement of non-solvent atoms as anisotropic slightly dropped R-factors. The
+  R-factor statistics in the output PDB file header shows continues R-factors
+  decrease from macro-cycles to macro-cycle. This suggests to run the refinement
+  more than 3 macro-cycles (3 is the default).
+
+  **example_1d:** Same refinement run as in example_1c performed 10 macro-cycles.
+
+    Final: R-work = 0.1788 R-free = 0.2222
+
+  Indeed, switching from 3 to 10 macro-cycles dropped R-factors further by ~3.5%.
+  Also, the R-factor statistics in PDB file header shows no more changes in R
+  which indicates that refinement is converged.
+
+  **example_1e:** Same refinement run as in example_1d performed with hydrogen
+  atoms added to the final refined model obtained in example_1d.
+
+    Final: R-work = 0.1636 R-free = 0.2186
+
+  Using the hydrogens in refinement may further improve the model. Indeed,
+  adding the hydrogen atoms and refining them as riding model decreased Rs by
+  approx. 1%.
+
+**Refinement of 1071B at 3.0A resolution, 2 NCS groups with 3 components in each group.**
+
+  The aim of these four examples below is to practice determining and specifying
+  of NCS groups (using atom selection syntax). Also it underlines the importance
+  of checking NCS groups that determined automatically by phenix.refine. The
+  last example demonstrates the use of TLS.
+
+  **example_2a:** Refinement with all default parameters. This includes 3
+  macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
+  individual isotropic B-factors refinement.
+
+    Final: R-work = 0.2074 R-free = 0.2730
+
+  The number of parameters and relatively low resolution produce fairly large
+  gap between R-work and R-free. Hopefully we can add some more "observations"
+  by using NCS restraints.
+
+  **example_2b:** Same refinement run as in example_2a with using the NCS
+  restraints (NCS operators detected automatically).
+
+    Final: R-work = 0.2394 R-free = 0.2840
+
+  phenix.refine can automatically determine NCS groups and set up the selections
+  for NCS restraints. It does it by simple analysis of chains in input PDB.
+  Although it does the good job in many cases, in this particular one the found
+  selections are not optimal and their use in refinement is counterproductive:
+  both R-work and R-free jumped up. Visual inspection of the model on graphics
+  suggests more smart selections as demonstrated below.
+
+  **example_2c:** Same refinement run as in example_2a with using the NCS
+  restraints (NCS operators provided manually).
+
+    Final: R-work = 0.2127 R-free = 0.2557
+
+  The correct selections for NCS groups and their use in refinement produce
+  nice R-factors.
+
+  **example_2d:** Same refinement run as in example_2c with using TLS to model
+  ADP of selected domains.
+
+  The use of TLS model for ADP of selected chains results in some further model
+  improvement.
+
+    Final: R-work = 0.2055 R-free = 0.2513
+
+
+**Refinement of 1038B at 3.0A resolution, 10 fold NCS.**
+
+  These three examples below are similar to previous set of examples with two
+  main differences: the automatic determination of NCS groups worked well and
+  the use of TLS modeling resulted in more significant improvement.
+
+  **example_3a:** Refinement with all default parameters. This includes 3
+  macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
+  individual isotropic B-factors refinement.
+
+    Final: R-work = 0.2044 R-free = 0.2754
+
+  The gap between R-work and R-free clearly indicated the overfitting. The NCS
+  restraints will help as shown in the next example.
+
+  **example_3b:** Same refinement run as in example_3a with using the NCS
+  restraints (NCS operators detected automatically).
+
+    Final: R-work = 0.2169 R-free = 0.2505
+
+  Applying NCS restrains decreased R-free and narrowed the gap R-work - R-free.
+  No manual work was necessary to specify NCS groups.
+
+  **example_3c:** Same refinement run as in example_3b with using TLS to model
+  ADP of selected domains.
+
+    Final: r_work = 0.1993 r_free = 0.2393
+
+  Selecting TLS groups required a closer look at the model on graphics. This
+  is rewarded by ~2% drop in R. Note that the refinement is not fully converged
+  as indicated by continuous drop in R-factors between the last two macro-cycles
+  (see PDB file header: in refinement statistics step-by-step). This suggests
+  that adding a few more refinement macro-cycles may further improve the model.
+
+**Refinement using Simulated Annealing (SA)**
+
+  In this couple of examples we demonstrate the power of SA refinement to
+  improve a poor starting model. Combining it with automatic water picking is
+  a good idea at the cost of just one parameter added to the command line.
+
+  **example_4a:** Refinement with all default parameters. This includes 3
+  macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
+  individual isotropic B-factors refinement.
+
+  Start: r_work = 0.4166 r_free = 0.4678
+  Final: r_work = 0.3357 r_free = 0.4066
+
+  The default refinement run (plus water picking) did a good progress in model
+  improvement.
+
+  **example_4b:** Same refinement run as in example_4a with using SA.
+
+  Start: r_work = 0.4166 r_free = 0.4678
+  Final: r_work = 0.2687 r_free = 0.3449
+
+  Adding a SA refinement to the previous refinement run results in big model
+  improvement as indicated by ~6% drop in both R-work and R-free factors.
+
+**Refinement of f' and f'' for a structure with unknown (to the dictionary) molecule in it**
+
+  The goal of this example is to show that in case of refinement against
+  anomalous data the refinement of f' and f'' to model the anomalous
+  differences in F+ and F- may deliver another drop in R-factors from small
+  fractions to ~1% or more. Also it shows how to use eLBOW program to generate
+  a CIF (stereochemistry dictionary) file for the unknown item in the input PDB.
+  A PDB entry with the code 1mdg is used in this example.
+
+  **example_5a:** Refinement with all default parameters. This includes 3
+  macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
+  individual isotropic B-factors refinement.
+
+    Final: R-work = 0.2284 R-free = 0.2537
+
+  **example_5b:** Same refinement run as in example_5a with f' and f''
+  refinement for anomalous scatterer.
+
+    Final: R-work = 0.2221 R-free = 0.2442
+
+  Note the drop in R-free by 1.0%
+
+
+**Refinement using twinned data**
+
+  This example shows how to do the refinement if the data is twinned.
+  phenix.xtriage was used to obtain the twinning operator. For more information
+  about twinning analysis and using in refinement look separate paragraph in
+  PHENIX documentation.
+
+  **example_6a:** Refinement with all default parameters. This includes 3
+  macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
+  individual isotropic B-factors refinement. A PDB entry with the code 1l2h is
+  used in this example.
+
+    Final: R-work = 0.2479 R-free = 0.2753
+
+  **example_6b:** Same refinement run as in example_6a with the twinning taken
+  into account.
+
+    Final: R-work = 0.1687 R-free = 0.2093
+
+
+Questions, comments, more examples
+----------------------------------
+
+- phenix.refine documentation
+- PAfonine@lbl.gov or phenixbb@phenix-online.org
