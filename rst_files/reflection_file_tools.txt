@@ -1,0 +1,178 @@
+reflection file tools
+=====================
+
+================================
+phenix.reflection_file_converter
+================================
+
+**Purpose**
+
+``phenix.reflection_file_converter`` is a simple utility program that
+allows a straightforward conversion of many reflection file formats
+to ``mtz``, ``cns`` or ``scalepack`` format.  Currently, combining
+several dataset into a single output file is not supported.
+
+**Keywords**
+
+Typing::
+
+  phenix.reflection_file_converter --help
+
+results in::
+
+  Usage: phenix.reflection_file_converter [options] reflection_file ...
+
+  Options:
+    -h, --help            show this help message and exit
+    --unit-cell=10,10,20,90,90,120|FILENAME
+                          External unit cell parameters
+    --space-group=P212121|FILENAME
+                          External space group symbol
+    --symmetry=FILENAME   External file with symmetry information
+    --weak-symmetry       symmetry on command line is weaker than symmetry found
+                          in files
+    --resolution=FLOAT    High resolution limit (minimum d-spacing, d_min)
+    --low-resolution=FLOAT
+                          Low resolution limit (maximum d-spacing, d_max)
+    --label=STRING        Substring of reflection data label or number
+    --non-anomalous       Averages Bijvoet mates to obtain a non-anomalous array
+    --r-free-label=STRING
+                          Substring of reflection data label or number
+    --r-free-test-flag-value=FLOAT
+                          Value in R-free array indicating assignment to free
+                          set.
+    --generate-r-free-flags
+                          Generates a new array of random R-free flags (MTZ and
+                          CNS output only).
+    --use-lattice-symmetry-in-r-free-flag-generation
+                          group twin/pseudo symmetry related reflections
+                          together in r-free set.
+    --r-free-flags-fraction=FLOAT
+                          Target fraction free/work reflections (default: 0.10).
+    --r-free-flags-max-free=INT
+                          Maximum number of free reflections (default: 2000).
+    --change-of-basis=STRING
+                          Change-of-basis operator: h,k,l or x,y,z or
+                          to_reference_setting, to_primitive_setting,
+                          to_niggli_cell, to_inverse_hand
+    --eliminate-invalid-indices
+                          Remove indices which are invalid given the change of
+                          basis desired
+    --expand-to-p1        Generates all symmetrically equivalent reflections.
+                          The space group symmetry is reset to P1. May be used
+                          in combination with --change_to_space_group to lower
+                          the symmetry.
+    --change-to-space-group=SYMBOL|NUMBER
+                          Changes the space group and merges equivalent
+                          reflections if necessary
+    --write-mtz-amplitudes
+                          Converts intensities to amplitudes before writing MTZ
+                          format; requires --mtz_root_label
+    --write-mtz-intensities
+                          Converts amplitudes to intensities before writing MTZ
+                          format; requires --mtz_root_label
+    --remove-negatives    Remove negative intensities or amplitudes from the
+                          data set
+    --massage-intensities
+                          'Treat' negative intensities to get a positive
+                          amplitude. |Fnew| = sqrt((Io+sqrt(Io**2
+                          +2sigma**2))/2.0). Requires intensities as input and
+                          the flags --mtz, --write_mtz_amplitudes and
+                          --mtz_root_label.
+    --scale-max=FLOAT     Scales data such that the maximum is equal to the
+                          given value
+    --scale-factor=FLOAT  Multiplies data with the given factor
+    --sca=FILE            write data to Scalepack FILE ('--sca .' copies name of
+                          input file)
+    --mtz=FILE            write data to MTZ FILE ('--mtz .' copies name of input
+                          file)
+    --mtz-root-label=STRING
+                          Root label for MTZ file (e.g. Fobs)
+    --cns=FILE            write data to CNS FILE ('--cns .' copies name of input
+                          file)
+    --shelx=FILE          write data to SHELX FILE ('--shelx .' copies name of
+                          input file)
+
+  Example: phenix.reflection_file_converter w1.sca --mtz .
+
+**Examples**
+
+- Convert scalepack into an mtz format. Specify ouput filename (w1.mtz) and label for intensities (IP -> IP,SIGIP)::
+
+    phenix.reflection_file_converter w1.sca --mtz_root_label=IP --mtz=w1.mtz
+
+
+- Change basis to get data in primitive setting, merge to higher symmetry
+  and bring to reference setting (three steps)::
+
+    phenix.reflection_file_converter c2.sca --change_basis=to_niggli_cell --sca=niggli.sca
+    phenix.reflection_file_converter niggli.sca --change_to_space_group=R32:R --sca=r32r.sca
+    phenix.reflection_file_converter r32r.sca --change_of_basis=to_reference_setting --sca=r32_hexagonal_setting.sca
+
+
+=================
+phenix.cns_as_mtz
+=================
+
+**Purpose**
+
+Converts all data in a CNS reflection file to MTZ format.
+
+**Keywords**
+
+Typing::
+
+  phenix.cns_as_mtz --help
+
+results in::
+
+  Usage: phenix.cns_as_mtz [options] cns_file
+
+  Options:
+    -h, --help            show this help message and exit
+    --unit-cell=10,10,20,90,90,120|FILENAME
+                          External unit cell parameters
+    --space-group=P212121|FILENAME
+                          External space group symbol
+    --symmetry=FILENAME   External file with symmetry information
+    -q, --quiet           suppress output
+
+  Example: phenix.cns_as_mtz scale.hkl
+
+**Example**
+
+Extract unit cell parameters and space group symbol from a PDB coordinate
+file and reflection data from a CNS reflection file. Write MTZ file::
+
+  phenix.cns_as_mtz mad_scale.hkl --symmetry minimize.pdb
+
+
+===============
+phenix.mtz.dump
+===============
+
+**Purpose**
+
+Inspects an MTZ file. Optionally writes data in text format (human
+readable, machine readable, or spreadsheet).
+
+**Keywords**
+
+Typing::
+
+  phenix.mtz.dump --help
+
+results in::
+
+  Usage: phenix.mtz.dump [options] file_name [...]
+
+  Options:
+    -h, --help            show this help message and exit
+    -v, --verbose         Enable CMTZ library messages.
+    -c, --show-column-data
+    -f KEYWORD, --column-data-format=KEYWORD
+                          Valid keywords are: human_readable, machine_readable,
+                          spreadsheet. Human readable is the default. The format
+                          keywords can be abbreviated (e.g. -f s).
+    -b, --show-batches
+    --walk=ROOT_DIR       Find and process all MTZ files under ROOT_DIR

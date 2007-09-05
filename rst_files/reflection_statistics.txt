@@ -7,26 +7,35 @@ Reflection Statistics
 Comparisions between multiple datasets are available via the
 ``phenix.reflection_statistics`` command::
 
-  usage: phenix.reflection_statistics [options] reflection_file [...]
+  Usage: phenix.reflection_statistics [options] reflection_file [...]
 
-  options:
+  Options:
     -h, --help            show this help message and exit
-    --unit_cell=10,10,20,90,90,120|FILENAME
+    --unit-cell=10,10,20,90,90,120|FILENAME
                           External unit cell parameters
-    --space_group=P212121|FILENAME
+    --space-group=P212121|FILENAME
                           External space group symbol
     --symmetry=FILENAME   External file with symmetry information
+    --weak-symmetry       symmetry on command line is weaker than symmetry found
+                          in files
     --quick               Do not compute statistics between pairs of data arrays
     --resolution=FLOAT    High resolution limit (minimum d-spacing, d_min)
-    --low_resolution=FLOAT
+    --low-resolution=FLOAT
                           Low resolution limit (maximum d-spacing, d_max)
     --bins=INT            Number of bins
+    --bins-twinning-test=INT
+                          Number of bins for twinning test
+    --bins-second-moments=INT
+                          Number of bins for second moments of intensities
+    --lattice-symmetry-max-delta=LATTICE_SYMMETRY_MAX_DELTA
+                          angular tolerance in degrees used in the determination
+                          of the lattice symmetry
 
   Example: phenix.reflection_statistics data1.mtz data2.sca
 
-This utility reads one or more reflection files in any of the formats
-listed near the top of the document. For each of the datasets found in
-the reflection files the output shows a block like the following::
+This utility reads one or more reflection files (many common formats
+incl. MTZ, Scalepack, CNS, SHELX). For each of the datasets found
+in the reflection files the output shows a block like the following::
 
   Miller array info: gere_MAD.mtz:FSEinfl,SIGFSEinfl,DSEinfl,SIGDSEinfl
   Observation type: xray.reconstructed_amplitude
@@ -46,35 +55,14 @@ the reflection files the output shows a block like the following::
   Anomalous signal: 0.1065
 
 This is followed by a listing of the completeness and the anomalous
-signal in resolution bins (the number of bins and the resolution range
-may be adjusted with the options shown above).
+signal in resolution bins. The number of bins and the resolution range
+may be adjusted with the options shown above.
 
 *Unless* the ``--quick`` option is specified the output will also show
 the correlations between the datasets and, if applicable, between the
 anomalous differences, both as overall values and in bins. The
 correlation between anomalous differences is often a very powerful
 indicator for the resolution up to which the anomalous signal is useful
-for substructure determination. In general one should use reflection
-data only up to the resolution to which the correlation is better
-than 0.30. For example::
+for substructure determination.
 
-  Anomalous difference correlation of:
-    gere_MAD.mtz:F(+)SEinfl,SIGF(+)SEinfl,F(-)SEinfl,SIGF(-)SEinfl
-    gere_MAD.mtz:F(+)SElrm,SIGF(+)SElrm,F(-)SElrm,SIGF(-)SElrm
-  Overall correlation:  0.390
-  unused:              d >   24.7502:  0.000
-  bin  1:   24.7502 >= d >    5.8979:  0.874
-  bin  2:    5.8979 >= d >    4.6917:  0.702
-  bin  3:    4.6917 >= d >    4.1017:  0.647
-  bin  4:    4.1017 >= d >    3.7281:  0.483
-  bin  5:    3.7281 >= d >    3.4616:  0.346
-  bin  6:    3.4616 >= d >    3.2580:  0.188
-  bin  7:    3.2580 >= d >    3.0952:  0.189
-  bin  8:    3.0952 >= d >    2.9607:  0.138
-  bin  9:    2.9607 >= d >    2.8469:  0.138
-  bin 10:    2.8469 >= d >    2.7488:  0.136
-  unused:    2.7488 >  d            :  0.000
-
-In this case the correlation drops below 0.30 between 3.46 and 3.25 Angstrom.
-This suggests to run substructure searches (e.g. HySS) with ``--resolution=3.5``.
-
+See also: `phenix.xtriage <xtriage.htm>`_
