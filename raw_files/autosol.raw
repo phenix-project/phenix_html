@@ -274,6 +274,37 @@ f_prime=-5  # f-prime value for SAD
 f_double_prime=4.5  # f-double-prime value for SAD
 </PRE>
 
+<P><H5><I>Model viewing during model-building with the Coot-PHENIX interface 
+</I></H5><P>
+<P>The AutoSol Wizard allows you to view the current best model that is
+produced by the automated model-building process.  This capability is 
+identical to the view/edit model procedure available in the 
+<A href="autobuild.htm"> AutoBuild </A>
+Wizard. Normally you would use it just to view the model in AutoSol, and
+to view and edit a model in 
+<A href="autobuild.htm"> AutoBuild </A> .
+<p>The PHENIX-Coot interface is accessible through the GUI and 
+via the command-line.
+Using the GUI, when a model has been produced by the AutoSol Wizard, 
+you can double-click the  button on the GUI labelled 
+<b>View/edit files with coot</b> to start Coot with your current map and model.
+If you are running from the command-line, you can open a new window and
+type:
+<PRE style="face=courier">phenix.autobuild coot </PRE>
+which will do the same (provided the necessary map and model are ready).
+<p>When Coot has been loaded, your map and model will be displayed along with
+a <b>PHENIX-Coot Interface</b> window. If you want, 
+you can edit your model and then save 
+it, giving it back to PHENIX with the button labelled something like
+<b>Save model as COMM/overall_best_coot_7.pdb</b>. This button creates the
+indicated file and also tells PHENIX to look for this file and to try and
+include the contents of the model in the building process. In AutoSol, only
+the main-chain atoms of the model you save are considered, and
+the side-chains are ignored.  Ligands 
+and solvent in the model are ignored as well.
+<p>As the AutoSol Wizard continues to build new models and create new maps,
+you can update in the PHENIX-Coot Interface to the current best model and
+map with the button <b>Update with current files from PHENIX</b>.
       <P><H5><U>Examples</U></H5><P>
 <P><H5>SAD dataset</H5><P>
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
@@ -307,7 +338,8 @@ This will carry out the usual structure solution, but will skip model-building
 This will carry out the usual structure solution, but will build an RNA
 chain.  For DNA, specify chain_type=DNA.  You can only build one type of
 chain at a time in the AutoSol Wizard. To build protein and DNA, use 
-the AutoBuild Wizard and run it first with chain_type=PROTEIN, then
+the <A href="autobuild.htm"> AutoBuild </A>
+Wizard and run it first with chain_type=PROTEIN, then
 run it again specifying the protein model as input_lig_file=proteinmodel.pdb
 and with chain_type=DNA.
 

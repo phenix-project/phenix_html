@@ -480,6 +480,38 @@ used in refinement
 </LI>
 </UL>
 
+<P><H5><I>Model editing during rebuilding with the Coot-PHENIX interface 
+</I></H5><P>
+<P>The AutoBuild Wizard allows you to edit a model and give it back to the
+Wizard during the iterative model-building, density modification and
+refinement process. The Wizard will consider the model that you give it
+along with the models that it generates automatically, and will choose the
+parts of your model that fit the density better than other models.
+<p>You can edit a model using the PHENIX-Coot interface. This 
+interface is accessible through the GUI and via the command-line.
+Using the GUI, when a model has been produced by the AutoBuild Wizard, 
+you can double-click the  button on the GUI labelled 
+<b>View/edit files with coot</b> to start Coot with your current map and model.
+If you are running from the command-line, you can open a new window and
+type:
+<PRE style="face=courier">phenix.autobuild coot </PRE>
+which will do the same (provided the necessary map and model are ready).
+<p>When Coot has been loaded, your map and model will be displayed along with
+a <b>PHENIX-Coot Interface</b> window. You can edit your model and then save 
+it, giving it back to PHENIX with the button labelled something like
+<b>Save model as COMM/overall_best_coot_7.pdb</b>. This button creates the
+indicated file and also tells PHENIX to look for this file and to try and
+include the contents of the model in the building process.
+<p>The precise use of the model that you save depends on the type of
+model-building that is being carried out by the AutoBuild Wizard. If you 
+are using <b>rebuild_in_place</b> then the main-chain and side-chains of the
+model are considered as replacements for the current working model. Otherwise,
+only the main-chain conformation is considered, and the side-chains are
+ignored.  Ligands and solvent in the model are ignored as well.
+<p>As the AutoBuild Wizard continues to build new models and create new maps,
+you can update in the PHENIX-Coot Interface to the current best model and
+map with the button <b>Update with current files from PHENIX</b>.
+
 
       <P><H5><U>Examples</U></H5><P>
 
