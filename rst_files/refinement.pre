@@ -60,7 +60,7 @@ Current limitations
  data type w.r.t. another.
 
 phenix.refine organization
---------------------------
+**************************
 
 A refinement run in phenix.refine always consists of three main steps: reading
 in and processing of the data (model in PDB format, reflections in most known
@@ -81,7 +81,7 @@ illustrated at figure below:
 .. image:: images/phenix_refine_flexibility.png
 
 Running phenix.refine
----------------------
+*********************
 
 phenix.refine is run from the command line::
 
@@ -148,19 +148,6 @@ To see all default parameters::
 
   % phenix.refine --show-defaults=all
 
-Refinement with all default parameters
-**************************************
-::
-
-  % phenix.refine data.hkl model.pdb
-
-This will perform coordinate refinement and restrained ADP refinement. Three
-macrocycles will be executed, each consisting of bulk solvent correction,
-anisotropic scaling of the data, coordinate refinement (25 iterations of the
-LBFGS minimizer) and ADP refinement (25 iterations of the LBFGS minimizer). At
-the end the updated coordinates, maps, map coefficients, and statistics are
-written to files.
-
 Giving parameters on the command line or in files
 *************************************************
 
@@ -200,8 +187,21 @@ generate a template file containing all parameters by using the command
 ``phenix.refine --show-defaults=all`` and then take the parameters that you
 want to use (and remove the rest).
 
+**Comments in parameter files**
+
+Use # for comments::
+
+  % phenix.refine data.hkl model.pdb comments_in_params_file.params
+
+where comments_in_params_file.params file contains the lines::
+
+  #include_params comments_in_params_file.params
+
+In this example the only parameter that is used to overwrite the defaults is
+``target_weights.wxc_scale`` and the rest is commented.
+
 Refinement scenarios
---------------------
+********************
 
 The refinement of atomic parameters is controlled by the ``strategy``
 keyword. Those include::
@@ -217,8 +217,21 @@ keyword. Those include::
 Below are examples to illustrate the use of the ``strategy`` keyword
 as well as a few others.
 
+Refinement with all default parameters
+--------------------------------------
+::
+
+  % phenix.refine data.hkl model.pdb
+
+This will perform coordinate refinement and restrained ADP refinement. Three
+macrocycles will be executed, each consisting of bulk solvent correction,
+anisotropic scaling of the data, coordinate refinement (25 iterations of the
+LBFGS minimizer) and ADP refinement (25 iterations of the LBFGS minimizer). At
+the end the updated coordinates, maps, map coefficients, and statistics are
+written to files.
+
 Refinement of coordinates
-*************************
+-------------------------
 
 phenix.refine offers three ways of coordinate refinement:
 
@@ -337,6 +350,22 @@ Important to note:
      Increasing this number may increase the convergence radius of rigid body
      refinement at the cost of much longer run time.
 
+  8. Rigid body refinement can be combined with individual coordinates
+     refinement in a smart way::
+
+       % phenix.refine data.hkl model.pdb strategy=rigid_body+individual_sites
+
+     this will perform 3 macro-cycles of individual coordinates refinement and
+     the rigid body refinement will be performed only once at the first
+     macro-cycle. More powerful combination for coordinates refinement is::
+
+       % phenix.refine data.hkl model.pdb strategy=rigid_body+individual_sites \
+         simulated_annealing=true
+
+     this will do the same refinement as above plus the Simulated annealing at
+     the second macro-cycle (see more options/examples for running SA in this
+     document).
+
 - **Refinement of individual coordinates**
 
   1. Refinement with Simulated Annealing::
@@ -404,7 +433,7 @@ Important to note:
      restraints will be preserved.
 
 Refinement of atomic displacement parameters (commonly named as ADP or B-factors)
-*********************************************************************************
+---------------------------------------------------------------------------------
 
 An ADP in phenix.refine is defined as a sum of three contributions::
 
@@ -601,7 +630,7 @@ It is important to keep in mind:
      parametrization doesn't suite well.
 
 Occupancy refinement
-********************
+--------------------
 
 1. Refinement of occupancies for all atoms in the model::
 
@@ -619,10 +648,19 @@ Occupancy refinement
    occupancy refinement)::
 
      % phenix.refine data.hkl model.pdb strategy=group_occupancies \
-       refine.occupancies.group="chain A and resid 1"
+       refine.occupancies.group="chain A and resid 1" \
+       refine.occupancies.group="chain B and resid 3"
+
+   this will refine two occupancy factors: one for residue number 1 in chain A
+   and another one for residue number 3 in chain B. This feature is frequently
+   used for refinement of occupancies of partially occupied ligands. If no
+   selections is provided with ``refine.occupancies.group`` then by default one
+   occupancy per residue will be refined (similarly to group ADP refinement)::
+
+     % phenix.refine data.hkl model.pdb strategy=group_occupancies
 
 f' and f'' refinement
-*********************
+---------------------
 
 If the structure contains anomalous scatterers (e.g. Se in a
 SAD or MAD experiment), and if anomalous data are available,
@@ -674,7 +712,7 @@ Run without arguments for usage information::
   % phenix.form_factor_query
 
 Using NCS restraints in refinement
-**********************************
+----------------------------------
 
 phenix.refine can find NCS automatically or use NCS selections defined by the
 user. Gaps in selected sequences are allowed - a sequence alignment is performed
@@ -711,7 +749,7 @@ detected or adjusted NCS groups.
    file.
 
 Water picking
-*************
+-------------
 
 phenix.refine has very efficient and fully automated protocol for water picking
 and refinement. One run of phenix.refine is normally necessary to locate waters,
@@ -760,7 +798,7 @@ annealing, TLS refinement, etc. Some useful commands are:
    atomic B-factor.
 
 Hydrogens in refinement
-***********************
+-----------------------
 
 phenix.refine offers two possibilities for handling of hydrogen atoms:
 
@@ -817,7 +855,7 @@ Below are some useful commands:
    without repeating exactly the same refinement protocol.
 
 Refinement using twinned data
-*****************************
+-----------------------------
 
 phenix.refine can handle the refinement of hemihedrally twinned data (two twin
 domains). Least square twin refinement can be carried out using the following
@@ -843,7 +881,7 @@ An important point to stress is that phenix.refine will only deal properly
 with twinning that involves two twin domains.
 
 Neutron and joint X-ray and neutron refinement
-**********************************************
+----------------------------------------------
 
 Refinement using neutron data requires having H or/and D atoms added to the
 model. Use Reduce program to add all potential H atoms::
@@ -876,9 +914,8 @@ with D where necessary.
        phenix.refine model.pdb data_xray.hkl neutron_data.file_name=data_neutron.hkl
        input.xray_data.labels=FOBSx input.neutron_data.labels=FOBSn
 
-
 Examples of frequently used refinement protocols, common problems
-*****************************************************************
+-----------------------------------------------------------------
 
 1. Starting refinement from high R-factors::
 
@@ -1030,17 +1067,17 @@ Examples of frequently used refinement protocols, common problems
    Consult eLBOW documentation for more details.
 
 Useful options
---------------
+**************
 
 Changing the number of refinement cycles and minimizer iterations
-*****************************************************************
+-----------------------------------------------------------------
 ::
 
   % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=5 \
     main.max_number_of_iterations=20
 
 Creating R-free flags (if not present in the input reflection files)
-********************************************************************
+--------------------------------------------------------------------
 ::
 
     % phenix.refine data.hkl model.pdb main.generate_r_free_flags=True
@@ -1058,13 +1095,13 @@ fraction::
     r_free_flags.fraction=0.05 r_free_flags.max_free=500
 
 Specify the name for output files
-*********************************
+---------------------------------
 ::
 
   % phenix.refine data.hkl model.pdb output.prefix=lysozyme
 
 Reflection output
-*****************
+-----------------
 
 At the end of refinement a file with Fobs, Fmodel, Fcalc, Fmask, FOM,
 R-free_flags can be written out (in MTZ format)::
@@ -1080,13 +1117,13 @@ Note: Fmodel is the total model structure factor including all scales:
   Fmodel = scale_k1 * exp(-h*U_overall*ht) * (Fcalc + k_sol * exp(-B_sol*s^2) * Fmask)
 
 Setting the resolution range for the refinement
-***********************************************
+-----------------------------------------------
 ::
 
   % phenix.refine data.hkl model.pdb main.low_resolution=15.0 main.high_resolution=2.0
 
 Bulk solvent correction and anisotropic scaling
-***********************************************
+-----------------------------------------------
 
 By default phenix.refine always starts with bulk solvent modeling and
 anisotropic scaling. Here is the list of command that may be of use in some
@@ -1142,7 +1179,7 @@ even though the only anisotropic scaling was done and no ADP refinement
 performed.
 
 Default refinement with user specified X-ray target function
-************************************************************
+------------------------------------------------------------
 
 1. Refinement with least-squares target::
 
@@ -1162,7 +1199,7 @@ Default refinement with user specified X-ray target function
      % phenix.refine data.hkl model.pdb main.use_experimental_phases=false
 
 Modifying the initial model before refinement starts
-****************************************************
+----------------------------------------------------
 
 phenix.refine offers several options to modify input model before refinement
 starts:
@@ -1227,7 +1264,7 @@ manipulations. For more information on ``phenix.pdbtools`` type::
 Documentation on ``phenix.pdbtools`` is also available.
 
 Refinement using FFT or direct structure factor calculation algorithm
-*********************************************************************
+---------------------------------------------------------------------
 ::
 
   % phenix.refine data.hkl model.pdb \
@@ -1239,7 +1276,7 @@ or::
     structure_factors_and_gradients_accuracy.algorithm=direct
 
 Ignoring test (free) flags in refinement
-****************************************
+----------------------------------------
 
 Sometimes one need to use all reflections ("work" and "test") in the refinement;
 for example, at very low resolution where each single reflection counts, or at
@@ -1253,7 +1290,7 @@ Note: 1) the corresponding statistics (R-factors, ...) will be identical for
 in input reflection file (or automatically generated by phenix.refine).
 
 Using phenix.refine to calculate structure factors
-**************************************************
+--------------------------------------------------
 
 The total structure factor used in phenix.refine nearly in all calculations is
 defined as::
@@ -1279,7 +1316,7 @@ defined as::
 4. Resolution limits can be applied::
 
      % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=1 \
-       main.low_resolution=15.0 main.high_resolution=2.0
+       strategy=none main.low_resolution=15.0 main.high_resolution=2.0
 
 Note:
 
@@ -1291,7 +1328,7 @@ Note:
   of provided Fobs.
 
 Scattering factors
-******************
+------------------
 
 There are four choices for the scattering table to be used in phenix.refine:
 
@@ -1305,7 +1342,7 @@ The default is ``n_gaussian``. To switch to different table::
   % phenix.refine data.hkl model.pdb scattering_table=neutron
 
 Suppressing the output of certain files
-***************************************
+---------------------------------------
 
 The following command will tell phenix,refine to not write .eff, .geo, .def,
 maps and map coefficients files::
@@ -1316,7 +1353,7 @@ maps and map coefficients files::
 The only output will be: .log and .pdb files.
 
 Random seed
-***********
+-----------
 
 To change random seed::
 
@@ -1336,7 +1373,7 @@ an ensemble of slightly different models in average but sometimes containing
 significant variations in certain parts.
 
 Electron density maps
-*********************
+---------------------
 
 phenix.refine can compute and output three types of maps: k*Fobs-n*Fmodel,
 2m*Fobs-D*Fmodel and m*Fobs-D*Fmodel, where ``k`` and ``n`` are scalar
@@ -1383,7 +1420,7 @@ output around main chain atoms. If ``atom_selection`` is set to ``None`` or
   not be exactly what one can get with formulas rho(r)=...
 
 Refining with anomalous data (or what phenix.refine does with Fobs+ and Fobs-).
-*******************************************************************************
+-------------------------------------------------------------------------------
 
 The way phenix.refine uses Fobs+ and Fobs- is controlled by
 ``main.force_anomalous_flag_to_be_equal_to`` parameter.
@@ -1408,7 +1445,7 @@ Here are 3 possibilities:
 Look this documentation to see how to use and refine f' and f''.
 
 Rejecting reflections by sigma
-******************************
+------------------------------
 
 Reflections can be rejected by sigma cutoff criterion applied to amplitudes
 Fobs <= ``sigma_fobs_rejection_criterion`` * sigma(Fobs)::
@@ -1422,7 +1459,7 @@ or/and intensities Iobs <= ``sigma_iobs_rejection_criterion`` * sigma(Iobs)::
 Internally, phenix.refine uses amplitudes. If both
 ``sigma_fobs_rejection_criterion`` and ``sigma_iobs_rejection_criterion`` are
 given as non-zero values, then both criteria will be applied: first to Iobs,
-then to Fobs (after cutted Iobs got converted to Fobs)::
+then to Fobs (after truncated Iobs got converted to Fobs)::
 
   % phenix.refine model.pdb data_anom.hkl sigma_fobs_rejection_criterion=2 \
     sigma_iobs_rejection_criterion=2
@@ -1433,7 +1470,7 @@ and, unless strongly motivated, we encourage to not change these values. If
 amplitudes provided at input then ``sigma_fobs_rejection_criterion`` is ignored.
 
 Developer's tools
-******************
+-----------------
 
 phenix.refine offers a broad functionality for experimenting that may not be
 useful in everyday practice but handy for testing ideas.
@@ -1534,7 +1571,7 @@ not necessary to manually specify them again if further refinement
 runs are started with ``.def`` files.
 
 Atom selection examples
------------------------
+***********************
 **All atoms**::
 
     all
@@ -1610,14 +1647,27 @@ this will select residue 188 only in chain A.
     dna and not (phosphate or ribose)
     within(5, (nucleotide or peptide) backbone)
 
+Depositing refined structure with PDB
+*************************************
+
+phenix.refine reports a comprehensive statistics in PDB file header of refined
+model. This statistics consists of two parts: the first (upper, formatted with
+REMARK record) part is  relevant to the current refinement run and contains the
+information about input data and model files, time stamp, start and final
+R-factors, refinement statistics from macro-cycle to macro-cycle, etc. The
+second (lower, formatted with REMARK 3 record) part is abstracted from a
+particular refinement run (no intermediate statistics, time, no file names,
+etc.). This part is supposed to go in PDB and the first part should be removed
+manually.
+
 Referencing phenix.refine
--------------------------
+*************************
 
 Afonine, P.V., Grosse-Kunstleve, R.W. & Adams, P.D. (2005). CCP4 Newsl. 42,
 contribution 8.
 
 Relevant reading
-----------------
+****************
 
 Below is the list of papers either published in connection with phenix.refine
 or used to implement specific features in phenix.refine:
@@ -1752,8 +1802,8 @@ or used to implement specific features in phenix.refine:
       IUCr Commission on Crystallographic Computing 2005, 5:69-91.
       "cctbx news: Phil and friends"
 
-Questions, problems, bugs, more information
--------------------------------------------
+Feedback, more information
+--------------------------
 
 - Send bug reports to: bugs@phenix-online.org
 - For help write to: help@phenix-online.org
@@ -1761,6 +1811,3 @@ Questions, problems, bugs, more information
 - More information: www.phenix-online.org or type::
 
   % phenix.about
-
-- The latest version of this documentation: http://phenix-online.org/download/cci_apps/ ->
-  click on Documentation link right next to phenix.refine

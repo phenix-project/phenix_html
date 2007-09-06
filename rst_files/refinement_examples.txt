@@ -20,13 +20,33 @@ Quick Facts
 - Data and model files are located in data sub-directory;
 - Some examples are quick to run and some could take an hour or more
   (depending on computer);
-- To run the examples: a) copy the entire refinement_examples directory to
-  where you plan to run the examples, b) go to any of sub-directories
-  example_xx and execute a run file. This will start the selected refinement
-  example, wait until it's finished and inspect the output files.
 - The actual R-factors resulted from running these examples may slightly vary
   from listed below due to potential differences in hardware and software
   (different versions of compilers or PHENIX).
+
+Run examples
+------------
+
+There are two different ways to run the examples:
+
+1. Type the command::
+
+     % phenix.run_refinement_example 5a
+
+   this will create the directory ``example_5a`` and run the example 5a in this
+   directory. Running the command above without arguments will run all examples
+   (will take a long time). One can also run several examples like this::
+
+     % phenix.run_refinement_example 1a 2b 3a 3c
+
+   this will create 4 directories: ``example_1a``, ..., ``example_3c`` and run
+   the examples 1a, 2b, 3a and 3c in these directories.
+
+2. From PHENIX distribution copy the entire refinement_examples directory to
+   where you plan to run the examples. Then go to any of sub-directories
+   example_xx and execute a run file. This will start the selected refinement
+   example, wait until it's finished and inspect the output files.
+
 
 Examples
 --------

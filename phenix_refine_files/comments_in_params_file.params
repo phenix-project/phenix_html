@@ -1,0 +1,11 @@
+refinement {
+  refine {
+    #strategy =  individual_sites rigid_body  individual_adp group_adp tls \
+    #           individual_occupancies group_occupancies group_anomalous *none
+  }
+  #main {
+  #  number_of_macro_cycles = 1
+  #}
+}
+refinement.target_weights.wxc_scale = 1.5
+#refinement.main.low_resolution=5.0
