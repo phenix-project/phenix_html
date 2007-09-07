@@ -16,21 +16,22 @@ is predefined and you do not need read any further in this page.)</p>
 <b>$PHENIX/phenix/phenix/utilities</b> and <b>$PHENIX/phenix_html</b>.
 </p>
 <p>
-To create the current PHENIX html, get into the directory <b>$PHENIX/phenix_html</b>
+To create the current PHENIX html, get into the directory <b>$PHENIX</b>
 and type:
 </p><PRE style="face=courier">
-phenix.python $PHENIX/phenix/phenix/utilities/toc_and_index.py
+./bin/build-html
 </PRE>
-<p>You can also do the same thing with a regression test:
-</p><PRE style="face=courier">
-$PHENIX/phenix_regression/phenix_doc/test_phenix_html.csh
-</PRE>
-<p>Either of these will read the list of files in <b>html.list</b>, use the
+<p>This will generate some new raw files in 
+<b>$PHENIX/phenix_html/raw_files</b>, 
+read the list of files in <b>html.list</b>, use the
 raw <b>xxx.htm_raw</b> files in <b>raw_files</b> as templates and any python
 <b>master_params</b> specified in <b>html.list</b> to create a new set of
 <b>.htm</b> files in <b>$PHENIX/phenix_html</b>.
 </p><p>NOTE: Do not edit the files in <b>$PHENIX/phenix_html</b>, only the files
-in <b>$PHENIX/phenix_html/raw_files</b>.  The ones in <b>$PHENIX/phenix_html</b> are
+in <b>$PHENIX/phenix_html/raw_files</b>. Also those documents in 
+<b>$PHENIX/phenix_html/raw_files</b> that are auto-generated (e.g.
+refinement.raw) should not be edited.
+ The files in <b>$PHENIX/phenix_html</b> are
 overwritten every time you generate the current PHENIX html.
 </p>
 
