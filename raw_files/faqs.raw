@@ -74,9 +74,18 @@ build cycles.
  
 <H5>Can PHENIX do MRSAD?</H5>
 <p>Yes, PHENIX can run MRSAD (molecular replacement, combined with SAD
-phases).  There is a set of sample commands to do it in the 
+phases) by determining the anomalous scatterer substructure from a 
+model-phased anomalous difference Fourier.  
+There is a set of sample commands to do this in the 
 <a href="automr.htm">AutoMR</a>
 documentation.
+</p>
+<p>There is an alternative procedure in Phaser, which uses 
+log-likelihood-gradient completion to find the anomalous scatterers, 
+treating the molecular replacement model as a starting substructure.  
+At the moment this can only be carried out from the scripted (keyword)
+interface to Phaser, but will be implemented as part of the AutoSol 
+Wizard in a future release of Phenix.
 </p>
  
 <H5>What can I do if a Wizard says 

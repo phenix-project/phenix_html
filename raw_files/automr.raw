@@ -12,7 +12,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U><B>Author(s)</B></U></H5><P>
-<UL><LI>Phaser: Randy Read, Airlie McCoy and Laurant Storoni
+<UL><LI>Phaser: Randy J. Read, Airlie J. McCoy and Laurent C. Storoni
 <LI>AutoMR Wizard: Tom Terwilliger, Laurent Storoni, Randy Read, and Airlie McCoy
 <LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
 <LI>phenix.xtriage: Peter Zwart
@@ -57,11 +57,11 @@ solve structure, then carry out rigid body refinement of final solution with
 all data) and all the data will be used for model rebuilding. 
 
 <P><B>Composition of the asymmetric unit</B>. 
-PHASER needs to know what the mass in the
-asymmetric unit is. You can define this either by specifying one or more
-protein or nucleic acid sequence files, or by specifying protein or nucleic
-acid molecular masses, and telling the Wizard how many copies of each are
-present. 
+PHASER needs to know what the total mass in the asymmetric unit is (i.e. not
+just the mass of the search models). You can define this either by specifying 
+one or more protein or nucleic acid sequence files, or by specifying protein 
+or nucleic acid molecular masses, and telling the Wizard how many copies of 
+each are present. 
 
 <P><B>Space groups to search</B>. 
 You can request that all space groups with the same
@@ -72,13 +72,14 @@ model rebuilding in AutoBuild.
 <P><B>Ensembles to search for</B>. 
 AutoMR builds up a model by finding a set of good
 positions and orientations of one "ensemble", and then using each of those
-placements as starting points for finding the next "ensemble", until all the
+placements as starting points for finding the next ensemble, until all the
 contents of the asymmetric unit are found and a consistent solution is
 obtained. You can specify any number of different ensembles to search for, and
 you can search for any number of copies of each ensemble. The order of
-searching for ensembles does make a difference. You want to search for the
-biggest and best-ordered ensemble first. You specify the order when you list
-the ensembles to search for on the last main window of the AutoMR wizard. 
+searching for ensembles does make a difference. If possible, you want to 
+search for the biggest, best-ordered, most accurate ensemble first. 
+You specify the order when you list the ensembles to search for on the 
+last main window of the AutoMR wizard. 
 
 <P>
 Each ensemble can be specified by a single PDB file or a set of PDB files. The
@@ -88,7 +89,9 @@ molecular replacement process.
 
 <P>You will need to specify how similar you think each input PDB file that is
 part of an ensemble is to the structure that is in your crystal. You can
-specify either sequence identity, or expected rmsd. 
+specify either sequence identity, or expected rmsd. Note that if you use a 
+homology model, you should give the sequence identity of the template from
+which the model was constructed, not the 100% identity of the model!
 
 
 <P><B>Output of AutoMR</B>
@@ -121,8 +124,9 @@ MR.MAP_COEFFS.1.mtz
 The AutoMR wizard writes out MR.1.pdb and MR.1.mtz and
 MR.MAP_COEFFS.1.mtz well as output log files. The MR.1.pdb file will contain
 all the components of your MR solution. If there are multiple PDB files in an
-ensemble, the first model is placed in the new unit cell and written to
-MR.1.pdb. If there are multiple copies of a model, the chains are lettered
+ensemble, the model with the lowest estimated rmsd is chosen to represent the
+whole ensemble and is written to MR.1.pdb. 
+If there are multiple copies of a model, the chains are lettered
 sequentially A B C... The MR.1.mtz file contains the data from your input file
 to the full resolution available. The MR.MAP_COEFFS.1.mtz file contains
 sigmaA-weighted 2Fo-Fc map coefficients based on the rigid-body-refined model.
@@ -164,7 +168,7 @@ an <B>ensemble</B> of structures.
 N copies of this model in your structure, you need:
 <P><UL><LI>(1) a datafile name (native.sca or data=native.sca)
 <P><LI>(2) a search model (search_model.pdb or coords=search_model.pdb)
-<P><LI>(3) a how similar the search model is to your structure (
+<P><LI>(3) how similar the search model is to your structure (
 RMS=0.8 or identity=75)
 <P><LI>(4) information about the contents of the asymmetric unit:
    (mass=23000 or seq_file=seq.dat)  and (copies=1)
@@ -220,7 +224,7 @@ seq_file=seq.dat  # sequence file
 <P><H5>Standard AutoMR run with coords.pdb native.sca </H5><P>
 <P>Run AutoMR using coords.pdb as search model, native.sca as data, 
 assume RMS between coords.pdb and true model is about 0.85 A, the
-sequence of true model is seq.dat and there are 1 copies in the unit cell:
+sequence of true model is seq.dat and there is 1 copy in the unit cell:
 <PRE style="face=courier">phenix.automr coords.pdb native.sca RMS=0.85 seq.dat copies=1  \
     n_cycle_rebuild_max=2 n_cycle_build_max=2
 </PRE>
