@@ -516,33 +516,39 @@ map with the button <b>Update with current files from PHENIX</b>.
       <P><H5><U>Examples</U></H5><P>
 
 
-<UL><LI><H5>Run AutoBuild automatically after AutoSol</H5><P>
+<H5>Run AutoBuild automatically after AutoSol</H5><P>
 <PRE style="face=courier">phenix.autobuild after_autosol
 </PRE>
 
-<LI><H5>Run AutoBuild beginning with experimental data</H5><P>
+<H5>Run AutoBuild beginning with experimental data</H5><P>
 <PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat
 </PRE>
 
-<LI><H5>Merge in hires data</H5><P>
+<H5>Merge in hires data</H5><P>
 <PRE style="face=courier">phenix.autobuild data=solve_2.mtz hires_file=w1.sca  seq_file=seq.dat
 </PRE>
 
-<LI><H5>Make a SA-omit map around atoms in target.pdb</H5><P>
+<H5>Make a SA-omit map around atoms in target.pdb</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb omit_box_pdb=target.pdb   composite_omit_type=sa_omit
 </PRE>
 Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 An additional map coefficients file omit_region.mtz will show you the
-region that has been omitted.
+region that has been omitted. 
+(Note: be sure to use the weights in both
+resolve_composite_map.mtz and omit_region.mtz).
 
-<LI><H5>Make a simple composite omit map</H5><P>
+<H5>Make a simple composite omit map</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb composite_omit_type=simple_omit
 </PRE>
 Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
+An additional map coefficients file omit_region.mtz will show you the
+region that has been omitted. 
+(Note: be sure to use the weights in both
+resolve_composite_map.mtz and omit_region.mtz).
 
-<LI><H5>Make an iterative-build omit map around atoms in target.pdb</H5><P>
+<H5>Make an iterative-build omit map around atoms in target.pdb</H5><P>
 <PRE style="face=courier">phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=target.pdb \
    composite_omit_type=iterative_build_omit
 </PRE>
@@ -550,16 +556,22 @@ Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 An additional map coefficients file omit_region.mtz will show you the
 region that has been omitted.
+(Note: be sure to use the weights in both
+resolve_composite_map.mtz and omit_region.mtz).
 
-<LI><H5>Make a sa-omit map around residues 3 and 4 in chain A of coords.pdb</H5><P>
+<H5>Make a sa-omit map around residues 3 and 4 in chain A of coords.pdb</H5><P>
 <PRE style="face=courier">phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=coords.pdb \
    omit_res_start_list=3 omit_res_end_list=4 omit_chain_list=A   \
    composite_omit_type=sa_omit
 </PRE>
 Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
+An additional map coefficients file omit_region.mtz will show you the
+region that has been omitted.
+(Note: be sure to use the weights in both
+resolve_composite_map.mtz and omit_region.mtz).
 
-<LI><H5>Create one very good rebuilt model</H5><P>
+<H5>Create one very good rebuilt model</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
   include_input_model=True  \
   multiple_models_number=1 n_cycle_rebuild_max=5
@@ -576,7 +588,7 @@ and not discard any non-matching residues, then specify also edit_pdb=False.)
 will be carried out and multiple_models_starting_resolution is ignored.
 
 
-<LI><H5>Create 20 very good rebuilt models that are as different as possible</H5><P>
+<H5>Create 20 very good rebuilt models that are as different as possible</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
    multiple_models_number=20 n_cycle_rebuild_max=5
 </PRE>
@@ -587,15 +599,15 @@ among these models is an indication of the uncertainty in each of the models.
 Note that the ensemble of models is not a representation of the ensemble of
 structures that is truly present in the crystal.
 
-<LI><H5>Build an RNA chain</H5><P>
+<H5>Build an RNA chain</H5><P>
 <PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat chain_type=RNA
 </PRE>
 
-<LI><H5>Build a DNA chain</H5><P>
+<H5>Build a DNA chain</H5><P>
 <PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat chain_type=DNA
 </PRE>
 
-<LI><H5>Just make maps; don't do any building. </H5><P>
+<H5>Just make maps; don't do any building. </H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb maps_only=True     
 </PRE>
 </LI>
