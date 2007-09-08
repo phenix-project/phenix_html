@@ -368,6 +368,10 @@ this PDB file. This can be done through the GUI, the command-line, or
 a script. In the command-line version you do this with something like:
 <PRE style="face=courier">input_lig_file=my_ligand.pdb
 </PRE>
+<P>NOTE: you cannot use an input_lig_file containing ATOM records with
+rebuild_in_place, because the the rebuild_in_place algorithm
+will try to use them in rebuilding.  For rebuild_in_place normally the
+input_lig_file should be ligands with HETATM records.
 <P>If the PDB file contains a ligand, you may need to tell phenix.refine
 about the geometry of this ligand. In that case you will want to run
 phenix.elbow to create a cif definition file for this ligand:
@@ -640,6 +644,11 @@ the model that is being built and to discard any ligand atoms that overlap).
 PDB files by hand because when you build DNA, a lot of chains are going to
 be built into the protein region, and when you build protein, it is going to
 be accidentally built into the DNA.
+
+<LI>You cannot use an input_lig_file containing ATOM records with
+rebuild_in_place, because the the rebuild_in_place algorithm
+will try to use them in rebuilding.  For rebuild_in_place normally the
+input_lig_file should be ligands with HETATM records.
 
 <LI>The AutoBuild Wizard cannot build modified residues.  If you supply
 a model with modified residues, these will be excised and the chain will
