@@ -368,10 +368,8 @@ this PDB file. This can be done through the GUI, the command-line, or
 a script. In the command-line version you do this with something like:
 <PRE style="face=courier">input_lig_file=my_ligand.pdb
 </PRE>
-<P>NOTE: you cannot use an input_lig_file containing ATOM records with
-rebuild_in_place, because the the rebuild_in_place algorithm
-will try to use them in rebuilding.  For rebuild_in_place normally the
-input_lig_file should be ligands with HETATM records.
+<P>NOTE: The input_lig_file should be composed of HETATM records
+to tell AutoBuild to ignore these residues in rebuilding.
 <P>If the PDB file contains a ligand, you may need to tell phenix.refine
 about the geometry of this ligand. In that case you will want to run
 phenix.elbow to create a cif definition file for this ligand:
@@ -614,8 +612,6 @@ structures that is truly present in the crystal.
 <H5>Just make maps; don't do any building. </H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb maps_only=True     
 </PRE>
-</LI>
-</UL>
 
 
       <P><H5><U>Possible Problems</U></H5><P>
@@ -647,8 +643,9 @@ be accidentally built into the DNA.
 
 <LI>You cannot use an input_lig_file containing ATOM records with
 rebuild_in_place, because the the rebuild_in_place algorithm
-will try to use them in rebuilding.  For rebuild_in_place normally the
-input_lig_file should be ligands with HETATM records.
+will try to use them in rebuilding.  ATOM records are allowed in
+input_lig_file if rebuild_in_place=False, but they are not recommended.
+Normally the input_lig_file should be ligands with HETATM records.
 
 <LI>The AutoBuild Wizard cannot build modified residues.  If you supply
 a model with modified residues, these will be excised and the chain will
