@@ -13,7 +13,7 @@ hkl_anom = libtbx.env.find_in_repositories(
 hkl = libtbx.env.find_in_repositories(
   relative_path="phenix_regression/reflection_files/enk.mtz",
   test=os.path.isfile)
-  
+
 create_structure_refinement_txt = libtbx.env.find_in_repositories(
   relative_path="phenix_html/scripts/create_refinement_txt.py",
   test=os.path.isfile)
@@ -40,6 +40,7 @@ def inject_parameter_file(cmd):
 
 def exercise(args):
   dry_run = "--dry_run" in args
+  quick = "--quick" in args
   assert create_structure_refinement_txt is not None
   os.system("python %s"%create_structure_refinement_txt)
   dir_cont = os.listdir(".")
@@ -51,6 +52,9 @@ def exercise(args):
      amp_counter = 0
      cmd_counter = 0
      for st in open("refinement.txt", "r").read().splitlines():
+       if(quick):
+         if(cmd_counter == 1):
+           break
        fake_cmd = ((st.find("<") < 0 or st.find(">") < 0) and
                    (st.find("[") < 0 or st.find("]") < 0))
        st = st.strip()
