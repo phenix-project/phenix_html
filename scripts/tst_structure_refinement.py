@@ -1,3 +1,4 @@
+from libtbx import easy_run
 import libtbx.load_env
 import sys, os
 
@@ -42,9 +43,10 @@ def exercise(args):
   dry_run = "--dry_run" in args
   quick = "--quick" in args
   assert create_structure_refinement_txt is not None
-  os.system("python %s"%create_structure_refinement_txt)
-  dir_cont = os.listdir(".")
-  assert "refinement.txt" in dir_cont
+  if (os.path.isfile("refinement.txt")):
+    os.remove("refinement.txt")
+  easy_run.call(command="phenix.python %s" % create_structure_refinement_txt)
+  assert os.path.isfile("refinement.txt")
   if 1:
      line_start = False
      slash = str("%s"%"\ ").strip()
@@ -111,7 +113,7 @@ def exercise(args):
                                              relative_path = "phenix_regression",
                                              test          = os.path.isdir)
             sys.stdout.flush()
-            try: os.system(final_cmd)
+            try: easy_run.call(command=final_cmd)
             except KeyboardInterrupt: raise
             except:
               print "Cannot run the command:"
