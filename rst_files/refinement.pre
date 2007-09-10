@@ -1572,38 +1572,46 @@ runs are started with ``.def`` files.
 
 Atom selection examples
 ***********************
-**All atoms**::
+**All atoms**
+::
 
     all
 
-**All C-alpha atoms (not case sensitive)**::
+**All C-alpha atoms (not case sensitive)**
+::
 
     name ca
 
-**All atoms with ``H`` in the name (``*`` is a wildcard character)**::
+**All atoms with ``H`` in the name (``*`` is a wildcard character)**
+::
 
     name *H*
 
-**Atoms names with ``*`` (backslash disables wildcard function)**::
+**Atoms names with ``*`` (backslash disables wildcard function)**
+::
 
     name o2\*
 
-**Atom names with spaces**::
+**Atom names with spaces**
+::
 
     name 'O 1'
 
-**Atom names with primes don't necessarily have to be quoted**::
+**Atom names with primes don't necessarily have to be quoted**
+::
 
     name o2'
 
-**Boolean ``and``, ``or`` and ``not``**::
+**Boolean ``and``, ``or`` and ``not``**
+::
 
     resname ALA and (name ca or name c or name n or name o)
     chain a and not altid b
     resid 120 and icode c and model 2
     segid a and element c and charge 2+ and anisou
 
-**Residue 188**::
+**Residue 188**
+::
 
     resseq 188
 
@@ -1619,25 +1627,14 @@ chain::
 
 this will select residue 188 only in chain A.
 
-**All residues from 188 to the end (including 188)**::
-
-    resseq 188:
-
-**Alternative to the previous**::
-
-    resseq 188-
-
-**All residues from the beginning to 188 (including 188)**::
-
-    resseq :188
-    resseq -188
-
-**Residues 2 through 10 (including 2 and 10)**::
+**Residues 2 through 10 (including 2 and 10)**
+::
 
     resseq 2:10
     resseq 2-10
 
-**"Smart" selections**::
+**"Smart" selections**
+::
 
     resname ALA and backbone
     resname ALA and sidechain
