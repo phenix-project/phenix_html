@@ -103,7 +103,8 @@ def exercise(args):
             if(final_cmd.count("main.number_of_macro_cycles=0")==0):
                final_cmd = final_cmd + " main.number_of_macro_cycles=2"
             final_cmd = final_cmd + " --overwrite" + " --quiet"
-
+            if(final_cmd.find("--show-defaults") >= 0):
+              final_cmd += " > zlog"
           if(final_cmd.count("phenix.pdbtools")):
             final_cmd = final_cmd + " --quiet"
           print separator
