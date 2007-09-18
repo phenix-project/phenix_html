@@ -198,7 +198,7 @@ with RESOLVE or with TEXTAL.  The refinement is carried out with phenix.refine.
 <P>There are several resolution limits used in AutoSol. You can leave them
 all to default, or you can set any of them individually. Here is a list of
 these limits and how their default values are set:
-<TABLE width=670 border=0>
+<TABLE width=670 border=1>
  <TBODY>
   <TR>
     <TD>Resolution variable name</TD>
@@ -235,6 +235,8 @@ these limits and how their default values are set:
     <TD>value of &quot;resolution&quot; or 2.5 A, whichever is
         lower resolution.  </TD>
   </TR>
+ </TBODY>
+</TABLE>
 
 <P><H5><I>Output files from AutoSol</I></H5><P>
 <P>When you run AutoSol the output files will be in a subdirectory with
