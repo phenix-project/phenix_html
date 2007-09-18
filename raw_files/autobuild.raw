@@ -514,6 +514,36 @@ ignored.  Ligands and solvent in the model are ignored as well.
 you can update in the PHENIX-Coot Interface to the current best model and
 map with the button <b>Update with current files from PHENIX</b>.
 
+<P><H5><I>Resolution limits in AutoBuild</I></H5><P>
+<P>There are several resolution limits used in AutoBuild. You can leave them
+all to default, or you can set any of them individually. Here is a list of
+these limits and how their default values are set:
+<TABLE width=670 border=1>
+ <TBODY>
+  <TR>
+    <TD>Name</TD>
+    <TD>Description</TD>
+    <TD>How default value is set </TD>
+  </TR>
+  <TR>
+    <TD>resolution</TD>
+    <TD>Overall resolution </TD>
+    <TD>Resolution of input datafile. If a hires datafile is 
+       provided, the resolution of that data is used.  </TD>
+  </TR>
+  <TR>
+    <TD>refinement_resolution</TD>
+    <TD>Resolution for refinement</TD>
+    <TD>value of &quot;resolution&quot;</TD>
+  </TR>
+  <TR>
+    <TD>multiple_models_starting_resolution</TD>
+    <TD>Resolution for the initial rebuilding of a model in the multiple-models
+        procedure. Normally a low resolution to generate diversity.</TD>
+    <TD>4 A by default</TD>
+  </TR>
+ </TBODY>
+</TABLE>
 
       <P><H5><U>Examples</U></H5><P>
 
