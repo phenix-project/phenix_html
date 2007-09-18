@@ -194,6 +194,48 @@ this NCS if it is present in the electron density map.
 refinement after obtaining density-modified phases. The model-building can be
 with RESOLVE or with TEXTAL.  The refinement is carried out with phenix.refine.
 
+<P><H5><I>Resolution limits in AutoSol</I></H5><P>
+<P>There are several resolution limits used in AutoSol. You can leave them
+all to default, or you can set any of them individually. Here is a list of
+these limits and how their default values are set:
+<TABLE width=670 border=0>
+ <TBODY>
+  <TR>
+    <TD>Resolution variable name</TD>
+    <TD>Description</TD>
+    <TD>How default value is set </TD>
+  </TR>
+  <TR>
+    <TD>resolution</TD>
+    <TD>Overall resolution for a dataset</TD>
+    <TD>Highest resolution for any datafile in this dataset. For
+       multiple datasets, the highest resolution for any dataset </TD>
+  </TR>
+  <TR>
+    <TD>refinement_resolution</TD>
+    <TD>Resolution for refinement</TD>
+    <TD>value of &quot;resolution&quot;</TD>
+  </TR>
+  <TR>
+    <TD>resolution_build</TD>
+    <TD>Resolution for model-building</TD>
+    <TD>value of &quot;resolution&quot;</TD>
+  </TR>
+  <TR>
+    <TD>res_phase</TD>
+    <TD>Resolution for phasing for a dataset</TD>
+    <TD>If phase_full_resolution=True then 
+            use value of &quot;resolution&quot;. 
+         Otherwise, use value of &quot;recommended_resolution&quot;
+         based on analysis of signal-to-noise in dataset.</TD>
+  </TR>
+  <TR>
+    <TD>res_eval</TD>
+    <TD>Resolution for evaluation of solution quality</TD>
+    <TD>value of &quot;resolution&quot; or 2.5 A, whichever is
+        lower resolution.  </TD>
+  </TR>
+
 <P><H5><I>Output files from AutoSol</I></H5><P>
 <P>When you run AutoSol the output files will be in a subdirectory with
 your run number: 
