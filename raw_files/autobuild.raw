@@ -649,7 +649,15 @@ structures that is truly present in the crystal.
 <P><H5>General limitations</H5><P>
 
 
-<UL><LI>The AutoBuild model-building can only build one type of chain at a 
+<UL>
+<LI> The AutoBuild wizard edits input PDB files to remove multiple
+conformations. It will also renumber residues if the file contains residues with
+insertion codes.  All references to residue numbers (e.g. 
+rebuild_res_start_list) refer to the edited, renumbered model. 
+This model can be found in the AutoBuild_run_1_ (or appropriate) 
+directory as &quot;edited_pdb.pdb&quot;.
+
+<LI>The AutoBuild model-building can only build one type of chain at a 
 time (default chain_type='PROTEIN'; other choices are RNA and DNA).  If you
 supply a PDB file containing more than one type of chain for rebuilding, 
 then all the residues that are not that type of chain are ignored.  

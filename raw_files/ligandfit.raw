@@ -210,6 +210,9 @@ then you may wish to remove them before building the ligand.
 for each conformation of the ring (rings are taken as fixed units 
 in LigandFit).
 
+<P><LI>LigandFit ignores insertion codes, so if you specify a residue
+with ligand_near_res, only the residue number is used.
+
 <P><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
 the LigandFit wizard is limited by the memory in your computer and the
 binaries used. The Wizard is supplied with regular-size ("", size=6), 
