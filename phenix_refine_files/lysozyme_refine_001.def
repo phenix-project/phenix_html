@@ -247,49 +247,6 @@ refinement.ordered_solvent {
     min_cross_distance = 2
   }
 }
-refinement.bulk_solvent_and_scale {
-  bulk_solvent = True
-  anisotropic_scaling = True
-  statistical_solvent = False
-  k_sol_b_sol_grid_search = True
-  minimization_k_sol_b_sol = True
-  minimization_b_cart = True
-  target = ls_wunit_k1 *ml
-  symmetry_constraints_on_b_cart = True
-  k_sol_max = 0.6
-  k_sol_min = 0
-  b_sol_max = 80
-  b_sol_min = 10
-  k_sol_step = 0.05
-  b_sol_step = 5
-  number_of_macro_cycles = 2
-  number_of_minimization_macro_cycles = 3
-  number_of_cycles_for_anisotropic_scaling = 3
-  fix_k_sol = None
-  fix_b_sol = None
-  fix_b_cart {
-    u11 = None
-    u22 = None
-    u33 = None
-    u12 = None
-    u13 = None
-    u23 = None
-  }
-  apply_back_trace_of_b_cart = False
-  start_minimization_from_k_sol = 0.35
-  start_minimization_from_b_sol = 46
-  start_minimization_from_b_cart {
-    u11 = 0
-    u22 = 0
-    u33 = 0
-    u12 = 0
-    u13 = 0
-    u23 = 0
-  }
-  nu_fix_n_atoms = None
-  nu_fix_b_atoms = None
-  verbose = 1
-}
 refinement.alpha_beta {
   free_reflections_per_bin = 140
   number_of_macromolecule_atoms_absent = 225
