@@ -1,11 +1,11 @@
-=================================================
-phenix.pdbtools: tools for PDB file manipulations
-=================================================
+================================================================
+phenix.pdbtools: tools for PDB file manipulations and statistics
+================================================================
 
 **Purpose**
 
 phenix.pdbtools is a command line tool to perform simple maipulations on a
-structure in PDB file such as:
+structure in PDB file (or its any selected part) such as:
 
 - shaking of coordinates (adding a random shift to coordinates)
 - rotation-translation shift of coordinates
@@ -18,7 +18,18 @@ structure in PDB file such as:
 - converting to anisotropic
 - removing selected part of a model
 
-All operations above can be performed on a whole model or any selected part.
+and provide comprihensive model statistics such as:
+
+- ADP statistics::
+
+  % phenix.pdbtools model.pdb --show_adp_statistics
+
+- geometry (stereochemistry) statistics::
+
+  % phenix.pdbtools model.pdb --show-geometry-statistics
+
+If the input PDB file does not contain CRYST1 record then certain manipulations
+that require crystall symmetry information will ne unavailable.
 
 **How to run**
 
