@@ -449,7 +449,7 @@ by the Wizard during the run (some parts are binary and are not printed)
 <LI>Final map coefficients used to build refined model. Use FP PHIM FOMM in
 maps. Normally this is a density-modified map from resolve. See also the
 map coefficients from phenix.refine below.
-<PRE style="face=courier">overall_best_denmod_map_coeffs.mtz
+<PRE style="face=courier">overall_best_build_map_coeffs.mtz
 </PRE>
 
 <LI>Final sigmaA-weighted 2mFo-DFc and Fo-Fc map coefficients from 
@@ -641,6 +641,12 @@ structures that is truly present in the crystal.
 
 <H5>Just make maps; don't do any building. </H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb maps_only=True     
+</PRE>
+
+<H5>Just calculate a prime-and-switch map </H5><P>
+<PRE style="face=courier">
+phenix.autobuild data=data.mtz solvent_fraction=.6 \
+   ps_in_rebuild=True model=coords.pdb maps_only=True 
 </PRE>
 
 
