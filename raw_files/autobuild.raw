@@ -366,9 +366,10 @@ current version of the structure just before refinement, so all the refined
 models produced contain whatever AutoBuild has built, plus the contents of
 this PDB file. This can be done through the GUI, the command-line, or
 a script. In the command-line version you do this with something like:
-<PRE style="face=courier">input_lig_file=my_ligand.pdb
+<PRE style="face=courier">input_lig_file_list=my_ligand.pdb
 </PRE>
-<P>NOTE: The input_lig_file will be edited to make it all HETATM records
+<P>NOTE: The files in 
+input_lig_file_list will be edited to make them all HETATM records
 to tell AutoBuild to ignore these residues in rebuilding.
 <P>If the PDB file contains a ligand, you may need to tell phenix.refine
 about the geometry of this ligand. In that case you will want to run
@@ -449,7 +450,7 @@ by the Wizard during the run (some parts are binary and are not printed)
 <LI>Final map coefficients used to build refined model. Use FP PHIM FOMM in
 maps. Normally this is a density-modified map from resolve. See also the
 map coefficients from phenix.refine below.
-<PRE style="face=courier">overall_best_build_map_coeffs.mtz
+<PRE style="face=courier">overall_best_denmod_map_coeffs.mtz
 </PRE>
 
 <LI>Final sigmaA-weighted 2mFo-DFc and Fo-Fc map coefficients from 
@@ -507,9 +508,13 @@ include the contents of the model in the building process.
 <p>The precise use of the model that you save depends on the type of
 model-building that is being carried out by the AutoBuild Wizard. If you 
 are using <b>rebuild_in_place</b> then the main-chain and side-chains of the
-model are considered as replacements for the current working model. Otherwise,
+model are considered as replacements for the current working model. Any 
+ligands or unrecognized residues are (by default) not rebuilt but are
+included in refinement. By default, solvent in the model is ignored.
+If you are not using <b>rebuild_in_place</b>,
 only the main-chain conformation is considered, and the side-chains are
-ignored.  Ligands and solvent in the model are ignored as well.
+ignored.  Ligands (but not solvent) in the model are (by default) kept and 
+included in refinement.
 <p>As the AutoBuild Wizard continues to build new models and create new maps,
 you can update in the PHENIX-Coot Interface to the current best model and
 map with the button <b>Update with current files from PHENIX</b>.
@@ -648,6 +653,7 @@ structures that is truly present in the crystal.
 phenix.autobuild data=data.mtz solvent_fraction=.6 \
    ps_in_rebuild=True model=coords.pdb maps_only=True 
 </PRE>
+The output prime-and-switch map will be in the file prime_and_switch.mtz.
 
 
       <P><H5><U>Possible Problems</U></H5><P>
@@ -666,12 +672,16 @@ directory as &quot;edited_pdb.pdb&quot;.
 <LI>The AutoBuild model-building can only build one type of chain at a 
 time (default chain_type='PROTEIN'; other choices are RNA and DNA).  If you
 supply a PDB file containing more than one type of chain for rebuilding, 
-then all the residues that are not that type of chain are ignored.  
+then all the residues that are not that type of chain are treated as
+ligands and are (by default, keep_input_ligands=True) 
+included in refinement but not in rebuilding. Any
+input solvent molecules are (by default, keep_input_waters=False) ignored.  
+
 <P>You can include more than one type of chain in rebuilding by supplying 
-one type of chains as ligands with input_lig_file and rebuilding another
+one type of chains as ligands with input_lig_file_list and rebuilding another
 type:
 <PRE style="face=courier">chain_type=PROTEIN  # build only protein
-input_lig_file=MyDNA.pdb  # just read in DNA coordinates and include in refinement
+input_lig_file_list=MyDNA.pdb  # just read in DNA coordinates and include in refinement
 </PRE>
 In this case only protein chains will be built, but the DNA coordinates in
 MyDNA.pdb will be included in all refinements and will be written out
@@ -680,19 +690,20 @@ to the final coordinate file.  You may wish to add the keyword:
 which will tell AutoBuild that the ligand (DNA) atoms are to be kept if the
 model that is being built (protein) overlaps with it. (The default is to keep 
 the model that is being built and to discard any ligand atoms that overlap).
+
 <p> This whole process is likely to require substantial editing of the 
 PDB files by hand because when you build DNA, a lot of chains are going to
 be built into the protein region, and when you build protein, it is going to
 be accidentally built into the DNA.
 
-<LI>An input_lig_file containing ATOM records will have them 
+<LI>An file in input_lig_file_list containing ATOM records will have them 
 replaced with HETATM records. This is so that the rebuild_in_place algorithm
 does not try to use them in rebuilding.  
 
 <LI>The AutoBuild Wizard cannot build modified residues.  If you supply
 a model with modified residues, these will be excised and the chain will
 be broken at that point. You can supply such residues as ligands with
-the input_lig_file procedure if you want.
+the input_lig_file_list procedure if you want.
 </LI>
 <LI>The AutoBuild Wizard will not build very short chains unless you
 set the variable grep_ca_length (default=4) to a smaller number. The

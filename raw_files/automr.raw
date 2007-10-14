@@ -352,10 +352,11 @@ depending on how good your MR model is.
 <P>The AutoBuild Wizard can build PROTEIN, RNA, or DNA, but it can only
 build one at a time.  If your MR model contains more than one type of chain,
 then you will need to run AutoBuild separately from AutoMR and
-specify one of them with input_lig_file and the type
+when you run AutoBuild, 
+specify one of them with input_lig_file_list and the type
 of chain to build with chain_type:
 <PRE style="face=courier"> 
-input_lig_file=ProteinPartofMRmodel.pdb
+input_lig_file_list=ProteinPartofMRmodel.pdb
 chain_type=DNA
 </PRE>
 
