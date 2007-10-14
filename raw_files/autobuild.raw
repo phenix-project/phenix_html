@@ -361,18 +361,30 @@ before your commands in the resolve command file.) Note that
 some commands in resolve may be incompatible with this usage.
 
 <P><H5>Including ligand coordinates in AutoBuild</H5><P>
-<P>You can tell AutoBuild to add the contents of any PDB file to the
+
+<P> If your input PDB file contains ligands (anything other than solvent
+that is not protein if your chain_type=PROTEIN, for example) then 
+by default these
+ligands will be kept, used in refinement, and written out to your output
+PDB file.  Any solvent molecules will by default be discarded.
+You can change this behavior by changing the keywords from these defaults:
+<PRE style="face=courier">keep_input_ligands=True
+keep_input_waters=False
+</PRE>
+
+<P>You can also tell AutoBuild to add the contents of any PDB files to the
 current version of the structure just before refinement, so all the refined
 models produced contain whatever AutoBuild has built, plus the contents of
-this PDB file. This can be done through the GUI, the command-line, or
-a script. In the command-line version you do this with something like:
+these PDB files. This can be done through the GUI, the command-line, or
+a script. In the command-line version you do this with:
 <PRE style="face=courier">input_lig_file_list=my_ligand.pdb
 </PRE>
 <P>NOTE: The files in 
 input_lig_file_list will be edited to make them all HETATM records
 to tell AutoBuild to ignore these residues in rebuilding.
-<P>If the PDB file contains a ligand, you may need to tell phenix.refine
-about the geometry of this ligand. In that case you will want to run
+<P>NOTE You may need to tell phenix.refine
+about the geometry of your ligands. You will get an error message if
+the ligand is not recognized. In that case you will want to run
 phenix.elbow to create a cif definition file for this ligand:
 <PRE style="face=courier">phenix.elbow my_ligand.pdb --id=LIG
 </PRE>
