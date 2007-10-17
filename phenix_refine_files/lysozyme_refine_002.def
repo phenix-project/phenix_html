@@ -11,22 +11,22 @@ refinement.input {
   neutron_data {
     file_name = None
     labels = None
-  }
-  neutron_r_free_flags {
-    file_name = None
-    label = None
-    test_flag_value = None
-    disable_suitability_test = False
+    r_free_flags {
+      file_name = None
+      label = None
+      test_flag_value = None
+      disable_suitability_test = False
+    }
   }
   xray_data {
     file_name = "$PHENIX_REGRESSION_DIR/reflection_files/enk_1.5.hkl"
     labels = None
-  }
-  r_free_flags {
-    file_name = "$PHENIX_REGRESSION_DIR/reflection_files/enk_1.5.hkl"
-    label = None
-    test_flag_value = 1
-    disable_suitability_test = False
+    r_free_flags {
+      file_name = "$PHENIX_REGRESSION_DIR/reflection_files/enk_1.5.hkl"
+      label = None
+      test_flag_value = 1
+      disable_suitability_test = False
+    }
   }
   experimental_phases {
     file_name = None
@@ -96,22 +96,17 @@ refinement.refine {
   }
 }
 refinement.main {
-  high_resolution = None
-  low_resolution = None
   bulk_solvent_and_scale = True
   simulated_annealing = False
   ordered_solvent = False
   number_of_macro_cycles = 3
   max_number_of_iterations = 25
-  generate_neutron_r_free_flags = False
-  generate_r_free_flags = False
   use_form_factor_weights = False
   tan_u_iso = False
   use_convergence_test = False
   target = *ml mlhl ls
   min_number_of_test_set_reflections_for_max_likelihood_target = 50
   max_number_of_resolution_bins = 30
-  sigma_fobs_rejection_criterion = 0
   reference_xray_structure = None
   use_experimental_phases = None
   force_anomalous_flag_to_be_equal_to = None
@@ -322,8 +317,4 @@ refinement.ls_target_names {
                 ls_wff_k1 ls_wff_k2 ls_wff_kunit ls_wff_k1_fixed \
                 ls_wff_k1ask3_fixed lsm_kunit lsm_k1 lsm_k2 lsm_k1_fixed \
                 lsm_k1ask3_fixed
-}
-refinement.neutron {
-  low_resolution = None
-  high_resolution = None
 }

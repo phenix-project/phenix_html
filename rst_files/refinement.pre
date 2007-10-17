@@ -128,7 +128,7 @@ prior to running the job)::
 If you know the parameter that you want to change you can override it from
 the command line::
 
-   % phenix.refine data.hkl model.pdb main.low_resolution=8.0 \
+   % phenix.refine data.hkl model.pdb xray_data.low_resolution=8.0 \
      simulated_annealing.start_temperature=5000
 
 Note that you don't have to specify the full parameter name. What you
@@ -161,7 +161,7 @@ difficult to type them all on the command line, for example::
 
   % phenix.refine data.hkl model.pdb refine.adp.tls="chain A" \
     refine.adp.tls="chain B" main.number_of_macro_cycles=4 \
-    main.high_resolution=2.5 wxc_scale=3 wxu_scale=5 \
+    xray_data.high_resolution=2.5 wxc_scale=3 wxu_scale=5 \
     output.prefix=my_best_model strategy=tls+individual_sites+individual_adp \
     simulated_annealing.start_temperature=5000
 
@@ -1080,7 +1080,7 @@ Creating R-free flags (if not present in the input reflection files)
 --------------------------------------------------------------------
 ::
 
-    % phenix.refine data.hkl model.pdb main.generate_r_free_flags=True
+    % phenix.refine data.hkl model.pdb xray_data.r_free_flags.generate=True
 
 It is important to understand that reflections selected for test set must be
 never used in any refinement of any parameters. If the newly selected test
@@ -1091,8 +1091,8 @@ must be applied to recover proper statistics.
 To change the default maximal number of test flags to be generated and the
 fraction::
 
-  % phenix.refine data.hkl model.pdb main.generate_r_free_flags=True \
-    r_free_flags.fraction=0.05 r_free_flags.max_free=500
+  % phenix.refine data.hkl model.pdb xray_data.r_free_flags.generate=True \
+    xray_data.r_free_flags.fraction=0.05 xray_data.r_free_flags.max_free=500
 
 Specify the name for output files
 ---------------------------------
@@ -1120,7 +1120,7 @@ Setting the resolution range for the refinement
 -----------------------------------------------
 ::
 
-  % phenix.refine data.hkl model.pdb main.low_resolution=15.0 main.high_resolution=2.0
+  % phenix.refine data.hkl model.pdb xray_data.low_resolution=15.0 xray_data.high_resolution=2.0
 
 Bulk solvent correction and anisotropic scaling
 -----------------------------------------------
@@ -1316,7 +1316,7 @@ defined as::
 4. Resolution limits can be applied::
 
      % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=1 \
-       strategy=none main.low_resolution=15.0 main.high_resolution=2.0
+       strategy=none xray_data.low_resolution=15.0 xray_data.high_resolution=2.0
 
 Note:
 
@@ -1450,19 +1450,19 @@ Rejecting reflections by sigma
 Reflections can be rejected by sigma cutoff criterion applied to amplitudes
 Fobs <= ``sigma_fobs_rejection_criterion`` * sigma(Fobs)::
 
-  % phenix.refine model.pdb data_anom.hkl sigma_fobs_rejection_criterion=2
+  % phenix.refine model.pdb data_anom.hkl xray_data.sigma_fobs_rejection_criterion=2
 
 or/and intensities Iobs <= ``sigma_iobs_rejection_criterion`` * sigma(Iobs)::
 
-  % phenix.refine model.pdb data_anom.hkl sigma_iobs_rejection_criterion=2
+  % phenix.refine model.pdb data_anom.hkl xray_data.sigma_iobs_rejection_criterion=2
 
 Internally, phenix.refine uses amplitudes. If both
 ``sigma_fobs_rejection_criterion`` and ``sigma_iobs_rejection_criterion`` are
 given as non-zero values, then both criteria will be applied: first to Iobs,
 then to Fobs (after truncated Iobs got converted to Fobs)::
 
-  % phenix.refine model.pdb data_anom.hkl sigma_fobs_rejection_criterion=2 \
-    sigma_iobs_rejection_criterion=2
+  % phenix.refine model.pdb data_anom.hkl xray_data.sigma_fobs_rejection_criterion=2 \
+    xray_data.sigma_iobs_rejection_criterion=2
 
 By default, both ``sigma_fobs_rejection_criterion`` and
 ``sigma_iobs_rejection_criterion`` are set to zero (no reflections rejected)
