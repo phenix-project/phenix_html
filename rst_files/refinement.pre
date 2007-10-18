@@ -1283,7 +1283,7 @@ for example, at very low resolution where each single reflection counts, or at
 subatomic resolution where the risk of overfitting is very low. In the example
 below all the reflections are used in the refinement::
 
-  % phenix.refine data.hkl model.pdb ignore_r_free_flags=true
+  % phenix.refine data.hkl model.pdb xray_data.r_free_flags.ignore_r_free_flags=true
 
 Note: 1) the corresponding statistics (R-factors, ...) will be identical for
 "work" and "test" sets; 2) it is still necessary to have test flags presented
@@ -1423,7 +1423,7 @@ Refining with anomalous data (or what phenix.refine does with Fobs+ and Fobs-).
 -------------------------------------------------------------------------------
 
 The way phenix.refine uses Fobs+ and Fobs- is controlled by
-``main.force_anomalous_flag_to_be_equal_to`` parameter.
+``xray_data.force_anomalous_flag_to_be_equal_to`` parameter.
 
 Here are 3 possibilities:
 
@@ -1435,12 +1435,12 @@ Here are 3 possibilities:
 2. phenix.refine will generate missing Bijvoet mates and use all Fobs+ and
    Fobs- as independent reflections if::
 
-     % phenix.refine model.pdb data_anom.hkl force_anomalous_flag_to_be_equal_to=true
+     % phenix.refine model.pdb data_anom.hkl xray_data.force_anomalous_flag_to_be_equal_to=true
 
 3. phenix.refine will merge Fobs+ and Fobs-, that is instead of two separate
    Fobs+ and Fobs- it will use one value F_mean = (Fobs+ + Fobs-)/2 if::
 
-     % phenix.refine model.pdb data_anom.hkl force_anomalous_flag_to_be_equal_to=false
+     % phenix.refine model.pdb data_anom.hkl xray_data.force_anomalous_flag_to_be_equal_to=false
 
 Look this documentation to see how to use and refine f' and f''.
 
