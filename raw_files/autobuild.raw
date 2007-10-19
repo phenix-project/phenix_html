@@ -371,8 +371,11 @@ You can change this behavior by changing the keywords from these defaults:
 <PRE style="face=courier">keep_input_ligands=True
 keep_input_waters=False
 </PRE>
+The AutoBuild Wizard will use phenix.elbow to generate geometries for any
+ligands that are not recognized.
 
-<P>You can also tell AutoBuild to add the contents of any PDB files to the
+<P>You can also tell AutoBuild to add the contents of any PDB files that
+you wish to supply to the
 current version of the structure just before refinement, so all the refined
 models produced contain whatever AutoBuild has built, plus the contents of
 these PDB files. This can be done through the GUI, the command-line, or
@@ -384,13 +387,17 @@ input_lig_file_list will be edited to make them all HETATM records
 to tell AutoBuild to ignore these residues in rebuilding.
 <P>NOTE You may need to tell phenix.refine
 about the geometry of your ligands. You will get an error message if
-the ligand is not recognized. In that case you will want to run
+the ligand is not recognized and an automatic run of
+phenix.elbow does not succeed in generating your ligand. 
+In that case you will want to run
 phenix.elbow to create a cif definition file for this ligand:
 <PRE style="face=courier">phenix.elbow my_ligand.pdb --id=LIG
 </PRE>
 where LIG is the 3-letter ID code that you use in my_ligand.pdb
-to identify your ligand.
-<P>Then you can use the keyword "cif_def_files_list" to 
+to identify your ligand. If the automatic run does not work you may need
+to give phenix.elbow additional information to generate your ligand.
+<P>Once phenix.elbow has generated your ligand
+you can use the keyword "cif_def_files_list" to 
 tell AutoBuild about this ligand:
 <PRE style="face=courier">cif_def_files_list=elbow.LIG.my_ligand.pdb.cif
 </PRE>
@@ -708,18 +715,29 @@ PDB files by hand because when you build DNA, a lot of chains are going to
 be built into the protein region, and when you build protein, it is going to
 be accidentally built into the DNA.
 
-<LI>An file in input_lig_file_list containing ATOM records will have them 
+<LI>Any file in input_lig_file_list containing ATOM records will have them 
 replaced with HETATM records. This is so that the rebuild_in_place algorithm
 does not try to use them in rebuilding.  
 
+<LI>The ligand generation routine in phenix.elbow will not generate
+heme groups at this point. Most other ligands can be automatically
+generated.
+
 <LI>The AutoBuild Wizard cannot build modified residues.  If you supply
-a model with modified residues, these will be excised and the chain will
-be broken at that point. You can supply such residues as ligands with
+a model with modified residues, these will be taken out of the
+chain and treated as ligands, and the chain will
+be broken at that point. By default the modified residues will be added to
+your model just before refinement and a cif definitions file will be
+automatically generated for these residues.
+You can also add these residues with
 the input_lig_file_list procedure if you want.
 </LI>
 <LI>The AutoBuild Wizard will not build very short chains unless you
-set the variable grep_ca_length (default=4) to a smaller number. The
-shortest chain that will be built is group_ca_length.
+set the variable grep_ca_length (default=4 for building a model
+from scratch) to a smaller number. The
+shortest chain that will be built is group_ca_length.  If you use
+rebuild_in_place, then the default shortest chain allowed is 1 residue, 
+so any part of a model you supply is rebuilt.
 </LI>
 </UL>
 
