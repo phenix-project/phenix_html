@@ -1,320 +1,48 @@
-# Default parameters for subsequent refinement
-
-refinement.crystal_symmetry {
-  unit_cell = 10.851 13.095 21.192 90 90 90
-  space_group = "P 21 21 21"
-}
-refinement.input {
-  pdb {
-    file_name = "$PHENIX_REGRESSION_DIR/phenix_doc/enk_doc.pdb"
+refinement {
+  crystal_symmetry {
+    unit_cell = 10.851 13.095 21.192 90 90 90
+    space_group = "P 21 21 21"
   }
-  neutron_data {
-    file_name = None
-    labels = None
-    r_free_flags {
-      file_name = None
-      label = None
-      test_flag_value = None
-      disable_suitability_test = False
+  input {
+    pdb {
+      file_name = "$PHENIX_REGRESSION_DIR/phenix_doc/enk_doc.pdb"
     }
-  }
-  xray_data {
-    file_name = "$PHENIX_REGRESSION_DIR/reflection_files/enk_1.5.hkl"
-    labels = None
-    r_free_flags {
+    xray_data {
       file_name = "$PHENIX_REGRESSION_DIR/reflection_files/enk_1.5.hkl"
-      label = None
-      test_flag_value = 1
-      disable_suitability_test = False
+      r_free_flags {
+        file_name = "$PHENIX_REGRESSION_DIR/reflection_files/enk_1.5.hkl"
+        test_flag_value = 1
+      }
     }
   }
-  experimental_phases {
-    file_name = None
-    labels = None
+  output {
+    prefix = "enk_refine"
+    serial = 2
   }
-  monomers {
-    file_name = None
-  }
-  symmetry_safety_check = *error warning
-}
-refinement.output {
-  prefix = "enk_refine"
-  serial = 2
-  serial_format = "%03d"
-  write_eff_file = True
-  write_geo_file = True
-  write_def_file = True
-  export_final_f_model = mtz cns
-  write_maps = True
-  write_map_coefficients = True
-}
-refinement.electron_density_map {
-  map_types = k*Fobs-n*Fmodel *2m*Fobs-D*Fmodel *m*Fobs-D*Fmodel
-  k = 2
-  n = 1
-  map_format = *xplor
-  map_coefficients_format = *mtz phs
-  mtz_labels {
-    map_type = "2m*Fobs-D*Fmodel"
-    amplitudes = "2FOFCWT"
-    phases = "PH2FOFCWT"
-  }
-  mtz_labels {
-    map_type = "m*Fobs-D*Fmodel"
-    amplitudes = "FOFCWT"
-    phases = "PHFOFCWT"
-  }
-  mtz_labels {
-    map_type = "k*Fobs-n*Fmodel"
-    amplitudes = "oFOoFCWT"
-    phases = "oPHFOoFCWT"
-  }
-  grid_resolution_factor = 0.3333333333
-  region = *selection cell
-  atom_selection = None
-  atom_selection_buffer = 3
-}
-refinement.refine {
-  strategy = *individual_sites rigid_body *individual_adp group_adp tls \
-             individual_occupancies group_occupancies none
-  sites {
-    individual = None
-    rigid_body = None
-  }
-  adp {
-    individual {
-      isotropic = "all"
-      anisotropic = None
-    }
-    group = None
-    one_adp_group_per_residue = True
-    tls = None
-  }
-  occupancies {
-    individual = None
-    group = None
-  }
-}
-refinement.main {
-  bulk_solvent_and_scale = True
-  simulated_annealing = False
-  ordered_solvent = False
-  number_of_macro_cycles = 3
-  max_number_of_iterations = 25
-  generate_neutron_r_free_flags = False
-  use_form_factor_weights = False
-  tan_u_iso = False
-  use_convergence_test = False
-  target = *ml mlhl ls
-  min_number_of_test_set_reflections_for_max_likelihood_target = 50
-  max_number_of_resolution_bins = 30
-  reference_xray_structure = None
-  use_experimental_phases = None
-  compute_optimal_errors = False
-  random_seed = 2772306
-  scattering_table = wk1995 it1992 *n_gaussian neutron
-  use_normalized_geometry_target = True
-  target_weights_only = False
-  use_f_model_scaled = False
-  max_d_min = 0.1
-  fake_f_obs = False
-}
-refinement.modify_start_model {
-  adp {
-    randomize = None
-    set_b_iso = None
-  }
-  sites {
-    shake = None
-    translate = 0 0 0
-    rotate = 0 0 0
-  }
-}
-refinement.fake_f_obs {
-  k_sol = 0
-  b_sol = 0
-  b_cart = "0" "0" "0" "0" "0" "0"
-}
-refinement.pdb_interpretation {
-  link_distance_cutoff = 3
-  disulfide_distance_cutoff = 3
-  nonbonded_distance_cutoff = None
-  default_vdw_distance = 1
-  min_vdw_distance = 1
-  nonbonded_buffer = 1
-  vdw_1_4_factor = 0.6666666667
-  translate_cns_dna_rna_residue_names = True
-  clash_guard {
-    nonbonded_distance_threshold = 0.5
-    max_number_of_distances_below_threshold = 100
-    max_fraction_of_distances_below_threshold = 0.1
-  }
-}
-refinement.group_b_iso {
-  number_of_macro_cycles = 3
-  max_number_of_iterations = 25
-  convergence_test = False
-  run_finite_differences_test = False
-}
-refinement.adp {
-  iso {
-    max_number_of_iterations = 25
-    automatic_randomization_if_all_equal = True
-    scaling {
-      scale_max = 3
-      scale_min = 10
+  refine {
+    adp {
+      individual {
+        isotropic = "all"
+      }
     }
   }
-}
-refinement.tls {
-  one_residue_one_group = None
-  refine_T = True
-  refine_L = True
-  refine_S = True
-  number_of_macro_cycles = 2
-  max_number_of_iterations = 25
-  start_tls_value = None
-  run_finite_differences_test = False
-  eps = 1e-06
-}
-refinement.adp_restraints {
-  iso {
-    use_u_local_only = False
-    sphere_radius = 5
-    distance_power = 1.69
-    average_power = 1.03
-    wilson_b_weight_auto = False
-    wilson_b_weight = None
-    plain_pairs_radius = 5
-    refine_ap_and_dp = False
-    b_iso_max = None
+  main {
+    random_seed = 2772306
+    max_d_min = 0.1
+  }
+  rigid_body {
+    target = *ls_wunit_k1 ml
+    min_number_of_reflections = 10000000
+  }
+  pdb_interpretation {
+    vdw_1_4_factor = 0.6666666667
+  }
+  ordered_solvent {
+    occupancy_min = 1
+    occupancy_max = 1
+  }
+  mask {
+    solvent_radius = 1
+    shrink_truncation_radius = 1
   }
 }
-refinement.rigid_body {
-  target = *ls_wunit_k1 ml
-  refine_rotation = True
-  refine_translation = True
-  min_number_of_reflections = 10000000
-  max_iterations = 25
-  bulk_solvent_and_scale = True
-  euler_angle_convention = *xyz zyz
-}
-refinement.geometry_restraints.remove {
-  angles = None
-  dihedrals = None
-  chiralities = None
-  planarities = None
-}
-refinement.ordered_solvent {
-  low_resolution = 2.8
-  output_residue_name = "HOH"
-  output_chain_id = "S"
-  output_atom_name = "O"
-  b_iso_min = 1
-  b_iso_max = 50
-  b_iso = None
-  scattering_type = "O"
-  occupancy_min = 1
-  occupancy_max = 1
-  occupancy = 1
-  use_sigma_scaled_maps = True
-  primary_map_type = "m*Fobs-D*Fmodel"
-  primary_map_k = None
-  primary_map_n = None
-  primary_map_cutoff = 3
-  secondary_map_type = "2m*Fobs-D*Fmodel"
-  secondary_map_k = None
-  secondary_map_n = None
-  secondary_map_cutoff = 1
-  peak_map_matching_tolerance = 2
-  resolution_factor = 0.25
-  min_solv_macromol_dist = 1.8
-  max_solv_macromol_dist = 6
-  min_solv_solv_dist = 1.8
-  max_number_of_peaks = None
-  verbose = 1
-  peak_search {
-    peak_search_level = 1
-    max_peaks = 0
-    interpolate = True
-    min_distance_sym_equiv = 1e-06
-    general_positions_only = False
-    min_cross_distance = 2
-  }
-}
-refinement.alpha_beta {
-  free_reflections_per_bin = 140
-  number_of_macromolecule_atoms_absent = 225
-  n_atoms_included = 0
-  bf_atoms_absent = 15
-  final_error = 0
-  absent_atom_type = "O"
-  method = *est calc
-  verbose = -1
-  interpolation = True
-  fix_scale_for_calc_option = None
-  number_of_waters_absent = 613
-}
-refinement.mask {
-  solvent_radius = 1
-  shrink_truncation_radius = 1
-  grid_step_factor = 4
-  verbose = 1
-  mean_shift_for_mask_update = 0.1
-}
-refinement.cartesian_dynamics {
-  temperature = 300
-  number_of_steps = 200
-  time_step = 0.0005
-  n_print = 100
-  verbose = -1
-}
-refinement.simulated_annealing {
-  start_temperature = 5000
-  final_temperature = 300
-  cool_rate = 100
-  number_of_steps = 25
-  time_step = 0.0005
-  n_print = 100
-  update_grads_shift = 0.3
-  refine_sites = True
-  refine_adp = False
-  max_number_of_iterations = 25
-  mode = every_macro_cycle *second_and_before_last
-  verbose = -1
-}
-refinement.target_weights {
-  wxc_scale = 0.5
-  wxu_scale = 1
-  wc = 1
-  wu = 1
-  fix_wxc = None
-  fix_wxu = None
-  allow_automatic_adjustment = False
-  delta_r_free_r_work = 6
-  wxc_scale_drop = 3
-  wxu_scale_drop = 3
-  max_number_of_macro_cycles = 12
-  optimize_wxc = False
-  optimization_criterion = *r_free gradient_angle
-  optimize_wxu = False
-  shake_sites = True
-  shake_adp = 10
-  regularize_ncycles = 50
-  gradient_filtering = True
-  gradient_filtering_method = *cns new
-  rmsd_cutoff_for_gradient_filtering = 3
-  verbose = 1
-  neutrons {
-    wxnc_scale = 1
-    wxnu_scale = 1
-  }
-}
-refinement.ls_target_names {
-  target_name = *ls_wunit_k1 ls_wunit_k2 ls_wunit_kunit ls_wunit_k1_fixed \
-                ls_wunit_k1ask3_fixed ls_wexp_k1 ls_wexp_k2 ls_wexp_kunit \
-                ls_wff_k1 ls_wff_k2 ls_wff_kunit ls_wff_k1_fixed \
-                ls_wff_k1ask3_fixed lsm_kunit lsm_k1 lsm_k2 lsm_k1_fixed \
-                lsm_k1ask3_fixed
-}
-
