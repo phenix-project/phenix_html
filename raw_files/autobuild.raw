@@ -688,6 +688,12 @@ rebuild_res_start_list) refer to the edited, renumbered model.
 This model can be found in the AutoBuild_run_1_ (or appropriate) 
 directory as &quot;edited_pdb.pdb&quot;.
 
+<LI> The AutoBuild wizard expects residue numbers to not decrease along a
+chain.  It will stop if residue 250 in chain B is found 
+between residues 116 and 117 in the same chain,
+for example. To get around this, use insertion codes (make residue 250
+residue 116A instead).
+
 <LI>The AutoBuild model-building can only build one type of chain at a 
 time (default chain_type='PROTEIN'; other choices are RNA and DNA).  If you
 supply a PDB file containing more than one type of chain for rebuilding, 

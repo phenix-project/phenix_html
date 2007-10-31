@@ -441,7 +441,7 @@ label strings to use by typing:
 sequence file, the heavy-atom type, and the number of sites, as well as
 whether to use anomalous differences (or just isomorphous differences):
 <PRE style="face=courier">phenix.autosol native.data=native.sca deriv.data=deriv.sca \
-   deriv.ha_type=I deriv.sites=2 deriv.inano=inano
+   deriv.atom_type=I deriv.sites=2 deriv.inano=inano
 </PRE>
 This will set the heavy-atom type to Iodine, look for 2 sites, and include
 anomalous differences.

@@ -246,6 +246,21 @@ edit to rerun the Wizard:
 This autosol.eff file (for AutoSol) contains the values of all the AutoSol
 parameters at the time of starting the Wizard. 
 
+<P>Note that the syntax in the autosol.eff file is very slightly different
+than the syntax from the command line.  From the command line, if a value has
+several parts, you enclose them in quotes and there are no spaces around the
+&quot;=&quot; sign:
+<PRE style="face=courier">phenix.autosol ... input_phase_labels="FP PHIM FOMM"
+</PRE>
+In the .eff file, you MUST leave off the quotes or the three values will
+be treated as one, and you should leave blanks around the &quot;=&quot; sign:
+<PRE style="face=courier"> input_phase_labels = FP PHIM FOMM
+</PRE>
+The reason these are different is that in the .eff file, the structure of
+the file and the brackets tell the PHIL parser what is grouped together, 
+while from the commmand line, the quotes tell the parser what is to be 
+grouped together.
+
 <P><LI> A script file (".inp") with inputs in the format for running from a 
 script is produced that you can edit and use like this: 
 <PRE style="face=courier">phenix.runWizard AutoSol AutoSol.inp
@@ -298,7 +313,8 @@ at the end of every temporary command file created to run resolve.
 <P> <P><H5>Running a Wizard from a script</H5><P>
 <P><H5> Differences between running from the command line and running a script</H5><P>
 <P>Command-line
-<P>Scripts are an easy way to run a Wizard and are recommended for any users.
+<P>The command-line is an easy way to run a Wizard and is 
+recommended for any users.
 The command starts with <b>phenix.</b> plus the name of the Wizard in lower-case
 letters (<b>phenix.autosol</b>). Following this, all of the keywords are on the
 same line (or on continuation lines) and values are assigned with an 
