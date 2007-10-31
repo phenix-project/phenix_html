@@ -39,14 +39,43 @@ can be specified externally (e.g. via the --symmetry option).
 
 **How to run**
 
-``phenix.pdbtools`` is run from the command line::
-
-  % phenix.pdbtools [options] [pdb_file] [parameter_file]
-
-**To get information about command line options type**::
+Type ``phenix.pdbtools`` from the command line for instructions::
 
   % phenix.pdbtools
 
 **To see all default parameters**::
 
   % phenix.pdbtools --show-defaults=all
+
+**Examples**
+
+Suppose a PDB model consist of three chains A, B and C and some water molecules.
+
+1) Remove all atoms in chain C and all waters::
+
+   % phenix.pdbtools model.pdb remove="chain C or water"
+
+   or one can achieve exactly the same result with equivalent command::
+
+   % phenix.pdbtools model.pdb keep="chain A or chain B"
+
+   or::
+
+   % phenix.pdbtools model.pdb keep="not(chain C or water)"
+
+   or finally::
+
+   % phenix.pdbtools model.pdb remove="not(chain A or chain B)"
+
+
+   The result of all four equivalent commands above will be a new PDB file
+   containing chains A and B only. Important: the commands ``keep`` and
+   ``remove`` cannot be used simultaneously.
+
+2) Remove all but backbone atoms and set all b-factors to 25::
+
+   % phenix.pdbtools model.pdb keep=backbone set_b_iso=25
+
+3) Remove all but backbone atoms and set b-factors to 25 for chain C atoms::
+
+   % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 selection="chain C"
