@@ -83,8 +83,15 @@ documentation.
 <p>There is an alternative procedure in Phaser, which uses 
 log-likelihood-gradient completion to find the anomalous scatterers, 
 treating the molecular replacement model as a starting substructure.  
-At the moment this can only be carried out from the scripted (keyword)
-interface to Phaser, but will be implemented as part of the AutoSol 
+If you are carrying out SAD phasing with Phaser, you can use 
+this procedure in AutoSol with the keyword
+</p><PRE style="face=courier">input_partpdb_file=MR.pdb 
+</PRE>
+In this case the MR.pdb file will be used to calculate phases and identify
+sites in Phaser, and the combined MR+SAD phases will be written out.
+At the moment the AutoBuild Wizard is not equipped to use these combined
+phases optimally in iterative model-building, density modification
+and refinement, but this will be implemented as part of the AutoBuild
 Wizard in a future release of Phenix.
 </p>
  
