@@ -404,6 +404,17 @@ printed out for you so that you can just paste the one you want in.
 <PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
 </PRE>
 
+<P><H5>SAD dataset, reading heavy-atom sites from a PDB file 
+written by <b>phenix.hyss</b>:
+<PRE style="face=courier">phenix.autosol 11 Pb data=deriv.sca seq_file=seq.dat \
+  sites_file=deriv_hyss_consensus_model.pdb 
+</PRE>
+This will carry out the usual structure solution process, but will read sites
+from deriv_hyss_consensus_model.pdb, try both hands, and carry on from there.
+If you know the hand of the substructure, 
+you can fix it with <b>have_hand=True</b>.
+
+
 <P><H5>MAD dataset</H5><P>
 <P>The inputs for a MAD dataset need to specify f_prime and f_double_prime
 for each wavelength.  It also must be clear what datafile goes with which
