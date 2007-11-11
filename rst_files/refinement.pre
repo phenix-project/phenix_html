@@ -319,7 +319,7 @@ Important to note:
   4. To switch from MZ protocol to traditional way of doing rigid body
      refinement (not recommended!)::
 
-       % phenix.refine data.hkl model.pdb strategy=rigid_body rigid_body.protocol=one_zone \
+       % phenix.refine data.hkl model.pdb strategy=rigid_body rigid_body.number_of_zones=1 \
          rigid_body.high_resolution=4.0
 
      Note that doing one zone refinement one need to cut the high-resolution
