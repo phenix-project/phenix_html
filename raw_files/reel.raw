@@ -28,6 +28,16 @@ manipulate the restraints via the table or molecule view.  The
 geometry of the revised restraints can be tested using the 
 File->Go option.  The final restraints can be saved to a CIF for
 use with phenix.refine.
+
+Clicking an atom in the molecule view will highlight the various
+related topological elements in the table view.  Use the checkbox
+in the table view to remove a restraint from optimisation and
+output file.
+
+<H5><U>Example</U></H5>
+
+<PRE><FONT face=courier>phenix.reel
+</FONT></PRE>
   
 <!--REMARK PHENIX BODY END-->
 
