@@ -26,7 +26,14 @@ map and building an model of the helical parts of a structure.
 
 <P><H5>How find_helices works:</H5><P>
 
-find_helices 
+find_helices first identifies helical segments as rods of density at
+5-8 A. Then it identifies helices at higher resolution keeping the 
+overall locations of the helices fixed. Then it identifies the directions
+and CA positions of helices by noting the helical pattern of high-density
+points offset slightly along the helix axis from the main helical density
+(as used in &quot;O&quot; to identify helix direction).  Finally model
+helices are fit to the density using the positions and orientations
+identified in the earlier steps.
 
 <P><H5><I>Output files from find_helices</I></H5><P>
 If you run find_helices with my_map.mtz then you will get:
