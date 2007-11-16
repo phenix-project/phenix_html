@@ -1,0 +1,68 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Correlation of map and model after adjusting model for origin shifts
+    with get_cc_mtz_pdb</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>get_cc_mtz_pdb: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+get_cc_mtz_pdb is a command line tool for adjusting the origin or a PDB file
+so that the PDB file superimposes on a map, obtaining the correlation
+of model and map, and analyzing the correlation for each residue.
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How get_cc_mtz_pdb works:</H5><P>
+
+get_cc_mtz_pdb calculates a model map based on the supplied PDB file, then
+uses RESOLVE to find the origin shift that maximizes the correlation of this
+model map with the supplied map. This shift is applied to the atoms in the
+PDB file to create <b>offset.pdb</b> and then the 
+correlation, residue-by-residue
+of <b>offset.pdb</b> with the supplied map is analyzed. Atoms and
+residues that are out of density or are in weak density are flagged
+
+<P><H5><I>Output files from get_cc_mtz_pdb</I></H5><P>
+
+<b>offset.pdb</b>: A PDB file offset to match the origin in the mtz file.
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of get_cc_mtz_pdb:</H5><P>
+
+  Running the get_cc_mtz_pdb is easy. From the command-line you can
+type:
+<PRE style="face=courier">phenix.get_cc_mtz_pdb map_coeffs.mtz coords.pdb
+</PRE>
+
+If you want (or need) to specify the column names from your mtz file, you
+will need to tell get_cc_mtz_pdb what FP and PHIB are, in this format:
+
+<PRE style="face=courier">phenix.get_cc_mtz_pdb map_coeffs.mtz coords.pdb \
+labin="LABIN FP=2FOFCWT PHIB=PH2FOFCWT"
+</PRE>
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->

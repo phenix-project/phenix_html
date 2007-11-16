@@ -1,0 +1,81 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Rapid helix fitting to a map with find_helices</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>find_helices: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+find_helices is a command line tool for finding helices in a
+map and building an model of the helical parts of a structure.  
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How find_helices works:</H5><P>
+
+find_helices 
+
+<P><H5><I>Output files from find_helices</I></H5><P>
+If you run find_helices with my_map.mtz then you will get:
+<b>my_map.mtz_helices.pdb</b> which is 
+a PDB file containing helices from your structure.
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of find_helices:</H5><P>
+
+Running the find_helices is easy. From the command-line you can
+type:
+<PRE style="face=courier">phenix.find_helices map_coeffs.mtz quick=True
+</PRE>
+<P> If you want a more thorough run, then skip the "quick=True" flag.
+
+<p>If you want (or need) to specify the column names from your mtz file, you
+will need to tell find_helices what FP and PHIB are, in this format:
+<PRE style="face=courier">phenix.find_helices map_coeffs.mtz \
+labin="LABIN FP=2FOFCWT PHIB=PH2FOFCWT"
+</PRE>
+
+<p>If you want to specify a sequence file, then in the last step find_helices
+will try to align your sequence with the map and model:
+<PRE style="face=courier">phenix.find_helices map_coeffs.mtz seq_file=seq.dat
+</PRE>
+
+<P><H5>Using find_helices to bootstrap phenix.autobuild:</H5><P>
+
+If you run phenix.autobuild at low resolution (3.5 A or lower) then your model
+may have strands built instead of helices.  You can use find_helices to
+help bootstrap autobuild model-building by providing the helical model
+from find_helices to phenix.autobuild.  
+<p> Just run phenix.find_helices with your best map map_coeffs.mtz. 
+Then take the helical model map_coeffs.mtz_helices.pdb and pass it to
+phenix.autobuild with the keyword (in addition to your usual keywords for
+autobuild):
+<PRE style="face=courier">consider_main_chain_list=map_coeffs.mtz_helices.pdb
+</PRE>
+Then the AutoBuild wizard will treat your helical model just like one of the 
+models that it builds, and merge it into the model as it is being assembled.
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->
