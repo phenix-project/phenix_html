@@ -1373,11 +1373,10 @@ significant variations in certain parts.
 Electron density maps
 ---------------------
 
-phenix.refine can compute and output three types of maps: k*Fobs-n*Fmodel,
-2m*Fobs-D*Fmodel and m*Fobs-D*Fmodel, where ``k`` and ``n`` are scalar
-parameters. The result is output either as in ASCII X-PLOR format files. A
-reflection file with map coefficients is also generated for use in Coot or
-XtalView. The example below illustrates the main options::
+phenix.refine can compute and output three types of maps: Fobs-Fmodel,
+2mFobs-DFmodel and mFobs-DFmodel. The result is output either as in ASCII
+X-PLOR format files. A reflection file with map coefficients is also generated
+for use in Coot or XtalView. The example below illustrates the main options::
 
   % phenix.refine data.hkl model.pdb map.params
 
@@ -1385,37 +1384,12 @@ where ``map.params`` contains::
 
   #include_params map.params
 
-This will output three map files containing Fobs-Fmodel, 2m*Fobs-D*Fmodel and
-m*Fobs-D*Fmodel maps (which is requested by putting ``*`` in front of
+This will output three map files containing Fobs-Fmodel, 2mFobs-DFmodel and
+mFobs-DFmodel maps (which is requested by putting ``*`` in front of
 corresponding map names). All maps will be in absolute scale (in e/A**3). The
 map finess will be (data resolution)*grid_resolution_factor and the map will be
 output around main chain atoms. If ``atom_selection`` is set to ``None`` or
 ``all`` then map will be computed for all atoms.
-
-- **Calculating model map**
-
-  The most direct and logical way is to calculate it using the standard formulas
-  rho(r)=... . However, this option is currently not available in phenix.refine.
-  A work-around is to compute (Fcalc, phi_calc) to certain resolution and completeness
-  first and then do the Fourier transformation. This will result in Fourier image
-  of the "true" electron density ("true" = calculated by formulas) at given
-  resolution and completeness. As higher resolution and completeness of Fcalc, as
-  closer this Fourier image to the "true" density. This is possible to do with
-  phenix.refine and the following command will do this::
-
-    % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=0 \
-      electron_density_map.map_types="k*Fobs-n*Fmodel" electron_density_map.k=0 \
-      electron_density_map.n=-1 main.bulk_solvent_and_scale=false strategy=none
-
-  In the example above we load the model and data into phenix.refine and ask it
-  to do nothing (main.number_of_macro_cycles=0, strategy=none) but calculate the
-  k*Fobs-n*Fmodel map with the coefficients k=0 and n=-1. Here Fmodel is just
-  Fcalc from atomic model and does not include any bulk solvent contribution or
-  other scales (main.bulk_solvent_and_scale=false).
-
-  Please note that the Fourier image calculated in this example will be
-  based on the resolution and completeness of provided Fobs (data.mtz) and will
-  not be exactly what one can get with formulas rho(r)=...
 
 Refining with anomalous data (or what phenix.refine does with Fobs+ and Fobs-).
 -------------------------------------------------------------------------------

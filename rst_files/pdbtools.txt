@@ -47,7 +47,7 @@ Type ``phenix.pdbtools`` from the command line for instructions::
 
   % phenix.pdbtools --show-defaults=all
 
-**Examples**
+**Examples of PDB model manipulations**
 
 Suppose a PDB model consist of three chains A, B and C and some water molecules.
 
@@ -79,3 +79,31 @@ Suppose a PDB model consist of three chains A, B and C and some water molecules.
 3) Remove all but backbone atoms and set b-factors to 25 for chain C atoms::
 
    % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 selection="chain C"
+
+**Structure factors calculation**
+
+The total model structure factor is defined as::
+
+  Fmodel = scale * exp(-h*b_cart*ht) * (Fcalc + k_sol * exp(-b_sol*s^2) * Fmask)
+
+1) Simple Fcalc from atomic model (Fmodel = Fcalc)::
+
+   % phenix.pdbtools model.pdb --f_model high_resolution=2.0
+
+   this will result in MTZ file with complete set of Fcalc up to 2A resolution.
+
+2) Include bulk solvent and all other scales, request the output in CNS format,
+   specify labels for output Fmodel (by default it is FMODEL), set
+   low_resolution limit, use direct method of calcualtions (rather than FFT)::
+
+    % phenix.pdbtools model.pdb high_resolution=2.0 format=cns label=FM \
+      low_resolution=6.0 algorithm=direct k_sol=0.35 b_sol=60 scale=3 \
+      b_cart='1 2 -3 0 0 0' --f_model
+
+3) Use neutron scattering dictionary::
+
+   % phenix.pdbtools model.pdb --f_model high_resolution=2.0 scattering_table=neutron
+
+4) Input model can be manipulated firts before structure factors calculation::
+
+    % phenix.pdbtools model.pdb --f_model high_resolution=2.0 sites.shake=1.0
