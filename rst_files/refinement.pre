@@ -891,7 +891,7 @@ with D where necessary.
 
 1. Running refinement with neutron data only::
 
-     % phenix.refine data.hkl model.pdb scattering_table=neutron
+     % phenix.refine data.hkl model.pdb main.scattering_table=neutron
 
    this will tell phenix.refine that the data in data.hkl file is coming from
    neutron scattering experiment and the appropriate scattering factors will be
@@ -1158,8 +1158,8 @@ cases:
    shrink_truncation_radius and grid_step_factor. Normally, these parameters
    are not supposed to be changed but can be changed::
 
-     % phenix.refine data.hkl model.pdb solvent_radius=1.0 \
-       shrink_truncation_radius=1.0 grid_step_factor=3
+     % phenix.refine data.hkl model.pdb refinement.mask.solvent_radius=1.0 \
+       refinement.mask.shrink_truncation_radius=1.0 refinement.mask.grid_step_factor=3
 
    If one wants to gain some more drop in R-factors (somewhere between 0.0 and
    1.0%) it is possible to run fairly time consuming (depending on structure
@@ -1337,7 +1337,7 @@ There are four choices for the scattering table to be used in phenix.refine:
 
 The default is ``n_gaussian``. To switch to different table::
 
-  % phenix.refine data.hkl model.pdb scattering_table=neutron
+  % phenix.refine data.hkl model.pdb main.scattering_table=neutron
 
 Suppressing the output of certain files
 ---------------------------------------
