@@ -199,6 +199,11 @@ keywords that you can set for this wizard, type:
 <PRE style="face=courier">phenix.autosol --help all
 </PRE>
 
+
+<P><LI>Any wizard  keyword can be entered at the command line (not just
+the ones labelled &quot;command-line only&quot;). The documentation for 
+each wizard lists all the keywords that apply to that wizard.
+
 <P><LI>If you want to stop a Wizard, you can create a file "STOPWIZARD" and
 put it in the subdirectory (i.e., AutoSol_2_/) where the Wizard is running.
 This is like hitting the PAUSE button on the GUI and stops the wizard cleanly.
