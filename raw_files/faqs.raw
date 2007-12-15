@@ -240,5 +240,13 @@ to ignore the hex-digest warnings.
 </p> 
 <!--REMARK PHENIX BODY END-->
 
-</TABLE></BODY>
+<H5>Can I use the AutoBuild wizard at low resolution?  </b></H5>
+<p>The standard building with AutoBuild does not work very well at 
+resolutions below about 3-3.2 A.  In particular, the wizard tends to build
+strands into helical regions at low resolution.
+However you can specify "helices_strands_only=True" and
+the wizard will just build regions that are helical or beta-sheet, using
+a completely different algorithm. This is much
+quicker than standard building but much less complete as well.
+</p>
 
