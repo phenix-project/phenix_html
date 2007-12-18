@@ -22,7 +22,8 @@ Available features
  3. TLS
  4. comprehensive mode: combined TLS + individual or group ADP
 
-- Occupancy refinement (individual or group)
+- Occupancy refinement (individual, group, constrained for alternative
+  conformations)
 - Anomalous f' and f'' refinement
 - Bulk solvent correction (flat model using a mask) and anisotropic scaling
 - Multiple refinement and scale target functions: least-squares (ls),
@@ -44,12 +45,10 @@ Current limitations
 
 - No omit maps calculation (use PHENIX wizards for this)
 - TLS and individual anisotropic ADP cannot be refined at once for the same group
-- No specific constraints for occupancies of atoms in alternative conformations
 - Certain refinement strategies are not available for joint X-ray/neutron refinement
 - No NCS constraints (restraints only)
 - No selective removing of bond restraints
 - Atoms with anisotropic ADP in NCS groups
-- No selected bond restraints removing
 
 **Remark on using amplitudes (Fobs) vs intensities (Iobs)**
 
@@ -632,9 +631,26 @@ It is important to keep in mind:
 Occupancy refinement
 --------------------
 
-1. Refinement of occupancies for all atoms in the model::
+By default, the individual occupancy refinement is selected (star in front of
+corresponding keyword: strategy = ... *individual_occupancies ...). This does
+not mean that occupancies for all atoms will be refined. This just tells
+phenix.refine to eiser refine occupancies of selected atoms only or to do
+something else. Here are the possible scenarios::
+
+- ``refine.occupancies.individual=None`` (default option). In this case the
+occupancies of all atoms in alternative conformations or those having partial
+occupancies will be refine. The occupancies of other atoms will not be refined.
+
+- ``refine.occupancies.individual=atom_selection``. In this case only atoms
+selected with atom_selection syntax will participate in occupancy refinement.
+See this document for examples of atom_selection syntax.
+
+1. Refinement of occupancies only::
 
      % phenix.refine data.hkl model.pdb strategy=individual_occupancies
+
+   This will only refine occupancies for atoms in alternative conformations or
+   for atoms having partial occupancies.
 
 2. Refinement of occupancies for selected atoms only::
 
