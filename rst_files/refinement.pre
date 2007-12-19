@@ -862,11 +862,20 @@ Below are some useful commands:
 
 4. To remove hydrogens from a model::
 
-     % phenix.pdbtools model.py remove="element H"
+     % phenix.pdbtools model.pdb remove="element H"
 
-   We strongly encourage to not remove hydrogen atoms after refinement since it
+   We strongly recommend to not remove hydrogen atoms after refinement since it
    will make the refinement statistics (R-factors, etc...) unreproducible
    without repeating exactly the same refinement protocol.
+
+5. Normally, phenix.reduce is used to add hydrogens. However, it may happen
+   that phenix.reduce fails to add H to certain ligands. In this case
+   phenix.elbow can be used to add hydrogens::
+
+     % phenix.elbow --final-geometry=model.pdb --residue=MAN --output=model_h
+
+   A PDB file called model_h.pdb will contain the original ligand MAN with all
+   hydrogen atoms added.
 
 Refinement using twinned data
 -----------------------------

@@ -62,9 +62,11 @@ def exercise(args):
        st = st.strip()
        taken_first = False
        final_cmd = ""
-       if(fake_cmd and (st.startswith("% phenix.") or
+       if(fake_cmd and (
+          st.startswith("% phenix.") or
           st.startswith("% cctbx.") or
           st.startswith("% mmtbx.") or
+          st.startswith("% iotbx.") or
           st.startswith("% elbow."))):
           amp_counter += 1
           cmd = st
@@ -102,11 +104,11 @@ def exercise(args):
           if(final_cmd.count("phenix.refine")):
             if(final_cmd.count("main.number_of_macro_cycles=0")==0):
                final_cmd = final_cmd + " main.number_of_macro_cycles=2"
-            final_cmd = final_cmd + " --overwrite" + " --quiet"
+            final_cmd = final_cmd + " --overwrite"
             if(final_cmd.find("--show-defaults") >= 0):
               final_cmd += " > zlog"
           if(final_cmd.count("phenix.pdbtools")):
-            final_cmd = final_cmd + " --quiet"
+            final_cmd = final_cmd
           print separator
           print final_cmd
           if (not dry_run):
