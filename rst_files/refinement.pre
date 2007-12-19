@@ -632,18 +632,20 @@ Occupancy refinement
 --------------------
 
 By default, the individual occupancy refinement is selected (star in front of
-corresponding keyword: strategy = ... *individual_occupancies ...). This does
+corresponding keyword: strategy = ... \*individual_occupancies ...). This does
 not mean that occupancies for all atoms will be refined. This just tells
 phenix.refine to eiser refine occupancies of selected atoms only or to do
-something else. Here are the possible scenarios::
+something else. Here are the possible scenarios:
 
-- ``refine.occupancies.individual=None`` (default option). In this case the
-occupancies of all atoms in alternative conformations or those having partial
-occupancies will be refine. The occupancies of other atoms will not be refined.
+  - ``refine.occupancies.individual=None`` (default option). In this case the
+    occupancies of all atoms in alternative conformations or those
+    having partial occupancies will be refine. The occupancies of
+    other atoms will not be refined.
 
-- ``refine.occupancies.individual=atom_selection``. In this case only atoms
-selected with atom_selection syntax will participate in occupancy refinement.
-See this document for examples of atom_selection syntax.
+  - ``refine.occupancies.individual=atom_selection``. In this case only atoms
+    selected with atom_selection syntax will participate in occupancy
+    refinement.  See this document for examples of atom_selection
+    syntax.
 
 1. Refinement of occupancies only::
 
