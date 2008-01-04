@@ -1,16 +1,19 @@
 refinement {
   ordered_solvent {
     low_resolution = 2.8
-    b_iso_min = 1
-    b_iso_max = 50
+    b_iso_min = 1.0
+    b_iso_max = 50.0
     b_iso = 25.0
-    occupancy_min = 1
-    occupancy_max = 1
-    occupancy = 1
-    primary_map_type = "m*Fobs-D*Fmodel"
-    primary_map_cutoff = 3
-    min_solv_macromol_dist = 1.8
-    max_solv_macromol_dist = 6
-    min_solv_solv_dist = 1.8
+    primary_map_type = mFobs-DFmodel
+    primary_map_cutoff = 3.0
+    secondary_map_type = 2mFobs-DFmodel
+  }
+  peak_search {
+    map_next_to_model {
+      min_model_peak_dist = 1.8
+      max_model_peak_dist = 6.0
+      min_peak_peak_dist = 1.8
+    }
   }
 }
+
