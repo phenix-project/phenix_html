@@ -14,10 +14,10 @@ Quick Facts
 -----------
 
 - All necessary files to run structure refinement examples with phenix.refine
-  are located in refinement_examples directory;
-- Each sub-directory example_xx contains all task files (command and
-  parameter files) necessary to run an example;
-- Data and model files are located in data sub-directory;
+  are located in ``refinement_examples`` directory;
+- Each sub-directory ``refinement_examples/example_xx`` contains all task files
+  (command and parameter files) necessary to run an example;
+- Data and model files are located in ``refinement_examples/data`` sub-directory;
 - Some examples are quick to run and some could take an hour or more
   (depending on computer);
 - The actual R-factors resulted from running these examples may slightly vary
@@ -42,28 +42,30 @@ There are two different ways to run the examples:
    this will create 4 directories: ``example_1a``, ..., ``example_3c`` and run
    the examples 1a, 2b, 3a and 3c in these directories.
 
-2. From PHENIX distribution copy the entire refinement_examples directory to
-   where you plan to run the examples. Then go to any of sub-directories
-   example_xx and execute a run file. This will start the selected refinement
-   example, wait until it's finished and inspect the output files.
+2. From PHENIX distribution copy the entire ``refinement_examples`` directory
+   to where you plan to run the examples. Then go to any of sub-directories
+   ``refinement_examples/example_xx`` and execute a run file. This will start
+   the selected refinement example, wait until it's finished and inspect the
+   output files.
 
 
 Examples
 --------
 
-**Refinement of lysozyme structure at 1.5 A**
+**Refinement of 1akg structure at 1.1 A resolution**
 
   In this series of examples we review the simple refinement with all default
   parameters, automatic picking and refinement of solvent molecules, switching
   from isotropic to anisotropic ADP refinement, practice monitoring of Rfactors
-  change during refinement and experience the effect of adding and refinement of
-  hydrogen atoms.
+  change during refinement and experience the effect of adding and refinement
+  of hydrogen atoms.
 
   **example_1a:** The simplest possible refinement mode: refinement with all
   default parameters. This includes 3 macro-cycles of bulk-solvent and
-  anisotropic scaling, coordinates and individual isotropic B-factors refinement.
+  anisotropic scaling, individual coordinates and isotropic B-factors
+  refinement, refinement of occupancies for atoms in alternative conformations.
 
-    Final: R-work = 0.2773 R-free = 0.3153
+    Final: R-work = 0.2264 R-free = 0.2423
 
   The start model does not contain any water molecules placed into it. Next
   example demonstrates how to add and refine ordered solvent.
@@ -71,38 +73,36 @@ Examples
   **example_1b:** Same refinement run as in example_1a with automatic water
   picking and refinement.
 
-    Final: R-work = 0.2198 R-free = 0.2574
+    Final: R-work = 0.1780 R-free = 0.1917
 
-  Automatic water picking and refinement dropped the R-factors by ~6%. At 1.5 A
-  resolution it's worth of trying to refine all well ordered non-solvent and
-  non-hydrogen atoms as anisotropic.
+  Automatic water picking and refinement dropped the R-factors by ~5%. At 1.1 A
+  resolution all well ordered non-hydrogen atoms should be refined as
+  anisotropic.
 
   **example_1c:** Same refinement run as in example_1b with all non-water atoms
   refined anisotropically.
 
-    Final: R-work = 0.2134 R-free = 0.2559
+    Final: R-work = 0.1534 R-free = 0.1849
 
-  Refinement of non-solvent atoms as anisotropic slightly dropped R-factors. The
-  R-factor statistics in the output PDB file header shows continues R-factors
-  decrease from macro-cycles to macro-cycle. This suggests to run the refinement
-  more than 3 macro-cycles (3 is the default).
+  Refinement of non-solvent atoms as anisotropic dropped both Rwork and Rfree (
+  as expected at this resolution).
 
-  **example_1d:** Same refinement run as in example_1c performed 10 macro-cycles.
+  **example_1d:** Same refinement run as in example_1c performed with hydrogen
+  atoms added to the start model.
 
-    Final: R-work = 0.1788 R-free = 0.2222
-
-  Indeed, switching from 3 to 10 macro-cycles dropped R-factors further by ~3.5%.
-  Also, the R-factor statistics in PDB file header shows no more changes in R
-  which indicates that refinement is converged.
-
-  **example_1e:** Same refinement run as in example_1d performed with hydrogen
-  atoms added to the final refined model obtained in example_1d.
-
-    Final: R-work = 0.1636 R-free = 0.2186
+    Final: R-work = 0.1411 R-free = 0.1725
 
   Using the hydrogens in refinement may further improve the model. Indeed,
-  adding the hydrogen atoms and refining them as riding model decreased Rs by
-  approx. 1%.
+  adding the hydrogen atoms and refining them as riding model decreased
+  R-factors by approximately 1%.
+
+  **example_1e:** Same refinement run as in example_1d performed with optimized
+  X-ray target weights for both coordinate and ADP refinement.
+
+    Final: R-work = 0.1352 R-free = 0.1685
+
+  Since it is very slow, this option is recomended to run overnight for a final
+  model tune up.
 
 **Refinement of 1071B at 3.0A resolution, 2 NCS groups with 3 components in each group.**
 
