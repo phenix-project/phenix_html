@@ -99,10 +99,13 @@ Examples
   **example_1e:** Same refinement run as in example_1d performed with optimized
   X-ray target weights for both coordinate and ADP refinement.
 
-    Final: R-work = 0.1352 R-free = 0.1685
+    Final: R-work = 0.1322 R-free = 0.1582
 
-  Since it is very slow, this option is recomended to run overnight for a final
-  model tune up.
+  Although phenix.refine uses automatic procedure for relative xray/geometry
+  weight calculation and finds good weights in most of cases, it may be a good
+  idea to try to optimize the weights. A drop in R-factors by ~1% in this
+  example clearly demonstrates this. Since it is very slow, this option is
+  recommended to run overnight for a final model tune up.
 
 **Refinement of 1071B at 3.0A resolution, 2 NCS groups with 3 components in each group.**
 

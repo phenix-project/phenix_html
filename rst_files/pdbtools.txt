@@ -94,7 +94,7 @@ The total model structure factor is defined as::
 
 2) Include bulk solvent and all other scales, request the output in CNS format,
    specify labels for output Fmodel (by default it is FMODEL), set
-   low_resolution limit, use direct method of calcualtions (rather than FFT)::
+   low_resolution limit, use direct method of calculations (rather than FFT)::
 
     % phenix.pdbtools model.pdb high_resolution=2.0 format=cns label=FM \
       low_resolution=6.0 algorithm=direct k_sol=0.35 b_sol=60 scale=3 \
@@ -104,6 +104,6 @@ The total model structure factor is defined as::
 
    % phenix.pdbtools model.pdb --f_model high_resolution=2.0 scattering_table=neutron
 
-4) Input model can be manipulated firts before structure factors calculation::
+4) Input model can be manipulated first before structure factors calculation::
 
     % phenix.pdbtools model.pdb --f_model high_resolution=2.0 sites.shake=1.0

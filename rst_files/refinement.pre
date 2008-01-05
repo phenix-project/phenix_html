@@ -49,6 +49,7 @@ Current limitations
 - No NCS constraints (restraints only)
 - No selective removing of bond restraints
 - Atoms with anisotropic ADP in NCS groups
+- No Simulated Annealing for selected fragments.
 
 **Remark on using amplitudes (Fobs) vs intensities (Iobs)**
 
@@ -812,7 +813,7 @@ annealing, TLS refinement, etc. Some useful commands are:
    select or will remove existing water if water-water or water-macromolecule
    distance is less than 1.8A or water-macromolecule distance is greater than
    6.0 A. The initial occupancies and B-factors of newly placed waters will be
-   1.0 and 25.0 correspondingly. If b_iso = None, then b_iso will be the mean
+   1.0 and 25.0 correspondingly. If b_either = None, then b_iso will be the mean
    atomic B-factor.
 
 Hydrogens in refinement
@@ -938,6 +939,21 @@ with D where necessary.
 
        phenix.refine model.pdb data_xray.hkl neutron_data.file_name=data_neutron.hkl
        input.xray_data.labels=FOBSx input.neutron_data.labels=FOBSn
+
+Optimizing target weights
+-------------------------
+
+phenix.refine uses automatic procedure to determine the weights between X-ray
+target and stereochemistry or ADP restraints. To optimize these weights (that is
+to find those resulting in lowest Rfree factors)::
+
+  % phenix.refine data.hkl model.pdb optimize_wxc=true optimize_wxu=true
+
+where ``optimize_wxc`` will turn on the optimization of X-ray/stereochemistry
+weight and ``optimize_wxu`` will turn on the optimization of X-ray/ADP
+weight. Note that this could be very slow since the procedure involves a grid
+search over an array of weights-candidates. It could be a good idea to run this
+overnight for a final model tune up.
 
 Examples of frequently used refinement protocols, common problems
 -----------------------------------------------------------------
