@@ -1398,7 +1398,7 @@ Random seed
 
 To change random seed::
 
-  % phenix.refine data.hkl model.pdb random_seed=7112384
+  % phenix.refine data.hkl model.pdb main.random_seed=7112384
 
 The results of certain refinement protocols, such as restrained refinement of
 coordinates (with SA or LBFGS minimization), are sensitive to the random seed.
