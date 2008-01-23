@@ -955,6 +955,86 @@ weight. Note that this could be very slow since the procedure involves a grid
 search over an array of weights-candidates. It could be a good idea to run this
 overnight for a final model tune up.
 
+Refinement at high resolution (higher than approx. 1.0 Angstrom)
+----------------------------------------------------------------
+
+Guidelines for structure refinement at high resolution:
+
+  - make sure the model contains hydrogen atoms. If not, ``phenix.reduce``
+    can be used to add them::
+
+      % phenix.reduce model.pdb > model_h.pdb
+
+    By default, ``phenix.refine`` will refine positions of H atoms as riding
+    model (H atom will exactly follow the atom it is attached to). Note that
+    ``phenix.refine`` can also refine individual coordinates of H atoms (can be
+    used for small molecules at ultra-high resolutions or for refinement
+    against neutron data). This is governed by
+    ``hydrogens.refine_sites = individual *riding`` keyword and the default is
+    to use riding model. ``hydrogens.refine_adp`` defines how hydrogens'
+    B-factors are refined (default is to refine one group B for all H atoms).
+    At high resolution one should definitely try to use ``one_b_per_molecule``
+    or even ``individual`` choice (resolution permitting). Similar strategy
+    should be used for refinement of H's occupancies,
+    ``hydrogens.refine_occupancies`` keyword.
+
+  - most of the atoms should be refined with anisotropic ADP. Exceptions could
+    be model parts with high B-factors), atoms in alternative conformations,
+    hydrogens and solvent molecules. However, at resolutions higher than 1.0A
+    it's worth of trying to refine solvent with anisotropic ADP.
+
+  - it is a good idea to constantly monitor the existing solvent molecules and
+    check for new ones by using ``ordered_solvent=true`` keyword. If it's
+    decided to refine waters with anisotropic ADP then make sure that the newly
+    added ones are also anisotropic; use
+    ``ordered_solvent.new_solvent=anisotropic`` (default is ``isotropic``). One
+    can also ask ``phenix.refine`` to refine occupancies of water:
+    ``ordered_solvent.refine_occupancies=true`` (default is False).
+
+  - at high resolution the alternative conformations can be visible for more
+    than 20% of residues. ``phenix.refine`` automatically recognizes atoms in
+    alternative conformations (based on PDB records) and by default does
+    constrained refinement of occupancies for these atoms. Please note, that
+    ``phenix.refine`` does not build or create the fragments in alternative
+    conformations; the atoms in alternative conformations should be properly
+    defined in input PDB file (using conformer identifiers) (if actually found
+    in a structure).
+
+  - the default weights for stereochemical and ADP restraints are most likely
+    too tight at this resolution, so most likely the corresponding values need
+    to be relaxed. Use ``wxc_scale`` and ``wxu_scale`` for this; lower values,
+    like 1/2, 1/3, 1/4, ... etc of the default ones should be tried.
+    ``phenix.refine`` allows automatically optimize these values (
+    ``optimize_wxc=True`` and ``optimize_wxu=True``), however this is a very
+    slow task so it may be considered for an over night run or even longer.
+    At ultra-high resolutions (approx. 0.8A or higher) a complete unrestrained
+    refinement should be definitely tried out for well ordered parts of the
+    model (single conformations, low B-factors).
+
+  - at ultra-high resolution the residual maps show the electron density
+    redistribution due to bonds formation as density peaks at interatomic bonds.
+    ``phenix.refine`` has specific tools to model this density called IAS
+    models (Afonine et al, Acta Cryst. (2007). D63, 1194-1197).
+
+This example illustrates most of the above points::
+
+  % phenix.refine model_h.pdb data.mtz high_res.params
+
+where the file ``high_res.params`` contains following lines (for more parameters
+under each scope look at complete list of parameters)::
+
+  #include_params high_res.params
+
+In the example above ``phenix.refine`` will perform 5 macro-cycles with ordered
+solvent update (add/remove) every macro-cycles, all atoms including newly added
+water will be refined with anisotropic B-factors (except hydrogens), riding
+model will be used for positional refinement of H atoms, one occupancy and
+isotropic B-factor will be refined per all hydrogens within a residue,
+occupancies of waters will be refined as well, the default stereochemistry and
+ADP restraints weights are scaled down by the factors of 0.25 and 0.3
+respectively. If starting model is far enough from the "final" one, more
+macro-cycles may be required (than 5 used in this example).
+
 Examples of frequently used refinement protocols, common problems
 -----------------------------------------------------------------
 

@@ -1,0 +1,28 @@
+refinement.main {
+  number_of_macro_cycles = 5
+  ordered_solvent=true
+}
+refinement.refine {
+  adp {
+    individual {
+      isotropic = element H
+      anisotropic = not element H
+    }
+  }
+}
+refinement.target_weights {
+  wxc_scale = 0.25
+  wxu_scale = 0.3
+}
+refinement.hydrogens {
+  refine_sites = individual *riding
+  refine_adp = *one_b_per_residue  one_b_per_molecule  individual
+  refine_occupancies = *one_q_per_residue  one_q_per_molecule  individual
+}
+refinement {
+  ordered_solvent {
+    mode = auto filter_only *every_macro_cycle
+    new_solvent =  isotropic *anisotropic
+    refine_occupancies = True
+  }
+}
