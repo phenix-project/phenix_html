@@ -1,11 +1,10 @@
-=======================================================
 phenix.pdbtools: PDB model manipulations and statistics
-=======================================================
+-------------------------------------------------------
 
-**Purpose**
+**Manipulations on a model in a PDB file including**
 
-``phenix.pdbtools`` is a command-line tool for performing simple
-manipulations on a model in a PDB file including:
+The operations below can be applied to the whole model or selected parts
+(e.g. "selection=chain A and backbone"). See examples below.
 
 - shaking of coordinates (random coordinate shifts)
 - rotation-translation shift of coordinates
@@ -18,13 +17,9 @@ manipulations on a model in a PDB file including:
 - conversion to anisotropic ADP
 - removal of selected parts of a model
 
-The operations can be applied to the whole model or selected parts
-(e.g. "selection=chain A and backbone").
+**Comprehensive model statistics**
 
-In addition, ``phenix.pdbtools`` provides comprehensive model
-statistics:
-
-- ADP statistics::
+- Atomic Displacement parameters (ADP) statistics::
 
   % phenix.pdbtools model.pdb --show-adp-statistics
 
@@ -37,73 +32,95 @@ that doesn't require knowledge of the crystal symmetry is still
 available. To enable the full functionality, the crystal symmetry
 can be specified externally (e.g. via the --symmetry option).
 
-**How to run**
-
-Type ``phenix.pdbtools`` from the command line for instructions::
-
-  % phenix.pdbtools
-
-**To see all default parameters**::
-
-  % phenix.pdbtools --show-defaults=all
-
-**Examples of PDB model manipulations**
-
-Suppose a PDB model consist of three chains A, B and C and some water molecules.
-
-1) Remove all atoms in chain C and all waters::
-
-   % phenix.pdbtools model.pdb remove="chain C or water"
-
-   or one can achieve exactly the same result with equivalent command::
-
-   % phenix.pdbtools model.pdb keep="chain A or chain B"
-
-   or::
-
-   % phenix.pdbtools model.pdb keep="not(chain C or water)"
-
-   or finally::
-
-   % phenix.pdbtools model.pdb remove="not(chain A or chain B)"
-
-
-   The result of all four equivalent commands above will be a new PDB file
-   containing chains A and B only. Important: the commands ``keep`` and
-   ``remove`` cannot be used simultaneously.
-
-2) Remove all but backbone atoms and set all b-factors to 25::
-
-   % phenix.pdbtools model.pdb keep=backbone set_b_iso=25
-
-3) Remove all but backbone atoms and set b-factors to 25 for chain C atoms::
-
-   % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 selection="chain C"
-
 **Structure factors calculation**
 
 The total model structure factor is defined as::
 
   Fmodel = scale * exp(-h*b_cart*ht) * (Fcalc + k_sol * exp(-b_sol*s^2) * Fmask)
 
-1) Simple Fcalc from atomic model (Fmodel = Fcalc)::
+where: ``scale`` is overall scale factor, ``h`` is Miller index, ``b_cart``
+is overall anisotropic scale matrix in Cartesian basis, ``Fcalc`` are structure
+factors computed from atomic model, ``k_sol`` is bulk solvent density, ``b_sol``
+is smearing factor for bulk solvent contribution, ``Fmask`` is a solvent mask.
 
-   % phenix.pdbtools model.pdb --f_model high_resolution=2.0
+**Add hydrogen atoms**
 
-   this will result in MTZ file with complete set of Fcalc up to 2A resolution.
+Add H atoms to a model using phenix.reduce. All default parameters of
+phenix.reduce are used.
 
-2) Include bulk solvent and all other scales, request the output in CNS format,
-   specify labels for output Fmodel (by default it is FMODEL), set
-   low_resolution limit, use direct method of calculations (rather than FFT)::
+**Perform model geometry regularization**
 
-    % phenix.pdbtools model.pdb high_resolution=2.0 format=cns label=FM \
-      low_resolution=6.0 algorithm=direct k_sol=0.35 b_sol=60 scale=3 \
-      b_cart='1 2 -3 0 0 0' --f_model
+Minimize geometry target to idealize bond lenghths, bond angles, planarities,
+chiralities, dihedrals, and non-bonded interactions.
 
-3) Use neutron scattering dictionary::
+**Examples**
 
-   % phenix.pdbtools model.pdb --f_model high_resolution=2.0 scattering_table=neutron
+**1)** Type ``phenix.pdbtools`` from the command line for instructions::
 
-4) Input model can be manipulated first before structure factors calculation::
+  % phenix.pdbtools
 
-    % phenix.pdbtools model.pdb --f_model high_resolution=2.0 sites.shake=1.0
+**2)** To see all default parameters::
+
+  % phenix.pdbtools --show-defaults=all
+
+**3)** Suppose a PDB model consist of three chains A, B and C and some water
+molecules. Remove all atoms in chain C and all waters::
+
+  % phenix.pdbtools model.pdb remove="chain C or water"
+
+or one can achieve exactly the same result with equivalent command::
+
+  % phenix.pdbtools model.pdb keep="chain A or chain B"
+
+or::
+
+  % phenix.pdbtools model.pdb keep="not(chain C or water)"
+
+or finally::
+
+  % phenix.pdbtools model.pdb remove="not(chain A or chain B)"
+
+The result of all four equivalent commands above will be a new PDB file
+containing chains A and B only. Important: the commands ``keep`` and
+``remove`` cannot be used simultaneously.
+
+**4)** Remove all but backbone atoms and set all b-factors to 25::
+
+  % phenix.pdbtools model.pdb keep=backbone set_b_iso=25
+
+**5)** Suppose a PDB model consist of three chains A, B and C and some water
+molecules. Remove all but backbone atoms and set b-factors to 25 for chain C
+atoms::
+
+  % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 selection="chain C"
+
+**6)** Simple Fcalc from atomic model (Fmodel = Fcalc)::
+
+  % phenix.pdbtools model.pdb --f_model high_resolution=2.0
+
+this will result in MTZ file with complete set of Fcalc up to 2A resolution.
+
+**7)** Compute Fmodel include bulk solvent and all other scales, request the
+output in CNS format, specify labels for output Fmodel (by default it is
+FMODEL), set ``low_resolution`` limit, use direct method of calculations
+(rather than FFT)::
+
+  % phenix.pdbtools model.pdb high_resolution=2.0 format=cns label=FM \
+    low_resolution=6.0 algorithm=direct k_sol=0.35 b_sol=60 scale=3 \
+    b_cart='1 2 -3 0 0 0' --f_model
+
+**8)** Compute Fcalc using neutron scattering dictionary::
+
+  % phenix.pdbtools model.pdb --f_model high_resolution=2.0 scattering_table=neutron
+
+**9)** Input model can be manipulated first before structure factors calculation::
+
+  % phenix.pdbtools model.pdb --f_model high_resolution=2.0 sites.shake=1.0
+
+**10)** Add H atoms to a model::
+
+  % phenix.pdbtools model.pdb --add_h output.file_name=model_h.pdb
+
+**11)** Model geometry regularization::
+
+  % phenix.pdbtools model.pdb --geometry_regularization

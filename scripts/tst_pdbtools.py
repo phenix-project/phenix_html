@@ -77,7 +77,7 @@ def example_1(commands):
       counter += 1
       cmd = cmd.replace("model.pdb", pdb)
       cmd = cmd.replace("%", "")
-      cmd += " output.pdb.file_name=check_equivalent_%s "%str(counter)
+      cmd += " output.file_name=check_equivalent_%s "%str(counter)
       easy_run.call(command = cmd)
   assert counter == 4
   f1=smart_open.for_reading(file_name="check_equivalent_1").read().splitlines()
@@ -98,7 +98,7 @@ def example_2(commands):
       counter += 1
       cmd = cmd.replace("model.pdb", pdb)
       cmd = cmd.replace("%", "")
-      cmd += " output.pdb.file_name=example_2 "
+      cmd += " output.file_name=example_2 "
       easy_run.call(command = cmd)
   assert counter == 1
   f1 = smart_open.for_reading(file_name="example_2").read()
@@ -134,7 +134,7 @@ def example_3(commands):
       counter += 1
       cmd = cmd.replace("model.pdb", pdb)
       cmd = cmd.replace("%", "")
-      cmd += " output.pdb.file_name=example_3 "
+      cmd += " output.file_name=example_3 "
       easy_run.call(command = cmd)
   assert counter == 1
   f1 = smart_open.for_reading(file_name="example_3").read()
