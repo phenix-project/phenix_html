@@ -624,8 +624,11 @@ Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 An additional map coefficients file omit_region.mtz will show you the
 region that has been omitted.
-(Note: be sure to use the weights in both
+(Note 1: be sure to use the weights in both 
 resolve_composite_map.mtz and omit_region.mtz).
+(Note 2: Although the variables are omit_res_start_list omit_res_end_list 
+omit_chain_list, you can only specify one region of a molecule to 
+omit, not a list of them, all others are ignored.)
 
 <H5>Create one very good rebuilt model</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
