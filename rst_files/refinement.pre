@@ -1018,7 +1018,7 @@ Guidelines for structure refinement at high resolution:
 
 This example illustrates most of the above points::
 
-  % phenix.refine model_h.pdb data.mtz high_res.params
+  % phenix.refine model_h.pdb data.hkl high_res.params
 
 where the file ``high_res.params`` contains following lines (for more parameters
 under each scope look at complete list of parameters)::
