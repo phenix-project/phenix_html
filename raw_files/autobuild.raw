@@ -551,7 +551,9 @@ these limits and how their default values are set:
   </TR>
   <TR>
     <TD>resolution</TD>
-    <TD>Overall resolution </TD>
+    <TD>Overall resolution. Used as high-resolution limit for
+     density modification. Used as default for refinement resolution 
+       and model-building resolution if they are not set.</TD>
     <TD>Resolution of input datafile. If a hires datafile is 
        provided, the resolution of that data is used.  </TD>
   </TR>
@@ -559,6 +561,21 @@ these limits and how their default values are set:
     <TD>refinement_resolution</TD>
     <TD>Resolution for refinement</TD>
     <TD>value of &quot;resolution&quot;</TD>
+  </TR>
+  <TR>
+    <TD>resolution_build</TD>
+    <TD>Resolution for model-building</TD>
+    <TD>value of &quot;resolution&quot;</TD>
+  </TR>
+  <TR>
+    <TD>overall_resolution</TD>
+    <TD>Resolution to truncate all data. This should only be used
+       if you need to truncate the data in order to get the Wizard to
+       run. It causes the Wizard to ignore all data at higher resolution
+       than overall_resolution.  It is normally better to use the
+       resolution keyword to define the resolution limits, as that
+       will keep all the data in the output and working files.</TD>
+    <TD>None</TD>
   </TR>
   <TR>
     <TD>multiple_models_starting_resolution</TD>
