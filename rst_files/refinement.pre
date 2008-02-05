@@ -809,7 +809,7 @@ annealing, TLS refinement, etc. Some useful commands are:
 
    This will skip water picking if the resolution of data is lower than 2.8A,
    it will remove waters with B < 1.0 or B > 50.0 A**2 or occupancy different
-   from 1 or peak height at m*Fobs-D*Fmodel map lower then 3 sigma. It will not
+   from 1 or peak height at mFo-DFc map lower then 3 sigma. It will not
    select or will remove existing water if water-water or water-macromolecule
    distance is less than 1.8A or water-macromolecule distance is greater than
    6.0 A. The initial occupancies and B-factors of newly placed waters will be
@@ -1496,9 +1496,10 @@ significant variations in certain parts.
 Electron density maps
 ---------------------
 
-phenix.refine can compute and output three types of maps: Fobs-Fmodel,
-2mFobs-DFmodel and mFobs-DFmodel. The result is output either as in ASCII
-X-PLOR format files. A reflection file with map coefficients is also generated
+phenix.refine can compute and output likelihood-weighted (2mFo-DFc,
+2mFo-DFc, 2.7mFo-1.3DFc, ...) or regular (Fo-Fc, 2Fo-Fc) maps with user
+specified coefficients. The result is output as  ASCII X-PLOR format.
+A reflection file with map coefficients is also generated
 for use in Coot or XtalView. The example below illustrates the main options::
 
   % phenix.refine data.hkl model.pdb map.params
@@ -1507,9 +1508,8 @@ where ``map.params`` contains::
 
   #include_params map.params
 
-This will output three map files containing Fobs-Fmodel, 2mFobs-DFmodel and
-mFobs-DFmodel maps (which is requested by putting ``*`` in front of
-corresponding map names). All maps will be in absolute scale (in e/A**3). The
+This will output two map files containing mFo-DFc and 2mFo-DFc maps. All maps
+will be in absolute scale (in e/A**3). The
 map finess will be (data resolution)*grid_resolution_factor and the map will be
 output around main chain atoms. If ``atom_selection`` is set to ``None`` or
 ``all`` then map will be computed for all atoms.

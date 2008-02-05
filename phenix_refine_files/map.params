@@ -1,6 +1,19 @@
 refinement {
   electron_density_map {
-    map_types = *Fobs-Fmodel *2mFobs-DFmodel *mFobs-DFmodel
+    map {
+      mtz_label_amplitudes = 2FOFCWT
+      mtz_label_phases = PH2FOFCWT
+      likelihood_weighted = True
+      obs_factor = 2
+      calc_factor = 1
+    }
+    map {
+      mtz_label_amplitudes = FOFCWT
+      mtz_label_phases = PHFOFCWT
+      likelihood_weighted = True
+      obs_factor = 1
+      calc_factor = 1
+    }
     grid_resolution_factor = 1/4.
     region = *selection cell
     atom_selection = name CA or name N or name C
