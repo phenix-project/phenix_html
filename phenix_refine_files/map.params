@@ -14,6 +14,13 @@ refinement {
       obs_factor = 1
       calc_factor = 1
     }
+    map {
+      mtz_label_amplitudes = 3FO2FCWT
+      mtz_label_phases = PH3FO2FCWT
+      likelihood_weighted = False
+      obs_factor = 3
+      calc_factor = 2
+    }
     grid_resolution_factor = 1/4.
     region = *selection cell
     atom_selection = name CA or name N or name C

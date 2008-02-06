@@ -1496,11 +1496,12 @@ significant variations in certain parts.
 Electron density maps
 ---------------------
 
-phenix.refine can compute and output likelihood-weighted (2mFo-DFc,
-2mFo-DFc, 2.7mFo-1.3DFc, ...) or regular (Fo-Fc, 2Fo-Fc) maps with user
-specified coefficients. The result is output as  ASCII X-PLOR format.
-A reflection file with map coefficients is also generated
-for use in Coot or XtalView. The example below illustrates the main options::
+By phenix.refine outputs two likelihood-weighted maps: 2mFo-DFc and mFo-DFc.
+The user can also choose between likelihood-weighted and regular maps with any
+specified coefficients, for example: 2mFo-DFc, 2.7mFo-1.3DFc, Fo-Fc, 3Fo-2Fc.
+The result is output as ASCII X-PLOR format. A reflection file with map
+coefficients is also generated for use in Coot or XtalView. The example below
+illustrates the main options::
 
   % phenix.refine data.hkl model.pdb map.params
 
@@ -1508,11 +1509,12 @@ where ``map.params`` contains::
 
   #include_params map.params
 
-This will output two map files containing mFo-DFc and 2mFo-DFc maps. All maps
-will be in absolute scale (in e/A**3). The
-map finess will be (data resolution)*grid_resolution_factor and the map will be
-output around main chain atoms. If ``atom_selection`` is set to ``None`` or
-``all`` then map will be computed for all atoms.
+This will output three map files containing mFo-DFc, 2mFo-DFc and 3Fo-2Fc maps.
+All maps will be in absolute scale (in e/A**3). The map finess will be (data
+resolution)*grid_resolution_factor and the map will be output around main chain
+atoms. If ``atom_selection`` is set to ``None`` or ``all`` then map will be
+computed for all atoms. The corresponding MTZ file will also contain the map
+coefficients for these three maps.
 
 Refining with anomalous data (or what phenix.refine does with Fobs+ and Fobs-).
 -------------------------------------------------------------------------------
