@@ -1,7 +1,7 @@
 refinement {
   refine {
     #strategy =  individual_sites rigid_body  individual_adp group_adp tls \
-    #           individual_occupancies group_occupancies group_anomalous *none
+    #           occupancies group_anomalous *none
   }
   #main {
   #  number_of_macro_cycles = 1

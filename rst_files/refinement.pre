@@ -633,7 +633,7 @@ Occupancy refinement
 --------------------
 
 By default, the individual occupancy refinement is selected (star in front of
-corresponding keyword: strategy = ... \*individual_occupancies ...). This does
+corresponding keyword: strategy = ... \*occupancies ...). This does
 not mean that occupancies for all atoms will be refined. This just tells
 phenix.refine to eiser refine occupancies of selected atoms only or to do
 something else. Here are the possible scenarios:
@@ -650,14 +650,14 @@ something else. Here are the possible scenarios:
 
 1. Refinement of occupancies only::
 
-     % phenix.refine data.hkl model.pdb strategy=individual_occupancies
+     % phenix.refine data.hkl model.pdb strategy=occupancies
 
    This will only refine occupancies for atoms in alternative conformations or
    for atoms having partial occupancies.
 
 2. Refinement of occupancies for selected atoms only::
 
-     % phenix.refine data.hkl model.pdb strategy=individual_occupancies \
+     % phenix.refine data.hkl model.pdb strategy=occupancies \
        refine.occupancies.individual="water or element H"
 
    In the example above, the only occupancies of waters and H atoms will be
@@ -666,7 +666,7 @@ something else. Here are the possible scenarios:
 3. Refinement of one occupancy factor per selected group of atoms (group
    occupancy refinement)::
 
-     % phenix.refine data.hkl model.pdb strategy=group_occupancies \
+     % phenix.refine data.hkl model.pdb strategy=occupancies \
        refine.occupancies.group="chain A and resid 1" \
        refine.occupancies.group="chain B and resid 3"
 
@@ -676,7 +676,7 @@ something else. Here are the possible scenarios:
    selections is provided with ``refine.occupancies.group`` then by default one
    occupancy per residue will be refined (similarly to group ADP refinement)::
 
-     % phenix.refine data.hkl model.pdb strategy=group_occupancies
+     % phenix.refine data.hkl model.pdb strategy=occupancies
 
 f' and f'' refinement
 ---------------------
