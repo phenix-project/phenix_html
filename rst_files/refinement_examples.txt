@@ -73,7 +73,7 @@ Examples
   **example_1b:** Same refinement run as in example_1a with automatic water
   picking and refinement.
 
-    Final: R-work = 0.1780 R-free = 0.1917
+    Final: R-work = 0.1771 R-free = 0.1855
 
   Automatic water picking and refinement dropped the R-factors by ~5%. At 1.1 A
   resolution all well ordered non-hydrogen atoms should be refined as
@@ -90,7 +90,7 @@ Examples
   **example_1d:** Same refinement run as in example_1c performed with hydrogen
   atoms added to the start model.
 
-    Final: R-work = 0.1411 R-free = 0.1725
+    Final: R-work = 0.1426 R-free = 0.1703
 
   Using the hydrogens in refinement may further improve the model. Indeed,
   adding the hydrogen atoms and refining them as riding model decreased
@@ -99,7 +99,7 @@ Examples
   **example_1e:** Same refinement run as in example_1d performed with optimized
   X-ray target weights for both coordinate and ADP refinement.
 
-    Final: R-work = 0.1322 R-free = 0.1582
+    Final: R-work = 0.1340 R-free = 0.1658
 
   Although phenix.refine uses automatic procedure for relative xray/geometry
   weight calculation and finds good weights in most of cases, it may be a good
@@ -118,7 +118,7 @@ Examples
   macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
   individual isotropic B-factors refinement.
 
-    Final: R-work = 0.2074 R-free = 0.2730
+    Final: R-work = 0.2082 R-free = 0.2729
 
   The number of parameters and relatively low resolution produce fairly large
   gap between R-work and R-free. Hopefully we can add some more "observations"
@@ -127,7 +127,7 @@ Examples
   **example_2b:** Same refinement run as in example_2a with using the NCS
   restraints (NCS operators detected automatically).
 
-    Final: R-work = 0.2394 R-free = 0.2840
+    Final: R-work = 0.2404 R-free = 0.2839
 
   phenix.refine can automatically determine NCS groups and set up the selections
   for NCS restraints. It does it by simple analysis of chains in input PDB.
@@ -139,7 +139,7 @@ Examples
   **example_2c:** Same refinement run as in example_2a with using the NCS
   restraints (NCS operators provided manually).
 
-    Final: R-work = 0.2127 R-free = 0.2557
+    Final: R-work = 0.2147 R-free = 0.2566
 
   The correct selections for NCS groups and their use in refinement produce
   nice R-factors.
@@ -150,7 +150,7 @@ Examples
   The use of TLS model for ADP of selected chains results in some further model
   improvement.
 
-    Final: R-work = 0.2055 R-free = 0.2513
+    Final: R-work = 0.2079 R-free = 0.2540
 
 
 **Refinement of 1038B at 3.0A resolution, 10 fold NCS.**
@@ -163,7 +163,7 @@ Examples
   macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
   individual isotropic B-factors refinement.
 
-    Final: R-work = 0.2044 R-free = 0.2754
+    Final: R-work = 0.2043 R-free = 0.2743
 
   The gap between R-work and R-free clearly indicated the overfitting. The NCS
   restraints will help as shown in the next example.
@@ -171,7 +171,7 @@ Examples
   **example_3b:** Same refinement run as in example_3a with using the NCS
   restraints (NCS operators detected automatically).
 
-    Final: R-work = 0.2169 R-free = 0.2505
+    Final: R-work = 0.2207 R-free = 0.2527
 
   Applying NCS restrains decreased R-free and narrowed the gap R-work - R-free.
   No manual work was necessary to specify NCS groups.
@@ -179,7 +179,7 @@ Examples
   **example_3c:** Same refinement run as in example_3b with using TLS to model
   ADP of selected domains.
 
-    Final: r_work = 0.1993 r_free = 0.2393
+    Final: r_work = 0.2008 r_free = 0.2410
 
   Selecting TLS groups required a closer look at the model on graphics. This
   is rewarded by ~2% drop in R. Note that the refinement is not fully converged
@@ -198,7 +198,7 @@ Examples
   individual isotropic B-factors refinement.
 
   Start: r_work = 0.4166 r_free = 0.4678
-  Final: r_work = 0.3357 r_free = 0.4066
+  Final: r_work = 0.3621 r_free = 0.4188
 
   The default refinement run (plus water picking) did a good progress in model
   improvement.
@@ -206,10 +206,10 @@ Examples
   **example_4b:** Same refinement run as in example_4a with using SA.
 
   Start: r_work = 0.4166 r_free = 0.4678
-  Final: r_work = 0.2687 r_free = 0.3449
+  Final: r_work = 0.2771 r_free = 0.3414
 
   Adding a SA refinement to the previous refinement run results in big model
-  improvement as indicated by ~6% drop in both R-work and R-free factors.
+  improvement as indicated by drop in both R-work and R-free factors.
 
 **Refinement of f' and f'' for a structure with unknown (to the dictionary) molecule in it**
 
@@ -224,14 +224,14 @@ Examples
   macro-cycles of bulk-solvent and anisotropic scaling, coordinates and
   individual isotropic B-factors refinement.
 
-    Final: R-work = 0.2284 R-free = 0.2537
+    Final: R-work = 0.1944 R-free = 0.2368
 
   **example_5b:** Same refinement run as in example_5a with f' and f''
   refinement for anomalous scatterer.
 
-    Final: R-work = 0.2221 R-free = 0.2442
+    Final: R-work = 0.1900 R-free = 0.2287
 
-  Note the drop in R-free by 1.0%
+  Note the drop in both R and R-free.
 
 
 **Refinement using twinned data**
@@ -246,12 +246,12 @@ Examples
   individual isotropic B-factors refinement. A PDB entry with the code 1l2h is
   used in this example.
 
-    Final: R-work = 0.2479 R-free = 0.2753
+    Final: R-work = 0.2476 R-free = 0.2755
 
   **example_6b:** Same refinement run as in example_6a with the twinning taken
   into account.
 
-    Final: R-work = 0.1687 R-free = 0.2093
+    Final: R-work = 0.1640 R-free = 0.2069
 
 
 Questions, comments, more examples
