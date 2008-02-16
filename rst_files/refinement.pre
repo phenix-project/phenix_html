@@ -22,7 +22,7 @@ Available features
  3. TLS
  4. comprehensive mode: combined TLS + individual or group ADP
 
-- Occupancy refinement (individual, group, constrained for alternative
+- Occupancy refinement (any: individual, group, constrained for alternative
   conformations)
 - Anomalous f' and f'' refinement
 - Bulk solvent correction (flat model using a mask) and anisotropic scaling
@@ -47,7 +47,6 @@ Current limitations
 - TLS and individual anisotropic ADP cannot be refined at once for the same group
 - Certain refinement strategies are not available for joint X-ray/neutron refinement
 - No NCS constraints (restraints only)
-- No selective removing of bond restraints
 - Atoms with anisotropic ADP in NCS groups
 - No Simulated Annealing for selected fragments.
 
@@ -632,51 +631,51 @@ It is important to keep in mind:
 Occupancy refinement
 --------------------
 
-By default, the individual occupancy refinement is selected (star in front of
+By default, the occupancy refinement is selected (star in front of
 corresponding keyword: strategy = ... \*occupancies ...). This does
 not mean that occupancies for all atoms will be refined. This just tells
-phenix.refine to eiser refine occupancies of selected atoms only or to do
-something else. Here are the possible scenarios:
+phenix.refine to automatically find which occupancies it will be refining (
+based on input PDB file). Here are the possible scenarios:
 
-  - ``refine.occupancies.individual=None`` (default option). In this case the
-    occupancies of all atoms in alternative conformations or those
-    having partial occupancies will be refine. The occupancies of
-    other atoms will not be refined.
+  - if no selections are provided (``refine.occupancies.individual=None`` and
+    ``refine.occupancies.group=None``) then phenix.refine by default will refine
+    individual occupancies for atoms that have partial occupancy values in input
+    PDB file (except zeros) and it will perform group constrained occupancy
+    refinement for all atoms in alternative conformations. Occupancies of all
+    other atoms will be fixed.
 
-  - ``refine.occupancies.individual=atom_selection``. In this case only atoms
-    selected with atom_selection syntax will participate in occupancy
-    refinement.  See this document for examples of atom_selection
-    syntax.
+  - If selections are provided (``refine.occupancies.individual=atom_selection``
+    or ``refine.occupancies.group=atom_selection``) then the selected atoms
+    will be added to the list of atoms defined above (atoms with partial
+    occupancies or those in alternative conformations). See this document for
+    examples of atom_selection syntax.
 
 1. Refinement of occupancies only::
 
      % phenix.refine data.hkl model.pdb strategy=occupancies
 
    This will only refine occupancies for atoms in alternative conformations or
-   for atoms having partial occupancies.
+   for atoms having partial occupancies (other model parameters, like B-factors
+   or coordinates will be fixed).
 
-2. Refinement of occupancies for selected atoms only::
+2. Refine occupancies of water in addition to atoms with partial occupancies
+   and those in alternative conformations::
 
-     % phenix.refine data.hkl model.pdb strategy=occupancies \
-       refine.occupancies.individual="water or element H"
+     % phenix.refine data.hkl model.pdb \
+       refine.occupancies.individual="water"
 
-   In the example above, the only occupancies of waters and H atoms will be
-   refined.
-
-3. Refinement of one occupancy factor per selected group of atoms (group
+3. Refine one occupancy factor per selected group of atoms (group
    occupancy refinement)::
 
      % phenix.refine data.hkl model.pdb strategy=occupancies \
-       refine.occupancies.group="chain A and resid 1" \
-       refine.occupancies.group="chain B and resid 3"
+       refine.occupancies.group="chain A and resseq 1" \
+       refine.occupancies.group="chain B and resseq 3"
 
    this will refine two occupancy factors: one for residue number 1 in chain A
    and another one for residue number 3 in chain B. This feature is frequently
-   used for refinement of occupancies of partially occupied ligands. If no
-   selections is provided with ``refine.occupancies.group`` then by default one
-   occupancy per residue will be refined (similarly to group ADP refinement)::
-
-     % phenix.refine data.hkl model.pdb strategy=occupancies
+   used for refinement of occupancies of partially occupied ligands.
+   Additionally, the partial occupancies and those for atoms in alternative
+   conformations will be refined since they are selected automatically by default.
 
 f' and f'' refinement
 ---------------------
