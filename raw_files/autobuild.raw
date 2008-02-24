@@ -195,6 +195,12 @@ you might use by typing:
 <PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
 </PRE>
 
+<P>NOTES: if your data files contain a mixture of amplitude and intensity data
+then only the amplitude data is available. If you have only intensity data in 
+a data file and want to select specific columns, then you need to specify the
+column names as they are after importing the data and conversion to 
+amplitudes (see below under General Limitations for details).
+
 <P><H5>Specifying other general parameters</H5><P>
 <P>You can specify many more parameters as well. See the list of
 keywords, defaults and descriptions at the end of this page and
@@ -748,6 +754,32 @@ does not try to use them in rebuilding.
 <LI>The ligand generation routine in phenix.elbow will not generate
 heme groups at this point. Most other ligands can be automatically
 generated.
+
+<LI>If your input data file contains both intensity data and
+amplitude data, only the amplitude data is exposed in the AutoBuild
+Wizard.  If you want to use the intensity data then you have to create a
+file that does not have amplitude data in it.
+
+<LI>If your input data file has only intensity data and you wish to
+specify which columns of data the AutoBuild Wizard is to use,
+then you have to specify the names that the columns will have
+AFTER importing the data and conversion to amplitudes, 
+not the original column names.
+<p>These column names may not be obvious. Here is how to find out what they
+will be.  Do a quick dummy run like this with XXX as labels:
+<PRE style="face=courier">
+phenix.autobuild w2.sca coords.pdb input_labels="XXX XXX"
+</PRE>
+The Wizard will print out a list of available labels like this:
+<PRE style="face=courier">
+Sorry, the label XXX does not exist as an amplitude array in
+the input_data_file ImportRawData_run_8_/w2_PHX.mtz
+...available labels are: ['w2', 'SIGw2', 'None']
+</PRE>
+Then you know that the correct command is:
+<PRE style="face=courier">
+phenix.autobuild w2.sca coords.pdb input_labels="w2 SIGw2"
+</PRE>
 
 <LI>The AutoBuild Wizard cannot build modified residues.  If you supply
 a model with modified residues, these will be taken out of the

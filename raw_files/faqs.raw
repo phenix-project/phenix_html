@@ -94,6 +94,63 @@ phases optimally in iterative model-building, density modification
 and refinement, but this will be implemented as part of the AutoBuild
 Wizard in a future release of Phenix.
 </p>
+
+<H5>How can I tell the AutoSol Wizard which columns to use 
+from my mtz file?</H5>
+
+<p> The AutoSol Wizard will normally try to guess the appropriate columns
+of data from an input data file.  If there are several choices, then you
+can tell the Wizard which one to use with the script command group_labels_list
+or the command_line keywords labels, peak.labels, infl.labels etc.  For 
+example if you have two input datafiles w1 and w2 for a 
+2-wavelength MAD dataset and you want to select the w1(+) and w1(-) data from
+the first file and w2(+) and w2(-1) from the second,
+you could put in a script file the following lines (see &quot;How do I know what
+my choices of labels are for my data file&quot; to know what to put
+in these lines):
+</p><PRE style="face=courier">input_file_list w1.mtz w2.mtz
+group_labels_list 'w1(+) SIGw1(+) w1(-) SIGw1(-)' 'w2(+) SIGw2(+) w2(-) SIGw2(-)'
+</PRE>
+Note that all the labels for one set of anomalous data from one file are
+grouped together in each set of quotes.
+<p>
+You could accomplish the same thing from the command 
+line by specifying something
+like:
+</p><PRE style="face=courier">peak.data=w1.mtz infl.data=w2.mtz \
+peak.labels='w1(+) SIGw1(+) w1(-) SIGw1(-)'  \
+infl.labels='w2(+) SIGw2(+) w2(-) SIGw2(-)'
+</PRE>
+
+<H5>How do I know what my choices of labels are for my data file?</H5>
+<p>You can find out what your choices of labels are by running the
+command:
+</p><PRE style="face=courier">phenix.autosol show_labels=w1.mtz
+</PRE>
+<p>This will provide a listing of the labels in w1.mtz and suggestions for their
+use in the PHENIX Wizards. For example the labels for w1.mtz yields: 
+</p><PRE style="face=courier">
+List of all anomalous datasets in  w1.mtz
+'w1(+) SIGw1(+) w1(-) SIGw1(-)'
+
+List of all datasets in  w1.mtz
+'w1(+) SIGw1(+) w1(-) SIGw1(-)'
+
+List of all individual labels in  w1.mtz
+'w1(+)'
+'SIGw1(+)'
+'w1(-)'
+'SIGw1(-)'
+
+Suggested uses:
+labels='w1(+) SIGw1(+) w1(-) SIGw1(-)'
+input_labels='w1(+) SIGw1(+) None None None None None None None'
+input_refinement_labels='w1(+) SIGw1(+) None'
+input_map_labels='w1(+) None None'
+</PRE>
+
+</p>
+ 
  
 <H5>What can I do if a Wizard says 
 <b> this version does not seem big enough</b>? </H5>
