@@ -10,12 +10,6 @@
 <!--REMARK PHENIX BODY START   Put your text here. 
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
-
-      <P><H5><U>Author(s)</U></H5><P>
-<P><UL><LI> AutoSol Wizard: Tom Terwilliger
-<P><LI> PHENIX GUI and PDS Server: Nigel W. Moriarty
-</UL>
-
       <P><H5><U>Purpose</U></H5><P>
 <P>Any Wizard can be run from the PHENIX GUI, from the command-line, 
 and from keyworded script files.  All three versions are identical except
@@ -54,7 +48,7 @@ describe the strategies and commands for each Wizard:
 
 
       <P><H5><U>Usage</U></H5><P>
-<P><H5>Wizard data directories, sub-directories, Facts, and the
+<P><H5>Wizard data directories, sub-directories, Facts, and the 
 PDS (Project Data Storage)</H5><P>
 <P>
 <P><UL><LI>The directory that you are in when you start up PHENIX is 
@@ -88,9 +82,14 @@ any time by loading the appropriate set of Facts.
 </PRE>
 The PDS contains the output of each of your runs for all
 Wizards and a record of all the Facts
-(parameters and data) for each run. If you delete a run, the corresponding
+(parameters and data) for each run. If you delete a run using
+the PHENIX Wizard GUI or with 
+a command like &quot;phenix.autosol delete_runs=2&quot;, the corresponding
 entries in the PDS are also deleted. You can copy the PDS from one place to 
-another
+another.  Note that if you delete directories such as 
+&quot;AutoSol_run_1_&quot; by hand then the corresponding information
+remains in the PDS. For this reason
+it is best to use the GUI or specific commands to delete runs.
 
 <P><H5>Running a Wizard from a GUI</H5><P>
 <P>
@@ -343,7 +342,10 @@ command or keyword, separated by spaces.
 <p>The keywords for scripts are a subset of keywords for the command-line. This is
 because the command-line interpreter has a number of special keywords 
 (essentially shortcuts) to make typing at the command-line easier. 
-A sample script file &quot;autosol.inp&quot; that contains the same information as the
+<p>A script file assigns values to keywords by being on the same line,
+not using any &quot;=&quot; signs.
+
+<p>A sample script file &quot;autosol.inp&quot; that contains the same information as the
 command-line command shown above (but with the full keyword names, not the command-line
 shortcuts) is: 
 <PRE style="face=courier"># autosol.inp
@@ -537,11 +539,13 @@ chain_type
 dmin
 expt_type
 find_ncs
+include_dm_score
 input_seq_file
 ligand_solutions
 mad_ha_type
 mask_type
 ncs_copies
+overall_score_method
 residues
 resolution
 semet

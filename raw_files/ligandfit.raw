@@ -47,6 +47,9 @@ RESOLVE to carry out the fitting of the ligand into the
 electron-density map. The map used is normally a difference map, with F=FP-FC.
 It can also be an Fobs map (calulated from FP with phases PHIC from the input
 partial model), or an arbitrary map, calculated with FP PHI and FOM.
+If you supply an input partial model, then the region occupied by the
+partial model is flattened in the map used to fit the ligand, so that the
+ligand will normally not get placed in this region.
 
 <P>The ligand fitting is done by RESOLVE in a three-stage process. First,
 the largest contiguous region of density in the map not already occupied
@@ -78,7 +81,8 @@ to take stereochemically reasonable orientations.
 
     The ligandfit wizard needs:
 <P><UL><LI>(1) a datafile (w1.sca or data=w1.sca); this can be any format
-<P><LI>(2) a PDB file with your model without ligand (model=partial.pdb)
+<P><LI>(2) a PDB file with your model without ligand (model=partial.pdb;
+optional if your datafile contains map coefficients)
 <P><LI>(3) a file with information about your ligand (ligand=side.pdb)
 
 <P>The ligand file can be a PDB file with 1 stereochemically acceptable
@@ -245,14 +249,17 @@ previous runs of the same and any other Wizard in the same directory.
 The parameters that are set this way are:
 
 <PRE style="face=courier">chain_type
+chain_type
 dmin
 expt_type
 find_ncs
+include_dm_score
 input_seq_file
 ligand_solutions
 mad_ha_type
 mask_type
 ncs_copies
+overall_score_method
 residues
 resolution
 semet

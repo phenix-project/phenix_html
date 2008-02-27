@@ -791,7 +791,7 @@ You can also add these residues with
 the input_lig_file_list procedure if you want.
 </LI>
 <LI>The AutoBuild Wizard will not build very short chains unless you
-set the variable grep_ca_length (default=4 for building a model
+set the variable group_ca_length (default=4 for building a model
 from scratch) to a smaller number. The
 shortest chain that will be built is group_ca_length.  If you use
 rebuild_in_place, then the default shortest chain allowed is 1 residue, 
@@ -821,20 +821,23 @@ previous runs of the same and any other Wizard in the same directory.
 The parameters that are set this way are:
 </UL>
 <PRE style="face=courier">chain_type
-dmin 
-expt_type 
-find_ncs 
-input_seq_file 
-ligand_solutions 
-mad_ha_type 
-mask_type 
-ncs_copies 
-residues 
-resolution 
-semet 
-solvent_fraction 
-thorough_denmod 
-truncate_ha_sites_in_resolve 
+chain_type
+dmin
+expt_type
+find_ncs
+include_dm_score
+input_seq_file
+ligand_solutions
+mad_ha_type
+mask_type
+ncs_copies
+overall_score_method
+residues
+resolution
+semet
+solvent_fraction
+thorough_denmod
+truncate_ha_sites_in_resolve
 use_met_in_align
 </PRE>
 

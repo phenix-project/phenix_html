@@ -98,7 +98,7 @@ data is scaled with SOLVE. For MAD data, FA values are calculated as well.
 <P>The AutoSol wizard will apply an anistropy correction to all the raw
 experimental data if any of the files in the first dataset read in have a very
 strong anisotropy. You can tell the Wizard how much anisotropy there must be
-using the keywords
+before applying this correction by default using the keywords
 
 <PRE style="face=courier">correct_aniso=True  # (if True or False then always or never apply correction)
 
@@ -647,10 +647,7 @@ request.
 <P><LI>The command-line version of AutoSol cannot be used for MIR or for 
 combining multiple datasets.  The script and GUI versions can be used
 instead for these cases.
-<P><LI>The command-line and script versions of AutoSol cannot be used 
-to select out more than one dataset from a single datafile. You will 
-need to use the GUI version or phenix.reflection_file_converter for these
-cases.
+
 <P><LI>The AutoSol Wizard can take a maximum of 6 derivatives for MIR.
 
 <P><LI>The AutoSol Wizard can take most settings of most space groups,
@@ -665,14 +662,17 @@ previous runs of the same and any other Wizard in the same directory.
 The parameters that are set this way are:
 
 <PRE style="face=courier">chain_type
+chain_type
 dmin
 expt_type
 find_ncs
+include_dm_score
 input_seq_file
 ligand_solutions
 mad_ha_type
 mask_type
 ncs_copies
+overall_score_method
 residues
 resolution
 semet
