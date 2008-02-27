@@ -147,7 +147,7 @@ Z-score system to put all the scores on a common scale and to combine them
 into a single overall score. 
 <p>The overall
 scoring method chosen (BAYES-CC, CC-SCORE, or Z-SCORE) is determined by the
-value of the keyword overall_score_method.
+value of the keyword overall_score_method. The default is BAYES-CC.
 <p>Note that for all scoring methods, the map that is being evaluated,
 and the estimates of map-perfect-model correlation, refer to 
 the experimental electron density map, not the density-modified map. 
@@ -174,7 +174,7 @@ The mean estimate (BAYES-CC) is reported (multiplied x 100),
 <p>The BAYES-CC values are
 estimated independently for each scoring criterion used, and also from all
 those selected with the keyword score_type_list and not selected
-with the keyword skip_score_list. It
+with the keyword skip_score_list. 
 
 <P><b>Regression-based CC-scores (CC-SCORE).</b>  
 A linear regression is used to 

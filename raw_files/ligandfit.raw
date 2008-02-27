@@ -179,6 +179,19 @@ number 1):
 <PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb quick=True
 </PRE>
 
+<P><LI>Run ligandfit on a series of ligands specified in ligand_list.dat
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb \
+  ligand=ligand_list.dat file_or_file_list=file_with_list_of_files
+</PRE>
+Note that you have to specify
+<PRE style="face=courier">
+file_or_file_list=file_with_list_of_files
+</PRE>
+or else the Wizard will try to interpret the contents of
+ligand_list.dat as a SMILES string. Here the &quot;file_with_list_of_files&quot;
+is a flag, not something you substitute with an actual file name.  You use
+it just as listed above.
+
 <P><LI>Place ligand near residue 94 of chain "A" from partial.pdb
 <PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
    ligand_near_chain="A" ligand_near_res=92
