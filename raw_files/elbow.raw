@@ -66,7 +66,7 @@ molecule = builder.run("input_file.ext", **kwds)
 </FONT></PRE>
 
 where the options are passed as a dictionary. The return object can be
-interogated for information via the class methods.
+interrogated for information via the class methods.
 
 Output files from both techniques include a PDB file of the final
 geometry and a CIF file that contains the geometry restraint
@@ -110,7 +110,7 @@ To run eLBOW on a SMILES string
 
 or
 
-<PRE><FONT face=courier>phenix.elbow --smiles="input_file.smi"
+<PRE><FONT face=courier>phenix.elbow --smiles=input_file.smi
 </FONT></PRE>
 
 <H5>Other input</H5>
@@ -130,12 +130,24 @@ To start from a specific geometry for the optimisation
 <PRE><FONT face=courier>phenix.elbow --initial_geometry input_file.pdb --opt
 </FONT></PRE>
 
-To use a seperately installed GAMESS and do a HF/3-21G geometry optimisation
+To use a separately installed GAMESS and do a HF/3-21G geometry optimisation
 <PRE><FONT face=courier>phenix.elbow input_file.pdb --gamess --basis="3-21G"
 </FONT></PRE>
 
 To not optimise, but use the input geometry as the final geometry
 <PRE><FONT face=courier>phenix.elbow --final_geometry input_file.pdb
+</FONT></PRE>
+
+<H5>Hydrogen addition</H5>
+
+eLBOW automatically adds hydrogens to the input molecules if there are less
+than a quarter of the possible hydrogens.  This can be controlled using
+<PRE><FONT face=courier>phenix.elbow input_file.pdb --add-hydrogens=True
+</FONT></PRE>
+
+A common requirement is to add hydrogens to a ligand but retain the geometry
+and position relative to a protein.  To do so use
+<PRE><FONT face=courier>phenix.elbow --final-geometry=input_file.pdb
 </FONT></PRE>
 
 <H5>Output</H5>
@@ -310,6 +322,26 @@ use the passed SMILES
 <P>
 <FONT size=2 face=Helvetica,Arial >  
 use file for chemical input
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--msd
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+get SMILES using MSDChem code
 </FONT>
 </td>
 </tr>
@@ -637,6 +669,26 @@ use this file to obtain the intital geometry for QM
 <td>
 <P>
 <FONT size=2 face=Helvetica,Arial >
+--energy-validation
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+calculate the difference between starting and final energies
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
 --restart
 </FONT>
 </td>
@@ -697,6 +749,26 @@ optimisation tolerance = loose, default or tight
 <td>
 <P>
 <FONT size=2 face=Helvetica,Arial >
+--chiral
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+retain
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+treatment of chiral centres = retain (default), both, enumerate
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
 --ignore-chiral
 </FONT>
 </td>
@@ -710,6 +782,26 @@ None
 <P>
 <FONT size=2 face=Helvetica,Arial >  
 ignore the chirality in the SMILES string
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--skip-cif-molecule
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+ignore ligands in supplied CIF file(s)
 </FONT>
 </td>
 </tr>
@@ -850,6 +942,26 @@ False
 <P>
 <FONT size=2 face=Helvetica,Arial >  
 viewing software command
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--reel
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+fire up restraints editor
 </FONT>
 </td>
 </tr>
@@ -1395,6 +1507,26 @@ set the max bondlength for auto bond detection
 <P>
 <FONT size=2 face=Helvetica,Arial >  
 set the atom attributes in the PDB file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--write-redundant-dihedrals
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+control the writing of redundant dihedrals
 </FONT>
 </td>
 </tr>
