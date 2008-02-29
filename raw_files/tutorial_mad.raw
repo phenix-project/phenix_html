@@ -353,16 +353,23 @@ cc = correlation coefficient after extrapolation scan
 r = number of dual-space recycling cycles
 cc = final correlation coefficient
 
-p=000 f=000 cc=0.181 r=015 cc=0.292 [ best cc: 0.292 ]
-p=000 f=001 cc=0.151 r=015 cc=0.285 [ best cc: 0.292 0.285 ]
+
+p=000 f=000 cc=0.212 r=015 cc=0.282 [ best cc: 0.282 ]
+p=000 f=001 cc=0.195 r=015 cc=0.290 [ best cc: 0.290 0.282 ]
 Number of matching sites of top 2 structures: 2
-p=000 f=002 cc=0.144 r=015 cc=0.280 [ best cc: 0.292 0.285 0.280 ]
-Number of matching sites of top 2 structures: 2
+p=000 f=002 cc=0.144 r=015 cc=0.292 [ best cc: 0.292 0.290 0.282 ]
+Number of matching sites of top 2 structures: 3
 Number of matching sites of top 3 structures: 2
-p=001 f=000 cc=0.152 r=015 cc=0.278 [ best cc: 0.292 0.285 0.280 0.278 ]
-Number of matching sites of top 2 structures: 2
-Number of matching sites of top 3 structures: 2
+p=001 f=000 cc=0.178 r=015 cc=0.288 [ best cc: 0.292 0.290 0.288 0.282 ]
+Number of matching sites of top 2 structures: 3
+Number of matching sites of top 3 structures: 3
 Number of matching sites of top 4 structures: 2
+p=001 f=001 cc=0.168 r=015 cc=0.292 [ best cc: 0.292 0.292 0.290 0.288 0.282 ]
+Number of matching sites of top 2 structures: 3
+Number of matching sites of top 3 structures: 3
+Number of matching sites of top 4 structures: 3
+Number of matching sites of top 5 structures: 2
+
 </PRE>
 Here a correlation coefficient of 0.5 is very good (0.1 is hopeless,
 0.2 is possible, 0.3 is good) and 2 sites were found that matched in
@@ -403,32 +410,30 @@ acceptable, 0.6 is fine and anything above 0.7 is very good.
 </p><PRE style="face=courier">
 Scoring for this solution now...
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.5038548
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5245585
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2931607
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.5036805
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5257099
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2934522
 AutoSol_run_1_/TEMP0/resolve.scores FOM 0.59
 
-SCORING TABLE 0 MEAN : 0.285510333333  SD: 0.0265948149947
-SCORING TABLE 1 MEAN : 0.60276705  SD: 0.00873390838234
-SCORING TABLE 2 MEAN : 0.0230280666667  SD: 0.0348130120165
-SCORING TABLE 3 MEAN : 0.0  SD: 0.05
+CC-EST (BAYES-CC) CC : 53.9 +/- 30.5
+CC-EST (BAYES-CC) RFACTOR : 39.1 +/- 40.7
+CC-EST (BAYES-CC) SKEW : 57.4 +/- 16.0
+CC-EST (BAYES-CC) FOM : 44.5 +/- 47.7
+ESTIMATED MAP CC x 100:  57.8 +/- 8.0
 
-Total Z-score: 36.7241574395
 </PRE>
-The <b>Z-score</b> is a measure of how 
-different the scores for this solution are
-from those of a random set of phases.  In this run we have chosen the 
-<b>thorough</b> option, so the scores for random solutions were
- constructed by randomizing phases from the first solution tested. Then
-the scores for each criterion and each randomized solution were 
-obtained. The Z-score for one solution based on one criterion was then 
-the number of standard deviations that this solution is
-above the mean of scores for randomized solutions. The mean for each
-score is given above under <b>SCORING TABLE 0 MEAN</b> for the four
-different criteria. The total Z-score
-is the sum of the 4 Z-scores for this solution.  The total Z-score gives an
-idea of how different this solution is from a totally random solution (in 
-this case, about 36 standard deviations from the mean of random solutions.) 
+The <b>ESTIMATED MAP CC x 100</b> is an estimate of the quality of
+the experimental electron density map (not the density-modified one).
+A set of real structures was used to calibrate the range of values of each
+score that were obtained for phases with varying quality.  The resulting
+probability distributions are used above to estimate the correlation between
+the experimental map and an ideal map for this structure. Then all the
+estimates are combined to yield an overall Bayesian estimate of the map
+quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
+CC values are usually fairly close, so if the estimate is 70+/-5 then you
+can be quite confident that your structure is not only solved but that you
+will have a very good map when it is density modified.
+
 </p><p>In this case the datasets used to find heavy-atom substructures
 were the FA values in <b>FA.sca</b> and the peak data in <b>peak.sca_ano_1.sca</b>.
 For each dataset one solution was found, and that solution and its inverse
@@ -436,19 +441,21 @@ were scored.  The scores were (skipping extra text below):
 </p><PRE style="face=courier">
 
 SCORING SOLUTION 1: Solution 1 using HYSS on FA.sca. Dataset #1, with 2 sites
-Total Z-score: 36.7241574395
+ESTIMATED MAP CC x 100:  44.9 +/- 14.6
 
 SCORING SOLUTION 2: Solution  2 using HYSS on FA.sca and taking inverse. Dataset #1, with 2 sites
-Total Z-score: 24.6153603576
+ESTIMATED MAP CC x 100:  57.8 +/- 8.0
 
 SCORING SOLUTION 3: Solution 3 using HYSS on peak.sca_ano_1.sca. Dataset #1, with 2 sites
-Total Z-score: 30.3370056297
+ESTIMATED MAP CC x 100:  53.1 +/- 11.3
 
 SCORING SOLUTION 4: Solution  4 using HYSS on peak.sca_ano_1.sca and taking inverse. Dataset #1, with 2 sites
-Total Z-score: 30.3749150942
+ESTIMATED MAP CC x 100:  53.1 +/- 11.0
 </PRE>
-</p><p>In this case the best score was using the FA values (36.7), and
-score for the inverse hand was worse (Z-score of 24.6)
+</p><p>In this case the best score was using the FA values and taking the
+inverse hand (ESTIMATED MAP CC x 100:  57.8 +/- 8.0), and
+score for the non-inverted hand of the heavy-atom substructxurewas worse 
+(ESTIMATED MAP CC x 100:  44.9 +/- 14.6)
 and so the hand was clear.
 
 <p><H5>Finding additional sites by density modification and 
@@ -461,30 +468,38 @@ the heavy atoms and the non-heavy atoms
 to calculate Fourier maps showing the positions of the
 anomalously-scattering atoms. The top peaks in these maps are used as trial heavy-atom
 sites (if they are not already part of the heavy-atom model.
-</p><p>In this example solution 1 is used for this phasing/density modification/Fourier
+</p><p>In this example solution 2 is used for this phasing/density modification/Fourier
 procedure. Two new solutions are found, the second of which is nearly identical
-to the original solution 1, but which turns out to be a little better (leaving
+to the original solution 2, but which turns out to be a little better (leaving
 out some text below):
 </p><PRE style="face=courier">
 DM SOLUTION USED TO GET SITES FOR DATASET 1:Solution 1 using HYSS on FA.sca. Dataset #1
 Writing out solution  5
-xyz          0.516           0.351           0.406
+xyz          0.984           0.257           0.094
 
 Number of sites in additional list:3
 Generating common_list + up to 3 additional sites as group from denmod
 Writing out solution  6
-xyz          0.516           0.351           0.406
-xyz          0.473           0.137           0.448
+xyz          0.984           0.257           0.094
+xyz          0.028           0.040           0.052
+
+Evaluating solution 5
+ESTIMATED MAP CC x 100:  53.5 +/- 11.3
+
+Evaluating solution 6
+ESTIMATED MAP CC x 100:  57.9 +/- 7.9
+
+
 </PRE>
-<p> Solution 5 gets a score of just 30, but solution 6 gets a score of 36.9 and
-is the best solution so far.
+<p> Solution 5 gets a score of 53.5+/-11.3, 
+but solution 6 gets a score of 57.9+/-7.9 and is the best solution so far.
 </p><p>One more cycle of phasing, density modification and Fourier calculation
 is carried out, and solution 8 (identical to solution 6 in this case) is the best
 overall and is used for final phasing and density modification.
 
 <p><H5>Final phasing with SOLVE</H5></p>
 Once the best heavy-atom solution or solutions are chosen based on 
-<b>Z-scores</b>, these are used in a final round of phasing with
+<b>ESTIMATED MAP CC</b>, these are used in a final round of phasing with
 SOLVE (for MAD phasing). The log file from phasing for solution <b>8</b> is in
 <b>solve_8.prt</b>. This SOLVE log file repeats the correlation analysis of anomalous
 differences between data at each wavelength. Then it carries out a 
@@ -494,9 +509,8 @@ MAD phasing. The final occupancies and coordinates are listed at the end:
 </p><PRE style="face=courier">
                     SITE  ATOM       OCCUP     X       Y       Z         B
 
-
- CURRENT VALUES:      1    Se       0.9898  0.5164  0.3487  0.4068   53.0250
- CURRENT VALUES:      2    Se       0.5468  0.4713  0.1320  0.4481   60.0000
+ CURRENT VALUES:      1    Se       0.9668  0.9837  0.2564  0.0931   52.4444
+ CURRENT VALUES:      2    Se       0.5387  0.0286  0.0398  0.0517   60.0000
 </PRE>
 In this case the occupancy of one site is quite near 1 and the other is lower. The
 second site is a selenomethionine that is not well ordered (it is the N-terminal 
@@ -534,25 +548,25 @@ skew, though it is not perfect.
  and then convoluted with a gaussian with width of sigma
  where sigma, offset and beta are given below under "Error estimate."
 
-
-                          0.03..................................................
+                          0.04..................................................
                               .                   .                            .
                               .                   .                            .
-                              .              xxxxxx                            .
-                              .             x o oo.xoo                         .
-                              .            xoo    .oxx                         .
-                              .           xx      . oxo o                      .
-                p(rho)        .          xo       .   xxooo                    .
-                              .          x        .     xxoo                   .
-                              .         x         .       xooo                 .
-                              .       ox          .        xxxoo               .
-                              .      oxx          .           xxxo             .
-                              .     xxx           .             oxxx           .
-                              .   oxx             .               ooxxx        .
-                              .oxxxx              .                  ooxxxxx   .
-                         0.0  xx.........................................o.oxxxx
+                              .                 xxxo                           .
+                              .                xxoxxo                          .
+                              .              xxo  . xo                         .
+                              .             ooo   .  xo                        .
+                p(rho)        .             xo    .   xx                       .
+                              .            xo     .     xo                     .
+                              .          oxx      .      xo                    .
+                              .          x        .       xx                   .
+                              .         ox        .         xx                 .
+                              .        ox         .          oxx               .
+                              .      oxx          .            xxxx            .
+                              .    xxxx           .               xxxxx        .
+                         0.0  xxxxxx.................................oxxxxxxxxxx
 
                              -2        -1         0         1         2        3
+`
 
                                   normalized rho (0 = mean of solvent region)
 
@@ -565,21 +579,22 @@ one from a perfect structure:
                           0.03..................................................
                               .                   .                            .
                               .                   .                            .
-                              .          oo x     .                            .
-                              .          xxxxxxx  .                            .
-                              .         xo  o oox .                            .
-                              .        xo       oxxo                           .
-                p(rho)        .     o x           .xxo                         .
-                              .     xx            .  xo                        .
-                              .    xx             .  oxxooo                    .
-                              .   ox              .     xxxxooo o              .
-                              .  xx               .         xxxxxxxxoo         .
-                              .oxo                .                 xxxxxx o   .
-                              xx                  .                      oxxxxxx
-                              x                   .                          oox
-                         0.0  o................................................x
+                              .                 oo.                            .
+                              .            xxxxxxxo                            .
+                              .           xx o   xxo                           .
+                              .          xoo      .xo                          .
+                p(rho)        .         xo        . xx                         .
+                              .        xo         .  xxx                       .
+                              .       xx          .   oxxx                     .
+                              .      xx           .      xxxx                  .
+                              .    oxx            .        ooxxxxxx            .
+                              .   ox              .            o oxxxxxx       .
+                              . oxxx              .                  o  xxxxx oo
+                              xxxx                .                         oxxo
+                         0.0  x................................................x
 
                              -2        -1         0         1         2        3
+
 
                                   normalized rho (0 = mean of solvent region)
 
@@ -590,7 +605,7 @@ for comparison of observed structure factor amplitudes (FP) with those
 calculated from the density modification procedure (FC).
 In this <b>gene-5</b> MAD phasing the R-factor is very low: 
 </p><PRE style="face=courier">
- Overall R-factor for FC vs FP: 0.287 for       2602 reflections
+ Overall R-factor for FC vs FP: 0.275 for       2602 reflections
 </PRE>
 An acceptable value is anything below 0.35; below 0.30 is good.
 
@@ -628,34 +643,35 @@ done less comprehensively to speed things up.)
 </p>
 <p>In this case three initial models are built. 
 The model-building produces an initial model with 59
-residues built and side chains assigned to 13, and which refines to
-an R-factor of 0.43 and a free R-factor of 0.46. The next two models built
+residues built and no side chains assigned, and which refines to
+an R-factor of 0.44 and a free R-factor of 0.49. The next two models built
 have similar numbers of residues built, and are not refined:
 </p><PRE style="face=courier"> Building 3 RESOLVE models...
-Model 1: Residues built=59  placed=13  Chains=7  Model-map CC=0.50
+Model 1: Residues built=59  placed=0  Chains=9  Model-map CC=0.55
 Refining model:  Build_1.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.43/0.46
-
-Model 2: Residues built=53  placed=0  Chains=9  Model-map CC=0.47
-Model 3: Residues built=57  placed=8  Chains=8  Model-map CC=0.51
+Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.44/0.49
+Model 2: Residues built=61  placed=7  Chains=6  Model-map CC=0.55
+Model 3: Residues built=64  placed=0  Chains=8  Model-map CC=0.59
 </PRE>
 
 <p>After one model completion cycle (including merging these three initial
 models together, extending ends of chains,
 fitting loops, and building outside the region already built, the best
-model built has 62 residues built, 31 assigned to sequence:
-</p><PRE style="face=courier"> Model 8: Residues built=62  placed=31  Chains=3  Model-map CC=0.57
-Refining model:  Build_combine_extend_8.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_8.pdb  R/Rfree=0.39/0.47
+model built has 79 residues built, 66 assigned to sequence:
+</p><PRE style="face=courier"> Model 9: Residues built=79  placed=66  Chains=3  Model-map CC=0.73
+This is new best model with cc =  0.73
+Refining model:  model_with_loops_10.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.27/0.35
 </PRE>
 
 <p>After three model completion cycles the best
-model built has 74 residues built, 68 assigned to sequence and an R/Rfree of 0.29/0.36:
-</p><PRE style="face=courier"> Model 17: Residues built=74  placed=68  Chains=1  Model-map CC=0.65
-Refining model:  model_with_loops_18.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_17.pdb  R/Rfree=0.29/0.36
+model built has 79 residues built, 66 assigned to sequence and an R/Rfree of 0.27/0.35:
+</p><PRE style="face=courier">Model 9: Residues built=79  placed=66  Chains=3  Model-map CC=0.73
+This is new best model with cc =  0.73
+Refining model:  model_with_loops_10.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.27/0.35
 </PRE>
-This refined initial model is written out to <b>refine_17.pdb</b> in
+This refined initial model is written out to <b>refine_9.pdb</b> in
 the output directory.
 
 <p><H5>The AutoSol_summary.dat summary file</H5></p>
@@ -673,38 +689,39 @@ summary for this <b>gene-5</b> MAD dataset:
 
  *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
 
-Solution # 8   SCORE:36.8566061061 Dataset #1   FOM: 0.52 ----------------
+Solution # 8  BAYES-CC: 57.9 +/- 7.9 Dataset #1   FOM: 0.45 ----------------
 
 Solution 8 based on diff Fourier using denmod solution 6. Dataset #1
 Dataset number: 1
 Dataset type: mad
 Datafiles used: ['peak.sca', 'infl.sca', 'high.sca']
-Sites: 2 (Already used for Phasing at resol of 2.59)
+Sites: 2 (Already used for Phasing at resol of 2.59) 
 NCS information  in: AutoSol_8.ncs_spec
 Experimental phases in: solve_8.mtz
 Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_8.mtz
 Density-modified phases in: resolve_8.mtz
 HA sites (PDB format) in: ha_8.pdb_formatted.pdb
 Sequence file in: sequence.dat
-Model in: refine_17.pdb
-  Residues built: 74
-  Side-chains built: 68
-  Chains: 1
-  Overall model-map correlation: 0.65
-  R/R-free: 0.29/0.36
+Model in: refine_9.pdb
+  Residues built: 79
+  Side-chains built: 66
+  Chains: 3
+  Overall model-map correlation: 0.73
+  R/R-free: 0.27/0.35
 Scaling logfile in: dataset_1_scale.log
-HYSS logfile in: peak.sca_ano_1.sca_hyss.log
+HYSS logfile in: FA.sca_hyss.log
 Phasing logfile in: solve_8.prt
 Density modification logfile in: resolve_8.log
-Build logfile in: model_with_loops_18.log
+Build logfile in: model_with_loops_10.log
 
  Score type:        CC       RFACTOR       SKEW       FOM
-Raw scores:       0.503        0.524        0.297        0.590
-Z-scores:         8.178        9.021        7.858       11.800
+Raw scores:       0.50        0.53        0.30        0.59  
+BAYES-CC:        53.80       39.31       57.51       44.47  
 
-Heavy atom sites (fractional):
-xyz       0.516      0.349      0.406
-xyz       0.473      0.135      0.448
+Heavy atom sites (fractional): 
+xyz       0.984      0.256      0.094 
+xyz       0.028      0.039      0.052 
+
 
 </PRE>
 <p><H5>How do I know if I have a good solution?</H5></p>
@@ -727,16 +744,24 @@ largely correct but the model is not very good.
 </LI>
 <LI>What was the overall signal-to-noise in the data? Above 1 is good, below 0.5 is very low.
 </LI>
-<LI>What are the individual Z-scores for your top solution? For a good
-solution they are all positive, and at least several have a value of at least 2.
+<LI>What are the individual CC-BAYES estimates of map correlation
+for your top solution? For a good
+solution they are all around 50 or more, with 2SD uncertainties that are
+about 10-20.
 </LI>
-<LI>What is the overall Z-score of your top solution. Z-scores of less than
-5 are very dubious; those greater than 100 are very likely to be good; those
-in between are ok.
+<LI>What is the overall "ESTIMATED MAP CC x 100" of your top solution.  This
+should also be 50 or more for a good solution. This is an estimate of the
+map correlation before density modification, so if you have a lot of solvent
+or several NCS-related copies in the asymmetric unit, then lower values may
+still give you a good map.
 </LI>
-<LI>What is the difference in Z-score between the top solution and its
-inverse? If this is large (at least 2) that is a good sign.
+<LI>What is the difference in "ESTIMATED MAP CC x 100"
+between the top solution and its
+inverse? If this is large (more than the 2SD values for each)
+ that is a good sign.
 </LI>
+
+
 </UL>
 
 

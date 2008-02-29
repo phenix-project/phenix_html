@@ -246,6 +246,13 @@ are of the type that is expected (file name, number, etc).  If that doesn't
 work, just click YES and carry on.
 </p>
 
+<H5>Why is my TEMP0 directory empty after running a Wizard?</H5>
+<p>By default all the working files in the TEMP subdirectories are deleted
+at the end of a Wizard run.  If you want to keep these files, then
+you can specify
+</p><PRE style="face=courier">clean_up=False</PRE>
+
+
 <H5>How do I stop a Wizard?</H5>
 <p>You can stop a Wizard in two ways. For a &quot;soft&quot; stop, press the &quot;Pause&quot; button
 if you are running from the GUI, or create a file with the name STOPWIZARD in

@@ -302,12 +302,13 @@ cc = correlation coefficient after extrapolation scan
 r = number of dual-space recycling cycles
 cc = final correlation coefficient
 
-p=000 f=000 cc=0.391 r=015 cc=0.531 [ best cc: 0.531 ]
-p=000 f=001 cc=0.381 r=015 cc=0.534 [ best cc: 0.534 0.531 ]
-Number of matching sites of top 2 structures: 5
+p=000 f=000 cc=0.392 r=015 cc=0.532 [ best cc: 0.532 ]
+p=000 f=001 cc=0.381 r=015 cc=0.532 [ best cc: 0.532 0.532 ]
+Number of matching sites of top 2 structures: 6
+
 </PRE>
 Here a correlation coefficient of 0.5 is very good (0.1 is hopeless,
-0.2 is possible, 0.3 is good) and 5 sites were found that matched in
+0.2 is possible, 0.3 is good) and 6 sites were found that matched in
 the first two tries. The program continues until 5 structures all have
 matching sites, then ends and prints out the final correlations, after
 taking the top 4 sites.
@@ -335,32 +336,34 @@ acceptable, 0.4 is fine and anything above 0.5 is very good.
 </p><PRE style="face=courier">
 Scoring for this solution now...
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.6133949
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4781331
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2482638
-AutoSol_run_1_/TEMP0/resolve.scores FOM 0.547
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.6260929
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4817838
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2500097
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.557
 
-Total Z-score: 19.9095885
+CC-EST (BAYES-CC) CC : 68.4 +/- 27.5
+CC-EST (BAYES-CC) RFACTOR : 58.2 +/- 36.6
+CC-EST (BAYES-CC) SKEW : 54.5 +/- 17.8
+CC-EST (BAYES-CC) FOM : 43.6 +/- 44.1
+ESTIMATED MAP CC x 100:  59.6 +/- 8.4
 
 </PRE>
-The <b>Z-score</b> is a measure of how 
-different the scores for this solution are
-from those of a random set of phases.  In this run we have chosen the 
-<b>quick</b> option, so the scores for random solutions are taken from a table.
-If we had chosen <b>thorough</b> then a set of randomized solutions would
-be constructed by randomizing phases from the first solution tested. Then
-the scores for each criterion and each randomized solution  would be
-obtained. The Z-score for one solution based on one criterion would then
-be the number of standard deviations that this solution is
-above the mean of scores for randomized solutions. Then the total Z-score
-is the sum of the 4 Z-scores for this solution.  The total Z-score gives an
-idea of how different this solution is from a totally random solution (in 
-this case, about 19 standard deviations from the mean of random solutions.) 
+The <b>ESTIMATED MAP CC x 100</b> is an estimate of the quality of
+the experimental electron density map (not the density-modified one).
+A set of real structures was used to calibrate the range of values of each
+score that were obtained for phases with varying quality.  The resulting
+probability distributions are used above to estimate the correlation between
+the experimental map and an ideal map for this structure. Then all the
+estimates are combined to yield an overall Bayesian estimate of the map
+quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
+CC values are usually fairly close, so if the estimate is 70+/-5 then you
+can be quite confident that your structure is not only solved but that you 
+will have a very good map when it is density modified.
 
 
 <p><H5>Final phasing with Phaser</H5></p>
 Once the best heavy-atom solution or solutions are chosen based on 
-<b>Z-scores</b>, these are used in a final round of phasing with
+<b>ESTIMATED MAP CC x 100</b>, these are used in a final round of phasing with
 Phaser (for SAD phasing). The log file from phasing for solution <b>1</b> is in
 <b>phaser_1.log</b>.  Here is the final part of the output from this log file,
 showing the refined coordinates, occupancies, thermal (B) factors for
@@ -369,21 +372,28 @@ only f&quot; is refined), and the final figure of merit of phasing (0.548):
 </p><PRE style="face=courier">
    Atom Parameters: 4 atoms in list
         X      Y      Z      O      B      (AnisoB) M Atomtype
-   #1   -0.180  0.113  0.290  1.198   22.8 ( ---- ) 1 SE
-   #2   -0.738 -0.186  0.760  1.034   23.0 (+22.49) 1 SE
-   #3   -0.706 -0.165  0.697  1.080   28.6 (+25.88) 1 SE
-   #5    0.027  0.758  0.875  0.186   23.8 ( ---- ) 1 SE
+   #1    0.180 -0.112 -0.680  1.000   21.8 ( ---- ) 1 SE
+   #2    0.686 -0.238 -0.713  1.000   21.8 ( ---- ) 1 SE
+   #3    0.665 -0.207 -0.772  1.000   21.8 ( ---- ) 1 SE
+   #4    0.232 -0.166 -0.250  1.000   21.8 ( ---- ) 1 SE
+   Scales:
+      Overall Occupancy scale: 1
+      Overall B-factor: 0
+      Overall Sigma scale: 1
 
    Scattering Parameters:
-    Atom             f&quot;           (f&rsquo;)
-      SE         5.2396        -8.0000
+    Atom             f"           (f')
+      SE         4.5000        -8.0000
 
 
    Figures of Merit
    ----------------
    Bin Resolution   Acentric     Centric      Single       Total
                     Number FOM   Number FOM   Number FOM   Number FOM
-   ALL  28.49- 2.40   7502 0.598    874 0.147     51 0.059   8427 0.548
+   ALL  28.49- 2.40   7501 0.549    874 0.161     51 0.063   8426 0.506
+
+   log-likelihood gain -91362
+
 </PRE>
 
 <p><H5>Statistical density modification with RESOLVE</H5></p>
@@ -419,22 +429,22 @@ skew, though it is not perfect.
  where sigma, offset and beta are given below under "Error estimate."
 
 
-                          0.03..................................................
+                          0.02..................................................
                               .                   .                            .
                               .                   .                            .
-                              .             xxxxxx.                            .
-                              .            xooooooxxxo                         .
-                              .          xxoo     . xxo                        .
-                              .         xo        .   xxo                      .
-                p(rho)        .       oxx         .     xxo                    .
-                              .       xx          .       xooo                 .
-                              .     xx            .        xxxoo               .
-                              .    xx             .           xxx              .
-                              .   xx              .              xxxo          .
-                              .  xx               .                 xxx        .
-                              xxx                 .                    xxxxx   .
-                              x                   .                       oxxxxx
-                         0.0  x...............................................ox
+                              .             xxxxxxxxo                          .
+                              .          oxxo o   oxxo                         .
+                              .          x        .  xxo                       .
+                              .        ox         .    xx                      .
+                p(rho)        .       ox          .      xoo                   .
+                              .      ox           .       xxoo                 .
+                              .     xx            .         xxxo               .
+                              .    x              .            xxo             .
+                              .  oxx              .              xxxx          .
+                              . xx                .                 xxxx       .
+                              xx                  .                    oxxxx   .
+                              x                   .                       ooxxxx
+                         0.0  x................................................x
 
                              -2        -1         0         1         2        3
 
@@ -447,19 +457,19 @@ one from a perfect structure:
 </p><PRE style="face=courier">
                           0.03..................................................
                               .                   .                            .
-                              .                   .                            .
-                              .          xxxxxx   .                            .
-                              .         xoooooxxo .                            .
-                              .        x        xo.                            .
-                              .       x          xoo                           .
-                p(rho)        .     ox            xxo                          .
-                              .     x             . xoo                        .
-                              .    x              .  xxxo                      .
-                              .   ox              .     xxxxo                  .
-                              .  ox               .        xxxxxxxx            .
-                              . xx                .            o oxxxxxxx      .
-                              xxo                 .                    ooxxxxxoo
-                              x                   .                           xo
+                              .            x      .                            .
+                              .          xxoxxx   .                            .
+                              .        xxo oooxxo .                            .
+                              .       oo        xx.                            .
+                              .      ox          xoo                           .
+                p(rho)        .      x            xxo                          .
+                              .    ox             . xx                         .
+                              .    x              .  xxx                       .
+                              .   xx              .     xxxxo                  .
+                              .  xx               .        oxxxxxxx            .
+                              . xo                .            ooooxxxxxx      .
+                              xx                  .                  o  oxxxxxoo
+                              o                   .                          oxo
                          0.0  o................................................x
 
                              -2        -1         0         1         2        3
@@ -472,7 +482,7 @@ for comparison of observed structure factor amplitudes (FP) with those
 calculated from the density modification procedure (FC).
 In this <b>p9</b> SAD phasing the R-factor is very low: 
 </p><PRE style="face=courier">
- Overall R-factor for FC vs FP: 0.239 for       8437 reflections
+ Overall R-factor for FC vs FP: 0.239 for       8422 reflections
 </PRE>
 An acceptable value is anything below 0.35; below 0.30 is good.
 
@@ -508,23 +518,22 @@ except that if you specify
 <b>thoroughness=quick</b> as we have in this example, the model-building is
 done less comprehensively to speed things up.
 </p>
-<p>In this case the model-building produces an initial model with 111 
-residues built and side chains assigned to 66, and which refines to
-an R-factor of 0.35 and a free R-factor of 0.39:
-</p><PRE style="face=courier"> Model 1: Residues built=111  placed=66  Chains=7  Model-map CC=0.64
+<p>In this case the model-building produces an initial model with 115 
+residues built and side chains assigned to 77, and which refines to
+an R-factor of 0.32 and a free R-factor of 0.35:
+</p><PRE style="face=courier">Model 1: Residues built=115  placed=77  Chains=7  Model-map CC=0.69
+This is new best model with cc =  0.69
 Refining model:  Build_1.pdb
-Residue  MSE  106  replaced with MSE
-Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.35/0.39
+Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.32/0.35
 </PRE>
 After one model completion cycle (including extending ends of chains,
 fitting loops, and building outside the region already built, the best
-model built has 113 residues built, all assigned to sequence:
-</p><PRE style="face=courier"> Model 7: Residues built=113  placed=113  Chains=0  Model-map CC=0.78
+model built has 126 residues built, all assigned to sequence:
+</p><PRE style="face=courier"> 
+Model 7: Residues built=126  placed=126  Chains=0  Model-map CC=0.82
+This is new best model with cc =  0.82
 Refining model:  model_with_loops_8.pdb
-Residue  MSE  94  replaced with MSE
-Residue  MSE  96  replaced with MSE
-Residue  MSE  106  replaced with MSE
-Refined model: AutoSol_run_1_/TEMP0/refine_7.pdb  R/Rfree=0.26/0.31
+Refined model: AutoSol_run_1_/TEMP0/refine_7.pdb  R/Rfree=0.21/0.23
 </PRE>
 This refined initial model is written out to <b>refine_7.pdb</b> in
 the output directory.
@@ -539,45 +548,46 @@ refinement statistics.  These statistics are listed for all the solutions
 obtained, with the highest-scoring solutions first.  Here is part of the
 summary for this <b>p9</b> SAD dataset:
 </p><PRE style="face=courier"> -----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
-
  *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
 
 
 
-Solution # 1   SCORE:19.9095885 Dataset #1   FOM: 0.55 ----------------
+Solution # 2  BAYES-CC: 59.6 +/- 8.4 Dataset #1   FOM: 0.54 ----------------
 
-Solution 1 using HYSS on AutoSol_run_1_/p9_se_w2_PHX.sca_ano_1.sca. Dataset #1
+Solution  2 using HYSS on AutoSol_run_1_/p9_se_w2_PHX.sca_ano_1.sca and taking inverse. Dataset #1
 Dataset number: 1
 Dataset type: sad
 Datafiles used: ['AutoSol_run_1_/p9_se_w2_PHX.sca']
 Sites: 4 (Already used for Phasing at resol of 2.4)      Refined Sites: 4
-NCS information  in: AutoSol_1.ncs_spec
-Experimental phases in: phaser_1.mtz
-Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_1.mtz
-Density-modified phases in: resolve_1.mtz
-HA sites (PDB format) in: ha_1.pdb_formatted.pdb
+NCS information  in: AutoSol_2.ncs_spec
+Experimental phases in: phaser_2.mtz
+Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_2.mtz
+Density-modified phases in: resolve_2.mtz
+HA sites (PDB format) in: ha_2.pdb_formatted.pdb
 Sequence file in: seq.dat
 Model in: refine_7.pdb
-  Residues built: 113
-  Side-chains built: 113
+  Residues built: 126
+  Side-chains built: 126
   Chains: 0
-  Overall model-map correlation: 0.78
-  R/R-free: 0.26/0.31
+  Overall model-map correlation: 0.82
+  R/R-free: 0.21/0.23
 Scaling logfile in: dataset_1_scale.log
 HYSS logfile in: p9_se_w2_PHX.sca_ano_1.sca_hyss.log
-Phasing logfile in: phaser_1.log
-Density modification logfile in: resolve_1.log
+Phasing logfile in: phaser_2.log
+Density modification logfile in: resolve_2.log
 Build logfile in: model_with_loops_8.log
 
  Score type:        CC       RFACTOR       SKEW       FOM
-Raw scores:       0.613        0.478        0.248        0.547  
-Z-scores:         1.567        2.437        4.965       10.940  
+Raw scores:       0.63        0.48        0.25        0.56  
+BAYES-CC:        68.42       58.15       54.50       43.55  
 
 Refined heavy atom sites (fractional): 
-xyz      -0.180      0.113      0.290 
-xyz      -0.738     -0.186      0.760 
-xyz      -0.707     -0.165      0.696 
-xyz       0.027      0.759      0.875 
+xyz       0.180     -0.113     -0.681 
+xyz       0.686     -0.238     -0.710 
+xyz       0.665     -0.206     -0.774 
+xyz       0.028      0.759      0.906 
+
+
 
 </PRE>
 <p><H5>How do I know if I have a good solution?</H5></p>
@@ -600,15 +610,21 @@ largely correct but the model is not very good.
 </LI>
 <LI>What was the overall signal-to-noise in the data? Above 1 is good, below 0.5 is very low.
 </LI>
-<LI>What are the individual Z-scores for your top solution? For a good
-solution they are all positive, and at least several have a value of at least 2.
+<LI>What are the individual CC-BAYES estimates of map correlation
+for your top solution? For a good
+solution they are all around 50 or more, with 2SD uncertainties that are
+about 10-20.
 </LI>
-<LI>What is the overall Z-score of your top solution. Z-scores of less than
-5 are very dubious; those greater than 100 are very likely to be good; those
-in between are ok.
+<LI>What is the overall "ESTIMATED MAP CC x 100" of your top solution.  This
+should also be 50 or more for a good solution. This is an estimate of the
+map correlation before density modification, so if you have a lot of solvent
+or several NCS-related copies in the asymmetric unit, then lower values may
+still give you a good map.
 </LI>
-<LI>What is the difference in Z-score between the top solution and its
-inverse? If this is large (at least 2) that is a good sign.
+<LI>What is the difference in "ESTIMATED MAP CC x 100"
+between the top solution and its
+inverse? If this is large (more than the 2SD values for each)
+ that is a good sign.
 </LI>
 </UL>
 

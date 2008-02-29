@@ -357,9 +357,8 @@ Analyzing and scaling the data</a>
 in the AutoSol web page for more discussion
 of the anisotropy correction). In the <b>rh-dehalogenase</b> case, the range of
 anisotropic B values is small and no correction is made:
-</p><PRE style="face=courier">
-Range of aniso B:  15.15 21.06
-Not using aniso-corrected data files as the range of aniso b  is only  5.91  and 'correct_aniso' is not set
+</p><PRE style="face=courier"> Range of aniso B:  13.06 19.68
+Not using aniso-corrected data files as the range of aniso b  is only  6.62  and 'correct_aniso' is not set
 </PRE>
 Note that if any one of the datafiles in a MIR dataset has a high anisotropy,
 then by default all of them will be corrected for anisotropy.
@@ -380,7 +379,7 @@ points.  The HYSS log files are named after the datafile that they
 are based on and the type of differences (ano, iso) that are being used.
 In this <b>rh-dehalogenase</b> MIR dataset, the HYSS logfile for the
 Au derivative is
-<b>auki_rd_1_PHX.sca_iso_1.sca_hyss.log</b>.  The key part of this HYSS log file
+<b>hgki_rd_1_PHX.sca_iso_2.sca_hyss.log</b>.  The key part of this HYSS log file
 is:
 </p><PRE style="face=courier">
 Entering search loop:
@@ -391,21 +390,26 @@ cc = correlation coefficient after extrapolation scan
 r = number of dual-space recycling cycles
 cc = final correlation coefficient
 
-p=000 f=000 cc=0.155 r=015 cc=0.286 [ best cc: 0.286 ]
-p=000 f=001 cc=0.155 r=015 cc=0.286 [ best cc: 0.286 0.286 ]
-Number of matching sites of top 2 structures: 8
-p=000 f=002 cc=0.152 r=015 cc=0.286 [ best cc: 0.286 0.286 0.286 ]
-Number of matching sites of top 2 structures: 8
-Number of matching sites of top 3 structures: 8
-p=001 f=000 cc=0.173 r=015 cc=0.286 [ best cc: 0.286 0.286 0.286 0.286 ]
-Number of matching sites of top 2 structures: 8
-Number of matching sites of top 3 structures: 8
-Number of matching sites of top 4 structures: 8
+
+=0.190 r=015 cc=0.250 [ best cc: 0.250 ]
+p=000 f=001 cc=0.191 r=015 cc=0.242 [ best cc: 0.250 0.242 ]
+Number of matching sites of top 2 structures: 3
+p=000 f=002 cc=0.174 r=015 cc=0.200 [ best cc: 0.250 0.242 ]
+p=001 f=000 cc=0.167 r=015 cc=0.230 [ best cc: 0.250 0.242 0.230 ]
+Number of matching sites of top 2 structures: 3
+Number of matching sites of top 3 structures: 2
+...
+p=011 f=002 cc=0.165 r=015 cc=0.229 [ best cc: 0.293 0.279 0.277 0.276 ]
+p=012 f=000 cc=0.184 r=015 cc=0.250 [ best cc: 0.293 0.279 0.277 0.276 ]
+p=012 f=001 cc=0.148 r=015 cc=0.292 [ best cc: 0.293 0.292 0.279 0.277 ]
+Number of matching sites of top 2 structures: 7
+Number of matching sites of top 3 structures: 7
+Number of matching sites of top 4 structures: 6
 
 </PRE>
 Here a correlation coefficient of 0.5 is very good (0.1 is hopeless,
 0.2 is possible, 0.3 is good) and 8 sites were found that matched in
-the first two tries. The program continues until 5 structures all have
+the first two tries. The program continues until 4 structures all have 6
 matching sites, then ends and prints out the final correlations, after
 taking the top 5 sites.
 
@@ -445,17 +449,16 @@ Evaluating solution 1
 <p>and then after some analysis of random solutions...
 </p><PRE style="face=courier">
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.3112427
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.6219324
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.063086487
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.3158748
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.6215501
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.05753465
 AutoSol_run_1_/TEMP0/resolve.scores FOM 0.39
 
-SCORING TABLE 0 MEAN : 0.2226933  SD: 0.0203041521839
-SCORING TABLE 1 MEAN : 0.616432316667  SD: 0.0065241101629
-SCORING TABLE 2 MEAN : 0.00449461028333  SD: 0.0158383115198
-SCORING TABLE 3 MEAN : 0.0  SD: 0.05
-
-Total Z-score: 15.0174842126
+CC-EST (BAYES-CC) CC : 19.5 +/- 39.9
+CC-EST (BAYES-CC) RFACTOR : 16.3 +/- 33.0
+CC-EST (BAYES-CC) SKEW : 22.9 +/- 30.3
+CC-EST (BAYES-CC) FOM : 31.4 +/- 34.4
+ESTIMATED MAP CC x 100:  28.7 +/- 22.2
 
 </PRE>
 <p>This is a pretty poor solution, with a low correlation of density
@@ -464,61 +467,41 @@ experimental phases (0.31), a high R-factor for density modification
 (0.62), a low (though positive) skew (0.06), and a moderate figure
 of merit (0.39).
 </p><p>
-The <b>Z-score</b> is a measure of how 
-different the scores for this solution are
-from those of a random set of phases.  In this run we have chosen the 
-<b>thorough</b> option, so the scores for random solutions were
- constructed by randomizing phases from the first solution tested. Then
-the scores for each criterion and each randomized solution were 
-obtained. The Z-score for one solution based on one criterion was then 
-the number of standard deviations that this solution is
-above the mean of scores for randomized solutions. The mean for each
-score is given above under <b>SCORING TABLE 0 MEAN</b> for the four
-different criteria. The total Z-score
-is the sum of the 4 Z-scores for this solution.  The total Z-score gives an
-idea of how different this solution is from a totally random solution (in 
-this case, about 15 standard deviations from the mean of random solutions.) 
+The <b>ESTIMATED MAP CC x 100</b> is an estimate of the quality of
+the experimental electron density map (not the density-modified one).
+A set of real structures was used to calibrate the range of values of each
+score that were obtained for phases with varying quality.  The resulting
+probability distributions are used above to estimate the correlation between
+the experimental map and an ideal map for this structure. Then all the
+estimates are combined to yield an overall Bayesian estimate of the map
+quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
+CC values are usually fairly close, so if the estimate is 70+/-5 then you
+can be quite confident that your structure is not only solved but that you
+will have a very good map when it is density modified.
+
 </p><p>In this case the datasets used to find heavy-atom substructures
 were the isomorphous differences for each derivative
 For each dataset one solution was found, and that solution and its inverse
 were scored.  The scores were (skipping extra text below):
 </p><PRE style="face=courier">
-SCORING SOLUTION 1: Solution 1 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. 
-Dataset #1, with 5 sites
-Total Z-score: 15.0174842126
+SCORING SOLUTION 1: Solution 1 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. Dataset #1, with 5 sites
+ESTIMATED MAP CC x 100:  28.7 +/- 22.2
 
-SCORING SOLUTION 2: Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. 
-Dataset #1, with 5 sites
-Total Z-score: 26.2703497059
+SCORING SOLUTION 2: Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. Dataset #1, with 5 sites
+ESTIMATED MAP CC x 100:  37.0 +/- 15.2
 
-SCORING SOLUTION 3: Solution 3 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. 
-Dataset #2, with 5 sites
-Total Z-score: 29.9017541599
+SCORING SOLUTION 3: Solution 3 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. Dataset #2, with 5 sites
+ESTIMATED MAP CC x 100:  36.8 +/- 27.6
 
-SCORING SOLUTION 4: Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
-Dataset #2, with 5 sites
-Total Z-score: 63.0261758148
+SCORING SOLUTION 4: Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2, with 5 sites
+ESTIMATED MAP CC x 100:  58.5 +/- 7.9
 
-SCORING SOLUTION 5: Solution 5 using HYSS on AutoSol_run_1_/hgi2_rd_1_PHX.sca_iso_4.sca. 
-Dataset #4, with 5 sites
-Total Z-score: 15.2858496369
-
-SCORING SOLUTION 6: Solution  6 using HYSS on AutoSol_run_1_/hgi2_rd_1_PHX.sca_iso_4.sca and taking inverse. 
-Dataset #4, with 5 sites
-Total Z-score: 16.2365813265
-
-SCORING SOLUTION 7: Solution 7 using HYSS on AutoSol_run_1_/smac_1_PHX.sca_iso_5.sca. 
-Dataset #5, with 3 sites
-Total Z-score: 6.63438239846
-
-SCORING SOLUTION 8: Solution  8 using HYSS on AutoSol_run_1_/smac_1_PHX.sca_iso_5.sca and taking inverse. 
-Dataset #5, with 3 sites
-Total Z-score: 20.6244179856
 
 </PRE>
 </p><p>In this case the best score was solution 4, based on the HGKI
 derivative and taking the inverse of the heavy-atom sites, with a
-Z-score of 63. The Z-score from the opposite hand was just 29,
+ESTIMATED MAP CC x 100:  58.5 +/- 7.9. 
+The score from the opposite hand was just 36.8+/- 27.6 
 and so the hand was clear.
 
 <p><H5>Finding origin shifts between heavy-atom solutions for 
@@ -540,8 +523,7 @@ sites is found, SOLVE Bayesian correlated phasing is used to
 calculate a final set of native phases from the native and all the
 derivatives at once. Here is the best pair of derivatives from this
 first cycle:
-</p><PRE style="face=courier">
-Getting origin shift for 2 mapped on to 4
+</p><PRE style="face=courier">Getting origin shift for 2 mapped on to 4
 Phases from solution 4:solve_4.mtz
 Phases from solution 2:solve_2.mtz
 Merged ha files in ha_4_2.pdb
@@ -573,13 +555,19 @@ score is not improved over the HGKI derivative by itself:
 
 AutoSol_run_1_/TEMP0/resolve.scores CC 0.4500604
 AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5492675
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.1624269
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.1611985
 AutoSol_run_1_/TEMP0/resolve.scores FOM 0.57
 
-Total Z-score: 42.8644574912
+CC-EST (BAYES-CC) CC : 48.5 +/- 31.8
+CC-EST (BAYES-CC) RFACTOR : 27.4 +/- 40.6
+CC-EST (BAYES-CC) SKEW : 41.6 +/- 23.3
+CC-EST (BAYES-CC) FOM : 43.9 +/- 45.4
+ESTIMATED MAP CC x 100:  49.1 +/- 11.1
+
 
 </PRE>
-<p>This is a better solution than the first one, with a moderate
+<p>Though worse than the HGKI solution by itself,
+this is reasonably good solution, with a moderate
  correlation of density
 between map-probability phases from density modification and the original
 experimental phases (0.45), a lower R-factor for density modification
@@ -623,20 +611,15 @@ is used for this phasing/density modification/Fourier
 procedure. Sites are are found for <b>all</b> the derivatives and 
 new solutions are created and scored using the top sites for each derivative.
 None of these new solutions has a score higher than the original HGKI
-derivative, but one of the  combination is now better:
+derivative, but one of the  combinations is now better:
 
 </p><PRE style="face=courier">
- NEW SOLUTION: 21
-Saved mir_fpfm.scl in PDS
-Saved mir_fbar.scl in PDS
-Saved mir_fbar.mtz in PDS
-Reformatting  ha_21.pdb  and putting it in  ha_21.pdb_formatted.pdb
-
- PHASED SOLUTION: Solution 21 based on MIR phasing starting from solutions 4 (dataset #2)  and 12 (dataset #1)
+ PHASED SOLUTION: Solution 25 based on MIR phasing starting from solutions 4 (dataset #2)  and 15 (dataset #1)
 
 MARKING DUPLICATES FROM solutions
 
 Number of scoring criteria:  4
+Using BAYES-CC (Bayesian estimate of CC of map to perfect) as scores
 
 Evaluate_solution
 
@@ -645,10 +628,14 @@ Scoring for this solution now...
 
 AutoSol_run_1_/TEMP0/resolve.scores CC 0.6533058
 AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4493593
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.417136
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.4176151
 AutoSol_run_1_/TEMP0/resolve.scores FOM 0.64
 
-Total Z-score: 85.6700228188
+CC-EST (BAYES-CC) CC : 70.8 +/- 25.3
+CC-EST (BAYES-CC) RFACTOR : 64.8 +/- 23.9
+CC-EST (BAYES-CC) SKEW : 68.6 +/- 18.3
+CC-EST (BAYES-CC) FOM : 48.8 +/- 50.5
+ESTIMATED MAP CC x 100:  68.0 +/- 5.6
 
 </PRE>
 <p>This is quite a good solution, with high 
@@ -666,14 +653,14 @@ all the other derivatives are ignored.
 <p><H5>Final phasing with SOLVE</H5></p>
 Once the best heavy-atom solution or solutions are chosen based on 
 <b>Z-scores</b>, these are used in a final round of phasing with
-SOLVE (for MIR phasing). The log file from phasing for solution <b>21</b> is in
-<b>solve_21.prt</b>. 
+SOLVE (for MIR phasing). The log file from phasing for solution <b>25</b> is in
+<b>solve_25.prt</b>. 
 The
 heavy-atom model is refined and phases are calculated with Bayesian correlated
 MIR phasing. An important part of this phasing method is a statistical
 method of taking into account the correlation of non-isomorphism among
 derivatives. The extent of this correlation is listed in the 
-<b>solve_21.prt</b> summary file:
+<b>solve_25.prt</b> summary file:
 </p><PRE style="face=courier">
  DERIVATIVE:            1
  CENTRIC REFLECTIONS:
@@ -728,8 +715,8 @@ from the heavy-atom substructure. The weighted structure factors and
 phases (FP, PHIB) from SOLVE are used to calculate the starting
 map for RESOLVE, and the experimental structure factor amplitudes (FP)
 and MIR Hendrickson-Lattman coefficients from SOLVE are used
-in the density modification process. The output from RESOLVE for solution 21
-can be found in <b>resolve_21.log</b>.  Here are key sections of this
+in the density modification process. The output from RESOLVE for solution 25
+can be found in <b>resolve_25.log</b>.  Here are key sections of this
 output. </p>
 <p>First, the plot of how many points in the &quot;protein&quot; region
 of the map have each possible value of electron density. The
@@ -824,9 +811,9 @@ The files to be used for model-building
 and refinement are listed in the AutoSol log file:
 </p><PRE style="face=courier"> 
 Generating FreeR flags...
-Saving  exptl_fobs_phases_freeR_flags_21.mtz  for refinement
-THE FILE AutoSol_run_1_/resolve_21.mtz will be used for model-building
-THE FILE exptl_fobs_phases_freeR_flags_21.mtz will be used for refinement
+Saving  exptl_fobs_phases_freeR_flags_25.mtz  for refinement
+THE FILE AutoSol_run_1_/resolve_25.mtz will be used for model-building
+THE FILE exptl_fobs_phases_freeR_flags_25.mtz will be used for refinement
 
 </PRE>
 
@@ -887,44 +874,41 @@ summary for this <b>rh-dehalogenase</b> MIR dataset:
 
  *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
 
+Solution # 25  BAYES-CC: 68.0 +/- 5.6 Dataset #0   FOM: 0.64 ----------------
 
-Solution # 21   SCORE:85.6700228188 Dataset #0   FOM: 0.64 ----------------
-
-Solution 21 based on MIR phasing starting from solutions 4 (dataset #2)  and 12 (dataset #1)
-This solution is a composite of solutions:  4 12 (Already used for Phasing at resol of 2.8)      Refined Sites: 4
-NCS information  in: AutoSol_21.ncs_spec
-Experimental phases in: solve_21.mtz
-Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_21.mtz
-Density-modified phases in: resolve_21.mtz
-HA sites (PDB format) in: ha_21.pdb_formatted.pdb
+Solution 25 based on MIR phasing starting from solutions 4 (dataset #2)  and 15 (dataset #1) 
+This solution is a composite of solutions:  4 15 (Already used for Phasing at resol of 2.8)      Refined Sites: 4
+NCS information  in: AutoSol_25.ncs_spec
+Experimental phases in: solve_25.mtz
+Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_25.mtz
+Density-modified phases in: resolve_25.mtz
+HA sites (PDB format) in: ha_25.pdb_formatted.pdb
 Sequence file in: sequence.dat
-Model in: refine_14.pdb
-  Residues built: 284
-  Side-chains built: 284
-  Chains: 0
-  Overall model-map correlation: 0.79
-  R/R-free: 0.2/0.25
-Phasing logfile in: solve_21.prt
-Density modification logfile in: resolve_21.log
-Build logfile in: model_with_loops_15.log
-
+Model in: refine_20.pdb
+  Residues built: 283
+  Side-chains built: 279
+  Chains: 1
+  Overall model-map correlation: 0.81
+  R/R-free: 0.17/0.24
+Phasing logfile in: solve_25.prt
+Density modification logfile in: resolve_25.log
+Build logfile in: Build_combine_extend_20.log
 
  Score type:        CC       RFACTOR       SKEW       FOM
-Raw scores:       0.653        0.449        0.417        0.640
-Z-scores:        21.208       25.609       26.053       12.800
+Raw scores:       0.65        0.45        0.42        0.64  
+BAYES-CC:        70.78       64.78       68.58       48.82  
 
-Refined heavy atom sites (fractional):
+Refined heavy atom sites (fractional): 
 deriv 1
-xyz       0.722      0.280      0.421
-xyz       0.188      0.157      0.439
-xyz       0.737      0.252      0.416
-xyz       0.711      0.296      0.470
+xyz       0.722      0.280      0.421 
+xyz       0.188      0.157      0.439 
+xyz       0.737      0.252      0.416 
+xyz       0.711      0.296      0.470 
 deriv 2
-xyz       0.209      0.187      0.463
-xyz       0.361      0.338      0.484
-xyz       0.712      0.283      0.432
-xyz       0.183      0.161      0.446
-
+xyz       0.209      0.187      0.463 
+xyz       0.361      0.338      0.484 
+xyz       0.712      0.283      0.432 
+xyz       0.183      0.161      0.446 
 </PRE>
 
 <p><H5>How do I know if I have a good solution?</H5></p>
@@ -945,16 +929,23 @@ resolution (2.5 A or better) the R-factor should be in the low 30's to be very
 good. For lower-resolution data, an R-factor in the low 40's is probably
 largely correct but the model is not very good.
 </LI>
-<LI>What are the individual Z-scores for your top solution? For a good
-solution they are all positive, and at least several have a value of at least 2.
+<LI>What are the individual CC-BAYES estimates of map correlation
+for your top solution? For a good
+solution they are all around 50 or more, with 2SD uncertainties that are
+about 10-20.
 </LI>
-<LI>What is the overall Z-score of your top solution. Z-scores of less than
-5 are very dubious; those greater than 100 are very likely to be good; those
-in between are ok.
+<LI>What is the overall "ESTIMATED MAP CC x 100" of your top solution.  This
+should also be 50 or more for a good solution. This is an estimate of the
+map correlation before density modification, so if you have a lot of solvent
+or several NCS-related copies in the asymmetric unit, then lower values may
+still give you a good map.
 </LI>
-<LI>What is the difference in Z-score between the top solution and its
-inverse? If this is large (at least 2) that is a good sign.
+<LI>What is the difference in "ESTIMATED MAP CC x 100"
+between the top solution and its
+inverse? If this is large (more than the 2SD values for each)
+ that is a good sign.
 </LI>
+
 </UL>
 
 
