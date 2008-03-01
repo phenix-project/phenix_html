@@ -430,9 +430,9 @@ probability distributions are used above to estimate the correlation between
 the experimental map and an ideal map for this structure. Then all the
 estimates are combined to yield an overall Bayesian estimate of the map
 quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
-CC values are usually fairly close, so if the estimate is 70+/-5 then you
-can be quite confident that your structure is not only solved but that you
-will have a very good map when it is density modified.
+CC values are usually fairly close, so if the estimate is 57.8 +/- 8.0 
+then you can be confident that your structure is not only solved but that 
+you will have a good map when it is density modified.
 
 </p><p>In this case the datasets used to find heavy-atom substructures
 were the FA values in <b>FA.sca</b> and the peak data in <b>peak.sca_ano_1.sca</b>.
@@ -538,7 +538,7 @@ map is 1.0. A perfect map has a lot of points with density slightly less
 than zero on this scale (the points between atoms) and a few points
 with very high density (the points near atoms), and no points with very
 negative density.  Such a map has a very high skew (think 
-&quot;skewed off to the right&quot;. This map is good, with a positive
+&quot;skewed off to the right&quot;). This map is good, with a positive
 skew, though it is not perfect.
 </p><PRE style="face=courier">
 
@@ -663,15 +663,8 @@ This is new best model with cc =  0.73
 Refining model:  model_with_loops_10.pdb
 Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.27/0.35
 </PRE>
-
-<p>After three model completion cycles the best
-model built has 79 residues built, 66 assigned to sequence and an R/Rfree of 0.27/0.35:
-</p><PRE style="face=courier">Model 9: Residues built=79  placed=66  Chains=3  Model-map CC=0.73
-This is new best model with cc =  0.73
-Refining model:  model_with_loops_10.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.27/0.35
-</PRE>
-This refined initial model is written out to <b>refine_9.pdb</b> in
+This is the best model that is obtained, and this
+refined initial model is written out to <b>refine_9.pdb</b> in
 the output directory.
 
 <p><H5>The AutoSol_summary.dat summary file</H5></p>

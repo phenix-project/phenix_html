@@ -356,9 +356,10 @@ probability distributions are used above to estimate the correlation between
 the experimental map and an ideal map for this structure. Then all the
 estimates are combined to yield an overall Bayesian estimate of the map
 quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
-CC values are usually fairly close, so if the estimate is 70+/-5 then you
-can be quite confident that your structure is not only solved but that you 
-will have a very good map when it is density modified.
+CC values are usually fairly close, so as the estimate is
+ 59.6 +/- 8.4, you can be quite confident that your structure is 
+not only solved but that you 
+will have a good map when it is density modified.
 
 
 <p><H5>Final phasing with Phaser</H5></p>
@@ -372,27 +373,23 @@ only f&quot; is refined), and the final figure of merit of phasing (0.548):
 </p><PRE style="face=courier">
    Atom Parameters: 4 atoms in list
         X      Y      Z      O      B      (AnisoB) M Atomtype
-   #1    0.180 -0.112 -0.680  1.000   21.8 ( ---- ) 1 SE
-   #2    0.686 -0.238 -0.713  1.000   21.8 ( ---- ) 1 SE
-   #3    0.665 -0.207 -0.772  1.000   21.8 ( ---- ) 1 SE
-   #4    0.232 -0.166 -0.250  1.000   21.8 ( ---- ) 1 SE
-   Scales:
-      Overall Occupancy scale: 1
-      Overall B-factor: 0
-      Overall Sigma scale: 1
+   #1    0.180 -0.113 -0.681  1.144   23.2 ( ---- ) 1 SE
+   #2    0.685 -0.238 -0.710  0.978   22.6 (+16.60) 1 SE
+   #3    0.665 -0.206 -0.774  1.004   27.5 (+16.47) 1 SE
+   #5    0.028  0.758  0.906  0.182   23.5 ( ---- ) 1 SE
 
    Scattering Parameters:
     Atom             f"           (f')
-      SE         4.5000        -8.0000
+      SE         5.5375        -8.0000
 
 
    Figures of Merit
    ----------------
    Bin Resolution   Acentric     Centric      Single       Total
                     Number FOM   Number FOM   Number FOM   Number FOM
-   ALL  28.49- 2.40   7501 0.549    874 0.161     51 0.063   8426 0.506
+   ALL  28.49- 2.40   7502 0.592    874 0.140     51 0.056   8427 0.542
 
-   log-likelihood gain -91362
+   log-likelihood gain -90102
 
 </PRE>
 
@@ -418,7 +415,7 @@ map is 1.0. A perfect map has a lot of points with density slightly less
 than zero on this scale (the points between atoms) and a few points
 with very high density (the points near atoms), and no points with very
 negative density.  Such a map has a very high skew (think 
-&quot;skewed off to the right&quot;. This map is good, with a positive
+&quot;skewed off to the right&quot;). This map is good, with a positive
 skew, though it is not perfect.
 </p><PRE style="face=courier">
 

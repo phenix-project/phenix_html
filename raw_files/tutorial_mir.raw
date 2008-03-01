@@ -378,7 +378,7 @@ when the same solution is found beginning with several different starting
 points.  The HYSS log files are named after the datafile that they
 are based on and the type of differences (ano, iso) that are being used.
 In this <b>rh-dehalogenase</b> MIR dataset, the HYSS logfile for the
-Au derivative is
+HgKI derivative is
 <b>hgki_rd_1_PHX.sca_iso_2.sca_hyss.log</b>.  The key part of this HYSS log file
 is:
 </p><PRE style="face=courier">
@@ -444,28 +444,26 @@ phases. For a MIR dataset, a figure of merit of 0.5 is
 acceptable, 0.6 is fine and anything above 0.7 is very good.
  The scores are listed in the AutoSol log file:
 </p><PRE style="face=courier">
-Evaluating solution 1
-</PRE>
-<p>and then after some analysis of random solutions...
-</p><PRE style="face=courier">
+Evaluating solution 4
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.3158748
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.6215501
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.05753465
-AutoSol_run_1_/TEMP0/resolve.scores FOM 0.39
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.5665045
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5045264
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2937651
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.54
 
-CC-EST (BAYES-CC) CC : 19.5 +/- 39.9
-CC-EST (BAYES-CC) RFACTOR : 16.3 +/- 33.0
-CC-EST (BAYES-CC) SKEW : 22.9 +/- 30.3
-CC-EST (BAYES-CC) FOM : 31.4 +/- 34.4
-ESTIMATED MAP CC x 100:  28.7 +/- 22.2
+CC-EST (BAYES-CC) CC : 60.9 +/- 30.8
+CC-EST (BAYES-CC) RFACTOR : 48.3 +/- 43.2
+CC-EST (BAYES-CC) SKEW : 57.4 +/- 16.0
+CC-EST (BAYES-CC) FOM : 43.2 +/- 42.5
+ESTIMATED MAP CC x 100:  58.5 +/- 7.9
+
 
 </PRE>
-<p>This is a pretty poor solution, with a low correlation of density
+<p>This is a good solution, with a good correlation of density
 between map-probability phases from density modification and the original
-experimental phases (0.31), a high R-factor for density modification
-(0.62), a low (though positive) skew (0.06), and a moderate figure
-of merit (0.39).
+experimental phases (0.57), a reasonable R-factor for density modification
+(0.50), a high (and positive) skew (0.29), and a good SIR figure
+of merit (0.54).
 </p><p>
 The <b>ESTIMATED MAP CC x 100</b> is an estimate of the quality of
 the experimental electron density map (not the density-modified one).
@@ -475,12 +473,13 @@ probability distributions are used above to estimate the correlation between
 the experimental map and an ideal map for this structure. Then all the
 estimates are combined to yield an overall Bayesian estimate of the map
 quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
-CC values are usually fairly close, so if the estimate is 70+/-5 then you
-can be quite confident that your structure is not only solved but that you
-will have a very good map when it is density modified.
+CC values are usually fairly close, so if the estimate is 
+ 58.5 +/- 7.9 then you
+can be confident that your structure is solved  and that the density-modified
+map will be quite good.
 
 </p><p>In this case the datasets used to find heavy-atom substructures
-were the isomorphous differences for each derivative
+were the isomorphous differences for each derivative.
 For each dataset one solution was found, and that solution and its inverse
 were scored.  The scores were (skipping extra text below):
 </p><PRE style="face=courier">
@@ -498,7 +497,8 @@ ESTIMATED MAP CC x 100:  58.5 +/- 7.9
 
 
 </PRE>
-</p><p>In this case the best score was solution 4, based on the HGKI
+</p><p>In this case the best score was solution 4 (as shown 
+above), based on the HGKI
 derivative and taking the inverse of the heavy-atom sites, with a
 ESTIMATED MAP CC x 100:  58.5 +/- 7.9. 
 The score from the opposite hand was just 36.8+/- 27.6 
@@ -570,8 +570,8 @@ ESTIMATED MAP CC x 100:  49.1 +/- 11.1
 this is reasonably good solution, with a moderate
  correlation of density
 between map-probability phases from density modification and the original
-experimental phases (0.45), a lower R-factor for density modification
-(0.55), a better skew (0.16), and a better figure
+experimental phases (0.45), a moderate R-factor for density modification
+(0.55), a positive skew (0.16), and a good figure
 of merit (0.57).
 <p>As the original HGKI solution was the best, it is used for density
 modification and finding additional sites:
@@ -726,7 +726,7 @@ map is 1.0. A perfect map has a lot of points with density slightly less
 than zero on this scale (the points between atoms) and a few points
 with very high density (the points near atoms), and no points with very
 negative density.  Such a map has a very high skew (think 
-&quot;skewed off to the right&quot;. This map is good, with a positive
+&quot;skewed off to the right&quot;). This map is good, with a positive
 skew, though it is not perfect.
 </p><PRE style="face=courier">
 
