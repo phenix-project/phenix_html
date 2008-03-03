@@ -21,11 +21,11 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 find_helices_strands is a command line tool for finding helices and strands
 in a map and building an model of the parts of a structure that have regular
-secondary structure.  
+secondary structure.  It can be used for protein, RNA, and DNA.
 
 <P><H5><U>Usage</U></H5><P>
 
-<P><H5>How find_helices_strands works:</H5><P>
+<P><H5>How find_helices_strands finds helices and strands in maps:</H5><P>
 
 find_helices_strands first identifies helical segments as rods of density at
 5-8 A. Then it identifies helices at higher resolution keeping the 
@@ -36,6 +36,15 @@ points offset slightly along the helix axis from the main helical density
 helices are fit to the density using the positions and orientations
 identified in the earlier steps.  A similar procedure is used to identify
 strands. Then the helices and strands are combined into a single model.
+
+<P><H5>How find_helices_strands finds RNA and DNA helices in maps:</H5><P>
+find_helices_strands finds RNA and DNA helices differently than it finds
+helices in proteins. It uses a convolution search to find places in 
+the asymmetric unit where an A-form RNA or B-form DNA helix can be placed.
+These are assembled into contiguous helical segments if possible. 
+The resolution of this search is 4.5 A if you have resolution beyond
+4.5 A, and the resolution of your data otherwise.
+
 
 <P><H5><I>Output files from find_helices_strands</I></H5><P>
 If you run find_helices_strands with my_map.mtz then you will get:
