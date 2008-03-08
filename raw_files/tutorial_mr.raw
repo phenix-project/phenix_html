@@ -181,27 +181,26 @@ input and use it to run Phaser molecular replacement algorithm:
 </PRE>
 <p>This is followed by a summary of some of the input information:
 </p><PRE style="face=courier">
-
 CRITERIA FOR PHASER MR RUN:
 
-sg : P 21 21 21
-selection_criteria : Percent_of_best
-selection_criteria_value : 75
-all_plausible_sg_list : ['P 2 2 2', 'P 2 2 21', 'P 21 2 2', 'P 2 21 2', 
-'P 21 21 2', 'P 2 21 21', 'P 21 2 21', 'P 21 21 21']
+sg : p212121
+selection_criteria_rot : Percent_of_best
+selection_criteria_rot_value : 75
+all_plausible_sg_list : ['P 2 2 2', 'P 2 2 21', 'P 21 2 2', 'P 2 21 2', 'P 21 21 2', 'P 2 21 21', 'P 21 2 21', 'P 21 21 21']
 use_all_plausible_sg : No
-overlap_allowed : 0
-DICTENS: {'n1': [['mup_search.pdb', 'RMS', 1.0]]}
-PDBList entry:  n1 mup_search.pdb RMS 1.0
+overlap_allowed :
+DICTENS: {'ensemble_1': [['mup_search.pdb', 'RMS', 1.0]]}
+PDBList entry:  ensemble_1 mup_search.pdb RMS 1.0
 ...
 HALL:   P 2ac 2ab
 CELL:  (106.81999999999999, 62.340000000000003, 114.19, 90.0, 90.0, 90.0)
-ENSEMBLE  0 : n1
-ENSEMBLE  1 : n1
-ENSEMBLE  2 : n1
-ENSEMBLE  3 : n1
+ENSEMBLE  0 : ensemble_1
+ENSEMBLE  1 : ensemble_1
+ENSEMBLE  2 : ensemble_1
+ENSEMBLE  3 : ensemble_1
 
-ENSEMBLE: n1 , 1 PDB file(s)
+ENSEMBLE: ensemble_1 , 1 PDB file(s)
+
 </PRE>
 <p>Here the list of all plausible space groups are those with the same symmetry
 in reciprocal space as the one you have input, and hence these might be the
@@ -212,23 +211,23 @@ you can tell AutoMR to try all of these with <b>use_all_plausible_sg=Yes</b>).
 <b>MR.log</b>. The summary is written to your AutoMR log file. It starts
 out with a list of steps to be carried out:
 </p><PRE style="face=courier">
-
    Steps:
       Anisotropy correction
+      Cell Content Analysis
       Fast Rotation Function
       Fast Translation Function
       Packing
       Refinement (if data higher resolution than search resolution)
-
    Number of search ensembles = 4
-      #1: Ensemble n1
-      #2: Ensemble n1
-      #3: Ensemble n1
-      #4: Ensemble n1
+      #1: Ensemble ensemble_1
+      #2: Ensemble ensemble_1
+      #3: Ensemble ensemble_1
+      #4: Ensemble ensemble_1
    Number of permutations of search ensembles = 1
 
-   One test space group
+   One test spacegroup
      P 21 21 21
+
 
 </PRE>
 <p>Phaser then carries out each of these steps. The final summary is:
@@ -246,14 +245,12 @@ OUTPUT FILES
 is fine, and a very strong solution will be over 1000) and
 orientations for each of the 4 molecules:
 </p><PRE style="face=courier">
-Solutions:
-=====================
-Solution #1:  Likelihood Gain 1515.40
-ENSE n1 - EULER   13.586,  27.090, 136.982 - FRAC    0.241,   0.059,  -0.021
-ENSE n1 - EULER  244.504, 120.777,  50.080 - FRAC   -0.096,   0.198,   0.115
-ENSE n1 - EULER  356.247, 165.868, 313.627 - FRAC    0.217,   0.279,  -0.085
-ENSE n1 - EULER  111.633,  65.228, 215.295 - FRAC   -0.073,   0.399,   0.038
 
+Solution #1:  Likelihood Gain 1410.51
+ENSE ensemble_1 - EULER  295.533,  59.329, 229.980 - FRAC    0.096,  -0.302,  -0.115
+ENSE ensemble_1 - EULER  166.424, 152.963, 316.988 - FRAC   -0.241,  -0.440,   0.021
+ENSE ensemble_1 - EULER  183.783,  14.133, 133.534 - FRAC   -0.217,  -0.221,   0.085
+ENSE ensemble_1 - EULER   68.417, 114.921,  35.347 - FRAC    0.073,  -0.100,  -0.037
 
 </PRE>
 
@@ -268,7 +265,7 @@ summary for this <b>a2u-globulin-mr</b> MR dataset:
 </p><PRE style="face=courier"> 
 **************** SOLUTION MR *******
 
- Log likelihood gain for solution MR: 1515.3987
+ Log likelihood gain for solution MR: 1410.5121
  Output PDB files for solution MR: MR.1.pdb
  Output MTZ files for solution MR: MR.1.mtz
  Output log file for solution MR: MR.log

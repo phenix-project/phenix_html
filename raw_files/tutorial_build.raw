@@ -255,40 +255,44 @@ the file to be used for refinement is called <b>exptl_fobs_phases_freeR_flags.mt
 of your structure.  
 </p>
 <p>In this case three initial models are built. 
-The model-building produces an initial model with 108
-residues built and side chains assigned to 70, and which refines to
-an R-factor of 0.33 and a free R-factor of 0.39. The next two models built
-have similar numbers of residues built, and are not refined:
-</p><PRE style="face=courier"> Building 3 RESOLVE models...
-Model 1: Residues built=108  placed=70  Chains=7  Model-map CC=0.68
+The model-building produces an initial model with 109
+residues built and side chains assigned to 69, and which refines to
+an R-factor of 0.32 and a free R-factor of 0.36. The next two models built
+have slighlty more residues built, but after refinement are not better than
+the first one:
+</p><PRE style="face=courier"> 
+Building 3 RESOLVE models...
+Model 1: Residues built=109  placed=69  Chains=7  Model-map CC=0.68
+This is new best model with score =  164
 Refining model:  Build_1.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.33/0.39
+Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.32/0.36
 
-Model 2: Residues built=117  placed=83  Chains=4  Model-map CC=0.69
+Model 2: Residues built=119  placed=63  Chains=7  Model-map CC=0.67
+This is new best model with score =  168
 Refining model:  Build_2.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_2.pdb  R/Rfree=0.31/0.37
+Refined model: AutoBuild_run_1_/TEMP0/refine_2.pdb  R/Rfree=0.33/0.39
 
-Model 3: Residues built=107  placed=70  Chains=4  Model-map CC=0.68
+Restoring previous best...
+Model 3: Residues built=112  placed=80  Chains=5  Model-map CC=0.66
+This is new best model with score =  182
+Refining model:  Build_3.pdb
+Refined model: AutoBuild_run_1_/TEMP0/refine_3.pdb  R/Rfree=0.34/0.39
+Restoring previous best...
 
 </PRE>
 
 <p>After one model completion cycle (including merging these three initial
 models together, extending ends of chains,
 fitting loops, and building outside the region already built, the best
-model built has 130 residues built, 126 assigned to sequence:
-</p><PRE style="face=courier"> Model 9: Residues built=130  placed=126  Chains=1  Model-map CC=0.80
+model built has 129 residues built, all assigned to sequence:
+</p><PRE style="face=courier"> 
+Model 9: Residues built=129  placed=129  Chains=0  Model-map CC=0.83
+This is new best model with score =  258
 Refining model:  model_with_loops_10.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.22/0.27
+Refined model: AutoBuild_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.20/0.25
 
 </PRE>
-
-<p>After three model completion cycles the best
-model built has 135 residues built, 127 assigned to sequence and an R/Rfree of 0.21/0.27:
-</p><PRE style="face=courier"> Model 13: Residues built=135  placed=127  Chains=2  Model-map CC=0.81
-Refining model:  Build_combine_extend_13.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_13.pdb  R/Rfree=0.21/0.27
-</PRE>
-This refined initial model is written out to <b>refine_13.pdb</b> in
+This refined initial model is written out to <b>refine_9.pdb</b> in
 the output directory.
 
 <p>In the second overall cycle of model building, the AutoBuild Wizard carries out several 
@@ -321,9 +325,8 @@ Creating omit map from image.mtz and previous models
 <p>This process of model-building iterated with generation of real-space targets
 for density modification based on local patterns, fragments of structure, and the
 model is repeated until the R-factor does not decrease for several cycles. In this
-example, the iterative process only improves  the model slightly (it is very good
-after just the first cycle) and the iteration ends after 6 cycles with an R/Rfree
-of 0.19/0.25.
+example, the iterative process does not improve the model,
+and the model from the first cycle is the best with an R/Rfree of 0.20/0.25.
 
 <p><H5>Model-rebuilding with RESOLVE</H5></p>
 <p>Once the model-building procedure has converged, the AutoBuild Wizard carries out
@@ -344,32 +347,31 @@ Here is part of the
 summary for this <b>p9-build</b> model-building run:
 </p><PRE style="face=courier"> 
 
-Summary of model-building for run 1  Tue Jul  3 20:38:46 2007
+Summary of model-building for run 1  Fri Mar  7 00:53:41 2008
 Files are in the directory:  AutoBuild_run_1_
+
 
 Starting mtz file: p9-solve.mtz
 Sequence file: p9.seq
 File with locations where density is to be truncated:
-Best solution on cycle: 4
-Model: cycle_best.pdb_4
-Refinement log: cycle_best.log_refine_4
-Refinement map coefficients: cycle_best_refine_map_coeffs.mtz_4
-Evaluation log: cycle_best.log_eval_4
-Density modification log: cycle_best.log_4
-Density modified phases: cycle_best.mtz_4
+Best solution on cycle: 1
+Model: cycle_best.pdb_1
+Refinement log: cycle_best.log_refine_1
+Refinement map coefficients: cycle_best_refine_map_coeffs.mtz_1
+Evaluation log: cycle_best.log_eval_1
+Density modification log: cycle_best.log_1
+Density modified phases: cycle_best.mtz_1
 
 SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
- 1         1      0.21        0.27      135       127
- 2         2      0.20        0.25      141       127
- 3         3      0.20        0.25      141       127
- 4         4      0.19        0.25      141       127
- 5         5      0.20        0.25      141       127
- 6         6      0.20        0.24      141       127
- 7         8      0.20        0.26      137       127
+ 1         1      0.20        0.25      129       129
+ 2         2      0.20        0.25      127       127
+ 3         3      0.20        0.25      127       127
+ 4         5      0.21        0.25      127       127
+
 
 </PRE>
-<p>Note that the file <b>cycle_best.log_eval_4</b> in this example has a complete
-analysis of the the fit of the model to the best map in <b>cycle_best.mtz_4</b>.
+<p>Note that the file <b>cycle_best.log_eval_1</b> in this example has a complete
+analysis of the the fit of the model to the best map in <b>cycle_best.mtz_1</b>.
 This is useful in identifying places where additional rebuilding needs to be done.
 
 <p><H5>How do I know if iterative model-building, density modification 

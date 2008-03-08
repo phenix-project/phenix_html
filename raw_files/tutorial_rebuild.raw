@@ -181,7 +181,7 @@ Guessing a2u-globulin.seq is sequence file.
 <p>The first couple lines are just a repeat of how you ran AutoBuild; 
 you can copy it and paste them
 into the command line to repeat this run.
-</p><p>The lst 3 lines point out that you didn't specify exacly what these
+</p><p>The last 3 lines point out that you didn't specify exacly what these
 three files are...and is confirming what the Wizard is going to use them for.
 </p>
 
@@ -318,9 +318,9 @@ of your structure.   In this example the rebuild-in-place option is used.
 </p><PRE style="face=courier"> 
 Using edited_pdb.pdb for rebuild, copied to unrefined.pdb_1
 Refining model:  unrefined.pdb_1
-Refined model: refine.pdb_1  R/Rfree=0.29/0.33
+Refined model: refine.pdb_1  R/Rfree=0.32/0.35
 </PRE>
-<p>This starting model is rather good, with an R of 0.29.  This is about the
+<p>This starting model is rather good, with an R of 0.32.  This is about the
 quality of model that works best with rebuild-in-place. The NCS in this
 model is analyzed automatically:
 </p><PRE style="face=courier"> 
@@ -341,47 +341,50 @@ in 4 different orientations and locations in the asymmetric unit).
 The rebuild-in place procedure is then carried out:
 </p><PRE style="face=courier"> 
 Rebuilding in place: refine.pdb_1
-New total residues built:  562
-Warning: some residues not rebuilt successfully...
-using original coordinates for: {'A': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 156, 157],
- 'C': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 61, 62, 63, 64, 65, 151, 152, 153, 154, 155, 156, 157], 
-'B': [1, 2, 3, 4, 5, 61, 62, 63, 64, 65], 
-'D': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 61, 62, 63, 64, 65, 151, 152, 153, 154, 155, 156, 157]}
+New total residues built:  559
+
+Warning: some residues not rebuilt successfully on cycle 2:
+Chain 'A':    1-  10,
+Chain 'C':    1-  10,   61-  65,  151- 157,
+Chain 'B':    1-  10,   61-  65,
+Chain 'D':    1-  10,   61-  65,  151- 157
 Refining model:  Build_rebuild_in_place_1.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.22/0.26
+Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.27
+
+
 </PRE>
 <p>Notice the warning about some of the residues that were not rebuilt. For
 any residues that the rebuilding process simply could not fit, the original
 coordinates are kept. In favorable cases, by the end of iterative model-building
 all the coordinates can be fit. In cases where they cannot, you should be
 cautious about using those parts of the model that do not get rebuilt.
-In this case the R has decreased substantially by rebuilding to 0.22.
+In this case the R has decreased substantially by rebuilding to 0.23.
 </p><p>The side chains are then rebuilt, and the best-fitting parts of the
-current models are recombined to yield a new model with a slighlty improved
-R of 0.21:
+current models are recombined to yield a new model with a similar (slightly worse)
+R of 0.24:
 </p><PRE style="face=courier"> 
-building side chains from  Build_composite_refined_2.pdb
+Rebuilding side chains from  Build_composite_refined_3.pdb
 Refining model:  edit_model.pdb
-Refined model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_2.pdb  R/Rfree=0.21/0.25
+Refined model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_3.pdb  R/Rfree=0.24/0.28
 </PRE>
 <p> This is the end of the first cycle of rebuilding. Next the rebuilt model
 is used to calculate phases and the resulting map is used in statistical
 density modification, including not just solvent flattening and histograms
 of density, but also the 4-fold NCS in this structure.  This whole process is
-repeated 10 times, yielding a final R/Rfree of 0.20/0.24.  On the final
+repeated 7 times, yielding a final R/Rfree of 0.21/0.25.  On the final
 cycle of model-building a few residues are still not rebuilt:
 </p><PRE style="face=courier"> 
-
-Warning: some residues not rebuilt successfully...
-using original coordinates for: {'C': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 156, 157],
- 'B': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 'D': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+Warning: some residues not rebuilt successfully on cycle 8:
+Chain 'C':    1-  10,  156- 157,
+Chain 'B':    1-  10,
+Chain 'D':    1-  10
 </PRE>
 <p>and these residues (the N-terminal 10 residues of chains B, C,
 and D) and the C-terminal 2 residues of chain C) should probably not be used
 in the model.
 </p><p>
 
-The refined initial model is written out to <b>cycle_best.pdb_9</b> in
+The final refined model is written out to <b>cycle_best.pdb_4</b> in
 the output directory. An identical file has the name <b>overall_best.pdb</b>
 which may be more convenient to remember.
 </p><p>Note that the quality of the model improves a lot in the first cycle
@@ -395,71 +398,52 @@ output directory) and some of the key statistics for the run.
 Here is the summary for this <b>a2u-globulin-rebuild</b> model-building run:
 </p><PRE style="face=courier"> 
 
-Summary of model-building for run 1  Mon Jul  9 00:43:33 2007
+
+Summary of model-building for run 1  Thu Mar  6 21:43:17 2008
 Files are in the directory:  AutoBuild_run_1_
 
 
 Starting mtz file: a2u-sigmaa.mtz
 Sequence file: a2u-globulin.seq
 File with locations where density is to be truncated:
-Best solution on cycle: 9
-Model: cycle_best.pdb_9
-Refinement log: cycle_best.log_refine_9
-Refinement map coefficients: cycle_best_refine_map_coeffs.mtz_9
-Evaluation log: cycle_best.log_eval_9
+Best solution on cycle: 4
+Model: cycle_best.pdb_4
+Refinement log: cycle_best.log_refine_4
+Refinement map coefficients: cycle_best_refine_map_coeffs.mtz_4
+Evaluation log: cycle_best.log_eval_4
 Density modification log: None
-Density modified phases: cycle_best.mtz_9
+Density modified phases: cycle_best.mtz_4
 
 SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
- 1         2      0.21        0.25      562       0
- 2         3      0.20        0.25      586       0
- 3         4      0.21        0.25      598       0
- 4         5      0.20        0.24      594       0
- 5         6      0.21        0.24      591       0
- 6         7      0.20        0.24      581       0
- 7         8      0.20        0.24      589       0
- 8         9      0.20        0.24      596       0
- 9         10      0.20        0.24      596       0
- 10         11      0.20        0.24      596       0
+ 1         2      0.23        0.27      559       0
+ 2         3      0.21        0.25      570       0
+ 3         4      0.21        0.24      592       0
+ 4         5      0.21        0.24      594       0
+ 5         6      0.21        0.24      598       0
+ 6         7      0.21        0.24      596       0
+ 7         8      0.21        0.25      596       0
 
 </PRE>
-<p>Note that the file <b>cycle_best.log_eval_9</b> in this example 
+<p>Note that the file <b>cycle_best.log_eval_4</b> in this example 
 has a complete
-analysis of the the fit of the model to the best map in <b>cycle_best.mtz_9</b>.
+analysis of the the fit of the model to the best map in <b>cycle_best.mtz_4</b>.
 This is useful in identifying places where additional rebuilding needs to be 
 done, and in this case to check whether residues 1-10 in chains B, C and 
 D are ok.
 </p><p>
-Here is the part of the <b>cycle_best.log_eval_9</b> analysis of the model
+Here is the part of the <b>cycle_best.log_eval_4</b> analysis of the model
 where it analyzes residues 1-10 of chain B:
 </p><PRE style="face=courier"> 
-
-Analysis by residue...
-                        Definitions:
- "out of density":  RHO < 2 SD below 1/2 mean density for this atom/group
- "very weak density":  RHO < 1 SD below 1/2 mean density for this atom/group
- "weak density":  RHO < 1/2 mean density for this atom/group
- "acceptable density":  No atom is < 1 SD below 1/2 mean for that atom type and
- no group is < 1/2 mean for that group
-
- "DENSITY" is the electron density in the map, normalized so that
- the mean and SD in the region of the model are zero and 1.0, respectively.
-
-
-                     ------ MEAN DENSITY -------              NOTES
-   RESIDUE      CC       ALL     MAIN     SIDE
-
- GLU      1B   0.65      0.0      0.0      0.0     VERY WEAK DENSITY (All       )
- GLU      2B   0.70      0.6      1.0      0.3     WEAK DENSITY (All       )
- ALA      3B   0.91      1.5      1.8      0.5     WEAK DENSITY (Side-chain)
- SER      4B   0.87      1.4      1.7      0.9
- SER      5B   0.89      1.7      1.6      1.8
- THR      6B   0.88      1.1      1.2      0.8
- ARG      7B   0.84      1.1      1.2      0.7     WEAK DENSITY (Side-chain)
- GLY      8B   0.77      0.7      0.7      0.0     WEAK DENSITY (All       )
- ASN      9B   0.83      0.9      1.1      0.8     WEAK DENSITY (All       )
- LEU     10B   0.88      1.4      2.0      0.7
-
+ GLU      1 B   0.66      0.1      0.1      0.1     VERY WEAK DENSITY (All  )
+ GLU      2 B   0.69      0.6      0.9      0.3     WEAK DENSITY (All       )
+ ALA      3 B   0.89      1.5      1.8      0.4     WEAK DENSITY (Side-chain)
+ SER      4 B   0.90      1.4      1.7      0.9
+ SER      5 B   0.90      1.6      1.6      1.8
+ THR      6 B   0.87      0.9      1.2      0.6     WEAK DENSITY (All       )
+ ARG      7 B   0.71      0.6      1.1      0.3     WEAK DENSITY (All       )
+ GLY      8 B   0.73      0.6      0.6      0.0     WEAK DENSITY (All       )
+ ASN      9 B   0.81      0.8      1.0      0.7     WEAK DENSITY (All       )
+ LEU     10 B   0.88      1.3      2.0      0.6     WEAK DENSITY (Side-chain)
 </PRE>
 <p>Evidently the density for GLU 1B is non-existent, but the density for the
 other residues is present, though a bit weak.  The summary of the fit
@@ -469,26 +453,28 @@ of the entire model to the map shows a good fit:
 
             Summary of fit of model to map
 
-  Overall map correlation:                     0.88
+  Overall map correlation:                     0.87
 
   Total residues:                              628
-  Residues in acceptable density:              503
-  Residues with some weak density:             125
+  Residues in acceptable density:              496
+  Residues with some weak density:             132
 
   Residues out of density:                       0
-  Residues in very weak density:                10
-  Residues in weak density:                     36
+  Residues in very weak density:                17
+  Residues in weak density:                     31
 
   Main-chain out of density:                     0
-  Main-chain in very weak density:               1
-  Main-chain in weak density:                    5
+  Main-chain in very weak density:               2
+  Main-chain in weak density:                    7
 
   Side-chain out of density:                     0
-  Side-chain in very weak density:               0
+  Side-chain in very weak density:               1
   Side-chain in weak density:                   67
 
-  Residue with atoms out of density:             1
-  Residue with atoms in very weak density:       5
+  Residue with atoms out of density:             0
+  Residue with atoms in very weak density:       7
+
+======================================================================
 
 </PRE>
 

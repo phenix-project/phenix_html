@@ -178,18 +178,18 @@ and the best model is written out.
 Fitting ligand #1 from 1J4R_random.pdb
 Ligand file has 45 atoms
 Searching for ligand number 1
-Estimated ligand volume: 184.0  A**3
-Starting CC of ligand as input to map: 0.32
+Estimated ligand volume: 185.0  A**3
+Starting CC of ligand as input to map: 0.31
 Starting local CC of ligand as input to map: 0.18
 USING LOCAL CC: 0.18
 Trying fit with n_indiv_tries_min = 5
                 n_indiv_tries_max = 10
                 n_group_search    = 3
                 ligand_file       = 1J4R_random.pdb
-USING LOCAL CC: 0.7  instead of std cc ( 0.77 )
-Overall score: 128.2533
+USING LOCAL CC: 0.71  instead of std cc ( 0.77 )
+Overall score: 127.6678
 Atoms placed: 45 of 45
-CC to map: 0.7
+CC to map: 0.71
 </PRE>
 <p> The log file for the best fit at any time is in 
 <b>ligand_fit_1_1.pdb</b> (the first 1 refers to the solution number, 
@@ -207,7 +207,7 @@ subsequent tries at fitting these will all be increased to search more
 thoroughly.
 </p><p>This fitting of the ligand was able to place all 45 atoms in
 the ligand, with a correlation to the map in the region of the ligand of
-0.70. The &quot;LOCAL CC&quot; is the correlation of the model density
+0.71. The &quot;LOCAL CC&quot; is the correlation of the model density
 with map density in the region occupied by the ligand itself, plus 
 any contiguous points with high difference electron density that are
 connected to the region occupied by the ligand. This local CC is more 
@@ -220,10 +220,10 @@ The log file in this case concludes with:
 </p><PRE style="face=courier">
 SUMMARY:
 
-cc_overall 0.71
+cc_overall 0.72
 run_number 1
 starting_cc 0.18
-lig_volume 184.0
+lig_volume 185.0
 atoms_placed 45
 template 1J4R_random.pdb
 number_of_ligands 1
@@ -250,11 +250,12 @@ summary for this <b>1J4R-ligand</b> ligand-fitting run:
 
    ****    FILES ARE IN THE DIRECTORY: LigandFit_run_1_  ****
 
-  RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME           TEMPLATE         RMSD  
-CC_START    LIG_VOLUME
+  RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME           TEMPLATE         
+RMSD  CC_START    LIG_VOLUME
 
-   1     129.410      0.710        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb     0.00
-      0.18    184.00
+   1     128.302      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb     
+0.00      0.18    185.00
+
 
 
 </PRE>
