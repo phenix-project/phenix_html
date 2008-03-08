@@ -209,7 +209,8 @@ files produced for the <b>rh-dehalogenase</b> MIR dataset.
 you will find:
 </p><PRE style="face=courier">
 READING FACTS FROM Facts.list
-NEW FACT from Facts.list :cell [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0]
+NEW FACT from Facts.list :
+cell [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0]
 NEW FACT from Facts.list :resolution 2.8
 NEW FACT from Facts.list :expt_type sir
 NEW FACT from Facts.list :input_file_list ['rt_rd_1.sca', 'auki_rd_1.sca']
@@ -298,7 +299,7 @@ Total of 2 input data files
 in your sequence file (<b>sequence.dat</b>) and the cell parameters and space
 group to guess the number of NCS copies and the solvent fraction.
 </p><PRE style="face=courier"> 
-AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Sun Jul  8 16:59:54 2007
+AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Fri Mar  7 01:24:08 2008
 
 Solvent fraction and resolution and ha types/scatt fact
 Guessing setup for scaling dataset 1
@@ -358,7 +359,8 @@ in the AutoSol web page for more discussion
 of the anisotropy correction). In the <b>rh-dehalogenase</b> case, the range of
 anisotropic B values is small and no correction is made:
 </p><PRE style="face=courier"> Range of aniso B:  13.06 19.68
-Not using aniso-corrected data files as the range of aniso b  is only  6.62  and 'correct_aniso' is not set
+Not using aniso-corrected data files as the range of aniso b  is 
+only  6.62  and 'correct_aniso' is not set
 </PRE>
 Note that if any one of the datafiles in a MIR dataset has a high anisotropy,
 then by default all of them will be corrected for anisotropy.
@@ -483,16 +485,24 @@ were the isomorphous differences for each derivative.
 For each dataset one solution was found, and that solution and its inverse
 were scored.  The scores were (skipping extra text below):
 </p><PRE style="face=courier">
-SCORING SOLUTION 1: Solution 1 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. Dataset #1, with 5 sites
+SCORING SOLUTION 1: 
+Solution 1 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. 
+Dataset #1, with 5 sites
 ESTIMATED MAP CC x 100:  28.7 +/- 22.2
 
-SCORING SOLUTION 2: Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. Dataset #1, with 5 sites
+SCORING SOLUTION 2: 
+Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. 
+Dataset #1, with 5 sites
 ESTIMATED MAP CC x 100:  37.0 +/- 15.2
 
-SCORING SOLUTION 3: Solution 3 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. Dataset #2, with 5 sites
+SCORING SOLUTION 3: 
+Solution 3 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. 
+Dataset #2, with 5 sites
 ESTIMATED MAP CC x 100:  36.8 +/- 27.6
 
-SCORING SOLUTION 4: Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2, with 5 sites
+SCORING SOLUTION 4: 
+Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
+Dataset #2, with 5 sites
 ESTIMATED MAP CC x 100:  58.5 +/- 7.9
 
 
@@ -528,9 +538,11 @@ Phases from solution 4:solve_4.mtz
 Phases from solution 2:solve_2.mtz
 Merged ha files in ha_4_2.pdb
 Merged files in merged_4_2.mtz
-FOM solution 4: 0.56    FOM solution 2: 0.44    Correlation of maps: 0.249    Ideal map correlation: 0.2464
+FOM solution 4: 0.56    FOM solution 2: 0.44    
+Correlation of maps: 0.249    Ideal map correlation: 0.2464
 
-RESULT: FOM solution 4: 0.56    FOM solution 2: 0.44    Correlation of maps: 0.249    Ideal map correlation: 0.2464
+RESULT: FOM solution 4: 0.56    FOM solution 2: 0.44    
+Correlation of maps: 0.249    Ideal map correlation: 0.2464
  Origin offset of solution 2: [-0.5, 0.0, 0.0]
 </PRE>
 <p>Here solutions 2 and 4 have a map correlation of 0.25, just about the
@@ -542,16 +554,21 @@ basis for density modification:
 </p><PRE style="face=courier">
 Merging a set of solutions and phasing the group with SOLVE
 List of solutions to merge
-SOL:  4 : Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2
+SOL:  4 : 
+Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
+Dataset #2
 Native is :  AutoSol_run_1_/rt_rd_1_PHX.sca
-SOL:  2 : Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. Dataset #1
+SOL:  2 : 
+Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. 
+Dataset #1
 Native is :  AutoSol_run_1_/rt_rd_1_PHX.sca
 Number of derivatives:  2
 </PRE>
 However in this case after phasing with the two derivatives together, the
 score is not improved over the HGKI derivative by itself:
 </p><PRE style="face=courier">
- PHASED SOLUTION: Solution 9 based on MIR phasing starting from solutions 4 (dataset #2)  and 2 (dataset #1)
+ PHASED SOLUTION: 
+Solution 9 based on MIR phasing starting from solutions 4 (dataset #2)  and 2 (dataset #1)
 
 AutoSol_run_1_/TEMP0/resolve.scores CC 0.4500604
 AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5492675
@@ -577,7 +594,8 @@ of merit (0.57).
 modification and finding additional sites:
 </p><PRE style="face=courier">
 SOLUTION USED TO START DEN MOD:
-Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2
+Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
+Dataset #2
 HKLIN: solve_4.mtz
 Testing density modification with mask_type = wang
 RFACTOR:  0.2475
@@ -614,7 +632,8 @@ None of these new solutions has a score higher than the original HGKI
 derivative, but one of the  combinations is now better:
 
 </p><PRE style="face=courier">
- PHASED SOLUTION: Solution 25 based on MIR phasing starting from solutions 4 (dataset #2)  and 15 (dataset #1)
+ PHASED SOLUTION: 
+Solution 34 based on MIR phasing starting from solutions 4 (dataset #2)  and 24 (dataset #1)
 
 MARKING DUPLICATES FROM solutions
 
@@ -626,9 +645,9 @@ Evaluate_solution
 
 Scoring for this solution now...
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.6533058
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4493593
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.4176151
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.6533188
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4493503
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.4176672
 AutoSol_run_1_/TEMP0/resolve.scores FOM 0.64
 
 CC-EST (BAYES-CC) CC : 70.8 +/- 25.3
@@ -654,13 +673,13 @@ all the other derivatives are ignored.
 Once the best heavy-atom solution or solutions are chosen based on 
 <b>Z-scores</b>, these are used in a final round of phasing with
 SOLVE (for MIR phasing). The log file from phasing for solution <b>25</b> is in
-<b>solve_25.prt</b>. 
+<b>solve_34.prt</b>. 
 The
 heavy-atom model is refined and phases are calculated with Bayesian correlated
 MIR phasing. An important part of this phasing method is a statistical
 method of taking into account the correlation of non-isomorphism among
 derivatives. The extent of this correlation is listed in the 
-<b>solve_25.prt</b> summary file:
+<b>solve_34.prt</b> summary file:
 </p><PRE style="face=courier">
  DERIVATIVE:            1
  CENTRIC REFLECTIONS:
@@ -668,7 +687,6 @@ derivatives. The extent of this correlation is listed in the
  RMS errors correlated and uncorrelated with others in group:
       Correlated:   51.1   64.3   52.2   42.9   52.6   58.9   56.8   40.9   26.4
     Uncorrelated:   32.7   34.6   29.4   41.6   23.6   27.6    4.6   37.9   46.6
-
  Correlation of errors with other derivs:
  DERIV 2:           0.57   0.68   0.62   0.45   0.55   0.66   0.65   0.51   0.28
 
@@ -681,23 +699,29 @@ means that a big part of the errors are correlated, and should be treated
 as such.
 The final occupancies and coordinates are listed at the end:
 
-</p><PRE style="face=courier">PARAMETER SHIFTS FOR DERIV  1 : set 1 
+</p><PRE style="face=courier">
+PARAMETER SHIFTS FOR DERIV  1 : set 1 
+
                          SCALE FACTOR     OVERALL B
  CURRENT VALUES:          0.9685          0.0000
+
                     SITE  ATOM       OCCUP     X       Y       Z         B
  CURRENT VALUES:      1    Hg       0.3587  0.7222  0.2799  0.4213    6.2541
  CURRENT VALUES:      2    Hg       0.3862  0.1884  0.1574  0.4392   30.8420
  CURRENT VALUES:      3    Hg       0.2914  0.7366  0.2517  0.4165    8.5235
  CURRENT VALUES:      4    Hg       0.2864  0.7111  0.2957  0.4698    8.0632
 
-PARAMETER SHIFTS FOR DERIV  2 : set 2 
+ PARAMETER SHIFTS FOR DERIV  2 : set 2 
+
                          SCALE FACTOR     OVERALL B
  CURRENT VALUES:          0.9648          0.0000
+
                     SITE  ATOM       OCCUP     X       Y       Z         B
- CURRENT VALUES:      1    Au       0.3923  0.2086  0.1866  0.4628   20.2014
- CURRENT VALUES:      2    Au       0.3014  0.3615  0.3381  0.4843   14.7380
- CURRENT VALUES:      3    Au       0.5414  0.7124  0.2832  0.4320   32.2650
- CURRENT VALUES:      4    Au       0.1402  0.1826  0.1607  0.4459   19.4977
+ CURRENT VALUES:      1    Au       0.5416  0.7124  0.2832  0.4320   32.2978
+ CURRENT VALUES:      2    Au       0.3923  0.2086  0.1866  0.4628   20.1964
+ CURRENT VALUES:      3    Au       0.3014  0.3615  0.3381  0.4843   14.7369
+ CURRENT VALUES:      4    Au       0.1402  0.1826  0.1607  0.4459   19.5093
+
 
 </PRE>
 In this case the occupancies of the top sites are about 1/3, which
@@ -716,7 +740,7 @@ phases (FP, PHIB) from SOLVE are used to calculate the starting
 map for RESOLVE, and the experimental structure factor amplitudes (FP)
 and MIR Hendrickson-Lattman coefficients from SOLVE are used
 in the density modification process. The output from RESOLVE for solution 25
-can be found in <b>resolve_25.log</b>.  Here are key sections of this
+can be found in <b>resolve_34.log</b>.  Here are key sections of this
 output. </p>
 <p>First, the plot of how many points in the &quot;protein&quot; region
 of the map have each possible value of electron density. The
@@ -811,9 +835,9 @@ The files to be used for model-building
 and refinement are listed in the AutoSol log file:
 </p><PRE style="face=courier"> 
 Generating FreeR flags...
-Saving  exptl_fobs_phases_freeR_flags_25.mtz  for refinement
-THE FILE AutoSol_run_1_/resolve_25.mtz will be used for model-building
-THE FILE exptl_fobs_phases_freeR_flags_25.mtz will be used for refinement
+Saving  exptl_fobs_phases_freeR_flags_34.mtz  for refinement
+THE FILE AutoSol_run_1_/resolve_34.mtz will be used for model-building
+THE FILE exptl_fobs_phases_freeR_flags_34.mtz will be used for refinement
 
 </PRE>
 
@@ -831,32 +855,38 @@ Automated Model Building and Rebuilding with AutoBuild</a>.
 done less comprehensively to speed things up.)
 </p>
 <p>In this case three initial models are built. 
-The model-building produces an initial model with 239
-residues built and side chains assigned to 159, and which refines to
-an R-factor of 0.37 and a free R-factor of 0.43. The next two models built
-have similar numbers of residues built, and are not refined:
+The model-building produces an initial model with 221
+residues built and side chains assigned to 92, and which refines to
+an R-factor of 0.41 and a free R-factor of 0.47. The next two models built
+have similar numbers of residues built, but the second model is a little
+better than the first and is also refined, giving an R/Rfreee of 0.37/0.44.
 </p><PRE style="face=courier"> 
-iBuilding 3 RESOLVE models...
-Model 1: Residues built=239  placed=159  Chains=12  Model-map CC=0.62
-Refining model:  Build_1.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.37/0.43
-
-Model 2: Residues built=246  placed=115  Chains=19  Model-map CC=0.60
-Model 3: Residues built=229  placed=117  Chains=18  Model-map CC=0.59
-
+Building 3 RESOLVE models...
+Model 1: Residues built=221  placed=92  Chains=16  Model-map CC=0.58
+Model 2: Residues built=228  placed=149  Chains=14  Model-map CC=0.61
+Model 3: Residues built=233  placed=139  Chains=14  Model-map CC=0.61
 </PRE>
 
 <p>After one model completion cycle (including merging these three initial
 models together, extending ends of chains,
 fitting loops, and building outside the region already built, the best
-model built has 280 residues built, 260 assigned to sequence:
+model built has 283 residues built, 259 assigned to sequence:
 </p><PRE style="face=courier"> 
-Model 9: Residues built=280  placed=260  Chains=1  Model-map CC=0.77
+Model 9: Residues built=283  placed=259  Chains=2  Model-map CC=0.77
+This is new best model with cc =  0.77
 Refining model:  model_with_loops_10.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.23/0.28
+Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.22/0.29
+</PRE>
+After an additional model completion cycle, the best model is in refine_14.pdb:
+</p><PRE style="face=courier"> 
+Model 14: Residues built=289  placed=285  Chains=1  Model-map CC=0.79
+This is new best model with cc =  0.79
+Refining model:  model_with_loops_15.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_14.pdb  R/Rfree=0.19/0.25
 </PRE>
 
-This refined initial model is written out to <b>refine_9.pdb</b> in
+
+This refined initial model is written out to <b>refine_14.pdb</b> in
 the output directory.
 
 <p><H5>The AutoSol_summary.dat summary file</H5></p>
@@ -873,42 +903,44 @@ summary for this <b>rh-dehalogenase</b> MIR dataset:
 -----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
 
  *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
+Solution # 34  BAYES-CC: 68.0 +/- 5.6 Dataset #0   FOM: 0.64 ----------------
 
-Solution # 25  BAYES-CC: 68.0 +/- 5.6 Dataset #0   FOM: 0.64 ----------------
-
-Solution 25 based on MIR phasing starting from solutions 4 (dataset #2)  and 15 (dataset #1) 
-This solution is a composite of solutions:  4 15 (Already used for Phasing at resol of 2.8)      Refined Sites: 4
-NCS information  in: AutoSol_25.ncs_spec
-Experimental phases in: solve_25.mtz
-Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_25.mtz
-Density-modified phases in: resolve_25.mtz
-HA sites (PDB format) in: ha_25.pdb_formatted.pdb
+Solution 34 based on MIR phasing starting from solutions 4 (dataset #2)  and 24 (dataset #1)
+This solution is a composite of solutions:  4 24 
+(Already used for Phasing at resol of 2.8)      Refined Sites: 4
+NCS information  in: AutoSol_34.ncs_spec
+Experimental phases in: solve_34.mtz
+Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_34.mtz
+Density-modified phases in: resolve_34.mtz
+HA sites (PDB format) in: ha_34.pdb_formatted.pdb
 Sequence file in: sequence.dat
-Model in: refine_20.pdb
-  Residues built: 283
-  Side-chains built: 279
+Model in: refine_14.pdb
+  Residues built: 289
+  Side-chains built: 285
   Chains: 1
-  Overall model-map correlation: 0.81
-  R/R-free: 0.17/0.24
-Phasing logfile in: solve_25.prt
-Density modification logfile in: resolve_25.log
-Build logfile in: Build_combine_extend_20.log
+  Overall model-map correlation: 0.79
+  R/R-free: 0.19/0.25
+Phasing logfile in: solve_34.prt
+Density modification logfile in: resolve_34.log (R=0.25)
+Build logfile in: model_with_loops_15.log
 
  Score type:        CC       RFACTOR       SKEW       FOM
-Raw scores:       0.65        0.45        0.42        0.64  
-BAYES-CC:        70.78       64.78       68.58       48.82  
+Raw scores:       0.65        0.45        0.42        0.64
+BAYES-CC:        70.78       64.78       68.59       48.82
 
-Refined heavy atom sites (fractional): 
+Refined heavy atom sites (fractional):
 deriv 1
-xyz       0.722      0.280      0.421 
-xyz       0.188      0.157      0.439 
-xyz       0.737      0.252      0.416 
-xyz       0.711      0.296      0.470 
+xyz       0.722      0.280      0.421
+xyz       0.188      0.157      0.439
+xyz       0.737      0.252      0.416
+xyz       0.711      0.296      0.470
 deriv 2
-xyz       0.209      0.187      0.463 
-xyz       0.361      0.338      0.484 
-xyz       0.712      0.283      0.432 
-xyz       0.183      0.161      0.446 
+xyz       0.712      0.283      0.432
+xyz       0.209      0.187      0.463
+xyz       0.361      0.338      0.484
+xyz       0.183      0.161      0.446
+
+
 </PRE>
 
 <p><H5>How do I know if I have a good solution?</H5></p>

@@ -193,14 +193,13 @@ Scalepack format. The AutoSol wizard converts everything to premerged
 Scalepack format before proceeding. Here is where the AutoSol Wizard
 identifies the format and then calls the ImportRawData Wizard:
 </p><PRE style="face=courier">HKLIN ENTRY:  p9_se_w2.sca
-FILE TYPE scalepack_no_merge_original_index
 GUESS FILE TYPE MERGE TYPE sca unmerged
 LABELS['I', 'SIGI']
 CONTENTS: ['p9_se_w2.sca', 'sca', 'unmerged', 'I 41', None, None, ['I', 'SIGI']]
 Converting the files ['p9_se_w2.sca'] to sca format before proceeding
 Running import directly...
 WIZARD:  ImportRawData
-PHENIX VERSION:  1.3b  of  27-06-2007
+PHENIX VERSION:  1.3b  of  21-10-2007
 </PRE>
 
 <p><H5>Using the datafiles converted to premerged format.</H5></p>
@@ -225,7 +224,8 @@ in your sequence file (<b>seq.dat</b>) and the cell parameters and space
 group to guess the number of NCS copies and the solvent fraction, and the
 number of total methionines (approximately equal to the number of heavy-atom
 sites for SeMet proteins):
-</p><PRE style="face=courier"> AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Tue Jul  3 20:38:55 2007
+</p><PRE style="face=courier"> 
+AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Fri Mar  7 00:53:48 2008
 
 Solvent fraction and resolution and ha types/scatt fact
 This is the last dataset to scale
@@ -252,7 +252,8 @@ conditions that you should be aware of.  You can read more about
 xtriage in <a href="xtriage.htm">Data quality assessment 
 with phenix.xtriage</a>.  Part of the summary output from xtriage for this
 dataset looks like this:
-</p><PRE style="face=courier"> The largest off-origin peak in the Patterson function is 6.49% of the
+</p><PRE style="face=courier"> 
+The largest off-origin peak in the Patterson function is 6.49% of the
 height of the origin peak. No significant pseudotranslation is detected.
 
 The results of the L-test indicate that the intensity statistics
@@ -551,7 +552,8 @@ summary for this <b>p9</b> SAD dataset:
 
 Solution # 2  BAYES-CC: 59.6 +/- 8.4 Dataset #1   FOM: 0.54 ----------------
 
-Solution  2 using HYSS on AutoSol_run_1_/p9_se_w2_PHX.sca_ano_1.sca and taking inverse. Dataset #1
+Solution  2 using HYSS on AutoSol_run_1_/p9_se_w2_PHX.sca_ano_1.sca and taking inverse. 
+Dataset #1
 Dataset number: 1
 Dataset type: sad
 Datafiles used: ['AutoSol_run_1_/p9_se_w2_PHX.sca']

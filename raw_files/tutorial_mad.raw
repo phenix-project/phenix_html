@@ -206,8 +206,8 @@ in your sequence file (<b>sequence.dat</b>) and the cell parameters and space
 group to guess the number of NCS copies and the solvent fraction, and the
 number of total methionines (approximately equal to the number of heavy-atom
 sites for SeMet proteins):
-</p><PRE style="face=courier"> AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Tue Jul  3 13:54:02 2007
-
+</p><PRE style="face=courier"> 
+AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Thu Mar  6 21:43:20 2008
 Solvent fraction and resolution and ha types/scatt fact
 This is the last dataset to scale
 Guessing setup for scaling dataset 1
@@ -223,6 +223,7 @@ SOLVENT FRACTION ESTIMATE: 0.46
 Total residues:87
 Total Met:2
 resolution estimate: 2.59
+
 </PRE>
 
 <p><H5>Running phenix.xtriage</H5></p>
@@ -253,9 +254,9 @@ in the AutoSol web page for more discussion
 of the anisotropy correction). In the <b>gene-5</b> case, the range of
 anisotropic B values is small and no correction is made:
 </p><PRE style="face=courier">
-Range of aniso B:  24.65 29.43
+Range of aniso B:  24.58 27.92
 Not using aniso-corrected data files as the range of aniso b  is 
-only  4.78  and 'correct_aniso' is not set
+only  3.43  and 'correct_aniso' is not set
 </PRE>
 Note that if any one of the datafiles in a MAD dataset has a high anisotropy,
 then by default all of them will be corrected for anisotropy.
@@ -296,6 +297,7 @@ for the peak and high energy remote wavelengths.
 You can see this analysis in the log file 
 <b>dataset_scale_1.log</b> for this MAD dataset:
 </p><PRE style="face=courier">
+
 Correlation of anomalous differences at different wavelengths.
 (You should probably cut your data off at the resolution where
  this drops below about 0.3. A good dataset has correlation
@@ -307,7 +309,7 @@ Correlation of anomalous differences at different wavelengths.
  DMIN    1 VS 2   1 VS 3   2 VS 3
 
  5.18     0.79     0.89     0.73
- 3.88     0.68     0.76     0.55
+ 3.88     0.68     0.75     0.55
  3.63     0.68     0.72     0.46
  3.43     0.53     0.61     0.41
  3.24     0.51     0.58     0.26
@@ -328,10 +330,10 @@ signal-to-noise).
   In this case,  the FA's appear to have
 the highest signal-to-noise (3.1) and the inflection data the lowest (0.5):
 </p><PRE style="face=courier">
-FILE DATA:FA.sca sn: 3.139669
-FILE DATA:peak.sca sn: 2.527148
-FILE DATA:high.sca sn: 1.359413
-FILE DATA:infl.sca sn: 0.5159167
+FILE DATA:FA.sca sn: 3.136704
+FILE DATA:peak.sca sn: 2.527422
+FILE DATA:high.sca sn: 1.35499
+FILE DATA:infl.sca sn: 0.5154387
 order of datasets for trying phasing:['FA.sca', 'peak.sca', 'high.sca', 'infl.sca']
 </PRE>
 
@@ -354,20 +356,20 @@ r = number of dual-space recycling cycles
 cc = final correlation coefficient
 
 
-p=000 f=000 cc=0.212 r=015 cc=0.282 [ best cc: 0.282 ]
-p=000 f=001 cc=0.195 r=015 cc=0.290 [ best cc: 0.290 0.282 ]
+p=000 f=000 cc=0.181 r=015 cc=0.292 [ best cc: 0.292 ]
+p=000 f=001 cc=0.151 r=015 cc=0.285 [ best cc: 0.292 0.285 ]
 Number of matching sites of top 2 structures: 2
-p=000 f=002 cc=0.144 r=015 cc=0.292 [ best cc: 0.292 0.290 0.282 ]
+p=000 f=002 cc=0.144 r=015 cc=0.280 [ best cc: 0.292 0.285 0.280 ]
+Number of matching sites of top 2 structures: 2
+Number of matching sites of top 3 structures: 2
+p=001 f=000 cc=0.152 r=015 cc=0.278 [ best cc: 0.292 0.285 0.280 0.278 ]
+Number of matching sites of top 2 structures: 2
+Number of matching sites of top 3 structures: 2
+Number of matching sites of top 4 structures: 2
+p=001 f=001 cc=0.101 r=015 cc=0.291 [ best cc: 0.292 0.291 0.285 0.280 0.278 ]
 Number of matching sites of top 2 structures: 3
 Number of matching sites of top 3 structures: 2
-p=001 f=000 cc=0.178 r=015 cc=0.288 [ best cc: 0.292 0.290 0.288 0.282 ]
-Number of matching sites of top 2 structures: 3
-Number of matching sites of top 3 structures: 3
 Number of matching sites of top 4 structures: 2
-p=001 f=001 cc=0.168 r=015 cc=0.292 [ best cc: 0.292 0.292 0.290 0.288 0.282 ]
-Number of matching sites of top 2 structures: 3
-Number of matching sites of top 3 structures: 3
-Number of matching sites of top 4 structures: 3
 Number of matching sites of top 5 structures: 2
 
 </PRE>
@@ -408,6 +410,10 @@ phases. For a MAD dataset, a figure of merit of 0.5 is
 acceptable, 0.6 is fine and anything above 0.7 is very good.
  The scores are listed in the AutoSol log file:
 </p><PRE style="face=courier">
+SCORING SOLUTION 2: Solution  2 using HYSS on FA.sca and taking inverse. 
+Dataset #1, with 2 sites
+Evaluating solution 2
+
 Scoring for this solution now...
 
 AutoSol_run_1_/TEMP0/resolve.scores CC 0.5036805
@@ -440,21 +446,25 @@ For each dataset one solution was found, and that solution and its inverse
 were scored.  The scores were (skipping extra text below):
 </p><PRE style="face=courier">
 
-SCORING SOLUTION 1: Solution 1 using HYSS on FA.sca. Dataset #1, with 2 sites
+SCORING SOLUTION 1: Solution 1 using HYSS on FA.sca. 
+Dataset #1, with 2 sites
 ESTIMATED MAP CC x 100:  44.9 +/- 14.6
 
-SCORING SOLUTION 2: Solution  2 using HYSS on FA.sca and taking inverse. Dataset #1, with 2 sites
+SCORING SOLUTION 2: Solution  2 using HYSS on FA.sca and taking inverse. 
+Dataset #1, with 2 sites
 ESTIMATED MAP CC x 100:  57.8 +/- 8.0
 
-SCORING SOLUTION 3: Solution 3 using HYSS on peak.sca_ano_1.sca. Dataset #1, with 2 sites
+SCORING SOLUTION 3: Solution 3 using HYSS on peak.sca_ano_1.sca. 
+Dataset #1, with 2 sites
 ESTIMATED MAP CC x 100:  53.1 +/- 11.3
 
-SCORING SOLUTION 4: Solution  4 using HYSS on peak.sca_ano_1.sca and taking inverse. Dataset #1, with 2 sites
+SCORING SOLUTION 4: Solution  4 using HYSS on peak.sca_ano_1.sca and taking inverse. 
+Dataset #1, with 2 sites
 ESTIMATED MAP CC x 100:  53.1 +/- 11.0
 </PRE>
 </p><p>In this case the best score was using the FA values and taking the
 inverse hand (ESTIMATED MAP CC x 100:  57.8 +/- 8.0), and
-score for the non-inverted hand of the heavy-atom substructxurewas worse 
+score for the non-inverted hand of the heavy-atom substructure was worse 
 (ESTIMATED MAP CC x 100:  44.9 +/- 14.6)
 and so the hand was clear.
 
@@ -468,49 +478,66 @@ the heavy atoms and the non-heavy atoms
 to calculate Fourier maps showing the positions of the
 anomalously-scattering atoms. The top peaks in these maps are used as trial heavy-atom
 sites (if they are not already part of the heavy-atom model.
-</p><p>In this example solution 2 is used for this phasing/density modification/Fourier
-procedure. Two new solutions are found, the second of which is nearly identical
-to the original solution 2, but which turns out to be a little better (leaving
-out some text below):
+</p><p>In this example solutions 2, 3 and 4 are all used for this 
+phasing/density modification/Fourier
+procedure. Six new solutions are found, 
+the best of which is solution 8, based on a difference Fourier using 
+density modified phases from solution 4 (and is nearly identical to
+solution 2):
 </p><PRE style="face=courier">
-DM SOLUTION USED TO GET SITES FOR DATASET 1:Solution 1 using HYSS on FA.sca. Dataset #1
-Writing out solution  5
-xyz          0.984           0.257           0.094
 
-Number of sites in additional list:3
-Generating common_list + up to 3 additional sites as group from denmod
-Writing out solution  6
-xyz          0.984           0.257           0.094
-xyz          0.028           0.040           0.052
+SCORING SOLUTION 8: Solution 8 based on diff Fourier using denmod solution 4. 
+Dataset #1, with 2 sites
+Scoring for this solution now...
 
-Evaluating solution 5
-ESTIMATED MAP CC x 100:  53.5 +/- 11.3
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.5031005
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5256081
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2940973
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.59
 
-Evaluating solution 6
-ESTIMATED MAP CC x 100:  57.9 +/- 7.9
-
+CC-EST (BAYES-CC) CC : 53.8 +/- 30.5
+CC-EST (BAYES-CC) RFACTOR : 39.1 +/- 40.7
+CC-EST (BAYES-CC) SKEW : 57.4 +/- 16.0
+CC-EST (BAYES-CC) FOM : 44.5 +/- 47.7
+ESTIMATED MAP CC x 100:  57.8 +/- 8.0
 
 </PRE>
-<p> Solution 5 gets a score of 53.5+/-11.3, 
-but solution 6 gets a score of 57.9+/-7.9 and is the best solution so far.
-</p><p>One more cycle of phasing, density modification and Fourier calculation
-is carried out, and solution 8 (identical to solution 6 in this case) is the best
-overall and is used for final phasing and density modification.
+<p> This process is repeated several additional times, leading to the final 
+best solution of Solution 10:
+
+</p><PRE style="face=courier">
+SCORING SOLUTION 10: Solution 10 based on diff Fourier using denmod solution 3. 
+Dataset #1, with 2 sites
+
+AutoSol_run_1_/TEMP0/resolve.scores CC 0.5036793
+AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5255247
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2941538
+AutoSol_run_1_/TEMP0/resolve.scores FOM 0.59
+
+CC-EST (BAYES-CC) CC : 53.9 +/- 30.5
+CC-EST (BAYES-CC) RFACTOR : 39.2 +/- 40.8
+CC-EST (BAYES-CC) SKEW : 57.4 +/- 16.0
+CC-EST (BAYES-CC) FOM : 44.5 +/- 47.7
+ESTIMATED MAP CC x 100:  57.9 +/- 8.0
+</PRE>
+
+which is used for final phasing and density modification.
 
 <p><H5>Final phasing with SOLVE</H5></p>
 Once the best heavy-atom solution or solutions are chosen based on 
 <b>ESTIMATED MAP CC</b>, these are used in a final round of phasing with
-SOLVE (for MAD phasing). The log file from phasing for solution <b>8</b> is in
-<b>solve_8.prt</b>. This SOLVE log file repeats the correlation analysis of anomalous
+SOLVE (for MAD phasing). The log file from phasing for solution <b>10</b> is in
+<b>solve_10.prt</b>. This SOLVE log file repeats the correlation analysis of anomalous
 differences between data at each wavelength. Then it carries out a 
 detailed refinement of the scattering factors at each wavelength. Finally the
 heavy-atom model is refined and phases are calculated with Bayesian correlated
 MAD phasing. The final occupancies and coordinates are listed at the end:
 </p><PRE style="face=courier">
                     SITE  ATOM       OCCUP     X       Y       Z         B
+ CURRENT VALUES:      1    Se       0.9645  0.4839  0.1971  0.0931   52.1889
+ CURRENT VALUES:      2    Se       0.5351  0.0286  0.4805  0.0517   60.0000
 
- CURRENT VALUES:      1    Se       0.9668  0.9837  0.2564  0.0931   52.4444
- CURRENT VALUES:      2    Se       0.5387  0.0286  0.0398  0.0517   60.0000
+
 </PRE>
 In this case the occupancy of one site is quite near 1 and the other is lower. The
 second site is a selenomethionine that is not well ordered (it is the N-terminal 
@@ -528,7 +555,7 @@ phases (FWT, PHWT) from SOLVE are used to calculate the starting
 map for RESOLVE, and the experimental structure factor amplitudes (FP)
 and MAD Hendrickson-Lattman coefficients from SOLVE are used
 in the density modification process. The output from RESOLVE for solution 1
-can be found in <b>resolve_8.log</b>.  Here are key sections of this
+can be found in <b>resolve_10.log</b>.  Here are key sections of this
 output. </p>
 <p>First, the plot of how many points in the &quot;protein&quot; region
 of the map have each possible value of electron density. The
@@ -542,31 +569,32 @@ negative density.  Such a map has a very high skew (think
 skew, though it is not perfect.
 </p><PRE style="face=courier">
 
+
  Plot of Observed (o) and model (x) electron density distributions for protein
  region, where the model distribution is given by,
   p_model(beta*(rho+offset)) = p_ideal(rho)
  and then convoluted with a gaussian with width of sigma
  where sigma, offset and beta are given below under "Error estimate."
 
-                          0.04..................................................
+
+                          0.03..................................................
                               .                   .                            .
                               .                   .                            .
-                              .                 xxxo                           .
-                              .                xxoxxo                          .
-                              .              xxo  . xo                         .
-                              .             ooo   .  xo                        .
-                p(rho)        .             xo    .   xx                       .
-                              .            xo     .     xo                     .
-                              .          oxx      .      xo                    .
-                              .          x        .       xx                   .
-                              .         ox        .         xx                 .
-                              .        ox         .          oxx               .
-                              .      oxx          .            xxxx            .
-                              .    xxxx           .               xxxxx        .
-                         0.0  xxxxxx.................................oxxxxxxxxxx
+                              .              xxxxxx                            .
+                              .             x o oo.xoo                         .
+                              .            xoo    .oxx                         .
+                              .           xx      . oxo o                      .
+                p(rho)        .          xo       .   xxooo                    .
+                              .          x        .     xxoo                   .
+                              .         x         .       xooo                 .
+                              .       ox          .        xxxoo               .
+                              .      oxx          .           xxxo             .
+                              .     xxx           .             oxxx           .
+                              .   oxx             .               ooxxx        .
+                              .oxxxx              .                  ooxxxxx   .
+                         0.0  xx.........................................o.oxxxx
 
                              -2        -1         0         1         2        3
-`
 
                                   normalized rho (0 = mean of solvent region)
 
@@ -579,33 +607,33 @@ one from a perfect structure:
                           0.03..................................................
                               .                   .                            .
                               .                   .                            .
-                              .                 oo.                            .
-                              .            xxxxxxxo                            .
-                              .           xx o   xxo                           .
-                              .          xoo      .xo                          .
-                p(rho)        .         xo        . xx                         .
-                              .        xo         .  xxx                       .
-                              .       xx          .   oxxx                     .
-                              .      xx           .      xxxx                  .
-                              .    oxx            .        ooxxxxxx            .
-                              .   ox              .            o oxxxxxx       .
-                              . oxxx              .                  o  xxxxx oo
-                              xxxx                .                         oxxo
-                         0.0  x................................................x
+                              .          oo x     .                            .
+                              .          xxxxxxx  .                            .
+                              .         xo  o oox .                            .
+                              .        xo       oxxo                           .
+                p(rho)        .     o x           .xxo                         .
+                              .     xx            .  xo                        .
+                              .    xx             .  oxxooo                    .
+                              .   ox              .     xxxxooo o              .
+                              .  xx               .         xxxxxxxxoo         .
+                              .oxo                .                 xxxxxx o   .
+                              xx                  .                      oxxxxxx
+                              x                   .                          oox
+                         0.0  o................................................x
 
                              -2        -1         0         1         2        3
-
 
                                   normalized rho (0 = mean of solvent region)
 
 
 </PRE>
+
 <p>The key statistic from this RESOLVE density modification is the R-factor
 for comparison of observed structure factor amplitudes (FP) with those
 calculated from the density modification procedure (FC).
 In this <b>gene-5</b> MAD phasing the R-factor is very low: 
 </p><PRE style="face=courier">
- Overall R-factor for FC vs FP: 0.275 for       2602 reflections
+ Overall R-factor for FC vs FP: 0.283 for       2602 reflections
 </PRE>
 An acceptable value is anything below 0.35; below 0.30 is good.
 
@@ -623,9 +651,9 @@ then you can do this with the keyword <b>input_refinement_file=hires.mtz</b>.
 The files to be used for model-building
 and refinement are listed in the AutoSol log file:
 </p><PRE style="face=courier"> Generating FreeR flags...
-Saving  exptl_fobs_phases_freeR_flags_8.mtz  for refinement
-THE FILE AutoSol_run_1_/resolve_8.mtz will be used for model-building
-THE FILE exptl_fobs_phases_freeR_flags_8.mtz will be used for refinement
+Saving  exptl_fobs_phases_freeR_flags_10.mtz  for refinement
+THE FILE AutoSol_run_1_/resolve_10.mtz will be used for model-building
+THE FILE exptl_fobs_phases_freeR_flags_10.mtz will be used for refinement
 </PRE>
 
 <p><H5>Model-building with RESOLVE</H5></p>
@@ -641,30 +669,42 @@ Automated Model Building and Rebuilding with AutoBuild</a>.
 <b>thoroughness=quick</b> the model-building is
 done less comprehensively to speed things up.)
 </p>
-<p>In this case three initial models are built. 
-The model-building produces an initial model with 59
+<p>In this case two different maps are used in two tries at
+model-building, and for each map three initial models are built. 
+The first map used is from Solution 14, and the second is from Solution 10.
+<p> The model-building from Solution 10 turns out to be a little better 
+than that from solution 14, and is described here.
+<p> The model-building produces an initial model with 50
 residues built and no side chains assigned, and which refines to
-an R-factor of 0.44 and a free R-factor of 0.49. The next two models built
+an R-factor of 0.47 and a free R-factor of 0.51. The next two models built
 have similar numbers of residues built, and are not refined:
 </p><PRE style="face=courier"> Building 3 RESOLVE models...
-Model 1: Residues built=59  placed=0  Chains=9  Model-map CC=0.55
-Refining model:  Build_1.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.44/0.49
-Model 2: Residues built=61  placed=7  Chains=6  Model-map CC=0.55
-Model 3: Residues built=64  placed=0  Chains=8  Model-map CC=0.59
+Model 19: Residues built=50  placed=7  Chains=6  Model-map CC=0.51
+This is new best model with cc =  0.51
+Refining model:  Build_19.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_19.pdb  R/Rfree=0.47/0.51
+Model 20: Residues built=61  placed=0  Chains=11  Model-map CC=0.57
+Model 21: Residues built=52  placed=7  Chains=6  Model-map CC=0.53
 </PRE>
 
 <p>After one model completion cycle (including merging these three initial
 models together, extending ends of chains,
 fitting loops, and building outside the region already built, the best
-model built has 79 residues built, 66 assigned to sequence:
-</p><PRE style="face=courier"> Model 9: Residues built=79  placed=66  Chains=3  Model-map CC=0.73
-This is new best model with cc =  0.73
-Refining model:  model_with_loops_10.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.27/0.35
+model built has 63 residues built, 5 assigned to sequence:
+</p><PRE style="face=courier"> 
+Model 26: Residues built=73  placed=10  Chains=6  Model-map CC=0.64
+This is new best model with cc =  0.64
+Refining model:  Build_combine_extend_26.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_26.pdb  R/Rfree=0.39/0.43
 </PRE>
-This is the best model that is obtained, and this
-refined initial model is written out to <b>refine_9.pdb</b> in
+After two more model-completion cycles, the best model obtained is #31:
+</p><PRE style="face=courier"> 
+Model 31: Residues built=76  placed=50  Chains=3  Model-map CC=0.67
+This is new best model with cc =  0.67
+Refining model:  model_with_loops_32.pdb
+Refined model: AutoSol_run_1_/TEMP0/refine_31.pdb  R/Rfree=0.35/0.43
+</PRE>
+This refined initial model is written out to <b>refine_31.pdb</b> in
 the output directory.
 
 <p><H5>The AutoSol_summary.dat summary file</H5></p>
@@ -680,40 +720,42 @@ summary for this <b>gene-5</b> MAD dataset:
 
 -----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
 
- *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
+*** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
 
-Solution # 8  BAYES-CC: 57.9 +/- 7.9 Dataset #1   FOM: 0.45 ----------------
 
-Solution 8 based on diff Fourier using denmod solution 6. Dataset #1
+
+Solution # 10  BAYES-CC: 57.9 +/- 8.0 Dataset #1   FOM: 0.45 ----------------
+
+Solution 10 based on diff Fourier using denmod solution 3. Dataset #1
 Dataset number: 1
 Dataset type: mad
 Datafiles used: ['peak.sca', 'infl.sca', 'high.sca']
-Sites: 2 (Already used for Phasing at resol of 2.59) 
-NCS information  in: AutoSol_8.ncs_spec
-Experimental phases in: solve_8.mtz
-Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_8.mtz
-Density-modified phases in: resolve_8.mtz
-HA sites (PDB format) in: ha_8.pdb_formatted.pdb
+Sites: 2 (Already used for Phasing at resol of 2.59)
+NCS information  in: AutoSol_10.ncs_spec
+Experimental phases in: solve_10.mtz
+Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_10.mtz
+Density-modified phases in: resolve_10.mtz
+HA sites (PDB format) in: ha_10.pdb_formatted.pdb
 Sequence file in: sequence.dat
-Model in: refine_9.pdb
-  Residues built: 79
-  Side-chains built: 66
+Model in: refine_31.pdb
+  Residues built: 76
+  Side-chains built: 50
   Chains: 3
-  Overall model-map correlation: 0.73
-  R/R-free: 0.27/0.35
+  Overall model-map correlation: 0.67
+  R/R-free: 0.35/0.43
 Scaling logfile in: dataset_1_scale.log
-HYSS logfile in: FA.sca_hyss.log
-Phasing logfile in: solve_8.prt
-Density modification logfile in: resolve_8.log
-Build logfile in: model_with_loops_10.log
+HYSS logfile in: peak.sca_ano_1.sca_hyss.log
+Phasing logfile in: solve_10.prt
+Density modification logfile in: resolve_10.log (R=0.28)
+Build logfile in: model_with_loops_32.log
 
  Score type:        CC       RFACTOR       SKEW       FOM
-Raw scores:       0.50        0.53        0.30        0.59  
-BAYES-CC:        53.80       39.31       57.51       44.47  
+Raw scores:       0.50        0.53        0.29        0.59
+BAYES-CC:        53.89       39.18       57.41       44.47
 
-Heavy atom sites (fractional): 
-xyz       0.984      0.256      0.094 
-xyz       0.028      0.039      0.052 
+Heavy atom sites (fractional):
+xyz       0.485      0.197      0.093
+xyz       0.020      0.477      0.050
 
 
 </PRE>
@@ -777,7 +819,7 @@ the main log file (e.g., <b>AutoSol_run_1_1.log</b>) and all the
 other principal log files  in order beginning with 
 scaling (<b>dataset_1_scale.log</b>), then looking at  heavy-atom
 searching (<b>FA.sca_hyss.log</b>),  phasing
-(e.g., <b>solve_8.log</b> or <b>solve_xx.log</b> depending on
+(e.g., <b>solve_10.log</b> or <b>solve_xx.log</b> depending on
 which solution <b>xx</b> was the top solution) and density modification (e.g., 
 <b>resolve_xx.log</b>).  Is there anything 
 strange or unusual in any of them that may give you a clue as to

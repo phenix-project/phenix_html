@@ -306,7 +306,8 @@ fragment information comes from an analysis of the map from the previous cycle a
 combined into a pseudo-map <b>combine.map</b>. This real-space information is then 
 merged with the experimental phase information in exptl_fobs_phases_freeR_flags.mtz:
 </p><PRE style="face=courier"> Density modifying with patterns/fragments and model
-Adding pattern/fragment phase information from combine.map to exptl_fobs_phases_freeR_flags.mtz to create image.mtz
+Adding pattern/fragment phase information from combine.map to exptl_fobs_phases_freeR_flags.mtz 
+to create image.mtz
 </PRE>
 <p>The composite phase information is then used in density modification. In this
 step the model density is used as part of the real-space target for statistical
