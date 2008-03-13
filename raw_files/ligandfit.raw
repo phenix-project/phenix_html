@@ -274,6 +274,53 @@ you have set them to will become the default for future runs in that
 directory (unless you delete that run).  If there are multiple runs 
 in which a parameter is set, then the one that was started last sets 
 the default for that parameter.
+
+
+<LI>If you run a Wizard using input from an .eff file (such as one produced
+by the Wizard when you run it from the command line) then parameters in the
+.eff file that have the same value as the default may sometimes be 
+changed by the Wizard.
+
+<p> This happens because the Wizard sets some parameters after it starts up, 
+based on the values of other parameters. If the Wizard can tell that you
+have explicitly set a parameter, it won't change it. However if 
+an .eff file has a parameter
+with the same value as the default, then the Wizard cannot tell that you
+want this value to be fixed.  There are only a few parameters where this
+happens, as most parameters have None as the default and if you
+set them to anything else then the Wizard can tell you have set them.
+<p>Therefore if you need to force a variable to have a value that
+is the same as the default, set it from the command line
+where it is clear that you are setting this variable.  
+
+<p> For example, in AutoBuild the default for input_map_file is None.
+Suppose you have just completed a run of AutoSol and you want to
+continue on with AutoBuild, but you do not want to use the resolve.mtz
+map from AutoSol.
+You might run AutoBuild from the command line like this: 
+<PRE style="face=courier">
+phenix.autobuild after_autosol input_map_file=None
+</PRE>
+This command will force input_map_file to be None (and ignore the
+resolve.mtz map from AutoSol).  This AutoBuild run will also produce an 
+.eff file: AutoBuild_run_1_/autobuild.eff.  If you now run AutoBuild using
+this .eff file with:
+<PRE style="face=courier">
+phenix.autobuild AutoBuild_run_1_/autobuild.eff
+</PRE>
+the AutoBuild Wizard will see input_map_file = None in the .eff file, but
+the Wizard will ignore this command because the value of None
+is identical to the default for input_map_file.
+The Wizard will then read the information from AutoSol, including 
+the resolve.mtz input map file and it will use this file.
+<p>To get around this, you can use the fact that anything defined at the 
+command line is fixed and will not be overwritten by the wizard. In the
+AutoBuild case, you could say:
+<PRE style="face=courier">
+phenix.autobuild AutoBuild_run_1_/autobuild.eff input_map_file=None
+</PRE>
+and then the input_map_file from AutoSol would be ignored.
+
 </UL>
 
       <P><H5><U>Literature</U></H5><P>
