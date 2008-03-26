@@ -309,6 +309,31 @@ with PDB files and percent sequence identity with the true structures
  n_cycle_rebuild_max=1
 </PRE>
 
+<P><H5>AutoMR searching for 2 components, but specifying the 
+orientation of one of them</H5><P>
+<P>Run AutoMR on a structure with 2 components. Define the components of
+the asymmetric unit with sequence files (beta.seq and blip.seq) and
+number of copies of each component (1).  Define the search models
+with PDB files and estimated RMS from true structures. Define the 
+orientation and position of one component. Define the numbrer of copies to
+find for each component (0 for beta, which is fixed, 1 for blip).
+<PRE style="face=courier">phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
+ resolution=0.0 resolution_build=3.0                               \
+ component_1.component_type=protein component_1.seq_file=beta.seq  \
+ component_1.component_copies=1                                    \
+ component_2.component_type=protein component_2.seq_file=blip.seq  \
+ component_2.component_copies=1                                    \
+ ensemble_1.coords=beta.pdb ensemble_1.RMS=0.85 ensemble_1.copies_to_find=0 \
+ ensemble_1.ensembleID="beta" \
+ ensemble_2.coords=blip.pdb ensemble_2.RMS=0.90 ensemble_2.copies_to_find=1 \
+ ensemble_2.ensembleID="blip" \
+ n_cycle_rebuild_max=1 \
+ fixed_ensembleID_list="beta" \
+ fixed_euler_list="199.84,41.535,184.15"\
+ fixed_frac_list="-0.49736,-0.15895,-0.28067"
+</PRE>
+Note: you have to define an ensemble for the fixed molecule (beta in this
+example). 
 
 <P><H5>Combining MR and SAD phasing information (MRSAD)</H5><P>
 You can combine MR information with SAD phases (see J. P. Schuermann and 
