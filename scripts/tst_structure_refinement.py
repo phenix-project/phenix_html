@@ -49,7 +49,7 @@ def exercise(args):
   assert os.path.isfile("refinement.txt")
   if 1:
      line_start = False
-     slash = str("%s"%"\ ").strip()
+     slash = "\\"
      pick_next = False
      amp_counter = 0
      cmd_counter = 0
@@ -119,7 +119,7 @@ def exercise(args):
             try: easy_run.call(command=final_cmd)
             except KeyboardInterrupt: raise
             except:
-              print "Cannot run the command:"
+              print "Error: Cannot run the command:"
               print final_cmd
               print
               sys.stdout.flush()
