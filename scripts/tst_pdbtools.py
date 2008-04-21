@@ -1,7 +1,9 @@
+from libtbx.test_utils import show_diff
 from libtbx import easy_run
-import libtbx.load_env
-import sys, os
 from libtbx import smart_open
+import libtbx.load_env
+import time
+import sys, os
 
 pdb = libtbx.env.find_in_repositories(
   relative_path="phenix_regression/pdb/phe_abc_w_h.pdb",
@@ -12,6 +14,7 @@ txt = libtbx.env.find_in_repositories(
   test=os.path.isfile)
 
 def exercise():
+  time0 = time.time()
   # extract commands and check their number
   assert [pdb, txt].count(None) == 0
   line_start = False
@@ -60,6 +63,7 @@ def exercise():
   example_1(commands)
   example_2(commands)
   example_3(commands)
+  print "OK time %.2f" % (time.time() - time0)
 
 def example_1(commands):
   selected_commands = [
@@ -102,26 +106,28 @@ def example_2(commands):
       easy_run.call(command = cmd)
   assert counter == 1
   f1 = smart_open.for_reading(file_name="example_2").read()
-  expected_result = \
-"""CRYST1   12.000   11.000   13.000  80.00  70.00 100.00 P 1
+  assert not show_diff(f1, """\
+CRYST1   12.000   11.000   13.000  80.00  70.00 100.00 P 1
 SCALE1      0.083333  0.014694 -0.035164        0.00000
 SCALE2      0.000000  0.092312 -0.024020        0.00000
 SCALE3      0.000000  0.000000  0.084586        0.00000
-ATOM      8  C   PHE A   1       5.864   7.650   5.747  1.00 25.00           C
-ATOM      9  O   PHE A   1       6.144   7.469   4.562  1.00 25.00           O
-ATOM     11  N   PHE A   1       4.546   5.572   5.714  1.00 25.00           N
-ATOM     12  CA  PHE A   1       5.193   6.557   6.572  1.00 25.00           C
-ATOM     28  C   PHE B   1      11.961   6.316   5.313  1.00 25.00           C
-ATOM     29  O   PHE B   1      11.902   5.976   4.132  1.00 25.00           O
-ATOM     31  N   PHE B   1       9.817   5.175   5.710  1.00 25.00           N
-ATOM     32  CA  PHE B   1      11.002   5.735   6.347  1.00 25.00           C
-ATOM     48  C   PHE C   1      11.652  11.587   6.579  1.00 25.00           C
-ATOM     49  O   PHE C   1      11.662  11.223   5.404  1.00 25.00           O
-ATOM     51  N   PHE C   1       9.463  10.498   6.860  1.00 25.00           N
-ATOM     52  CA  PHE C   1      10.618  11.048   7.561  1.00 25.00           C
+ATOM      1  C   PHE A   1       5.864   7.650   5.747  1.00 25.00           C
+ATOM      2  O   PHE A   1       6.144   7.469   4.562  1.00 25.00           O
+ATOM      3  N   PHE A   1       4.546   5.572   5.714  1.00 25.00           N
+ATOM      4  CA  PHE A   1       5.193   6.557   6.572  1.00 25.00           C
+TER
+ATOM      5  C   PHE B   1      11.961   6.316   5.313  1.00 25.00           C
+ATOM      6  O   PHE B   1      11.902   5.976   4.132  1.00 25.00           O
+ATOM      7  N   PHE B   1       9.817   5.175   5.710  1.00 25.00           N
+ATOM      8  CA  PHE B   1      11.002   5.735   6.347  1.00 25.00           C
+TER
+ATOM      9  C   PHE C   1      11.652  11.587   6.579  1.00 25.00           C
+ATOM     10  O   PHE C   1      11.662  11.223   5.404  1.00 25.00           O
+ATOM     11  N   PHE C   1       9.463  10.498   6.860  1.00 25.00           N
+ATOM     12  CA  PHE C   1      10.618  11.048   7.561  1.00 25.00           C
+TER
 END
-"""
-  assert f1 == expected_result
+""")
 
 def example_3(commands):
   selected_command = \
@@ -138,27 +144,28 @@ def example_3(commands):
       easy_run.call(command = cmd)
   assert counter == 1
   f1 = smart_open.for_reading(file_name="example_3").read()
-  expected_result = \
-"""CRYST1   12.000   11.000   13.000  80.00  70.00 100.00 P 1
+  assert not show_diff(f1, """\
+CRYST1   12.000   11.000   13.000  80.00  70.00 100.00 P 1
 SCALE1      0.083333  0.014694 -0.035164        0.00000
 SCALE2      0.000000  0.092312 -0.024020        0.00000
 SCALE3      0.000000  0.000000  0.084586        0.00000
-ATOM      8  C   PHE A   1       5.864   7.650   5.747  1.00 17.21           C
-ATOM      9  O   PHE A   1       6.144   7.469   4.562  1.00 17.39           O
-ATOM     11  N   PHE A   1       4.546   5.572   5.714  1.00 17.13           N
-ATOM     12  CA  PHE A   1       5.193   6.557   6.572  1.00 17.18           C
-ATOM     28  C   PHE B   1      11.961   6.316   5.313  1.00 34.38           C
-ATOM     29  O   PHE B   1      11.902   5.976   4.132  1.00 34.72           O
-ATOM     31  N   PHE B   1       9.817   5.175   5.710  1.00 34.25           N
-ATOM     32  CA  PHE B   1      11.002   5.735   6.347  1.00 34.35           C
-ATOM     48  C   PHE C   1      11.652  11.587   6.579  1.00 25.00           C
-ATOM     49  O   PHE C   1      11.662  11.223   5.404  1.00 25.00           O
-ATOM     51  N   PHE C   1       9.463  10.498   6.860  1.00 25.00           N
-ATOM     52  CA  PHE C   1      10.618  11.048   7.561  1.00 25.00           C
+ATOM      1  C   PHE A   1       5.864   7.650   5.747  1.00 17.21           C
+ATOM      2  O   PHE A   1       6.144   7.469   4.562  1.00 17.39           O
+ATOM      3  N   PHE A   1       4.546   5.572   5.714  1.00 17.13           N
+ATOM      4  CA  PHE A   1       5.193   6.557   6.572  1.00 17.18           C
+TER
+ATOM      5  C   PHE B   1      11.961   6.316   5.313  1.00 34.38           C
+ATOM      6  O   PHE B   1      11.902   5.976   4.132  1.00 34.72           O
+ATOM      7  N   PHE B   1       9.817   5.175   5.710  1.00 34.25           N
+ATOM      8  CA  PHE B   1      11.002   5.735   6.347  1.00 34.35           C
+TER
+ATOM      9  C   PHE C   1      11.652  11.587   6.579  1.00 25.00           C
+ATOM     10  O   PHE C   1      11.662  11.223   5.404  1.00 25.00           O
+ATOM     11  N   PHE C   1       9.463  10.498   6.860  1.00 25.00           N
+ATOM     12  CA  PHE C   1      10.618  11.048   7.561  1.00 25.00           C
+TER
 END
-"""
-  assert f1 == expected_result
-
+""")
 
 if (__name__ == "__main__"):
   exercise()
