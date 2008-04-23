@@ -218,12 +218,57 @@ n_cycle_build_max=5  # max number of build cycles (starting from experimental ph
 n_cycle_rebuild_max=5  # max number of rebuild cycles (starting from a model)
 </PRE>
 
+<P><H5>Picking waters in AutoBuild</H5><P>
+<P>By default AutoBuild will instruct phenix.refine to pick waters using its
+standard procedure. This means that if the resolution of the data is
+high enough (typically 3 A) then waters are placed.
+<P>You can tell AutoBuild not to have phenix.refine pick waters with 
+the command:
+<PRE style="face=courier">place_waters=False
+</PRE>
+If you want to place waters at a lower resolution, you will need to
+reset the low-resolution cutoff for placing waters in phenix.refine. You would
+do that in a &quot;refinement_params.eff&quot; file containing lines like 
+these (see below for 
+passing parameters to phenix.refine with an &quot;.eff&quot; file):
+<PRE style="face=courier">refinement {
+  ordered_solvent {
+    low_resolution = 2.8
+  }
+} 
+</PRE>
+
+<P><H5>Keeping waters from your input file in AutoBuild</H5><P>
+<P>You can tell AutoBuild to keep the waters in your input file when you
+are using rebuild_in_place (the default is to toss them and replace 
+them with new ones).
+You can say,
+<PRE style="face=courier">keep_input_waters=True
+place_waters=No
+</PRE>
+NOTE: If you specify keep_input_waters=True you 
+should also specify either "place_waters=No" 
+or "keep_pdb_atoms=No" .  This is because if place_waters=Yes and 
+keep_pdb_atoms=Yes then phenix.refine will add waters and 
+then the wizard will keep the new waters from the new PDB file 
+created by phenix.refine preferentially over the ones in your input file.
+
+
 <P><H5>Specifying phenix.refine parameters</H5><P>
 <P>You can control phenix.refine parameters that are not specified
 directly by AutoBuild using a refinement parameters (.eff) file:
 <PRE style="face=courier">refine_eff_file=refinement_params.eff    # set any phenix.refine params not set by AutoBuild
 </PRE>
-Note that any parameters that are set directly by AutoBuild override your 
+This file might contain a twin-law for refinement:
+<PRE style="face=courier">refinement {
+  twinning {
+    twin_law = "-k, -h, -l"
+  }
+}
+</PRE>
+<P>
+You can put any phenix.refine parameters in this file, but a few parameters
+that are set directly by AutoBuild override your 
 inputs from the refine_eff_file. These parameters are listed below.
 
 <P>Refinement parameters that must be set using AutoBuild Wizard 
