@@ -448,15 +448,15 @@ where LIG is the 3-letter ID code that you use in my_ligand.pdb
 to identify your ligand. If the automatic run does not work you may need
 to give phenix.elbow additional information to generate your ligand.
 <P>Once phenix.elbow has generated your ligand
-you can use the keyword "cif_def_files_list" to 
+you can use the keyword "cif_def_file_list" to 
 tell AutoBuild about this ligand:
-<PRE style="face=courier">cif_def_files_list=elbow.LIG.my_ligand.pdb.cif
+<PRE style="face=courier">cif_def_file_list=elbow.LIG.my_ligand.pdb.cif
 </PRE>
 
 <P><H5>Specifying arbitrary commands and cif files for phenix.refine </H5><P>
 <P>You can tell AutoBuild to apply any set of cif definitions to the model
 during refinement by using a combination of specification files and the
-commands cif_def_files_list and refine_eff_file_list:
+commands cif_def_file_list and refine_eff_file_list:
 <PRE style="face=courier">refine_eff_file_list=link.eff cif_def_file_list=link.cif
 </PRE>
 This example comes from the phenix.refine manual page in which a link is 
