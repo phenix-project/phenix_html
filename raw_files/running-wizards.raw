@@ -91,6 +91,42 @@ another.  Note that if you delete directories such as
 remains in the PDS. For this reason
 it is best to use the GUI or specific commands to delete runs.
 
+<P><H5>Running a Wizard using a multiprocessor machine or on a cluster</H5><P>
+<P>
+<P>You can take advantage of having a multiprocessor machine or a cluster 
+when running the wizards (Currently this applies to the LigandFit and
+AutoBuild Wizards).  For example, adding command
+<PRE style="face=courier">nproc=4
+</PRE>
+to a command-line command for a Wizard will use 4 processors to run the
+wizard (if possible).  Normally you will run the parallel processes in
+the background with the default of
+<PRE style="face=courier">background=True
+</PRE>
+If you have a cluster with a batch queue, you can send subprocesses to the
+batch queue with
+<PRE style="face=courier">run_command=qsub
+</PRE>
+(or whatever your batch command is).  In this case you will use 
+<PRE style="face=courier">background=False
+</PRE>
+so that the batch queue can keep track of your jobs.
+<P>
+The Wizards divide the data into nbatch batches during processing. The
+value of 
+<PRE style="face=courier">nbatch=4
+</PRE>
+is the default and is appropriate if you have 1 to 4 processors. If you
+have more, then you may wish to increase nbatch to match the number of
+processors. The reason it is done this way is that the value of nbatch 
+can affect the results that you get, as the jobs are not split into 
+exact replicates, but are rather run with different random numbers. 
+If you want to get the same results, keep the same value of nbatch.
+<p>
+<p>  Normally you will set nproc to the number of processors available
+  and leave nbatch alone. If you leave nbatch as None it will be set
+  automatically, with a value depending on the Wizard. This is recommended. 
+<p>
 <P><H5>Running a Wizard from a GUI</H5><P>
 <P>
 <P><H5> Basic operation of a Wizard from the GUI </H5><P>
