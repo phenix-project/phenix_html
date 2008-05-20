@@ -166,39 +166,88 @@ The LigandFit Wizard will use the partial model <b>1J4R_no_ligand.pdb</b> to cal
 FC and PHIC (model amplitudes and phases )
 for the structure factors in <b>1J4R.mtz</b>. Then these are used to calculate a
 simple (FO-FC) exp(iPHIC) difference map which is written to <b>resolve_map.mtz</b>.
+
 </p><p>Then the RESOLVE algorithm for ligand fitting is used to fit your ligand
-<b>1J4R_random.pdb</b> into this map. To make the fitting process faster for simple
-ligands, the fitting is done in a series of tries, each considering more possible 
+<b>1J4R_random.pdb</b> into this map. To make the fitting process suitable for
+parallelization, 
+the fitting is done in a series of tries, each considering more possible 
 rotations of the ligand and each carrying out a more exhaustive search than the
-previous one.  Once a fit of the model to the map is found that has a correlation
-at least as high as <b>ligand_cc_min</b> (default =0.75), then the process is ended
-and the best model is written out.
-</p><p> Here is the summary of the first attempt at fitting the 1J4R difference map:
+previous one.  Then depending on how many processors are available, they are
+run one at a time or in parallel.
+
+</p><p> Here is the summary of the five attempts at fitting the 1J4R difference map:
 </p><PRE style="face=courier">
-Fitting ligand #1 from 1J4R_random.pdb
-Ligand file has 45 atoms
-Searching for ligand number 1
+Fitting ligand #1 from /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb
+Ligand file has 45 atomsSearching for ligand number 1
 Estimated ligand volume: 185.0  A**3
 Starting CC of ligand as input to map: 0.31
-Starting local CC of ligand as input to map: 0.18
-USING LOCAL CC: 0.18
-Trying fit with n_indiv_tries_min = 5
+Starting local CC of ligand as input to map: 0.18USING LOCAL CC: 0.18
+Setting background=False as nproc=1
+Try:  1 quickTrying fit with n_indiv_tries_min = 5
                 n_indiv_tries_max = 10
                 n_group_search    = 3
                 ligand_file       = 1J4R_random.pdb
-USING LOCAL CC: 0.71  instead of std cc ( 0.77 )
-Overall score: 127.6678
-Atoms placed: 45 of 45
-CC to map: 0.71
+Try:  2 thorough
+Trying fit with n_indiv_tries_min = 100
+                n_indiv_tries_max = 100
+                n_group_search    = 4
+                ligand_file       = 1J4R_random.pdb
+Try:  3 randomize
+Randomizing ligand conformation before starting fit
+Randomized version of /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-liga
+nd/1J4R_random.pdb placed in random.pdb
+Trying fit with n_indiv_tries_min = 100
+                n_indiv_tries_max = 100
+                n_group_search    = 4
+                ligand_file       = random.pdb
+Try:  4 extra_thorough
+Trying fit with n_indiv_tries_min = 300
+                n_indiv_tries_max = 300
+                n_group_search    = 6
+                ligand_file       = 1J4R_random.pdb
+Try:  5 extra_thorough_randomize
+Randomizing ligand conformation before starting fit
+Randomized version of /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb placed in random.pdb
+Trying fit with n_indiv_tries_min = 300
+                n_indiv_tries_max = 300
+                n_group_search    = 6
+                ligand_file       = random.pdb
+Running 5 jobs on 1 processors
+Splitting work into 5 jobs and running 1 at a time with csh in
+/net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/LigandFit_run_1_/TEMP0
+
+Starting job 1...
+Starting job 2...
+Starting job 3...
+Starting job 4...
+Starting job 5...
+
+Solution for try :  1
+ SCORE=   123.868 CC=     0.650 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=1J4R_random.pdb
+
+Solution for try :  2
+ SCORE=   128.528 CC=     0.700 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=1J4R_random.pdb
+
+Solution for try :  3
+ SCORE=   128.170 CC=     0.710 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=random.pdb
+
+Solution for try :  4
+ SCORE=   129.750 CC=     0.720 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=1J4R_random.pdb
+
+Solution for try :  5
+ SCORE=   129.574 CC=     0.720 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=random.pdb
+
 </PRE>
-<p> The log file for the best fit at any time is in 
+<p>In this case the best fits were found on tries 4 and 5 (the ones with the most
+thorough fitting attempts).
+<p> The log file for the best fit is in
 <b>ligand_fit_1_1.pdb</b> (the first 1 refers to the solution number, 
 and the second 1 refers to the ligand number, as you have the option of 
 finding more than one ligand in the map with <b>number_of_ligands=n</b>).
 This log file will describe the analysis of the ligand and the rigid parts
 of the ligand, the search for locations of rigid parts of the ligand, and the
 extension of those rigid parts into density to complete the ligand.
-</p><p>On this run the parameters <b>n_indiv_tries_min=5</b>  and
+</p><p>In these runs the parameters <b>n_indiv_tries_min=5</b>  and
 <b>n_indiv_tries_max=10</b>  are the
 minimum and maximum number of placements of each rigid part of the ligand
 to test for completing the ligand. The parameter <b>n_group_search=3</b> 
@@ -207,31 +256,15 @@ subsequent tries at fitting these will all be increased to search more
 thoroughly.
 </p><p>This fitting of the ligand was able to place all 45 atoms in
 the ligand, with a correlation to the map in the region of the ligand of
-0.71. The &quot;LOCAL CC&quot; is the correlation of the model density
+0.72. The &quot;LOCAL CC&quot; is the correlation of the model density
 with map density in the region occupied by the ligand itself, plus 
 any contiguous points with high difference electron density that are
 connected to the region occupied by the ligand. This local CC is more 
 useful at discriminating between correct and incorrect models than the
 standard correlation (which only includes the region occupied by the
 model.)</p>
-<p>When the LigandFit run is finished, a brief summary will be printed
-at the end of the log file and to the <b>Ligandfit_summary.dat</b> file.
-The log file in this case concludes with:
-</p><PRE style="face=courier">
-SUMMARY:
 
-cc_overall 0.72
-run_number 1
-starting_cc 0.18
-lig_volume 185.0
-atoms_placed 45
-template 1J4R_random.pdb
-number_of_ligands 1
-atoms_total 45
-model ligand_fit_1_1.pdb
-
-</PRE>
-Note that the fit to the map has improved only slightly in this case over 
+<p>Note that the fit to the map has improved only slightly in this case over 
 the initial fit found on the first try. Sometimes this is the case and sometimes
 a considerably better fit may be found by searching more thoroughly.
 
@@ -250,13 +283,9 @@ summary for this <b>1J4R-ligand</b> ligand-fitting run:
 
    ****    FILES ARE IN THE DIRECTORY: LigandFit_run_1_  ****
 
-  RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME           TEMPLATE         
-RMSD  CC_START    LIG_VOLUME
+  RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME           TEMPLATE         RMSD  CC_START    LIG_VOLUME
 
-   1     128.302      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb     
-0.00      0.18    185.00
-
-
+   1     129.750      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb     0.00      0.18    185.00
 
 </PRE>
 

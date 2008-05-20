@@ -254,46 +254,97 @@ the file to be used for refinement is called <b>exptl_fobs_phases_freeR_flags.mt
 <p>The AutoBuild Wizard by default uses RESOLVE to build an atomic model
 of your structure.  
 </p>
-<p>In this case three initial models are built. 
-The model-building produces an initial model with 109
-residues built and side chains assigned to 69, and which refines to
-an R-factor of 0.32 and a free R-factor of 0.36. The next two models built
-have slighlty more residues built, but after refinement are not better than
-the first one:
+<p>In each cycle of model-building,
+the AutoBuild Wizard breaks up the building process into separate steps that can be
+run in parallel and then combines the results.</p>
+<p>In the first model-building cycle, the AutoBuild Wizard builds 4 separate models
+by running 4 subprocesses, each of which runs the AutoBuild Wizard to just build a 
+single model and refine it and return:
+</p>
 </p><PRE style="face=courier"> 
-Building 3 RESOLVE models...
-Model 1: Residues built=109  placed=69  Chains=7  Model-map CC=0.68
-This is new best model with score =  164
-Refining model:  Build_1.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.32/0.36
+Build cycle 1 of 17   method:build
 
-Model 2: Residues built=119  placed=63  Chains=7  Model-map CC=0.67
-This is new best model with score =  168
-Refining model:  Build_2.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_2.pdb  R/Rfree=0.33/0.39
+Running  4 parallel build jobs
 
-Restoring previous best...
-Model 3: Residues built=112  placed=80  Chains=5  Model-map CC=0.66
-This is new best model with score =  182
-Refining model:  Build_3.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_3.pdb  R/Rfree=0.34/0.39
-Restoring previous best...
+Standard build in parallel
+This is the first try at building this model
+
+Setting background=False as nproc=1
+Try:  1 building 1 model
+Try:  2 building 1 model
+Try:  3 building 1 model
+Try:  4 building 1 model
+Running up to  1  jobs in parallel... with total of  4  jobs
+Splitting work into 4 jobs and running 1 at a time with csh in
+/net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/TEMP0
+
+...
+
+
+Collecting models....
+
+Solution for try :  1 cycle_best_1.pdb
+Solution 1 from build cycle 1 R= 0.23
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/
+TEMP0/AutoBuild_run_1_/cycle_best_1.pdb  as  MODEL_1.pdb  in  AutoBuild_run_1_/TEMP0
+
+Solution for try :  2 cycle_best_1.pdb
+Solution 1 from build cycle 1 R= 0.22
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/
+TEMP0/AutoBuild_run_2_/cycle_best_1.pdb  as  MODEL_2.pdb  in  AutoBuild_run_1_/TEMP0
+
+Solution for try :  3 cycle_best_1.pdb
+Solution 1 from build cycle 1 R= 0.25
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/
+TEMP0/AutoBuild_run_3_/cycle_best_1.pdb  as  MODEL_3.pdb  in  AutoBuild_run_1_/TEMP0
+
+Solution for try :  4 cycle_best_1.pdb
+Solution 1 from build cycle 1 R= 0.25
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/
+TEMP0/AutoBuild_run_4_/cycle_best_1.pdb  as  MODEL_4.pdb  in  AutoBuild_run_1_/TEMP0
+Done with  4 parallel build jobs...
+Running standard build to merge and extend these models now.
 
 </PRE>
-
-<p>After one model completion cycle (including merging these three initial
-models together, extending ends of chains,
-fitting loops, and building outside the region already built, the best
-model built has 129 residues built, all assigned to sequence:
+<p>If you want to look at the log files for these individual model-building
+steps, you can look in the directory listed above:</p>
 </p><PRE style="face=courier"> 
-Model 9: Residues built=129  placed=129  Chains=0  Model-map CC=0.83
-This is new best model with score =  258
-Refining model:  model_with_loops_10.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.20/0.25
+/net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/TEMP0
+</PRE>
+This will contain subdirectories  with the model-building runs:
+</p><PRE style="face=courier"> 
+AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/AutoBuild_run_1_1.log
+AutoBuild_run_1_/TEMP0/AutoBuild_run_2_/AutoBuild_run_2_1.log
+AutoBuild_run_1_/TEMP0/AutoBuild_run_3_/AutoBuild_run_3_1.log
+AutoBuild_run_1_/TEMP0/AutoBuild_run_4_/AutoBuild_run_4_1.log
+</PRE>
+
+
+<p>In this case model 2 is the best. It is then used to start a merging process in
+which the best parts of each model are kept to create a composite model. This model
+is then refined, extended (by building off all the ends of chains) and saved:
+</p><PRE style="face=courier"> 
+Model completion cycle 1
+Models to combine and extend:  ['MODEL_1.pdb', 'MODEL_2.pdb', 'MODEL_3.pdb', 'MO
+DEL_4.pdb']
+Model 1: Residues built=126  placed=115  Chains=1  Model-map CC=0.82
+This is new best model with score =  239
+Refining model:  Build_combine_extend_1.pdb
+Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.22/0.25
+
+...
+
+New best overall: AutoBuild_run_1_/overall_best.pdb
+
+Model obtained on cycle 1
+R (work): 0.215959816154
+R (free): 0.253184208229
+Residues built: 126
+Residues placed: 115
+Model-map CC: 0.82
+Chains: 1
 
 </PRE>
-This refined initial model is written out to <b>refine_9.pdb</b> in
-the output directory.
 
 <p>In the second overall cycle of model building, the AutoBuild Wizard carries out several 
 density modification steps to obtain an improved map:
@@ -322,11 +373,81 @@ to make resolve_work.mtz. Then building model
 Creating omit map from image.mtz and previous models
 </PRE>
 
+<p>A new model is then built, using the best model available so far (in this
+case from cycle 1), combined with pieces of a model built in four ways.
+The first is to "fit_loops", in which case all gaps in the model (places where
+the sequence file says there are residues but for which there is no model yet, and
+for which the residues on either side of the gap are present in the model) are
+systematically rebuilt. The method used is to try to build from either end of the
+gap and if the two chains connect with the correct number of residues then the gap is 
+considered filled.  The second method is to "connect" ends of chains. This is the
+same as the gap-filling procedure except that it is used in cases where the 
+model has not been assigned to sequence so that the ends to be connected are not
+known in advance and the number of residues in the gap is also not known.  The
+third method is to "build_outside", in which case the current model is used to
+mask out the density in the region of the model, and a model is built into the
+remaining density.  The fourth method is simply to build a new model from scratch.
+</p><PRE style="face=courier"> 
+Standard build in parallel  starting with  refine.pdb_1  and  ['overall_best.pdb']
+
+Setting background=False as nproc=1
+Try:  1  fit_loops=True
+Try:  2  connect=True
+Try:  3  build_outside=True
+Try:  4 building 1 model
+
+</PRE>
+<p>Then the current best model and the models built from each of these tries are
+combined together to make a composite model. As in cycle 1 it is then refined, 
+extended, and saved (if it is an improvement):
+</p><PRE style="face=courier"> 
+Solution for try :  1 cycle_best_1.pdbSolution 1 from build cycle 1 R= 0.21
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_
+1_/TEMP0/AutoBuild_run_5_/cycle_best_1.pdb  as  MODEL_1.pdb  in  AutoBuild_run_1
+_/TEMP0
+Solution for try :  2 cycle_best_1.pdbSolution 1 from build cycle 1 R= 999.9
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_
+1_/TEMP0/AutoBuild_run_6_/cycle_best_1.pdb  as  MODEL_2.pdb  in  AutoBuild_run_1
+_/TEMP0
+Solution for try :  3 cycle_best_1.pdbSolution 1 from build cycle 1 R= 0.22
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_
+1_/TEMP0/AutoBuild_run_7_/cycle_best_1.pdb  as  MODEL_3.pdb  in  AutoBuild_run_1
+_/TEMP0
+Solution for try :  4 cycle_best_1.pdbSolution 1 from build cycle 1 R= 0.22
+Saving  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_
+1_/TEMP0/AutoBuild_run_8_/cycle_best_1.pdb  as  MODEL_4.pdb  in  AutoBuild_run_1
+_/TEMP0
+</PRE>
+<p>In this case the gap-filling,  building outside and building of a new 
+model all gave good models while the  connecting failed to connect any 
+segments (it gave an R of 999. meaning nothing was refined).
+<p>Model completion with these models and the current best model from cycle 1 
+gave:
+</p><PRE style="face=courier"> 
+Model completion cycle 1
+Models to combine and extend:  ['overall_best.pdb', 'starting_model.pdb', 'MODEL_1.pdb', 'MODEL_2.pdb', 'MODEL_3.pdb', 'MODEL_4.pdb']
+Model 1: Residues built=127  placed=127  Chains=0  Model-map CC=0.79
+This is new best model with score =  254
+Refining model:  Build_combine_extend_1.pdb
+Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.21/0.25
+</PRE>
+
 <p>This process of model-building iterated with generation of real-space targets
 for density modification based on local patterns, fragments of structure, and the
 model is repeated until the R-factor does not decrease for several cycles. In this
-example, the iterative process does not improve the model,
-and the model from the first cycle is the best with an R/Rfree of 0.20/0.25.
+example, the best model using this procedure is obtained
+on cycle 3 with an R/Rfree of 0.20/0.25:
+</p><PRE style="face=courier"> 
+New best overall: AutoBuild_run_1_/overall_best.pdb
+
+Model obtained on cycle 3
+R (work): 0.204578940825
+R (free): 0.246875586516
+Residues built: 127
+Residues placed: 127
+Model-map CC: 0.79
+</PRE>
+
 
 <p><H5>Model-rebuilding with RESOLVE</H5></p>
 <p>Once the model-building procedure has converged, the AutoBuild Wizard carries out
@@ -335,44 +456,107 @@ set of cycles are that the local patterns and fragments approaches are no longer
 (the maps by this time look so much like a macromolecule that these procedures do not
 add anything), and that the starting point for density modification is a model-based
 map, not the experimental map.</p>
-<p>In this example, the rebuilding steps do not improve the model any further, and the
-process ends after 1 cycle of rebuilding.</p>
+<p>In this example, the rebuilding steps improve the model just a little, and the
+process ends after 4 cycle of rebuilding:</p>
+</p><PRE style="face=courier"> 
+New best overall: AutoBuild_run_1_/overall_best.pdb
+
+Model obtained on cycle 8
+R (work): 0.196373568913
+R (free): 0.237815453224
+Residues built: 127
+Residues placed: 127
+Model-map CC: 0.84
+
+</PRE>
 
 <p><H5>The AutoBuild_summary.dat summary file</H5></p>
 A quick summary of the results of your AutoBuild run is in the
 <b>AutoBuild_summary.dat</b> file in your output directory.  This file lists the
 key files that were produced in your run of AutoBuild (all these are in the
 output directory) and some of the key statistics for the run.
-Here is part of the
-summary for this <b>p9-build</b> model-building run:
+Here is the summary for this <b>p9-build</b> model-building run:
 </p><PRE style="face=courier"> 
 
-Summary of model-building for run 1  Fri Mar  7 00:53:41 2008
-Files are in the directory:  AutoBuild_run_1_
+Summary of model-building for run 1  Sat May 17 11:06:47 2008
+Files are in the directory:  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/
 
 
-Starting mtz file: p9-solve.mtz
-Sequence file: p9.seq
-File with locations where density is to be truncated:
-Best solution on cycle: 1
-Model: cycle_best.pdb_1
-Refinement log: cycle_best.log_refine_1
-Refinement map coefficients: cycle_best_refine_map_coeffs.mtz_1
-Evaluation log: cycle_best.log_eval_1
-Density modification log: cycle_best.log_1
-Density modified phases: cycle_best.mtz_1
+Starting mtz file: /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/p9-solve.mtz
+Sequence file: /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/p9.seq
 
-SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
- 1         1      0.20        0.25      129       129
- 2         2      0.20        0.25      127       127
+Best solution on cycle: 8    R/Rfree=0.2/0.24
+
+Summary of output files for Solution 7 from rebuild cycle 8
+
+---  Model (PDB file)  ---
+pdb_file: AutoBuild_run_1_/cycle_best_8.pdb
+
+---  Refinement log file ---
+log_refine: AutoBuild_run_1_/cycle_best_8.log_refine
+
+---  Model-building log file ---
+log: AutoBuild_run_1_/cycle_best_8.log
+
+---  Model-map correlation log file ---
+log_eval: AutoBuild_run_1_/cycle_best_8.log_eval
+
+---  2FoFc and FoFc map coefficients from refinement 2FOFCWT PH2FOFCWT FOFCWT PHFOFCWT ---
+refine_map_coeffs: AutoBuild_run_1_/cycle_best_refine_map_coeffs_8.mtz
+
+---  Data for refinement FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag ---
+hklout_ref: AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz
+
+---  Density-modification log file ---
+log_denmod: AutoBuild_run_1_/cycle_best_8.log_denmod
+
+---  Density-modified map coefficients FP PHIM FOM ---
+hklout_denmod: AutoBuild_run_1_/cycle_best_8.mtz
+
+You might consider making one very good model now with: 
+
+phenix.autobuild \
+ data=AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz \
+ model=AutoBuild_run_1_/cycle_best_8.pdb \
+ rebuild_in_place=True \
+ seq_file=/net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/p9.seq
+
+
+SOLUTION  CYCLE     R        RFREE     BUILT   PLACED 
+ 1         1      0.22        0.25      126       115
+ 2         2      0.21        0.25      127       127
  3         3      0.20        0.25      127       127
- 4         5      0.21        0.25      127       127
+ 4         4      0.21        0.24      127       127
+ 5         6      0.20        0.24      127       127
+ 6         7      0.20        0.24      127       127
+ 7         8      0.20        0.24      127       127
+ 8         9      0.20        0.24      127       127
 
 
 </PRE>
-<p>Note that the file <b>cycle_best.log_eval_1</b> in this example has a complete
-analysis of the the fit of the model to the best map in <b>cycle_best.mtz_1</b>.
+<p>Note that the file <b>AutoBuild_run_1_/cycle_best_8.log_eval</b> in this 
+example has a complete
+analysis of the the fit of the model in <b>AutoBuild_run_1_/cycle_best_8.pdb</b> 
+to the best map in <b>AutoBuild_run_1_/cycle_best_8.log_denmod</b>.
 This is useful in identifying places where additional rebuilding needs to be done.
+<p><H5>Creating an improved model after AutoBuild</H5></p>
+In our example, the summary file had this phrase in it:
+</p><PRE style="face=courier"> 
+You might consider making one very good model now with:
+
+phenix.autobuild \
+ data=AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz \
+ model=AutoBuild_run_1_/cycle_best_8.pdb \
+ rebuild_in_place=True \
+ seq_file=/net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/p9.seq
+</PRE>
+<p>This is a command-line command to take the final model from this AutoBuild
+run, rebuild it 4 times using the "rebuild_in_place" algorithm, combine the
+resulting models to make a composite model, refine it, and write out the
+final model.  This method is very effective at improving models from AutoBuild
+(or from any other source). You can see more details of this in 
+ <A href="tutorial_rebuild.htm">Tutorial 6: Automatically
+  rebuilding a structure solved by Molecular Replacement</A>
 
 <p><H5>How do I know if iterative model-building, density modification 
 and refinement worked?</H5></p>

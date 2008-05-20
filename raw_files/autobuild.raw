@@ -516,6 +516,12 @@ by the Wizard during the run (some parts are binary and are not printed)
 <LI>Final refined model
 <PRE style="face=courier">overall_best.pdb
 </PRE>
+<p>NOTE: The &quot;overall_best.pdb&quot; file is always the current best
+ model. Similarly &quot;overall_best_denmod_map_coeffs.mtz&quot; is always
+the best map_coefficients file. The AutoBuild_summary.dat file lists
+the names of the current best set of files. The contents of 
+ &quot;overall_best.pdb&quot; and of the best model 
+listed in AutoBuild_summary.dat will be the same.
 
 <LI>Final map coefficients used to build refined model. Use FP PHIM FOMM in
 maps. Normally this is a density-modified map from resolve. See also the
@@ -552,6 +558,70 @@ used in refinement
 </PRE>
 </LI>
 </UL>
+
+<P><H5><I>Standard building, rebuild_in_place, and multiple-models </I></H5><P>
+The AutoBuild Wizard has two overall methods for building a model.  </p>
+<p>The first method (standard build) is to 
+build a model from scratch. This involves identification 
+of where helices (and strands, for proteins) are located, extension using
+fragment libraries, connection of segments, identification of side-chains,
+and sequence alignment.  These methods are augmented in the standard building 
+procedure by loop-fitting and building model outside of the region that has
+already been built.</p></p></p></p>
+<p>The second method (rebuild_in_place) takes an existing model and 
+rebuilds it without adding or deleting any residues and without changing
+the connectivity of the chain.  The way this works is a segment of the model 
+is deleted and then is filled-in again by rebuilding from the remaining
+ends. This is repeated for overlapping segments covering the entire model.</p>
+<p>The multiple-models approach really has two levels of multiple models.
+At the first level, several (multiple_models_group_number, default is
+number_of_parallel_models) models are built (using rebuild_in_place) and
+are then recombined into a single good model. At the next level, this whole
+process may be done more than once (multiple_models_number times), yielding
+several very good models.  By default, if you ask for rebuild_in_place, then
+you will get a single very good model, created by running rebuild_in_place
+several times and recombining the models.
+
+<P><H5><I>Parallel jobs, nproc, nbatch, number_of_parallel_models and 
+how AutoBuild works in parallel
+</I></H5><P>
+The AutoBuild Wizard is set up to take advantage of multi-processor
+machines or batch queues by splitting the work into separate tasks. 
+See 
+  <A href="tutorial_build.htm">Tutorial 4: Iterative model-building,
+      density modification and refinement
+      starting from experimental phases </A>
+   and 
+  <A href="tutorial_rebuild.htm">Tutorial 6: Automatically
+  rebuilding a structure solved by Molecular Replacement</A> for
+a description of the method used by the AutoBuild Wizard to run
+build jobs as sub-processes and to combine the results into single models.
+</p>
+
+ <p>Here
+are the key factors that determine how splitting model-building into
+batches and running them on one or more processors works:
+</P>
+<UL>
+<LI><b>nbatch</b> is the number of batches of work. As long as nbatch is
+fixed then the results of running the Wizard will be the same, no matter
+how many processors are used.  It is most efficient however to have
+nbatch be at least as large as nproc, the number of processors. Otherwise
+some processors may end up doing nothing. The default is nbatch=3. The
+value of nbatch is used to set other defaults 
+(such as number_of_parallel_models).
+ 
+<LI><b>nproc</b> is the number of processors to split the work among
+
+<LI><b>number_of_parallel_models</b> is the number of models to build
+at once.  The default is to set number_of_parallel_models=nbatch. This 
+affects both standard building (number_of_parallel_models sets how many
+initial models to build) and rebuild_in_place (number_of_parallel_models
+determines whether a single model is built or a set of models are built
+and recombined into a single model).
+
+</UL>
+
 
 <P><H5><I>Model editing during rebuilding with the Coot-PHENIX interface 
 </I></H5><P>

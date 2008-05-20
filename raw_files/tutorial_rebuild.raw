@@ -301,7 +301,7 @@ reflections are not to be used in refinement. By default 5% of reflections
 (up to a maximum of 2000)
 are reserved for this test set. 
 If you supply a reflection file with free R flags already set, then they
-will be used.  If you want to supply a file <b>ref.mtz</b>specifically 
+will be used.  If you want to supply a file <b>ref.mtz</b> specifically 
 for refinement, you can do that with <b>input_refinement_file=ref.mtz</b>.
 Also if you want to supply 
 a high-resolution datafile <b>hires.mtz</b> that has 
@@ -310,15 +310,116 @@ then you can do this with the keywords <b>input_hires_file=hires.mtz</b>.
 After generation of free R flags if necessary, and any merging of data files,
 the file to be used for refinement is called <b>exptl_fobs_phases_freeR_flags.mtz</b>.
 
-<p><H5>Rebuild-in-place model-building with RESOLVE</H5></p>
+<p><H5>Rebuild-in-place model-building with RESOLVE by building
+ multiple models and combining the best parts</H5></p>
 <p>The AutoBuild Wizard by default uses RESOLVE to build an atomic model
-of your structure.   In this example the rebuild-in-place option is used.
+of your structure.   In this example the rebuild-in-place option is used. 
+To rebuild a model in place means to rebuild the model without
+adding or removing any residues or changing the connectivity of the chain.
+The AutoBuild Wizard uses the multiple-models algorithm to rebuild your
+model several times and then to recombine them together to form a single
+very good model.  (The multiple-models algorithm can also be used to form
+several very good models if you want).
 </p>
-<p>The first step is to simply refine the edited input model:
+<p>Here is where this is done:
+</p>
 </p><PRE style="face=courier"> 
-Using edited_pdb.pdb for rebuild, copied to unrefined.pdb_1
+Setting up to build 4 models to be combined into final model #1
+
+
+Setting background=False as nproc=1
+Building  4  models ...
+Splitting work into 4 jobs and running 1 at a time with csh in
+/net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/AutoBuild_run_1_/TEMP0
+Starting job 1...Starting job 2...Starting job 3...Starting job 4...
+Collecting multiple_model runs to form a single final model
+
+Solution for try :  1 cycle_best_3.pdb
+Solution 2 from rebuild cycle 3 R= 0.21
+...
+Solution for try :  2 cycle_best_3.pdb
+Solution 2 from rebuild cycle 3 R= 0.21
+...
+Solution for try :  3 cycle_best_3.pdb
+Solution 2 from rebuild cycle 3 R= 0.21
+...
+Solution for try :  4 cycle_best_5.pdb
+Solution 4 from rebuild cycle 5 R= 0.2
+..
+
+</PRE>
+<p>In this case each of the individually rebuilt models is pretty good, with
+an R from 0.20 to 0.21. These models are then combined together, with the best
+parts of each model (based on correlation to the density-modified map) kept:
+</p><PRE style="face=courier"> 
+AutoBuild_combine  AutoBuild  Run 2 Mon May 19 12:06:11 2008
+
+Current combine number:  1
+Combining initial models # 1
+...
+NOTE: only keeping merged models if they improve R
+
+Merging model  4
+R/Rfree for model  composite_model_refined_4.pdb 0.2 0.24
+
+...
+Merging model  2
+combining  current_model.pdb initial_model.pdb_1_2
+Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/current_model.pdb
+Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/initial_model.pdb_1_2
+R/Rfree for model  composite_model_refined_2.pdb 0.2 0.24
+Not keeping this merged model as it is no better than current best
+...
+Merging model  3
+combining  current_model.pdb initial_model.pdb_1_3
+Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/current_model.pdb
+Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/initial_model.pdb_1_3
+R/Rfree for model  composite_model_refined_3.pdb 0.2 0.24
+
+Saving refinement data file, refinement map coeffs,
+and density-modified map (averaged for all models):
+AutoBuild_run_2_/TEMP0/composite_model_fmodel.mtz AutoBuild_run_2_/TEMP0/composite_model_refined_3.mtz initial_model.mtz_1_3
+
+Copied  current_model.pdb  to cycle_best.pdb
+Copying files:  cycle_best.pdb ->  overall_best.pdb (etc.)
+
+New best overall: AutoBuild_run_2_/overall_best.pdb
+
+Model obtained on cycle 1
+R (work): 0.197864372935
+R (free): 0.241592271563
+
+</PRE>
+<p>Here there were four models built, with R values from 0.2 to 0.22. 
+The one with the lowest R (model 4)
+was used as the starting model, and each of the others
+was merged with this model, taking the best-fitting parts. An improved model
+was obtained by merging model 3 with model 4, yielding an R just under 0.20.
+</p>
+
+<p><H5>Individual rebuild-in-place log files </H5></p>
+<p>If you want to see the details of the individual runs of rebuild_in_place
+on this model, you will want to look in the directory  that was listed above:
+</p><PRE style="face=courier"> 
+AutoBuild_run_1_/TEMP0
+</PRE>
+<p>In this TEMP0 directory you will find subdirectories like:
+</p><PRE style="face=courier"> 
+AutoBuild_run_1_/
+AutoBuild_run_2_/
+</PRE>
+which in turn contain the log files for the runs of these individual rebuild_in_place
+rebuilding steps. Here is a summary of the run in
+</p><PRE style="face=courier"> 
+AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/AutoBuild_run_1_1_.log
+</PRE>
+
+<p>After reading in the data in this sub-process, the starting model is
+refined:
+</p>
+</p><PRE style="face=courier"> 
 Refining model:  unrefined.pdb_1
-Refined model: refine.pdb_1  R/Rfree=0.32/0.35
+Refined model: refine.pdb_1  R/Rfree=0.31/0.34
 </PRE>
 <p>This starting model is rather good, with an R of 0.32.  This is about the
 quality of model that works best with rebuild-in-place. The NCS in this
@@ -340,17 +441,19 @@ in 4 different orientations and locations in the asymmetric unit).
 </p><p>
 The rebuild-in place procedure is then carried out:
 </p><PRE style="face=courier"> 
-Rebuilding in place: refine.pdb_1
-New total residues built:  559
+Running standard build
+Starting with current best model of  refine.pdb_1 ...setting it to  refine.pdb_1Including parts of this model if best...
+Using starting model from  starting_model.pdb
+Rebuilding in place: starting_model.pdb
+New total residues built:  562
 
 Warning: some residues not rebuilt successfully on cycle 2:
-Chain 'A':    1-  10,
+Chain 'A':    1-  10,  156- 157,
 Chain 'C':    1-  10,   61-  65,  151- 157,
-Chain 'B':    1-  10,   61-  65,
+Chain 'B':    1-   5,   61-  65,
 Chain 'D':    1-  10,   61-  65,  151- 157
 Refining model:  Build_rebuild_in_place_1.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.27
-
+Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.26
 
 </PRE>
 <p>Notice the warning about some of the residues that were not rebuilt. For
@@ -359,36 +462,43 @@ coordinates are kept. In favorable cases, by the end of iterative model-building
 all the coordinates can be fit. In cases where they cannot, you should be
 cautious about using those parts of the model that do not get rebuilt.
 In this case the R has decreased substantially by rebuilding to 0.23.
-</p><p>The side chains are then rebuilt, and the best-fitting parts of the
-current models are recombined to yield a new model with a similar (slightly worse)
-R of 0.24:
+</p>
+<p>The side chains are then rebuilt, and the best-fitting parts of the
+current models are recombined to yield a new 
+model with a similar R of 0.23:
 </p><PRE style="face=courier"> 
 Rebuilding side chains from  Build_composite_refined_3.pdb
 Refining model:  edit_model.pdb
-Refined model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_3.pdb  R/Rfree=0.24/0.28
+Refined model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_3.pdb  R/Rfree=0.23/0.27
 </PRE>
 <p> This is the end of the first cycle of rebuilding. Next the rebuilt model
 is used to calculate phases and the resulting map is used in statistical
 density modification, including not just solvent flattening and histograms
 of density, but also the 4-fold NCS in this structure.  This whole process is
-repeated 7 times, yielding a final R/Rfree of 0.21/0.25.  On the final
+repeated 2 more times, yielding a final R/Rfree of 0.21/0.25.  On the final
 cycle of model-building a few residues are still not rebuilt:
 </p><PRE style="face=courier"> 
-Warning: some residues not rebuilt successfully on cycle 8:
-Chain 'C':    1-  10,  156- 157,
+Warning: some residues not rebuilt successfully on cycle 4:
+Chain 'C':    1-  10,   61-  65,  156- 157,
 Chain 'B':    1-  10,
 Chain 'D':    1-  10
 </PRE>
 <p>and these residues (the N-terminal 10 residues of chains B, C,
-and D) and the C-terminal 2 residues of chain C) should probably not be used
-in the model.
+and D) and residues 61-65 and the C-terminal 2 residues of chain C) 
+should probably not be used in the model.
 </p><p>
 
-The final refined model is written out to <b>cycle_best.pdb_4</b> in
-the output directory. An identical file has the name <b>overall_best.pdb</b>
-which may be more convenient to remember.
+The final refined model is written out to 
+<b> AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.pdb</b>. 
+Note that this run is carried out entirely within the TEMP0/ subdirectory
+because this is a sub-process.  This model is then combined with the
+models from the other sub-processes in this multiple-model run to
+form a final model.
+
 </p><p>Note that the quality of the model improves a lot in the first cycle
 and not very much after that. This is common in the rebuild-in-place procedure.
+
+
 
 <p><H5>The AutoBuild_summary.dat summary file</H5></p>
 A quick summary of the results of your AutoBuild run is in the
@@ -397,85 +507,22 @@ key files that were produced in your run of AutoBuild (all these are in the
 output directory) and some of the key statistics for the run.
 Here is the summary for this <b>a2u-globulin-rebuild</b> model-building run:
 </p><PRE style="face=courier"> 
+Best solution on cycle: 1    R/Rfree=0.2/0.24
 
+Summary of output files for Solution 1 from multiple_models cycle 1
 
-Summary of model-building for run 1  Thu Mar  6 21:43:17 2008
-Files are in the directory:  AutoBuild_run_1_
+---  Model (PDB file)  ---
+pdb_file: AutoBuild_run_2_/cycle_best_1.pdb
 
+---  Data for refinement FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag ---
+hklout_ref: AutoBuild_run_2_/exptl_fobs_phases_freeR_flags.mtz
 
-Starting mtz file: a2u-sigmaa.mtz
-Sequence file: a2u-globulin.seq
-File with locations where density is to be truncated:
-Best solution on cycle: 4
-Model: cycle_best.pdb_4
-Refinement log: cycle_best.log_refine_4
-Refinement map coefficients: cycle_best_refine_map_coeffs.mtz_4
-Evaluation log: cycle_best.log_eval_4
-Density modification log: None
-Density modified phases: cycle_best.mtz_4
+---  Density-modified map coefficients FP PHIM FOM ---
+hklout_denmod: AutoBuild_run_2_/cycle_best_1.mtz
+
 
 SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
- 1         2      0.23        0.27      559       0
- 2         3      0.21        0.25      570       0
- 3         4      0.21        0.24      592       0
- 4         5      0.21        0.24      594       0
- 5         6      0.21        0.24      598       0
- 6         7      0.21        0.24      596       0
- 7         8      0.21        0.25      596       0
-
-</PRE>
-<p>Note that the file <b>cycle_best.log_eval_4</b> in this example 
-has a complete
-analysis of the the fit of the model to the best map in <b>cycle_best.mtz_4</b>.
-This is useful in identifying places where additional rebuilding needs to be 
-done, and in this case to check whether residues 1-10 in chains B, C and 
-D are ok.
-</p><p>
-Here is the part of the <b>cycle_best.log_eval_4</b> analysis of the model
-where it analyzes residues 1-10 of chain B:
-</p><PRE style="face=courier"> 
- GLU      1 B   0.66      0.1      0.1      0.1     VERY WEAK DENSITY (All  )
- GLU      2 B   0.69      0.6      0.9      0.3     WEAK DENSITY (All       )
- ALA      3 B   0.89      1.5      1.8      0.4     WEAK DENSITY (Side-chain)
- SER      4 B   0.90      1.4      1.7      0.9
- SER      5 B   0.90      1.6      1.6      1.8
- THR      6 B   0.87      0.9      1.2      0.6     WEAK DENSITY (All       )
- ARG      7 B   0.71      0.6      1.1      0.3     WEAK DENSITY (All       )
- GLY      8 B   0.73      0.6      0.6      0.0     WEAK DENSITY (All       )
- ASN      9 B   0.81      0.8      1.0      0.7     WEAK DENSITY (All       )
- LEU     10 B   0.88      1.3      2.0      0.6     WEAK DENSITY (Side-chain)
-</PRE>
-<p>Evidently the density for GLU 1B is non-existent, but the density for the
-other residues is present, though a bit weak.  The summary of the fit
-of the entire model to the map shows a good fit:
-</p><PRE style="face=courier"> 
-======================================================================
-
-            Summary of fit of model to map
-
-  Overall map correlation:                     0.87
-
-  Total residues:                              628
-  Residues in acceptable density:              496
-  Residues with some weak density:             132
-
-  Residues out of density:                       0
-  Residues in very weak density:                17
-  Residues in weak density:                     31
-
-  Main-chain out of density:                     0
-  Main-chain in very weak density:               2
-  Main-chain in weak density:                    7
-
-  Side-chain out of density:                     0
-  Side-chain in very weak density:               1
-  Side-chain in weak density:                   67
-
-  Residue with atoms out of density:             0
-  Residue with atoms in very weak density:       7
-
-======================================================================
-
+ 1         1      0.20        0.24      0       0
 </PRE>
 
 
