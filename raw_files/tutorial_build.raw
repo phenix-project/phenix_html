@@ -577,8 +577,8 @@ good. For lower-resolution data, an R-factor in the low 30's is probably
 largely correct but the model is not very good.
 </LI>
 <LI>Does the model show NCS if there are more than one copies in the 
-asymmetric unit? You can look at the file  <b>AutoBuild.ncs_spec_xx</b> (xx is 
-the solution number) which will tell you about any NCS in your model.
+asymmetric unit? You can look at your log file  
+which will tell you about any NCS in your model.
 </LI>
 </UL>
 
@@ -610,7 +610,7 @@ ice rings? Are there many outlier reflections?
 </LI>
 <LI>Have a look at the electron density maps at different stages in
 model building.  How does the starting map look?  How about the maps produced
-during the iterative building process (<b>cycle_best_refine_map_coeffs.mtz_xx</b>)?
+during the iterative building process (<b>cycle_best_xx.mtz</b>)?
 If the maps look poor, then the rebuilding process will not work well. However if
 the maps look good and the rebuilding is not working well then it is worth trying
 to identify where the problem is.

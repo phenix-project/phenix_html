@@ -507,24 +507,46 @@ key files that were produced in your run of AutoBuild (all these are in the
 output directory) and some of the key statistics for the run.
 Here is the summary for this <b>a2u-globulin-rebuild</b> model-building run:
 </p><PRE style="face=courier"> 
-Best solution on cycle: 1    R/Rfree=0.2/0.24
+
+Summary of model-building for run 3  Tue May 20 12:13:15 2008
+Files are in the directory:  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/AutoBuild_run_3_/
+
+
+Starting mtz file: /net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/a2u-sigmaa.mtz
+Sequence file: /net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/a2u-globulin.seq
+One composite model generated with 'multiple_models'
+
+
+Best solution on cycle: 1    R/Rfree=0.2/0.25
 
 Summary of output files for Solution 1 from multiple_models cycle 1
 
 ---  Model (PDB file)  ---
-pdb_file: AutoBuild_run_2_/cycle_best_1.pdb
+pdb_file: AutoBuild_run_3_/cycle_best_1.pdb
+
+---  Model-map correlation log file ---
+log_eval: AutoBuild_run_3_/cycle_best_1.log_eval
 
 ---  Data for refinement FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag ---
-hklout_ref: AutoBuild_run_2_/exptl_fobs_phases_freeR_flags.mtz
+hklout_ref: AutoBuild_run_3_/exptl_fobs_phases_freeR_flags.mtz
 
 ---  Density-modified map coefficients FP PHIM FOM ---
-hklout_denmod: AutoBuild_run_2_/cycle_best_1.mtz
+hklout_denmod: AutoBuild_run_3_/cycle_best_1.mtz
 
 
 SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
- 1         1      0.20        0.24      0       0
-</PRE>
+ 1         1      0.20        0.25      0       0
 
+</PRE>
+<p>Your best model is in AutoBuild_run_3_/cycle_best_1.pdb, and it has
+an R/Rfree of 0.20/0.25, which is quite reasonable.  The best
+density-modified map coefficients are in AutoBuild_run_3_/cycle_best_1.mtz.
+There is a residue-by-residue analysis of the correlation 
+between density calculated from this model and this map 
+in AutoBuild_run_3_/cycle_best_1.log_eval.  If you want to refine
+your model further, you should use the data in 
+AutoBuild_run_3_/exptl_fobs_phases_freeR_flags.mtz, which includes a 
+set of freeR flags.
 
 <p><H5>How do I know if iterative model-building, density modification 
 and refinement with rebuild-in-place worked?</H5></p>
@@ -544,8 +566,8 @@ good. For lower-resolution data, an R-factor in the low 30's is probably
 largely correct but the model is not very good.
 </LI>
 <LI>Does the model show NCS if there are more than one copies in the 
-asymmetric unit? You can look at the file  <b>AutoBuild.ncs_spec_xx</b> (xx is 
-the solution number) which will tell you about any NCS in your model.
+asymmetric unit? You can look at your log file  
+ which will tell you about any NCS in your model.
 </LI>
 </UL>
 
@@ -579,7 +601,7 @@ ice rings? Are there many outlier reflections?
 <LI>Have a look at the electron density maps at different stages in
 model building.  How does the starting map look?  How about the maps produced
 during the iterative building process 
-(<b>cycle_best_refine_map_coeffs.mtz_xx</b>)?
+(<b>cycle_best_xx.mtz</b>)?
 If the maps look poor, then the rebuilding process will not work well. 
 However if
 the maps look good and the rebuilding is not working well then it is 
