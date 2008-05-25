@@ -8,6 +8,7 @@ refinement.geometry_restraints.edits {
     atom_selection_2 = $his117_selection
     distance_ideal = 2.1
     sigma = 0.02
+    slack = None
   }
   bond {
     action = *add
@@ -15,6 +16,7 @@ refinement.geometry_restraints.edits {
     atom_selection_2 = $asp130_selection
     distance_ideal = 2.1
     sigma = 0.02
+    slack = None
   }
   angle {
     action = *add

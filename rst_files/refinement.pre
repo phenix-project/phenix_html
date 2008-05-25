@@ -1655,16 +1655,37 @@ can be specified in this way::
 
   #include_params restraints_edits.params
 
-Placing the above parameters into file ``restraints_edits.params``, one can run::
-
-  % phenix.refine model.pdb data.hkl restraints_edits.params
-
 The atom selections must uniquely select a single atom. Save the
 geometry_restraints.edits to a file and specify the file name as
 an additional argument when running phenix.refine for the first
-time. The edits will be included into the ``.def`` files. I.e. it is
-not necessary to manually specify them again if further refinement
-runs are started with ``.def`` files.
+time. For example::
+
+  % phenix.refine model.pdb data.hkl restraints_edits.params
+
+The edits will be included into the ``.def`` files. I.e. it is not
+necessary to manually specify them again if further refinement runs
+are started with ``.def`` files.
+
+The ``bond.slack`` parameter above can be used to disable a bond
+restraint within the ``slack`` tolerance around ``distance_ideal``.
+This is useful for hydrogen bond restraints, or when refining with
+very high-resolution data (e.g. better than 1 A). The bond restraint
+is activated only if the discrepancy between the model bond distance
+and ``distance_ideal`` is greater than the ``slack`` value. The
+``slack`` is subtracted from the discrepancy. The resulting potential
+is called a "square-well potential" by some authors. The formula for
+the contribution to the refinement target function is::
+
+  weight * delta_slack**2
+
+with::
+
+  delta_slack = sign(delta) * max(0, (abs(delta) - slack))
+  delta = distance_ideal - distance_model
+  weight = 1 / sigma**2
+
+The ``slack`` value must be greater than or equal to zero (it can
+also be ``None``, which is equivalent to zero in this case).
 
 Atom selection examples
 ***********************
