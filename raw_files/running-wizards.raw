@@ -114,18 +114,15 @@ so that the batch queue can keep track of your jobs.
 <P>
 The Wizards divide the data into nbatch batches during processing. The
 value of 
-<PRE style="face=courier">nbatch=4
+<PRE style="face=courier">nbatch=3
 </PRE>
-is the default and is appropriate if you have 1 to 4 processors. If you
+is set from 3 to 5  by default (depending on the Wizard)
+and is appropriate if you have up to nbatch processors. If you
 have more, then you may wish to increase nbatch to match the number of
 processors. The reason it is done this way is that the value of nbatch 
 can affect the results that you get, as the jobs are not split into 
 exact replicates, but are rather run with different random numbers. 
 If you want to get the same results, keep the same value of nbatch.
-<p>
-<p>  Normally you will set nproc to the number of processors available
-  and leave nbatch alone. If you leave nbatch as None it will be set
-  automatically, with a value depending on the Wizard. This is recommended. 
 <p>
 <P><H5>Running a Wizard from a GUI</H5><P>
 <P>
