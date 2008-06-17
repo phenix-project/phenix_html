@@ -906,20 +906,6 @@ Then you know that the correct command is:
 phenix.autobuild w2.sca coords.pdb input_labels="w2 SIGw2"
 </PRE>
 
-<LI>The AutoBuild Wizard writes temporary versions of your input data files
-which are converted to a standard format (mtz) and arrangement of columns.
-In the process some groups of column names may be changed from their original
-names. In particular the pair (FWT,PHWT) gets converted to (FWT,PHIFWT), the
-pair (FC,PHIC) gets converted to (FC, PHIFC), and (HLAM,HLBM,HLCM,HLDM) are
-converted to (HLA,HLB,HLC,HLD).  In rare cases if you supply a group of column
-names that corresponds to a matched group of columns the Wizard might fail to
-recognize their relationship. This would happen if you supplied (F,PC) for
-example.  The Wizard would then stop, saying that is is unable to find
-the label PC in the intermediate file (the label needed is PHIF, but the
-Wizard can't figure out which column (PC) corresponds to PHIF). The work-around
-is to use phenix.reflection_file_converter or another tool to convert your
-data file to a format with easier-to-interpret column labels.
-
 <LI>The AutoBuild Wizard cannot build modified residues.  If you supply
 a model with modified residues, these will be taken out of the
 chain and treated as ligands, and the chain will
@@ -966,6 +952,25 @@ used in PHENIX for these settings and space groups.
     <TD>
       <TABLE cellSpacing=3 cellPadding=1 width="100%" align=center border=0>
         <TBODY>
+
+      <TR id="terwilliger2008">
+        <TD ALIGN=LEFT BGCOLOR="#eeeee8">
+          <FONT FACE="Verdana,Helvetica,Arial" COLOR="#000000">
+          <b>Iterative model building, structure refinement and density 
+           modification with the PHENIX AutoBuild wizard.</b>
+          T. C. Terwilliger, R. W. Grosse-Kunstleve, P. V. Afonine, 
+           N. W. Moriarty, P. H. Zwart, L.-W. Hung, R. J. Read, and P. D. Adams
+          <a href="http://www.iucr.org/cgi-bin/paper?ba5109">
+          <i>Acta Cryst.</i> <b>D64</b>, 61-69 (2008)</a><br>
+          </FONT>
+        </TD>
+        <TD ALIGN=CENTER BGCOLOR="#ffffff">
+          <A HREF="http://www.phenix-online.org/papers/ba5109_reprint.pdf" 
+          TARGET="_main"><FONT FACE="Verdana,Helvetica,Arial" COLOR="#000000">[pdf]
+           </FONT></A>           
+        </TD>
+      </TR>
+
 
 
        <TR id=terwilliger2007b>
