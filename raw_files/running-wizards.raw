@@ -545,6 +545,12 @@ if they come from separate starting directories.
 combining multiple datasets.  The script and GUI versions can be used
 instead for these cases.
 
+<P><LI>If you  stop a Wizard and continue on with a command such as
+phenix.autobuild run=2 then you can change most parameters with keywords
+just as if you were starting from scratch, but if you had previously changed
+a keyword away from the default, you cannot set it back to the default in
+this way (the Wizard ignores keywords that are the same as the default).
+
 <P><LI>
 You should not work on the same
 run in two ways at the same time.  This can lead to unpredictable results
