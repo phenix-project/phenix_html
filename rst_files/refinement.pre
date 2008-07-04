@@ -845,17 +845,10 @@ Below are some useful commands:
 
      % phenix.refine model.pdb data.hkl
 
-   When riding model is used, there are two options for hydrogens' ADP
-   refinement: one isotropic B per whole molecule or one isotropic B per
-   residue. The first option is the default and is probably more suited at
-   resolutions lower than approx. 1.5 - 1.7 A. At higher resolution, better than
-   approx. 1.5 A one may consider to switch to refinement of one B per residue::
+   It is possible to refine individual parameters for H atoms (if neutron data
+   is used or at ultra-high resolution)::
 
-     % phenix.refine model.pdb data.hkl hydrogens.refine_adp=one_b_per_residue
-
-   To switch back to refinement of one B per molecule::
-
-     % phenix.refine model.pdb data.hkl hydrogens.refine_adp=one_b_per_molecule
+     % phenix.refine model.pdb data.hkl hydrogens.refine=individual
 
 3. To refine individual coordinates and ADP of H atoms::
 

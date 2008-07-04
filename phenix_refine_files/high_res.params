@@ -14,11 +14,6 @@ refinement.target_weights {
   wxc_scale = 0.25
   wxu_scale = 0.3
 }
-refinement.hydrogens {
-  refine_sites = individual *riding
-  refine_adp = *one_b_per_residue  one_b_per_molecule  individual
-  refine_occupancies = *one_q_per_residue  one_q_per_molecule  individual
-}
 refinement {
   ordered_solvent {
     mode = auto filter_only *every_macro_cycle
