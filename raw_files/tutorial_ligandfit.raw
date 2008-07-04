@@ -28,7 +28,7 @@ If PHENIX is already installed and your environment is all set, then
 if you type:
 </p><PRE style="face=courier">echo $PHENIX</PRE>
 then you should get back something like this:
-</p><PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+</p><PRE style="face=courier">/xtal//phenix-1.3</PRE>
 If instead you get:
 </p><PRE style="face=courier">PHENIX: undefined variable</PRE>
 then you need to set up your PHENIX environment. See the
@@ -37,7 +37,7 @@ details of how to do this.
 If you are using the C-shell environment (<b>csh</b>) then all you will need 
 to do is add one line to your <b>.cshrc</b> (or equivalent) file that
 looks like this:
-</p><PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+</p><PRE style="face=courier">source /xtal/phenix-1.3/phenix_env</PRE>
 (except that the path in this statement will be where <b>your</b> PHENIX is
 installed). Then the next time you log in <b>$PHENIX</b> will be defined.
 
@@ -207,7 +207,9 @@ Trying fit with n_indiv_tries_min = 300
                 ligand_file       = 1J4R_random.pdb
 Try:  5 extra_thorough_randomize
 Randomizing ligand conformation before starting fit
-Randomized version of /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb placed in random.pdb
+Randomized version of 
+/net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb 
+placed in random.pdb
 Trying fit with n_indiv_tries_min = 300
                 n_indiv_tries_max = 300
                 n_group_search    = 6
@@ -283,9 +285,11 @@ summary for this <b>1J4R-ligand</b> ligand-fitting run:
 
    ****    FILES ARE IN THE DIRECTORY: LigandFit_run_1_  ****
 
-  RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME           TEMPLATE         RMSD  CC_START    LIG_VOLUME
+  RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME       TEMPLATE         
+      RMSD  CC_START    LIG_VOLUME
 
-   1     129.750      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb     0.00      0.18    185.00
+   1     129.750      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb    
+      0.00      0.18    185.00
 
 </PRE>
 

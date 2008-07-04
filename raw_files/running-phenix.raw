@@ -55,16 +55,10 @@ flag --help :
 documentation). If you use a shell with command completion, you can type the first
 part of a command, hit the command list key (&lt;ctrl&gt;-D in tcsh) and see
 a list of the available commands. For example, this is the start of the list of
-commands that begin with phenix:</p>
+commands that begin with phenix.auto:</p>
 <pre>
-phenix.autobuild                     
-phenix.autobuild_1.3b               
-phenix.automr                        
-phenix.automr_1.3b                  
-phenix.autosol                       
-phenix.autosol_1.3b                 
-phenix.doc                           
-phenix.doc_1.3b                     
+phenix.autobuild      phenix.automr         phenix.autosol
+phenix.autobuild_1.3  phenix.automr_1.3     phenix.autosol_1.3
 </pre>
 <p>Note: all commands have their regular name and name qualified with the
 version. You can always use the version-qualified name to ensure which

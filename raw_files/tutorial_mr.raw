@@ -25,7 +25,7 @@ If PHENIX is already installed and your environment is all set, then
 if you type:
 </p><PRE style="face=courier">echo $PHENIX</PRE>
 then you should get back something like this:
-</p><PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+</p><PRE style="face=courier">/xtal//phenix-1.3</PRE>
 If instead you get:
 </p><PRE style="face=courier">PHENIX: undefined variable</PRE>
 then you need to set up your PHENIX environment. See the
@@ -34,7 +34,7 @@ details of how to do this.
 If you are using the C-shell environment (<b>csh</b>) then all you will need 
 to do is add one line to your <b>.cshrc</b> (or equivalent) file that
 looks like this:
-</p><PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+</p><PRE style="face=courier">source /xtal/phenix-1.3/phenix_env</PRE>
 (except that the path in this statement will be where <b>your</b> PHENIX is
 installed). Then the next time you log in <b>$PHENIX</b> will be defined.
 

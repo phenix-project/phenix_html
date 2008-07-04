@@ -26,7 +26,7 @@ If PHENIX is already installed and your environment is all set, then
 if you type:
 </p><PRE style="face=courier">echo $PHENIX</PRE>
 then you should get back something like this:
-</p><PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+</p><PRE style="face=courier">/xtal//phenix-1.3</PRE>
 If instead you get:
 </p><PRE style="face=courier">PHENIX: undefined variable</PRE>
 then you need to set up your PHENIX environment. See the
@@ -35,7 +35,7 @@ details of how to do this.
 If you are using the C-shell environment (<b>csh</b>) then all you will need 
 to do is add one line to your <b>.cshrc</b> (or equivalent) file that
 looks like this:
-</p><PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+</p><PRE style="face=courier">source /xtal/phenix-1.3/phenix_env</PRE>
 (except that the path in this statement will be where <b>your</b> PHENIX is
 installed). Then the next time you log in <b>$PHENIX</b> will be defined.
 
@@ -329,13 +329,11 @@ dataset looks like this:
 </p><PRE style="face=courier"> 
 No (pseudo)merohedral twin laws were found.
 
-
 Patterson analyses
-  - Largest peak height   : 6.467
-   (correpsonding p value : 6.082e-01)
+  - Largest peak height   : 6.680
+   (corresponding p value : 0.56306)
 
-
-The largest off-origin peak in the Patterson function is 6.47% of the
+The largest off-origin peak in the Patterson function is 6.68% of the
 height of the origin peak. No significant pseudotranslation is detected.
 
 The results of the L-test indicate that the intensity statistics
@@ -426,46 +424,34 @@ handedness such as <b>P61</b>, both hands of the <b>space group</b> must
 be tested. At present you need to do this yourself, running AutoSol separately
 for both space groups (i.e. <b>P61</b> and <b>P65</b>).
 </p>
-<p> The AutoSol Wizard scores heavy-atom
-solutions based on four criteria. The first two are from
-density modification. One of these is 
-the correlation of the experimental phases with the map-probability phases
-obtained in statistical density modification (<b>CC</b>). Good values for
-this criteria are usually in the range of 0.4-0.6. The second is the R-factor
-during the first cycle of density modification (<b>RFACTOR</b>). Good values
-for this are anything less than 0.6.  The third criterion is the skew
-of the electron density in the map (<b>SKEW</b>). 
-Good values for the skew are anything
+<p> The AutoSol Wizard scores heavy-atom solutions based on two criteria
+by default. The first criterion is the skew of the electron density
+in the map (<b>SKEW</b>).  Good values for the skew are anything
 greater than 0.1. In a MIR structure determination, the heavy-atom
-solution with the correct hand may have  a more positive skew and the one with the 
-inverse hand. The last criterion is the figure of merit
-of phasing (<b>FOM</b>), 
-essentially a measure of the consistency of the data and
-the heavy-atom model. For MIR datasets, SOLVE is used for calculating
+solution with the correct hand may have a more positive skew than
+the one with the inverse hand. The second criterion is the correlation
+of local RMS density (<b>CORR_RMS</b>).
+This is a measure of how contiguous the solvent and non-solvent
+regions are in the map. (If the local rms is low at one point and also
+low at neighboring points, then the solvent region must
+be relatively contiguous, and not split up into small regions.)
+
+For MIR datasets, SOLVE is used for calculating
 phases. For a MIR dataset, a figure of merit of 0.5 is
 acceptable, 0.6 is fine and anything above 0.7 is very good.
- The scores are listed in the AutoSol log file:
+ The scores are listed in the AutoSol log file. Here is the scoring 
+for solution 4 (the best initial map):
 </p><PRE style="face=courier">
-Evaluating solution 4
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2797302
+AutoSol_run_1_/TEMP0/resolve.scores CORR_RMS 0.9306123
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.5665045
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5045264
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2937651
-AutoSol_run_1_/TEMP0/resolve.scores FOM 0.54
-
-CC-EST (BAYES-CC) CC : 60.9 +/- 30.8
-CC-EST (BAYES-CC) RFACTOR : 48.3 +/- 43.2
-CC-EST (BAYES-CC) SKEW : 57.4 +/- 16.0
-CC-EST (BAYES-CC) FOM : 43.2 +/- 42.5
-ESTIMATED MAP CC x 100:  58.5 +/- 7.9
-
+CC-EST (BAYES-CC) SKEW : 57.8 +/- 17.0
+CC-EST (BAYES-CC) CORR_RMS : 63.3 +/- 28.2
+ESTIMATED MAP CC x 100:  60.8 +/- 13.3
 
 </PRE>
-<p>This is a good solution, with a good correlation of density
-between map-probability phases from density modification and the original
-experimental phases (0.57), a reasonable R-factor for density modification
-(0.50), a high (and positive) skew (0.29), and a good SIR figure
-of merit (0.54).
+<p>This is a good solution, with a high (and positive) skew (0.28), 
+and a high correlation of local rms density (0.93)
 </p><p>
 The <b>ESTIMATED MAP CC x 100</b> is an estimate of the quality of
 the experimental electron density map (not the density-modified one).
@@ -476,7 +462,7 @@ the experimental map and an ideal map for this structure. Then all the
 estimates are combined to yield an overall Bayesian estimate of the map
 quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
 CC values are usually fairly close, so if the estimate is 
- 58.5 +/- 7.9 then you
+ 60.8 +/- 13.3 then you
 can be confident that your structure is solved  and that the density-modified
 map will be quite good.
 
@@ -485,26 +471,25 @@ were the isomorphous differences for each derivative.
 For each dataset one solution was found, and that solution and its inverse
 were scored.  The scores were (skipping extra text below):
 </p><PRE style="face=courier">
-SCORING SOLUTION 1: 
-Solution 1 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. 
-Dataset #1, with 5 sites
-ESTIMATED MAP CC x 100:  28.7 +/- 22.2
+SCORING SOLUTION 1: Solution 1 using HYSS on 
+/net/moonbird/scratch1/terwill/run_082908a/rh-dehalogenase-mir/
+AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. Dataset #1, with 5 sites
+ESTIMATED MAP CC x 100:  29.6 +/- 34.8
 
-SCORING SOLUTION 2: 
-Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. 
-Dataset #1, with 5 sites
-ESTIMATED MAP CC x 100:  37.0 +/- 15.2
+SCORING SOLUTION 2: Solution  2 using HYSS on 
+/net/moonbird/scratch1/terwill/run_082908a/rh-dehalogenase-mir/
+AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. Dataset #1, with 5 sites
+ESTIMATED MAP CC x 100:  41.7 +/- 26.5
 
-SCORING SOLUTION 3: 
-Solution 3 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. 
-Dataset #2, with 5 sites
-ESTIMATED MAP CC x 100:  36.8 +/- 27.6
+SCORING SOLUTION 3: Solution 3 using HYSS on 
+/net/moonbird/scratch1/terwill/run_082908a/rh-dehalogenase-mir/
+AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. Dataset #2, with 5 sites
+ESTIMATED MAP CC x 100:  40.4 +/- 30.2
 
-SCORING SOLUTION 4: 
-Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
-Dataset #2, with 5 sites
-ESTIMATED MAP CC x 100:  58.5 +/- 7.9
-
+SCORING SOLUTION 4: Solution  4 using HYSS on 
+/net/moonbird/scratch1/terwill/run_082908a/rh-dehalogenase-mir/
+AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2, with 5 sites
+ESTIMATED MAP CC x 100:  60.8 +/- 13.3
 
 </PRE>
 </p><p>In this case the best score was solution 4 (as shown 
@@ -533,7 +518,8 @@ sites is found, SOLVE Bayesian correlated phasing is used to
 calculate a final set of native phases from the native and all the
 derivatives at once. Here is the best pair of derivatives from this
 first cycle:
-</p><PRE style="face=courier">Getting origin shift for 2 mapped on to 4
+</p><PRE style="face=courier">
+Getting origin shift for 2 mapped on to 4
 Phases from solution 4:solve_4.mtz
 Phases from solution 2:solve_2.mtz
 Merged ha files in ha_4_2.pdb
@@ -553,55 +539,37 @@ shift of 0.5 along x.
 basis for density modification:
 </p><PRE style="face=courier">
 Merging a set of solutions and phasing the group with SOLVE
-List of solutions to merge
-SOL:  4 : 
-Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
-Dataset #2
-Native is :  AutoSol_run_1_/rt_rd_1_PHX.sca
-SOL:  2 : 
-Solution  2 using HYSS on AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. 
-Dataset #1
-Native is :  AutoSol_run_1_/rt_rd_1_PHX.sca
-Number of derivatives:  2
+...
+ PHASED SOLUTION: Solution 9 based on MIR phasing starting from 
+solutions 4 (dataset #2)  and 2 (dataset #1)
 </PRE>
 However in this case after phasing with the two derivatives together, the
 score is not improved over the HGKI derivative by itself:
 </p><PRE style="face=courier">
- PHASED SOLUTION: 
-Solution 9 based on MIR phasing starting from solutions 4 (dataset #2)  and 2 (dataset #1)
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.1357029
+AutoSol_run_1_/TEMP0/resolve.scores CORR_RMS 0.9086851
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.4500604
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.5492675
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.1611985
-AutoSol_run_1_/TEMP0/resolve.scores FOM 0.57
-
-CC-EST (BAYES-CC) CC : 48.5 +/- 31.8
-CC-EST (BAYES-CC) RFACTOR : 27.4 +/- 40.6
-CC-EST (BAYES-CC) SKEW : 41.6 +/- 23.3
-CC-EST (BAYES-CC) FOM : 43.9 +/- 45.4
-ESTIMATED MAP CC x 100:  49.1 +/- 11.1
-
-
+CC-EST (BAYES-CC) SKEW : 37.3 +/- 31.3
+CC-EST (BAYES-CC) CORR_RMS : 60.8 +/- 31.5
+ESTIMATED MAP CC x 100:  49.1 +/- 20.2
 </PRE>
 <p>Though worse than the HGKI solution by itself,
 this is reasonably good solution, with a moderate
- correlation of density
-between map-probability phases from density modification and the original
-experimental phases (0.45), a moderate R-factor for density modification
-(0.55), a positive skew (0.16), and a good figure
-of merit (0.57).
+a positive skew (0.14), and a good correlation of local rms density (0.91).
 <p>As the original HGKI solution was the best, it is used for density
 modification and finding additional sites:
 </p><PRE style="face=courier">
 SOLUTION USED TO START DEN MOD:
-Solution  4 using HYSS on AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
-Dataset #2
+Solution  4 using HYSS on 
+/net/moonbird/scratch1/terwill/run_082908a/rh-dehalogenase-mir/
+AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. Dataset #2
 HKLIN: solve_4.mtz
 Testing density modification with mask_type = wang
 RFACTOR:  0.2475
 Best mask type so far is  wang
 Testing density modification with mask_type = histograms
 RFACTOR:  0.2553
+
 </PRE>
 <p>Note that two types of masks (<b>wang</b> and <b>histograms</b>) are
 tested in the density modification procedure. This is because sometimes
@@ -628,41 +596,23 @@ sites (if they are not already part of the heavy-atom model.
 is used for this phasing/density modification/Fourier
 procedure. Sites are are found for <b>all</b> the derivatives and 
 new solutions are created and scored using the top sites for each derivative.
-None of these new solutions has a score higher than the original HGKI
-derivative, but one of the  combinations is now better:
-
+The combinations are then tested as above, and the highest-scoring ones are kept
+again.  The best solution found is #107:
 </p><PRE style="face=courier">
- PHASED SOLUTION: 
-Solution 34 based on MIR phasing starting from solutions 4 (dataset #2)  and 24 (dataset #1)
+ PHASED SOLUTION: Solution 107 based on MIR phasing starting from 
+solutions 4 (dataset #2)  and 48 (dataset #1)
+...
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.3863446
+AutoSol_run_1_/TEMP0/resolve.scores CORR_RMS 0.9383891
 
-MARKING DUPLICATES FROM solutions
-
-Number of scoring criteria:  4
-Using BAYES-CC (Bayesian estimate of CC of map to perfect) as scores
-
-Evaluate_solution
-
-
-Scoring for this solution now...
-
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.6533188
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4493503
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.4176672
-AutoSol_run_1_/TEMP0/resolve.scores FOM 0.64
-
-CC-EST (BAYES-CC) CC : 70.8 +/- 25.3
-CC-EST (BAYES-CC) RFACTOR : 64.8 +/- 23.9
-CC-EST (BAYES-CC) SKEW : 68.6 +/- 18.3
-CC-EST (BAYES-CC) FOM : 48.8 +/- 50.5
-ESTIMATED MAP CC x 100:  68.0 +/- 5.6
+CC-EST (BAYES-CC) SKEW : 66.8 +/- 15.3
+CC-EST (BAYES-CC) CORR_RMS : 63.8 +/- 27.5
+ESTIMATED MAP CC x 100:  68.4 +/- 12.4
 
 </PRE>
-<p>This is quite a good solution, with high 
- correlation of density
-between map-probability phases from density modification and the original
-experimental phases (0.65), a low R-factor for density modification
-(0.45), a high skew (0.42), and a good figure
-of merit (0.64).
+<p>This is quite a good solution, with high  skew (0.39) and correlation of
+local rms density (0.94).
+
 This solution is the best
 overall and is used for final phasing and density modification.
 Notice that it only contains two of the five derivatives.  The merging procedure
@@ -672,59 +622,57 @@ all the other derivatives are ignored.
 <p><H5>Final phasing with SOLVE</H5></p>
 Once the best heavy-atom solution or solutions are chosen based on 
 <b>Z-scores</b>, these are used in a final round of phasing with
-SOLVE (for MIR phasing). The log file from phasing for solution <b>25</b> is in
-<b>solve_34.prt</b>. 
+SOLVE (for MIR phasing). 
+In this case several nearly-equally-good solutions are available, and all are
+used in phasing, density modification and initial model-building, with the
+R-factor in density modification and the model-map correlation in model-building
+being used to identify the best solutions.
+The log file from phasing for solution <b>107</b> is in
+<b>solve_107.prt</b>. 
 The
 heavy-atom model is refined and phases are calculated with Bayesian correlated
 MIR phasing. An important part of this phasing method is a statistical
 method of taking into account the correlation of non-isomorphism among
 derivatives. The extent of this correlation is listed in the 
-<b>solve_34.prt</b> summary file:
+<b>solve_107.prt</b> summary file:
 </p><PRE style="face=courier">
+SUMMARY OF CORRELATED ERRORS AMONG DERIVATIVES
+
  DERIVATIVE:            1
  CENTRIC REFLECTIONS:
  DMIN:            ALL     10.22   6.41   4.99   4.23   3.73   3.37   3.10   2.89
  RMS errors correlated and uncorrelated with others in group:
-      Correlated:   51.1   64.3   52.2   42.9   52.6   58.9   56.8   40.9   26.4
-    Uncorrelated:   32.7   34.6   29.4   41.6   23.6   27.6    4.6   37.9   46.6
+      Correlated:   51.5   69.4   50.8   42.4   52.7   57.8   55.0   40.9   30.5
+    Uncorrelated:   31.8   26.0   31.1   41.7   22.7   29.1   12.4   38.1   43.0
+
  Correlation of errors with other derivs:
- DERIV 2:           0.57   0.68   0.62   0.45   0.55   0.66   0.65   0.51   0.28
+ DERIV 2:           0.58   0.74   0.61   0.44   0.54   0.65   0.63   0.51   0.37
 
 </PRE>
 <p>Here the centric reflections in derivative 1 have non-isomorphism
 errors related to those in derivative 2, with a correlation coefficient
-overall of 0.57. another way to look at this is that the RMS correlated
-error is 51.1 and the RMS uncorrelated (random) error is just 32.7.  That
+overall of 0.58. another way to look at this is that the RMS correlated
+error is 51.5 and the RMS uncorrelated (random) error is just 31.8.  That
 means that a big part of the errors are correlated, and should be treated
 as such.
 The final occupancies and coordinates are listed at the end:
 
 </p><PRE style="face=courier">
-PARAMETER SHIFTS FOR DERIV  1 : set 1 
-
-                         SCALE FACTOR     OVERALL B
- CURRENT VALUES:          0.9685          0.0000
-
                     SITE  ATOM       OCCUP     X       Y       Z         B
  CURRENT VALUES:      1    Hg       0.3587  0.7222  0.2799  0.4213    6.2541
  CURRENT VALUES:      2    Hg       0.3862  0.1884  0.1574  0.4392   30.8420
  CURRENT VALUES:      3    Hg       0.2914  0.7366  0.2517  0.4165    8.5235
  CURRENT VALUES:      4    Hg       0.2864  0.7111  0.2957  0.4698    8.0632
 
- PARAMETER SHIFTS FOR DERIV  2 : set 2 
-
-                         SCALE FACTOR     OVERALL B
- CURRENT VALUES:          0.9648          0.0000
-
                     SITE  ATOM       OCCUP     X       Y       Z         B
- CURRENT VALUES:      1    Au       0.5416  0.7124  0.2832  0.4320   32.2978
- CURRENT VALUES:      2    Au       0.3923  0.2086  0.1866  0.4628   20.1964
- CURRENT VALUES:      3    Au       0.3014  0.3615  0.3381  0.4843   14.7369
- CURRENT VALUES:      4    Au       0.1402  0.1826  0.1607  0.4459   19.5093
+ CURRENT VALUES:      1    Au       0.5620  0.7124  0.2832  0.4337   33.6309
+ CURRENT VALUES:      2    Au       0.3820  0.2087  0.1867  0.4641   19.5002
+ CURRENT VALUES:      3    Au       0.2807  0.3614  0.3383  0.4823   13.1097
+ CURRENT VALUES:      4    Au       0.0610  0.3693  0.4041  0.3216    1.0000
 
 
 </PRE>
-In this case the occupancies of the top sites are about 1/3, which
+In this case the occupancies of the top sites are about 1/3 to 2/3, which
 is fine for MIR (particularly with such heavy atoms as Hg and Au).
 </p>
 
@@ -739,8 +687,8 @@ from the heavy-atom substructure. The weighted structure factors and
 phases (FP, PHIB) from SOLVE are used to calculate the starting
 map for RESOLVE, and the experimental structure factor amplitudes (FP)
 and MIR Hendrickson-Lattman coefficients from SOLVE are used
-in the density modification process. The output from RESOLVE for solution 25
-can be found in <b>resolve_34.log</b>.  Here are key sections of this
+in the density modification process. The output from RESOLVE for solution 107
+can be found in <b>resolve_107.log</b>.  Here are key sections of this
 output. </p>
 <p>First, the plot of how many points in the &quot;protein&quot; region
 of the map have each possible value of electron density. The
@@ -760,27 +708,28 @@ skew, though it is not perfect.
  and then convoluted with a gaussian with width of sigma
  where sigma, offset and beta are given below under "Error estimate."
 
-
                           0.03..................................................
                               .                   .                            .
-                              .                   .                            .
-                              .              xxxxxx                            .
-                              .             xxo   oxx                          .
-                              .            xoo    .oxo                         .
-                              .           xo      .  xxoo                      .
-                p(rho)        .          x        .    xo                      .
-                              .          x        .     xxo                    .
-                              .         x         .       xxo                  .
-                              .       ox          .         xxo                .
-                              .      oxx          .           xxxx             .
-                              .     oxx           .              xxxx          .
-                              .   oxx             .                oxxxx       .
+                              .                xx .                            .
+                              .              xxooxx                            .
+                              .             xxo   .xx                          .
+                              .            xoo    . xo                         .
+                              .           xx      .  xxo                       .
+                p(rho)        .          x        .    xoo                     .
+                              .         ox        .     xxoo                   .
+                              .        ox         .       xxoo                 .
+                              .       ox          .         xxxo               .
+                              .      oxx          .            xxx             .
+                              .     oxx           .              oxxx          .
+                              .   oxx             .                ooxxx       .
                               .ooxxx              .                   ooxxxxxx .
-                         0.0  xxx..........................................ooxxx
+                         0.0  xxx.........................................oooxxx
 
                              -2        -1         0         1         2        3
 
                                   normalized rho (0 = mean of solvent region)
+
+
  -------------------------------------------------------------------------------
 
 </PRE>
@@ -788,27 +737,28 @@ skew, though it is not perfect.
 positive skew:
 </p><PRE style="face=courier">
 
+
                           0.03..................................................
                               .                   .                            .
                               .                   .                            .
-                              .          oo x     .                            .
                               .          xxxxxxx  .                            .
-                              .         xo  o oox .                            .
-                              .        xo       oxxo                           .
-                p(rho)        .     o x           .xxo                         .
-                              .     xx            .  xo                        .
-                              .    xx             .  oxxooo                    .
-                              .   ox              .     xxxxooo o              .
-                              .  xx               .         xxxxxxxxoo         .
-                              .oxo                .                 xxxxxx o   .
-                              xx                  .                      oxxxxxx
-                              x                   .                          oox
-                         0.0  o................................................x
+                              .         xo  oooxx .                            .
+                              .        xo     o oxx                            .
+                              .       x          oxxo                          .
+                p(rho)        .      xx           . xo                         .
+                              .    oxx            .  xxoo                      .
+                              .    x              .    xxoooo                  .
+                              .   xx              .      xxxxoooo              .
+                              .  xx               .          xxxxxxxxoo        .
+                              .oxo                .                 oxxxxxxxo  .
+                              xx                  .                        xxxxo
+                              x                   .                            x
+                         0.0  x................................................x
 
                              -2        -1         0         1         2        3
 
                                   normalized rho (0 = mean of solvent region)
-
+  
 
 </PRE>
 <p>The key statistic from this RESOLVE density modification is the R-factor
@@ -819,7 +769,9 @@ In this <b>rh-dehalogenase</b> MIR phasing the R-factor is very low:
 Overall R-factor for FC vs FP: 0.254 for       8313 reflections
 </PRE>
 An acceptable value is anything below 0.35; below 0.30 is good.
-
+The R-factors for all the solutions considered at this stage were just about
+the same: #105 (R=0.254), #107 (R=0.254), #103 (R=.257) and all were used
+for initial model-building as well.
 
 <p><H5>Generation of FreeR flags</H5></p>
 <p>The AutoSol Wizard will create a set of free R flags indicating which 
@@ -834,60 +786,50 @@ then you can do this with the keyword <b>input_refinement_file=hires.mtz</b>.
 The files to be used for model-building
 and refinement are listed in the AutoSol log file:
 </p><PRE style="face=courier"> 
-Generating FreeR flags...
-Saving  exptl_fobs_phases_freeR_flags_34.mtz  for refinement
-THE FILE AutoSol_run_1_/resolve_34.mtz will be used for model-building
-THE FILE exptl_fobs_phases_freeR_flags_34.mtz will be used for refinement
 
 </PRE>
 
 <p><H5>Model-building with RESOLVE</H5></p>
-<p>The AutoSol Wizard by default uses RESOLVE to build an atomic model
-of your structure.  It will guess from your sequence file whether the 
+<p>The AutoSol Wizard by default uses a very quick method to build just
+the secondary structure of your macromolecule.  This is controlled
+by the keyword <b>helices_strands_only=True</b>.
+The Wizard will guess from your sequence file whether the
 structure is protein or RNA or DNA (but you can tell it if you want
-with (<b>chain_type=PROTEIN</b>). The model-building carried out in
-the AutoSol Wizard is essentially the same as one cycle of
+with (<b>chain_type=PROTEIN</b>).
+
+<p>If the quick model-building does not build a satisfactory model
+(if the correlation of map and model is less than
+ <b>acceptable_secondary_structure_cc=0.35</b>), then model-building
+is tried again with the standard build procedure,
+essentially the same as one cycle of
 model-building with the AutoBuild Wizard (see the web page
 <a href="autobuild.htm">
-Automated Model Building and Rebuilding with AutoBuild</a>.
-(If you specify
-<b>thoroughness=quick</b> the model-building is
-done less comprehensively to speed things up.)
+Automated Model Building and Rebuilding with AutoBuild</a>,
+except that if you specify
+<b>thoroughness=quick</b> as we have in this example, the model-building is
+done less comprehensively to speed things up.
 </p>
-<p>In this case three initial models are built. 
-The model-building produces an initial model with 221
-residues built and side chains assigned to 92, and which refines to
-an R-factor of 0.41 and a free R-factor of 0.47. The next two models built
-have similar numbers of residues built, but the second model is a little
-better than the first and is also refined, giving an R/Rfree of 0.37/0.44.
-</p><PRE style="face=courier"> 
-Building 3 RESOLVE models...
-Model 1: Residues built=221  placed=92  Chains=16  Model-map CC=0.58
-Model 2: Residues built=228  placed=149  Chains=14  Model-map CC=0.61
-Model 3: Residues built=233  placed=139  Chains=14  Model-map CC=0.61
+<p>In this case the secondary-structure-only
+model-building using solution #107 produces an initial model with 162
+residues built and side chains assigned to 52, and which has a
+model-map correlation of 0.42:
+</p><PRE style="face=courier">
+Model with helices and strands is in  Build_2.pdb
+Log for helices and strands is in  Build_2.log
+Model aligned with  AutoSol_run_1_/TEMP0/coords.pdb  is in  resolve_compare.pdb
+Final file:  AutoSol_run_1_/TEMP0/Build_2.pdb
+Log file:  Build_2.log  copied to  Build_2.log
+Model 2: Residues built=162  placed=52  Chains=18  Model-map CC=0.42
+This is new best model with cc =  0.42
+Getting R for model:  Build_2.pdb
+Model: AutoSol_run_1_/TEMP0/refine_2.pdb  R/Rfree=0.53/0.54
 </PRE>
-
-<p>After one model completion cycle (including merging these three initial
-models together, extending ends of chains,
-fitting loops, and building outside the region already built, the best
-model built has 283 residues built, 259 assigned to sequence:
-</p><PRE style="face=courier"> 
-Model 9: Residues built=283  placed=259  Chains=2  Model-map CC=0.77
-This is new best model with cc =  0.77
-Refining model:  model_with_loops_10.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_9.pdb  R/Rfree=0.22/0.29
-</PRE>
-After an additional model completion cycle, the best model is in refine_14.pdb:
-</p><PRE style="face=courier"> 
-Model 14: Residues built=289  placed=285  Chains=1  Model-map CC=0.79
-This is new best model with cc =  0.79
-Refining model:  model_with_loops_15.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_14.pdb  R/Rfree=0.19/0.25
-</PRE>
-
-
-This refined initial model is written out to <b>refine_14.pdb</b> in
-the output directory.
+This is quite an adequate secondary-structure-only model.
+It is just a preliminary model, but it is good
+enough to tell that the structure is solved. For full model-building you
+will want to go on and use the AutoBuild Wizard
+ (see the web page <a href="autobuild.htm">
+Automated Model Building and Rebuilding with AutoBuild</a> )
 
 <p><H5>The AutoSol_summary.dat summary file</H5></p>
 A quick summary of the results of your AutoSol run is in the
@@ -903,30 +845,32 @@ summary for this <b>rh-dehalogenase</b> MIR dataset:
 -----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
 
  *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
-Solution # 34  BAYES-CC: 68.0 +/- 5.6 Dataset #0   FOM: 0.64 ----------------
 
-Solution 34 based on MIR phasing starting from solutions 4 (dataset #2)  and 24 (dataset #1)
-This solution is a composite of solutions:  4 24 
-(Already used for Phasing at resol of 2.8)      Refined Sites: 4
-NCS information  in: AutoSol_34.ncs_spec
-Experimental phases in: solve_34.mtz
-Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_34.mtz
-Density-modified phases in: resolve_34.mtz
-HA sites (PDB format) in: ha_34.pdb_formatted.pdb
+Solution # 107  BAYES-CC: 68.4 +/- 12.4 Dataset #0   FOM: 0.64 ----------------
+
+Solution 107 based on MIR phasing starting from solutions 4 (dataset #2)  and 48 (dataset #1)
+This solution is a composite of solutions:  4 48 (Already used for 
+Phasing at resol of 2.8)      Refined Sites: 4
+NCS information  in: AutoSol_107.ncs_spec
+Experimental phases in: solve_107.mtz
+Experimental phases plus FreeR_flags for refinement in: 
+exptl_fobs_phases_freeR_flags_107.mtz
+Density-modified phases in: resolve_107.mtz
+HA sites (PDB format) in: ha_107.pdb_formatted.pdb
 Sequence file in: sequence.dat
-Model in: refine_14.pdb
-  Residues built: 289
-  Side-chains built: 285
-  Chains: 1
-  Overall model-map correlation: 0.79
-  R/R-free: 0.19/0.25
-Phasing logfile in: solve_34.prt
-Density modification logfile in: resolve_34.log (R=0.25)
-Build logfile in: model_with_loops_15.log
+Model in: refine_2.pdb
+  Residues built: 162
+  Side-chains built: 52
+  Chains: 18
+  Overall model-map correlation: 0.42
+  R/R-free: 0.53/0.54
+Phasing logfile in: solve_107.prt
+Density modification logfile in: resolve_107.log (R=0.25)
+Build logfile in: Build_2.log
 
- Score type:        CC       RFACTOR       SKEW       FOM
-Raw scores:       0.65        0.45        0.42        0.64
-BAYES-CC:        70.78       64.78       68.59       48.82
+ Score type:     SKEW    CORR_RMS
+Raw scores:     0.39      0.94
+BAYES-CC:      66.76     63.84
 
 Refined heavy atom sites (fractional):
 deriv 1
@@ -935,29 +879,30 @@ xyz       0.188      0.157      0.439
 xyz       0.737      0.252      0.416
 xyz       0.711      0.296      0.470
 deriv 2
-xyz       0.712      0.283      0.432
-xyz       0.209      0.187      0.463
-xyz       0.361      0.338      0.484
-xyz       0.183      0.161      0.446
-
-
+xyz       0.712      0.283      0.434
+xyz       0.209      0.187      0.464
+xyz       0.361      0.338      0.482
+xyz       0.369      0.404      0.322
 </PRE>
 
 <p><H5>How do I know if I have a good solution?</H5></p>
 <p>Here are some of the things to look for to tell if you have obtained a 
 correct solution:
 <UL>
-<LI>How much of the model was built? More than 60% is good.  If less than 
+<LI>How much of the model was built? More than 50% is good, particularly if
+you are using the default of helices_strands_only=True.  If less than
 25% of the model is built, then it may be entirely incorrect. Have a
 look at the model. If you see clear sets of parallel or antiparallel strands,
 or if you see helices and strands with the expected relationships,
 your model is going to be correct. If you see a lot of short fragments
 everywhere, your model and solution is going to be incorrect.
-How many side-chains were fitted to density? More than 25% is ok, 
-more than 50% is very good. 
+How many side-chains were fitted to density? More than 25% is ok,
+more than 50% is very good.
 </LI>
-<LI>What is the R-factor of the model? For a solution at moderate to high
-resolution (2.5 A or better) the R-factor should be in the low 30's to be very 
+<LI>What is the R-factor of the model? This only applies if you are building
+a full model (not for helices_strands_only=True).
+For a solution at moderate to high
+resolution (2.5 A or better) the R-factor should be in the low 30's to be very
 good. For lower-resolution data, an R-factor in the low 40's is probably
 largely correct but the model is not very good.
 </LI>
@@ -1000,7 +945,7 @@ the main log file (e.g., <b>AutoSol_run_1_1.log</b>) and all the
 other principal log files  in order beginning with 
 scaling (<b>dataset_1_scale.log</b>), then looking at  heavy-atom
 searching (e.g., <b>auki_rd_1_PHX.sca_iso_1.sca_hyss.log</b>),  phasing
-(e.g., <b>solve_21.log</b> or <b>solve_xx.log</b> depending on
+(e.g., <b>solve_107.log</b> or <b>solve_xx.log</b> depending on
 which solution <b>xx</b> was the top solution) and density modification (e.g., 
 <b>resolve_xx.log</b>).  Is there anything 
 strange or unusual in any of them that may give you a clue as to

@@ -25,7 +25,7 @@ If PHENIX is already installed and your environment is all set, then
 if you type:
 </p><PRE style="face=courier">echo $PHENIX</PRE>
 then you should get back something like this:
-</p><PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+</p><PRE style="face=courier">/xtal//phenix-1.3</PRE>
 If instead you get:
 </p><PRE style="face=courier">PHENIX: undefined variable</PRE>
 then you need to set up your PHENIX environment. See the
@@ -34,7 +34,7 @@ details of how to do this.
 If you are using the C-shell environment (<b>csh</b>) then all you will need 
 to do is add one line to your <b>.cshrc</b> (or equivalent) file that
 looks like this:
-</p><PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+</p><PRE style="face=courier">source /xtal/phenix-1.3/phenix_env</PRE>
 (except that the path in this statement will be where <b>your</b> PHENIX is
 installed). Then the next time you log in <b>$PHENIX</b> will be defined.
 
@@ -199,7 +199,6 @@ CONTENTS: ['p9_se_w2.sca', 'sca', 'unmerged', 'I 41', None, None, ['I', 'SIGI']]
 Converting the files ['p9_se_w2.sca'] to sca format before proceeding
 Running import directly...
 WIZARD:  ImportRawData
-PHENIX VERSION:  1.3b  of  21-10-2007
 </PRE>
 
 <p><H5>Using the datafiles converted to premerged format.</H5></p>
@@ -315,38 +314,35 @@ matching sites, then ends and prints out the final correlations, after
 taking the top 4 sites.
 
 <p><H5>Scoring heavy-atom solutions</H5></p>
-<p> The AutoSol Wizard scores heavy-atom
-solutions based on four criteria. The first two are from
-density modification. One of these is 
-the correlation of the experimental phases with the map-probability phases
-obtained in statistical density modification (<b>CC</b>). Good values for
-this criteria are usually in the range of 0.4-0.6. The second is the R-factor
-during the first cycle of density modification (<b>RFACTOR</b>). Good values
-for this are anything less than 0.6.  The third criterion is the skew
-of the electron density in the map (<b>SKEW</b>). 
-Good values for the skew are anything
-greater than 0.1. Typically in a SAD structure determination, the heavy-atom
-solution with the correct hand has a positive skew and the one with the 
-inverse hand has a negative skew. The last criterion is the figure of merit
-of phasing (<b>FOM</b>), 
-essentially a measure of the consistency of the data and
-the heavy-atom model. For SAD datasets, Phaser is used for calculating
+<p> The AutoSol Wizard scores heavy-atom solutions based on two criteria 
+by default. The first criterion is the skew of the electron density 
+in the map (<b>SKEW</b>).  Good values for the skew are anything
+greater than 0.1. In a SAD structure determination, the heavy-atom
+solution with the correct hand may have a much more positive skew than 
+the one with the inverse hand. The second criterion is the correlation
+of local RMS density (<b>CORR_RMS</b>). 
+This is a measure of how contiguous the solvent and non-solvent 
+regions are in the map. (If the local rms is low at one point and also 
+low at neighboring points, then the solvent region must 
+be relatively contiguous, and not split up into small regions.)
+
+For SAD datasets, Phaser is used for calculating
 phases. For a SAD dataset, a figure of merit of 0.3 is
 acceptable, 0.4 is fine and anything above 0.5 is very good.
- The scores are listed in the AutoSol log file:
+ The scores for solution #1 are listed in the AutoSol log file:
 </p><PRE style="face=courier">
 Scoring for this solution now...
 
-AutoSol_run_1_/TEMP0/resolve.scores CC 0.6260929
-AutoSol_run_1_/TEMP0/resolve.scores RFACTOR 0.4817838
-AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2500097
-AutoSol_run_1_/TEMP0/resolve.scores FOM 0.557
+AutoSol_run_1_/TEMP0/resolve.scores SKEW -0.047612928
+AutoSol_run_1_/TEMP0/resolve.scores CORR_RMS 0.8755398
 
-CC-EST (BAYES-CC) CC : 68.4 +/- 27.5
-CC-EST (BAYES-CC) RFACTOR : 58.2 +/- 36.6
-CC-EST (BAYES-CC) SKEW : 54.5 +/- 17.8
-CC-EST (BAYES-CC) FOM : 43.6 +/- 44.1
-ESTIMATED MAP CC x 100:  59.6 +/- 8.4
+CC-EST (BAYES-CC) SKEW : 10.0 +/- 26.1
+CC-EST (BAYES-CC) CORR_RMS : 55.7 +/- 36.1
+Resetting sigma of quality estimate due to wide range of estimated values:
+Overall quality:  14.7
+Highest lower bound of quality for individual estimates: 37.6
+Current 2*sigma:  37.5 New 2*sigma:  45.7
+ESTIMATED MAP CC x 100:  14.7 +/- 45.7
 
 </PRE>
 The <b>ESTIMATED MAP CC x 100</b> is an estimate of the quality of
@@ -358,7 +354,28 @@ the experimental map and an ideal map for this structure. Then all the
 estimates are combined to yield an overall Bayesian estimate of the map
 quality.  These are reported as CC x 100 +/- 2SD.  These estimated map
 CC values are usually fairly close, so as the estimate is
- 59.6 +/- 8.4, you can be quite confident that your structure is 
+ 14.7 +/- 45.7, you can be quite confident that this solution is
+not the right one.
+<p>The wizard then tries the inverse solution...
+</p><PRE style="face=courier">
+Scoring for this solution now...
+
+AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.2644597
+AutoSol_run_1_/TEMP0/resolve.scores CORR_RMS 0.9274329
+
+CC-EST (BAYES-CC) SKEW : 56.5 +/- 18.1
+CC-EST (BAYES-CC) CORR_RMS : 63.1 +/- 28.5
+ESTIMATED MAP CC x 100:  60.0 +/- 13.6
+
+Reading NCS information from:  AutoSol_run_1_/TEMP0/resolve.log
+ based on  [ha_2.pdb,phaser_2.mtz]
+Reformatting  ha_2.pdb  and putting it in  ha_2.pdb_formatted.pdb
+RANGE to KEEP :1.28
+Confident of the hand (Quality diff from opp hand is 1.9 sigma)
+
+</PRE>
+This solution looks a lot better. The overall estimated map CC value is
+60.0 +/- 13.6. This means that your structure is 
 not only solved but that you 
 will have a good map when it is density modified.
 
@@ -366,31 +383,32 @@ will have a good map when it is density modified.
 <p><H5>Final phasing with Phaser</H5></p>
 Once the best heavy-atom solution or solutions are chosen based on 
 <b>ESTIMATED MAP CC x 100</b>, these are used in a final round of phasing with
-Phaser (for SAD phasing). The log file from phasing for solution <b>1</b> is in
-<b>phaser_1.log</b>.  Here is the final part of the output from this log file,
+Phaser (for SAD phasing). The log file from phasing for solution <b>2</b> is in
+<b>phaser_2.log</b>.  Here is the final part of the output from this log file,
 showing the refined coordinates, occupancies, thermal (B) factors for
 the 4 sites, along with the refined scattering factors (in this case
-only f&quot; is refined), and the final figure of merit of phasing (0.548):
+only f&quot; is refined), and the final figure of merit of phasing (0.544):
 </p><PRE style="face=courier">
    Atom Parameters: 4 atoms in list
         X      Y      Z      O      B      (AnisoB) M Atomtype
-   #1    0.180 -0.113 -0.681  1.144   23.2 ( ---- ) 1 SE
-   #2    0.685 -0.238 -0.710  0.978   22.6 (+16.60) 1 SE
-   #3    0.665 -0.206 -0.774  1.004   27.5 (+16.47) 1 SE
-   #5    0.028  0.758  0.906  0.182   23.5 ( ---- ) 1 SE
+   #1    0.180 -0.113 -0.681  1.135   22.8 ( ---- ) 1 SE
+   #2    0.686 -0.238 -0.710  0.980   23.0 (+22.40) 1 SE
+   #3    0.665 -0.206 -0.774  1.020   28.2 (+26.14) 1 SE
+   #5    0.027  0.758  0.905  0.176   23.9 ( ---- ) 1 SE
 
    Scattering Parameters:
     Atom             f"           (f')
-      SE         5.5375        -8.0000
+      SE         5.5196        -8.0000
 
 
    Figures of Merit
    ----------------
    Bin Resolution   Acentric     Centric      Single       Total
                     Number FOM   Number FOM   Number FOM   Number FOM
-   ALL  28.49- 2.40   7502 0.592    874 0.140     51 0.056   8427 0.542
+   ALL  28.49- 2.40   7502 0.594    874 0.140     51 0.057   8427 0.544
 
-   log-likelihood gain -90102
+   log-likelihood gain -90088
+
 
 </PRE>
 
@@ -406,7 +424,7 @@ phases (FWT, PHWT) from Phaser are used to calculate the starting
 map for RESOLVE, and the experimental structure factor amplitudes (FP)
 and SAD Hendrickson-Lattman coefficients from Phaser are used
 in the density modification process. The output from RESOLVE for solution 1
-can be found in <b>resolve_1.log</b>.  Here are key sections of this
+can be found in <b>resolve_2.log</b>.  Here are key sections of this
 output. </p>
 <p>First, the plot of how many points in the &quot;protein&quot; region
 of the map have each possible value of electron density. The
@@ -427,20 +445,20 @@ skew, though it is not perfect.
  where sigma, offset and beta are given below under "Error estimate."
 
 
-                          0.02..................................................
+                          0.03..................................................
                               .                   .                            .
                               .                   .                            .
-                              .             xxxxxxxxo                          .
-                              .          oxxo o   oxxo                         .
-                              .          x        .  xxo                       .
-                              .        ox         .    xx                      .
-                p(rho)        .       ox          .      xoo                   .
-                              .      ox           .       xxoo                 .
-                              .     xx            .         xxxo               .
-                              .    x              .            xxo             .
-                              .  oxx              .              xxxx          .
-                              . xx                .                 xxxx       .
-                              xx                  .                    oxxxx   .
+                              .             xxxxxxx                            .
+                              .          ooxoooooooxxo                         .
+                              .          xxo      .  xoo                       .
+                              .         xo        .   xxo                      .
+                p(rho)        .        xx         .     xxoo                   .
+                              .      ox           .       xxooo                .
+                              .      xo           .         xxo                .
+                              .    xx             .           xxxx             .
+                              .   xo              .              xxxx          .
+                              .  xx               .                 xxxx       .
+                              xxx                 .                    xxxxx   .
                               x                   .                       ooxxxx
                          0.0  x................................................x
 
@@ -455,25 +473,24 @@ one from a perfect structure:
 </p><PRE style="face=courier">
                           0.03..................................................
                               .                   .                            .
-                              .            x      .                            .
-                              .          xxoxxx   .                            .
-                              .        xxo oooxxo .                            .
-                              .       oo        xx.                            .
-                              .      ox          xoo                           .
-                p(rho)        .      x            xxo                          .
-                              .    ox             . xx                         .
-                              .    x              .  xxx                       .
+                              .          xxxxx    .                            .
+                              .         xooooxxo  .                            .
+                              .       oxo     oxo .                            .
+                              .       xx        xo.                            .
+                              .      ox          xxoo                          .
+                p(rho)        .     ox            .xoo                         .
+                              .     x             . xo                         .
+                              .    x              .  xxxx                      .
                               .   xx              .     xxxxo                  .
-                              .  xx               .        oxxxxxxx            .
-                              . xo                .            ooooxxxxxx      .
-                              xx                  .                  o  oxxxxxoo
-                              o                   .                          oxo
+                              .  xx               .         xxxxxxxx           .
+                              . xx                .              ooxxxxxx      .
+                              xx                  .                   o oxxxxxoo
+                              x                   .                           xo
                          0.0  o................................................x
 
                              -2        -1         0         1         2        3
 
                                   normalized rho (0 = mean of solvent region)
-
 </PRE>
 <p>The key statistic from this RESOLVE density modification is the R-factor
 for comparison of observed structure factor amplitudes (FP) with those
@@ -497,18 +514,27 @@ then you can do this with the keyword <b>input_refinement_file=hires.mtz</b>.
 
 The files to be used for model-building
 and refinement are listed in the AutoSol log file:
-</p><PRE style="face=courier"> Generating FreeR flags...
-Saving  exptl_fobs_phases_freeR_flags_1.mtz  for refinement
-THE FILE AutoSol_run_1_/resolve_1.mtz will be used for model-building
-THE FILE exptl_fobs_phases_freeR_flags_1.mtz will be used for refinement
+</p><PRE style="face=courier"> 
+
+FreeR_flag added to  phaser_2.mtz
+...
+Saving  exptl_fobs_phases_freeR_flags_2.mtz  for refinement
+THE FILE AutoSol_run_1_/resolve_2.mtz will be used for model-building
 </PRE>
 
 <p><H5>Model-building with RESOLVE</H5></p>
-<p>The AutoSol Wizard by default uses RESOLVE to build an atomic model
-of your structure.  It will guess from your sequence file whether the 
+<p>The AutoSol Wizard by default uses a very quick method to build just
+the secondary structure of your macromolecule.  This is controlled 
+by the keyword <b>helices_strands_only=True</b>.
+The Wizard will guess from your sequence file whether the 
 structure is protein or RNA or DNA (but you can tell it if you want
-with (<b>chain_type=PROTEIN</b>). The model-building carried out in
-the AutoSol Wizard is essentially the same as one cycle of
+with (<b>chain_type=PROTEIN</b>). 
+
+<p>If the quick model-building does not build a satisfactory model
+(if the correlation of map and model is less than 
+ <b>acceptable_secondary_structure_cc=0.35</b>), then model-building
+is tried again with the standard build procedure,
+essentially the same as one cycle of
 model-building with the AutoBuild Wizard (see the web page
 <a href="autobuild.htm">
 Automated Model Building and Rebuilding with AutoBuild</a>, 
@@ -516,25 +542,47 @@ except that if you specify
 <b>thoroughness=quick</b> as we have in this example, the model-building is
 done less comprehensively to speed things up.
 </p>
-<p>In this case the model-building produces an initial model with 115 
-residues built and side chains assigned to 77, and which refines to
-an R-factor of 0.32 and a free R-factor of 0.35:
-</p><PRE style="face=courier">Model 1: Residues built=115  placed=77  Chains=7  Model-map CC=0.69
-This is new best model with cc =  0.69
-Refining model:  Build_1.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.32/0.35
+<p>In this case the secondary-structure-only 
+model-building produces an initial model with 61 
+residues built and side chains assigned to 0, and which has a
+model-map correlation of 0.33:
+</p><PRE style="face=courier">
+Model with helices and strands is in  Build_1.pdb
+Log for helices and strands is in  Build_1.log
+Final file:  AutoSol_run_1_/TEMP0/Build_1.pdb
+Log file:  Build_1.log  copied to  Build_1.log
+Model 1: Residues built=61  placed=0  Chains=9  Model-map CC=0.33
+This is new best model with cc =  0.33
+Getting R for model:  Build_1.pdb
+Model: AutoSol_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.55/0.58
+</PRE>
+As the model-map correlation is only 0.33, the Wizard decides that this is
+not good enough and tries again with regular model-building, yielding 
+a better model with 86 residues built and a map correlation of 0.55:
+</p><PRE style="face=courier">
+Model 2: Residues built=86  placed=7  Chains=15  Model-map CC=0.55
+This is new best model with cc =  0.55
+Refining model:  Build_2.pdb
+Model: AutoSol_run_1_/TEMP0/refine_2.pdb  R/Rfree=0.46/0.49
 </PRE>
 After one model completion cycle (including extending ends of chains,
 fitting loops, and building outside the region already built, the best
-model built has 126 residues built, all assigned to sequence:
+model built has 77 residues built, 22 assigned to sequence and a 
+map correlation of 0.61:
 </p><PRE style="face=courier"> 
-Model 7: Residues built=126  placed=126  Chains=0  Model-map CC=0.82
-This is new best model with cc =  0.82
-Refining model:  model_with_loops_8.pdb
-Refined model: AutoSol_run_1_/TEMP0/refine_7.pdb  R/Rfree=0.21/0.23
+Model completion cycle 1
+Models to combine and extend:  ['Build_2.pdb', 'refine_2.pdb']
+Model 3: Residues built=77  placed=22  Chains=10  Model-map CC=0.61
+This is new best model with cc =  0.61
+Refining model:  Build_combine_extend_3.pdb
+Model: AutoSol_run_1_/TEMP0/refine_3.pdb  R/Rfree=0.45/0.47
 </PRE>
-This refined initial model is written out to <b>refine_7.pdb</b> in
-the output directory.
+This initial model is written out to <b>refine_3.pdb</b> in
+the output directory. It is still just a preliminary model, but it is good
+enough to tell that the structure is solved. For full model-building you
+will want to go on and use the AutoBuild Wizard
+ (see the web page <a href="autobuild.htm">
+Automated Model Building and Rebuilding with AutoBuild</a> )
 
 <p><H5>The AutoSol_summary.dat summary file</H5></p>
 A quick summary of the results of your AutoSol run is in the
@@ -548,52 +596,51 @@ summary for this <b>p9</b> SAD dataset:
 </p><PRE style="face=courier"> -----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
  *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
 
+Solution # 2  BAYES-CC: 60.0 +/- 13.6 Dataset #1   FOM: 0.54 ----------------
 
-
-Solution # 2  BAYES-CC: 59.6 +/- 8.4 Dataset #1   FOM: 0.54 ----------------
-
-Solution  2 using HYSS on AutoSol_run_1_/p9_se_w2_PHX.sca_ano_1.sca and taking inverse. 
-Dataset #1
+Solution  2 using HYSS on 
+/net/firebird/scratch1/terwill/run_082908a/p9-sad/AutoSol_run_1_/
+p9_se_w2_PHX.sca_ano_1.sca and taking inverse. Dataset #1
 Dataset number: 1
 Dataset type: sad
-Datafiles used: ['AutoSol_run_1_/p9_se_w2_PHX.sca']
+Datafiles used: [
+'/net/firebird/scratch1/terwill/run_082908a/p9-sad/AutoSol_run_1_/p9_se_w2_PHX.sca']
 Sites: 4 (Already used for Phasing at resol of 2.4)      Refined Sites: 4
 NCS information  in: AutoSol_2.ncs_spec
 Experimental phases in: phaser_2.mtz
-Experimental phases plus FreeR_flags for refinement in: exptl_fobs_phases_freeR_flags_2.mtz
+Experimental phases plus FreeR_flags for refinement in: 
+exptl_fobs_phases_freeR_flags_2.mtz
 Density-modified phases in: resolve_2.mtz
 HA sites (PDB format) in: ha_2.pdb_formatted.pdb
 Sequence file in: seq.dat
-Model in: refine_7.pdb
-  Residues built: 126
-  Side-chains built: 126
-  Chains: 0
-  Overall model-map correlation: 0.82
-  R/R-free: 0.21/0.23
+Model in: refine_3.pdb
+  Residues built: 77
+  Side-chains built: 22
+  Chains: 10
+  Overall model-map correlation: 0.61
+  R/R-free: 0.45/0.47
 Scaling logfile in: dataset_1_scale.log
 HYSS logfile in: p9_se_w2_PHX.sca_ano_1.sca_hyss.log
 Phasing logfile in: phaser_2.log
-Density modification logfile in: resolve_2.log
-Build logfile in: model_with_loops_8.log
+Density modification logfile in: resolve_2.log (R=0.24)
+Build logfile in: Build_combine_extend_3.log
 
- Score type:        CC       RFACTOR       SKEW       FOM
-Raw scores:       0.63        0.48        0.25        0.56  
-BAYES-CC:        68.42       58.15       54.50       43.55  
+ Score type:     SKEW    CORR_RMS
+Raw scores:     0.26      0.93
+BAYES-CC:      56.50     63.07
 
-Refined heavy atom sites (fractional): 
-xyz       0.180     -0.113     -0.681 
-xyz       0.686     -0.238     -0.710 
-xyz       0.665     -0.206     -0.774 
-xyz       0.028      0.759      0.906 
-
-
-
+Refined heavy atom sites (fractional):
+xyz       0.180     -0.113     -0.681
+xyz       0.686     -0.238     -0.710
+xyz       0.665     -0.206     -0.774
+xyz       0.027      0.758      0.905
 </PRE>
 <p><H5>How do I know if I have a good solution?</H5></p>
 <p>Here are some of the things to look for to tell if you have obtained a 
 correct solution:
 <UL>
-<LI>How much of the model was built? More than 60% is good.  If less than 
+<LI>How much of the model was built? More than 50% is good, particularly if
+you are using the default of helices_strands_only=True.  If less than 
 25% of the model is built, then it may be entirely incorrect. Have a
 look at the model. If you see clear sets of parallel or antiparallel strands,
 or if you see helices and strands with the expected relationships,
@@ -602,7 +649,9 @@ everywhere, your model and solution is going to be incorrect.
 How many side-chains were fitted to density? More than 25% is ok, 
 more than 50% is very good. 
 </LI>
-<LI>What is the R-factor of the model? For a solution at moderate to high
+<LI>What is the R-factor of the model? This only applies if you are building
+a full model (not for helices_strands_only=True).
+For a solution at moderate to high
 resolution (2.5 A or better) the R-factor should be in the low 30's to be very 
 good. For lower-resolution data, an R-factor in the low 40's is probably
 largely correct but the model is not very good.

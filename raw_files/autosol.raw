@@ -146,7 +146,7 @@ either a Bayesian estimate, a linear regression, or a
 Z-score system to put all the scores on a common scale and to combine them
 into a single overall score. 
 <p>The overall
-scoring method chosen (BAYES-CC, CC-SCORE, or Z-SCORE) is determined by the
+scoring method chosen (BAYES-CC or Z-SCORE) is determined by the
 value of the keyword overall_score_method. The default is BAYES-CC.
 <p>Note that for all scoring methods, the map that is being evaluated,
 and the estimates of map-perfect-model correlation, refer to 
@@ -175,37 +175,6 @@ The mean estimate (BAYES-CC) is reported (multiplied x 100),
 estimated independently for each scoring criterion used, and also from all
 those selected with the keyword score_type_list and not selected
 with the keyword skip_score_list. 
-
-<P><b>Regression-based CC-scores (CC-SCORE).</b>  
-A linear regression is used to 
-estimate the value of the square of the correlation of the experimental
-map and the (unknown) perfect map.
-The regression is based on values of the 
-scoring criteria obtained in test runs of the AutoSol Wizard, along with the
-square of the actual correlation of the maps to model maps.  These data were
-generated from 52 MAD, SAD, and MIR experimental datasets run through the
-AutoSol Wizard, and include 489 sets of values of scoring criteria with an 
-associated model-map correlation.   The resulting coefficients can then be
-used to generate and estimate of the square of the correlation of any 
-experimental map to the correct map for this structure. The square of the
-correlation is estimated in this process because it is more closely linearly
-related to the scoring criteria than is the correlation itself. Taking the
-square root gives an estimate of the correlation of the experimental map
-to the correct map for the structure. When multiplied by 100,
-this estimated CC is referred to as the CC-SCORE.  
-The mean estimate (CC-SCORE) is reported, with a 
-+/-2SD estimate of the uncertainty in this estimate of CC_PERFECT.
-
-<p>The CC-SCORE values are
-estimated independently for each scoring criterion used, and also from all
-those selected with the keyword score_type_list and not selected
-with the keyword
-skip_score_list.
-Coefficients for these regressions
-can be entered with the keywords score_weight_list, score_overall_scale,
-score_overall_offset, score_overall_sd, and score_individual_scale_list,
-score_individual_offset_list, score_individual_sd_list.  
-
 
 <P><b>Z-scores (Z-SCORE).</b> 
 The Z-score for one criterion for a particular solution is given by,
@@ -250,14 +219,12 @@ sites to suggest NCS, and RESOLVE identifies the actual correlation of
 NCS-related density for the NCS overlap score. 
 This score is used by default if NCS is present in the Z-score method of 
 scoring. 
-By default it is printed out but not used in scoring in the CC-SCORE method.
 <P>(5) Figure of merit (FOM). The figure of merit of phasing is a good 
 indicator of the internal consistency of a solution. This score is not
 normalized by the SD of randomized phase sets (as that has no meaning; rather
 a standard SD=0.05 is used).
 This score is used by default if NCS is present in the Z-score method of 
 scoring and in the Bayesian CC estimate method.
-By default it is printed out but not used in scoring in the CC-SCORE method.
 <P>(6) Map correlation after truncation (TRUNCATION). 
 Dummy atoms (the same number as
 estimated non-hydrogen atoms in the structure) are placed in positions

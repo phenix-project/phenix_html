@@ -27,7 +27,7 @@ If PHENIX is already installed and your environment is all set, then
 if you type:
 </p><PRE style="face=courier">echo $PHENIX</PRE>
 then you should get back something like this:
-</p><PRE style="face=courier">/xtal//phenix-1.3b</PRE>
+</p><PRE style="face=courier">/xtal//phenix-1.3</PRE>
 If instead you get:
 </p><PRE style="face=courier">PHENIX: undefined variable</PRE>
 then you need to set up your PHENIX environment. See the
@@ -36,7 +36,7 @@ details of how to do this.
 If you are using the C-shell environment (<b>csh</b>) then all you will need 
 to do is add one line to your <b>.cshrc</b> (or equivalent) file that
 looks like this:
-</p><PRE style="face=courier">source /xtal/phenix-1.3b/phenix_env</PRE>
+</p><PRE style="face=courier">source /xtal/phenix-1.3/phenix_env</PRE>
 (except that the path in this statement will be where <b>your</b> PHENIX is
 installed). Then the next time you log in <b>$PHENIX</b> will be defined.
 
@@ -324,29 +324,35 @@ several very good models if you want).
 <p>Here is where this is done:
 </p>
 </p><PRE style="face=courier"> 
-Setting up to build 4 models to be combined into final model #1
-
+Setting up to build 5 models to be combined into final model #1
 
 Setting background=False as nproc=1
-Building  4  models ...
-Splitting work into 4 jobs and running 1 at a time with csh in
-/net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/AutoBuild_run_1_/TEMP0
-Starting job 1...Starting job 2...Starting job 3...Starting job 4...
+Building  5  models ...Splitting work into 5 jobs and running 1 at a time with csh in
+/net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/AutoBuild_run_1_/TEMP0
+
+Starting job 1...
+Starting job 2...
+Starting job 3...
+Starting job 4...
+Starting job 5...
 Collecting multiple_model runs to form a single final model
 
 Solution for try :  1 cycle_best_3.pdb
-Solution 2 from rebuild cycle 3 R= 0.21
-...
-Solution for try :  2 cycle_best_3.pdb
-Solution 2 from rebuild cycle 3 R= 0.21
-...
-Solution for try :  3 cycle_best_3.pdb
-Solution 2 from rebuild cycle 3 R= 0.21
-...
-Solution for try :  4 cycle_best_5.pdb
-Solution 4 from rebuild cycle 5 R= 0.2
-..
+Solution 2 from rebuild cycle 3 R= 0.2
+Saving  /net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/
+AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.pdb  as  
+/net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/
+AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_1
 
+Saving  /net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/
+AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.mtz  as  
+/net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/
+AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.mtz_1_1
+...
+Solution 4 from rebuild cycle 5 R= 0.21
+Solution 2 from rebuild cycle 3 R= 0.21
+Solution 3 from rebuild cycle 4 R= 0.21
+Solution 3 from rebuild cycle 4 R= 0.21
 </PRE>
 <p>In this case each of the individually rebuilt models is pretty good, with
 an R from 0.20 to 0.21. These models are then combined together, with the best
@@ -359,35 +365,41 @@ Combining initial models # 1
 ...
 NOTE: only keeping merged models if they improve R
 
-Merging model  4
-R/Rfree for model  composite_model_refined_4.pdb 0.2 0.24
+Merging model  1
+Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/current_model.pdb
+R/Rfree for model  composite_model_refined_1.pdb 0.21 0.23
+
+...
+
+Merging model  5
+combining  current_model.pdb initial_model.pdb_1_5
+Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/current_model.pdb
+Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/initial_model.pdb_1_5
+R/Rfree for model  composite_model_refined_5.pdb 0.2 0.23
 
 ...
 Merging model  2
 combining  current_model.pdb initial_model.pdb_1_2
-Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/current_model.pdb
-Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/initial_model.pdb_1_2
-R/Rfree for model  composite_model_refined_2.pdb 0.2 0.24
+Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/current_model.pdb
+Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/initial_model.pdb_1_2
+R/Rfree for model  composite_model_refined_2.pdb 0.21 0.23
 Not keeping this merged model as it is no better than current best
-...
-Merging model  3
-combining  current_model.pdb initial_model.pdb_1_3
-Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/current_model.pdb
-Removing waters and ligands (if any): AutoBuild_run_2_/TEMP0/initial_model.pdb_1_3
-R/Rfree for model  composite_model_refined_3.pdb 0.2 0.24
 
-Saving refinement data file, refinement map coeffs,
-and density-modified map (averaged for all models):
-AutoBuild_run_2_/TEMP0/composite_model_fmodel.mtz AutoBuild_run_2_/TEMP0/composite_model_refined_3.mtz initial_model.mtz_1_3
+ ...
 
-Copied  current_model.pdb  to cycle_best.pdb
-Copying files:  cycle_best.pdb ->  overall_best.pdb (etc.)
+New overall best saved:
 
-New best overall: AutoBuild_run_2_/overall_best.pdb
+Current overall_best model and map  Mon Jun 30 01:08:22 2008
+Working directory: 
+/net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/AutoBuild_run_1_
+Model (overall_best.pdb) from: overall_best.pdb
+Cycle: 1
+R and R-free: 0.20 0.23
+Map coeffs used for build (overall_best_denmod_map_coeffs.mtz)
+from: overall_best_denmod_map_coeffs.mtz
 
-Model obtained on cycle 1
-R (work): 0.197864372935
-R (free): 0.241592271563
+Final composite model # 1 :  AutoBuild_run_1_/MULTIPLE_MODELS/model.pdb_1
+Final composite mtz # 1 :  AutoBuild_run_1_/MULTIPLE_MODELS/resolve_composite_map.mtz_1
 
 </PRE>
 <p>Here there were four models built, with R values from 0.2 to 0.22. 
@@ -411,7 +423,7 @@ AutoBuild_run_2_/
 which in turn contain the log files for the runs of these individual rebuild_in_place
 rebuilding steps. Here is a summary of the run in
 </p><PRE style="face=courier"> 
-AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/AutoBuild_run_1_1_.log
+AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/AutoBuild_run_1_1.log
 </PRE>
 
 <p>After reading in the data in this sub-process, the starting model is
@@ -419,7 +431,7 @@ refined:
 </p>
 </p><PRE style="face=courier"> 
 Refining model:  unrefined.pdb_1
-Refined model: refine.pdb_1  R/Rfree=0.31/0.34
+Model: refine.pdb_1  R/Rfree=0.31/0.32
 </PRE>
 <p>This starting model is rather good, with an R of 0.32.  This is about the
 quality of model that works best with rebuild-in-place. The NCS in this
@@ -427,12 +439,13 @@ model is analyzed automatically:
 </p><PRE style="face=courier"> 
 GROUP 1
 Summary of NCS group with 4 operators:
-ID of chain/residue where these apply: 
-[['A', 'B', 'C', 'D'], [[[1, 157]], [[1, 157]], [[1, 157]], [[1, 157]]]]
+ID of chain/residue where these apply: [['A', 'B', 'C', 'D'], 
+[[[1, 157]], [[1, 157]], [[1, 157]], [[1, 157]]]]
 RMSD (A) from chain A:  0.0  0.0  0.0  0.0
 Number of residues matching chain A:[157, 157, 157, 157]
 Source of NCS info: AutoBuild_run_1_/TEMP0/overall_best.pdb
 Correlation of NCS: 0.76
+
 </PRE>
 <p>There is good correlation of NCS-related density (as expected as all the
 density is model-based so far) and the 4 chains have a 0.0 RMSD after
@@ -442,8 +455,9 @@ in 4 different orientations and locations in the asymmetric unit).
 The rebuild-in place procedure is then carried out:
 </p><PRE style="face=courier"> 
 Running standard build
-Starting with current best model of  refine.pdb_1 ...setting it to  refine.pdb_1Including parts of this model if best...
-Using starting model from  starting_model.pdb
+Starting with current best model of  refine.pdb_1 ...setting it to  refine.pdb_1
+Including parts of this model if best...
+Starting best model from  starting_model.pdb
 Rebuilding in place: starting_model.pdb
 New total residues built:  562
 
@@ -453,8 +467,7 @@ Chain 'C':    1-  10,   61-  65,  151- 157,
 Chain 'B':    1-   5,   61-  65,
 Chain 'D':    1-  10,   61-  65,  151- 157
 Refining model:  Build_rebuild_in_place_1.pdb
-Refined model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.26
-
+Model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.26
 </PRE>
 <p>Notice the warning about some of the residues that were not rebuilt. For
 any residues that the rebuilding process simply could not fit, the original
@@ -465,23 +478,25 @@ In this case the R has decreased substantially by rebuilding to 0.23.
 </p>
 <p>The side chains are then rebuilt, and the best-fitting parts of the
 current models are recombined to yield a new 
-model with a similar R of 0.23:
+model with a similar R of 0.24:
 </p><PRE style="face=courier"> 
 Rebuilding side chains from  Build_composite_refined_3.pdb
 Refining model:  edit_model.pdb
-Refined model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_3.pdb  R/Rfree=0.23/0.27
+Model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_3.pdb  R/Rfree=0.24/0.26
 </PRE>
 <p> This is the end of the first cycle of rebuilding. Next the rebuilt model
 is used to calculate phases and the resulting map is used in statistical
 density modification, including not just solvent flattening and histograms
 of density, but also the 4-fold NCS in this structure.  This whole process is
-repeated 2 more times, yielding a final R/Rfree of 0.21/0.25.  On the final
+repeated 2 more times, yielding the best model on the second cycle,
+with a final R/Rfree of 0.20/0.23.  On the final
 cycle of model-building a few residues are still not rebuilt:
 </p><PRE style="face=courier"> 
-Warning: some residues not rebuilt successfully on cycle 4:
+Warning: some residues not rebuilt successfully on cycle 3:
+Chain 'A':  156- 157,
 Chain 'C':    1-  10,   61-  65,  156- 157,
 Chain 'B':    1-  10,
-Chain 'D':    1-  10
+Chain 'D':    1-  10,   61-  65,  156- 157
 </PRE>
 <p>and these residues (the N-terminal 10 residues of chains B, C,
 and D) and residues 61-65 and the C-terminal 2 residues of chain C) 
@@ -507,40 +522,45 @@ key files that were produced in your run of AutoBuild (all these are in the
 output directory) and some of the key statistics for the run.
 Here is the summary for this <b>a2u-globulin-rebuild</b> model-building run:
 </p><PRE style="face=courier"> 
+Summary of model-building for run 1  Mon Jun 30 01:08:54 2008
+Files are in the directory:  
+/net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/AutoBuild_run_1_/
 
-Summary of model-building for run 3  Tue May 20 12:13:15 2008
-Files are in the directory:  /net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/AutoBuild_run_3_/
 
-
-Starting mtz file: /net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/a2u-sigmaa.mtz
-Sequence file: /net/cci-filer1/vol1/tmp/terwill/phenix_examples/a2u-globulin-rebuild/a2u-globulin.seq
+Starting mtz file: 
+/net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/a2u-sigmaa.mtz
+Sequence file: 
+/net/idle/scratch1/terwill/run_082908a/a2u-globulin-rebuild/a2u-globulin.seq
 One composite model generated with 'multiple_models'
 
 
-Best solution on cycle: 1    R/Rfree=0.2/0.25
+Best solution on cycle: 1    R/Rfree=0.2/0.23
 
 Summary of output files for Solution 1 from multiple_models cycle 1
 
 ---  Model (PDB file)  ---
-pdb_file: AutoBuild_run_3_/cycle_best_1.pdb
+pdb_file: AutoBuild_run_1_/cycle_best_1.pdb
 
 ---  Model-map correlation log file ---
-log_eval: AutoBuild_run_3_/cycle_best_1.log_eval
+log_eval: AutoBuild_run_1_/cycle_best_1.log_eval
 
 ---  Data for refinement FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag ---
-hklout_ref: AutoBuild_run_3_/exptl_fobs_phases_freeR_flags.mtz
+hklout_ref: AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz
 
 ---  Density-modified map coefficients FP PHIM FOM ---
-hklout_denmod: AutoBuild_run_3_/cycle_best_1.mtz
+hklout_denmod: AutoBuild_run_1_/cycle_best_1.mtz
 
 
 SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
- 1         1      0.20        0.25      0       0
+ 1         1      0.20        0.23      0       0
+
 
 </PRE>
 <p>Your best model is in AutoBuild_run_3_/cycle_best_1.pdb, and it has
-an R/Rfree of 0.20/0.25, which is quite reasonable.  The best
+an R/Rfree of 0.20/0.23, which is quite reasonable.  The best
 density-modified map coefficients are in AutoBuild_run_3_/cycle_best_1.mtz.
+The values of &quot;BUILT&quot; and &quot;PLACED&quot;  are zero because no
+new model is being built in this process (just rebuilding in place).
 There is a residue-by-residue analysis of the correlation 
 between density calculated from this model and this map 
 in AutoBuild_run_3_/cycle_best_1.log_eval.  If you want to refine
