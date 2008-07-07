@@ -276,7 +276,7 @@ Try:  2 building 1 model
 Try:  3 building 1 model
 Running up to  1  jobs in parallel... with total of  3  jobs
 Splitting work into 3 jobs and running 1 at a time with csh in
-/net/idle/scratch1/terwill/run_082908a/p9-build/AutoBuild_run_1_/TEMP0
+/net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0
 
 Starting job 1...
 Starting job 2...Starting job 3...
@@ -284,17 +284,17 @@ Collecting models....
 
 Solution for try :  1 cycle_best_1.pdb
 Solution 1 from build cycle 1 R= 0.24
-Saving  /net/idle/scratch1/terwill/run_082908a/p9-build/AutoBuild_run_1_/TEMP0/
+Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0/
 AutoBuild_run_1_/cycle_best_1.pdb  as  MODEL_1.pdb  in  AutoBuild_run_1_/TEMP0
 
 Solution for try :  2 cycle_best_1.pdb
 Solution 1 from build cycle 1 R= 0.24
-Saving  /net/idle/scratch1/terwill/run_082908a/p9-build/AutoBuild_run_1_/TEMP0/
+Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0/
 AutoBuild_run_2_/cycle_best_1.pdb  as  MODEL_2.pdb  in  AutoBuild_run_1_/TEMP0
 
 Solution for try :  3 cycle_best_1.pdb
 Solution 1 from build cycle 1 R= 0.24
-Saving  /net/idle/scratch1/terwill/run_082908a/p9-build/AutoBuild_run_1_/TEMP0/
+Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0/
 AutoBuild_run_3_/cycle_best_1.pdb  as  MODEL_3.pdb  in  AutoBuild_run_1_/TEMP0
 Done with  3 parallel build jobs...
 Running standard build to merge and extend these models now.
@@ -395,19 +395,19 @@ extended, and saved (if it is an improvement):
 </p><PRE style="face=courier"> 
 Solution for try :  1 cycle_best_1.pdb
 Solution 1 from build cycle 1 R= 999.9
-Saving  /net/idle/scratch1/terwill/run_082908a/p9-build/
+Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/
 AutoBuild_run_1_/TEMP0/AutoBuild_run_4_/cycle_best_1.pdb  as  
 MODEL_1.pdb  in  AutoBuild_run_1_/TEMP0
 
 Solution for try :  2 cycle_best_1.pdb
 Solution 1 from build cycle 1 R= 999.9
-Saving  /net/idle/scratch1/terwill/run_082908a/p9-build/
+Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/
 AutoBuild_run_1_/TEMP0/AutoBuild_run_5_/cycle_best_1.pdb  as  
 MODEL_2.pdb  in  AutoBuild_run_1_/TEMP0
 
 Solution for try :  3 cycle_best_1.pdb
 Solution 1 from build cycle 1 R= 0.23
-Saving  /net/idle/scratch1/terwill/run_082908a/p9-build/
+Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/
 AutoBuild_run_1_/TEMP0/AutoBuild_run_6_/cycle_best_1.pdb  as  
 MODEL_3.pdb  in  AutoBuild_run_1_/TEMP0
 Done with  3 parallel build jobs...
@@ -474,11 +474,11 @@ output directory) and some of the key statistics for the run.
 Here is the summary for this <b>p9-build</b> model-building run:
 </p><PRE style="face=courier"> 
 Summary of model-building for run 1  Sun Jun 29 12:02:56 2008
-Files are in the directory:  /net/idle/scratch1/terwill/run_082908a/p9-build/AutoBuild_run_1_/
+Files are in the directory:  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/
 
 
-Starting mtz file: /net/idle/scratch1/terwill/run_082908a/p9-build/p9-solve.mtz
-Sequence file: /net/idle/scratch1/terwill/run_082908a/p9-build/p9.seq
+Starting mtz file: /net/idle/scratch1/terwill/run_072908a/p9-build/p9-solve.mtz
+Sequence file: /net/idle/scratch1/terwill/run_072908a/p9-build/p9.seq
 
 Best solution on cycle: 4    R/Rfree=0.22/0.27
 
@@ -516,7 +516,7 @@ phenix.autobuild \
  data=AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz \
  model=AutoBuild_run_1_/cycle_best_4.pdb \
  rebuild_in_place=True \
- seq_file=/net/idle/scratch1/terwill/run_082908a/p9-build/p9.seq
+ seq_file=/net/idle/scratch1/terwill/run_072908a/p9-build/p9.seq
 
 
 SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
