@@ -105,9 +105,9 @@ results in::
 - Change basis to get data in primitive setting, merge to higher symmetry
   and bring to reference setting (three steps)::
 
-    phenix.reflection_file_converter c2.sca --change_basis=to_niggli_cell --sca=niggli.sca
-    phenix.reflection_file_converter niggli.sca --change_to_space_group=R32:R --sca=r32r.sca
-    phenix.reflection_file_converter r32r.sca --change_of_basis=to_reference_setting --sca=r32_hexagonal_setting.sca
+    phenix.reflection_file_converter c2.sca --change-of-basis=to_niggli_cell --sca=niggli.sca
+    phenix.reflection_file_converter niggli.sca --change-to-space_group=R32:R --sca=r32r.sca
+    phenix.reflection_file_converter r32r.sca --change-of-basis=to_reference_setting --sca=r32_hexagonal_setting.sca
 
 
 =================
