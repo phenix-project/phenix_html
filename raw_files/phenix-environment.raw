@@ -23,7 +23,7 @@ installation directory (for example):</p>
 <pre>
 % . /usr/local/phenix-&lt;version&gt;/phenix_env.sh [sh/bash users]
 </pre>
-<p>To run jobs remotely, you need to source the phenix_env in the
+<p>To run jobs remotely, you need to source the phenix_env in your
 .cshrc (or equivalent) file.</p>
 
 <p>The following environmental variables should now be defined (here
@@ -54,7 +54,8 @@ documentation supplied with PHENIX, by typing:</p>
 % phenix.doc
 </pre>
 
-<p>If this doesn't work then you can point a web browser to your PHENIX
+<p>If this doesn't work because of browser installation issues then
+you can point a web browser to the correct location in your PHENIX
 installation (for example):</p>
 
 <pre>
@@ -65,12 +66,6 @@ installation (for example):</p>
 
 <pre>
 % mozilla $PHENIX/doc/index.html
-</pre>
-
-<p>You can also visit the PHENIX Wiki:</p>
-
-<pre>
-http://www.phenix-online.org/phenix_wiki
 </pre>
 
 <p>For license information please see the LICENSE file.</p>
