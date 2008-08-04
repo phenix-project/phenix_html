@@ -852,7 +852,7 @@ Below are some useful commands:
 
 3. To refine individual coordinates and ADP of H atoms::
 
-     % phenix.refine model.pdb data.hkl hydrogens.mode=individual 
+     % phenix.refine model.pdb data.hkl hydrogens.refine=individual
 
 4. To remove hydrogens from a model::
 
@@ -961,8 +961,8 @@ Guidelines for structure refinement at high resolution:
     ``phenix.refine`` can also refine individual coordinates of H atoms (can be
     used for small molecules at ultra-high resolutions or for refinement
     against neutron data). This is governed by
-    ``hydrogens.mode = individual *riding`` keyword and the default is
-    to use riding model. ``hydrogens.mode`` defines how hydrogens'
+    ``hydrogens.refine = individual *riding`` keyword and the default is
+    to use riding model. ``hydrogens.refine`` defines how hydrogens'
     B-factors are refined (default is to refine one group B for all H atoms).
     At high resolution one should definitely try to use ``one_b_per_molecule``
     or even ``individual`` choice (resolution permitting). Similar strategy
