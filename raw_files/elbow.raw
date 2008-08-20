@@ -389,6 +389,26 @@ display smiles DB
 <td>
 <P>
 <FONT size=2 face=Helvetica,Arial >
+--chemical-component
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+build ligand from chemical components (PDB)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
 --pipe
 </FONT>
 </td>
@@ -602,6 +622,26 @@ False
 <P>
 <FONT size=2 face=Helvetica,Arial >  
 use GAMESS for quantum chemistry calculations  (requires GAMESS be installed)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--qchem
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+use QChem for quantum chemistry calculations  (requires QChem be installed)
 </FONT>
 </td>
 </tr>
@@ -869,6 +909,26 @@ run QM with this basis, if possible
 <td>
 <P>
 <FONT size=2 face=Helvetica,Arial >
+--aux-basis
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+run QM with this auxiliary basis, if possible
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
 --random-seed
 </FONT>
 </td>
@@ -1089,6 +1149,26 @@ output is also written in TRIPOS format
 <td>
 <P>
 <FONT size=2 face=Helvetica,Arial >
+--sdf
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+output is also written in SDF format
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
 --pdb-ligand
 </FONT>
 </td>
@@ -1182,6 +1262,66 @@ False
 <P>
 <FONT size=2 face=Helvetica,Arial >  
 DELETES "unnecessary" output files (dangerous)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--pdb-assign
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+""
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+set the atom attributes in the PDB file
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--heme
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+None
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+attempt to match HEME groups (experimental)
+</FONT>
+</td>
+</tr>
+<tr>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+--add-hydrogens
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >
+"algorithm determination", True, False
+</FONT>
+</td>
+<td>
+<P>
+<FONT size=2 face=Helvetica,Arial >  
+override the automatic hydrogen addition
 </FONT>
 </td>
 </tr>
@@ -1434,26 +1574,6 @@ converts QM program output to xyz file
 <td>
 <P>
 <FONT size=2 face=Helvetica,Arial >
---add-hydrogens
-</FONT>
-</td>
-<td>
-<P>
-<FONT size=2 face=Helvetica,Arial >
-"algorithm determination", True, False
-</FONT>
-</td>
-<td>
-<P>
-<FONT size=2 face=Helvetica,Arial >  
-override the automatic hydrogen addition
-</FONT>
-</td>
-</tr>
-<tr>
-<td>
-<P>
-<FONT size=2 face=Helvetica,Arial >
 --write-hydrogens
 </FONT>
 </td>
@@ -1487,26 +1607,6 @@ override the automatic writing of hydrogens to PDB and CIF files
 <P>
 <FONT size=2 face=Helvetica,Arial >  
 set the max bondlength for auto bond detection
-</FONT>
-</td>
-</tr>
-<tr>
-<td>
-<P>
-<FONT size=2 face=Helvetica,Arial >
---pdb-assign
-</FONT>
-</td>
-<td>
-<P>
-<FONT size=2 face=Helvetica,Arial >
-""
-</FONT>
-</td>
-<td>
-<P>
-<FONT size=2 face=Helvetica,Arial >  
-set the atom attributes in the PDB file
 </FONT>
 </td>
 </tr>
