@@ -1,0 +1,268 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Density modification with multi-crystal averaging
+    with phenix.multi</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>phenix.multi: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+phenix.multi is a command line tool for carrying out density modification, 
+including NCS symmetry within a crystal and electron density from multiple
+crystals.
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How phenix.multi works:</H5><P>
+The inputs to phenix.multi are a set of PDB files that define the NCS
+within each crystal and the relationships of density between crystals,
+structure factor amplitudes (and optional phases, FOM and HL coefficients) 
+for each crystal, and starting electron density maps for one or more crystals.
+<p>
+The PDB files should be composed of the exact same of chains, placed in a
+different position and orientation for each NCS asymmetric unit of each crystal.
+You might create these PDB files by molecular replacement starting with
+the same search model for each crystal. You should not refine these MR
+solutions; they are only used to get the NCS relationships and they will be
+more reliably found if the models for all NCS asymmetric units are identical.
+You can break the NCS asymmetric unit into domains and place them independently.In this case a separate NCS group will be created for each domain. Additionally
+if your NCS asymmetric unit consists of more than one chain (A+B for
+example) then each chain will always be treated as a separate NCS group.
+
+<P>
+phenix.multi first uses the supplied PDB files to calculate NCS operators
+relating the NCS asymmetric unit in each crystal to all othe NCS asymmetric
+units in that crystal and in other crystals.  This is done by adding the
+unique chains in one crystal to each PDB file in turn, finding all the
+NCS relationships from all chains in that composite PDB file, and removing
+duplicate identity transformations. For example, suppose the NCS asymmetric
+unit is one chain (A,B,C....). Then to
+to relate all NCS asymmetric units to the NCS asymmetric unit 
+of crystal 0, phenix.multi
+will compare all chains in the PDB file for each crystal to the unique chain
+in the PDB file for crystal 0, generating one NCS operator for each chain
+in each crystal. In this process the unique chain (in this case the NCS 
+asymmetric unit of crystal 0) is renamed to a unique name (usually "**")
+and a composite PDB file is created with this chain along with
+all the chains in the PDB file for the crystal being considered, and
+phenix.simple_ncs_from_pdb is used to find the NCS operators. The centroids of
+the chains defining NCS are used as centers of the regions
+where the NCS operator is to be applied.
+
+<p>
+If the supplied PDB files have more than one domain or chain in each NCS 
+asymmetric unit, then the domains or chains are grouped into separate 
+NCS groups.
+<p> 
+Once NCS operators have been identified, density modification is carried out
+sequentially on data from each crystal. During density modification for
+one crystal, the current electron density maps from all other crystals 
+are used in generating target density for density modification in 
+exactly the same way as NCS-related density is normally used when only a
+single crystal is available.  
+<p>
+First the asymmetric unit of NCS is defined,
+in this case including the density in all NCS copies within the crystal
+being density modified as well as the density in all NCS copies in all
+other crystals. The asymmetric unit of NCS is the region over which the
+NCS operators apply. It is assumed to be identical for all NCS copies for
+all crystals, just with orientation and position identified by the NCS
+operators.  It is identified as the region over which all NCS copies have
+correlated density.  If a mask for the protein/solvent boundary is
+supplied (by specifying "use_model_mask"), then the asymmetric unit 
+of NCS is constrained to be within the non-solvent region of the map.
+<p>
+Then a target density map is created for the crystal being density modified. 
+For each NCS copy in this crystal, the average density for all other
+NCS copies in this and other crystals is used as a target.
+<p>
+Finally, statistical density modification is carried out using histograms of
+expected density, solvent flattening, and the NCS-based target density for
+this crystal.  The process is then repeated for all other crystals.  For those
+crystals for which no starting phases were available, one additional step
+is carried out in which the target density map is used by itself to calculate
+a starting electron density map (using RESOLVE map-based phasing).
+<p>
+This entire process is carried out several times, leading to 
+electron density maps for all crystals that typically have a high level
+of correlation of density within all NCS copies in each crystal and
+between the corresponding NCS regions in different crystals.
+
+
+<P><H5><I>Output files from phenix.multi</I></H5><P>
+
+<b>denmod_cycle_1_xl_0.mtz</b>: Density-modified map coefficients for
+crystal 0, cycle 1.
+<p>
+<b>denmod_cycle_5_xl_2.mtz</b>: Density-modified map coefficients for
+crystal 2, cycle 5. These map coefficients are suitable for model-building.
+They also contain HL coefficients that can optionally be used in refinement.
+As the HL coefficients contain information from all crystals they may in
+some cases be useful in refinement (normally you would only use
+experimental HL phase information in refinement as the NCS-based information
+would come from your NCS restraints in refinement).
+
+
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of phenix.multi:</H5><P>
+
+  Running phenix.multi is easy. Usually you will want to edit a small parameter
+file (run_multi.eff) to contain your commands like this:
+type:
+<PRE style="face=courier"># run_multi.eff  commands for running phenix.multi
+# use:   "phenix.multi run_multi.eff"
+multi {
+  pdb_list = "crystal_1.pdb" "crystal_2.pdb"
+  map_coeff_list = "crystal_1_map_coeffs.mtz"  None
+  datafile_list = "crystal_1_data.mtz" "crystal_2_data.mtz"
+  datafile_labin_list = "FP=FP"   "FP=F SIGFP=SIGF PHIB=PHI FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD"
+  solvent_content_list = "0.43" "0.50"
+  cycles = 5
+}
+</PRE>
+<p>Then you can run this with the command:
+<PRE style="face=courier">phenix.multi run_multi.eff 
+</PRE>
+<p>
+In this example we have 2 crystals. Crystal 1 has starting map coefficients
+in crystal_1_map_coeffs.mtz and data for FP in crystal_1_data.mtz. The
+contents of this crystal are represented by crystal_1.pdb.  The second crystal
+has no starting map, has data for FP as well as PHI and HL coefficients
+in crystal_2_data.mtz, and the contents of this crystal are represented by
+crystal_2.pdb.  The solvent contents of the 2 crystals are 0.43 and 0.50,
+and 5 overall cycles are to be done.
+<p>
+The column label strings like "FP=FP" are optional...if you say instead
+"None" then phenix.multi will guess them for you.
+
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+<UL>
+<LI>If the NCS asymmetric unit of your crystal contains
+more than one chain, phenix.multi will consider it to have more than one
+domain. This limitation comes from phenix.simple_ncs_from_pdb, which assigns
+one NCS group to each unique chain in the NCS asymmetric unit.  If you would
+like phenix.multi to consider several chains as a single NCS group, then
+you would need to rename your chains and residues so that all the residues
+in a single NCS group have the same chain name and so that residue numbers
+are not duplicated. Normally you not need to do this, but if you
+want to use phenix.multi to generate phases for one crystal from another
+and you have more than one chain in the NCS asymmetric unit you would have 
+to do this.
+
+<LI>
+If your NCS asymmetric unit has more than one domain (more than
+one chain, or else multiple domains within a chain that have different
+arrangements in different NCS asymmetric units) then phenix.multi requires
+that you provide map coefficients for all crystals. This is because 
+phenix.multi cannot use the PDB files you provide to generate the NCS
+asymmetric unit directly at this point (i.e., it cannot use pdb_domain
+in RESOLVE.)  Therefore if you don't provide map coefficients for one 
+crystal then it does not have a way to individually identify the region
+occupied by each domain in the  NCS asymmetric unit for
+that crystal. This isn't a problem if there are not multiple domains or
+chains in the NCS asymmetric unit because the automatic method for
+generation of the NCS asymmetric unit can be used.
+
+<LI>
+The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
+the AutoBuild wizard is limited by the memory in your computer and the
+binaries used. The Wizard is supplied with regular-size ("", size=6), 
+giant ("_giant", size=12), huge ("_huge", size=18) and extra_huge
+("_extra_huge", size=36).  Larger-size versions can be obtained on
+request.
+
+<LI>The AutoBuild Wizard can take most settings of most space groups,
+however it can only use the hexagonal setting of rhombohedral space groups 
+(eg., #146 R3:H or #155 R32:H), and it cannot use space groups 114-119 (not
+found in macromolecular crystallography) even in the standard setting 
+due to difficulties with the use of asuset in the version of ccp4 libraries 
+used in PHENIX for these settings and space groups.
+
+
+</UL>
+
+      <P><H5><U>Literature</U></H5><P>
+
+<TABLE width=670 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=3 cellPadding=1 width="100%" align=center border=0>
+        <TBODY>
+
+        <TR id=terwilliger2002b>
+          <TD align=left bgColor=eeeee8><FONT 
+            color=000000 size=2><B>Rapid automatic NCS identification using
+            heavy-atom substructures</B> T.C. Terwilliger. <A
+            href="http://www.iucr.org/cgi-bin/paper?gr2270"><I>Acta Cryst.</I>
+            <B>D58</B>, 2213-2215 (2002)</A><BR></FONT></TD>
+          <TD vAlign=top align=center bgColor=ffffff><A
+            href="http://www.phenix-online.org/papers/gr2270_reprint.pdf"
+            target=_main><FONT  color=000000
+            size=2>[pdf]</FONT></A> </TD></TR>
+        <TR id=terwilliger2002a>
+          <TD align=left bgColor=eeeee8><FONT 
+            color=000000 size=2><B>Statistical density modification with
+            non-crystallographic symmetry</B> T.C. Terwilliger. <A
+            href="http://www.iucr.org/cgi-bin/paper?gr2269"><I>Acta Cryst.</I>
+            <B>D58</B>, 2082-2086 (2002)</A><BR></FONT></TD>
+          <TD vAlign=top align=center bgColor=ffffff><A
+            href="http://www.phenix-online.org/papers/gr2269_reprint.pdf"
+            target=_main><FONT  color=000000
+            size=2>[pdf]</FONT></A> </TD></TR>
+
+        <TR id=terwilliger2000>
+          <TD align=left bgColor=eeeee8><FONT 
+            color=000000 size=2><B> Maximum likelihood density modification </B>
+            T. C. Terwilliger
+            <A href= "http://www.iucr.org/cgi-bin/paper?gr2006" ><I>
+             Acta Cryst.  </I> <B> D56 </B>, 965-972 (2000) </A><BR></FONT></TD>
+
+          <TD align=center bgColor=ffffff><A
+            href= "http://www.phenix-online.org/papers/related/resolve_reprint.pdf"
+            target=_main><FONT  color=000000
+            size=2>[pdf]</FONT></A> </TD></TR>
+
+
+        <TR id=terwilliger2001b>
+          <TD align=left bgColor=eeeee8><FONT 
+            color=000000 size=2><B> Map-likelihood phasing </B>
+            T. C. Terwilliger
+            <A href= "http://www.iucr.org/cgi-bin/paper?gr2165" ><I>
+             Acta Cryst.  </I> <B> D57 </B>, 1763-1775 (2001) </A><BR></FONT></TD>
+          <TD align=center bgColor=ffffff><A
+            href= "http://www.phenix-online.org/papers/related/gr2165_map_likelihood01.pdf"
+            target=_main><FONT  color=000000
+            size=2>[pdf]</FONT></A> </TD></TR>
+
+
+
+        </TBODY>
+     </TABLE>
+    </TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+      <P><H5><U>Additional information</U></H5><P>
+
+
+<!-- REMARK PHENIX BODY END-->

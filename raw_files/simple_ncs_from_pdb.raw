@@ -268,9 +268,12 @@ NCS written as ncs object information to: simple_ncs_from_pdb.ncs_spec
 but they are too dissimilar as a whole (rmsd > max_rmsd_use) then 
 the group is rejected even if some fragment of the chains could be
 similar.
-<P><LI>Chain specification from suggested_ncs_groups could in principle be
+<P><LI>Chain specification from suggested_ncs_groups could in principle
 have than one chain in one group...and simple_ncs_from_pdb can only use
 suggested groups that consist of N copies of single chains.
+<P><LI>If the NCS asymmetric unit of your crystal contains
+more than one chain, simple_ncs_from_pdb will consider it to have more than one
+domain, and it will assign one NCS group to each chain.
 </UL>
 
       <P><H5><U>Literature</U></H5><P>
