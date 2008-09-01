@@ -980,6 +980,9 @@ apply the correction with <b>correct_aniso=True</b>.
 (yet) automatically check space group <b>P61</b> if you specify <b>P65</b>, so you
 need to do this yourself.
 </LI>
+<LI>Try including more phased solutions from each derivative with
+the  keyword <b>min_phased_each_deriv=8</b> instead of the default 1.
+</LI>
 <LI>Try related space groups. If you are not positive that your space group
 is P212121, then try other possibilities with different or no screw axes.
 </LI>
