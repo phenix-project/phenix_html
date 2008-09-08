@@ -182,20 +182,63 @@ chains in the NCS asymmetric unit because the automatic method for
 generation of the NCS asymmetric unit can be used.
 
 <LI>
+Normally you should supply PDB files defining the NCS in your crystals 
+in which all the chains have identical sequences and conformations within
+each NCS copy.  This is not absolutely required, however.  
+If your PDB file contains chains that are not identical then NCS will
+be estimated from the chains you provide. It may be necessary to set the
+parameter
+<PRE style="face=courier">
+simple_ncs_from_pdb.maximize_size_of_groups=True
+</PRE>
+to get this to work if the chains have insertions, deletions, or sequence
+differences.
+
+<LI>
+If your PDB files have more than one NCS domain within a chain, then
+you may want to split the chains up into sub-chains representing the
+individual NCS domains. This will provide a better definition of the NCS
+operators when the PDB files are analyzed.
+<p> You  can use the jiffy "edit_chains.py" to do this.
+This jiffy splits your chains up into sub-chains based on the domains
+that you specify in "edit_chains.dat".
+<p> NOTE: edit_chains.py only works if your chains have 
+single-letter ID's. (It simply adds another character to your chain 
+ID's to make new ones.) If you have two-letter chain ID's, then you'll 
+have to do this another way.
+
+To use it, type:
+<PRE style="face=courier">
+phenix.python $PHENIX/phenix/phenix/autosol/edit_chains.py file.pdb edited_file.pdb
+</PRE>
+The file edit_chains.dat is required and should look like:
+<PRE style="face=courier">
+A 1 321
+A 322 597
+A                 598 750
+A                751 902
+A                903 1082
+B                        1 58
+B 424 425
+B                59 101
+B  343 423
+B                        102 342
+</PRE>
+
+where the letter and residue range is your chain ID and residue range for
+a particular domain. You should specify these for ALL chains in your PDB
+files (not just the unique ones).
+
+
+
+
+<LI>
 The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
-the AutoBuild wizard is limited by the memory in your computer and the
+phenix.multi_crystal_average is limited by the memory in your computer and the
 binaries used. The Wizard is supplied with regular-size ("", size=6), 
 giant ("_giant", size=12), huge ("_huge", size=18) and extra_huge
 ("_extra_huge", size=36).  Larger-size versions can be obtained on
 request.
-
-<LI>The AutoBuild Wizard can take most settings of most space groups,
-however it can only use the hexagonal setting of rhombohedral space groups 
-(eg., #146 R3:H or #155 R32:H), and it cannot use space groups 114-119 (not
-found in macromolecular crystallography) even in the standard setting 
-due to difficulties with the use of asuset in the version of ccp4 libraries 
-used in PHENIX for these settings and space groups.
-
 
 </UL>
 

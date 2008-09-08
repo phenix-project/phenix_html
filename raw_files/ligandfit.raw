@@ -218,8 +218,10 @@ specific keyword to RESOLVE.
 
 <P><UL><LI>The ligand to be searched for must have at least 3 atoms.
 
-<P><LI>The partial-model file must not have any atoms in the position
-where the ligand is to be built. If this file contains solvent waters,
+<P><LI>The partial-model file must not have any atoms (other than
+waters, which are automatically removed) in the position
+where the ligand is to be built. If this file contains atoms other than
+waters in the position where the ligand is to be built,
 then you may wish to remove them before building the ligand.
 
 <P><LI>If a ring in the ligand can have more than one conformation

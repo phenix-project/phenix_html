@@ -1,0 +1,97 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Finding all ligands in a map with phenix.find_all_ligands</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>phenix.find_all_ligands: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+phenix.find_all_ligands is a command line tool for finding all the ligands
+in a map by repetitively running
+<A href="ligandfit.htm">phenix.ligandfit</A>  
+with a series of ligands and choosing the best-fitting
+one at each cycle.
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How phenix.find_all_ligands works:</H5><P>
+The basic procedure for phenix.find_all_ligands has three
+steps. The first is to identify the
+largest contiguous region of density in your map that is not already
+occupied by your model or previously-fitted ligands. The second is
+to fit each ligand (you identify the candidate ligands in advance) into
+this density. The third is to choose the one that fits the density the
+best.  Then the best-fitting ligand is added to the structure and the 
+process is repeated until the number of ligands you request is found or
+the correlation of ligand to the map drops below the value you specify
+(default=0.5).
+
+<P><H5><I>Output files from phenix.find_all_ligands</I></H5><P>
+
+The output ligand files from phenix.find_all_ligands are normally in 
+the temporary directory (default='temp_dir').  They will be files with
+names such as "SITE_1_ATP.pdb" for the placement of ATP in the first
+site fitted.
+
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of phenix.find_all_ligands:</H5><P>
+
+  Running phenix.find_all_ligands is easy. Usually you will want to edit a small parameter
+file (find_all_ligands.eff) to contain your commands like this:
+type:
+<PRE style="face=courier">#  commands for running phenix.find_all_ligands
+find_all_ligands {
+  number_of_ligands = 5
+  cc_min = 0.5
+  ligand_list =  ATP.pdb NAD.pdb
+  nproc = 2
+}
+</PRE>
+You might also want to add to this some commands for 
+<A href="ligandfit.htm">phenix.ligandfit</A>: 
+<PRE style="face=courier"># find_all_ligands.eff  more commands for ligandfit
+ligandfit {
+ligand_cc_min = 0.75
+verbose = Yes
+}
+</PRE>
+where you can put any phenix.ligandfit commands in the braces.
+<p>Then you can run this with the command:
+<PRE style="face=courier">phenix.find_all_ligands find_all_ligands.eff
+</PRE>
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+<UL>
+
+<LI>
+This method uses 
+<A href="ligandfit.htm">phenix.ligandfit</A>
+to do the ligand fitting, so all the 
+commands, features, and limitations of phenix.ligandfit apply to
+phenix.find_all_ligands.
+</UL>
+
+      <P><H5><U>Literature</U></H5><P>
+
+
+      <P><H5><U>Additional information</U></H5><P>
+
+
+<!-- REMARK PHENIX BODY END-->
