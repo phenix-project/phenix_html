@@ -38,7 +38,10 @@ You might create these PDB files by molecular replacement starting with
 the same search model for each crystal. You should not refine these MR
 solutions; they are only used to get the NCS relationships and they will be
 more reliably found if the models for all NCS asymmetric units are identical.
-You can break the NCS asymmetric unit into domains and place them independently.In this case a separate NCS group will be created for each domain. Additionally
+You can break the NCS asymmetric unit into domains and place them 
+independently. You can specify the domains by giving them unique chain IDs,
+(or you can use the routine edit_chains.py to do this for you, see below).
+A separate NCS group will be created for each domain. Additionally
 if your NCS asymmetric unit consists of more than one chain (A+B for
 example) then each chain will always be treated as a separate NCS group.
 
@@ -73,17 +76,21 @@ one crystal, the current electron density maps from all other crystals
 are used in generating target density for density modification in 
 exactly the same way as NCS-related density is normally used when only a
 single crystal is available.  
-<p>
 First the asymmetric unit of NCS is defined,
 in this case including the density in all NCS copies within the crystal
 being density modified as well as the density in all NCS copies in all
 other crystals. The asymmetric unit of NCS is the region over which the
 NCS operators apply. It is assumed to be identical for all NCS copies for
-all crystals, just with orientation and position identified by the NCS
+all crystals, with orientation and position identified by the NCS
 operators.  It is identified as the region over which all NCS copies have
 correlated density.  If a mask for the protein/solvent boundary is
-supplied (by specifying "use_model_mask"), then the asymmetric unit 
+supplied (by specifying "quot;use_model_mask"quot;), then the asymmetric unit 
 of NCS is constrained to be within the non-solvent region of the map.
+Alternatively, if you request that the domains provided in your PDB files
+be used to define the NCS asymmetric unit (by 
+specifying "quot;write_ncs_domain_pdb"quot;)
+then the the NCS asymmetric unit (for each NCS group) is limited to the 
+region occupied by the corresponding chains in your PDB files.
 <p>
 Then a target density map is created for the crystal being density modified. 
 For each NCS copy in this crystal, the average density for all other
@@ -105,10 +112,11 @@ between the corresponding NCS regions in different crystals.
 <P><H5><I>Output files from phenix.multi_crystal_average</I></H5><P>
 
 <b>denmod_cycle_1_xl_0.mtz</b>: Density-modified map coefficients for
-crystal 0, cycle 1.
+crystal 0, cycle 1. Crystal 0 is the first crystal specified in your
+pdb_list, map_coeff_list, etc.
 <p>
-<b>denmod_cycle_5_xl_2.mtz</b>: Density-modified map coefficients for
-crystal 2, cycle 5. These map coefficients are suitable for model-building.
+<b>denmod_cycle_5_xl_1.mtz</b>: Density-modified map coefficients for
+crystal 1, cycle 5. These map coefficients are suitable for model-building.
 They also contain HL coefficients that can optionally be used in refinement.
 As the HL coefficients contain information from all crystals they may in
 some cases be useful in refinement (normally you would only use
@@ -150,52 +158,8 @@ and 5 overall cycles are to be done.
 The column label strings like "FP=FP" are optional...if you say instead
 "None" then phenix.multi_crystal_average will guess them for you.
 
-
-<P><H5><U>Possible Problems</U></H5><P>
-
-<P><H5>Specific limitations and problems:</H5><P>
-<UL>
-<LI>If the NCS asymmetric unit of your crystal contains
-more than one chain, phenix.multi_crystal_average will consider it to have more than one
-domain. This limitation comes from phenix.simple_ncs_from_pdb, which assigns
-one NCS group to each unique chain in the NCS asymmetric unit.  If you would
-like phenix.multi_crystal_average to consider several chains as a single NCS group, then
-you would need to rename your chains and residues so that all the residues
-in a single NCS group have the same chain name and so that residue numbers
-are not duplicated. Normally you not need to do this, but if you
-want to use phenix.multi_crystal_average to generate phases for one crystal from another
-and you have more than one chain in the NCS asymmetric unit you would have 
-to do this.
-
-<LI>
-If your NCS asymmetric unit has more than one domain (more than
-one chain, or else multiple domains within a chain that have different
-arrangements in different NCS asymmetric units) then phenix.multi_crystal_average requires
-that you provide map coefficients for all crystals. This is because 
-phenix.multi_crystal_average cannot use the PDB files you provide to generate the NCS
-asymmetric unit directly at this point (i.e., it cannot use pdb_domain
-in RESOLVE.)  Therefore if you don't provide map coefficients for one 
-crystal then it does not have a way to individually identify the region
-occupied by each domain in the  NCS asymmetric unit for
-that crystal. This isn't a problem if there are not multiple domains or
-chains in the NCS asymmetric unit because the automatic method for
-generation of the NCS asymmetric unit can be used.
-
-<LI>
-Normally you should supply PDB files defining the NCS in your crystals 
-in which all the chains have identical sequences and conformations within
-each NCS copy.  This is not absolutely required, however.  
-If your PDB file contains chains that are not identical then NCS will
-be estimated from the chains you provide. It may be necessary to set the
-parameter
-<PRE style="face=courier">
-simple_ncs_from_pdb.maximize_size_of_groups=True
-</PRE>
-to get this to work if the chains have insertions, deletions, or sequence
-differences.
-
-<LI>
-If your PDB files have more than one NCS domain within a chain, then
+<P><H5>Run of phenix.multi_crystal_average with multiple domains:</H5><P>
+<p> If your PDB files have more than one NCS domain within a chain, then
 you may want to split the chains up into sub-chains representing the
 individual NCS domains. This will provide a better definition of the NCS
 operators when the PDB files are analyzed.
@@ -228,6 +192,62 @@ B                        102 342
 where the letter and residue range is your chain ID and residue range for
 a particular domain. You should specify these for ALL chains in your PDB
 files (not just the unique ones).
+
+<P><H5>Run of phenix.multi_crystal_average using PDB files to 
+define the NCS asymmetric unit:</H5><P>
+<p> If you specify the parameter write_ncs_domain_pdb=True, then 
+phenix.multi_crystal_average will write out domain-specific PDB files
+for each domain in your model (based on its analysis of NCS, one
+for each NCS group).  Then it will use those domain-specific PDB files
+to define the region over which the corresponding set of NCS operators
+apply. This is generally a good idea if you have multiple domains in your
+structure.
+
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+<UL>
+<LI>If the NCS asymmetric unit of your crystal contains
+more than one chain, phenix.multi_crystal_average will consider it to have more than one
+domain. This limitation comes from phenix.simple_ncs_from_pdb, which assigns
+one NCS group to each unique chain in the NCS asymmetric unit.  If you would
+like phenix.multi_crystal_average to consider several chains as a single NCS group, then
+you would need to rename your chains and residues so that all the residues
+in a single NCS group have the same chain name and so that residue numbers
+are not duplicated. Normally you not need to do this, but if you
+want to use phenix.multi_crystal_average to generate phases for one crystal from another
+and you have more than one chain in the NCS asymmetric unit you would have 
+to do this.
+
+<LI>
+If your NCS asymmetric unit has more than one domain (more than
+one chain, or else multiple domains within a chain that have different
+arrangements in different NCS asymmetric units) then 
+phenix.multi_crystal_average requires
+that you provide map coefficients for all crystals. This is because 
+phenix.multi_crystal_average cannot use the PDB files you 
+provide to generate the NCS
+asymmetric unit directly at this point (i.e., it cannot use pdb_domain
+in RESOLVE.)  Therefore if you don't provide map coefficients for one 
+crystal then it does not have a way to individually identify the region
+occupied by each domain in the  NCS asymmetric unit for
+that crystal. This isn't a problem if there are not multiple domains or
+chains in the NCS asymmetric unit because the automatic method for
+generation of the NCS asymmetric unit can be used.
+
+<LI>
+Normally you should supply PDB files defining the NCS in your crystals 
+in which all the chains have identical sequences and conformations within
+each NCS copy.  This is not absolutely required, however.  
+If your PDB file contains chains that are not identical then NCS will
+be estimated from the chains you provide. It may be necessary to set the
+parameter
+<PRE style="face=courier">
+simple_ncs_from_pdb.maximize_size_of_groups=True
+</PRE>
+to get this to work if the chains have insertions, deletions, or sequence
+differences.
 
 
 

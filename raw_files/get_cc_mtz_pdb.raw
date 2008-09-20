@@ -50,7 +50,8 @@ type:
 </PRE>
 
 If you want (or need) to specify the column names from your mtz file, you
-will need to tell get_cc_mtz_pdb what FP and PHIB are, in this format:
+will need to tell get_cc_mtz_pdb what FP and PHIB (and optionally FOM)
+are, in this format:
 
 <PRE style="face=courier">phenix.get_cc_mtz_pdb map_coeffs.mtz coords.pdb \
 labin="FP=2FOFCWT PHIB=PH2FOFCWT"
