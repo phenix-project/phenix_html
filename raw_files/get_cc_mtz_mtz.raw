@@ -22,16 +22,50 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 get_cc_mtz_mtz is a command line tool for adjusting the origin of a map 
 so that the map superimposes on another map, and obtaining the correlation
-of the two maps.
+of the two maps. The maps are calculated from map coefficients supplied by the
+user in two mtz files.
 
 <P><H5><U>Usage</U></H5><P>
 
 <P><H5>How get_cc_mtz_mtz works:</H5><P>
 
 get_cc_mtz_mtz calculates maps based on the supplied mtz files, then
-uses RESOLVE to find the origin shift that maximizes the correlation of the two
+uses RESOLVE to find the origin shift compatible with space-group
+symmetry that maximizes the correlation of the two
 maps. This shift is applied to the second map and the correlation of the maps is
 calculated.
+
+<p>Several parameters can be set by the user to define how the correlations
+are calculated. By default, maps are calculated using all the reflections
+present (to the specified high-resolution limit, if any) in each mtz file.
+<p>If you specify 
+<PRE style="face=courier">
+use_only_refl_present_in_mtz_1=True
+</PRE>
+Then the map calculated using your second mtz file will only include reflections
+that were present in your first mtz file. This removes the effects of
+missing reflections on the correlation.
+<p>If you specify
+<PRE style="face=courier">
+scale=True
+</PRE>
+then get_cc_mtz_mtz scales the amplitudes from the second
+input mtz file to those in the first input mtz, including an overall B factor
+and a scale factor.  This reduces effects of differences in overall B factors
+between the two mtz files on the correlation.
+<p>If you specify
+<PRE style="face=courier">
+keep_f_mag=False
+</PRE>
+then get_cc_mtz_mtz uses amplitudes from the first
+input mtz file and phases and figure of merit from both to do 
+the correlation. This has the effect of removing effects due to differences
+in amplitudes on the correlation, and focusing on differences in phases
+and figures of merit.
+
+
+
+
 <P><H5><I>Output files from get_cc_mtz_mtz</I></H5><P>
 
 <b>offset.log</b>: Log file for correlation calculation.
@@ -59,8 +93,13 @@ labin="FP=2FOFCWT PHIB=PH2FOFCWT"
 <UL>
 <LI>
 Versions of phenix.get_cc_mtz_mtz up to 1.3-final used a different set of 
-defaults, with scale=True use_f_mag=False and 
-use_only_refl_present_in_mtz_1=True. This was changed after version 1.3-final
+defaults, with the values,
+<PRE style="face=courier">
+scale=True 
+use_f_mag=False 
+use_only_refl_present_in_mtz_1=True
+</PRE>
+These defaults were changed after version 1.3-final
 in order to make the results independent of the order of the mtz files and
 to make the default be to get the correlation of maps without manipulation.
 
