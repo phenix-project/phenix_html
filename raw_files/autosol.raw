@@ -126,17 +126,22 @@ HYSS corresponds to a potential solution. In space groups where the heavy-atom
 structure can be either hand, a pair of enantiomorphic solutions is saved for
 each run of HYSS. 
 
-<P><H5><I>Running AutoSol separately in each possible space group </I></H5><P>
-AutoSol will check for the opposite hand of the heavy-atom solution, but it 
-will not check for the opposite hand of your space group. If you have a space
-group that is enantiomorphic (i.e., P61), then you will need to run AutoSol
-once using each of the two possible space groups (i.e., P61 and P65 in this
-example.) If there are more possibilities for your space group, then
-you should test them all. For example if you were not able to measure
+<P><H5><I>Running AutoSol separately in related space groups </I></H5><P>
+AutoSol will check for the opposite hand of the heavy-atom solution, and
+at the same time it will check for the opposite hand of your space group
+(It will invert the heavy-atom solution from HYSS and invert the hand of the
+space group at the same time). Therefore you do not need to run AutoSol
+twice for space groups that are chiral (for example P41).  The
+corresponding inverse space groups will be checked automatically (P43 ).
+<p>If there are possibilities for your space group other than the inverse
+hand of the space group, then
+you should test them all, one at a time. 
+For example if you were not able to measure
 00l reflections in a hexagonal space group, your
 space group  might be P6, P61, P62, P63, P64 or P65. 
-In this case you should run it in all 
-these space groups.  Normally only one of these will give a plausible solution.
+In this case you  would have to run it in P6, P61 P62 and P63 (and then
+P65 and P64 will be done automatically as the inverses of P61 and P62).
+Normally only one of these will give a plausible solution.
 
 <P><H5><I>Scoring of heavy-atom solutions</I></H5><P>
 Potential heavy-atom solutions are scored based on a set of criteria 

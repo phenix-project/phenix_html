@@ -313,6 +313,20 @@ the first two tries. The program continues until 5 structures all have
 matching sites, then ends and prints out the final correlations, after
 taking the top 4 sites.
 
+<p><H5>Finding the hand and scoring heavy-atom solutions</H5></p>
+<p> Normally either hand of the heavy-atom substructure is a possible
+solution, and both must be tested by calculating phases and examining the
+electron density map and by carrying out density modification, as they will give 
+the same statistics for all heavy-atom analysis and phasing steps. 
+Note that in chiral space groups (those that have a
+handedness such as <b>P61</b>, both hands of the <b>space group</b> must
+be tested.
+The AutoSol Wizard will do this for you, inverting the hand
+of the heavy-atom substructure and the space group at the same time.
+For example, in space group <b>P61</b> the hand of the substructure is
+inverted and then it is placed in space group <b>P65</b>.
+</p>
+
 <p><H5>Scoring heavy-atom solutions</H5></p>
 <p> The AutoSol Wizard scores heavy-atom solutions based on two criteria 
 by default. The first criterion is the skew of the electron density 

@@ -414,15 +414,17 @@ matching sites, then ends and prints out the final correlations, after
 taking the top 5 sites.
 
 <p><H5>Finding the hand and scoring heavy-atom solutions</H5></p>
-<p> In many space groups either hand of the heavy-atom substructure is a possible
+<p> Normally either hand of the heavy-atom substructure is a possible
 solution, and both must be tested by calculating phases and examining the 
 electron density map and by carrying out density modification, as they will give 
-the same statistics for all heavy-atom analysis and phasing steps. In this
-example the space group is <b>P21212</b> and both hands of the heavy-atom substructure
-do need to be tested. Note that in chiral space groups (those that have a 
+the same statistics for all heavy-atom analysis and phasing steps. 
+Note that in chiral space groups (those that have a 
 handedness such as <b>P61</b>, both hands of the <b>space group</b> must 
-be tested. At present you need to do this yourself, running AutoSol separately
-for both space groups (i.e. <b>P61</b> and <b>P65</b>).
+be tested. 
+The AutoSol Wizard will do this for you, inverting the hand
+of the heavy-atom substructure and the space group at the same time.
+For example, in space group <b>P61</b> the hand of the substructure is
+inverted and then it is placed in space group <b>P65</b>.
 </p>
 <p> The AutoSol Wizard scores heavy-atom solutions based on two criteria
 by default. The first criterion is the skew of the electron density
@@ -975,10 +977,6 @@ read your solution in to AutoSol with <b>sites_file=my_sites.pdb</b>.
 <LI>Was an anisotropy correction applied in AutoSol? If there is 
 some anisotropy but no correction was applied, you can force AutoSol to 
 apply the correction with <b>correct_aniso=True</b>.
-</LI>
-<LI>Try the space group with the opposite hand, if it exists. AutoSol does not
-(yet) automatically check space group <b>P61</b> if you specify <b>P65</b>, so you
-need to do this yourself.
 </LI>
 <LI>Try including more phased solutions from each derivative with
 the  keyword <b>min_phased_each_deriv=8</b> instead of the default 1.
