@@ -52,7 +52,9 @@ site fitted.
 <P><H5>Standard run of phenix.find_all_ligands:</H5><P>
 
   Running phenix.find_all_ligands is easy. Usually you will want to edit a small parameter
-file (find_all_ligands.eff) to contain your commands like this:
+file (find_all_ligands.eff) to contain your commands like this,
+where the ligandfit commands are sent to ligandfit for the actual fitting
+and the find_all_ligands commands determine what searches are done:
 type:
 <PRE style="face=courier">#  commands for running phenix.find_all_ligands
 find_all_ligands {
@@ -61,11 +63,20 @@ find_all_ligands {
   ligand_list =  ATP.pdb NAD.pdb
   nproc = 2
 }
+ligandfit {
+  data = "nsf-d2.mtz"
+  model = "nsf-d2_noligand.pdb"
+  lig_map_type = fo-fc_difference_map
+}
+
 </PRE>
-You might also want to add to this some commands for 
+You might also want to add to this some additional commands for 
 <A href="ligandfit.htm">phenix.ligandfit</A>: 
 <PRE style="face=courier"># find_all_ligands.eff  more commands for ligandfit
 ligandfit {
+data = "nsf-d2.mtz"
+model = "nsf-d2_noligand.pdb"
+lig_map_type = fo-fc_difference_map
 ligand_cc_min = 0.75
 verbose = Yes
 }
