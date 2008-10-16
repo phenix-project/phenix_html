@@ -479,6 +479,66 @@ printed out for you so that you can just paste the one you want in.
 <PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
 </PRE>
 
+<P><H5>MRSAD -- SAD dataset with an MR model; Phaser SAD phasing including the model</H5>
+
+<p>If you are carrying out SAD phasing with Phaser, you can carry out a combination of 
+molecular replacement phasing and SAD phasing (MRSAD) by adding
+a single new keyword to your AutoSol run:
+</p><PRE style="face=courier">input_partpdb_file=MR.pdb
+</PRE>
+In this case the MR.pdb file will be used as a partial model in a maximum-likelihood
+SAD phasing calculation with Phaser to calculate phases and identify
+sites in Phaser, and the combined MR+SAD phases will be written out.
+<p>NOTE: At the moment the AutoBuild Wizard is not equipped to use these combined
+phases optimally in iterative model-building, density modification
+and refinement, because they contain both experimental phase information and model
+information. It is therefore possible that the resulting phases are biased by your 
+MR model, and that this bias will not go away during iterative model-building because it
+is continually fed back in.
+
+<P><H5>Using an MR model to find sites and as a source of phase information (method #2 for MRSAD)</H5>
+
+You can also combine MR information with SAD phases (see J. P. Schuermann and 
+J. J. Tanner Acta Cryst. (2003). D59, 1731-1736 ) in PHENIX
+by running the three wizards AutoMR, AutoSol, and AutoBuild one after the
+other.  This method does not use the partial model and the
+anomalous information in the SAD dataset simultaneously as the above Phaser 
+maximum-likelihood method does. On the other hand, the phases obtained 
+in this method are independent of the model, so that combining them 
+afterwards does not introduce model bias. (It is not yet clear which is the better
+approach, so you may wish to try both.) Additionally, this approach can be used with
+any method for phasing.
+
+<p>Here is a set of three simple commands to do this:
+<p>First run <b>AutoMR</b> to find the molecular replacement solution, but 
+don't rebuild it yet:
+<PRE style="face=courier">phenix.automr gene-5.pdb infl.sca copies=1 \
+  RMS=1.5 mass=9800 rebuild_after_mr=False
+</PRE>
+<p>Now your MR solution is in <b>AutoMR_run_1_/MR.1.pdb</b> and 
+phases are in <b>AutoMR_run_1_/MR.1.mtz</b>.  Use these phases as input
+to AutoSol, along with some weak SAD data, still not building any new models:
+<PRE style="face=courier"> phenix.autosol data=infl.sca \
+ input_phase_file=AutoMR_run_1_/MR.1.mtz input_phase_labels="F PHIC FOM"   \
+seq_file=sequence.dat build=False
+</PRE>
+<p> note that we have specified the data columns for F PHI and FOM in the
+input_phase_file. For input_phase_file you must specify all three of these (if 
+you leave out FOM it will set it to zero). </p>
+<p>AutoSol will write an MTZ file with experimental phases to <b>phaser_xx.mtz</b> where xx depends on how many solutions are considered during the run.  The
+next command for running AutoBuild  you will need to edit depending 
+on the value of xx:
+<PRE style="face=courier"> phenix.autobuild data=AutoSol_run_1_/phaser_2.mtz \
+  model=AutoMR_run_1_/MR.1.pdb seq_file=sequence.dat rebuild_in_place=False
+</PRE>
+<p>AutoBuild will now take the phases from your AutoSol run and combine them
+with model-based information from your AutoMR MR solution, and will carry
+out iterative density modification, model-building and refinement to rebuild
+your model. </p>
+<p>Note that you may wish to set <b>rebuild_in_place=True</b>, 
+depending on how good your MR model is.
+
+
 <P><H5>SAD dataset, reading heavy-atom sites from a PDB file 
 written by <b>phenix.hyss</b></H5>
 <PRE style="face=courier">phenix.autosol 11 Pb data=deriv.sca seq_file=seq.dat \
