@@ -248,12 +248,13 @@ with
 the file used for the MR search:
 <PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
     data=data.mtz input_label_string="F SIGF"  \
-    autobuild_input_refinement_file=refinement.mtz \
-    autobuild_input_refinement_labels="FP SIGFP FreeR_flag"  \
+    input_refinement_file=refinement.mtz \
+    input_refinement_labels="FP SIGFP FreeR_flag"  \
     n_cycle_rebuild_max=2 n_cycle_build_max=2 
 </PRE>
 Note that the commands input_refinement_file and input_refinement_labels are
-preceded by autobuild_ . These commands and others with this prefix are
+in the scope "autobuild_variables" . 
+These commands and others with this prefix are
 passed on to AutoBuild.
 
 <P><H5>Passing any commands to AutoBuild</H5><P>
@@ -266,14 +267,14 @@ commands semet=True and refine=False:
 <PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
     data=data.mtz input_label_string="F SIGF"  \
     autobuild_input_list_add='semet refine'  \
-    autobuild_semet=True \
-    autobuild_refine=False
+    semet=True \
+    refine=False
 </PRE>
 Notes. This applies only to command-line operation of AutoMR.
 Note that any keywords that are used in both AutoBuild and AutoMR will apply to 
 both if you specify them in autobuild_input_list_add. For example if you 
 set the resolution in AutoBuild with autobuild_input_list_add=resolution and
-autobuild_resolution=2.6 then this resolution will apply to both AutoMR and
+resolution=2.6 then this resolution will apply to both AutoMR and
 AutoBuild.
 
 <P><H5>AutoMR searching for 2 components</H5><P>
