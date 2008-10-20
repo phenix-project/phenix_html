@@ -456,7 +456,7 @@ to perform refinement of::
 
 - individual isotropic ADP for atoms in chain A,
 - individual anisotropic ADP for atoms in chain B,
-- grouped B with one B per residue for chain C,
+- grouped B with one B per all atoms in chain C,
 - TLS refinement for chain D,
 - TLS and individual isotropic refinement for chain E,
 - TLS and grouped B refinement for chain F.
@@ -516,10 +516,16 @@ It is important to keep in mind:
 
        % phenix.refine data.hkl model.pdb strategy=group_adp
 
+     Two B-factors per residue::
+
+       % phenix.refine data.hkl model.pdb strategy=group_adp \
+         group_adp_refinement_mode=two_adp_groups_per_residue
+
   2. One isotropic B per selected group of atoms::
 
        % phenix.refine data.hkl model.pdb strategy=group_adp \
-         one_adp_group_per_residue=false adp.group="chain A" adp.group="chain B"
+         group_adp_refinement_mode=group_selection \
+         adp.group="chain A" adp.group="chain B"
 
      This will refine one isotropic B for chain A and one B for chain B.
 
