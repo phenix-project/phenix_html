@@ -78,30 +78,30 @@ to get operators, for example), you can tell find_ncs to ignore the map with:
 <P><H5>Standard run of find_ncs:</H5><P>
 <P>  Running find_ncs is easy.  From the command-line you can 
 type:
-<PRE style="face=courier">phenix.find_ncs MM-all.pdb MM-all.mtz
+<PRE style="face=courier">phenix.find_ncs anb.pdb mlt.mtz
 </PRE>
 
 <P>This will produce the following output:
-<PRE style="face=courier">Getting column labels from MM-all.mtz for input map file
+<PRE style="face=courier">Getting column labels from mlt.mtz for input map file
 FILE TYPE:  ccp4_mtz
 All labels:  ['FP', 'SIGFP', 'PHIC', 'FOM']
 Labin line will be:  labin FP=FP PHIB=PHIC FOM=FOM
 To change it modify this: params.ncs.labin="labin FP=FP PHIB=PHIC FOM=FOM "
 </PRE>
 <P>This is the map that will be used to evaluate NCS
-<PRE style="face=courier">Reading NCS information from:  MM-all.pdb
-Copying  MM-all.mtz  to  temp_dir/MM-all.mtz
+<PRE style="face=courier">Reading NCS information from:  anb.pdb
+Copying  mlt.mtz  to  temp_dir/mlt.mtz
 This PDB file contains 2  chains and  636  total residues
 and  636  C-alpha or P atoms  and  4740  total atoms
 NCS will be found using the chains in this PDB file
 Chains in this PDB file:  ['M', 'Z']
 </PRE>
-<P>Two chains were found in the file MM-all.pdb, chain M and chain Z
+<P>Two chains were found in the file anb.pdb, chain M and chain Z
 <PRE style="face=courier">GROUPS BASED ON QUICK COMPARISON: []
 Looking for invariant domains for ...: ['M', 'Z'] [[[2, 138], [193, 373]], [[2, 138], [193, 373]]]
 </PRE>
 <P>Residues 2-138, 193-373, matched between the two chains
-<PRE style="face=courier">Copying  MM-all.mtz  to  temp_dir/MM-all.mtz
+<PRE style="face=courier">Copying  mlt.mtz  to  temp_dir/mlt.mtz
 Copying  temp_dir/NCS_correlation.log  to  NCS_correlation.log
 Log file for NCS correlation is in  NCS_correlation.log
 List of refined NCS correlations:  [1.0, 0.80000000000000004]
@@ -117,7 +117,7 @@ Summary of NCS group with 2 operators:
 ID of chain/residue where these apply: [['M', 'Z'], [[[193, 373]], [[193, 373]]]]
 RMSD (A) from chain M:  0.0  0.0
 Number of residues matching chain M:[181, 181]
-Source of NCS info: MM-all.pdb
+Source of NCS info: anb.pdb
 Correlation of NCS: 1.0
 
 OPERATOR 1
@@ -141,7 +141,7 @@ Summary of NCS group with 2 operators:
 ID of chain/residue where these apply: [['M', 'Z'], [[[2, 138]], [[2, 138]]]]
 RMSD (A) from chain M:  0.0  0.0
 Number of residues matching chain M:[137, 137]
-Source of NCS info: MM-all.pdb
+Source of NCS info: anb.pdb
 Correlation of NCS: 0.8
 
 OPERATOR 1

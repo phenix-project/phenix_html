@@ -84,7 +84,7 @@ will need to tell get_cc_mtz_mtz what FP and PHIB (and optionally FOM)
 are, in this format:
 
 <PRE style="face=courier">phenix.get_cc_mtz_mtz map_coeffs_1.mtz  map_coeffs_2.mtz \
-labin="FP=2FOFCWT PHIB=PH2FOFCWT"
+labin_1="FP=2FOFCWT PHIB=PH2FOFCWT"  labin_2="FP=2FOFCWT PHIB=PH2FOFCWT"
 </PRE>
 
 <P><H5><U>Possible Problems</U></H5><P>
