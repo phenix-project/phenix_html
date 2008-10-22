@@ -73,10 +73,10 @@ build cycles.
 </p>
  
 <H5>What is the difference between overall_best.pdb and cycle_best_1.pdb
- in the AutoBuild Wizard?
+ in the AutoBuild Wizard?</H5>
 <p>The AutoBuild Wizard saves the best model (and map coefficient file, etc)
 for each build cycle nn as cycle_best_nn.pdb.  Also the Wizard copies the
-current overall best model to overall_best.pdb.  In this way you can always
+current overall best model to overall_best.pdb.  In this way you can always 
 pull the overall_best.pdb file and you will have the current best model.
 If you wait until the end of the run you will get a summary that lists
 the files corresponding to the best model. These will have the same contents
