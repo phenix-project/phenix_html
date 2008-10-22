@@ -45,7 +45,7 @@ phenix.map_to_object fixed_pdb=my_target.pdb moving_pdb=my_ligand.pdb
 and phenix.map_to_object will move my_ligand.pdb as close as it can to
 my_target.pdb. 
 
-<P><H5>Run of phenix.map_to_object specifying center of mass of moving PDB
+<P><H5>Run of phenix.map_to_object specifying center of mass of moving PDB 
 is to be close to any atom of fixed PDB:</H5><P>
 By default phenix.map_to_object will move the center of mass of moving_pdb
 as close as possible to any atom in fixed_pdb. You could specify this
@@ -55,7 +55,7 @@ phenix.map_to_object fixed_pdb=my_target.pdb moving_pdb=my_ligand.pdb \
 use_moving_center_of_mass=True use_fixed_center_of_mass=False 
 </PRE>
 
-<P><H5>Run of phenix.map_to_object specifying center of mass of moving PDB
+<P><H5>Run of phenix.map_to_object specifying center of mass of moving PDB 
 is to have maximum number of contacts with atoms of fixed PDB:</H5><P>
 <p>If you wanted instead to maximize the number of close contacts under
 5 A between the center of mass of my_ligand.pdb and any atom 
