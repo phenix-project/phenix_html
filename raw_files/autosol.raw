@@ -612,6 +612,7 @@ be readily expressed in the command-line inputs, but you can specify it easily
 with the PHENIX AutoSol GUI or with a script. In a script file you can say:
 <P>
 <PRE style="face=courier">cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
+thoroughness thorough                      # best to use thorough for MIR
 resolution 2.8                             #  Resolution 
 expt_type       sir                        # MIR dataset is set of SIR datasets
 input_seq_file sequence.dat

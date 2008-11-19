@@ -87,6 +87,8 @@ the file Facts.list as parameters.
 relevant part of the file:
 </p><PRE style="face=courier">
 
+sequence_file sequence.dat
+thoroughness thorough
 cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
 resolution 2.8                             #  Resolution
 
@@ -122,6 +124,9 @@ with SOLVE Bayesian correlated phasing.  This approach works well because
 a substructure determination is done separately for each 
 derivative, and if any one of them works well, then all the derivatives
 can be solved.
+</p><p>This part of the script also tells AutoSol to use defaults for a 
+thorough analysis. Usually for MIR this is the best idea, while for SAD 
+and MAD experiments a quick analysis is fine.
 </p><p>The MIR script then continues with data for the second, third... derivatives.
 These parts of the script all look like this:
 </p><PRE style="face=courier">
