@@ -1,0 +1,144 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>The phenix.refine graphical interface</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<P><H5><U><B>GUI overview</B></U></H5><P>
+<p>The graphical interface for <em>phenix.refine</em> runs the unmodified command-line
+version; default settings are unchanged.  All parameters should be 
+configurable through the GUI, although some of these (such as NCS restraint
+groups) are handled in a non-standard way.  This document describes the
+behavior of the GUI only; see the <cite>phenix.refine &lt;refinement.htm&gt;</cite>
+documentation for details on specific parameters and methods.</p>
+<p>At present the GUI has the following capabilities:</p>
+<blockquote>
+<ul>
+<li>automatic extraction of parameters from PDB and reflection files</li>
+<li>detection of unknown ligands, and generation of restraint files</li>
+<li>graphical mirroring and picking of any atom selection</li>
+<li>project-specific default settings and restraints</li>
+<li>NCS restraint group detection and editing tool</li>
+<li>real-time visualization of current model and maps during refinement</li>
+<li>model validation and structure quality scores (in development)</li>
+<li>printable plots of final statistics</li>
+</ul>
+</blockquote>
+<p>This software is under continual development; to report any problems with
+normal operation, please send email to <a class="reference" href="mailto:bugs&#64;phenix-online.org">bugs&#64;phenix-online.org</a>.</p>
+<P><H5><U><B>Launching</B></U></H5><P>
+<p>The GUI can be started by typing the command <em>phenix.refine_gui</em>.
+Any combination of PDB, CIF, reflection, and parameter (.param or .eff) files
+may be specified on the command line.  Keyword parameters used in the
+command line-only version are not currently supported.  The options
+<tt class="docutils literal"><span class="pre">-q</span></tt> and <tt class="docutils literal"><span class="pre">--debug</span></tt> will disable the splash screen and print debugging
+messages, respectively.</p>
+<p>The GUI uses a database of projects to track default settings (and eventually,
+progress and individual jobs) for a structure or group of related structures.
+The current project will be guessed based on the directory from which
+PHENIX is launched; if not determined, a dialog window will be opened
+prompting the user to enter a project ID and directory path.  Although this
+is not required for the GUI to function, we recommend using projects to
+track preferences and data files specific to your structures.  In some
+cases, such as creating custom restraints files, this will be done for you
+automatically.</p>
+<div class="image"><img alt="images/gui2_projects.png" src="images/gui2_projects.png" /></div>
+<P><H5><U><B>Configuration</B></U></H5><P>
+<p>Because phenix.refine currently has nearly 500 distinct parameters, many
+of which rarely need changing, and the window controls are mostly created
+automatically, advanced settings are hidden by default.  This can be toggled
+in the <em>Preferences</em> dialog (opened from the toolbar or <em>File menu</em>),
+under the setting <em>User level</em>.  For example, the dialog appearing when
+the &quot;Other parameters&quot; button in the main window is clicked, shown first
+at the &quot;Basic&quot; setting:</p>
+<div class="image"><img alt="images/gui_level0.png" src="images/gui_level0.png" /></div>
+<p>The same window on the &quot;Advanced&quot; setting:</p>
+<div class="image"><img alt="images/gui_level2.png" src="images/gui_level2.png" /></div>
+<p>The most important parameters (input and output files, strategy, additional
+procedures such as solvent updating and simulated annealing) are shown
+in the main window.</p>
+<div class="image"><img alt="images/gui_refine_main.png" src="images/gui_refine_main.png" /></div>
+<p>Some commonly-used settings are accessible via buttons on this screen; many
+of these will open additional dialog windows in response to mouse clicks
+or file selection.  In many cases, you can open these windows on demand
+by right-clicking on the appropriate control (for instance, right-clicking
+the &quot;Rigid body&quot; strategy button will show the atom selection controls for
+defining rigid groups).  All other parameters can be found in the <em>Settings</em>
+menu, which can also be displayed by right-clicking on any empty section
+of the main window:</p>
+<div class="image"><img alt="images/gui_refine_settings.png" src="images/gui_refine_settings.png" /></div>
+<P><H5><U><B>Automatic parameter updates</B></U></H5><P>
+<p>If your reflection and/or PDB files have the appropriate information on
+crystal symmetry and data labels, parameters will be propagated to the
+GUI.  A detailed example is shown below for a reflection file containing
+R-free flags and experimental phases:</p>
+<div class="image"><img alt="images/gui_hkl_params.png" src="images/gui_hkl_params.png" /></div>
+<p>These settings can be changed later by clicking any of the buttons below
+the list of input files.  Any valid space group symbol may be used (for
+instance, '19', 'P212121', and 'P 21 21 21' are all equivalent).  Data
+labels are restricted to the suitable columns found in the reflection file.</p>
+<P><H5><U><B>Creating restraints</B></U></H5><P>
+<p>If the PDB file contains ligands or prosthetic groups that are not part of
+the limited monomer library distributed with PHENIX, a warning message will
+be displayed when the file is loaded.  The necessary restraints must be
+generated by <em>phenix.elbow</em> in order for refinement to proceed.  To start
+this process, click the <em>Restraints</em> button in the toolbar or choose 
+&quot;Prepare structure and restraints&quot; from the <em>Utilities</em> menu.  This will
+launch a dialog for running <em>phenix.ready_set</em>, a simple utility for
+preparing structures for phenix.refine.</p>
+<div class="image"><img alt="images/gui_ready_set.png" src="images/gui_ready_set.png" /></div>
+<p>Generating the restraints will take between 30 seconds and several minutes,
+depending on computer speed and the size of the ligand.  When ReadySet is
+finished, another window will be displayed summarizing the results.  If
+a project directory is defined, these can be saved for future runs and
+will be automatically loaded into the GUI when launched.</p>
+<p>If your input model does not contain hydrogen atoms and you would like to
+use them in refinement, this can also be done via the ReadySet dialog, or
+by clicking the box labeled &quot;Add hydrogens to model if not present&quot; in the
+main window.</p>
+<P><H5><U><B>Atom selection</B></U></H5><P>
+<p>The atom-selection syntax used by PHENIX is described in the 
+<cite>phenix.refine manual &lt;refinement.htm#anch297&gt;</cite>.  In the GUI, any valid
+atom selection can be visualized if you have a suitable graphics card
+and have already loaded a PDB file with valid symmetry information.  The
+graphics window can be opened by clicking the &quot;View/pick&quot; button next
+to any atom selection field.  Depending on the size of your structure, it
+may take several seconds for PHENIX to determine the atomic connectivity.
+The current selection, if any, will be highlighted:</p>
+<div class="image"><img alt="images/gui_atom_selection.png" src="images/gui_atom_selection.png" /></div>
+<p>The <em>Select atoms</em> button opens a window that allows you to type in
+selections and immediately visualize the results, including the number of
+atoms selected.  If a 3-button mouse is used, the middle and right buttons
+in combination with the control and/or command keys (on Mac) can be used
+to directly make selections by clicking on the structure.  However, we
+recommend that you learn the selection syntax, as it is much more flexible
+than mouse controls.  Selections made in the graphics window will be sent
+automatically to the appropriate control.</p>
+<p>Once this window is open, it does not need to be closed; clicking a different
+&quot;View/pick&quot; button will transfer control of the display.</p>
+<P><H5><U><B>Running phenix.refine</B></U></H5><P>
+<p>Each time phenix.refine is run from the GUI, a new folder is created
+(in the current output directory) named <em>Refine_X</em>, where X is an integer.
+This directory will contain all temporary and output files created during
+the course of the run.  Existing folders will not be overwritten.  All
+output files will be displayed in the GUI in the results tab.</p>
+<p>Once you are done configuring refinement, switch to the <em>Run</em> tab in the
+main window and start the process by clicking the &quot;Run&quot; button.  The
+log output will appear in the central window:</p>
+<div class="image"><img alt="images/gui_refine_run.png" src="images/gui_refine_run.png" /></div>
+<p>Statistics will be continually updated; any that appear to be outliers
+(e.g. excessively high R-factors) will be highlighted in red.  If an
+error occurs during refinement, a message box will pop up and the process
+will be halted.  Once the refinement is complete, another tab will apear
+containing the final statistics, buttons for opening the refined structure
+in Coot and PyMOL, and a validation summary.</p>
+<P><H5><U><B>Acknowledgements</B></U></H5><P>
+<p>The electron-density isosurface code in the CCTBX was contributed by
+Luc Bourhis.</p>
+<p>Some of the icons used in the GUI came from the <cite>Crystal Icons project
+&lt;http://www.everaldo.com/crystal/&gt;</cite> which is licensed under the LGPL.</p>
+<!--REMARK PHENIX BODY END-->
