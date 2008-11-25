@@ -211,6 +211,7 @@ keyword. Those include::
   - group_anomalous  (refinement of f' and f" values)
   - tls              (TLS refinement = refinement of ADP through TLS parameters)
   - rigid_body       (rigid body refinement)
+  - occupancies      (occupancy refinement: individual, group, group constrained)
   - none             (bulk solvent and anisotropic scaling only)
 
 Below are examples to illustrate the use of the ``strategy`` keyword
@@ -637,51 +638,118 @@ It is important to keep in mind:
 Occupancy refinement
 --------------------
 
-By default, the occupancy refinement is selected (star in front of
-corresponding keyword: strategy = ... \*occupancies ...). This does
-not mean that occupancies for all atoms will be refined. This just tells
-phenix.refine to automatically find which occupancies it will be refining (
-based on input PDB file). Here are the possible scenarios:
+Here is the list of facts that are important to know about occupancy refinement
+in ``phenix.refine``:
 
-  - if no selections are provided (``refine.occupancies.individual=None`` and
-    ``refine.occupancies.group=None``) then phenix.refine by default will refine
-    individual occupancies for atoms that have partial occupancy values in input
-    PDB file (except zeros) and it will perform group constrained occupancy
-    refinement for all atoms in alternative conformations. Occupancies of all
-    other atoms will be fixed.
+- ``phenix.refine`` can perform the following types of occupancy refinement:
+  individual (refinement of one occupancy factor per atom), group
+  (refinement of one occupnacy factor per group of selected atoms) and group
+  constrained occupancy refinement. In individual and group occupancy
+  refinement the refined occupancy values will be constrained between
+  ``main.occupancy_min`` and ``main.occupancy_max``, which is 0 and 1 by
+  default. In group constrained occupancy refinement, there are ``(N-1)``
+  refinable occupancies per constrained group. An example of constrained
+  group could be a residue that has ``N`` alternative conformations (where
+  ``N`` typically ranges between 2 and 4). In such case all atoms within an
+  alternative conformer will have equal occupancy values (1<=occupancy<=0)
+  and the sum of all ``(N-1)`` occupancies will be 1.
 
-  - If selections are provided (``refine.occupancies.individual=atom_selection``
-    or ``refine.occupancies.group=atom_selection``) then the selected atoms
-    will be added to the list of atoms defined above (atoms with partial
-    occupancies or those in alternative conformations). See this document for
-    examples of atom_selection syntax.
+- The occupancy refinement is ON by default. This does not mean that
+  occupancies of all atoms will be refined. Based on input PDB file,
+  ``phenix.refine`` automatically finds which occupancies it will be refining.
+  If no user defined selections is provided, ``phenix.refine`` will refine
+  individual occupancies for all atoms that have partial occupancy values in
+  input PDB file (1<occupancy<0, atoms with zero occupancy values are not
+  included). Atoms in alternative conformations will be automatically
+  determined based on ``altLoc`` identifiers in input PDB file and the group
+  constrained occupancy refinement for these atoms will be performed as well.
 
-1. Refinement of occupancies only::
+- Turning OFF the occupancy refinement can be done by removing the star
+  (``*``) from the corresponing keyword in ``strategy = ... *occupancies ...``.
+
+- If selections are provided (see examples below) then the occupancy
+  refinement for selected atoms will be performed as well as for those
+  selected automatically (as described above).
+
+- User defined selections will override those defined by ``phenix.refine``
+  automatically. For example, if an atoms is automatically selected for
+  individual occupancy refinement, but the user defined a group of atoms for
+  which one occupancy factor will be refined (group occupnacy refinement),
+  and this particular atom is within the group, then the individual occupancy
+  will not be refined for this atom.
+
+- User can withhold the occupancy refinement for any atoms that were
+  originally selectd for occupancy refinement by default (automatically).
+
+- The presence of user defined selections for occupancies to be refined is not
+  enough to engage the occupancy refinement. It is important that the occupancy
+  refinement is selected in ``strategy =`` keyword.
+
+Examples:
+
+1. Running with all defaul parameters::
+
+     % phenix.refine data.hkl model.pdb
+
+   This will refine individual coordinates, individual B-factors (isotropic or
+   anisotropic) and occupancies for atoms in alternative conformations or
+   for atoms having partial occupancies. If there is no such atoms in input PDB
+   file, then no occupancies will be refined.
+
+2. Refinement of occupancies only::
 
      % phenix.refine data.hkl model.pdb strategy=occupancies
 
    This will only refine occupancies for atoms in alternative conformations or
-   for atoms having partial occupancies (other model parameters, like B-factors
-   or coordinates will be fixed).
+   for atoms having partial occupancies. If there is no such atoms in input PDB
+   file, then no occupancies will be refined. Other model parameters, such as
+   B-factors or coordinates will not be refined (this is the only difference
+   between this and the above refinement runs).
 
-2. Refine occupancies of water in addition to atoms with partial occupancies
-   and those in alternative conformations::
+3. Refine individual occupancies of water molecules (in addition to atoms with
+   partial occupancies and those in alternative conformations, if any)::
 
-     % phenix.refine data.hkl model.pdb \
-       refine.occupancies.individual="water"
+     % phenix.refine data.hkl model.pdb refine.occupancies.individual="water"
 
-3. Refine one occupancy factor per selected group of atoms (group
-   occupancy refinement)::
+   Similar refinement where in addition all Zn atoms in chain X will be
+   refined::
 
-     % phenix.refine data.hkl model.pdb strategy=occupancies \
-       refine.occupancies.group="chain A and resseq 1" \
-       refine.occupancies.group="chain B and resseq 3"
+     % phenix.refine data.hkl model.pdb occupancies.individual="water" \
+       occupancies.individual="chain X and element Zn"
 
-   this will refine two occupancy factors: one for residue number 1 in chain A
-   and another one for residue number 3 in chain B. This feature is frequently
-   used for refinement of occupancies of partially occupied ligands.
-   Additionally, the partial occupancies and those for atoms in alternative
-   conformations will be refined since they are selected automatically by default.
+4. Complex occupancy refinement strategy (combination of various available
+occupancy refinement types)::
+
+     % phenix.refine data.hkl model.pdb strategy=occupancies occ.params
+
+The amount of atom selections makes it inconvenient to type them all from the
+command line. This is why the parameter file ``occ.params`` is used and it
+contains following lines::
+
+     #include_params occ.params
+
+which defines:
+
+- group occupancy refinement. One occupancy for all atoms in
+  ``chain A and resseq 1`` will be refined and it will be contrained between
+  ``main.occupancy_min`` and ``main.occupancy_min``, which is by default 0 and
+  1, correspondingly.
+
+- individual occupancies for all Zn and Br atoms, and waters.
+
+- group constrained occupancy refinement. In one group the occupancies of atoms
+  in ``chain A and resseq 2`` and ``chain A and resseq 3`` will be coupled.
+  All occupancies within ``chain A and resseq 2`` will have the exact same
+  values lying between 0 and 1, and same for ``chain A and resseq 3``. The sum
+  of occupancies of ``chain A and resseq 2`` and ``chain A and resseq 3`` will
+  be 1.0, making it one constrained group.
+
+- another constrained group contains three residues (number 42 and 121, and
+  MAN) and they occupancies will be refined similarly as described above.
+
+- occupancies of atoms ``O`` in residues 1 and 3 of chain X will not be
+  refined (even though these atoms have partial occupancies in input PDB
+  file and so they would normally be refined by default).
 
 f' and f'' refinement
 ---------------------

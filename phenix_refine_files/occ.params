@@ -1,0 +1,22 @@
+refinement {
+  refine {
+    occupancies {
+      individual = element BR or water
+      individual = element Zn
+      constrained_group {
+        selection = chain A and resseq 1
+      }
+      constrained_group {
+        selection = chain A and resseq 2
+        selection = chain A and resseq 3
+      }
+      constrained_group {
+        selection = chain X and resname MAN 
+        selection = chain X and resseq 42
+        selection = chain X and resseq 121
+      }
+      remove_selection = chain B and resseq 1 and name O
+      remove_selection = chain B and resseq 3 and name O
+    }
+  }
+}
