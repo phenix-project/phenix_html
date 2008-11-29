@@ -806,6 +806,23 @@ among these models is an indication of the uncertainty in each of the models.
 Note that the ensemble of models is not a representation of the ensemble of
 structures that is truly present in the crystal.
 
+<H5>Morph an MR model and rebuild it</H5><P>
+<PRE style="face=courier">phenix.autobuild data=data.mtz model=MR.pdb \
+morph=True rebuild_in_place=False seq_file=seq.dat
+</PRE>
+<p>You can have autobuild morph your input model, distorting it to match
+the density-modified map that is produced from your model and data. This
+can be used to make an improved starting model in cases where the MR model
+is very different than the structure that is to be solved.  For the morphing
+to work, the two structures must be topologically similar and differ
+mostly by movements of domains or motifs such as a group of helices or
+a sheet.
+<p>The morphing process consists of identifying a coordinate shift to apply
+to each N (or P for nucleic acids) atom that maximizes the local density
+correlation between the model and the map. This is smoothed and applied to
+the structure to generate a morphed structure.
+
+
 <H5>Build an RNA chain</H5><P>
 <PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat chain_type=RNA
 </PRE>
