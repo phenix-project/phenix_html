@@ -9,7 +9,7 @@ The graphical interface for *phenix.refine* runs the unmodified command-line
 version; default settings are unchanged.  All parameters should be 
 configurable through the GUI, although some of these (such as NCS restraint
 groups) are handled in a non-standard way.  This document describes the
-behavior of the GUI only; see the `phenix.refine <refinement.htm>`
+behavior of the GUI only; see the `phenix.refine <refinement.htm>`_
 documentation for details on specific parameters and methods.
 
 At present the GUI has the following capabilities:
@@ -23,7 +23,7 @@ At present the GUI has the following capabilities:
   - model validation and structure quality scores (in development)
   - printable plots of final statistics
 
-This software is under continual development; to report any problems with
+This software is still under development; to report any problems with
 normal operation, please send email to bugs@phenix-online.org.
 
 Launching
@@ -126,7 +126,7 @@ Atom selection
 ==============
 
 The atom-selection syntax used by PHENIX is described in the 
-`phenix.refine manual <refinement.htm#anch297>`.  In the GUI, any valid
+`phenix.refine manual <refinement.htm#anch297>`_.  In the GUI, any valid
 atom selection can be visualized if you have a suitable graphics card
 and have already loaded a PDB file with valid symmetry information.  The
 graphics window can be opened by clicking the "View/pick" button next
@@ -146,7 +146,9 @@ than mouse controls.  Selections made in the graphics window will be sent
 automatically to the appropriate control.
 
 Once this window is open, it does not need to be closed; clicking a different
-"View/pick" button will transfer control of the display.
+"View/pick" button will transfer control of the display.  (On Linux, you
+will first need to open the *Actions* menu and click *Restore parent window*
+to transfer mouse and keyboard controls back to the configuration dialog.)
 
 Running phenix.refine
 =====================
@@ -177,4 +179,4 @@ The electron-density isosurface code in the CCTBX was contributed by
 Luc Bourhis.
 
 Some of the icons used in the GUI came from the `Crystal Icons project
-<http://www.everaldo.com/crystal/>` which is licensed under the LGPL.
+<http://www.everaldo.com/crystal/>`_ which is licensed under the LGPL.
