@@ -29,12 +29,14 @@ normal operation, please send email to bugs@phenix-online.org.
 Launching
 =========
 
-The GUI can be started by typing the command *phenix.refine_gui*.
+The GUI can be started by typing either of these commands:
+
+  phenix.refine --gui
+  phenix.refine_gui
+
 Any combination of PDB, CIF, reflection, and parameter (.param or .eff) files
-may be specified on the command line.  Keyword parameters used in the
-command line-only version are not currently supported.  The options
-``-q`` and ``--debug`` will disable the splash screen and print debugging
-messages, respectively.
+may be specified on the command line.  Most keyword parameters used in the
+command-line version of phenix.refine should work as well.
 
 The GUI uses a database of projects to track default settings (and eventually,
 progress and individual jobs) for a structure or group of related structures.
