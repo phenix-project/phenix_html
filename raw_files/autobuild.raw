@@ -839,11 +839,16 @@ the structure to generate a morphed structure.
 <PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat chain_type=DNA
 </PRE>
 
-<H5>Just make maps; don't do any building. </H5><P>
+<H5>Density-modify with or without a model and make maps </H5><P>
+You can use the AutoBuild Wizard as a convenient way to run resolve
+density modification with or without including model-based information.  Just
+use a command like this:
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb maps_only=True     
 </PRE>
+The Wizard will calculate the same map that it would normally calculate given
+these data, and then it will write the map out and stop.
 
-<H5>Just calculate a prime-and-switch map </H5><P>
+<H5>Calculate a prime-and-switch map </H5><P>
 <PRE style="face=courier">
 phenix.autobuild data=data.mtz solvent_fraction=.6 \
    ps_in_rebuild=True model=coords.pdb maps_only=True 
@@ -857,6 +862,7 @@ The output prime-and-switch map will be in the file prime_and_switch.mtz.
 
 
 <UL>
+
 <LI> The AutoBuild wizard edits input PDB files to remove multiple
 conformations. It will also renumber residues if the file contains residues with
 insertion codes.  All references to residue numbers (e.g. 
@@ -957,7 +963,23 @@ so any part of a model you supply is rebuilt.
 <P><H5>Specific limitations and problems</H5><P>
 
 
-<UL><LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
+<UL>
+<LI>By default the AutoBuild Wizard splits jobs into one or more parts 
+(determined by the parameter &quot;nbatch&quot;) and runs
+them as sub-processes.  These may run sequentially or in parallel, 
+depending on the value of the parameter &quot;nproc&quot; . In some cases the
+running of sub-processes can lead to timing errors in which a file is
+not written fully before it is to be read by the next process. This appears
+more often when jobs are run on nfs-mounted disks than on a local disk.
+If this occurs, a solution is to set the parameter &quot;nbatch=1&quot;
+so that the jobs not be run as sub-processes.  You can also specify
+&quot;number_of_parallel_models=1&quot; which will do much the same
+thing. Note that changing the
+value of &quot;nbatch&quot; will normally change the results of running the
+Wizard. (Changing the value of &quot;nproc&quot; does not change the results,
+it changes only how many jobs are run at once.)
+
+<LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
 the AutoBuild wizard is limited by the memory in your computer and the
 binaries used. The Wizard is supplied with regular-size ("", size=6), 
 giant ("_giant", size=12), huge ("_huge", size=18) and extra_huge

@@ -17,10 +17,35 @@ Adams, P.D., Grosse-Kunstleve, R.W., Hung, L.-W., Ioerger, T.R., McCoy, A.J.,
 Moriarty, N.W., Read, R.J., Sacchettini, J.C., Sauter, N.K., Terwilliger, T.C.
 (2002). PHENIX: building new software for automated crystallographic structure
 determination. Acta Cryst. D58, 1948-1954.
-
 </p>
 
 
+<H5>How can I include high-resolution data and phase extend my map?</H5>
+<p> You can do this in AutoBuild with:
+</p><PRE style="face=courier">phenix.autobuild data=data.mtz hires_file=high_res_data.mtz maps_only=True
+</PRE>
+There are many variations on using maps_only=True as a way to run density
+modification. You can also specify a model with model=mymodel.pdb and the
+model information will be used in density modification. If you have
+a model you can also specify ps_in_rebuild=True to get a 
+prime-and-switch map.
+
+
+<H5>Why does AutoBuild bomb and say it cannot find a TEMP file?</H5>
+<p>By default the AutoBuild Wizard splits jobs into one or more parts 
+(determined by the parameter &quot;nbatch&quot;) and runs
+them as sub-processes.  These may run sequentially or in parallel, 
+depending on the value of the parameter &quot;nproc&quot; . In some cases the
+running of sub-processes can lead to timing errors in which a file is
+not written fully before it is to be read by the next process. This appears
+more often when jobs are run on nfs-mounted disks than on a local disk.
+If this occurs, a solution is to set the parameter &quot;nbatch=1&quot;
+so that the jobs not be run as sub-processes.  
+You can also specify&quot;number_of_parallel_models=1&quot; 
+which will do much the same thing.  Note that changing the
+value of &quot;nbatch&quot; will normally change the results of running the
+Wizard. (Changing the value of &quot;nproc&quot; does not change the results,
+it changes only how many jobs are run at once.)
 
 <H5>Where can I find sample data?</H5>
 <p>You can find sample data in the directories located in:
