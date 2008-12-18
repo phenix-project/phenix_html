@@ -12,7 +12,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
       <P><H5><U>Purpose</U></H5><P>
 <P>Any Wizard can be run from the PHENIX GUI, from the command-line, 
-and from keyworded script files.  All three versions are identical except
+and from keyworded parameters files.  All three versions are identical except
 in the way that they take commands and keywords from the user. 
 <P>This page describes how to run a Wizard and what a Wizard does in general. 
 The specific Wizard help pages describe the details of each PHENIX Wizard.
@@ -30,7 +30,8 @@ AutoBuild Wizard to make one very good final model.
 </P><P> If your structure contains ligands, you can place them using the 
 LigandFit Wizard</p>
 </P><P>This help page describes how to run the Wizards from a GUI,
-the command-line, or a script.  The individual Wizard documentation pages
+the command-line, or a parameters file.  The 
+individual Wizard documentation pages
 describe the strategies and commands for each Wizard:
         <UL>
           <LI><A
@@ -298,9 +299,9 @@ the file and the brackets tell the PHIL parser what is grouped together,
 while from the commmand line, the quotes tell the parser what is to be 
 grouped together.
 
-<P><LI> A script file (".inp") with inputs in the format for running from a 
-script is produced that you can edit and use like this: 
-<PRE style="face=courier">phenix.runWizard AutoSol AutoSol.inp
+<P><LI> A parameters file (".eff")
+is produced that you can edit and use like this: 
+<PRE style="face=courier">phenix.autosol parameters.eff
 </PRE>
 
 <P><LI> To get keyword help on a specific keyword you can type:
@@ -347,184 +348,54 @@ This will put the text
 at the end of every temporary command file created to run resolve.
 </UL>
 
-<P> <P><H5>Running a Wizard from a script</H5><P>
-<P><H5> Differences between running from the command line and running a script</H5><P>
-<P>Command-line
-<P>The command-line is an easy way to run a Wizard and is 
-recommended for any users.
-The command starts with <b>phenix.</b> plus the name of the Wizard in lower-case
-letters (<b>phenix.autosol</b>). Following this, all of the keywords are on the
-same line (or on continuation lines) and values are assigned with an 
-&quot;=&quot; sign. 
-The order of keywords makes no difference running from the command line. A simple 
-command is:
-<PRE style="face=courier">phenix.autosol data=w1.sca seq_file=seq.dat  sites=2 atom_type=Se
+<P> <P><H5>Running a Wizard from a parameters file</H5><P>
+<p>Parameters files are an easy way to specify any parameters that you
+want to use when running a Wizard.  They are structured in a clear way and
+you can edit them to set the values that you want.
+For example here is a parameters file &quot;sad.eff&quot; to run a SAD dataset
+with &quot;phenix.autosol sad.eff&quot;:
+<PRE style="face=courier">
+autosol {  atom_type = Se
+  sites = 2
+  seq_file = sequence.dat
+  crystal_info {
+    space_group = C2
+    unit_cell = 76.08 27.97 42.36 90 103.2 90
+    resolution = 2.6
+  }
+  wavelength {
+    data = high.sca
+    lambda = 0.9600
+    f_prime = -1.5
+    f_double_prime = 3
+  }
+}
 </PRE>
-
-
-<P>Scripts
-<p>Normally scripts are for advanced users only (for running MIR or multiple
-datasets, you have to use the GUI or a script, however).
-A script can contain both commands and keywords. Keywords are read in until a
-command is found, then the command is executed, then additional keywords are read
-in until another command is found, and so on. If the script file contains only 
-keywords and no commands, then the keywords are read in and used 
-as input to the Wizard, in just the same way as running from the command line.
-In a script file, each line can contain a command or keyword and optional values for the
-command or keyword, separated by spaces. 
-<p>The keywords for scripts are a subset of keywords for the command-line. This is
-because the command-line interpreter has a number of special keywords 
-(essentially shortcuts) to make typing at the command-line easier. 
-<p>A script file assigns values to keywords by being on the same line,
-not using any &quot;=&quot; signs.
-
-<p>A sample script file &quot;autosol.inp&quot; that contains the same information as the
-command-line command shown above (but with the full keyword names, not the command-line
-shortcuts) is: 
-<PRE style="face=courier"># autosol.inp
-# script file with inputs for AutoSol Wizard.
-# run with: phenix.runWizard AutoSol autosol.inp
-#
-input_file_list w1.sca   # script keyword is input_file_list not data
-input_seq_file seq.dat   # script keyword is input_seq_file not seq_file
-mad_ha_n 2               # script keyword is mad_ha_n not sites
-mad_ha_type Se           # script keyword is mad_ha_type not atom_type
-#
-# end of autosol.inp
+Note the scope names (&quot;autosol&quot; or &quot;crystal_info&quot;) 
+followed by paired brackets ({ ....}) which enclose 
+sets of parameters that
+are related.  
+<P>The values of parameters are usually entered on one line,
+without quotation marks (as in this example) unless they are to be
+all considered as a single item.
+<P>You can specify almost anything either in a parameters file or on
+the command line. In the above example you could also just say:
+<PRE style="face=courier">
+phenix.autosol atom_type = Se sites = 2 seq_file = sequence.dat \
+    space_group = C2  \
+    unit_cell = "76.08 27.97 42.36 90 103.2 90"  \
+    resolution = 2.6  \
+    data = high.sca \
+    lambda = 0.9600 \
+    f_prime = -1.5 \
+    f_double_prime = 3 
 </PRE>
-which you can run with:
-<PRE style="face=courier">phenix.runWizard AutoSol autosol.inp
-</PRE>
-<P>NOTE: The script interpreter will accept <b>any</b> keywords and values.
-If the keyword is not recognized, then it will write a warning to
-the log file, but it will not stop.  This means that if you use the 
-wrong name for a keyword, you will only find this out by looking
-at the beginning of the log file. The utility of this feature is that
-keywords set the value of the corresponding variable in the Wizard. If
-you know what you are doing, you can set any variable in the Wizard in 
-this way, whether or not it is a keyword.
-
-
-
-<P><H5> Basic operation of a Wizard from a script</H5><P>
-<P>
-<P><UL><LI> You can run a wizard from a script like this 
-(AutoSol wizard):
-<PRE style="face=courier">phenix.runWizard AutoSol autosol.inp
-</PRE>
-The script file (autosol.inp) should contain keyword entries telling
-the Wizard what to do.  The output will be written to the log file
-(e.g., <b>AutoSol_run_1_/AutoSol_run_1_1.log</b>).
-<P><LI>The keywords that can be set in a script file include most of the
-keywords for for command-line running, plus a set of control commands for
-running from a script. To see all the basic keywords for a wizard, make a
-script (e.g., keywords.inp) that says:
-<PRE style="face=courier">list_keywords
-</PRE>
-and then type:
-<PRE style="face=courier">phenix.runWizard AutoSol keywords.inp
-</PRE>
-The keywords will be written to the log file 
-(e.g., <b>AutoSol_run_1_/AutoSol_run_1_1.log</b>).
-
-<P><LI>For help on a Wizard, your script file should say:
-<PRE style="face=courier">help
-</PRE>
-
-<P><LI>Unlike running from the command-line, the order of entries in a 
-script file can make a difference. For example you can specify a group
-of inputs for one dataset and then start a new dataset. 
-
-<P><LI>If you want to stop a Wizard, you can create a file "STOPWIZARD" and
-put it in the subdirectory (i.e., AutoSol_2_/) where the Wizard is running.
-This is like hitting the PAUSE button on the GUI and stops the wizard cleanly.
-</UL>
-
-<P><H5> Keeping track of multiple runs of a Wizard from a script</H5><P>
-
-<P><UL><LI>When you start a Wizard from the command line, the default is
-to start a <B>new</B> run of that Wizard.
-<P><LI>To see all the available runs of this Wizard, delete some runs,
-carry on with run 3, or copy run 4 into a new run, your script should say
-one of the following:
-<PRE style="face=courier">show_runs
-delete_run_list 1 2 3-5
-run 3
-copy_run 4
-</PRE>
-</UL>
-
-<P><H5> Setting parameters of a Wizard from a script</H5><P>
-<P><UL><LI>You can set nearly any parameter using keywords from a script. 
-For example:
-<PRE style="face=courier">resolution 2.5
-</PRE>
-will set the overall high-resolution cutoff to 2.5 A.
-<P>
-<P><H5>Useful script commands</H5><P>
-
-<P> With the exception of <b>show_runs</b> and  <b>delete_runs</b>, the
-output for each of these commands is written to the log file
-(e.g., <b>AutoSol_run_1_/AutoSol_run_1_1.log</b>).
-
-<PRE style="face=courier">help  # print out this help message 
-
-show_runs # list all the runs that are saved
-
-delete_runs 1 2 3-5 9:12 # delete runs 1 2 3-5 9-12
-
-carry_on # continue on with the highest-numbered run
-
-run 5 # continue with run 5
-
-copy_run 5 # make a new copy of run 5 (with number equal
-   # to highest existing run number +1) and continue
-   # with this new copy.
-
-run 2
-run_only DumpFacts # list current values of all parameters in run 2 and stop
-
-run_only nothing # do nothing and stop
-
-list_keywords # list all the keywords and their possible values
-
-run_list method_1 method_2 # run these methods and anything
-    # that follows automatically
-
-run_only method_1 method_2 # run just these methods and stop
-user_command method_1 
-
-list_methods # list all methods that can be run with run_list
-
-</PRE>
-<P> These are a good way to run Wizards initially, and also a good way
-to change some parameters after stopping a run
-<P> Note: these all have the form:
-<PRE style="face=courier">keyword parameter
-</PRE>
-<P>where the parameter must be enclosed in quotes if it is a string
- containing blanks. If the keyword contains the text "list" or the words
- "dataset_", "cell" or "input_labels" then the
- parameter can be a list of items,
- separated by blanks:
-<PRE style="face=courier"> 
-cell 40 50 40 90 90 90
-</PRE>
-<P> An empty list is
- indicated by "[]" <P>
-
-<P><LI>NOTE that you can set any SOLVE, RESOLVE or RESOLVE_PATTERN keyword
-in PHENIX using the "resolve_command", "solve_command" or 
-"resolve_pattern_command" keywords from a script. The format is
-different than from the command-line: you don't have to put quotes around
-around the command:
-<PRE style="face=courier">resolve_command ligand_start start.pdb # NOTE: quotes not necessary for script
-</PRE>
-<P>This will put the text 
-<PRE style="face=courier">ligand_start start.pdb
-</PRE>
-at the end of every temporary command file created to run resolve.
-</UL>
+(note that the cell parameters are in quotes on the command line and not
+in the paramters file) 
+and you would get the same results. 
+For simple cases the command-line format is
+fine, but for anything with a lot of parameters to set it is much easier to
+just edit a parameters file.
 
 <P><H5>Specific limitations and problems:</H5><P>
 <P><UL><LI>
@@ -540,10 +411,6 @@ they do not differentiate between files with the same name coming from
 different directories. Consequently you should not use two files with 
 different contents but with the same file name as inputs to a Wizard, even
 if they come from separate starting directories.
-
-<P><LI>The command-line version of AutoSol cannot be used for MIR or for 
-combining multiple datasets.  The script and GUI versions can be used
-instead for these cases.
 
 <P><LI>If you  stop a Wizard and continue on with a command such as
 phenix.autobuild run=2 then you can change most parameters with keywords
