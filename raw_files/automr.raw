@@ -185,10 +185,39 @@ same orientation as the others, so that the ensemble of models can be placed
 as a group in the unit cell.
 
 <P>If you are searching for more than one ensemble, or if there is more
-than one component in the a.u., then use the full syntax and specify them as
-(NOTE copies becomes copies_to_find or component_copies):
-<PRE style="face=courier">ensemble_1.coords=s1.pdb ensemble_1.RMS=0.8 ensemble_1.copies_to_find=1 \
-   component_1.mass=23000 component_1.component_copies=1
+than one component in the a.u., then use a parameters file and specify them
+like this (put all of this in a file like &quot;my_mr.eff&quot; and run it with
+&quot;phenix.automr my_mr.eff&quot;: 
+<PRE style="face=courier">
+automr {
+  ensemble {
+    ensembleID = "mol1"
+    copies_to_find = 1
+    coords = mol1.pdb
+    identity = None
+    RMS = "0.85"
+  }
+  ensemble {
+    ensembleID = "mol2"
+    copies_to_find = 1
+    coords = mol2.pdb
+    identity = None
+    RMS = "0.90"
+  }
+  component {
+    seq_file = "seq1.dat"
+    component_type = *protein nucleic_acid
+    mass = None
+    component_copies = 1
+  }
+  component {
+    seq_file = "seq2.dat"
+    component_type = *protein nucleic_acid
+    mass = None
+    component_copies = 1
+  }
+}
+
 </PRE>
 
 <P><H5>Specifying which columns of data to use from input data files</H5><P>
@@ -257,40 +286,48 @@ in the scope "autobuild_variables" .
 These commands and others with this prefix are
 passed on to AutoBuild.
 
-<P><H5>Passing any commands to AutoBuild</H5><P>
-<p>You can pass any AutoBuild commands on to AutoBuild, even if they
-are not already defined for you in AutoMR. Use the
-command <b>autobuild_input_list_add</b> to add a command, and then
-apply that command by adding &quot;autobuild_&quot; to the beginning of
-the command name. For example, to add the 
-commands semet=True and refine=False: 
-<PRE style="face=courier">phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
-    data=data.mtz input_label_string="F SIGF"  \
-    autobuild_input_list_add='semet refine'  \
-    semet=True \
-    refine=False
-</PRE>
-Notes. This applies only to command-line operation of AutoMR.
-Note that any keywords that are used in both AutoBuild and AutoMR will apply to 
-both if you specify them in autobuild_input_list_add. For example if you 
-set the resolution in AutoBuild with autobuild_input_list_add=resolution and
-resolution=2.6 then this resolution will apply to both AutoMR and
-AutoBuild.
-
 <P><H5>AutoMR searching for 2 components</H5><P>
 <P>Run AutoMR on a structure with 2 components. Define the components of
 the asymmetric unit with sequence files (beta.seq and blip.seq) and
 number of copies of each component (1).  Define the search models
 with PDB files and estimated RMS from true structures.
-<PRE style="face=courier">phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
- resolution=0.0 resolution_build=3.0                               \
- component_1.component_type=protein component_1.seq_file=beta.seq  \
- component_1.component_copies=1                                    \
- component_2.component_type=protein component_2.seq_file=blip.seq  \
- component_2.component_copies=1                                    \
- ensemble_1.coords=beta.pdb ensemble_1.RMS=0.85 ensemble_1.copies_to_find=1 \
- ensemble_2.coords=blip.pdb ensemble_2.RMS=0.90 ensemble_2.copies_to_find=1 \
- n_cycle_rebuild_max=1
+This is all done by creating a parameters file with all the control
+information in it. Put all of this in a file 
+like &quot;my_mr.eff&quot; and run it with &quot;phenix.automr my_mr.eff&quot;: 
+<PRE style="face=courier">
+automr {
+  data = "w1.sca"
+  ensemble {
+    ensembleID = "mol1"
+    copies_to_find = 1
+    coords = mol1.pdb
+    identity = None
+    RMS = "0.85"
+  }
+  ensemble {
+    ensembleID = "mol2"
+    copies_to_find = 1
+    coords = mol2.pdb
+    identity = None
+    RMS = "0.90"
+  }
+  component {
+    seq_file = "seq1.dat"
+    component_type = *protein nucleic_acid
+    mass = None
+    component_copies = 1
+  }
+  component {
+    seq_file = "seq2.dat"
+    component_type = *protein nucleic_acid
+    mass = None
+    component_copies = 1
+  }
+  model_building {
+    rebuild_after_mr = False
+  }
+}
+
 </PRE>
 
 <P><H5>Specifying molecular masses of 2 components</H5><P>
@@ -299,15 +336,40 @@ of the asymmetric unit with molecular masses (30000 and 20000),
 and define the search models
 with PDB files and percent sequence identity with the true structures
 (50% and 60%).
-<PRE style="face=courier">phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
- resolution=0.0 resolution_build=3.0                               \
- component_1.component_type=protein component_1.mass=30000  \
- component_1.component_copies=1                                    \
- component_2.component_type=protein component_2.mass=20000 \
- component_2.component_copies=1                                    \
- ensemble_1.coords=beta.pdb ensemble_1.identity=50 ensemble_1.copies_to_find=1 \
- ensemble_2.coords=blip.pdb ensemble_2.identity=60 ensemble_2.copies_to_find=1 \
- n_cycle_rebuild_max=1
+This is again all done by creating a parameters file with all the control
+information in it. Put all of this in a file 
+like &quot;my_mr.eff&quot; and run it with &quot;phenix.automr my_mr.eff&quot;: 
+<PRE style="face=courier">
+automr {
+  data = "w1.sca"
+  seq_file = seq.dat
+  ensemble {
+    ensembleID = "mol1"
+    copies_to_find = 1
+    coords = mol1.pdb
+    identity = 50
+  }
+  ensemble {
+    ensembleID = "mol2"
+    copies_to_find = 1
+    coords = mol2.pdb
+    identity = 60
+  }
+  component {
+    component_type = *protein nucleic_acid
+    mass = 30000
+    component_copies = 1
+  }
+  component {
+    component_type = *protein nucleic_acid
+    mass = 40000
+    component_copies = 1
+  }
+  autobuild_commands{
+    n_cycle_rebuild_max = 1
+  }
+}
+
 </PRE>
 
 <P><H5>AutoMR searching for 2 components, but specifying the 
@@ -318,23 +380,47 @@ number of copies of each component (1).  Define the search models
 with PDB files and estimated RMS from true structures. Define the 
 orientation and position of one component. Define the number of copies to
 find for each component (0 for beta, which is fixed, 1 for blip).
-<PRE style="face=courier">phenix.automr data=beta_blip_P3221.mtz input_label_string="Fobs Sigma"  \
- resolution=0.0 resolution_build=3.0                               \
- component_1.component_type=protein component_1.seq_file=beta.seq  \
- component_1.component_copies=1                                    \
- component_2.component_type=protein component_2.seq_file=blip.seq  \
- component_2.component_copies=1                                    \
- ensemble_1.coords=beta.pdb ensemble_1.RMS=0.85 ensemble_1.copies_to_find=0 \
- ensemble_1.ensembleID="beta" \
- ensemble_2.coords=blip.pdb ensemble_2.RMS=0.90 ensemble_2.copies_to_find=1 \
- ensemble_2.ensembleID="blip" \
- n_cycle_rebuild_max=1 \
- fixed_ensembleID_list="beta" \
- fixed_euler_list="199.84,41.535,184.15"\
- fixed_frac_list="-0.49736,-0.15895,-0.28067"
+This is again all done by creating a parameters file with all the control
+information in it. Put all of this in a file 
+like &quot;my_mr.eff&quot; and run it with &quot;phenix.automr my_mr.eff&quot;: 
+<PRE style="face=courier">
+automr {
+  data = "w1.sca"
+  seq_file = seq.dat
+  ensemble {
+    ensembleID = "mol1"
+    copies_to_find = 1
+    coords = mol1.pdb
+    identity = 50
+  }
+  ensemble {
+    ensembleID = "mol2"
+    copies_to_find = 0
+    coords = mol2.pdb
+    identity = 60
+  }
+  component {
+    component_type = *protein nucleic_acid
+    mass = 30000
+    component_copies = 1
+  }
+  component {
+    component_type = *protein nucleic_acid
+    mass = 40000
+    component_copies = 1
+  }
+  autobuild_commands{
+    n_cycle_rebuild_max = 1
+  }
+ fixed_ensembles {
+ fixed_ensembleID_list="mol2" 
+ fixed_euler_list = 199.84 41.535 184.15
+ fixed_frac_list = -0.49736 -0.15895 -0.28067
+ }
+}
 </PRE>
-Note: you have to define an ensemble for the fixed molecule (beta in this
-example). 
+Note: you have to define an ensemble for the fixed molecule (mol2 in this
+example) and that you search for 0 copies of this molecule. 
 
       <P><H5><U>Possible Problems</U></H5><P>
 
@@ -351,6 +437,14 @@ input_lig_file_list=ProteinPartofMRmodel.pdb
 chain_type=DNA
 </PRE>
 
+<P><LI>The keywords &quot;cell&quot; and &quot;sg&quot; have 
+been replaced with &quot;unit_cell&quot; and &quot;space_group&quot; to
+make the keywords the same as in other phenix applications.
+
+<P><LI>The syntax for searches with more than one ensemble and more than
+one component have changed in PHENIX version 1.4.
+
+
 <P><LI> If you use an ensemble as a search model, the output structure will
 contain just the first member of the ensemble, so you may wish to put
 the member that is likely to be the most similar to the true structure as
@@ -360,6 +454,9 @@ the first one in your ensemble.
 and then select &quot;Start run over (delete everything for this run)&quot;
 it will delete your AutoBuild <b>and</b> your AutoMR run and start your
 AutoMR run all over.
+
+<P><LI> AutoMR no longer is able to pass arbitrary commands to AutoBuild (this
+was discontinued to allow for a fixed set of inputs for AutoBuild).
 
 <P><LI>The AutoMR Wizard can take most settings of most space groups,
 however it can only use the hexagonal setting of rhombohedral space groups 

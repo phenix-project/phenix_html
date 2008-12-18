@@ -13,7 +13,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 version; default settings are unchanged.  All parameters should be 
 configurable through the GUI, although some of these (such as NCS restraint
 groups) are handled in a non-standard way.  This document describes the
-behavior of the GUI only; see the <cite>phenix.refine &lt;refinement.htm&gt;</cite>
+behavior of the GUI only; see the <a class="reference" href="refinement.htm">phenix.refine</a>
 documentation for details on specific parameters and methods.</p>
 <p>At present the GUI has the following capabilities:</p>
 <blockquote>
@@ -28,15 +28,16 @@ documentation for details on specific parameters and methods.</p>
 <li>printable plots of final statistics</li>
 </ul>
 </blockquote>
-<p>This software is under continual development; to report any problems with
+<p>This software is still under development; to report any problems with
 normal operation, please send email to <a class="reference" href="mailto:bugs&#64;phenix-online.org">bugs&#64;phenix-online.org</a>.</p>
 <P><H5><U><B>Launching</B></U></H5><P>
-<p>The GUI can be started by typing the command <em>phenix.refine_gui</em>.
-Any combination of PDB, CIF, reflection, and parameter (.param or .eff) files
-may be specified on the command line.  Keyword parameters used in the
-command line-only version are not currently supported.  The options
-<tt class="docutils literal"><span class="pre">-q</span></tt> and <tt class="docutils literal"><span class="pre">--debug</span></tt> will disable the splash screen and print debugging
-messages, respectively.</p>
+<p>The GUI can be started by typing either of these commands:</p>
+<blockquote>
+phenix.refine --gui
+phenix.refine_gui</blockquote>
+<p>Any combination of PDB, CIF, reflection, and parameter (.param or .eff) files
+may be specified on the command line.  Most keyword parameters used in the
+command-line version of phenix.refine should work as well.</p>
 <p>The GUI uses a database of projects to track default settings (and eventually,
 progress and individual jobs) for a structure or group of related structures.
 The current project will be guessed based on the directory from which
@@ -102,7 +103,7 @@ by clicking the box labeled &quot;Add hydrogens to model if not present&quot; in
 main window.</p>
 <P><H5><U><B>Atom selection</B></U></H5><P>
 <p>The atom-selection syntax used by PHENIX is described in the 
-<cite>phenix.refine manual &lt;refinement.htm#anch297&gt;</cite>.  In the GUI, any valid
+<a class="reference" href="refinement.htm#anch297">phenix.refine manual</a>.  In the GUI, any valid
 atom selection can be visualized if you have a suitable graphics card
 and have already loaded a PDB file with valid symmetry information.  The
 graphics window can be opened by clicking the &quot;View/pick&quot; button next
@@ -119,7 +120,9 @@ recommend that you learn the selection syntax, as it is much more flexible
 than mouse controls.  Selections made in the graphics window will be sent
 automatically to the appropriate control.</p>
 <p>Once this window is open, it does not need to be closed; clicking a different
-&quot;View/pick&quot; button will transfer control of the display.</p>
+&quot;View/pick&quot; button will transfer control of the display.  (On Linux, you
+will first need to open the <em>Actions</em> menu and click <em>Restore parent window</em>
+to transfer mouse and keyboard controls back to the configuration dialog.)</p>
 <P><H5><U><B>Running phenix.refine</B></U></H5><P>
 <p>Each time phenix.refine is run from the GUI, a new folder is created
 (in the current output directory) named <em>Refine_X</em>, where X is an integer.
@@ -139,6 +142,5 @@ in Coot and PyMOL, and a validation summary.</p>
 <P><H5><U><B>Acknowledgements</B></U></H5><P>
 <p>The electron-density isosurface code in the CCTBX was contributed by
 Luc Bourhis.</p>
-<p>Some of the icons used in the GUI came from the <cite>Crystal Icons project
-&lt;http://www.everaldo.com/crystal/&gt;</cite> which is licensed under the LGPL.</p>
+<p>Some of the icons used in the GUI came from the <a class="reference" href="http://www.everaldo.com/crystal/">Crystal Icons project</a> which is licensed under the LGPL.</p>
 <!--REMARK PHENIX BODY END-->

@@ -254,6 +254,14 @@ then the wizard will keep the new waters from the new PDB file
 created by phenix.refine preferentially over the ones in your input file.
 
 
+<P><H5>Twinning and AutoBuild </H5><P>
+<P>AutoBuild does not know about twinning, but you can incorporate
+a twin law into the refinement steps in the AutoBuild procedure if your 
+crystal is twinned. Use phenix.xtriage to identify twinning and the
+twin law. Then specify the twin law in a parameters file (see next
+section) and provide that to AutoBuild with the 
+keyword such as &quot;refine_eff_file=twin_law.eff&quot;
+
 <P><H5>Specifying phenix.refine parameters</H5><P>
 <P>You can control phenix.refine parameters that are not specified
 directly by AutoBuild using a refinement parameters (.eff) file:
@@ -861,6 +869,10 @@ chain.  It will stop if residue 250 in chain B is found
 between residues 116 and 117 in the same chain,
 for example. To get around this, use insertion codes (make residue 250
 residue 116A instead).
+
+<P><LI>The keywords &quot;cell&quot; and &quot;sg&quot; have 
+been replaced with &quot;unit_cell&quot; and &quot;space_group&quot; to
+make the keywords the same as in other phenix applications.
 
 <LI>The AutoBuild model-building can only build one type of chain at a 
 time (default chain_type='PROTEIN'; other choices are RNA and DNA).  If you

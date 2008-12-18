@@ -63,7 +63,7 @@ that is present in this <b>tutorials/p9-sad/</b> directory.
 </p><PRE style="face=courier">
 #!/bin/csh
 phenix.autosol  seq_file=seq.dat sites=4 atom_type=Se  data=p9_se_w2.sca  \
-sg=&quot;I4&quot; cell=&quot;113.949 113.949  32.474 90.000  90.000  90.00&quot;  \
+space_group=&quot;I4&quot; unit_cell=&quot;113.949 113.949  32.474 90.000  90.000  90.00&quot;  \
 resolution=2.4 thoroughness=quick
 </PRE>
 The first line (<b>#!/bin/csh</b>) tells the system to interpret the remainder of the text in
@@ -93,7 +93,7 @@ to solve the structure is in the datafile
 Scalepack unmerged format, which means that there may be multiple 
 instances of each reflection and the cell parameters are not in the file,
 so we need to provide the cell parameters with the command,
-<b> cell=&quot;113.949 113.949  32.474 90.000  90.000  90.00&quot;</b>.  
+<b> unit_cell=&quot;113.949 113.949  32.474 90.000  90.000  90.00&quot;</b>.  
 (Note that the
 cell parameters are surrounded by quotation marks. That tells
 the parser that these are all together.)
@@ -102,7 +102,7 @@ In this example, the space group in the
 <b>I41</b>, but the correct space group is
 <b>I4</b>,  so we need to tell AutoSol the
 correct space group with 
-<b>sg=&quot;I4&quot;</b>.
+<b>space_group=&quot;I4&quot;</b>.
 </p><p>The resolution of the data in 
 <b>p9_se_w2.sca</b>  is to 1.74 A, but in this
 example we would like to solve the structure quickly, so we have cut the
@@ -178,8 +178,8 @@ you will find:
 </p><PRE style="face=courier">------------------------------------------------------------
 Starting AutoSol with the command:
 
-phenix.autosol seq_file=seq.dat sites=4 atom_type=Se data=p9_se_w2.sca sg=I4   \
-cell='113.949 113.949  32.474 90.000  90.000  90.00' resolution=2.4   \
+phenix.autosol seq_file=seq.dat sites=4 atom_type=Se data=p9_se_w2.sca space_group=I4   \
+unit_cell='113.949 113.949  32.474 90.000  90.000  90.00' resolution=2.4   \
 thoroughness=quick
 </PRE>
 <p>This is just a repeat of how you ran AutoSol; you can copy it and paste it 

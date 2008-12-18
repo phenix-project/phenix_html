@@ -552,31 +552,63 @@ you can fix it with <b>have_hand=True</b>.
 
 <P><H5>MAD dataset</H5><P>
 <P>The inputs for a MAD dataset need to specify f_prime and f_double_prime
-for each wavelength.  It also must be clear what datafile goes with which
-wavelength. If you input an MTZ file with multiple datasets, then the order
-of those datasets is assumed to be the same as the order of the wavelengths.
-You may want to either select particular datasets from your MTZ file
-(see below) or split such an MTZ file into separate files for each dataset
-if this does not work in the way you expect.
-<PRE style="face=courier">phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
-peak.data=w1.sca   peak.f_prime=-8   peak.f_double_prime=4.5 \
-infl.data=w2.sca   infl.f_prime=-9   infl.f_double_prime=1.9 \
-high.data=w3.sca   high.f_prime=-5   high.f_double_prime=3.0 
+for each wavelength.  You can use a parameters file &quot;mad.eff&quot; 
+to input MAD data. You run it with &quot;phenix.autosol mad.eff&quot;.
+Here is an example of a parameters file for a MAD dataset. You can set
+many additional parameters as well (see the list at the end of this
+document).
+
+<PRE style="face=courier">
+autosol {
+  seq_file = seq.dat
+  sites = 2
+  atom_type = Se
+  wavelength {
+    data = peak.sca
+    lambda = .9798
+    f_prime = -8.0
+    f_double_prime = 4.5
+  }
+  wavelength {
+    data = inf.sca
+    lambda = .9792
+    f_prime = -9.0
+    f_double_prime = 1.5
+  }
 </PRE>
 
 <P><H5>MAD dataset, selecting particular datasets from an MTZ file</H5><P>
-This is similar to the case for SAD data.If you have an input MTZ file with more than one anomalous dataset, you can 
-type something like:
-<PRE style="face=courier">phenix.autosol  seq_file=seq.dat sites=2 atom_type=Se  \
-peak.data=all_data.mtz   peak.f_prime=-8   peak.f_double_prime=4.5 \
-high.data=all_data.mtz   high.f_prime=-5   high.f_double_prime=3.0 \
-peak.labels='Fpeak SIGFpeak DANOpeak SIGDANOpeak' \
-high.labels='Fhigh SIGFhigh DANOhigh SIGDANOhigh' 
+This is similar to the case for running a SAD analysis,
+selecting particular columns of 
+data from an MTZ file.
+If you have an input MTZ file with more than one anomalous dataset, you can 
+use a parameters file like the one above for MAD data, but adding
+information on the labels in the MTZ file that are to be chosen for
+each wavelength:
+<PRE style="face=courier">
+autosol {
+  seq_file = seq.dat
+  sites = 2
+  atom_type = Se
+  wavelength {
+    data = mad.mtz
+    lambda = .9798
+    f_prime = -8.0
+    f_double_prime = 4.5
+    labels='peak(+) SIGpeak(+) peak(-) SIGpeak(-)'
+
+  }
+  wavelength {
+    data = mad.mtz 
+    lambda = .9792
+    f_prime = -9.0
+    f_double_prime = 1.5
+    labels='infl(+) SIGinfl(+) infl(-) SIGinfl(-)'
+  }
+}
 </PRE>
 This will carry out the usual structure solution, but will choose the
-input peak data columns based on the  
-labels: 'Fpeak SIGFpeak DANOpeak SIGDANOpeak', and the high data 
-from the ones labelled 'Fhigh SIGFhigh DANOhigh SIGDANOhigh'. 
+input peak data columns based on the label keywords.
 <P>As in the SAD case, you can find out all the possible 
 label strings to use by typing:
 <PRE style="face=courier">phenix.autosol display_labels=w1.mtz  # display all labels for w1.mtz
@@ -586,11 +618,29 @@ label strings to use by typing:
 <P>The standard inputs for an SIR dataset are the native and derivative, the
 sequence file, the heavy-atom type, and the number of sites, as well as
 whether to use anomalous differences (or just isomorphous differences):
-<PRE style="face=courier">phenix.autosol native.data=native.sca deriv.data=deriv.sca \
-   deriv.atom_type=I deriv.sites=2 deriv.inano=inano
+<PRE style="face=courier">
+phenix.autosol native.data=native.sca deriv.data=deriv.sca \
+   atom_type=I sites=2 inano=inano
 </PRE>
 This will set the heavy-atom type to Iodine, look for 2 sites, and include
 anomalous differences.
+<P>You can also specify many more parameters using a parameters file.
+This parameters file shows some of them:
+<PRE style="face=courier">
+autosol {
+  seq_file = seq.dat
+  native {
+    data = native.sca
+  }
+  deriv {
+    data = pt.sca
+    lambda = 1.4
+    atom_type = Pt
+    f_prime = -3.0
+    f_double_prime = 3.5
+    sites = 3 
+  }
+</PRE>
 
 <P><H5>SAD with more than one anomalously-scattering atom </H5><P>
 <P>You can tell the AutoSol wizard to look for more than one anomalously-
@@ -604,60 +654,67 @@ mad_ha_add_f_double_prime_list=" 4.2 12"
 There must be the same number of entries in each of these three keyword
 lists. During phasing Phaser will try to add whichever atom types 
 best fit the scattering from each new site. This option is available
-for SAD phasing only.
+for SAD phasing only and only for a single dataset (not with SAD+MIR etc).
 
 <P><H5>MIR dataset</H5><P>
-<P> An MIR dataset is a set of more than one datasets. This cannot
-be readily expressed in the command-line inputs, but you can specify it easily
-with the PHENIX AutoSol GUI or with a script. In a script file you can say:
+<P> It is easiest to run an MIR dataset using a parameters file such 
+as &quot;mir.eff&quot; which you then run 
+with &quot;phenix.autosol mir.eff&quot;.
+
+Here is an example parameters file for MIR:
 <P>
-<PRE style="face=courier">cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
-thoroughness thorough                      # best to use thorough for MIR
-resolution 2.8                             #  Resolution 
-expt_type       sir                        # MIR dataset is set of SIR datasets
-input_seq_file sequence.dat
-############## DATASET 1 ################
-input_file_list  rt_rd_1.sca auki_rd_1.sca #  Native  and deriv 1
-nat_der_list    Native  Au                 # identify files by ha type
-inano_list      noinano inano              # say if ano diffs to be used 
-n_ha_list       0    5                     # number of heavy-atoms 
-run_list        start                      # read in datafiles for dataset
-run_list        read_another_dataset       # about to start a new dataset here
-############## DATASET 2 ################
-input_file_list  rt_rd_1.sca hgki_rd_1.sca # Native and deriv 2
-nat_der_list    Native Hg                  
-inano_list      noinano inano              
-n_ha_list       0    5  
-#########################################
+<PRE style="face=courier">
+autosol {
+  seq_file = seq.dat
+  native {
+    data = native.sca
+  }
+  deriv {
+    data = pt.sca
+    lambda = 1.4
+    atom_type = Pt
+  }
+  deriv {
+    data = ki.sca
+    lambda = 1.5
+    atom_type = I
+  }
+}
 </PRE>
-<P>The script file carries out steps in the order that they are input. This
-allows us to read in one entire dataset, save it, then read in another one.
-The AutoSol Wizard will solve each dataset and then combine them and phase
-the combined datset with SOLVE Bayesian correlated phasing, taking into
-account any correlations among the non-isomorphism and heavy-atom sites 
-for the various derivatives. 
+<P>You can enter as many derivatives as you want. If you specify a wavelength
+and heavy atom type
+then scattering factors are calculated from a table for that heavy-atom.
+You can instead enter scattering factors with the keywords 
+&quot;f_prime = -3.0 &quot;
+&quot;f_double_prime = 5.0&quot; if you want.
 
 <P><H5>SIR + SAD datasets</H5><P>
-<P> A combination of SIR and SAD datasets is almost the same as
-an MIR dataset in the AutoSol Wizard.  You specify each dataset separately,
-and put "start" and "read_another_dataset" between the datasets:
+<P> A combination of SIR and SAD datasets (or of SAD+SAD or MIR+SAD+SAD or any
+other combination) is easy with a parameters file.  You tell the wizard which
+grouping each wavelength, native, or derivative goes with with a
+keyword such as &quot;group=1&quot;.
 <P>
-<PRE style="face=courier">cell 93.796  79.849  43.108  90.000  90.000  90.00   # cell params
-resolution 2.8                             #  Resolution 
-input_seq_file sequence.dat
-############## DATASET 1 ################
-expt_type       sir                        # MIR dataset is set of SIR datasets
-input_file_list  rt_rd_1.sca auki_rd_1.sca #  Native  and deriv 1
-nat_der_list    Native  Au                 # identify files by ha type
-inano_list      noinano inano              # say if ano diffs to be used 
-n_ha_list       0    5                     # number of heavy-atoms 
-run_list        start                      # read in datafiles for dataset
-run_list        read_another_dataset       # about to start a new dataset here
-############## DATASET 2 ################
-expt_type       sad                        # our second dataset is SAD
-input_file_list  hgki_rd_1.sca             # anom diffs for SAD dataset
-mad_ha_n  5                                # 5 sites
-#########################################
+<PRE style="face=courier">
+autosol {
+  seq_file = seq.dat
+  native {
+    group = 1
+    data = native.sca
+  }
+  deriv {
+    group = 1
+    data = pt.sca
+    lambda = 1.4
+    atom_type = Pt
+  }
+  wavelength {
+    group = 2
+    data = w1.sca
+    lambda = .9798
+    atom_type = Se
+    f_prime = -7.
+    f_double_prime = 4.5
+  }
 </PRE>
 <P>The SIR and SAD datasets will be solved separately (but whichever
 one is solved first will use difference Fourier or anomalous difference 
@@ -680,6 +737,14 @@ request.
 <P><LI>The command-line version of AutoSol cannot be used for MIR or for 
 combining multiple datasets.  The script and GUI versions can be used
 instead for these cases.
+
+<P><LI>The keywords &quot;cell&quot; and &quot;sg&quot; have 
+been replaced with &quot;unit_cell&quot; and &quot;space_group&quot; to
+make the keywords the same as in other phenix applications.
+
+<P><LI>The keywords for running MIR and SIR and MAD datasets from 
+parameter files and the command line have been changed to make the
+inputs more consistent and suitable for a static GUI.
 
 <P><LI>The AutoSol Wizard can take a maximum of 6 derivatives for MIR.
 
