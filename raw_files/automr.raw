@@ -33,11 +33,11 @@ the data.
 
       <P><H5><U>Usage</U></H5><P>
 <P>The AutoMR Wizard can be run from the PHENIX GUI, from the command-line, 
-and from keyworded script files.  All three versions are identical except
+and from parameters files.  All three versions are identical except
 in the way that they take commands from the user. 
 See 
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for details of how to run a Wizard.
 The command-line version will be described here.
 <P>NOTE: You may find it easiest to run the GUI version of AutoMR when you
@@ -184,6 +184,15 @@ identity='45 40 35'.  Each of the models in the ensemble must be in the
 same orientation as the others, so that the ensemble of models can be placed
 as a group in the unit cell.
 
+<P><H5>Running from a parameters file</H5><P>
+You can run phenix.automr from a parameters file. This is often convenient
+because you can generate a default one with:
+<PRE style="face=courier">phenix.automr --show_defaults > my_automr.eff
+</PRE>
+and then you can just edit this file to match your needs and run it with:
+<PRE style="face=courier">phenix.automr  my_automr.eff
+</PRE>
+
 <P>If you are searching for more than one ensemble, or if there is more
 than one component in the a.u., then use a parameters file and specify them
 like this (put all of this in a file like &quot;my_mr.eff&quot; and run it with
@@ -241,7 +250,7 @@ you might use by typing:
 keywords, defaults and descriptions at the end of this page and
 also general information about running Wizards at
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for how to do this.  Some of the most common parameters are:
 <PRE style="face=courier">data=w1.sca       # data file
 model=coords.pdb  # starting model

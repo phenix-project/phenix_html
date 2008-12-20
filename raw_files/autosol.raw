@@ -35,14 +35,14 @@ preliminary model.
 
       <P><H5><U>Usage</U></H5><P>
 <P>The AutoSol Wizard can be run from the PHENIX GUI, from the command-line, 
-and from keyworded script files.  All three versions are identical except
+and from paramters files.  All three versions are identical except
 in the way that they take commands from the user. 
 See 
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for details of how to run a Wizard.
 The command-line version will be described here, except for MIR and multiple
-datasets, which can only be run with the GUI or with a script.
+datasets, which can only be run with the GUI or with a parameters file.
 <P>
 <P><H5>How the AutoSol Wizard works</H5><P>
 <P>The basic steps that the AutoSol Wizard carries out are
@@ -59,12 +59,15 @@ are grouped into Datasets and solutions are stored in Solution objects.
 <P>(2) a sequence file (seq.dat or seq_file=seq.dat)
 <P>(3) how many sites to look for (2 or sites=2)
 <P>(4) what the anomalously-scattering atom is (Se or atom_type=Se)
-<P>(5) If you have SAD or MAD data, then it is helpful to add 
-f_prime and f_double_prime for each wavelength.
+<P>(5) It is helpful to add the wavelength and 
+  f_prime and f_double_prime for each wavelength
+   or derivative that you have as well
 <P> You can also specify many other parameters, including resolution,
 number of sites, whether to search in a thorough or quick fashion, how
 thoroughly to build a model, etc. If you have a heavy-atom solution 
 from a previous run or another approach, you can read it in directly as well.
+<P>Your parameters can be specified on the command-line, using a GUI, 
+or by editing a parameters file (examples below).
 
 <P><H5><I>Datasets and Solutions in AutoSol </I></H5><P>
 <P>AutoSol breaks down the data for a structure solution into
@@ -381,7 +384,7 @@ f_double_prime values are set explicitly
 keywords, defaults and descriptions at the end of this page and
 also general information about running Wizards at
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for how to do this.  Some of the most common parameters are:
 <PRE style="face=courier">sites=3     # 3 sites
 sites_file=sites.pdb  # ha sites in PDB or fractional xyz format
@@ -392,6 +395,20 @@ data=w1.sca  # input datafile
 f_prime=-5  # f-prime value for SAD
 f_double_prime=4.5  # f-double-prime value for SAD
 </PRE>
+
+<P><H5>Running from a parameters file</H5><P>
+You can run phenix.autosol from a parameters file. This is often convenient
+because you can generate a default one with:
+<PRE style="face=courier">phenix.autosol --show_defaults > my_autosol.eff
+</PRE>
+and then you can just edit this file to match your needs and run it with:
+<PRE style="face=courier">phenix.autosol  my_autosol.eff
+</PRE>
+NOTE: the autosol parameters file my_autosol.eff will have just one 
+blank native, derivative, and wavelength. You can cut and paste them to 
+put in as many as you want to have.
+
+<P>
 
 <P><H5><I>Model viewing during model-building with the Coot-PHENIX interface 
 </I></H5><P>
@@ -734,9 +751,6 @@ binaries used. The Wizard is supplied with regular-size ("", size=6),
 giant ("_giant", size=12), huge ("_huge", size=18) and extra_huge
 ("_extra_huge", size=36).  Larger-size versions can be obtained on
 request.
-<P><LI>The command-line version of AutoSol cannot be used for MIR or for 
-combining multiple datasets.  The script and GUI versions can be used
-instead for these cases.
 
 <P><LI>The keywords &quot;cell&quot; and &quot;sg&quot; have 
 been replaced with &quot;unit_cell&quot; and &quot;space_group&quot; to

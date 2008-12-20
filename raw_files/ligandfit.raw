@@ -26,11 +26,11 @@ electron density maps.
 
       <P><H5><U>Usage</U></H5><P>
 <P>The LigandFit Wizard can be run from the PHENIX GUI, from the command-line, 
-and from keyworded script files.  All three versions are identical except
+and from parameters files.  All three versions are identical except
 in the way that they take commands from the user. 
 See 
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for details of how to run a Wizard.
 The command-line version will be described here.
 <P>
@@ -115,7 +115,7 @@ you might use by typing:
 keywords, defaults and descriptions at the end of this page and
 also general information about running Wizards at
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for how to do this.  Some of the most common parameters are:
 <PRE style="face=courier">data=w1.sca       # data file
 partial_model=coords.pdb  # starting model without ligand
@@ -165,6 +165,15 @@ number 1):
 <PRE style="face=courier">resolve_map.mtz
 </PRE>
 </UL>
+
+<P><H5>Running from a parameters file</H5><P>
+You can run phenix.ligandfit from a parameters file. This is often convenient
+because you can generate a default one with:
+<PRE style="face=courier">phenix.ligandfit --show_defaults > my_ligandfit.eff
+</PRE>
+and then you can just edit this file to match your needs and run it with:
+<PRE style="face=courier">phenix.ligandfit  my_ligandfit.eff
+</PRE>
 
       <P><H5><U>Examples</U></H5><P>
 <P><H5> Sample command_line inputs</H5><P>

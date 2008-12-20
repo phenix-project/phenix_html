@@ -30,7 +30,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents -->
 <P>The purpose of the AutoBuild Wizard is to provide a highly automated system
 for model rebuilding and completion. The Wizard design allows the user to
 specify data files and parameters through an interactive GUI, or alternatively
-through keyworded scripts. The AutoBuild Wizard begins with datafiles with
+through a parameters file. The AutoBuild Wizard begins with datafiles with
 structure factor amplitudes and uncertainties, along with either experimental
 phase information or a starting model, carries out cycles of model-building
 and refinement alternating with model-based density modification, and
@@ -54,11 +54,11 @@ experimental data (multiple_models)
 
       <P><H5><U>Usage</U></H5><P>
 <P>The AutoBuild Wizard can be run from the PHENIX GUI, from the command-line, 
-and from keyworded script files.  All three versions are identical except
+and from parameters files.  All three versions are identical except
 in the way that they take commands from the user. 
 See 
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for details of how to run a Wizard.
 The command-line version will be described here.
 <P>
@@ -90,7 +90,7 @@ moderate, or weak density and out of density is provided.
 <P>The AutoBuild Wizard has been designed for ease of use combined with maximal
 user control, with as many parameters set automatically by the Wizard as
 possible, but maintaining parameters accessible to the user through a GUI and
-through keyword-based scripts. The Wizard uses the input/output routines of
+through parameters files. The Wizard uses the input/output routines of
 the cctbx library, allowing data files of many different formats so that the
 user does not have to convert their data to any particular format before using
 the Wizard. Use of the phenix.refine refinement package in the AutoBuild
@@ -206,7 +206,7 @@ amplitudes (see below under General Limitations for details).
 keywords, defaults and descriptions at the end of this page and
 also general information about running Wizards at
 <a href="running-wizards.htm">
-Running a Wizard from a GUI, the command-line, or a script</a> 
+Using the PHENIX Wizards</a> 
 for how to do this.  Some of the most common parameters are:
 <PRE style="face=courier">data=w1.sca       # data file
 model=coords.pdb  # starting model
@@ -216,6 +216,15 @@ resolution=3     # dmin of 3 A
 s_annealing=True  # use simulated annealing refinement at start of each cycle
 n_cycle_build_max=5  # max number of build cycles (starting from experimental phases)
 n_cycle_rebuild_max=5  # max number of rebuild cycles (starting from a model)
+</PRE>
+
+<P><H5>Running from a parameters file</H5><P>
+You can run phenix.autobuild from a parameters file. This is often convenient
+because you can generate a default one with:
+<PRE style="face=courier">phenix.autobuild --show_defaults > my_autobuild.eff
+</PRE>
+and then you can just edit this file to match your needs and run it with:
+<PRE style="face=courier">phenix.autobuild  my_autobuild.eff
 </PRE>
 
 <P><H5>Picking waters in AutoBuild</H5><P>
@@ -442,7 +451,7 @@ you wish to supply to the
 current version of the structure just before refinement, so all the refined
 models produced contain whatever AutoBuild has built, plus the contents of
 these PDB files. This can be done through the GUI, the command-line, or
-a script. In the command-line version you do this with:
+a parameters file. In the command-line version you do this with:
 <PRE style="face=courier">input_lig_file_list=my_ligand.pdb
 </PRE>
 <P>NOTE: The files in 

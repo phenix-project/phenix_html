@@ -352,7 +352,12 @@ at the end of every temporary command file created to run resolve.
 <p>Parameters files are an easy way to specify any parameters that you
 want to use when running a Wizard.  They are structured in a clear way and
 you can edit them to set the values that you want.
-For example here is a parameters file &quot;sad.eff&quot; to run a SAD dataset
+<p>You can get a parameters file to edit with any wizard by running the
+wizard with the flag &quot;--show_defaults&quot;:
+<PRE style="face=courier">phenix.autosol --show_defaults
+</PRE>
+<P>
+Here is a parameters file &quot;sad.eff&quot; to run a SAD dataset
 with &quot;phenix.autosol sad.eff&quot;:
 <PRE style="face=courier">
 autosol {  atom_type = Se
