@@ -269,6 +269,9 @@ crystal is twinned. Use phenix.xtriage to identify twinning and the
 twin law. Then specify the twin law in a parameters file (see next
 section) and provide that to AutoBuild with the 
 keyword such as &quot;refine_eff_file=twin_law.eff&quot;
+<P>You may also want to try using the keyword
+&quot;two_fofc_in_rebuild&quot; which will use the 2Fo-Fc map from
+phenix.refine in model-building.
 
 <P><H5>Specifying phenix.refine parameters</H5><P>
 <P>You can control phenix.refine parameters that are not specified
