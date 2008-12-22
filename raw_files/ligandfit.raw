@@ -83,12 +83,16 @@ to take stereochemically reasonable orientations.
 <P><UL><LI>(1) a datafile (w1.sca or data=w1.sca); this can be any format
 <P><LI>(2) a PDB file with your model without ligand (model=partial.pdb;
 optional if your datafile contains map coefficients)
-<P><LI>(3) a file with information about your ligand (ligand=side.pdb)
+<P><LI>(3) a file with information about your ligand (ligand=side.pdb),
+  or a 3-letter code for your ligand (ligand=ATP)
 
 <P>The ligand file can be a PDB file with 1 stereochemically acceptable
     conformation of your ligand. It can alternatively be a file containing
     a SMILES string, in which case the starting ligand conformation will be
-    generated with the PHENIX elbow routine.
+    generated with the PHENIX elbow routine. It can also be a 3-letter code
+    that specifies a ligand in the Chemical Components Dictionary of the PDB,
+    in which case the ligand is taken from that dictionary with idealized
+    geometry.
 
 <P>The command_line ligandfit interpreter will guess which file is your
     data file but you have to tell it which file is the model and which is
@@ -179,17 +183,17 @@ and then you can just edit this file to match your needs and run it with:
 <P><H5> Sample command_line inputs</H5><P>
 
 <P><UL><LI>Standard run of ligandfit (generate map from model and data file)
-<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=ATP
 </PRE>
 
 <P><LI>Build into a map from pre-determined coefficients
 <PRE style="face=courier">phenix.ligandfit data=perfect.mtz \
  lig_map_type=fo-fc_difference_map   \
-   model=partial.pdb ligand=side.pdb
+   model=partial.pdb ligand=NAD
 </PRE>
 
 <P><LI>Quick run of ligandfit
-<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb quick=True
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=ATP quick=True
 </PRE>
 
 <P><LI>Run ligandfit using pre-calculated map coefficients from phenix.refine
@@ -206,17 +210,17 @@ You can then run ligandfit using the 2Fo-Fc map calculated from these map
 coefficients:
 
 <PRE style="face=courier">phenix.ligandfit data=partial_refine_001_map_coeffs.mtz \
- model=partial_refine_001.pdb ligand=side.pdb quick=True
+ model=partial_refine_001.pdb ligand=NAD quick=True
 </PRE>
 or if you want to specify the coefficients explicitly you can add the column
 labels:
 <PRE style="face=courier">phenix.ligandfit data=partial_refine_001_map_coeffs.mtz  \
-model=partial_refine_001.pdb ligand=side.pdb quick=True \
+model=partial_refine_001.pdb ligand=GOL quick=True \
 input_labels="2FOFCWT PH2FOFCWT"
 </PRE>
 For a difference map from the same file you can say:
 <PRE style="face=courier">phenix.ligandfit data=partial_refine_001_map_coeffs.mtz  \
- model=partial_refine_001.pdb ligand=side.pdb quick=True \
+ model=partial_refine_001.pdb ligand=AMP quick=True \
  input_labels="FOFCWT PHFOFCWT"
 </PRE>
 
@@ -235,14 +239,14 @@ is a flag, not something you substitute with an actual file name.  You use
 it just as listed above.
 
 <P><LI>Place ligand near residue 94 of chain "A" from partial.pdb
-<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=ADP \
    ligand_near_chain="A" ligand_near_res=92
 </PRE>
 
 <P><LI>Use start.pdb as a template for some of the atoms in the ligand; build
 the remainder of the ligand, fixing the coordinates of the corresponding
 atoms:
-<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=side.pdb \
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=GTP \
    resolve_command="'ligand_start start.pdb'"  # NOTE ' and " quotes necessary
 </PRE>
 Note that the formatting is slightly tricky and requires the two different
