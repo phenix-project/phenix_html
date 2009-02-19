@@ -23,6 +23,9 @@ find_helices_strands is a command line tool for finding helices and strands
 in a map and building an model of the parts of a structure that have regular
 secondary structure.  It can be used for protein, RNA, and DNA.
 
+An option is to use a rapid chain-tracing algorithm to build CA of
+proteins, followed by reconstruction of a full model.
+
 <P><H5><U>Usage</U></H5><P>
 
 <P><H5>How find_helices_strands finds helices and strands in maps:</H5><P>
@@ -45,6 +48,17 @@ These are assembled into contiguous helical segments if possible.
 The resolution of this search is 4.5 A if you have resolution beyond
 4.5 A, and the resolution of your data otherwise.
 
+<P><H5>How trace_chain finds CA positions in maps:</H5><P>
+The RESOLVE trace_chain algorithm places dummy atoms down the middle of all the
+tubes of density in a map, then it attempts to find sets of these
+atoms that may be CA atoms, where the atoms are spaced by 3.8 A and 
+where there is strong density between each pair. This yields segments 
+represented by CA atoms.  Next PULCHRA (
+Rotkiewicz P., Skolnick J.,Fast procedure for reconstruction
+ of full-atom protein models from reduced representations.
+ J Comput Chem. 2008 Jul 15;29(9):1460-5.) is used to reconstruct a full
+main-chain model.  Finally RESOLVE is used to assemble all the resulting
+fragments into a model.
 
 <P><H5><I>Output files from find_helices_strands</I></H5><P>
 If you run find_helices_strands with my_map.mtz then you will get:
@@ -70,6 +84,10 @@ labin="LABIN FP=2FOFCWT PHIB=PH2FOFCWT"
 <p>If you want to specify a sequence file, then in the last step find_helices_strands
 will try to align your sequence with the map and model:
 <PRE style="face=courier">phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat
+</PRE>
+
+<p>If you want to use the trace_chains algorithm, then  specify:
+<PRE style="face=courier">phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat trace_chains=True
 </PRE>
 
 <P><H5>Using find_helices_strands to bootstrap phenix.autobuild:</H5><P>
