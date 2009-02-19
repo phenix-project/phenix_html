@@ -86,8 +86,8 @@ will try to align your sequence with the map and model:
 <PRE style="face=courier">phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat
 </PRE>
 
-<p>If you want to use the trace_chains algorithm, then  specify:
-<PRE style="face=courier">phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat trace_chains=True
+<p>If you want to use the trace_chain algorithm, then  specify:
+<PRE style="face=courier">phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat trace_chain=True
 </PRE>
 
 <P><H5>Using find_helices_strands to bootstrap phenix.autobuild:</H5><P>
