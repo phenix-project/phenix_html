@@ -1056,6 +1056,9 @@ apply the correction with <b>correct_aniso=True</b>.
 <LI>Try including more phased solutions from each derivative with
 the  keyword <b>min_phased_each_deriv=8</b> instead of the default 1.
 </LI>
+<LI>Try including more combinations of solutions with
+the  keyword <b>max_composite_choices=16</b> instead of the default 8.
+</LI>
 <LI>Try related space groups. If you are not positive that your space group
 is P212121, then try other possibilities with different or no screw axes.
 </LI>
