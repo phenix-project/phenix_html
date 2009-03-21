@@ -148,9 +148,9 @@ Normally only one of these will give a plausible solution.
 
 <P><H5><I>Scoring of heavy-atom solutions</I></H5><P>
 Potential heavy-atom solutions are scored based on a set of criteria 
-(CC, RFACTOR, SKEW, FOM, NCS_OVERLAP, TRUNCATION, REGIONS, SD; 
-described below), using 
-either a Bayesian estimate, a linear regression, or a
+(SKEW, CORR_RMS, CC_DENMOD, RFACTOR, NCS_OVERLAP,TRUNCATE, REGIONS, CONTRAST, 
+FOM, FLATNESS,
+described below), using either a Bayesian estimate or a
 Z-score system to put all the scores on a common scale and to combine them
 into a single overall score. 
 <p>The overall
@@ -196,8 +196,30 @@ solutions with randomized phases.
 are simply summed.
 
 <P> The principal scoring criteria are:
-<P>(1) Correlation of map-phased electron density map with experimentally-
-phased map (CC). The statistical density modification in RESOLVE allows the 
+<P> The skew (SKEW; 
+third moment or normalized &lt;rho**3&gt;) of the density in an
+electron density map is a good measure of its quality, because a random 
+map has a skew of zero (density histograms look like a Gaussian), while a
+good map has a very positive skew (density histograms very strong near zero,
+but many points with very high density). 
+This criterion is used in scoring by default.
+<p>Correlation of local rms density (CORR_RMS).  The presence of contiguous
+flat solvent regions in a map was detected using the correlation
+coefficient of the smoothed squared electron density calculated as
+described above, with the same quantity calculated using half the value of
+the smoothing radius, yielding the correlation of rms density, r2RMS.  In
+this way the local value of the rms density within a small local region
+(typically within a radius of 3 A) is compared with the local rms density
+in a larger local region (typically within a radius of 6 A). If there were
+a large, contiguous solvent region and another large contiguous region
+containing the macromolecule, the local rms density in the small region
+would be expected to be highly correlated with the rms density in the
+larger region. On the other hand, if the solvent region were broken up
+into many small flat regions, then this correlation would be expected to
+be smaller.
+<P>Correlation of map-phased electron density map with experimentally-
+phased map (CC_DENMOD). 
+The statistical density modification in RESOLVE allows the 
 calculation of map-based phases that are (mostly) independent of the 
 experimental phases. The phase information in statistical density 
 modification comes from two sources: your experimental phases and 
@@ -209,31 +231,25 @@ correlation of the phase information from these two sources before
 combining them, and is a good indication of the quality of the
 experimental phases. 
 This criterion is used in scoring by default.
-<P>(2) The R-factor for density modification (R-Factor). Statistical 
+<P> The R-factor for density modification (RFACTOR). Statistical 
 density modification provides an estimate of structure factors that is
 (mostly) independent of the measured structure factors, so the R-factor
 between FC and Fobs is a good measure of the quality of experimental phases.
 This criterion is used in scoring by default.
-<P>(3) The skew (third moment or normalized &lt;rho**3&gt;) of the density in an
-electron density map is a good measure of its quality, because a random 
-map has a skew of zero (density histograms look like a Gaussian), while a
-good map has a very positive skew (density histograms very strong near zero,
-but many points with very high density). 
-This criterion is used in scoring by default.
-<P>(4) Non-crystallographic symmetry (NCS overlap).  The presence of 
+<P> Non-crystallographic symmetry (NCS_OVERLAP).  The presence of 
 NCS in a map is a nearly-positive indication that the map is good, or has
 some correct features. The AutoSol Wizard uses symmetry in heavy-atom
 sites to suggest NCS, and RESOLVE identifies the actual correlation of
 NCS-related density for the NCS overlap score. 
 This score is used by default if NCS is present in the Z-score method of 
 scoring. 
-<P>(5) Figure of merit (FOM). The figure of merit of phasing is a good 
+<P>Figure of merit (FOM). The figure of merit of phasing is a good 
 indicator of the internal consistency of a solution. This score is not
 normalized by the SD of randomized phase sets (as that has no meaning; rather
 a standard SD=0.05 is used).
 This score is used by default if NCS is present in the Z-score method of 
 scoring and in the Bayesian CC estimate method.
-<P>(6) Map correlation after truncation (TRUNCATION). 
+<P>Map correlation after truncation (TRUNCATION). 
 Dummy atoms (the same number as
 estimated non-hydrogen atoms in the structure) are placed in positions
 of high density of the map, and a new map is calculated based on these
@@ -241,7 +257,7 @@ atomic positions.  The correlation of these maps is calculated
 after adjusting an overall B-value for the dummy atoms to maximize the
 correlation.   A good map will show a high correlation of these maps.
 This score is by default not used.
-<P>(7) Number of contiguous regions per 100 A**3 comprising top 5% of density
+<P> Number of contiguous regions per 100 A**3 comprising top 5% of density
 in map (REGIONS).  
 The top 5% of points in the map are marked, and the number of 
 contiguous regions that result are counted, and divided by the volume
@@ -249,7 +265,9 @@ contiguous regions that result are counted, and divided by the volume
 a few contiguous regions at a high contour level, a poor map will have many
 isolated peaks.
 This score is by default not used.
-<p>(8) Standard deviation of local rms density (SD). The local rms
+
+<P> Contrast, or standard deviation of local rms density (CONTRAST). 
+The local rms
 density in the map is calculated using a smoothing radius of 3 times
 the high-resolution cutoff (or 6 A, if less than 6A). 
 Then the standard deviation
