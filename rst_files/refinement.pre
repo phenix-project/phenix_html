@@ -892,29 +892,81 @@ annealing, TLS refinement, etc. Some useful commands are:
 Hydrogens in refinement
 -----------------------
 
-phenix.refine offers two possibilities for handling of hydrogen atoms:
+Depending on data type (X-ray or neutron), data quality (resolution, 
+completeness) phenix.refine offers different options for parameterization of
+hydrogen atoms:
 
-- riding model;
-- complete refinement of H (H atoms will be refined as other atoms in the model)
+- riding model.
+- complete refinement of H (H atoms will be refined as other atoms in the model).
 
-Although the contribution of hydrogen atoms to X-ray scattering is weak (at high
-resolution) or negligible (at lower resolutions), the H atoms still present in
-real structures irrespective the data quality. Including them as riding model
-makes other model atoms aware of their positions and hence preventing
-non-physical (bad) contacts at no cost in terms of refinable parameters (= no
-risk of overfitting).
+Using the riding model does not add additional refinable parameters, since position
+of a hydrogen atom H in X-H bond is recalculated from the current position of 
+atom X. Also, H atom inherits the occupancy of X atom and its B-factor. Sometime
+the B-factor of H atom is the product of B-factor of X atoms and a scale from 1 
+to 1.5. The riding model should be used to parameterize H atoms at almost all
+resolutions in X-ray refinement. An exception can be a subatomic resolution (
+~0.7A and higher), where the hydrogen's parameters can be refined individually.
 
-At subatomic resolution (approx. < 1.0 A) X-ray refinement or refinement using
-neutron data the parameters of H atoms may be refined as for other heavier
-atoms.
+Although the contribution of hydrogen atoms to X-ray scattering is weak, the H 
+atoms are still present in real structures irrespective the data quality. 
+Including them as riding model at any resolution makes other model atoms aware 
+of their positions and hence preventing non-physical (bad) contacts at no cost 
+in terms of refinable parameters (= no risk of overfitting).
+
+The scattering contribution of Hydrogens by default is always accounted for, 
+however there is a parameter to turn it off::
+
+  % phenix.refine model.pdb data.hkl hydrogens.contribute_to_f_calc=false
+
+If neutron data is used then the parameters of H atoms should always be refined 
+individually, except the cases where data resolution and/or completeness are 
+poor. In that case riding model can be used. If partially deuterated structure 
+is used in refinement then the constrained occupancies of exchengeable H/D sites 
+are refined so they add up to 1. 
+
+Currently, ``phenix.refine`` does not add the H atoms (except a few cases 
+mentioned below), so it is necessary to use a different program from PHENIX suite
+ (ReadySet!) to add H, D or H/D atoms to your structure. Internally ReadySet!
+uses Reduce program to add hydrogens to macromolecule (protein, DNA/RNA) and it 
+uses its own resources to add hydrogens to ligands or water. Hydrogens are added
+to their ideal geometrical positions.
+
+If a structure contains a ligand unknown to ``phenix.refine``, ReadySet! will 
+create a library CIF file which will include the definitions for all newly added
+hydrogens.
+ 
+``phenix.refine`` can build H or D atoms for water molecules only. To do so it
+uses residual density map, mFo-DFc. This option is normally used at relatively 
+high resolution neutron data (~2.0...2.5A and higher) or at subatomic X-ray 
+resolution::
+
+  % phenix.refine model.pdb data.hkl main.find_and_add_hydrogens=true
+  
+Although this is not thoroughly studied yet, it seems that hydrogens should not be 
+included into NCS or TLS groups. This is why they are automatically excluded from 
+them. However, if NCS selections are created manually and the structure conains 
+H atoms, it might be a good idea to add ``and not (element H or element D)`` to
+all selection strings.
 
 Below are some useful commands:
 
-1. To add hydrogens to a model one need to run the Reduce program::
+1. Add hydrogens::
 
-     % phenix.reduce model.pdb > model_h_added.pdb
+     % phenix.ready_set model.pdb 
+     
+2. Add deuteriums::
 
-2. Once hydrogens added to a model, by default they will be refined as riding
+     % phenix.ready_set model.pdb perdeuterate=true
+     
+3. Add H and exchengeable H/D::
+
+     % phenix.ready_set model.pdb neutron_exchange_hydrogens=true
+     
+4. Add H to water::
+
+     % phenix.ready_set model.pdb add_h_to_water=true 
+
+5. Once hydrogens added to a model, by default they will be refined as riding
    model::
 
      % phenix.refine model.pdb data.hkl
@@ -924,25 +976,27 @@ Below are some useful commands:
 
      % phenix.refine model.pdb data.hkl hydrogens.refine=individual
 
-3. To refine individual coordinates and ADP of H atoms::
+6. To refine individual coordinates and ADP of H atoms::
 
      % phenix.refine model.pdb data.hkl hydrogens.refine=individual
 
-4. To remove hydrogens from a model::
+7. To remove hydrogens from a model::
 
-     % phenix.pdbtools model.pdb remove="element H"
+     % phenix.pdbtools model.pdb remove="element H or element D"
+     
+   or Reduce programs can be used for this::
+   
+     % phenix.reduce model_h.pdb -trim > model_noH.pdb
 
    We strongly recommend to not remove hydrogen atoms after refinement since it
    will make the refinement statistics (R-factors, etc...) unreproducible
    without repeating exactly the same refinement protocol.
 
-5. Normally, phenix.reduce is used to add hydrogens. However, it may happen
-   that phenix.reduce fails to add H to certain ligands. In this case
-   phenix.elbow can be used to add hydrogens::
+8. Yet another option to add hydrogens (rarely used in practice)::
 
      % phenix.elbow --final-geometry=model.pdb --residue=MAN --output=model_h
 
-   An output PDB file called model_h.pdb will contain the original ligand MAN
+   Output PDB file called model_h.pdb will contain the original ligand MAN
    with all hydrogen atoms added.
 
 Refinement using twinned data
@@ -975,12 +1029,8 @@ Neutron and joint X-ray and neutron refinement
 ----------------------------------------------
 
 Refinement using neutron data requires having H or/and D atoms added to the
-model. Use Reduce program to add all potential H atoms::
-
-  % phenix.reduce model.pdb > model_h.pdb
-
-Currently, adding D atoms will require editing of model_h.pdb file to replace H
-with D where necessary.
+model. Use ReadySet! program to add all H, D or H/D atoms. See 
+"Hydrogens in refinement" section for details.
 
 1. Running refinement with neutron data only::
 
@@ -1000,7 +1050,7 @@ with D where necessary.
    The only requirement (that is not enforced by the program but is the user's
    responsibility) is that both data sets have to be collected at the same
    temperature from same crystals (or grown in identical conditions, having
-   identical space groups and unit cell parameters).
+   identical space groups and unit cell parameters)::
 
        phenix.refine model.pdb data_xray.hkl neutron_data.file_name=data_neutron.hkl
        input.xray_data.labels=FOBSx input.neutron_data.labels=FOBSn
@@ -1891,7 +1941,7 @@ or used to implement specific features in phenix.refine:
 
    - S. Sheriff & W.A. Hendrickson. Acta Cryst. (1987). A43, 118-121.
      "Description of overall anisotropy in diffraction from macromolecular crystals"
-   - Jiang, J.-S. & Brünger, A. T. (1994). J. Mol. Biol. 243, 100-115.
+   - Jiang, J.-S. & Brunger, A. T. (1994). J. Mol. Biol. 243, 100-115.
      "Protein hydration observed by X-ray diffraction. Solvation properties of
      penicillopepsin and neuraminidase crystal structures."
    - A. Fokine & A. Urzhumtsev. Acta Cryst. (2002). D58, 1387-1392.
@@ -1918,23 +1968,23 @@ or used to implement specific features in phenix.refine:
 
 7. Dynamics, simulated annealing:
 
-   - Brünger, A.T., Kuriyan, J., Karplus, M. (1987). Science. 235, 458-460.
+   - Brunger, A.T., Kuriyan, J., Karplus, M. (1987). Science. 235, 458-460.
      "Crystallographic R factor refinement by molecular dynamics"
-   - Adams, P.D., Pannu, N.S., Read, R.J. & Brünger, A.T. (1997). Proc. Natl.
+   - Adams, P.D., Pannu, N.S., Read, R.J. & Brunger, A.T. (1997). Proc. Natl.
      Acad. Sci. 94, 5018-5023. "Cross-validated maximum likelihood enhances
      crystallographic simulated annealing refinement"
-   - L.M. Rice, Y. Shamoo & A.T. Brünger. J. Appl. Cryst. (1998). 31, 798-805.
+   - L.M. Rice, Y. Shamoo & A.T. Brunger. J. Appl. Cryst. (1998). 31, 798-805.
      "Phase Improvement by Multi-Start Simulated Annealing Refinement and
      Structure-Factor Averaging"
-   - Brünger, A.T & Adams, P.D. (2002). Acc. Chem. Res. 35, 404-412.
+   - Brunger, A.T & Adams, P.D. (2002). Acc. Chem. Res. 35, 404-412.
      "Molecular dynamics applied to X-ray structure refinement"
 
 8. Target weights calculation:
 
-   - Brünger, A.T., Karplus, M. & Petsko, G.A. (1989). Acta Cryst. A45, 50-61.
+   - Brunger, A.T., Karplus, M. & Petsko, G.A. (1989). Acta Cryst. A45, 50-61.
      "Crystallographic refinement by simulated annealing: application to crambin"
-   -    Brünger, A.T. (1992). Nature (London), 355, 472-474. "The free R value: a novel statistical quantity for assessing the accuracy of crystal structures"
-   - Adams, P.D., Pannu, N.S., Read, R.J. & Brünger, A.T. (1997). Proc. Natl.
+   -    Brunger, A.T. (1992). Nature (London), 355, 472-474. "The free R value: a novel statistical quantity for assessing the accuracy of crystal structures"
+   - Adams, P.D., Pannu, N.S., Read, R.J. & Brunger, A.T. (1997). Proc. Natl.
      Acad. Sci. 94, 5018-5023. "Cross-validated maximum likelihood enhances
      crystallographic simulated annealing refinement"
 
