@@ -926,7 +926,7 @@ are refined so they add up to 1.
 
 Currently, ``phenix.refine`` does not add the H atoms (except a few cases 
 mentioned below), so it is necessary to use a different program from PHENIX suite
- (ReadySet!) to add H, D or H/D atoms to your structure. Internally ReadySet!
+(ReadySet!) to add H, D or H/D atoms to your structure. Internally ReadySet!
 uses Reduce program to add hydrogens to macromolecule (protein, DNA/RNA) and it 
 uses its own resources to add hydrogens to ligands or water. Hydrogens are added
 to their ideal geometrical positions.
