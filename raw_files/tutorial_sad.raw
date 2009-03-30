@@ -707,7 +707,9 @@ structure determination. Here are a few that you should always try:
 <LI>Try setting thoroughness=thorough if it had previously been set to quick.
 This can make a big difference, though it takes longer.
 </LI>
-
+<LI>Try setting  max_choices to a larger number, or  desired_coverage to 
+a higher value.
+</LI>
 <LI>Have a careful look at all the output files. Work your way through
 the main log file (e.g., <b>AutoSol_run_1_1.log</b>) and all the
 other principal log files  in order beginning with 
