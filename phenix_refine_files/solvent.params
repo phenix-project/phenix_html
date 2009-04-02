@@ -6,11 +6,10 @@ refinement {
     b_iso = 25.0
     primary_map_type = mFobs-DFmodel
     primary_map_cutoff = 3.0
-    secondary_map_type = 2mFobs-DFmodel
     secondary_map_and_map_cc_filter
     {
       cc_map_2_type = 2mFobs-DFmodel
-    }  
+    }
   }
   peak_search {
     map_next_to_model {
@@ -20,4 +19,3 @@ refinement {
     }
   }
 }
-
