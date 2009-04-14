@@ -1219,8 +1219,8 @@ Examples of frequently used refinement protocols, common problems
   Supposing the H atoms were added to the model, below is an example of what may
   want to do at higher resolution::
 
-    % phenix.refine data.hkl model.pdb adp.individual.anisotropic="resid 1-2 and not element H" \
-      adp.individual.isotropic="not (resid 1-2 and not element H)" wxc_scale=2 wxu_scale=2
+    % phenix.refine data.hkl model.pdb adp.individual.anisotropic="resid 1:2 and not element H" \
+      adp.individual.isotropic="not (resid 1:2 and not element H)" wxc_scale=2 wxu_scale=2
 
   In the command above phenix.refine will refine the ADP of atoms in residues
   from 1 to 2 as anisotropic, the rest (including all H atoms) will be
