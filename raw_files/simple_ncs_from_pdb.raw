@@ -130,134 +130,239 @@ Source of NCS info: anb.pdb
 are not all contiguous. These are all the residues that all have the same
 relationships among the 3 chains. The RMSD of  CA atoms between chains A and N
 is 1.09 A and between A and B is 0.07 A.
-<P> The NCS operators relating these domains are given below.
-
+<P> The NCS information is written in three formats:
 <PRE style="face=courier">
-OPERATOR 1
-CENTER:   29.9208  -53.3304  -13.4779
-
-ROTA 1:    1.0000    0.0000    0.0000
-ROTA 2:    0.0000    1.0000    0.0000
-ROTA 3:    0.0000    0.0000    1.0000
-TRANS:     0.0000    0.0000    0.0000
-
-OPERATOR 2
-CENTER:   32.5410  -35.4227   20.2768
-
-ROTA 1:    0.9370   -0.2825    0.2053
-ROTA 2:   -0.3285   -0.9125    0.2439
-ROTA 3:    0.1184   -0.2960   -0.9478
-TRANS:   -14.7410  -79.9073   -8.5967
-
-OPERATOR 3
-CENTER:   50.0256  -91.8920  -13.6461
-
-ROTA 1:    0.6257    0.7800   -0.0037
-ROTA 2:   -0.7800    0.6257   -0.0010
-ROTA 3:    0.0015    0.0035    1.0000
-TRANS:    70.3889   42.4760    0.3937
-
-GROUP 2
-Summary of NCS group with 3 operators:
-ID of chain/residue where these apply: [['A', 'N', 'B'], [[[6, 9], 
-[56, 59], [517, 519]], [[6, 9], [56, 59], [517, 519]], [[6, 9], 
-[56, 59], [517, 519]]]]
-RMSD (A) from chain A:  0.0  0.48  0.03
-Number of residues matching chain A:[11, 11, 11]
-Source of NCS info: anb.pdb
-
-OPERATOR 1
-CENTER:   47.5037  -61.5641  -11.2751
-
-ROTA 1:    1.0000    0.0000    0.0000
-ROTA 2:    0.0000    1.0000    0.0000
-ROTA 3:    0.0000    0.0000    1.0000
-TRANS:     0.0000    0.0000    0.0000
-
-OPERATOR 2
-CENTER:   51.8984  -33.6038   20.9877
-
-ROTA 1:    0.9367   -0.2981    0.1836
-ROTA 2:   -0.3113   -0.9492    0.0469
-ROTA 3:    0.1603   -0.1011   -0.9819
-TRANS:   -14.9810  -78.2888   -2.3823
-
-OPERATOR 3
-CENTER:   66.8308  -82.9508  -11.4633
-
-ROTA 1:    0.6255    0.7802   -0.0016
-ROTA 2:   -0.7802    0.6255   -0.0025
-ROTA 3:   -0.0009    0.0028    1.0000
-TRANS:    70.3999   42.4366    0.4815
-
-GROUP 3
-Summary of NCS group with 3 operators:
-ID of chain/residue where these apply: [['A', 'N', 'B'], [[[193, 255], 
-[257, 259], [290, 355], [357, 374]], [[193, 255], [257, 259], 
-[290, 355], [357, 374]], [[193, 255], [257, 259], [290, 355], [357, 374]]]]
-RMSD (A) from chain A:  0.0  0.61  0.01
-Number of residues matching chain A:[150, 150, 150]
-Source of NCS info: anb.pdb
-
-OPERATOR 1
-CENTER:   36.1219  -37.6124  -62.1437
-
-ROTA 1:    1.0000    0.0000    0.0000
-ROTA 2:    0.0000    1.0000    0.0000
-ROTA 3:    0.0000    0.0000    1.0000
-TRANS:     0.0000    0.0000    0.0000
-
-OPERATOR 2
-CENTER:   39.1403  -33.0801   60.7270
-
-ROTA 1:    0.7650    0.3808   -0.5194
-ROTA 2:    0.0664   -0.8488   -0.5245
-ROTA 3:   -0.6406    0.3668   -0.6746
-TRANS:    50.3180  -36.4383   16.0299
-
-OPERATOR 3
-CENTER:   40.9347  -76.7723  -62.2004
-
-ROTA 1:    0.5942    0.8043   -0.0007
-ROTA 2:   -0.8043    0.5942   -0.0064
-ROTA 3:   -0.0047    0.0043    1.0000
-TRANS:    73.5084   40.5311    0.5807
-
-GROUP 4
-Summary of NCS group with 3 operators:
-ID of chain/residue where these apply: [['A', 'N', 'B'], [[[36, 41]], 
-[[36, 41]], [[36, 41]]]]
-RMSD (A) from chain A:  0.0  0.22  0.03
-Number of residues matching chain A:[6, 6, 6]
-Source of NCS info: anb.pdb
-
-OPERATOR 1
-CENTER:   45.4522  -37.4720  -14.4660
-
-ROTA 1:    1.0000    0.0000    0.0000
-ROTA 2:    0.0000    1.0000    0.0000
-ROTA 3:    0.0000    0.0000    1.0000
-TRANS:     0.0000    0.0000    0.0000
-
-OPERATOR 2
-CENTER:   42.1483  -55.6520   24.0535
-
-ROTA 1:    0.9444   -0.3074    0.1171
-ROTA 2:   -0.2975   -0.9501   -0.0940
-ROTA 3:    0.1402    0.0540   -0.9887
-TRANS:   -14.2728  -75.5420    6.4099
-
-OPERATOR 3
-CENTER:   46.7900  -69.5227  -14.6653
-
-ROTA 1:    0.6247    0.7809   -0.0013
-ROTA 2:   -0.7809    0.6247    0.0028
-ROTA 3:    0.0030   -0.0008    1.0000
-TRANS:    70.4964   42.5349    0.0067
-
 NCS operators written in format for resolve to: simple_ncs_from_pdb.resolve
 NCS operators written in format for phenix.refine to: simple_ncs_from_pdb.ncs
 NCS written as ncs object information to: simple_ncs_from_pdb.ncs_spec
+</PRE>
+
+The contents of the simple_ncs_from_pdb.ncs_spec file, which you can edit 
+if you want and which you can use in the AutoBuild Wizard, are shown below.
+
+<PRE style="face=courier">
+
+Summary of NCS information
+Thu Apr  9 08:39:48 2009
+/Users/Shared/unix/transfer/test
+
+
+
+
+
+new_ncs_group
+new_operator
+
+rota_matrix    1.0000    0.0000    0.0000
+rota_matrix    0.0000    1.0000    0.0000
+rota_matrix    0.0000    0.0000    1.0000
+tran_orth     0.0000    0.0000    0.0000
+
+center_orth   29.9208  -53.3304  -13.4779
+CHAIN A
+RMSD 0.0
+MATCHING 215
+  RESSEQ 2:5
+  RESSEQ 20:35
+  RESSEQ 60:76
+  RESSEQ 78:107
+  RESSEQ 110:137
+  RESSEQ 401:431
+  RESSEQ 433:483
+  RESSEQ 485:516
+  RESSEQ 520:525
+
+new_operator
+
+rota_matrix    0.9370   -0.2825    0.2053
+rota_matrix   -0.3285   -0.9125    0.2439
+rota_matrix    0.1184   -0.2960   -0.9478
+tran_orth   -14.7410  -79.9073   -8.5967
+
+center_orth   32.5410  -35.4227   20.2768
+CHAIN N
+RMSD 1.09447914951
+MATCHING 215
+  RESSEQ 2:5
+  RESSEQ 20:35
+  RESSEQ 60:76
+  RESSEQ 78:107
+  RESSEQ 110:137
+  RESSEQ 401:431
+  RESSEQ 433:483
+  RESSEQ 485:516
+  RESSEQ 520:525
+
+new_operator
+
+rota_matrix    0.6257    0.7800   -0.0037
+rota_matrix   -0.7800    0.6257   -0.0010
+rota_matrix    0.0015    0.0035    1.0000
+tran_orth    70.3889   42.4760    0.3937
+
+center_orth   50.0256  -91.8920  -13.6461
+CHAIN B
+RMSD 0.0715099139994
+MATCHING 194
+  RESSEQ 2:5
+  RESSEQ 20:35
+  RESSEQ 60:76
+  RESSEQ 78:107
+  RESSEQ 110:137
+  RESSEQ 401:431
+  RESSEQ 433:483
+  RESSEQ 485:516
+  RESSEQ 520:525
+
+
+
+
+
+new_ncs_group
+new_operator
+
+rota_matrix    1.0000    0.0000    0.0000
+rota_matrix    0.0000    1.0000    0.0000
+rota_matrix    0.0000    0.0000    1.0000
+tran_orth     0.0000    0.0000    0.0000
+
+center_orth   47.5037  -61.5641  -11.2751
+CHAIN A
+RMSD 0.0
+MATCHING 11
+  RESSEQ 6:9
+  RESSEQ 56:59
+  RESSEQ 517:519
+
+new_operator
+
+rota_matrix    0.9367   -0.2981    0.1836
+rota_matrix   -0.3113   -0.9492    0.0469
+rota_matrix    0.1603   -0.1011   -0.9819
+tran_orth   -14.9810  -78.2888   -2.3823
+
+center_orth   51.8984  -33.6038   20.9877
+CHAIN N
+RMSD 0.479682710546
+MATCHING 11
+  RESSEQ 6:9
+  RESSEQ 56:59
+  RESSEQ 517:519
+
+new_operator
+
+rota_matrix    0.6255    0.7802   -0.0016
+rota_matrix   -0.7802    0.6255   -0.0025
+rota_matrix   -0.0009    0.0028    1.0000
+tran_orth    70.3999   42.4366    0.4815
+
+center_orth   66.8308  -82.9508  -11.4633
+CHAIN B
+RMSD 0.034689065899
+MATCHING 11
+  RESSEQ 6:9
+  RESSEQ 56:59
+  RESSEQ 517:519
+
+
+
+
+
+new_ncs_group
+new_operator
+
+rota_matrix    1.0000    0.0000    0.0000
+rota_matrix    0.0000    1.0000    0.0000
+rota_matrix    0.0000    0.0000    1.0000
+tran_orth     0.0000    0.0000    0.0000
+
+center_orth   36.1219  -37.6124  -62.1437
+CHAIN A
+RMSD 0.0
+MATCHING 150
+  RESSEQ 193:255
+  RESSEQ 257:259
+  RESSEQ 290:355
+  RESSEQ 357:374
+
+new_operator
+
+rota_matrix    0.7650    0.3808   -0.5194
+rota_matrix    0.0664   -0.8488   -0.5245
+rota_matrix   -0.6406    0.3668   -0.6746
+tran_orth    50.3180  -36.4383   16.0299
+
+center_orth   39.1403  -33.0801   60.7270
+CHAIN N
+RMSD 0.610762530957
+MATCHING 150
+  RESSEQ 193:255
+  RESSEQ 257:259
+  RESSEQ 290:355
+  RESSEQ 357:374
+
+new_operator
+
+rota_matrix    0.5942    0.8043   -0.0007
+rota_matrix   -0.8043    0.5942   -0.0064
+rota_matrix   -0.0047    0.0043    1.0000
+tran_orth    73.5084   40.5311    0.5807
+
+center_orth   40.9347  -76.7723  -62.2004
+CHAIN B
+RMSD 0.0137641203481
+MATCHING 150
+  RESSEQ 193:255
+  RESSEQ 257:259
+  RESSEQ 290:355
+  RESSEQ 357:374
+
+
+
+
+
+new_ncs_group
+new_operator
+
+rota_matrix    1.0000    0.0000    0.0000
+rota_matrix    0.0000    1.0000    0.0000
+rota_matrix    0.0000    0.0000    1.0000
+tran_orth     0.0000    0.0000    0.0000
+
+center_orth   45.4522  -37.4720  -14.4660
+CHAIN A
+RMSD 0.0
+MATCHING 6
+  RESSEQ 36:41
+
+new_operator
+
+rota_matrix    0.9444   -0.3074    0.1171
+rota_matrix   -0.2975   -0.9501   -0.0940
+rota_matrix    0.1402    0.0540   -0.9887
+tran_orth   -14.2728  -75.5420    6.4099
+
+center_orth   42.1483  -55.6520   24.0535
+CHAIN N
+RMSD 0.215718434967
+MATCHING 6
+  RESSEQ 36:41
+
+new_operator
+
+rota_matrix    0.6247    0.7809   -0.0013
+rota_matrix   -0.7809    0.6247    0.0028
+rota_matrix    0.0030   -0.0008    1.0000
+tran_orth    70.4964   42.5349    0.0067
+
+center_orth   46.7900  -69.5227  -14.6653
+CHAIN B
+RMSD 0.0340725565251
+MATCHING 6
+  RESSEQ 36:41
+
+
+
 </PRE>
 
       <P><H5><U>Possible Problems</U></H5><P>
