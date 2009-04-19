@@ -643,7 +643,7 @@ in ``phenix.refine``:
 
 - ``phenix.refine`` can perform the following types of occupancy refinement:
   individual (refinement of one occupancy factor per atom), group
-  (refinement of one occupnacy factor per group of selected atoms) and group
+  (refinement of one occupancy factor per group of selected atoms) and group
   constrained occupancy refinement. In individual and group occupancy
   refinement the refined occupancy values will be constrained between
   ``main.occupancy_min`` and ``main.occupancy_max``, which is 0 and 1 by
@@ -665,7 +665,7 @@ in ``phenix.refine``:
   constrained occupancy refinement for these atoms will be performed as well.
 
 - Turning OFF the occupancy refinement can be done by removing the star
-  (``*``) from the corresponing keyword in ``strategy = ... *occupancies ...``.
+  (``*``) from the corresponding keyword in ``strategy = ... *occupancies ...``.
 
 - If selections are provided (see examples below) then the occupancy
   refinement for selected atoms will be performed as well as for those
@@ -674,12 +674,12 @@ in ``phenix.refine``:
 - User defined selections will override those defined by ``phenix.refine``
   automatically. For example, if an atoms is automatically selected for
   individual occupancy refinement, but the user defined a group of atoms for
-  which one occupancy factor will be refined (group occupnacy refinement),
+  which one occupancy factor will be refined (group occupancy refinement),
   and this particular atom is within the group, then the individual occupancy
   will not be refined for this atom.
 
 - User can withhold the occupancy refinement for any atoms that were
-  originally selectd for occupancy refinement by default (automatically).
+  originally selected for occupancy refinement by default (automatically).
 
 - The presence of user defined selections for occupancies to be refined is not
   enough to engage the occupancy refinement. It is important that the occupancy
@@ -687,7 +687,7 @@ in ``phenix.refine``:
 
 Examples:
 
-1. Running with all defaul parameters::
+1. Running with all default parameters::
 
      % phenix.refine data.hkl model.pdb
 
@@ -731,7 +731,7 @@ contains following lines::
 which defines:
 
 - group occupancy refinement. One occupancy for all atoms in
-  ``chain A and resseq 1`` will be refined and it will be contrained between
+  ``chain A and resseq 1`` will be refined and it will be constrained between
   ``main.occupancy_min`` and ``main.occupancy_min``, which is by default 0 and
   1, correspondingly.
 
@@ -893,7 +893,7 @@ Hydrogens in refinement
 -----------------------
 
 Depending on data type (X-ray or neutron), data quality (resolution, 
-completeness) phenix.refine offers different options for parameterization of
+completeness) phenix.refine offers different options for parametrization of
 hydrogen atoms:
 
 - riding model.
@@ -903,7 +903,7 @@ Using the riding model does not add additional refinable parameters, since posit
 of a hydrogen atom H in X-H bond is recalculated from the current position of 
 atom X. Also, H atom inherits the occupancy of X atom and its B-factor. Sometime
 the B-factor of H atom is the product of B-factor of X atoms and a scale from 1 
-to 1.5. The riding model should be used to parameterize H atoms at almost all
+to 1.5. The riding model should be used to parametrize H atoms at almost all
 resolutions in X-ray refinement. An exception can be a subatomic resolution (
 ~0.7A and higher), where the hydrogen's parameters can be refined individually.
 
@@ -921,7 +921,7 @@ however there is a parameter to turn it off::
 If neutron data is used then the parameters of H atoms should always be refined 
 individually, except the cases where data resolution and/or completeness are 
 poor. In that case riding model can be used. If partially deuterated structure 
-is used in refinement then the constrained occupancies of exchengeable H/D sites 
+is used in refinement then the constrained occupancies of exchangeable H/D sites 
 are refined so they add up to 1. 
 
 Currently, ``phenix.refine`` does not add the H atoms (except a few cases 
@@ -944,7 +944,7 @@ resolution::
   
 Although this is not thoroughly studied yet, it seems that hydrogens should not be 
 included into NCS or TLS groups. This is why they are automatically excluded from 
-them. However, if NCS selections are created manually and the structure conains 
+them. However, if NCS selections are created manually and the structure contains 
 H atoms, it might be a good idea to add ``and not (element H or element D)`` to
 all selection strings.
 
@@ -958,7 +958,7 @@ Below are some useful commands:
 
      % phenix.ready_set model.pdb perdeuterate=true
      
-3. Add H and exchengeable H/D::
+3. Add H and exchangeable H/D::
 
      % phenix.ready_set model.pdb neutron_exchange_hydrogens=true
      
@@ -1279,7 +1279,7 @@ Examples of frequently used refinement protocols, common problems
 4. Having unknown to phenix.refine item in PDB file (novel ligand, etc...).
 
    phenix.refine uses the CCP4 Monomer Library as the source of
-   stereochemical information for building geometry restraints and reposting
+   stereochemical information for building geometry restraints and reporting
    statistics.
 
    If phenix.refine is unable to match an item in input PDB file against the
@@ -1625,7 +1625,7 @@ where ``map.params`` contains::
   #include_params map.params
 
 This will output three map files containing mFo-DFc, 2mFo-DFc and 3Fo-2Fc maps.
-All maps will be in absolute scale (in e/A**3). The map finess will be (data
+All maps will be in absolute scale (in e/A**3). The map finesse will be (data
 resolution)*grid_resolution_factor and the map will be output around main chain
 atoms. If ``atom_selection`` is set to ``None`` or ``all`` then map will be
 computed for all atoms. The corresponding MTZ file will also contain the map
