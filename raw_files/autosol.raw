@@ -69,6 +69,26 @@ from a previous run or another approach, you can read it in directly as well.
 <P>Your parameters can be specified on the command-line, using a GUI, 
 or by editing a parameters file (examples below).
 
+<P><H5><I>Datafile formats in AutoSol</I></H5><P>
+<P>AutoSol will accept the following formats of data:
+<UL>
+<LI>scalepack unmerged original index: I,SIGI</LI>
+<LI>scalepack premerged: I+,SIGI+,I-,SIGI-</LI>
+<LI>mtz unmerged: I, SIGI, M_ISYM</LI>
+<LI>mtz premerged: I(+), SIGI(+), I(-), SIGI(-)</LI>
+<LI>d*trek </LI>
+<LI>CNS</LI>
+</UL>
+<P>For the best scaling results, you should supply all scalepack unmerged
+original index files or all mtz unmerged files.  If all the files are 
+scalepack unmerged original index or all the files are mtz unmerged
+and no anisotropy correction is applied, then SOLVE local scaling will be 
+applied to the data prior to merging and averaging equivalent reflections.  
+In all other cases equivalent reflections will be averaged prior to scaling, 
+so that the scaling may not be as effective at removing systematic errors 
+due to absorption or other effects.
+
+
 <P><H5><I>Datasets and Solutions in AutoSol </I></H5><P>
 <P>AutoSol breaks down the data for a structure solution into
 datasets, where a dataset is a set of data that corresponds to a single
