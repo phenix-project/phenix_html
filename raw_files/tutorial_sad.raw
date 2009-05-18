@@ -732,9 +732,9 @@ information for structure solution (though the data may be useful in
 refinement and density modification).
 </LI>
 <LI>Try a different rejection criterion for outliers. The default is
-<b>ratio_out=3.0</b> (toss reflections with delta F more than 3 times the
-rms delta F of all reflections in the shell).  Try instead <b>ratio_out=5.0</b>
-to keep almost everything.
+<b>ratio_out=10.0</b> (toss reflections with delta F more than 10 times the
+rms delta F of all reflections in the shell).  Try instead <b>ratio_out=3</b>
+to toss outliers.
 </LI>
 <LI>If the heavy-atom substructure search did not yield plausible
 solutions, try searching with HYSS using the command-line interface, and
