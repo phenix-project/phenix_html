@@ -40,6 +40,7 @@ may be specified on the command line.  Most keyword parameters used in the
 command-line version of phenix.refine should work as well.
 
 |br|
+|br|
 
 The GUI uses a database of projects to track default settings (and eventually,
 progress and individual jobs) for a structure or group of related structures.
@@ -134,6 +135,7 @@ Neutron crystallography
 diffraction data, or both.  You can change the type of data contained in a
 reflections file by right-clicking on the "Data type" field in the file list.
 |br|
+|br|
 
 At present, *phenix.refine* always requires that you define an X-ray dataset;
 this constraint will be removed in future versions.  If you are performing
@@ -146,7 +148,9 @@ you should leave the scattering table set to the default, and specify one
 reflections file as neutron data (or both).  Parameters for neutron data
 are not chosen automatically; once you have specified a neutron reflections
 file, click the "Neutron data. . ." button to select the column labels for
-the data and test set.|br|
+the data and test set.
+|br|
+|br|
 
 If you need to add hydrogens and deuteriums to your model before running
 phenix.refine, do not click the "Automatically add hydrogens" button in
@@ -171,12 +175,14 @@ The current selection, if any, will be highlighted:
 
 The *Select atoms* button opens a window that allows you to type in
 selections and immediately visualize the results, including the number of
-atoms selected.  If a 3-button mouse is used, the middle and right buttons
-in combination with the control and/or command keys (on Mac) can be used
-to directly make selections by clicking on the structure.  However, we
+atoms selected.  On mice with at least two buttons, clicking on an atom
+with the right button will open a menu for selecting residue ranges or
+chains.  However, we
 recommend that you learn the selection syntax, as it is much more flexible
 than mouse controls.  Selections made in the graphics window will be sent
-automatically to the appropriate control.|br|
+automatically to the appropriate control.
+|br|
+|br|
 
 Once this window is open, it does not need to be closed; clicking a different
 "View/pick" button will transfer control of the display.  (On Linux, you
