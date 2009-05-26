@@ -2,8 +2,12 @@
 The phenix.xtriage graphical interface
 ======================================
 
-Overview
-========
+.. contents::
+
+
+-------------
+Configuration
+-------------
 
 The configuration of Xtriage is much simpler than most of the other programs
 in the Phenix GUI; the minimum input is a reflection file and symmetry
@@ -11,12 +15,233 @@ information, which for MTZ files is automatically extracted.  Xtriage is also
 run automatically by the wizards (AutoSol, AutoBuild, and AutoMR) and the
 graphical results can be viewed from the GUIs for those programs as well.
 
+.. |br| raw:: html
+
+   <br /><br />
+
+|br|
 To launch Xtriage, open the main Phenix GUI and click on or drag-and-drop a
 reflection file onto the Xtriage module.  The command-line equivalent is
 ``phenix.xtriage_gui``; most parameters recognized by the command-line program
 should work here as well.  The configuration window is minimal:
+|br|
+
+.. image:: images/xtriage_main.png
+
+|br|
+
+The **Parameters** button opens a window containing the most essential
+information about the reflection data, including choice of data to analyze
+if more than one suitable Miller array is present.  Xtriage will accept
+any reflection file format and both intensities and amplitudes, but
+a Scalepack or MTZ file with separate I+/I- is the most typical input.  Most
+of this information will be extracted automatically if possible; at a minimum,
+only the input data and crystal symmetry are required.  A complete listing
+of parameters can be found in the `manual for the command-line version
+<xtriage.htm>`_.
 
 
+---------------------------
+Interpreting Xtriage output
+---------------------------
 
 The output of the GUI is nearly identical in content to the output of the
-command-line version.
+command-line version.  The analyses performed can be divided into three
+categories: data strength and completeness, lattice and symmetry properties,
+and twinning detection.  These are shown on three separate tabs in the results
+window; at the top of each tab, a drop-down menu can be used to scroll to each
+sub-section.  Buttons on the toolbar open this page, the full Xtriage log
+file, and a dialog for saving individual graphs, respectively.
+|br|
+
+.. image:: images/xtriage_results.png
+
+|br|
+Suggestions for interpreting the results are given where appropriate; more
+detail explanations are hidden by default but may be shown by clicking the
+"Details. . ." text buttons.
+|br|
+
+In general, many of the plots described have a distinctive and easily
+recognizable shape for strong, problem-free data.  In some cases pathologies
+may be immediately recognized on the basis of abnormal curves (see for
+instance the section on twinning and pseudotranslation below).
+|br|
+
+Data quality analyses
+=====================
+
+*Data strength.*  Xtriage displays two graphs of signal-to-noise ratio, one
+overall plot by resolution range, and a second combining signal-to-noise and
+completeness (shown below).  These are very similar to the output of
+data-processing programs such as HKL2000 and the CCP4 suite (MOSFLM/SCALA),
+and usually do not vary greatly unless the data are systematically incomplete
+and/or very weak.
+|br|
+
+.. image:: images/xtriage_s2n.png
+
+|br|
+
+This analysis is also used in the automatic determination of the high
+resolution limit used in the intensity statistics and twin analyses.  A
+separate table shows completeness for low-resolution data alone.
+|br|
+
+Low resolution completeness analysis.
+-------------------------------------
+
+Most data processing software do not provide a clear picture of the
+completeness of the data at low resolution. For this reason, xtriage lists
+the completeness of the data up to 5 Angstrom:
+|br|
+
+.. image:: images/xtriage_low_res.png
+
+|br|
+
+This analysis allows one to quickly see if there is any unusually low completeness at low resolution, for instance due to missing overloads.
+|br|
+
+Wilson scaling.
+------------------------------------------
+
+A Wilson plot analysis a la ARP/wARP is carried out, albeit with a slightly
+different standard curve.  This determines overall B-factors (isotropic and
+anisotropic) for the data.  A large spread in the diagonal values indicates
+anisotropy, as shown below (however, this example, the p9-sad structure
+included in the ``examples`` directory of the Phenix distribution, is actually
+very good data).  The shape of the curve does not vary greatly for
+most data, and a large deviation from expected values is unusual.  However,
+the resolution at which the maximum of the curve is found will be different
+depending on the type of molecule crystallized (protein vs. nucleic acid).
+|br|
+
+.. image:: images/xtriage_wilson.png
+
+|br|
+
+Problems with the Wilson plot will be identified and reported; again, the
+p9-sad example is relatively free of pathologies:
+|br|
+
+.. image:: images/xtriage_wilson_outliers.png
+
+|br|
+
+A very long list of warnings could indicate a serious problem with your
+data. Decisions on whether or not the data is useful, should be cut or
+should thrown away altogether, is not straightforward and falls beyond the
+scope of Xtriage.
+|br|
+
+Ice ring detection.
+-------------------
+
+Ice rings in the data are detected by analyzing the completeness and the mean intensity:
+|br|
+
+.. image:: images/xtriage_ice.png
+
+|br|
+
+Anomalous signal.
+-----------------
+
+If the input reflection file contains separate intensities for each Friedel
+mate, a quality measure of the anomalous signal is reported.  The p9-sad
+example, a high-resolution SeMet SAD dataset, is shown again:
+|br|
+
+.. image:: images/xtriage_anom_good.png
+
+|br|
+
+Suggested resolution cutoffs at which the anomalous signal disappears are
+shown by the vertical lines.  The p9-sad example is unusually excellent; a
+more difficult (but still solvable) dataset, the sec17 example in the Phenix
+distribution, is below:
+|br|
+
+.. image:: images/xtriage_anom_poor.png
+
+|br|
+
+Measurability values above 0.05 are encouraging; if the data do not reach this
+threshold at a usable resolution, successful phasing by SAD/MAD is extremely
+unlikely.
+
+Twinning analyses
+=================
+
+Xtriage will print a summary of its interpretation of twinning analyses at
+the top of the tab, including merohedral and pseudo-merohedral twin laws
+compatible with the lattice.  Below is the output for the pseudo-merohedrally
+twinned ``porin-twin`` example data:
+|br|
+
+.. image:: images/xtriage_twin_summary.png
+
+|br|
+
+Intensity distribution statistics
+---------------------------------
+
+Two separate tests for twinning rely on the cumulative distribution of
+intensities.  Both of these result in plots with a distinctive shapes for
+normal vs. twinned data.  The first, the NZ test, is shown below for the
+untwinned ``p9-sad`` data:
+|br|
+
+.. image:: images/xtriage_no_twin.png
+
+|br|
+
+The plot for a twinned dataset has sigmoidal curve instead:
+|br|
+
+.. image:: images/xtriage_nz_pm.png
+
+|br|
+
+Translational NCS (and translational pseudosymmetry) will also result in
+an abnormal curve, shifted up relative to the expected distribution.  Below
+is the NZ test plot for an untwinned dataset with translational pseudosymmetry:
+|br|
+
+.. image:: images/xtriage_nz_pt.png
+
+|br|
+
+Because the combination of twinning and translational NCS may result in a
+curve that appears close to normal, it is important to consider the second
+test for twinning, the L-test.  Here, twinning is indicated by an upwards
+shift of the curve relative to expected values:
+|br|
+
+.. image:: images/xtriage_l_pm.png
+
+|br|
+
+Twin law tests
+--------------
+
+If the crystal symmetry is compatible with one or more twin laws, each of
+these will be analyzed separately to determine the expected twin fraction.
+Most of these will result in a very low twin fraction whether or not twinning
+is present, but the actual twin law, if any, will usually have a significantly
+higher value, reflected in the shape of the curves.  Results from an untwinned
+crystal typically look like this:
+|br|
+
+.. image:: images/xtriage_twin_laws.png
+
+|br|
+
+The actual twin law for the ``porin-twin`` example:
+|br|
+
+.. image:: images/xtriage_twin_law_real.png
+
+|br|
+
