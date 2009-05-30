@@ -567,13 +567,13 @@ any method for phasing.
 <p>Here is a set of three simple commands to do this:
 <p>First run <b>AutoMR</b> to find the molecular replacement solution, but 
 don't rebuild it yet:
-<PRE style="face=courier">phenix.automr gene-5.pdb infl.sca copies=1 \
+<PRE style="face=courier">phenix.automr gene-5.pdb peak.sca copies=1 \
   RMS=1.5 mass=9800 rebuild_after_mr=False
 </PRE>
 <p>Now your MR solution is in <b>AutoMR_run_1_/MR.1.pdb</b> and 
 phases are in <b>AutoMR_run_1_/MR.1.mtz</b>.  Use these phases as input
 to AutoSol, along with some weak SAD data, still not building any new models:
-<PRE style="face=courier"> phenix.autosol data=infl.sca \
+<PRE style="face=courier"> phenix.autosol data=peak.sca \
  input_phase_file=AutoMR_run_1_/MR.1.mtz input_phase_labels="F PHIC FOM"   \
 seq_file=sequence.dat build=False
 </PRE>
