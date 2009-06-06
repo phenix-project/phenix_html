@@ -89,6 +89,16 @@ will try to align your sequence with the map and model:
 <p>If you want to use the trace_chain algorithm, then  specify:
 <PRE style="face=courier">phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat trace_chain=True
 </PRE>
+<p>Here is an example using data from the PHENIX examples library:
+<PRE style="face=courier">phenix.find_helices_strands $PHENIX/phenix_examples/p9-build/p9-resolve.mtz \
+labin="FP=FP PHIB=PHIM FOM=FOMM" trace_chain=True
+</PRE>
+<p>That should build a model using sample data in a few seconds. 
+Now try:
+<PRE style="face=courier">phenix.find_helices_strands $PHENIX/phenix_examples/p9-build/p9-resolve.mtz \
+trace_chain=True --gui
+</PRE>
+<p>which should set up the gui and do the same thing.
 
 <P><H5>Using find_helices_strands to bootstrap phenix.autobuild:</H5><P>
 
