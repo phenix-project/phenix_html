@@ -306,6 +306,7 @@ like &quot;my_mr.eff&quot; and run it with &quot;phenix.automr my_mr.eff&quot;:
 <PRE style="face=courier">
 automr {
   data = "w1.sca"
+  build = False
   ensemble {
     ensembleID = "mol1"
     copies_to_find = 1
@@ -331,9 +332,6 @@ automr {
     component_type = *protein nucleic_acid
     mass = None
     component_copies = 1
-  }
-  model_building {
-    rebuild_after_mr = False
   }
 }
 
@@ -374,7 +372,7 @@ automr {
     mass = 40000
     component_copies = 1
   }
-  autobuild_commands{
+  autobuild_variables{
     n_cycle_rebuild_max = 1
   }
 }
@@ -418,7 +416,7 @@ automr {
     mass = 40000
     component_copies = 1
   }
-  autobuild_commands{
+  autobuild_variables{
     n_cycle_rebuild_max = 1
   }
  fixed_ensembles {
