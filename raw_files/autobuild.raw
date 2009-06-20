@@ -595,7 +595,12 @@ already been built.</p></p></p></p>
 rebuilds it without adding or deleting any residues and without changing
 the connectivity of the chain.  The way this works is a segment of the model 
 is deleted and then is filled-in again by rebuilding from the remaining
-ends. This is repeated for overlapping segments covering the entire model.</p>
+ends. This is repeated for overlapping segments covering the entire model.
+NOTE: If you are using rebuild_in_place then your model must be quite
+similar to your sequence file, and in particular the model must not 
+extend in the N-terminal direction beyond your sequence file. Minor edits
+(amino acid replacements) will be done automatically.
+</p>
 <p>The multiple-models approach really has two levels of multiple models.
 At the first level, several (multiple_models_group_number, default is
 number_of_parallel_models) models are built (using rebuild_in_place) and
@@ -869,17 +874,24 @@ The output prime-and-switch map will be in the file prime_and_switch.mtz.
 
       <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>General limitations</H5><P>
+<P><H5>General Limitations</H5><P>
 
 
 <UL>
 
-<LI> The AutoBuild wizard edits input PDB files to remove multiple
+<LI> 
+The AutoBuild wizard edits input PDB files to remove multiple
 conformations. It will also renumber residues if the file contains residues with
 insertion codes.  All references to residue numbers (e.g. 
 rebuild_res_start_list) refer to the edited, renumbered model. 
 This model can be found in the AutoBuild_run_1_ (or appropriate) 
 directory as &quot;edited_pdb.pdb&quot;.
+
+<LI> 
+If you are using rebuild_in_place then your model must be quite
+similar to your sequence file, and in particular the model must not 
+extend in the N-terminal direction beyond your sequence file. Minor edits
+(amino acid replacements) will be done automatically.
 
 <LI> The AutoBuild wizard expects residue numbers to not decrease along a
 chain.  It will stop if residue 250 in chain B is found 
