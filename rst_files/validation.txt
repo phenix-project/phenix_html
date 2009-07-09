@@ -11,9 +11,9 @@ which is run both as a standalone program (*phenix.validate*) and as part of
 server <http://molprobity.biochem.duke.edu>`_.  Some programs are available
 as command-line tools; their use is covered in the last section.  There are
 two versions of validation in the GUI: one which performs only geometry
-validation (phenix.validate), and one which also compares the model to
-an electron-density map (phenix.structure_quality).  Since the geometry
-results are identical, this document covers the latter program.
+validation (phenix.validate_model), and one which also compares the model to
+an electron-density map and calculates R-factors (phenix.validate).  Since
+the geometry results are identical, this document covers the latter program.
 
 The analyses performed by Phenix include:
 
