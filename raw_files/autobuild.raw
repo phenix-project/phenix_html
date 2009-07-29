@@ -649,6 +649,34 @@ determines whether a single model is built or a set of models are built
 and recombined into a single model).
 
 </UL>
+<P>
+Phenix.autobuild is set up so that you can specify the number of processors (nproc) and  the number of batches (nbatch) as you indicated in your command.  Additionally you will want to set two more parameters:
+
+<PRE style="face=courier">run_command ="command you use to submit a job to your system"
+background=False   # probably false if this is a cluster, true if this is a multiprocessor machine
+</PRE>
+
+If you have a queueing system with 20 nodes, then you probably submit jobs with something like 
+
+"qsub -someflags myjob.csh"   # where someflags are whatever flags you use (or just "qsub myjob.csh" if no flags)
+
+Then you might use 
+
+<PRE style="face=courier"> run_command="qsub -someflags"  background=False nproc=20 nbatch=20
+</PRE>
+or
+<PRE style="face=courier"> run_command="qsub"  background=False nproc=20 nbatch=20
+</PRE>
+or
+
+
+
+If you have a 20-processor machine instead, then you might say
+
+<PRE style="face=courier"> run_command=csh  background=True nproc=20 nbatch=20
+</PRE>
+
+so that it would run your jobs with csh on your machine, and run them all in the background (i.e., all at one time).
 
 
 <P><H5><I>Model editing during rebuilding with the Coot-PHENIX interface 
