@@ -1030,6 +1030,19 @@ value of &quot;nbatch&quot; will normally change the results of running the
 Wizard. (Changing the value of &quot;nproc&quot; does not change the results,
 it changes only how many jobs are run at once.)
 
+<LI>In many versions of the shell tcsh (and csh), the length of the
+shell variable PATH is limited (for example to 4096 characters).  If your
+PATH is quite long then when AutoBuild runs a sub-process, it may
+accidentally increase the PATH to a value that is over the limit.  The
+symptom is that you get a message like &quot;Word too long&quot;.  If this
+happens, try 'echo $PATH' to see if it is very long...and if so see if 
+you can remove some entries in it.
+Or...you may want to shorten your path in PHENIX by specifying: 
+ remove_path_word_list='coot cns ccp4' (add as many paths that 
+you have but do not need within PHENIX).
+Or...you may want to install a new version of tcsh which will  allow a much 
+longer path. You can get a new version from ftp://ftp.astron.com/pub/tcsh/
+
 <LI>The size of the asymmetric unit in the SOLVE/RESOLVE portion of 
 the AutoBuild wizard is limited by the memory in your computer and the
 binaries used. The Wizard is supplied with regular-size ("", size=6), 
@@ -1043,7 +1056,6 @@ however it can only use the hexagonal setting of rhombohedral space groups
 found in macromolecular crystallography) even in the standard setting 
 due to difficulties with the use of asuset in the version of ccp4 libraries 
 used in PHENIX for these settings and space groups.
-
 
 </UL>
 
