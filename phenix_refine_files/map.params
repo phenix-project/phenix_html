@@ -1,15 +1,15 @@
 refinement {
   electron_density_maps {
     map {
-      mtz_label_amplitudes = 2FOFCWT
-      mtz_label_phases = PH2FOFCWT
+      mtz_label_amplitudes = 2FOFCWT_ml
+      mtz_label_phases = PH2FOFCWT_ml
       likelihood_weighted = True
       obs_factor = 2
       calc_factor = 1
     }
     map {
-      mtz_label_amplitudes = FOFCWT
-      mtz_label_phases = PHFOFCWT
+      mtz_label_amplitudes = FOFCWT_ml
+      mtz_label_phases = PHFOFCWT_ml
       likelihood_weighted = True
       obs_factor = 1
       calc_factor = 1
