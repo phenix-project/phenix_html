@@ -17,7 +17,6 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents -->
 <LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
 <LI>phenix.refine: Ralf W. Grosse-Kunstleve, Peter Zwart and Paul D. Adams
 <LI>RESOLVE: Tom Terwilliger
-<LI>TEXTAL: Kreshna Gopal, Thomas Ioerger, Rita Pai, Tod Romo, James Sacchettini, Erik McKee, Lalji Kanbi
 <LI>phenix.xtriage: Peter Zwart
 </LI>
 </UL>
@@ -36,7 +35,7 @@ phase information or a starting model, carries out cycles of model-building
 and refinement alternating with model-based density modification, and
 producing a relatively complete atomic model. 
 
-<P>The AutoBuild Wizard uses RESOLVE, (optionally also TEXTAL), xtriage and 
+<P>The AutoBuild Wizard uses RESOLVE, xtriage and 
 phenix.refine to build an atomic model, refine it, and improve
 it with iterative density modification, refinement, and model-building
 <P>The Wizard begins with either experimental phases (i.e., from AutoSol)

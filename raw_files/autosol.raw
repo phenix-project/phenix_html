@@ -18,13 +18,12 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <LI>Phaser: Randy J. Read, Airlie J. McCoy and Laurent C. Storoni
 <LI>SOLVE:  Tom Terwilliger
 <LI>RESOLVE: Tom Terwilliger
-<LI>TEXTAL: K. Gopal, T.R. Ioerger, R.K. Pai, T.D. Romo, J.C. Sacchettini
 <LI>phenix.refine: Ralf W. Grosse-Kunstleve, Peter Zwart and Paul D. Adams
 <LI>phenix.xtriage: Peter Zwart
 </UL>
 
       <P><H5><U>Purpose</U></H5><P>
-The AutoSol Wizard uses HYSS, SOLVE, Phaser, RESOLVE, TEXTAL, xtriage and 
+The AutoSol Wizard uses HYSS, SOLVE, Phaser, RESOLVE,  xtriage and 
 phenix.refine to solve a structure and generate experimental phases
 with the MAD, MIR, SIR, or SAD methods. 
 The Wizard begins with
@@ -307,8 +306,8 @@ identifies NCS from symmetries in heavy-atom sites with RESOLVE and applies
 this NCS if it is present in the electron density map.
 <P><H5><I>Preliminary model-building and refinement</I></H5><P>
 <P>The AutoSol Wizard carries out one cycle of model-building and
-refinement after obtaining density-modified phases. The model-building can be
-with RESOLVE or with TEXTAL.  The refinement is carried out with phenix.refine.
+refinement after obtaining density-modified phases. The model-building is done
+with RESOLVE.  The refinement is carried out with phenix.refine.
 
 <P><H5><I>Resolution limits in AutoSol</I></H5><P>
 <P>There are several resolution limits used in AutoSol. You can leave them
