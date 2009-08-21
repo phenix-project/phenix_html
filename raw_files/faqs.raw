@@ -31,6 +31,18 @@ a model you can also specify ps_in_rebuild=True to get a
 prime-and-switch map.
 
 
+<H5>Why does AutoBuild bomb and say &quot;word too long&quot;?</H5>
+<p>When Autobuild runs a sub-process it uses csh to run the subprocess.
+When the subprocess is run, a few additions are made to the $PATH variable.
+If your $PATH variable is already very long, this can sometimes make it too
+long for csh.
+<p>Solution #1:   install a new csh so that any length $PATH is ok. You can
+get it from ftp://ftp.astron.com/pub/tcsh/
+<p>Solution #2:   add the keyword remove_path_word_list="coot cns" to remove
+a few entries in your path (coot and cns in this case) that are not used
+by autobuild
+
+
 <H5>Why does AutoBuild bomb and say it cannot find a TEMP file?</H5>
 <p>By default the AutoBuild Wizard splits jobs into one or more parts 
 (determined by the parameter &quot;nbatch&quot;) and runs
@@ -50,7 +62,7 @@ it changes only how many jobs are run at once.)
 <H5>Where can I find sample data?</H5>
 <p>You can find sample data in the directories located in:
 <b>$PHENIX/examples</b>. Additionally there is sample MR data
- in <b>$PHENIX/phaser/tutorial</b>.
+in <b>$PHENIX/phaser/tutorial</b>.
 </p>
 <H5>Can I easily run a Wizard with some sample data?</H5>
 <p>You can run sample data with a Wizard with a simple command. To run
@@ -96,9 +108,9 @@ run this example data in AutoSol and how to interpret the results.
 nothing happens except refinement and grouping of models from any previous
 build cycles.
 </p>
- 
+
 <H5>What is the difference between overall_best.pdb and cycle_best_1.pdb
- in the AutoBuild Wizard?</H5>
+in the AutoBuild Wizard?</H5>
 <p>The AutoBuild Wizard saves the best model (and map coefficient file, etc)
 for each build cycle nn as cycle_best_nn.pdb.  Also the Wizard copies the
 current overall best model to overall_best.pdb.  In this way you can always 
@@ -107,7 +119,7 @@ If you wait until the end of the run you will get a summary that lists
 the files corresponding to the best model. These will have the same contents
 as the overall_best files.
 </p>
- 
+
 <H5>Can PHENIX do MRSAD?</H5>
 <p>Yes, PHENIX can run MRSAD (molecular replacement, combined with SAD
 phases) by determining the anomalous scatterer substructure from a 
@@ -121,26 +133,33 @@ from my mtz file?</H5>
 
 <p> The AutoSol Wizard will normally try to guess the appropriate columns
 of data from an input data file.  If there are several choices, then you
-can tell the Wizard which one to use with the script command group_labels_list
-or the command_line keywords labels, peak.labels, infl.labels etc.  For 
+can tell the Wizard which one to use with the 
+command_line keywords labels, peak.labels, infl.labels etc.  For 
 example if you have two input datafiles w1 and w2 for a 
 2-wavelength MAD dataset and you want to select the w1(+) and w1(-) data from
 the first file and w2(+) and w2(-1) from the second,
-you could put in a script file the following lines (see &quot;How do I know what
+you could use following keywords (see &quot;How do I know what
 my choices of labels are for my data file&quot; to know what to put
 in these lines):
-</p><PRE style="face=courier">input_file_list w1.mtz w2.mtz
-group_labels_list 'w1(+) SIGw1(+) w1(-) SIGw1(-)' 'w2(+) SIGw2(+) w2(-) SIGw2(-)'
+</p><PRE style="face=courier">input_file_list=" w1.mtz w2.mtz"
+group_labels_list=" 'w1(+) SIGw1(+) w1(-) SIGw1(-)' 'w2(+) SIGw2(+) w2(-) SIGw2(-)'"
 </PRE>
 Note that all the labels for one set of anomalous data from one file are
 grouped together in each set of quotes.
 <p>
-You could accomplish the same thing from the command 
-line by specifying something
-like:
-</p><PRE style="face=courier">peak.data=w1.mtz infl.data=w2.mtz \
-peak.labels='w1(+) SIGw1(+) w1(-) SIGw1(-)'  \
-infl.labels='w2(+) SIGw2(+) w2(-) SIGw2(-)'
+You could accomplish the same thing from a parameters file
+specifying something like:
+</p><PRE style="face=courier">
+wavelength{
+wavelength_name = peak
+data = w1.mtz 
+labels = w1(+) SIGw1(+) w1(-) SIGw1(-)
+}
+wavelength{
+wavelength_name = infl
+data = w2.mtz 
+labels = w2(+) SIGw2(+) w2(-) SIGw2(-)
+}
 </PRE>
 
 <H5>How do I know what my choices of labels are for my data file?</H5>
@@ -171,8 +190,8 @@ input_map_labels='w1(+) None None'
 </PRE>
 
 </p>
- 
- 
+
+
 <H5>What can I do if a Wizard says 
 <b> this version does not seem big enough</b>? </H5>
 
@@ -181,14 +200,14 @@ but if your data is very high resolution or a very large unit cell, you
 can get the message:
 
 </p><PRE style="face=courier"> ***************************************************
- Sorry, this version does not seem big enough...
- (Current value of isizeit is  30)
- Unfortunately your computer will only accept a size of  30
- with your current settings.
- You might try cutting back the resolution
- You might try "coarse_grid" to reduce memory
- You might try "unlimit" allow full use of memory
- ***************************************************
+Sorry, this version does not seem big enough...
+(Current value of isizeit is  30)
+Unfortunately your computer will only accept a size of  30
+with your current settings.
+You might try cutting back the resolution
+You might try "coarse_grid" to reduce memory
+You might try "unlimit" allow full use of memory
+***************************************************
 </PRE>
 <p>You cannot get rid of this problem by specifying the resolution with
 </p><PRE style="face=courier">resolution=4.0
@@ -242,51 +261,6 @@ have a look at this log file and it should have an error message at the
 end of the file.  
 </p>
 
-<H5>What do I do if the PHENIX GUI hangs?</H5>
-<p>If the GUI hangs (windows do not respond or windows display partially) then
-you may want to try and kill it by clicking on the upper right corner ,
-or right-clicking on the top bar of the GUI and closing it. If those fail,
-you can control-C in the window where you started up the GUI.
-In either case, you can restart the GUI by typing <b>phenix</b> again. You
-may find it necessary to start phenix up, then close it down nicely with
-Project/Exit, and restart it (this gets rid of some files that are deleted
-when the GUI closes normally).  You may also occasionally find it necessary
-to kill any jobs that are still running by running <b>top</b> and
-noticing if there are python or resolve or solve jobs running that were
-part of your PHENIX job, then using <b>k</b> to kill those jobs while
-running top.
-</p>
-
-<H5>Why does the GUI Parameters window say <b>Invalid input parameters...do you want to continue?</b></H5>
-<p>This happens if something in the window isn't correct. If no colored entry fields come up, have a look at the bottom where it says NAVIGATE  SET VARIABLE AUTO MANUAL.  The entry forms under these words should read:
-&quot;Choose method to run&quot;  &quot;Choose variable to set&quot; and &quot;Manual&quot; (or &quot;Automatic&quot;)
-unless you have intentionally set them.
-If that isn't it, look carefully at all the entries in the
-entire parameters window and make sure that they
-are of the type that is expected (file name, number, etc).  If that doesn't
-work, just click YES and carry on.
-</p>
-
-<H5>Why is my TEMP0 directory empty after running a Wizard?</H5>
-<p>By default all the working files in the TEMP subdirectories are deleted
-at the end of a Wizard run.  If you want to keep these files, then
-you can specify
-</p><PRE style="face=courier">clean_up=False</PRE>
-
-
-<H5>How do I stop a Wizard?</H5>
-<p>You can stop a Wizard in two ways. For a &quot;soft&quot; stop, press the &quot;Pause&quot; button
-if you are running from the GUI, or create a file with the name STOPWIZARD in
-the directory where the Wizard is running (i.e., create
- AutoBuild_run_4_/STOPWIZARD to stop run 4 of the AutoBuild Wizard).
-For a hard stop from the GUI, you can select &quot;Strategy&quot; on the top line of
-the GUI and then select &quot;Stop Strategy&quot; at the bottom of the choices. That
-kills the Wizard and all associated jobs.  You can still go on from there;
-select the Parameters window (the lines at the upper left of the now-yellow
-GUI window) and choose what to do next.
-</p>
-
-
 <H5>What is an R-free flags mismatch?</H5>
 When you run AutoBuild or phenix.refine you may get this error message or
 a similar one:
@@ -334,11 +308,495 @@ a completely different algorithm. This is much
 quicker than standard building but much less complete as well.
 </p>
 <H5>Why doesn't COOT recognize my MTZ file from AutoBuild?  </b></H5>
- <p> This happens if you use "auto-open MTZ" in COOT. COOT will say:
+<p> This happens if you use "auto-open MTZ" in COOT. COOT will say:
 FAILED TO FIND COLUMNS FWT AND PHWT IN THAT MTZ FILE
 FAILED TO FIND COLUMNS DELFWT AND PHDELFWT IN THAT MTZ FILE.
 <p>The solution is to use "Open MTZ" and then to select the columns 
 (usually FP PHIM FOMM, and yes, do use weights).
 <p>
+
+<H5>My AutoBuild composite OMIT job crashed because my computer crashed. Can I 
+go on without redoing all the work that has been done?</H5>
+<p>Yes, but it involves several steps:
+<UL>
+<LI>Run your job again in a separate directory, specifying 
+omit_box_start and omit_box_end to define which omit regions
+you want to still run.  You can figure out how many there should be
+total from your log file which will say something like: 
+Running separate sub-processes for 12 omit regions.  Then as they are
+running the log file will say what ones are being worked on.
+<LI>You will now have 2 OMIT/ subdirectories, one from each
+of your AutoBuild runs. 
+<LI>Put all the files together in one directory, and then
+run an edited version of the script below to combine them:
+</p><PRE style="face=courier">  
+#!/bin/csh -f
+phenix.resolve&lt;&lt;EOD
+hklin exptl_fobs_phases_freeR_flags.mtz
+labin FP=FP SIGFP=SIGFP
+solvent_content 0.6
+no_build
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_1
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_2
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_3
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_4
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_5
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_6
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_7
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_8
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_9
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_10
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_11
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_12
+omit
+EOD
+</pre>
+<LI>You will want to edit this to match the number of OMIT regions
+in your case.
+</UL>
+<H5>Does the RESOLVE database of density distributions contain RNA/protein examples?</H5>
+The RESOLVE database doesn't have RNA+protein in it, nor does it have low-resolution histograms, but you can create a new entry very easily.  Here is how:
+
+<UL>
+<LI> Find a PDB structure that has the characteristics that you want "refine_1.pdb"
+
+<LI> Calculate a map with this model at the resolution you are interested in:
+</p><PRE style="face=courier">
+phenix.pdbtools --f-model high_resolution=5 refine_1.pdb
+</PRE>
+
+<LI>Generate histograms with phenix.resolve. Here is a script:
+</p><PRE style="face=courier">
+#!/bin/csh -f
+phenix.resolve<<EOD
+hklin refine_1.pdb.mtz
+labin FP=FMODEL PHIB=PHIFMODEL
+get_histograms
+no_build
+solvent_content 0.5
+database 5
+mask_cycles 1
+minor_cycles 1
+EOD
+</PRE>
+
+
+<LI>Now the file  hist_values.dat will have your histograms:
+</p><PRE style="face=courier">
+5.002693       32.71021      !  resolution Boverall
+1   ! 1=protein 2 = solvent
+0.10198E-01    1.8145       0.41525E-01  ! a1 a2 a3
+0.14425E-01   0.46920       0.77521      ! a4 a5 a6
+0.23653E-06   0.34718E-08    0.0000      ! a7 a8 a9
+
+2   ! 1=protein 2 = solvent
+0.27101E-01    6.4460      -0.61802      ! a1 a2 a3
+0.12788E-01   0.55421      -0.39797E-02  ! a4 a5 a6
+0.0000        0.0000        0.0000      ! a7 a8 a9
+</PRE>
+
+
+<LI>Paste the contents of hist_values.dat at the end of $PHENIX/solve_resolve/ext_ref_files/segments/rho.list . NOTE: you need one blank line between sections, and an extra 2 blank lines at the very end of the file...otherwise resolve will give a bad error message.
+
+<LI>Now when you run phenix.resolve...say "database 7" and it will use your new histograms. It will write a message in the log file like this:
+
+</p><PRE style="face=courier">
+Histogram DB entry #   7 ("5       14.27721      !  resol")
+</PRE>
+which should match what you pasted in to the rho.list file...so you know it took your histograms.
+</UL>
+<H5>Why do I get &quot;None of the solve versions worked&quot; in AutoSol?</H5>
+<UL>
+<LI>
+If you get this or a similar message for resolve, first have a look at LAST.LOG
+if it exists in your AutoSol_run_xx_ or AutoBuild_run_xx_ directory. The end
+of that file may give you a hint as to what was wrong.
+<LI>The next thing to try is running one of these commands (just kill
+them with control-C if they do run):
+</p><PRE style="face=courier">
+phenix.solve
+</PRE>
+or
+</p><PRE style="face=courier">
+phenix.resolve
+</PRE>
+<LI>If these load up solve or resolve, then they basically work and the problem
+is probably in the size of your dataset, some formatting issue, or the like.
+<LI>If they do not run, then the problem is in your system setup. If you are
+using redhat linux, try changing the option of selinux to selinux=disabled 
+in your /etc/sysconfig/selinux file.
+</UL>
+<H5>If I run AutoBuild with after_autosol=True, how do I know which run of 
+AutoSol it will use?
+</H5>
+AutoBuild will look through all the autosol runs and choose the solution
+with the highest final score, and use that one.  You can see this near the
+beginning of the AutoBuild run:
+
+</p><PRE style="face=courier">
+Appending solution 4060.75360229 1 75.3602294036
+exptl_fobs_phases_freeR_flags_1.mtz solve_1.mtz
+Appending solution 59.3469818876 2 59.3469818876 None solve_2.mtz
+Best solution 4060.75360229 1 75.3602294036
+exptl_fobs_phases_freeR_flags_1.mtz solve_1.mtz AutoSol_run_2_
+</PRE>
+
+In this case it took run 2 with the solution solve_1.mtz with score of
+4060.7 over the solution solve_2.mtz with score of 59.
+
+If you want to choose a different AutoSol solution, then you will need to
+explicitly tell AutoBuild all the files that you want to use:
+
+</p><PRE style="face=courier">
+phenix.autobuild data=AutoSol_run_5_/exptl_fobs_freer_flags_3.mtz \
+map_file=AutoSol_run_5_/resolve_3.mtz \
+seq_file=my_seq_file.seq
+</PRE>
+
+Notes:
+<UL><LI>Use resolve_xx.mtz as a map file, never as a "data" file. It contains
+coefficients for a density-modified map
+<LI> It is recommended not to include the model from autosol in your autobuild
+runs. Autobuild is a lot better at building a model.
+<LI>The data file for autobuild should be
+AutoSol_run_5_/exptl_fobs_freer_flags_3.mtz in this case;  note that the
+"3" here matches the "3" in resolve_3.mtz and is for solution #3 of run 5.
+<LI>To see what files to use here, see the file
+"AutoBuild_run_5_/AutoBuild_summary.dat which lists the solutions for run
+5, and all the files that go with each solution.
+</UL>
+
+
+<H5>How can I do a quick check for iso and ano differences in an MIR dataset? 
+</H5>
+You can say:
+</p><PRE style="face=courier">
+phenix.autosol native.data=native.sca deriv.data=deriv.sca
+</PRE>
+and wait a couple minutes until it has scaled the data (once it 
+says "RUNNING HYSS" you are far enough) and then have a look at 
+</p><PRE style="face=courier">
+AutoSol_run_1_/TEMP0/dataset_1_scale.log
+</PRE>
+which will say near the end..
+
+</p><PRE style="face=courier">
+isomorphous differences derivs            1  - native
+
+
+Differences by shell:
+
+shell   dmin    nobs      Fbar      R     scale    SIGNAL  NOISE   S/N
+
+1     5.600  1018     285.012     0.287   0.998 105.05  26.73   3.93
+2     4.200  1386     324.927     0.216   1.000  84.78  26.76   3.17
+3     3.920   542     330.807     0.214   1.002  85.00  28.36   3.00
+4     3.710   523     286.487     0.237   1.002  81.31  27.29   2.98
+5     3.500   662     282.383     0.235   1.001  75.58  37.12   2.04
+6     3.360   518     255.782     0.241   1.003  72.69  27.18   2.67
+7     3.220   630     237.778     0.253   1.000  68.87  29.94   2.30
+8     3.080   727     208.271     0.255   1.000  61.39  29.19   2.10
+9     2.940   897     190.044     0.254   0.999  42.78  42.99   1.00
+10     2.800  1067     169.022     0.280   0.999  50.54  33.24   1.52
+
+Total:          7970     256.096     0.245   1.000  75.29  31.41   2.48
+</PRE>
+Here R is &lt;Fderiv-Fnative&gt;/(2 &lt;Fderiv+Fnative&gt;), 
+noise is &lt;sigma&gt;, 
+signal is sqrt(&lt;(Fderiv-Fnative)**2&gt;-&lt;sigma**2&gt;), 
+and S/N is the ratio of signal to noise.
+If you want to force the NCS to come from the ha file, first identify the
+NCS with phenix.find_ncs: 
+</p><PRE style="face=courier">
+phenix.find_ncs eden-unique.mtz hatom.pdb
+</PRE>
+This should find the NCS and write out a file called something like find_ncs.ncs_spec .
+Now use the keyword
+</p><PRE style="face=courier">
+ncs_file=find_ncs.ncs_spec
+</PRE>
+in phenix.autobuild and you should be ok.
+
+<H5>Is there a way to use AutoBuild to combine a set of models created by
+multi-start simulated annealing?</H5>
+
+You can do this in two ways. Both involve the keyword,
+
+</p><PRE style="face=courier">
+consider_main_chain_list="pdb1.pdb pdb2.pdb pdb3.pdb"
+</PRE>
+
+which lets you suggest a set of models to autobuild to consider in
+model-building.
+
+<UL><LI>You can use this with rebuild_in_place (all your models should have the
+same atoms, just with different coordinates):
+
+</p><PRE style="face=courier">
+phenix.autobuild data.mtz  map_file=map.mtz seq_file= seq.dat \
+model=coords1.pdb rebuild_in_place=True merge_models=true \
+consider_main_chain_list=" coords2.pdb coords3.pdb" \
+number_of_parallel_models=1 n_cycle_rebuild_max=1
+</PRE>
+
+<LI>You can also use it with rebuild_in_place=False (any fragments or
+models are ok):
+
+</p><PRE style="face=courier">
+phenix.autobuild data.mtz  map_file=map.mtz seq_file= seq.dat \
+model=coords1.pdb rebuild_in_place=False \
+consider_main_chain_list=" coords2.pdb coords3.pdb" \
+number_of_parallel_models=1 n_cycle_rebuild_max=1
+</PRE>
+</UL>
+<H5> I am using phenix.automr with a dimer (copies=1). However, Phenix 
+gives me a warning that the unit cell is too full.</H5>
+In this case, check to make sure that you have specified that the 
+contents of the unit cell include two copies of your sequence with
+component_copies=2.  (In automr the composition of the asymmetric 
+unit is specified independently of the model).
+
+<H5>How do I run AutoBuild on a cluster?</H5>
+Phenix.autobuild is set up so that you can specify the number of
+processors (nproc) and  the number of batches (nbatch).
+Additionally you will want to set two more parameters:
+
+</p><PRE style="face=courier">
+run_command ="command you use to submit a job to your system"
+background=False   # probably false if this is a cluster, true if this is a multiprocessor machine
+</PRE>
+
+If you have a queueing system with 20 nodes, then you probably submit jobs
+with something like
+
+</p><PRE style="face=courier">
+"qsub -someflags myjob.csh"   # where someflags are whatever flags you use
+</PRE>
+(or just "qsub myjob.csh" if no flags)
+
+Then you might use
+
+</p><PRE style="face=courier">
+run_command="qsub -someflags"  background=False nproc=20 nbatch=20
+</PRE>
+
+If you have a 20-processor machine instead, then you might say
+
+</p><PRE style="face=courier">
+run_command=csh  background=True nproc=20 nbatch=20
+</PRE>
+
+so that it would run your jobs with csh on your machine, and run them all
+in the background (i.e., all at one time).
+
+<H5>How do I tell AutoBuild to use phenix.refine maps instead of density-modified maps for model-building?</H5>
+To use the phenix.refine maps instead of density-modified maps, use the keyword:
+</p><PRE style="face=courier">
+two_fofc_in_rebuild=True
+</PRE>
+
+<H5>How do I include a twin-law for refinement in AutoBuild? </H5>
+you can include the twin law in autobuild for refinement
+with the keyword:
+
+</p><PRE style="face=courier">
+refine_eff_file=refinement_params.eff
+</PRE>
+
+where refinement_params.eff says something like:
+
+</p><PRE style="face=courier">
+refinement {
+ twinning {
+   twin_law = "-k, -h, -l"
+ }
+}
+</PRE>
+(You can get the twin law "-k, -h, -l" from phenix.xtriage.)
+
+<H5>Why is there no no exptl_fobs_phases_freeR_flags_*.mtz file in my
+AutoSol_run_xx_ directory?</H5>
+In AutoSol the file exptl_fobs_phases_freeR_flags_*.mtz normally contains 
+the experimental Fobs and free R flags for refinement, along with 
+phases and HL coefficients from the experimental phasing. (The * here
+is the solution number)
+
+<p>However if an anisotropy correction is applied to the data, then by 
+default no refinement is done in AutoSol and no 
+exptl_fobs_phases_freeR_flags_*.mtz file is created.  This is to 
+ensure that refinement is not carried out against anisotropy-corrected 
+data (you want to refine against the original data, and have 
+phenix.refine apply an anisotropy correction as part of refinement).
+
+If you supply 
+
+</p><PRE style="face=courier">
+input_refinement_file=my_data.sca 
+</PRE>
+
+then my_data.sca will be used for refinement and an 
+exptl_fobs_phases_freeR_flags_*.mtz will be created.  Note 
+that my_data.sca can be identical to your input data file if you want.
+
+<H5>AutoBuild seems to be taking a long time. What is the usual time for a run?</H5>
+For typical structures, AutoBuild runs can take from 30 minutes to several days
+using a single processor.  You can speed up your jobs by using several
+processors with a command such as &quot'nproc=4&quot;. for AutoBuild you
+can speed up by up to a factor of 5 in this way.  You can also speed up
+rebuild_in_place AutoBuild jobs (where your model is being adjusted, not
+built from scratch) by specifying fewer cycles: 
+&quot;n_cycle_rebuild_max=1&quot; will use 1 cycle of rebuilding instead 
+of the usual 5. Often that is plenty.
+
+<H5>When should I use multi-crystal averaging?</H5>
+ Multi-crystal averaging is going to be useful only if the crystals are 
+completely different or the amplitudes are nearly uncorrelated.  In 
+cases where there are only small changes the averaging procedure has 
+almost nothing different in the two structures to work with and it won't 
+do much.  Another way to say this is that multi-crystal averaging works 
+because two or more very different ways of sampling the Fourier transform 
+of the molecule are occurring, and each must be consistent with the 
+corresponding measured data.  If the molecules are nearly the same and 
+the measured data are nearly the same in all cases, then there are 
+few constraints on the phases.
+
+Yes, experimental phases can be included in multi-crystal averaging, 
+just as for NCS averaging. And yes, experimental phases are most helpful.
+
+If some regions are different in the different crystals, then the 
+masking procedure needs to be adjusted to exclude the variable 
+regions from the averaging process.
+
+<H5>Can I make density modified phase combination (partial model phases 
+and experimental phases) in PHENIX?</H5>
+Yes, you get these if you use:
+
+</p><PRE style="face=courier">
+phenix.autobuild model=partial_model.pdb data=exptl_phases_hl_etc.mtz
+rebuild_in_place=False seq_file=seq.dat
+</PRE>
+
+The model is used to generate phases by a variation on statistical density
+modification. These phases are then combined with the experimental phases
+and then the combined phases are density modified.  Then the result is
+density modified including the model.  So the file
+</p><PRE style="face=courier">
+ image.mtz
+</PRE>
+is exptl phases + model phases, and
+
+</p><PRE style="face=courier">
+ image_only_dm.mtz
+</PRE>
+
+is image.mtz, density modified. Then
+
+</p><PRE style="face=courier">
+ resolve_work.mtz
+</PRE>
+is image_only_dm.mtz, density modified further using the model as a target
+for density modification along with histograms, solvent flattening, ncs,
+etc.
+
+<H5>How can I specify a mask for density modification in AutoSol/AutoBuild?</H5>
+If you want to specify a mask, add this command:
+
+</p><PRE style="face=courier">
+resolve_command_list=&quot; 'model ../../coords.pdb'  'use_model_mask' &quot; 
+</PRE>
+
+where there are " and ' quotes and coords.pdb is the model to use for a
+mask. Note the &quot;../../&quot; because coords.pdb is in 
+your working directory but when resolve runs the run directory
+is 2 directories lower, so relative to that directory your coords.pdb is
+at &quot;../../coords.pdb&quot;.
+
+You will know it is working if your resolve_xx.log says:
+
+</p><PRE style="face=courier">
+Using model mask calculated from coordinates
+</PRE>
+
+<H5>Is there anyway to get phenix.autobuild to NOT delete multiple
+conformers when doing a SA-omit map?</H5>
+At present, if you put you multiple conformations in for the protein
+autobuild will take only conformation 1 and it will ignore the others. 
+
+As a work-around, you can try this:  call all  the protein a "ligand"
+and put it in this way (you need to give it one complete residue in the
+model as "one_residue.pdb" (or any part of the model that has just one
+conformation):
+
+</p><PRE style="face=courier">
+phenix.autobuild data=data.mtz \
+model=one_residue.pdb \
+input_lig_file_list=model.pdb \
+composite_omit_type=sa_omit
+</PRE>
+
+Autobuild treats ligands as a fixed structure during model building and in
+omit maps, only adjusted during refinement, which is what you want in this
+case.
+
+<H5>What do I do if autobuild says TRIED resolve_extra_huge ...but not OK?</H5>
+
+In most cases when you get this error in phenix
+</p><PRE style="face=courier">
+TRIED resolve_extra_huge ...but not OK
+</PRE>
+it actually means "your computer does not have enough memory to 
+run resolve_extra_huge".  If that is the case then you are kind of 
+stuck unless you have another computer with even more memory+swap space, 
+or you cut back on the resolution of the input data (Note that you have 
+to actually lower the resolution in the input file, not just 
+set "resolution=" because all the data is kept but not used if you 
+just set the resolution).
+
+You can also try the keyword
+
+</p><PRE style="face=courier">
+resolve_command_list=&quot;  'coarse_grid' &quot;
+</PRE>
+(note 2 sets of quotes)
+
+<p>Sometimes the not OK message can happen if your system and PHENIX are not
+matching, so that resolve or solve cannot run at all. You can test for this
+by typing
+
+</p><PRE style="face=courier">
+phenix.resolve
+</PRE>
+and if it loads up (just type QUIT or END or control-C to end it) then it
+runs, and if it doesn't, there is a system mismatch.
+
+<H5>What are my options for OMIT maps if I have 4 fold NCS axis?</H5>
+<UL><LI>Using the keyword omit_box_pdb
+is a good way of omitting a single small region, or a series of small regions,
+one at a time.  If you want to get a complete sa_omit map or many regions,
+then skip the omit_box_pdb command and let autobuild make a composite omit
+map covering the whole a.u.. Use the omit_box_pdb to define a single
+region that you want omitted (such as a few residues or a loop...)
+
+
+<LI>If you have ncs, you cannot conveniently delete all the copies at once
+with omit_box_pdb.  You can delete the 4 copies one at a time by
+specifying a list of omit regions however.
+
+<LI> To omit a list of regions, do it like this:
+
+</p><PRE style="face=courier">
+omit_res_start_list="100 500" omit_res_end_list="200 600"
+omit_chain_list="L M"
+</PRE>
+
+to omit chain L residues 100-200 and then separately chain M residues
+500-600.
+
+<LI>It shouldn't matter much if you turn off ncs while doing an omit map
+because the ncs copy won't be used in density modification during the
+process. However NCS will be used to restrain any coordinates.
+</UL>
+
+
 <!--REMARK PHENIX BODY END-->
 
