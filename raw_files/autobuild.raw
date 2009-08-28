@@ -562,6 +562,14 @@ difference map.  See also the map coefficients from density modification above.
 used in refinement
 <PRE style="face=courier">exptl_fobs_phases_freeR_flags.mtz
 </PRE>
+NOTE: The labels for this mtz file are typically:
+<PRE style="face=courier"> FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag
+</PRE>
+The file exptl_fobs_phases_freeR_flags.mtz has a copy of the (experimental) 
+HL coefficients that were input to autobuild.  The labels HLAM HLBM etc 
+have the ending "M" because they were copied by resolve and it outputs these
+labels...but in fact they are not density modified phases from autobuild, 
+just copied straight from the input data file.
 
 <LI>Final log file for model-building
 <PRE style="face=courier">overall_best.log
