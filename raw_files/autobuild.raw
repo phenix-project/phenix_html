@@ -133,20 +133,12 @@ normally procedure (a) is carried out, and then the resulting model is rebuilt
 with procedure (b). 
 
 <P>Starting from a model (e.g., from molecular replacement) and experimental
-structure factor amplitudes, procedure (c) is normally carried out if the
+structure factor amplitudes, procedure (c) is by default carried out if the
 starting model differs less than about 50% in sequence from the desired model,
-and otherwise procedure (b) is used.
-
-<P>
-<P><H5>How to run the AutoBuild Wizard</H5><P>
-<P>  Running the AutoBuild Wizard is easy.  For example, 
-from the command-line you can type:
-<PRE style="face=courier">phenix.autobuild data=w1.sca seq.dat model=coords.pdb
-</PRE>
-<P>The AutoBuild Wizard will carry out iterative model-building,
-density modification and refinement based on the data in w1.sca and
-the model in coords.pdb, editing the model as necessary to match the
-sequence in seq.dat.
+and otherwise procedure (b) is used. It is generally a good idea to specify
+which you want to happen using the keyword 
+&quot;rebuild_in_place=True&quot; (to keep the basic input model) or
+&quot;rebuild_in_place=False&quot; (to build a new model).
 
 <P><H5>What the AutoBuild wizard needs to run</H5><P>
 
@@ -208,6 +200,9 @@ Using the PHENIX Wizards</a>
 for how to do this.  Some of the most common parameters are:
 <PRE style="face=courier">data=w1.sca       # data file
 model=coords.pdb  # starting model
+rebuild_in_place=true # rebuild input model in place
+rebuild_in_place=false # build a new model; add or subtract residues 
+                       #   from input model as necessary
 seq_file=seq.dat  # sequence file
 map_file=map_coeffs.mtz # coefficients for a starting map for building
 resolution=3     # dmin of 3 A
@@ -770,21 +765,92 @@ these limits and how their default values are set:
  </TBODY>
 </TABLE>
 
-      <P><H5><U>Examples</U></H5><P>
+      <P><H5><U>Sample AutoBuild Commands</U></H5><P>
 
+<P>NOTE: Output files will be in subdirectories labelled 
+&quot;AutoBuild_run_1_&quot; &quot;AutoBuild_run_2_&quot; etc.</P>
+
+
+<H5>Run AutoBuild beginning with experimental data</H5><P>
+<PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat
+input_ncs_file=ha.pdb
+</PRE>
+<P> Here the data in solve_1.mtz (FP SIGFP PHIB FOM HLA HLB HLC HLD) will be
+used as the starting point for density modification. Then a model will be
+built and refined. In subsequent cycles the models that have been built
+will be used to improve the phases in density modification. If NCS can be
+found from the sites in ha.pdb or from any models that are built, 
+then NCS will be used in density modification.
+<P>
+
+<H5>Run AutoBuild beginning with a model and rebuild in place</H5><P>
+<PRE style="face=courier">phenix.autobuild data=w1.sca seq.dat model=coords.pdb \
+rebuild_in_place=True
+</PRE>
+<P>Here &quot;rebuild_in_place=True&quot; tells AutoBuild to keep the overall
+model you have supplied, not to add or subtract residues from it, except that
+AutoBuild will try to edit the model to match the sequence in 
+your sequence file.  
+The AutoBuild Wizard will use your model and the data in w1.sca to generate
+starting phases, then it will carry out density modification to improve those 
+phases, and adjust your model, rebuilding the model to match the resulting map
+and refining the model.
+This will be done iteratively, with the new model from each cycle being used
+at the start of the next one. If NCS is foud in your model then it will
+be used in the density modification process.
+<P>
+<H5>Add more residues to a model or rebuild a model</H5>
+<PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat \
+   model=coords.pdb rebuild_in_place=False
+</PRE>
+<P>Here &quot;rebuild_in_place=False&quot; tells AutoBuild to build a new
+model, adding or subtracting residues as necessary.
+The data in solve_1.mtz (FP SIGFP PHIB FOM HLA HLB HLC HLD) will be
+used along with your model as the starting point for density 
+modification. Then a new model will be
+built and refined. In subsequent cycles the models that have been built
+will be used to improve the phases in density modification. If NCS is 
+found in your model or any model that is built, then it will be used
+in density modification.
+<P>
 
 <H5>Run AutoBuild automatically after AutoSol</H5><P>
 <PRE style="face=courier">phenix.autobuild after_autosol
 </PRE>
-
-<H5>Run AutoBuild beginning with experimental data</H5><P>
-<PRE style="face=courier">phenix.autobuild data=solve_1.mtz seq_file=seq.dat
-</PRE>
+<p>AutoBuild will identify the AutoSol run (in your working directory) with
+the highest overall score, then it will take the experimental phases
+(solve_xx.mtz or phaser_xx.mtz, where xx is the solution number) from
+that run, along with the corresponding density-modified map (resolve_xx.mtz)
+and the heavy_atom file (ha_xx.pdb_formatted.pdb) as inputs. Additionally,
+if the input data have not been corrected for anisotropy, data for
+refinement are read in from exptl_fobs_freeR_flags_xx.mtz. (If the
+input data have been corrected for anisotropy you will have to supply a
+refinement file with input_refinement_file=xxx.mtz)
+<p>AutoBuild will then build a model, refine it, use the refined model
+in density modification, then iterate the model-building, refinement, and 
+density modification process until no further improvement in the model occcurs.
 
 <H5>Merge in hires data</H5><P>
 <PRE style="face=courier">phenix.autobuild data=solve_2.mtz hires_file=w1.sca  seq_file=seq.dat
 </PRE>
+The high-resolution data in w1.sca will be used for FP and SIGFP. 
+Other information from solve_2.mtz (PHIB FOM HLA HLB HLC HLD) will be kept.
 
+<H5>Truncate density at heavy-atom sites</H5><P>
+<PRE style="face=courier">phenix.autobuild data=solve_2.mtz seq_file=seq.dat input_ha_file=ha.pdb truncate_ha_sites_in_resolve=True
+</PRE>
+The heavy-atom sites in ha.pdb will be used to mark locations where
+high density is to be ignored during initial cycles of density modification.
+This can be useful if the heavy-atom peaks are very pronounced in the
+experimental map.
+
+<H5>Skip NCS in model_building and refinement</H5>
+<PRE style="face=courier">phenix.autobuild data=solve_2.mtz seq_file=seq.dat find_ncs=False refine_with_ncs=False
+</PRE>
+The keyword &quot;find_ncs=False&quot; disables the finding of NCS from the
+models that are built and its use in density modification and model-building.
+The keyword &quot;refine_with_ncs=False&quot; disables finding NCS and its
+use in the refinement process. Together they prevent all use of NCS.
 <H5>Make a SA-omit map around atoms in target.pdb</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb omit_box_pdb=target.pdb   composite_omit_type=sa_omit
 </PRE>
@@ -836,8 +902,8 @@ resolve_composite_map.mtz and omit_region.mtz).
   include_input_model=True  \
   multiple_models_number=1 n_cycle_rebuild_max=5
 </PRE>
-The final model will be in the file MULTIPLE_MODELS/all_models.pdb (this
-file will contain just one model).
+The final model will be in the subdirectory MULTIPLE_MODELS in
+the file all_models.pdb (this file will contain just one model).
 <p>
 Note that this procedure will keep the sequence that is present in coords.pdb.
 If you supply a sequence file it will edit the sequence of coords.pdb 
@@ -861,7 +927,8 @@ touch_up=True worst_percent_res_rebuild=2 min_cc_res_rebuild=0.8
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
    multiple_models_number=20 n_cycle_rebuild_max=5
 </PRE>
-The 20 models will be in the file MULTIPLE_MODELS/all_models.pdb.
+The 20 final models will be in the subdirectory MULTIPLE_MODELS in
+the file all_models.pdb. 
 This procedure is useful for generating an ensemble of models that are 
 each individually consistent with the data, and yet are diverse. The variation
 among these models is an indication of the uncertainty in each of the models.
