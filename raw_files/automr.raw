@@ -262,7 +262,7 @@ seq_file=seq.dat  # sequence file
 <P><H5>Standard AutoMR run with coords.pdb native.sca </H5><P>
 <P>Run AutoMR using coords.pdb as search model, native.sca as data, 
 assume RMS between coords.pdb and true model is about 0.85 A, the
-sequence of true model is seq.dat and there is 1 copy in the unit cell:
+sequence of true model is seq.dat and there is 1 copy in the asymmetric unit:
 <PRE style="face=courier">phenix.automr coords.pdb native.sca RMS=0.85 seq.dat copies=1  \
     n_cycle_rebuild_max=2 n_cycle_build_max=2
 </PRE>
