@@ -1,0 +1,170 @@
+==============================
+The phenix graphical interface
+==============================
+
+.. contents::
+
+--------
+Overview
+--------
+
+The Phenix GUI is primarily a frontend to the command-line programs, with
+several extra graphical utilities for validation, map generation, and file
+manipulations.  An older GUI is still available for running the AutoMR wizard
+and ligand identification.  This page covers the main interface and
+common behavior; individual program GUIs are covered separately.
+
+
+.. |br| raw:: html
+
+   <br /><br />
+
+|br|
+The main GUI is started simply by typing the command ``phenix``; by default,
+it will also open automatically when you launch any of the individual
+program GUIs.  You should not run more than one instance of the GUI at a
+time, to avoid conflicts with internal database files.
+|br|
+
+.. image:: images/gui_main.png
+
+-------
+Modules
+-------
+
+Individual programs are grouped by category.  Except where noted, most of
+these correspond to command-line programs, and the documentation for the
+command-line version should be the primary reference.  Additional GUI
+documentation is available for some programs.
+
+Reflection tools
+----------------
+
+  - `Xtriage <xtriage_gui.htm>`_: reflection data analysis and quality
+    assessment; used to detect twinning and other pathologies.
+
+  - Reflection file editor: utility for merging reflection files and
+    creating or extending R-free flags. (GUI only)
+
+Phasing
+-------
+
+  - `AutoSol <autosol.htm>`_: automated experimental phasing for all
+    experiment types (SAD, MAD, MIR, etc.); also performs simple model-building
+    after phasing.  Combines HySS, Phaser, SOLVE, RESOLVE, and phenix.refine.
+
+  - `AutoMR <automr.htm>`_: automated molecular replacement using Phaser;
+    feeds directly into AutoBuild.  A new GUI is in development; for now,
+    clicking this button will launch the old GUI.
+
+Building and refinement
+-----------------------
+
+  - `Find Helices and Strands <find_helices_strands.htm>`_: fast building of
+    secondary structure (as poly-ALA) into maps with RESOLVE and PULCHRA.
+    Especially good for low-resolution data.
+
+  - `AutoBuild <autobuild.htm>`_: automated model-building and refinement with
+    RESOLVE and phenix.refine.  This GUI only encapsulates the building
+    functions; a separate GUI is available for omit-map calculations.
+
+  - `phenix.refine <refine_gui.htm>`_: automated refinement, supporting both
+    X-ray and neutron data.  In addition to the features available in the
+    command-line program, the GUI version includes graphical atom selection,
+    simplified setup of restraints, automatic addition of hydrogens, and
+    post-refinement validation.
+
+  - Fit Loops: simple GUI for building missing loops into a map based on a
+    sequence and start model.
+
+Maps
+----
+
+  - Create map coefficients: simple GUI for generating likelihood-weighted
+    maps, including 2mFo-DFc, mFo-DFc, anomalous, and others, including
+    averaged "kick" maps.  Currently works only on untwinned data. (GUI only)
+
+  - `AutoBuild - create omit map <autobuild.htm>`_: similar to the main
+    AutoBuild GUI, but used for omit map generation rather than building.
+
+  - Isomorphous difference map: simple utility for creating a map from two
+    sets of amplitudes.  Corresponds to the command-line program
+    phenix.fobs_minus_fobs_map.
+
+Validation
+----------
+
+Documentation for all validation tools is `here <validation.htm>`_.  Although
+these programs exist only in the GUI, some of the individual analyses are
+available as command-line tools (``phenix.ramalyze``, ``phenix.rotalyze``,
+phenix.cbetadev``, and ``phenix.clashscore``).
+
+  - Validate geometry (Molprobity): statistics for geometry restraints,
+    Ramachandran plot, sidechain rotamers, C-beta deviation, and all-atom
+    contacts.  Outlier lists are linked to graphics programs such as Coot,
+    and clicking a residue or atom will zoom in on that site in the graphics
+    window.  Coot will also display clashes detected by PROBE.
+
+  - Comprehensive validation: Adds R-factor calculation and real-space
+    correlation statistics to the geometry validation.
+
+  - POLYGON: graphical comparison of user-selected model statistics with
+    similar structures in the PDB.
+
+Utilities
+---------
+
+  - `Old Phenix GUI <old_gui.htm>`_: The original GUI.
+
+Projects
+========
+
+Like the CCP4 GUI (ccp4i), Phenix manages data and job history by grouping
+into projects.  You will be prompted to create a project the first time you
+start the GUI;
+
+Preferences
+===========
+
+Some of the behavior of the GUI can be customized via the Preferences dialog,
+which is available from the File menu (Linux) or Phenix menu (Mac) and on the
+toolbar of most programs.
+
+.. image:: images/gui_prefs.png
+
+Because some of the larger programs may have up to 500 distinct parameters,
+many of which rarely need changing, advanced settings are hidden by default.
+This can be toggled in the "PHENIX interface" pane (shown above), in the
+"User level" option.  For example, in *phenix.refine*, a typical configuration
+dialog will look like this when the user level is "Basic":
+
+.. image:: images/gui_level0.png
+
+When set to "Advanced", many more options will appear:
+
+.. image:: images/gui_level2.png
+
+Other Preferences settings determine what external programs are used for
+various file types, interactions with molecular graphics programs (Coot,
+PyMOL, and the simple built-in graphics), and options for some of the
+specific modules in Phenix.
+
+Coot integration
+================
+
+`Coot <http://www.biop.ox.ac.uk/coot/>`_ is an open-source (GPL) model-building
+program written by Paul Emsley.   Although we do not distribute it with
+Phenix, it is available as source and binaries for Linux (from the developer's
+page), and third-party Mac binaries are available (provided by Bill Scott).
+Documentation on how to use it with Phenix is `here <coot.htm>`_.  Phenix
+will try to locate Coot on your system automatically, but if it is not found,
+you may specify the command to use under Preferences->Graphics->Full path to
+Coot.
+
+PyMOL integration
+=================
+
+`PyMOL <http://pymol.org>`_ is an open-source molecular viewer written by
+Warren DeLano.  We distribute an older precompiled version (0.99) with Phenix;
+however, we recommend installing the latest version and add the command
+under Preferences->Graphics->Full path to PyMOL.
