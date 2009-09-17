@@ -2,8 +2,6 @@
 The phenix graphical interface
 ==============================
 
-.. contents::
-
 --------
 Overview
 --------
@@ -24,7 +22,6 @@ The main GUI is started simply by typing the command ``phenix``; by default,
 it will also open automatically when you launch any of the individual
 program GUIs.  You should not run more than one instance of the GUI at a
 time, to avoid conflicts with internal database files.
-|br|
 
 .. image:: images/gui_main.png
 
@@ -77,6 +74,20 @@ Building and refinement
   - Fit Loops: simple GUI for building missing loops into a map based on a
     sequence and start model.
 
+Ligands
+-------
+
+  - `LigandFit <ligandfit.htm>`_: wizard for placing ligands in electron
+    density maps, accounting for necessary conformational changes.
+
+  - `REEL <reel.htm>`_: "Restraints Editor Especially Ligands", a graphical
+    editor for CIF files, also serves as a frontend to eLBOW.  Currently runs
+    as a separate program. (GUI only)
+
+  - `Ligand search <ligand_identification.htm>`_: program for identifying
+    unknown blobs of electron density and placing appropriate ligand(s).
+    Currently uses the old GUI.
+
 Maps
 ----
 
@@ -94,10 +105,11 @@ Maps
 Validation
 ----------
 
-Documentation for all validation tools is `here <validation.htm>`_.  Although
-these programs exist only in the GUI, some of the individual analyses are
-available as command-line tools (``phenix.ramalyze``, ``phenix.rotalyze``,
-phenix.cbetadev``, and ``phenix.clashscore``).
+Although these programs exist only in the GUI, some of the individual
+analyses are available as command-line tools (``phenix.ramalyze``,
+``phenix.rotalyze``, phenix.cbetadev``, and ``phenix.clashscore``).  Because
+all three programs are subsets of the same functionality, their
+`documentation <validation.htm>`_ is lumped together.
 
   - Validate geometry (Molprobity): statistics for geometry restraints,
     Ramachandran plot, sidechain rotamers, C-beta deviation, and all-atom
@@ -116,15 +128,47 @@ Utilities
 
   - `Old Phenix GUI <old_gui.htm>`_: The original GUI.
 
+--------
 Projects
-========
+--------
 
 Like the CCP4 GUI (ccp4i), Phenix manages data and job history by grouping
 into projects.  You will be prompted to create a project the first time you
-start the GUI;
+start the GUI.  On subsequent launches Phenix will attempt to guess the
+project based on the current directory.  There are several constraints on
+project management:
 
+  - Project IDs should be no more than 24 characters and contain only
+    alphanumeric characters (including underscore).
+
+  - Project directories may not be nested, i.e. you may not create a project
+    for a directory that is part of an existing project, or that has a
+    subdirectory that is owned by another project.
+
+When a project is created Phenix will create a folder "phenix" in the project
+directory; this is used to store job history, temporary files, and other
+internal data.  Users should not need to modify this folder unless deleting
+the project.  All functions related to project management are available
+from the main GUI only, either in the toolbar or the File menu.
+
+|br|
+The current version of the
+GUI has limited functionality for configuring projects.  Several options
+are available for setting the behavior of ``phenix.refine``, such as
+default parameter files.  The GUI will give you the opportunity to create
+these files automatically, but this feature is optional.  The other primary
+function of the projects is storing job history; although this feature is
+still in development, it will save basic statistics and configuration files,
+and can restore the parameters and results of any successful previous run.
+
+.. image:: images/job_history.png
+
+You may switch between projects while a GUI program is running; however, each
+program window stays associated with the project it was opened with.
+
+-----------
 Preferences
-===========
+-----------
 
 Some of the behavior of the GUI can be customized via the Preferences dialog,
 which is available from the File menu (Linux) or Phenix menu (Mac) and on the
@@ -149,8 +193,9 @@ various file types, interactions with molecular graphics programs (Coot,
 PyMOL, and the simple built-in graphics), and options for some of the
 specific modules in Phenix.
 
+----------------
 Coot integration
-================
+----------------
 
 `Coot <http://www.biop.ox.ac.uk/coot/>`_ is an open-source (GPL) model-building
 program written by Paul Emsley.   Although we do not distribute it with
@@ -158,13 +203,25 @@ Phenix, it is available as source and binaries for Linux (from the developer's
 page), and third-party Mac binaries are available (provided by Bill Scott).
 Documentation on how to use it with Phenix is `here <coot.htm>`_.  Phenix
 will try to locate Coot on your system automatically, but if it is not found,
-you may specify the command to use under Preferences->Graphics->Full path to
-Coot.
+you may specify the command to use under *Preferences->Graphics->Full path to
+Coot.*
 
+-----------------
 PyMOL integration
-=================
+-----------------
 
 `PyMOL <http://pymol.org>`_ is an open-source molecular viewer written by
 Warren DeLano.  We distribute an older precompiled version (0.99) with Phenix;
 however, we recommend installing the latest version and add the command
-under Preferences->Graphics->Full path to PyMOL.
+under *Preferences->Graphics->Full path to PyMOL*.
+
+--------------
+Reporting bugs
+--------------
+
+Bugs in the code may result in a pop-up window containing a detailed error
+message.  Clicking "OK" will send an email to the Phenix developers with
+this information.  We strongly encourage users to submit these reports, as
+they are one of the primary mechanisms by which we identify coding errors.
+No personal data other than your email address, the machine type (i.e.
+"intel-linux-2.6"), and version number will be sent.

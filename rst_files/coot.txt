@@ -2,6 +2,10 @@
 Using Coot with PHENIX
 ======================
 
+.. |br| raw:: html
+
+   <br /><br />
+
 `Coot <http://www.biop.ox.ac.uk/coot/>`_ is an open-source (GPL) model-building
 program written by Paul Emsley.  If a recent version of Coot (0.5 or later)
 with Python enabled is installed on your system, Phenix can use it as a
@@ -13,6 +17,7 @@ shared between all windows in a single instance of Phenix.  The Graphics
 pane of the Preferences dialog has an option to automatically start Coot
 whenever Phenix is launched.
 
+|br|
 Once the Coot window appears, you should see additional buttons on the
 toolbar for toggling communication with Phenix and showing/hiding hydrogen
 atoms.  There will also be a new menu titled PHENIX.  Currently this only
@@ -21,6 +26,7 @@ not see any modifications to the Coot window it is possible that your
 installation is incomplete, but communication with Phenix will usually be
 unaffected.
 
+|br|
 As long as Coot is open, any PDB file can be viewed there by right-clicking the
 magnifying glass icon next to the file name and choosing "Open in Coot" from
 the menu that appears.  If Coot is selected as the default PDB viewer (in
@@ -28,6 +34,7 @@ Preferences->File Handling), you may simply left-click the icon.  Most
 applications that output models and/or maps will display a button alongside
 the results that will load. the output file(s) in Coot.
 
+|br|
 In the phenix.refine, AutoBuild, and AutoSol GUIs, the current model and maps
 will be automatically updated in Coot after every cycle of refinement or
 building.  These models will be colored cyan and are regularly overwritten;
@@ -35,3 +42,10 @@ use the yellow model if you want to make permanent changes.  In phenix.refine,
 the start model will also be displayed (in purple).  To disable these
 automatic updates, uncheck "Show progress in graphics window" in
 Preferences->Graphics.
+
+Reference
+---------
+
+  - Emsley P, Cowtan K.  **Coot: model-building tools for molecular
+    graphics.**  Acta Cryst. 2004, D60:2126-32.
+
