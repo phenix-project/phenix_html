@@ -1,0 +1,47 @@
+=======================================
+Merging reflections with the Phenix GUI
+=======================================
+
+.. |br| raw:: html
+
+   <br /><br />
+
+Phenix includes a simple program for combining reflection data from
+different files and manipulating R-free flags, somewhat similar to the
+programs CAD and FREERFLAG in the CCP4 suite.  Any combination of data in
+the form of Miller arrays (any set of values indexed by h,k,l) may be merged
+into a single file, with the limitation that the crystal lattices
+specified in each file must be compatible.  All input formats readable by
+Phenix are supported, but only MTZ files are written.  Output is limited to
+25 different columns, which usually corresponds to significantly fewer
+Miller arrays (for example, experimental phases or Hendrickson-Lattman
+coefficients consist of four columns).
+
+.. image:: images/reflection_file_editor.png
+
+To add an input file, click the "+" button below the top list or simply drag
+files from the desktop into the list.  Available Miller arrays will
+automatically be loaded into the input list, and the crystal symmetry (if
+present in the file(s)) will be updated.  Select arrays by drag-and-drop
+into the output list or using the buttons below.  If different arrays
+have the same column label this will be noted in the window; you will have
+the opportunity to fix this later.
+
+|br|
+If an R-free set is not present in the output file you may create one by
+clicking the "R-free generation" button.  The default behavior is to flag
+5% of reflections up to a maximum of 2000.  Currently the assignment of flags
+is completely random across the entire resolution range, but will default to
+using the highest possible lattice symmetry initially and expanding to the
+actual symmetry.  (In other words, if the space group is P4, the R-free set
+will be generated in P422 and expanded to P4.)  Future versions will allow
+assignment of the test set in thin resolution shells to cope with potential
+bias introduced by non-crystallographic symmetry.
+
+|br|
+An existing R-free set may also be extended to the entire resolution range of
+the output file, e.g. when switching to a higher-resolution dataset for a
+partially refined structure.  This will also use the highest possible lattice
+symmetry, and will automatically determine the test set size.  If you
+previously assigned the test set in thin shells using DATAMAN or SFTOOLS,
+the program will attempt to detect this and issue a warning.
