@@ -456,15 +456,12 @@ identical to the view/edit model procedure available in the
 Wizard. Normally you would use it just to view the model in AutoSol, and
 to view and edit a model in 
 <A href="autobuild.htm"> AutoBuild </A> .
-<p>The PHENIX-Coot interface is accessible through the GUI and 
-via the command-line.
-Using the GUI, when a model has been produced by the AutoSol Wizard, 
-you can double-click the  button on the GUI labelled 
-<b>View/edit files with coot</b> to start Coot with your current map and model.
-If you are running from the command-line, you can open a new window and
+<p>The PHENIX-Coot interface is accessible via the command-line.
+When a model has been produced by the AutoSol Wizard, 
+you can open a new window and
 type:
 <PRE style="face=courier">phenix.autobuild coot </PRE>
-which will do the same (provided the necessary map and model are ready).
+which will start Coot with your current map and model.
 <p>When Coot has been loaded, your map and model will be displayed along with
 a <b>PHENIX-Coot Interface</b> window. If you want, 
 you can edit your model and then save 
