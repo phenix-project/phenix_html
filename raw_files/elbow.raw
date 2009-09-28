@@ -1,5 +1,5 @@
 
-<!--REMARK PHENIX TITLE START  Put your title here>
+<!--REMARK PHENIX TITLE START  Put your title here-->
 
 
 <H4><U>eLBOW - <I>electronic</I> Ligand Builder and Optimisation Workbench</U></H4> 
@@ -7,8 +7,9 @@
 
 <!--REMARK PHENIX TITLE END-->
 
-<!--REMARK PHENIX BODY START   Put your text here. 
-Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents-->
+
 
 <H4><U>
 <I>electronic</I> Ligand Builder and Optimisation Workbench (eLBOW)
@@ -19,10 +20,10 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <dt><a href="../elbow/docs/index_image.html">More detailed website</a></dt>
 </dl>
 
-<H5><U>Author</U></H5>
+<P><H5><U>Author</U></H5><P>
 Nigel W. Moriarty
 
-<H5><U>Purpose</U></H5>
+<P><H5><U>Purpose</U></H5><P>
 
 Automate the generation of geometry restraint information for
 refinement of novel ligands and improved geometry restraint
@@ -50,7 +51,6 @@ method known as AM1.
 <LI>CIF restraint file
 </LI>
 
-
 eLBOW contains a number of programs. All
 programs have been written to allow command-line control and script
 access to the objects and algorithm.  The main program is run thus:
@@ -75,15 +75,15 @@ such as edits and CIF files for linking the ligand to the protein.  A
 final file contains the serialised data of the molecule in the Python
 pickle format.
 
-<H5><U>Examples</U></H5>
+<P><H5><U>Examples</U></H5><P>
 
-<H5>Using SMILES string from internal database</H5>
+<P><H5>Using SMILES string from internal database</H5><P>
 
 To run eLBOW on an internal SMILES string
 <PRE><FONT face=courier>phenix.elbow --key=ATP [options]
 </FONT></PRE>
 
-<H5>PDB input</H5>
+<P><H5>PDB input</H5><P>
 
 To run eLBOW on a PDB file (containing one molecule)
 <PRE><FONT face=courier>phenix.elbow input_file.pdb
@@ -102,7 +102,7 @@ To use the atom names from a PDB file
  <PRE><FONT face=courier>phenix.elbow --smiles O --template input_file.pdb
 </FONT></PRE>
 
-<H5>SMILES input</H5>
+<P><H5>SMILES input</H5><P>
 
 To run eLBOW on a SMILES string
 <PRE><FONT face=courier>phenix.elbow --smiles="CCO"
@@ -113,13 +113,13 @@ or
 <PRE><FONT face=courier>phenix.elbow --smiles=input_file.smi
 </FONT></PRE>
 
-<H5>Other input</H5>
+<P><H5>Other input</H5><P>
 
 To run eLBOW on other supported input formats
 <PRE><FONT face=courier>phenix.elbow input_file.ext
 </FONT></PRE>
 
-<H5>Geometry optimisation</H5>
+<P><H5>Geometry optimisation</H5><P>
 
 eLBOW performs a simple force-field geometry optimisation by default, however
 an AM1 geometry optimisation can be performed as follows.
@@ -138,7 +138,7 @@ To not optimise, but use the input geometry as the final geometry
 <PRE><FONT face=courier>phenix.elbow --final_geometry input_file.pdb
 </FONT></PRE>
 
-<H5>Hydrogen addition</H5>
+<P><H5>Hydrogen addition</H5><P>
 
 eLBOW automatically adds hydrogens to the input molecules if there are less
 than a quarter of the possible hydrogens.  This can be controlled using
@@ -150,7 +150,7 @@ and position relative to a protein.  To do so use
 <PRE><FONT face=courier>phenix.elbow --final-geometry=input_file.pdb
 </FONT></PRE>
 
-<H5>Output</H5>
+<P><H5>Output</H5><P>
 
 To choice the base name of the output files
 <PRE><FONT face=courier>phenix.elbow input_file.pdb --output="output"
@@ -164,7 +164,7 @@ To change other attributes
 <PRE><FONT face=courier>phenix.elbow input_file.pdb --pdb-assign "resSeq=3 b=100"
 </FONT></PRE>
 
-<p>Some of the attributes.
+Some of the attributes.
 <LI>Residue name : resname
 <LI>Chain ID : chain, chainid
 <LI>Residue sequence ID : resseq, resid
@@ -183,7 +183,7 @@ To output PDB Ligand output
 <PRE><FONT face=courier>phenix.elbow input_file.pdb --pdb-ligand
 </FONT></PRE>
 
-<H5><U>Additional programs</U></H5>
+<P><H5><U>Additional programs</U></H5><P>
 
 <LI>phenix.get_smiles
 <LI>phenix.get_pdb
@@ -200,13 +200,17 @@ To output PDB Ligand output
 <LI>elbow.defaults : Generate a eLBOW defaults file
 </LI>
 
-<H5><U>Literature</U></H5>
+<P><H5><U>Literature</U></H5><P>
 
-<H5><U>Additional information</U></H5>
+<p>Moriarty NW, Grosse-Kunstleve RW, Adams PD:
+<b>electronic Ligand Builder and Optimization Workbench (eLBOW): a tool for ligand coordinate and restraint generation.</b>
+<a href="http://www.iucr.org/cgi-bin/paper?ea5105">
+<i>Acta Cryst.</i> 2009, <b>D65</b>:1074-1080.</a></li>
 
+<P><H5><U>Additional information</U></H5><P>
 
-  <H5>Novice options
-  </H5>
+  <P><H5>Novice options
+  </H5><P>
   <table nosave="" border="1" cols="3" width="92%" cellpadding="5px">
 <tbody>
 
@@ -1329,9 +1333,8 @@ override the automatic hydrogen addition
 </tbody>
 </table>
 
-  
-  <H5>Expert options
-  </H5>
+  <P><H5>Expert options
+  </H5><P>
   <table nosave="" border="1" cols="3" width="92%" cellpadding="5px">
 <tbody>
 
@@ -1634,10 +1637,5 @@ control the writing of redundant dihedrals
 </tbody>
 </table>
 
-  
+
 <!--REMARK PHENIX BODY END-->
-
-<!--REMARK PHENIX KEYWORDS START  This is auto-generated if you provide
-  a method, otherwise you can paste in here-->
-
-<!--REMARK PHENIX KEYWORDS END-->
