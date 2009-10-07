@@ -626,6 +626,7 @@ autosol {
     f_prime = -9.0
     f_double_prime = 1.5
   }
+}
 </PRE>
 
 <P><H5>MAD dataset, selecting particular datasets from an MTZ file</H5><P>
@@ -691,6 +692,7 @@ autosol {
     f_double_prime = 3.5
     sites = 3 
   }
+}
 </PRE>
 
 <P><H5>SAD with more than one anomalously-scattering atom </H5><P>
@@ -766,6 +768,7 @@ autosol {
     f_prime = -7.
     f_double_prime = 4.5
   }
+}
 </PRE>
 <P>The SIR and SAD datasets will be solved separately (but whichever
 one is solved first will use difference Fourier or anomalous difference 
