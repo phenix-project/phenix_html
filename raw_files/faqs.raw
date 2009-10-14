@@ -716,6 +716,13 @@ You will know it is working if your resolve_xx.log says:
 </p><PRE style="face=courier">
 Using model mask calculated from coordinates
 </PRE>
+<p>Note: this command is most appropriate for use with the 
+keyword &quot;maps_only=True&quot; because phenix.autobuild also 
+uses &quot;model=...&quot; so that iterative model-building may not work 
+entirely correctly in this case. Two parts that may not function 
+correctly are &quot;build_outside_model&quot; (which will use your model as a 
+mask and not the current one), and evaluate_model (which will 
+evaluate your starting model, not the current model).
 
 <H5>Is there anyway to get phenix.autobuild to NOT delete multiple
 conformers when doing a SA-omit map?</H5>
