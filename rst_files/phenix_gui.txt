@@ -8,9 +8,9 @@ Overview
 
 The Phenix GUI is primarily a frontend to the command-line programs, with
 several extra graphical utilities for validation, map generation, and file
-manipulations.  An older GUI is still available for running the AutoMR wizard
-and ligand identification.  This page covers the main interface and
-common behavior; individual program GUIs are covered separately.
+manipulations.  The original GUI is still available but deprecated, and all
+functionality has been more or less superseded.  This page covers the main
+interface and common behavior; individual program GUIs are covered separately.
 
 
 .. |br| raw:: html
@@ -51,8 +51,8 @@ Phasing
     after phasing.  Combines HySS, Phaser, SOLVE, RESOLVE, and phenix.refine.
 
   - `AutoMR <automr.htm>`_: automated molecular replacement using Phaser;
-    feeds directly into AutoBuild.  A new GUI is in development; for now,
-    clicking this button will launch the old GUI.
+    feeds directly into AutoBuild.  (This is also the starting point for
+    running MR-SAD.)
 
 Building and refinement
 -----------------------
@@ -71,8 +71,8 @@ Building and refinement
     simplified setup of restraints, automatic addition of hydrogens, and
     post-refinement validation.
 
-  - Fit Loops: simple GUI for building missing loops into a map based on a
-    sequence and start model.
+  - `Fit Loops <fit_loops.htm>`: simple GUI for building missing loops into
+    a map based on a sequence and start model.
 
 Ligands
 -------

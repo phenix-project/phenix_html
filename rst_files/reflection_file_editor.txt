@@ -24,8 +24,12 @@ files from the desktop into the list.  Available Miller arrays will
 automatically be loaded into the input list, and the crystal symmetry (if
 present in the file(s)) will be updated.  Select arrays by drag-and-drop
 into the output list or using the buttons below.  If different arrays
-have the same column label this will be noted in the window; you will have
-the opportunity to fix this later.
+have the same column label this will be noted in the window.  You can edit
+the output labels and resolution limits for individual arrays by clicking
+the "Edit arrays. . ." button.  You can also manipulate the output data
+by merging anomalous data or converting to and from intensities and amplitudes.
+
+.. image:: images/miller_arrays_dialog.png
 
 |br|
 If an R-free set is not present in the output file you may create one by
@@ -34,9 +38,11 @@ clicking the "R-free generation" button.  The default behavior is to flag
 is completely random across the entire resolution range, but will default to
 using the highest possible lattice symmetry initially and expanding to the
 actual symmetry.  (In other words, if the space group is P4, the R-free set
-will be generated in P422 and expanded to P4.)  Future versions will allow
-assignment of the test set in thin resolution shells to cope with potential
-bias introduced by non-crystallographic symmetry.
+will be generated in P422 and expanded to P4.)  Alternately, you may pick
+the test set in thin resolution shells, which helps avoid bias due to
+non-crystallographic symmetry.  (Since the test set will not be evenly
+distributed across the entire resolution range, don't use this option if
+NCS is not present.)
 
 |br|
 An existing R-free set may also be extended to the entire resolution range of
@@ -45,3 +51,19 @@ partially refined structure.  This will also use the highest possible lattice
 symmetry, and will automatically determine the test set size.  If you
 previously assigned the test set in thin shells using DATAMAN or SFTOOLS,
 the program will attempt to detect this and issue a warning.
+
+Current limitations
+-------------------
+
+  - The editor works best when all input files are in MTZ format; other
+    formats should work but have not been tested as thoroughly.
+  - Output labels will be guessed automatically, but this breaks down when
+    merging anomalous data, which halves the number of output arrays (and
+    makes the trailing (+) and (-) unnecessary).  This will be checked at
+    runtime.
+  - The editor will not otherwise attempt to impose sensible label names,
+    except when converting between intensities and amplitudes.
+  - All input files must either have the same symmetry (allowing for slight
+    differences in unit cell dimensions and screw axes) or leave it undefined
+    (e.g. CNS format).  To mix arrays from files with different symmetry,
+    first convert each to the desired final symmetry, then combine them.
