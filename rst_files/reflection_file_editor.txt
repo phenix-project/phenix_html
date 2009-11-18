@@ -31,7 +31,9 @@ by merging anomalous data or converting to and from intensities and amplitudes.
 
 .. image:: images/miller_arrays_dialog.png
 
-|br|
+Dealing with R-free flags
+-------------------------
+
 If an R-free set is not present in the output file you may create one by
 clicking the "R-free generation" button.  The default behavior is to flag
 5% of reflections up to a maximum of 2000.  Currently the assignment of flags
@@ -52,8 +54,21 @@ symmetry, and will automatically determine the test set size.  If you
 previously assigned the test set in thin shells using DATAMAN or SFTOOLS,
 the program will attempt to detect this and issue a warning.
 
-Current limitations
--------------------
+|br|
+Phenix uses the CNS/XPLOR convention for R-free flags, where 1 marks the test
+set and 0 the "working" set.  By default, all R-free arrays will be written
+in this format as well, regardless of source; if you generated R-free flags in
+CCP4, which assigns random numbers (usually 0 through 19) and uses 0 to mark
+the test set, they will be converted first.  If you prefer to preserve the
+original integer values, the R-free flags dialog includes an option to do
+this; however, this is incompatible with extending an existing set.
+Alternately, you may choose to output all R-free flags in the CCP4 format
+even if extending existing flags, but this will renumber all flags not in
+the test set.  (It also assumes that the test set size is approximately 5% of
+the total number of reflections.)
+
+Notes on usage
+--------------
 
   - The editor works best when all input files are in MTZ format; other
     formats should work but have not been tested as thoroughly.

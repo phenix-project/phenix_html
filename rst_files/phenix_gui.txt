@@ -43,6 +43,22 @@ Reflection tools
   - `Reflection file editor <reflection_file_editor.htm>`_: utility for
     merging reflection files and creating or extending R-free flags. (GUI only)
 
+Model tools
+-----------
+
+  - `PDB Tools <pdbtools.htm>`_: various model manipulations such as
+    modifying atom records, geometry minimization, and generating "fake"
+    structure factors.
+
+  - `ReadySet <ready_set.htm>`_: preparation of input files for refinement,
+    including generating restraints (CIF) files and adding hydrogens.
+
+  - `NCS restraint editor <simple_ncs_from_pdb.htm>`_: determine appropriate
+    restraint groups based on an existing PDB file.
+
+Note that the ReadySet and NCS GUIs are also available as plugins to the
+``phenix.refine`` GUI, and do not necessarily need to be run separately.
+
 Phasing
 -------
 
@@ -71,7 +87,7 @@ Building and refinement
     simplified setup of restraints, automatic addition of hydrogens, and
     post-refinement validation.
 
-  - `Fit Loops <fit_loops.htm>`: simple GUI for building missing loops into
+  - `Fit Loops <fit_loops.htm>`_: simple GUI for building missing loops into
     a map based on a sequence and start model.
 
 Ligands
@@ -107,21 +123,27 @@ Validation
 
 Although these programs exist only in the GUI, some of the individual
 analyses are available as command-line tools (``phenix.ramalyze``,
-``phenix.rotalyze``, phenix.cbetadev``, and ``phenix.clashscore``).  Because
+``phenix.rotalyze``, ``phenix.cbetadev``, and ``phenix.clashscore``).  Because
 all three programs are subsets of the same functionality, their
 `documentation <validation.htm>`_ is lumped together.
 
-  - Validate geometry (Molprobity): statistics for geometry restraints,
-    Ramachandran plot, sidechain rotamers, C-beta deviation, and all-atom
-    contacts.  Outlier lists are linked to graphics programs such as Coot,
+  - Comprehensive validation: reports R-work and R-free, statistics for
+    geometry restraints, Ramachandran plot, sidechain rotamers, C-beta
+    deviation, all-atom contacts, and real-space correlation with electron
+    density.  Outlier lists are linked to graphics programs such as Coot,
     and clicking a residue or atom will zoom in on that site in the graphics
-    window.  Coot will also display clashes detected by PROBE.
-
-  - Comprehensive validation: Adds R-factor calculation and real-space
-    correlation statistics to the geometry validation.
+    window.  Coot will also display clashes detected by PROBE.  (The
+    ``phenix.refine`` GUI will also display a nearly identical validation
+    report at the end of refinement.)
 
   - POLYGON: graphical comparison of user-selected model statistics with
     similar structures in the PDB.
+
+We strongly recommend that users run the comprehensive validation, since
+issues with geometry should ideally be analyzed together with the fit to
+experimental data.  However, a separate geometry-only interface (which does
+not require a reflections file) is available as ``phenix.validate_model``,
+although not listed in the GUI.
 
 Utilities
 ---------
@@ -178,9 +200,11 @@ toolbar of most programs.
 
 Because some of the larger programs may have up to 500 distinct parameters,
 many of which rarely need changing, advanced settings are hidden by default.
-This can be toggled in the "PHENIX interface" pane (shown above), in the
-"User level" option.  For example, in *phenix.refine*, a typical configuration
-dialog will look like this when the user level is "Basic":
+You may control this in individual dialogs using the "User level" menu at
+the bottom of the window, or change the global level in the "PHENIX interface"
+pane (shown above), in the "User level" option.  For example, in
+*phenix.refine*, a typical configuration dialog will look like this when the
+user level is "Basic":
 
 .. image:: images/gui_level0.png
 
@@ -223,7 +247,8 @@ Bugs in the code may result in a pop-up window containing a detailed error
 message.  Clicking "OK" will send an email to the Phenix developers with
 this information.  We strongly encourage users to submit these reports, as
 they are one of the primary mechanisms by which we identify coding errors.
-No personal data other than your email address, the machine type (i.e.
-"intel-linux-2.6"), and version number will be sent.
+The report will include the error message, information about the host
+system, and user name/email; no other personally identifying information or
+data is sent.
 
 .. image:: images/gui_error.png
