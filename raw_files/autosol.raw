@@ -387,7 +387,8 @@ phaser_15.mtz
 <PRE style="face=courier">current_cycle_map_coeffs.mtz  # map coefficients (density modified phases)
 resolve_15.mtz   # density-modified phases; same as above
 </PRE>
-For either of these, use FP PHIM FOMM for PHI F FOM.
+For either of these, use FP PHIM FOMM for PHI F FOM. If you are using
+Coot to display them, select "Open MTZ" (rather than "Auto Open MTZ").
 
 <P><LI>An mtz file for use in refinement
 <PRE style="face=courier">exptl_fobs_phases_freeR_flags_15.mtz  # F Sigma HL coeffs, freeR-flags for refinement
