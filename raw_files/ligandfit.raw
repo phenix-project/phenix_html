@@ -183,12 +183,13 @@ and then you can just edit this file to match your needs and run it with:
 <P><H5> Sample command_line inputs</H5><P>
 
 <P><UL><LI>Standard run of ligandfit (generate map from model and data file)
-<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=ATP
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=ATP \
+ lig_map_type=fo-fc_difference_map  
 </PRE>
 
 <P><LI>Build into a map from pre-determined coefficients
 <PRE style="face=courier">phenix.ligandfit data=perfect.mtz \
- lig_map_type=fo-fc_difference_map   \
+ lig_map_type=pre_calculated_map_coeffs \
    model=partial.pdb ligand=NAD
 </PRE>
 
