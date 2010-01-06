@@ -20,7 +20,7 @@ for arg in $*; do
 done
 
 cd $PHENIX/phenix_html
-echo "Building PHENIX documentation"
+echo "Building PHENIX documentation in $PHENIX"
 
 echo "  creating restructured text files"
 cd rst_files
