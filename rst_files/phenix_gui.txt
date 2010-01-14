@@ -31,8 +31,9 @@ Modules
 
 Individual programs are grouped by category.  Except where noted, most of
 these correspond to command-line programs, and the documentation for the
-command-line version should be the primary reference.  Additional GUI
-documentation is available for some programs.
+command-line version should be the primary reference for understanding
+program behavior and inputs.  Additional GUI documentation is available
+for some programs.
 
 Reflection tools
 ----------------
@@ -49,6 +50,12 @@ Model tools
   - `PDB Tools <pdbtools.htm>`_: various model manipulations such as
     modifying atom records, geometry minimization, and generating "fake"
     structure factors.
+
+  - Sculptor: prepare a search model for molecular replacement by trimming
+    the structure, modifying B-factors, etc.
+
+  - Ensembler: tool for creating superimposed ensembles of related MR search
+    models.
 
   - `ReadySet <ready_set.htm>`_: preparation of input files for refinement,
     including generating restraints (CIF) files and adding hydrogens.
@@ -69,6 +76,15 @@ Phasing
   - `AutoMR <automr.htm>`_: automated molecular replacement using Phaser;
     feeds directly into AutoBuild.  (This is also the starting point for
     running MR-SAD.)
+
+  - `Phaser-MR <phaser_mr.htm>`_: Interface for molecular replacement using
+    standalone `Phaser <phaser.htm>`_, with all parameters available as well
+    as different modes of operation.  We recommend starting with AutoMR
+    first, but this GUI is useful for tough cases.
+
+  - `Phaser-EP <phaser_ep.htm>`_: Another Phaser interface, for SAD and MR-SAD
+    phasing.  We recommend trying AutoSol first, but this GUI exposes
+    additional parameters.
 
 Building and refinement
 -----------------------
@@ -107,9 +123,10 @@ Ligands
 Maps
 ----
 
-  - Create map coefficients: simple GUI for generating likelihood-weighted
-    maps, including 2mFo-DFc, mFo-DFc, anomalous, and others, including
-    averaged "kick" maps.  Currently works only on untwinned data. (GUI only)
+  - `Create map coefficients <create_maps.htm>`_: simple GUI for generating
+    likelihood-weighted maps, including 2mFo-DFc, mFo-DFc, anomalous, and
+    others, including averaged "kick" maps.  Currently works only on untwinned
+    data. (GUI only)
 
   - `AutoBuild - create omit map <autobuild.htm>`_: similar to the main
     AutoBuild GUI, but used for omit map generation rather than building.
@@ -127,23 +144,23 @@ analyses are available as command-line tools (``phenix.ramalyze``,
 all three programs are subsets of the same functionality, their
 `documentation <validation.htm>`_ is lumped together.
 
-  - Comprehensive validation: reports R-work and R-free, statistics for
+  - `Comprehensive validation <validation.htm>`_: reports R-work and R-free,
+    statistics for
     geometry restraints, Ramachandran plot, sidechain rotamers, C-beta
     deviation, all-atom contacts, and real-space correlation with electron
     density.  Outlier lists are linked to graphics programs such as Coot,
     and clicking a residue or atom will zoom in on that site in the graphics
-    window.  Coot will also display clashes detected by PROBE.  (The
-    ``phenix.refine`` GUI will also display a nearly identical validation
-    report at the end of refinement.)
+    window.  Coot will also display clashes detected by PROBE.
 
-  - POLYGON: graphical comparison of user-selected model statistics with
-    similar structures in the PDB.
+  - `POLYGON <validation.htm#anch14>`_: graphical comparison of user-selected
+    model statistics with similar structures in the PDB.
 
 We strongly recommend that users run the comprehensive validation, since
 issues with geometry should ideally be analyzed together with the fit to
 experimental data.  However, a separate geometry-only interface (which does
 not require a reflections file) is available as ``phenix.validate_model``,
-although not listed in the GUI.
+although not listed in the GUI.  The ``phenix.refine`` GUI will also display
+a complete validation report at the end of refinement.
 
 Utilities
 ---------

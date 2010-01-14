@@ -221,19 +221,19 @@ decreases or the resolution gets worse.  Re-refinement with a slightly
 different protocol is often helpful; in particular, explicit hydrogens can
 help constrain the model.  The weight applied to X-ray terms during
 refinement may need to be reduced in favor of geometric restraints;
-this can be done automatically by `*phenix.refine* <refinement.htm>`_.
+this can be done automatically by `phenix.refine <refinement.htm>`_.
 
 
 References
 ==========
 
   - *Molprobity* :
-    Davis IW, Leaver-Fay A, Chen VB, Block JN, Kapral GJ, Wang X, Murray LW,
-    Arendall WB 3rd, Snoeyink J, Richardson JS, Richardson DC.
-    **MolProbity: all-atom contacts and structure validation for proteins
-    and nucleic acids.**
-    `Nucleic Acids Res. 2007 35:W375-83.
-    <http://www.ncbi.nlm.nih.gov/pubmed/17452350>`_
+    Chen VB, Arendall WB 3rd, Headd JJ, Keedy DA, Immormino RM, Kapral GJ,
+    Murray LW, Richardson JS, Richardson DC.
+    **MolProbity: all-atom structure validation for macromolecular 
+    crystallography.**
+    `Acta Cryst. 2010 D66:12-21
+    <http://www.ncbi.nlm.nih.gov/pubmed/20057044>`_
 
   - *POLYGON* :
     Urzhumtseva L, Afonine PV, Adams PD, Urzhumtsev A.
