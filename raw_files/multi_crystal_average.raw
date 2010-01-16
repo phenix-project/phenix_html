@@ -153,7 +153,12 @@ contents of this crystal are represented by crystal_1.pdb.  The second crystal
 has no starting map, has data for FP as well as PHI and HL coefficients
 in crystal_2_data.mtz, and the contents of this crystal are represented by
 crystal_2.pdb.  The solvent contents of the 2 crystals are 0.43 and 0.50,
-and 5 overall cycles are to be done.
+and 5 overall cycles are to be done. 
+<p>
+NOTE: Usually you will want to supply coefficients for a density-modified map 
+(if available, and perhaps with NCS as well) for your starting map 
+coefficients, and you will want to supply experimental phases and 
+HL coefficients for your datfiles.
 <P>
 The column label strings like "FP=FP" are optional...if you say instead
 "None" then phenix.multi_crystal_average will guess them for you.
