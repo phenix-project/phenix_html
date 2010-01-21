@@ -362,7 +362,7 @@ The RESOLVE database doesn't have RNA+protein in it, nor does it have low-resolu
 
 <LI> Calculate a map with this model at the resolution you are interested in:
 </p><PRE style="face=courier">
-phenix.pdbtools --f-model high_resolution=5 refine_1.pdb
+phenix.fmodel high_resolution=5 refine_1.pdb
 </PRE>
 
 <LI>Generate histograms with phenix.resolve. Here is a script:

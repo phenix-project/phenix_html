@@ -25,6 +25,7 @@ echo "Building PHENIX documentation in $PHENIX"
 echo "  creating restructured text files"
 cd rst_files
 phenix.python ../scripts/create_refinement_txt.py
+phenix.python ../scripts/create_fmodel_txt.py
 
 echo "  building HTML files from restructured text files"
 for file in `ls *.txt` ; do

@@ -33,17 +33,6 @@ that doesn't require knowledge of the crystal symmetry is still
 available. To enable the full functionality, the crystal symmetry
 can be specified externally (e.g. via the --symmetry option).
 
-**Structure factors calculation**
-
-The total model structure factor is defined as::
-
-  Fmodel = scale * exp(-h*b_cart*ht) * (Fcalc + k_sol * exp(-b_sol*s^2) * Fmask)
-
-where: ``scale`` is overall scale factor, ``h`` is Miller index, ``b_cart``
-is overall anisotropic scale matrix in Cartesian basis, ``Fcalc`` are structure
-factors computed from atomic model, ``k_sol`` is bulk solvent density, ``b_sol``
-is smearing factor for bulk solvent contribution, ``Fmask`` is a solvent mask.
-
 **Add hydrogen atoms**
 
 Add H atoms to a model using phenix.reduce. All default parameters of
@@ -95,33 +84,10 @@ atoms::
 
   % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 selection="chain C"
 
-**6)** Simple Fcalc from atomic model (Fmodel = Fcalc)::
-
-  % phenix.pdbtools model.pdb --f_model high_resolution=2.0
-
-this will result in MTZ file with complete set of Fcalc up to 2A resolution.
-
-**7)** Compute Fmodel include bulk solvent and all other scales, request the
-output in CNS format, specify labels for output Fmodel (by default it is
-FMODEL), set ``low_resolution`` limit, use direct method of calculations
-(rather than FFT)::
-
-  % phenix.pdbtools model.pdb high_resolution=2.0 format=cns label=FM \
-    low_resolution=6.0 algorithm=direct k_sol=0.35 b_sol=60 scale=3 \
-    b_cart='1 2 -3 0 0 0' --f_model
-
-**8)** Compute Fcalc using neutron scattering dictionary::
-
-  % phenix.pdbtools model.pdb --f_model high_resolution=2.0 scattering_table=neutron
-
-**9)** Input model can be manipulated first before structure factors calculation::
-
-  % phenix.pdbtools model.pdb --f_model high_resolution=2.0 sites.shake=1.0
-
-**10)** Add H atoms to a model::
+**6)** Add H atoms to a model::
 
   % phenix.pdbtools model.pdb --add_h output.file_name=model_h.pdb
 
-**11)** Model geometry regularization::
+**7)** Model geometry regularization::
 
   % phenix.pdbtools model.pdb --geometry_regularization

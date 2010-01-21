@@ -6,6 +6,7 @@ set phenix_html=`libtbx.find_in_repositories phenix_html`
 cd "$phenix_html/rst_files"
 if ($status != 0) exit $status
 phenix.python ../scripts/create_refinement_txt.py
+phenix.python ../scripts/create_fmodel_txt.py
 
 echo "  building HTML files from restructured text files"
 
