@@ -21,7 +21,7 @@ raw_footer = """\
 
 def run(args):
   assert len(args) == 1
-
+  title = ""
   lines_init = iter(open(args[0]).read().splitlines())
   for line in lines_init:
     if (line.startswith('<h1 class="title">')):
