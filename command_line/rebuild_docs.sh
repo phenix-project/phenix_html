@@ -1,7 +1,17 @@
 #!/bin/sh
 
-if [ ! -d $PHENIX/phenix_html ]; then
-  echo "$PHENIX/phenix_html not found; aborting"
+if [ -z "$PHENIX" ]; then
+  echo "PHENIX environment variable not set."
+  exit 1
+elif [ ! -d $PHENIX ]; then
+  echo "PHENIX environment variable is set, but not a directory:"
+  echo "  $PHENIX"
+  exit 1
+fi
+
+PHENIX_HTML=`libtbx.find_in_repositories phenix_html`
+if [ -z "$PHENIX_HTML" ]; then
+  echo "$PHENIX_HTML not found; aborting"
 fi
 
 HTML_LOG=/var/tmp/phenix_html.log
@@ -19,11 +29,13 @@ for arg in $*; do
   esac
 done
 
-cd $PHENIX/phenix_html
-echo "Building PHENIX documentation in $PHENIX"
+cd $PHENOX_HTML
+echo "Building PHENIX documentation in $PHENIX_HTML"
+echo "The complete documentation will be in:"
+echo "  $PHENIX/doc"
 
 echo "  creating restructured text files"
-cd rst_files
+cd $PHENIX_HTML/rst_files
 phenix.python ../scripts/create_refinement_txt.py
 phenix.python ../scripts/create_fmodel_txt.py
 
@@ -45,7 +57,7 @@ done
 
 echo "  converting raw HTML files, creating tables-of-contents, and indexing"
 
-cd $PHENIX/phenix_html
+cd $PHENIX_HTML
 phenix.python $PHENIX/phenix/phenix/utilities/toc_and_index.py >> $HTML_LOG
 
 echo "  populating documentation directory $PHENIX/doc"
@@ -56,13 +68,13 @@ fi
 
 mkdir -p $PHENIX/doc
 
-cp -r $PHENIX/phenix_html/icons   $PHENIX/doc
-cp -r $PHENIX/phenix_html/images  $PHENIX/doc
-cp    $PHENIX/phenix_html/*.html  $PHENIX/doc
-cp    $PHENIX/phenix_html/*.htm   $PHENIX/doc
+cp -r $PHENIX_HTML/icons   $PHENIX/doc
+cp -r $PHENIX_HTML/images  $PHENIX/doc
+cp    $PHENIX_HTML/*.html  $PHENIX/doc
+cp    $PHENIX_HTML/*.htm   $PHENIX/doc
 /bin/rm $PHENIX/doc/phenix_documentation.html
 VERSION=${PHENIX_VERSION}-${PHENIX_RELEASE_TAG}
-sed "s/INSTALLED_VERSION/$VERSION/;" $PHENIX/phenix_html/phenix_documentation.html > $PHENIX/doc/phenix_documentation.html
+sed "s/INSTALLED_VERSION/$VERSION/;" $PHENIX_HTML/phenix_documentation.html > $PHENIX/doc/phenix_documentation.html
 ln -s $PHENIX/doc/phenix_documentation.html $PHENIX/doc/index.html
 
 echo "done."
