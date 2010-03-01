@@ -1,0 +1,330 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Model editing with Sculptor</U></H4> 
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U><B>Author(s)</B></U></H5></P>
+<UL>
+<LI>sculptor: Gabor Bunkoczi</LI>
+<LI>PHENIX GUI: Nathaniel Echols</LI>
+</UL>
+
+<P><H5><U>Purpose</U></H5></P>
+
+<P>
+Sculptor can be used to improve a model for a specific molecular replacement
+problem, using additional information available from alignments.
+</P>
+
+<P><H5><U>Conventions</U></H5></P>
+
+<P>
+The following terms are used with the special meaning:
+<UL>
+<LI><B>target:</B> the structure to be solved</LI>
+<LI><B>model:</B> the structure used as a model for the target</LI>
+</UL>
+</P>
+
+<P><H5><U>Usage</U></H5></P>
+<P>
+Sculptor can be run from the PHENIX GUI and the command line, the only
+difference being the way commands are taken from the user. The command line
+version will be described here.
+</P>
+<P>
+The most typical command line for sculptor is as follows:
+<P>
+<P><CENTER><TT>phenix.sculptor my_structure.pdb my_alignment.aln</TT></CENTER></P>
+<P>
+This will process the structure in <TT>my_structure.pdb</TT> using the default
+workflow and write out the result to <TT>my_structure_sculpt.pdb</TT>. File
+types are identified from the extension, but command line switches are also
+available to specify types explicitly.
+</P>
+
+<P><H5>Accepted formats</H5></P>
+<UL>
+<LI><TT>.pdb</TT> for structure file</LI>
+<LI><TT>.aln</TT> (CLUSTAL format), <TT>.pir</TT> (PIR-format) and
+<TT>.ali</TT> (relaxed PIR-like format)</LI>
+</UL>
+
+<P><H5><U>User interface</U></H5></P>
+<P>
+Sculptor accepts UNIX-style switches, phil-style command line arguments and
+phil format command files.
+</P>
+
+<P><H5>Command line switches</H5></P>
+<UL>
+<LI><TT>--out</TT> specifies the output file name</LI>
+<LI><TT>--model</TT> specifies a PDB format model file irrespective of its
+extension</LI>
+<LI><TT>--alignment</TT> specifies an alignment file (has to be one of the
+accepted formats)</LI>
+<LI><TT>--verbose</TT> and <TT>--terse</TT> control verbosity</LI>
+<LI><TT>--help</TT> lists all available options</LI>
+</UL>
+<P>
+Phil keywords are summarized in the <B>Additional information</B> section.
+</P>
+
+<P><H5><U>Functionality</U></H5></P>
+<P>
+Sculptor processes a PDB file using information from optional alignment files.
+The alignment files can either be pairwise or multiple alignments, and the
+target sequence has to appear first. The PDB file can contain any number of
+(potentially non-identical) chains. No alignment is necessary for certain
+B-factor prediction modes.
+</P>
+<P>
+For each protein chain in the model, sculptor tries to find a matching
+alignment. Alignments are tried in input order and the first matching will be
+selected (in case several sequences match the chain, the longest one is used).
+If no matching alignment is found, optionally a dummy alignment is made up from
+the chain sequence (parameter <TT>create_missing_alignment=True</TT>) otherwise
+the chain is discarded.
+</P>
+<P>
+Chains go through a series of improvement steps, all of them configurable by
+the user:
+<OL>
+<LI>
+<B>Deletion</B>. Discards residues from a model chain that are unlikely to
+improve signal in molecular replacement.
+</LI>
+<LI>
+<B>Polishing</B>. Makes small adjustments to the mainchain of a chain (taking
+results from deletion into account) to make it obey basic macromolecular
+features.
+</LI>
+<LI>
+<B>Pruning</B>. Prunes the sidechains in model residues so that they agree
+better with target residues.
+</LI>
+<LI>
+<B>B-factor</B>. Changes the B-factor of atoms to smear out atoms that may
+show more variability.
+</LI>
+<LI>
+<B>Renumber</B>. Changes the numbering of a model chain so that it corresponds
+to that of the target.
+</LI>
+<LI>
+<B>Rename</B>. Changes residue names and "morphs" sidechains of the model to
+improve similarity with the target.
+</LI>
+</OL>
+
+Please see the relevant section for available algorithms. Default settings can
+be found in the <B>Additional information</B> section.
+
+<P><H5>Deletion</H5></P>
+<P>
+Phase 1 of mainchain processing. Takes input from the alignment to decide
+whether a residue is included in the model or not.
+<UL>
+<LI>
+<B>Gap</B>. Deletes residues that are not present in the target (model residue
+is aligned with a gap).
+</LI>
+<LI>
+<B>Similarity</B>. Deletes residues for which the sequence similarity is below
+a certain threshold. See options for the sequence similarity calculation.
+</LI>
+</UL>
+<P>
+These algorithms can also be used together in any combination. In this case, a
+residue will be deleted if assigned for deletion by any active algorithms.
+</P>
+
+<P><H5>Polishing</H5></P>
+<P>
+Phase 2 of mainchain processing (can be used on its own as well). Looks at the
+(optional) primary result from <B>deletion</B> and tries to improve it, based
+on information from the actual structure.
+<UL>
+<LI>
+<B>Remove short</B>. Deletes additional residue segments from the molecule that
+are shorter than a preset limit (customizable by the <TT>minimum_length</TT>
+parameter). Segment boundaries are determined from spatial properties of the
+residues. This algorithm is primarily intended to remove "floating" residues in
+loops.
+</LI>
+</UL>
+If there were other algorithms available, these could also be used together in
+any combination. Watch out for future releases!
+</P>
+
+<P><H5>Pruning</H5></P>
+<P>
+This phase determines the level distance from the C<SUB>alpha</SUB> atom up to
+which a residue sidechain in the model is potentially similar to its
+counterpart in the target.
+<P>
+<UL>
+<LI>
+<B>Schwarzenbacher</B>. Implements the algorithm published by Schwarzenbacher
+<I>et al.</I> (2004), who propose that for optimal molecular replacement
+results a residue sidechain should be truncated if aligned with a non-identical
+residue, and not truncated otherwise. The level of truncation is controlled by
+the <TT>pruning_level</TT> parameter, and defaults to C<SUB>gamma</SUB>
+(<TT>pruning_level=2</TT>).
+</LI>
+<LI>
+<B>Similarity</B>. Uses sequence similarity values for deciding the level of
+truncation. Residues above the upper threshold are not truncated at all, those
+below the lower threshold are truncated to C<SUB>beta</SUB>, and those in
+between are truncated to a certain level (controlled by the
+<TT>pruning_level</TT> parameter). Results tend to be similar values to those
+given by the Schwarzenbacher algorithm; however, it is possible to get high
+similarity values (and full sidechain preservation) for certain substitutions
+(i.e. TYR to PHE), and low-sequence similarity zones can end up being truncated
+to C<SUB>beta</SUB>. See options for the sequence similarity calculation.
+</LI>
+</UL>
+
+<P>
+These algorithms can also be used together in any combination, in which case
+the sidechain will be truncated to the shortest value suggested.
+</P>
+
+<P><H5>B-factor prediction</H5></P>
+<P>
+B-factor prediction tries to increase B-factors for atoms that are likely to be
+more flexible or more in error. There are several algorithms available, and it
+is possible to combine individual results with an arbitrary weight. Raw results
+from underlying algorithms are multiplied by their <TT>factor</TT> parameter,
+and summed up. If this value is lower than the <TT>minimum</TT> parameter,
+a constant is added to all B-factors so that the lowest of those equals
+<TT>minimum</TT> (this is primarily intended to avoid negative B-factors).
+</P>
+<P>
+<B>Caveat:</B> so far there is no clear indication that B-factor prediction is
+beneficial to molecular replacement.
+<P>
+<UL>
+<LI>
+<B>Original</B>. This uses the original B-factor of atoms. This is primarily
+intended as a contributor to a combination, but can also be used to manipulate
+current B-factors, e.g. set them to a constant value.
+</LI>
+<LI>
+<B>Accessible surface area</B>. This calculates accessible surface area for an
+isolated chain and transforms the raw values to B-factors. A high ASA-value
+indicates a potential for flexibility.
+</LI>
+<LI>
+<B>Similarity</B>. Low sequence similarity regions tend to be more dissimilar.
+See options for the sequence similarity calculation.
+</LI>
+</UL>
+<P>
+This mode can also be used to map sequence similarity or accessible surface
+area to residues/atoms for display purposes!
+</P>
+
+<P><H5>Renumber</H5></P>
+<P>
+Renumbers residues according to the <B>target</B> or <B>model</B> sequence. It
+is also possible to turn renumbering off (option <TT>None</TT>).
+<P>
+
+<P><H5>Rename</H5></P>
+<P>
+Renames residues according their counterpart in the target sequence. It also
+"morphs" the sidechain, i.e. renames atoms and deletes atoms that are not
+present. It can also generate missing atoms, if their positions are determined
+by present atoms.
+<P>
+<UL>
+<LI><B>C<SUB>beta</SUB></B>. For non-glycine residues having C, N and
+C<SUB>alpha</SUB> atoms present.</LI>
+</UL>
+<P>
+This list is not very long, but it has the potential to grow!
+</P>
+
+<P><H5>Sequence similarity calculation</H5></P>
+<P>
+Sequence similarity is calculated from the full alignment supplied (taking all
+present sequences into account), using a scoring matrix (currently
+<TT>blosum50</TT>, <TT>blosum62</TT>, <TT>dayhoff</TT> and <TT>identity</TT>
+are available). Raw scores are then averaged over a <TT>window</TT> of residues
+(defaults to 5 residues in both directions) that is weighted using either
+<TT>uniform</TT> or <TT>triangular</TT> weights. The resulting scores are
+"normalized" so that 1.0 would indicate an on average perfect alignment, 0.0
+would be an on average random match, and -1.0 a (locally) fully gapped
+alignment (it is possible to obtain values outside this range). This helps to
+ensure that defaults are sensible irrespective of the choice for the scoring
+matrix.
+</P>
+<P>
+Sequence similarity calculation is configured individually for the steps that
+are using it.
+</P>
+
+<P><H5><U>Specific limitations and possible problems</U></H5></P>
+<P><H5>Processing features</H5></P>
+<UL>
+<LI>
+As a consequence of dummy alignment generation, it is possible to run every
+mode in sculptor without an alignment, but results are of questionable value.
+</LI>
+<LI>
+Very short residue segments (shorter than 3 consecutive residues) cannot be
+reliably aligned to the sequence, and these will be discarded from the model.
+</LI>
+<LI>
+The <B>similarity</B> <B>deletion</B> algorithm may result in residues that are
+aligned with a gap being included in the model. Although this possibly
+indicates an error in the alignment and is potentially beneficial for molecular
+replacement, this causes a problem at the <B>rename</B> stage, as there is no 3-letter residue name for a "-"; these residues are tentatively named
+<TT>GAP</TT>. 
+</LI>
+<LI>
+Residue numbers for GAP residues are built up using the residue number of the
+previous non-GAP residue and an insertion code (A-Z, depending on the number of
+GAP residues after the previous non-GAP residue).
+</LI>
+</UL>
+
+<P><H5>Warning messages</H5></P>
+<UL>
+<LI>
+<TT>No matching alignment for chain 'A'; delete</TT>: the chain sequence does
+not agree with any sequences in the alignments, and the chain will be
+discarded. Sculptor is tolerant against residue modifications, e.g. a
+<TT>SER</TT> to <TT>SEP</TT> modification will still match an <TT>S</TT> 
+(serine) in the sequence (and also an <TT>X</TT>), but does not accept clear
+mismatches, e.g. a <TT>SER</TT> to <TT>ALA</TT> substitution, even if those can
+be fairly common.
+</LI>
+<LI>
+<TT>Everything is deleted; output file empty</TT>: this is emitted when
+everything is deleted from the model in the modification step. This usually
+indicates an incorrect sequence alignment.
+</LI>
+</UL>
+
+<P><H5><U>Literature</U></H5></P>
+<UL>
+<LI>
+    <B>The importance of alignment accuracy for molecular replacement.</B>
+    R. Schwarzenbacher, A. Godzik, S. K. Grzechnik and L. Jaroszewski
+    <I>Acta Cryst.</I> <B>D60</B>, 1229-1236 (2004)
+</LI>
+</UL>
+
+<P><H5><U>Additional information</U></H5></P>
+
+<!--REMARK PHENIX BODY END-->

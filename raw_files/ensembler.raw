@@ -1,0 +1,333 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Ensemble creation with Ensembler</U></H4> 
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U><B>Author(s)</B></U></H5></P>
+<UL>
+<LI>ensembler: Gabor Bunkoczi</LI>
+<LI>PHENIX GUI: Nathaniel Echols</LI>
+</UL>
+
+<P><H5><U>Purpose</U></H5></P>
+
+<P>
+Ensembler can be used to superpose multiple chains to be used as an ensemble
+search model for molecular replacement.
+</P>
+
+<P><H5><U>Usage</U></H5></P>
+<P>
+Ensembler can be run from the PHENIX GUI and the command line, the only
+difference being the way commands are taken from the user. The command line
+version will be described here.
+</P>
+<P>
+The most typical command line for ensembler are as follows:
+<P>
+<P>
+<PRE><TT>phenix.ensembler \
+    my_structure1.pdb my_structure2.pdb my_structure3.pdb \
+    my_alignment1.aln my_alignment2.pir</TT></PRE>
+</P>
+<P>
+This will take all chains from <TT>my_structure1.pdb</TT>,
+<TT>my_structure2.pdb</TT> and <TT>my_structure3.pdb</TT>,
+align them using the specified alignments, superpose them onto each other and
+write out superposed chains. File types are identified from the extension, but
+command line switches are also available to specify the type explicitly.
+</P>
+
+<P><H5>Accepted formats</H5></P>
+<UL>
+<LI><TT>.pdb</TT> for structure files</LI>
+<LI><TT>.aln</TT> (CLUSTAL format), <TT>.pir</TT> (PIR-format) and
+<TT>.ali</TT> (relaxed PIR-like format) for alignment files</LI>
+</UL>
+
+<P><H5>Output options</H5></P>
+<P>
+The superposed chains can be written out either (<TT>root</TT> stands for the
+file name root):
+</P>
+<UL>
+<LI>
+into a single file (<TT>root_merged.pdb</TT>) with all chains present
+as different models (<TT>1...N</TT>). This option makes it easy to display
+the superposition in molecular graphics programs. The MODEL keyword contains
+the sequence identity with respect to either the reference molecule or the
+first sequence of the supplied alignment (see below) in order to propagate this
+data to <I>Phaser</I>.
+</LI>
+<LI>
+as a series of separate files <TT>output.root_[1...N].pdb</TT>.
+</LI>
+</UL>
+<P>
+<TT>root</TT> is specified by the <TT>output.root</TT> parameter, and defaults
+to "ensemble". The logfile includes a listing that specifies the correspondence
+between chains and model/file numbers to help identification.
+
+<P><H5><U>User interface</U></H5></P>
+<P>
+Ensembler accepts UNIX-style switches, phil-style command line arguments and
+phil format command files.
+</P>
+
+<P><H5>Command line switches</H5></P>
+<P><H6>Input options</H6></P>
+<UL>
+<LI><TT>--pdb</TT> specifies a PDB format file, irrespective of the
+extension</LI>
+<LI><TT>--alignment</TT> specifies an alignment file (has to be one of the
+accepted formats)</LI>
+</UL>
+<P><H6>Output options</H6></P>
+<UL>
+<LI><TT>--root</TT> specifies the output root</LI>
+<LI><TT>--merge</TT> (default) and <TT>--separate</TT> control whether to
+write a single merged file or a series of separate files</LI>
+</UL>
+<P><H6>Other options</H6></P>
+<UL>
+<LI><TT>--verbose</TT> and <TT>--terse</TT> control verbosity</LI>
+<LI><TT>--help</TT> lists all available options</LI>
+</UL>
+<P>
+Phil keywords are summarized in the <B>Additional information</B> section.
+</P>
+
+<P><H5><U>Functionality</U></H5></P>
+<P>
+Ensembler superposes every chain present in any of the input PDB files. First,
+equivalent positions are established, and these are used in the superposition.
+The superposition is then weighted by (some function of) the r.m.s. differences
+of equivalence groups, and iterated until convergence.
+</P>
+
+<P><H5>Atom alignment</H5></P>
+<P>
+There are several ways in which the equivalence of positions can be established:
+<UL>
+<LI>
+If alignments are provided, chain sequences are matched against them. Chains
+not matching any alignment are discarded. Positions that belong to equivalent
+residues according to the alignment and have the same (atom) name are grouped
+into an equivalence group. 
+If there are multiple alignment files, the first sequence in each has to be
+identical (apart from gap characters).
+</LI>
+<LI>
+If no alignment has been provided, it is assumed that the chains have the same
+sequences, and are numbered consistently (apart from a constant frame shift).
+The first chain is selected as reference, and for consecutive chains frame
+shifts are determined against the reference. Equivalent positions are assigned
+based on residue number (taking frame shift into account ) and insertion code.
+This mode is primarily intended to be used after <B><TT>sculptor</TT></B>, as
+it potentially makes use of more superposable positions (the alignment-based
+algorithm discards residue segments shorter than 3 residues, which may be
+common after <B><TT>sculptor</TT></B>).
+</LI>
+</UL>
+<P>
+Atoms can be included in the superposition by specifying their name in
+the <TT>atoms</TT> parameter.
+</P>
+
+<P><H5>Superposition</H5></P>
+<P>
+The equivalent positions are then used for multiple superposition to find a
+globally optimal solution for all chains. There are two superposition
+algorithms implemented:
+<OL>
+<LI>
+<TT><B>gapless</B></TT>. This uses equivalence groups that have a site from all
+chains. For further details, see Diamond (1992).
+</LI>
+<LI>
+<TT><B>gapped</B></TT>. This can use partially incomplete equivalence groups as
+well, provided there are two or more sites present. For the exact algorithm,
+see Wang & Snoeyink (2008).
+</LI>
+</OL>
+<P>
+Multiple superposition is an iterative process and consists of a series of
+pairwise superpositions. The convergence criterion is controlled by the
+<TT>convergence_threshold</TT> parameter that is the r.m.s. difference
+change between two consecutive steps.
+</P>
+<P>
+In <B>ensembler</B>, both algorithms use Diamond's formulation to solve the
+pairwise rotational superposition problem (Diamond, 1988).
+</P>
+
+<P><H5>Weighting</H5></P>
+<P>
+Automatic weighting schemes can be used to improve superposition, either to
+amplify highly homologous regions or to decrease the effect of incorrect
+site-equivalence (typically arises because of a wrong alignment). Weighting is
+iterated until weights converge (controlled by the <TT>weight_displacement</TT>
+parameter that is a normalized value).
+</P>
+<P>
+Primary input to weighting is the distance<SUP>2</SUP> of the site from the
+average of all all equivalent sites. <TT>Robust-resistant</TT> weighting
+schemes offer an additional parameter (<TT>tolerance</TT>) that controls the maximum distance before a site is assigned a zero weight. The <TT>global</TT> and
+<TT>wang_snoeyink</TT> weighting schemes have no configurable parameters.
+</P>
+
+<P><H6>Positional weighting</H6></P>
+<P>
+Assigns a weight to each equivalence group. This can be used by both the
+<TT><B>gapless</B></TT> and the <TT><B>gapped</B></TT> method.
+</P>
+
+<UL>
+<LI>
+<TT><B>unit</B></TT>. Unit weights (equivalent to no weighting).
+</LI>
+<LI>
+<TT><B>robust_resistant</B></TT>. A robust-resistant weighting scheme
+(default). This tends to converge fast and give reliable results. The exact
+formula for weighting is as follows:
+<CENTER><TT>
+w = 1 - ( delta<SUP>2</SUP> / tolerance<SUP>2</SUP> )<SUP>2</SUP>
+ if delta < tolerance<BR>
+w = 0 (otherwise)
+</TT></CENTER>
+where <TT>delta</TT> is the deviation from the average. The recommended value
+for the <TT>tolerance</TT> parameter is 3 * weighted r.m.s.d.
+</LI>
+<LI>
+<TT><B>wang_snoeyink</B></TT>. A sophisticated weighting scheme that assigns
+1/distance<SUP>2</SUP> weights if a site is not an outlier (closer than the
+mean + 3 sigma distance to the average positions, where mean and sigma are
+determined from all equivalent sites) and zero otherwise
+(Wang & Snoeyink, 2008).
+</LI>
+</UL>
+
+<P><H6>Atomic weighting</H6></P>
+<P>
+Assigns a weight to each chain. This can only be used by the 
+<TT><B>gapped</B></TT> method, also in combination with <B>positional
+weighting</B>. (In principle, atomic weighting would allow assigning a weight
+to each site, but this is not available due to convergence problems.)
+</P>
+
+<UL>
+<LI>
+<TT><B>unit</B></TT>. Unit weights (equivalent to no weighting). Default.
+</LI>
+<LI>
+<TT><B>robust_global</B></TT>. A robust-resistant weighting scheme applied for
+the chain as a whole. The exact formula for weighting is as follows:
+<CENTER><TT>
+w = 1 - ( delta<SUP>2</SUP> / tolerance<SUP>2</SUP> )<SUP>2</SUP>
+ if delta < tolerance<BR>
+w = 0 (otherwise)
+</TT></CENTER>
+where <TT>delta</TT> is the r.m.s.d. of the chain. The recommended value
+for the <TT>tolerance</TT> parameter is 3 * average r.m.s.d.
+</LI>
+<LI>
+<TT><B>global</B></TT>. Tend to overemphasize similar regions, and is therefore
+not recommended. The exact formula for weighting is as follows:
+<CENTER><TT>
+w = 1/rmsd<SUP>2</SUP> if 1/rmsd<SUP>2</SUP> < MAX_WEIGHT<BR>
+w = MAX_WEIGHT (otherwise)
+</TT></CENTER>
+where <TT>MAX_WEIGHT</TT> = 100 (to prevent numerical instabilities), and is
+not configurable.
+</LI>
+</UL>
+
+<P>
+Weight shifts can be excessive if chains are dissimilar or alignment is
+incorrect. This is primarily a problem with the robust-resistant type weighting
+schemes, which should be calibrated to the problem (<TT>tolerance</TT> should
+be 3 * standard deviation), otherwise it may lead to all weights become zero. If
+this is encountered, the weighting is repeated with the tolerance parameter
+increased in 1.5X steps until reasonable weights are obtained or a 10X-limit
+is reached, in which case the program aborts.
+</P>
+
+<P><H5>Output</H5></P>
+<P>
+After superposition is complete, the chains are optionally sorted on sequence
+<TT>identity</TT>, <TT>overlap</TT> fraction, <TT>wrmsd</TT> or <TT>unwrmsd</TT>
+(<TT>original</TT> for input order), and output to either single or multiple
+files.
+</P>
+
+<P><H5><U>Specific limitations and possible problems</U></H5></P>
+<P><H5>Processing features</H5></P>
+<UL>
+<LI>
+Ensembler considers each chain individually and therefore it is not possible to
+superpose assemblies. The rationale is that its primary purpose is ensemble
+generation for molecular replacement and since intermolecular interactions are
+weak, assemblies are unlikely to be preserved, and one would obtain better
+models by an assembly of ensembles of monomers than the other way round.
+</LI>
+<LI>
+Very short residue segments (shorter than 3 consecutive residues) cannot be
+reliably aligned to the sequence, and these will be discarded from the
+superposition.
+</LI>
+</UL>
+
+<P><H5>Warning and error messages</H5></P>
+<UL>
+<LI>
+<TT>Cannot set up superposition: insufficient overlap</TT>: there are less than
+3 active sites available. A chain with the lowest overlap fraction will be
+discarded to increase the number of sites.
+</LI>
+<LI>
+<TT>Cannot set up superposition: only 1 chain is present</TT>: this is emitted
+if the number of remaining chains is only 1, and the program aborts.
+</LI>
+<LI>
+<TT>Excessive shift in weighting</TT> is printed if all weights are 0, and the
+automatic weight-damping is activated.
+</LI>
+<LI>
+<TT>Recovery exhausted</TT> is emitted if after consecutive tries the weights
+are still 0, and the change in <TT>tolerance</TT> is more than a 10X.
+</LI>
+</UL>
+
+<P><H5><U>Literature</U></H5></P>
+<UL>
+<LI>
+    <B>A note on the rotational superposition problem.</B>
+    R. Diamond
+    <I>Acta Cryst.</I> <B>A44</B>, 211-216 (1988)
+</LI>
+<LI>
+    <B>On the multiple simultaneous superposition of molecular structures by
+    rigid body transformations.</B>
+    R. Diamond
+    <I>Protein Science</I> <B>1</B>, 1279-1287 (1992)
+</LI>
+<LI>
+    <B>Defining and computing optimum RMSD for gapped and weighted
+    multiple-structure alignment.</B>
+    X. Wang and J. Snoeyink
+    <I>EEE/ACM Transactions on Computational Biology and Bioinformatics</I>
+    <B>5</B>, 525-533 (2008)
+</LI>
+</UL>
+
+<P><H5><U>Additional information</U></H5></P>
+
+<!--REMARK PHENIX BODY END-->
