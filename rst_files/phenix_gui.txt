@@ -44,6 +44,9 @@ Reflection tools
   - `Reflection file editor <reflection_file_editor.htm>`_: utility for
     merging reflection files and creating or extending R-free flags. (GUI only)
 
+  - `Calculate F(model) <fmodel.htm>`_: utility for generating structure
+    factors (as real or complex numbers) from a model alone.
+
 Model tools
 -----------
 
@@ -51,11 +54,11 @@ Model tools
     modifying atom records, geometry minimization, and generating "fake"
     structure factors.
 
-  - Sculptor: prepare a search model for molecular replacement by trimming
-    the structure, modifying B-factors, etc.
+  - Combine PDB files: simple utility for merging models split over several
+    PDB files (such as massive complexes like the ribosome).  Chain IDs will
+    be modified if necessary (using up to two characters).
 
-  - Ensembler: tool for creating superimposed ensembles of related MR search
-    models.
+  - `Superpose PDB files <superpose_pdbs.htm>`_: structure alignment program.
 
   - `ReadySet <ready_set.htm>`_: preparation of input files for refinement,
     including generating restraints (CIF) files and adding hydrogens.
@@ -73,6 +76,13 @@ Phasing
     experiment types (SAD, MAD, MIR, etc.); also performs simple model-building
     after phasing.  Combines HySS, Phaser, SOLVE, RESOLVE, and phenix.refine.
 
+  - `Phaser-EP <phaser_ep.htm>`_: Another Phaser interface, for SAD and MR-SAD
+    phasing.  We recommend trying AutoSol first, but this GUI exposes
+    additional parameters.
+
+Molecular replacement
+---------------------
+
   - `AutoMR <automr.htm>`_: automated molecular replacement using Phaser;
     feeds directly into AutoBuild.  (This is also the starting point for
     running MR-SAD.)
@@ -82,9 +92,11 @@ Phasing
     as different modes of operation.  We recommend starting with AutoMR
     first, but this GUI is useful for tough cases.
 
-  - `Phaser-EP <phaser_ep.htm>`_: Another Phaser interface, for SAD and MR-SAD
-    phasing.  We recommend trying AutoSol first, but this GUI exposes
-    additional parameters.
+  - `Sculptor <sculptor.htm>`_: prepare a search model for molecular
+    replacement by trimming the structure, modifying B-factors, etc.
+
+  - `Ensembler <ensembler.htm>`_: tool for creating superimposed ensembles
+    of related MR search models.
 
 Building and refinement
 -----------------------
@@ -155,22 +167,24 @@ all three programs are subsets of the same functionality, their
   - `POLYGON <validation.htm#anch14>`_: graphical comparison of user-selected
     model statistics with similar structures in the PDB.
 
-We strongly recommend that users run the comprehensive validation, since
-issues with geometry should ideally be analyzed together with the fit to
-experimental data.  However, a separate geometry-only interface (which does
-not require a reflections file) is available as ``phenix.validate_model``,
-although not listed in the GUI.  The ``phenix.refine`` GUI will also display
-a complete validation report at the end of refinement.
-
-Utilities
----------
-
-  - `Old Phenix GUI <old_gui.htm>`_: The original GUI.
-
   - PDB Statistics Overview: This very simple application uses the same
     database as POLYGON, but presents it in a different format.  Useful when
     you simply want to view a histogram of a statistic for a filtered subset
     of the PDB.
+
+We recommend including reflections in validation, since the model geometry
+ideally needs to be analyzed along with experimental data.  However, the
+validation GUI will also run with just a PDB file.  The ``phenix.refine`` GUI
+will also display a complete validation report at the end of refinement.
+
+Utilities
+---------
+
+  - `Calculate map correlations <get_cc_mtz_mtz.htm>`_: interface to
+    ``phenix.get_cc_mtz_mtz``.
+
+  - `Calculate model-map correlations <get_cc_mtz_pdb.htm>`_: interface to
+    ``phenix.get_cc_mtz_pdb``.
 
 --------
 Projects
