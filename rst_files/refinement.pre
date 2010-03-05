@@ -9,18 +9,20 @@ Available features
 
 - Coordinate refinement:
 
- 1. Restrained / unrestrained individual
+ 1. Restrained or completely unrestrained individual
  2. Grouped (rigid body)
- 3. LBFGS minimization, Simulated Annealing
+ 3. LBFGS minimization, Cartesian or torsion Simulated Annealing
  4. Selective removing of stereochemistry restraints
- 5. Adding custom bonds and angles
+ 5. Adding custom (user-defined) bonds and angles
+ 6. Fixing coordinates of any selected part of the structure during refinement
+ 7. NCS and secondary structure restraints
 
 - Atomic Displacement Parameters (ADP) refinement:
 
  1. Restrained individual isotropic, anisotropic, mixed
  2. Group isotropic (one isotropic B per selected model part)
  3. TLS
- 4. comprehensive mode: combined TLS + individual or group ADP
+ 4. Comprehensive mode: combined TLS + individual or group ADP
 
 - Occupancy refinement (any: individual, group, constrained for alternative
   conformations)
@@ -29,7 +31,7 @@ Available features
 - Multiple refinement and scale target functions: least-squares (ls),
   maximum-likelihood (ml), phased maximum-likelihood (mlhl)
 - FFT and direct summation based refinement
-- Various electron density map calculations (including likelihood-weighted)
+- Various electron density map calculations (including likelihood-weighted, kick maps)
 - Simple structure factor calculation (with or without bulk solvent and scaling)
 - Combined automatic ordered solvent building, update and refinement
 - Complete model and data statistics (including twinning analysis, Wilson
@@ -39,6 +41,8 @@ Available features
 - Complex refinement strategies in one run
 - Refinement at subatomic resolution (approx. < 1.0 A) with IAS model
 - Refinement with twinned data
+- Automatic fixing amino-acid side chains by doing local real-space refinement combined 
+  with torsion angle grid search fit into density.
 
 Current limitations
 *******************
@@ -48,7 +52,8 @@ Current limitations
 - Certain refinement strategies are not available for joint X-ray/neutron refinement
 - No NCS constraints (restraints only)
 - Atoms with anisotropic ADP in NCS groups
-- No Simulated Annealing for selected fragments.
+- No Simulated Annealing for selected fragments
+- Oxidation state of metals is ignored: for example, "+2" in Fe+2 will be ignored
 
 **Remark on using amplitudes (Fobs) vs intensities (Iobs)**
 
@@ -82,9 +87,11 @@ illustrated at figure below:
 Running phenix.refine
 *********************
 
-phenix.refine is run from the command line::
+phenix.refine can be run from the command line::
 
   % phenix.refine <pdb-file(s)> <reflection-file(s)> <monomer-library-file(s)>
+
+or from PHENIX GUI.
 
 When you do this a number of things happen:
 
@@ -105,10 +112,11 @@ When you do this a number of things happen:
 - At the end of refinement the program generates:
 
  1) a new PDB file, with the refined model, called for example lysozyme_refine_001.pdb;
- 2) two maps: likelihood weighted mFo-DFc and 2mFo-DFc. These are in ASCII
-    X-PLOR format. A reflection file with map coefficients is also generated
-    for use in Coot or XtalView (e.g. lysozyme_refine_001_map_coeffs.mtz);
- 3) a new defaults file to run the next cycle of refinement, e.g.
+ 2) a reflection file with map coefficients for use in Coot or XtalView 
+    (e.g. lysozyme_refine_001_map_coeffs.mtz);
+ 3) Optionally, two maps: likelihood weighted mFo-DFc and 2mFo-DFc can be requested. 
+    These are in ASCII X-PLOR format.
+ 4) a new defaults file to run the next cycle of refinement, e.g.
     lysozyme_refine_002.def. This means you can run the next cycle of
     refinement by typing::
 
@@ -638,52 +646,183 @@ It is important to keep in mind:
 Occupancy refinement
 --------------------
 
-Here is the list of facts that are important to know about occupancy refinement
-in ``phenix.refine``:
+List of facts about occupancy refinement in ``phenix.refine``:
 
 - ``phenix.refine`` can perform the following types of occupancy refinement:
-  individual (refinement of one occupancy factor per atom), group
-  (refinement of one occupancy factor per group of selected atoms) and group
-  constrained occupancy refinement. In individual and group occupancy
-  refinement the refined occupancy values will be constrained between
-  ``main.occupancy_min`` and ``main.occupancy_max``, which is 0 and 1 by
-  default. In group constrained occupancy refinement, there are ``(N-1)``
-  refinable occupancies per constrained group. An example of constrained
-  group could be a residue that has ``N`` alternative conformations (where
-  ``N`` typically ranges between 2 and 4). In such case all atoms within an
-  alternative conformer will have equal occupancy values (1<=occupancy<=0)
-  and the sum of all ``(N-1)`` occupancies will be 1.
+
+    - individual occupancy refinement - refinement of one occupancy per atom. 
+      In this case the refined occupancy value will be constrained between
+      ``main.occupancy_min`` and ``main.occupancy_max``, which is 0 and 1 by
+      default.
+    - group (constrained) occupancy refinement. There are two typical uses of 
+      this option:
+      
+        - refine one occupancy per selected set of atoms, such as a partially 
+          occupied ligand or ion. The refined occupancy will be constrained 
+          between 0 and 1.
+
+        - refine occupancies of atoms in alternative conformations. For example, 
+          if a residue has two alternative conformations, A and B, then there 
+          will be one refinable occupancy parameter. All occupancies within the 
+          conformer A will be equal to each other, and the same will be for 
+          conformer B. The sum of occupancies of A and B will add up to one. In 
+          general, for a constrained group containing N coupled conformers (for 
+          example, N=2 for alternative conformations A and B) there will be 
+          (N-1) refinable occupancies. Currently N has to be less or equal to 4.
 
 - The occupancy refinement is ON by default. This does not mean that
   occupancies of all atoms will be refined. Based on input PDB file,
   ``phenix.refine`` automatically finds which occupancies it will be refining.
-  If no user defined selections is provided, ``phenix.refine`` will refine
-  individual occupancies for all atoms that have partial occupancy values in
-  input PDB file (1<occupancy<0, atoms with zero occupancy values are not
-  included). Atoms in alternative conformations will be automatically
-  determined based on ``altLoc`` identifiers in input PDB file and the group
-  constrained occupancy refinement for these atoms will be performed as well.
+  If no user defined selections is provided, ``phenix.refine`` will refine:
+
+    - individual occupancies for all atoms that have partial occupancy values in
+      input PDB file (1<occupancy<0), for example::
+     
+        ATOM   1001 AU   AU    500      14.333   3.856  26.301  0.23  7.97 
+
+      NOTE: occupancies of atoms with starting 0 or 1 occupancy value will not 
+      be refined.
+
+    - occupancies of atoms in alternative conformations. Atoms in alternative 
+      conformations will be automatically determined based on ``altLoc`` 
+      identifiers (a one-letter code in front of three-letter residue name in 
+      ATOM record) in input PDB file and the group constrained occupancy 
+      refinement for these atoms will be performed. For example::
+
+        ATOM   5085  N  AALA   270      19.772  -6.267  40.250  0.75  5.17
+        ATOM   5086  CA AALA   270      19.927  -5.299  41.342  0.75  5.15
+        ATOM   5087  CB AALA   270      20.132  -6.108  42.617  0.75  6.92
+        ATOM   5088  C  AALA   270      21.058  -4.290  41.124  0.75  5.06
+        ATOM   5089  O  AALA   270      20.831  -3.090  41.384  0.75  5.54
+        ATOM   5090  N  BALA   270      19.733  -6.282  40.242  0.25  5.04
+        ATOM   5091  CA BALA   270      19.592  -5.512  41.492  0.25  5.03
+        ATOM   5092  CB BALA   270      19.702  -6.389  42.726  0.25  6.62
+        ATOM   5093  C  BALA   270      20.673  -4.426  41.454  0.25  4.77
+        ATOM   5094  O  BALA   270      20.381  -3.268  41.761  0.25  5.70
+
+      NOTE 1: The starting occupancy values can be any: they can already be set 
+      to some reasonable values, like 0.75 and 0.25 above, can be all zero or 1, 
+      or any random value. The refined occupancy values will be looking like in 
+      the above example: identical for all atoms within each conformer (in the 
+      above example: 0.75 for conformer A and 0.25 for conformer B), and the sum 
+      of unique occupancies across all conformers will be exactly 1 (=0.25+0.75).
+
+      NOTE 2: If there are two or more consecutive residues in the same chain 
+      that have alternative conformations, then their occupancies will be 
+      automatically grouped and refined. For example::
+      
+        ATOM      0  N  AGLY A   1       2.650   4.221   1.463  0.70 18.35   
+        ATOM      1  CA AGLY A   1       2.206   4.688   2.763  0.70 17.27   
+        ATOM      2  C  AGLY A   1       3.296   4.604   3.813  0.70  4.90   
+        ATOM      3  O  AGLY A   1       4.143   3.711   3.772  0.70 10.35   
+        ATOM      4  N  BGLY A   1       3.650   6.221   4.463  0.30 18.35   
+        ATOM      5  CA BGLY A   1       3.206   6.688   5.763  0.30 17.27   
+        ATOM      6  C  BGLY A   1       4.296   6.604   6.813  0.30  4.90   
+        ATOM      7  O  BGLY A   1       5.143   5.711   6.772  0.30 10.35   
+        ATOM      8  N  AALA A   2       3.276   5.538   4.758  0.70  8.03   
+        ATOM      9  CA AALA A   2       2.260   6.584   4.782  0.70  4.94   
+        ATOM     10  C  AALA A   2       2.886   7.964   4.606  0.70  8.07   
+        ATOM     11  O  AALA A   2       3.307   8.594   5.576  0.70  2.01   
+        ATOM     12  CB AALA A   2       1.465   6.522   6.077  0.70  4.52   
+        ATOM     13  N  BALA A   2       4.276   7.538   7.758  0.30  8.03   
+        ATOM     14  CA BALA A   2       3.260   8.584   7.782  0.30  4.94   
+        ATOM     15  C  BALA A   2       3.886   9.964   7.606  0.30  8.07   
+        ATOM     16  O  BALA A   2       4.307  10.594   8.576  0.30  2.01   
+        ATOM     17  CB BALA A   2       2.465   8.522   9.077  0.30  4.52   
+
+      where the occupancies of conformer A (in residue numbers 1 and 2) are all 
+      equal to each other (0.7), the occupancies of conformer B are all equal to 
+      each other as well (0.3), and their sum is 1 (0.7+0.3).
+
+      NOTE 3: It is possible to have multiple different (having different 
+      residue name) alternative conformers within the same residue number of the 
+      same chain::
+
+        ATOM      0  N  APRO A  22       4.915  12.683  -3.102  0.25 11.83   
+        ATOM      1  CA APRO A  22       6.042  13.429  -2.601  0.25 11.82   
+        ATOM      2  C  APRO A  22       6.387  13.122  -1.160  0.25 11.66   
+        ATOM      3  O  APRO A  22       5.480  13.006  -0.345  0.25 12.09   
+        ATOM      4  CB APRO A  22       5.655  14.896  -2.744  0.25 12.86   
+        ATOM      5  CG APRO A  22       4.661  14.854  -4.058  0.25 12.66   
+        ATOM      6  CD APRO A  22       3.957  13.505  -3.910  0.25 12.27   
+        ATOM      7  CA BSER A  22       6.034  13.399  -2.687  0.30 11.55   
+        ATOM      8  C  BSER A  22       6.367  13.062  -1.223  0.30 12.92   
+        ATOM      9  O  BSER A  22       5.412  13.050  -0.345  0.30 11.87   
+        ATOM     10  CB BSER A  22       5.409  14.835  -2.876  0.30 12.60   
+        ATOM     11  OG BSER A  22       4.760  15.243  -1.635  0.30 12.11   
+        ATOM     12  CA CSER A  22       6.112  13.653  -2.656  0.45 12.31   
+        ATOM     13  C  CSER A  22       6.354  13.275  -1.187  0.45 11.92   
+        ATOM     14  O  CSER A  22       5.636  12.705  -0.270  0.45 11.77   
+        ATOM     15  CB CSER A  22       5.605  15.097  -2.687  0.45 13.56   
+        ATOM     16  OG CSER A  22       6.750  15.771  -2.280  0.45 16.38   
+
+      If a structure contains a residue or ligand with all equal non-zero 
+      occupancies, for example::
+
+        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00 
+        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.70 11.00 
+        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.70 10.00 
+        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00 
+        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00 
+
+      in this case one occupancy per whole ligand will be refined automatically 
+      and it will be constrained between 0 and 1. If at least one occupancy is 
+      different from the rest::
+      
+        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00   
+        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.21 11.00   
+        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.70 10.00   
+        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00   
+        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00   
+
+      then the occupancies of all atoms in the above SO4 ion will refined 
+      individually. And in the example below::
+
+        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00    
+        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.70 11.00    
+        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.00 10.00    
+        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00    
+        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00    
+        
+      all occupancies will be refined individually except for atom O2 where it 
+      will stay zero.
+
+- A special case is refinement of a partially deuterated structure against 
+  neutron data. Such a structure contains exchangeable H/D sites that in 
+  ``phenix.refine`` are modeled as alternative conformations, for example::
+
+    ATOM     54  N   GLY L   2       2.908 -22.755  25.168  1.00 12.24           N
+    ATOM     55  CA  GLY L   2       2.957 -24.115  25.675  1.00 13.12           C
+    ATOM     56  C   GLY L   2       2.218 -24.358  26.958  1.00 15.55           C
+    ATOM     57  O   GLY L   2       2.343 -25.435  27.503  1.00 13.47           O
+    ATOM     58  HA2 GLY L   2       2.590 -24.711  25.004  1.00 15.29           H
+    ATOM     59  HA3 GLY L   2       3.885 -24.361  25.816  1.00 16.65           H
+    ATOM     60  H  AGLY L   2       2.349 -22.638  24.525  0.25 18.77           H
+    ATOM     61  D  BGLY L   2       2.349 -22.638  24.525  0.75 18.77           D
+
+  This situation is detected automatically and the occupancies of H and D atoms 
+  are refined in such a way so their sum is one.
 
 - Turning OFF the occupancy refinement can be done by removing the star
   (``*``) from the corresponding keyword in ``strategy = ... *occupancies ...``.
 
-- If selections are provided (see examples below) then the occupancy
+- If selections are provided by the user (see examples below) then the occupancy
   refinement for selected atoms will be performed as well as for those
   selected automatically (as described above).
 
 - User defined selections will override those defined by ``phenix.refine``
-  automatically. For example, if an atoms is automatically selected for
+  automatically. For example, if an atom is automatically selected for
   individual occupancy refinement, but the user defined a group of atoms for
   which one occupancy factor will be refined (group occupancy refinement),
-  and this particular atom is within the group, then the individual occupancy
-  will not be refined for this atom.
+  and this particular atom belongs to user defined group, then the individual 
+  occupancy will not be refined for this atom.
 
 - User can withhold the occupancy refinement for any atoms that were
-  originally selected for occupancy refinement by default (automatically).
+  automatically selected by ``phenix.refine`` for occupancy refinement.
 
 - The presence of user defined selections for occupancies to be refined is not
   enough to engage the occupancy refinement. It is important that the occupancy
-  refinement is selected in ``strategy =`` keyword.
+  refinement is turned ON using the ``strategy =`` keyword.
 
 Examples:
 
@@ -711,45 +850,46 @@ Examples:
 
      % phenix.refine data.hkl model.pdb refine.occupancies.individual="water"
 
-   Similar refinement where in addition all Zn atoms in chain X will be
-   refined::
+   Similar refinement as above where all Zn atoms in chain X will be
+   refined as well::
 
      % phenix.refine data.hkl model.pdb occupancies.individual="water" \
        occupancies.individual="chain X and element Zn"
 
 4. Complex occupancy refinement strategy (combination of various available
-occupancy refinement types)::
+   occupancy refinement types)::
 
      % phenix.refine data.hkl model.pdb strategy=occupancies occ.params
 
-The amount of atom selections makes it inconvenient to type them all from the
-command line. This is why the parameter file ``occ.params`` is used and it
-contains following lines::
+  The amount of atom selections makes it inconvenient to type them all from the
+  command line. This is why the parameter file ``occ.params`` is used and it
+  contains following lines::
 
-     #include_params occ.params
+    #include_params occ.params
 
-which defines:
+  which defines:
 
-- group occupancy refinement. One occupancy for all atoms in
-  ``chain A and resseq 1`` will be refined and it will be constrained between
-  ``main.occupancy_min`` and ``main.occupancy_min``, which is by default 0 and
-  1, correspondingly.
+  - individual occupancy refinement for all BR, Zn and water atoms;
 
-- individual occupancies for all Zn and Br atoms, and waters.
+  - group occupancy refinement for residue number 1 in chain A (as selected with
+    ``chain A and resseq 1``). One occupancy for all atoms in this residue
+    will be refined and it will be constrained between ``main.occupancy_min`` 
+    and ``main.occupancy_min``, which by default is 0 and 1, correspondingly.
 
-- group constrained occupancy refinement. In one group the occupancies of atoms
-  in ``chain A and resseq 2`` and ``chain A and resseq 3`` will be coupled.
-  All occupancies within ``chain A and resseq 2`` will have the exact same
-  values lying between 0 and 1, and same for ``chain A and resseq 3``. The sum
-  of occupancies of ``chain A and resseq 2`` and ``chain A and resseq 3`` will
-  be 1.0, making it one constrained group.
+  - another constrained occupancy group, where the occupancies of atoms
+    in ``chain A and resseq 2`` and ``chain A and resseq 3`` will be coupled.
+    That is all occupancies within ``chain A and resseq 2`` will have the 
+    exact same value between 0 and 1, and same for ``chain A and resseq 3``. 
+    The sum of occupancies of ``chain A and resseq 2`` and ``chain A and resseq 3`` 
+    will be 1.0, making it one constrained group.
 
-- another constrained group contains three residues (number 42 and 121, and
-  MAN) and they occupancies will be refined similarly as described above.
+  - another constrained group contains three residues (number 42 and 121, and
+    MAN) and their occupancies will be refined similarly as described above.
 
-- occupancies of atoms ``O`` in residues 1 and 3 of chain X will not be
-  refined (even though these atoms have partial occupancies in input PDB
-  file and so they would normally be refined by default).
+  - occupancies of atoms ``O`` in residues 1 and 3 of chain B will not be
+    refined as requested using ``remove_selection`` keyword (even though 
+    these atoms have partial occupancies in input PDB file and so they would 
+    normally be refined by default).
 
 f' and f'' refinement
 ---------------------
