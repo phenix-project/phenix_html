@@ -966,9 +966,22 @@ the structure to generate a morphed structure.
 You can use the AutoBuild Wizard as a convenient way to run resolve
 density modification with or without including model-based information.  Just
 use a command like this:
-<PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb maps_only=True     
+<PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb \
+   maps_only=True seq_file=seq.dat 
 </PRE>
 The Wizard will calculate the same map that it would normally calculate given
+these data, and then it will write the map out and stop.
+
+<H5>Density-modify starting with your map coefficients and make maps </H5><P>
+You can use the AutoBuild Wizard as a convenient way to run resolve
+density modification starting with map coefficients you define.  Just
+use a command like this:
+<PRE style="face=courier">phenix.autobuild data=data.mtz \
+     maps_only=True  seq_file=seq.dat \
+     map_file=starting_map.mtz map_labels="2FOFCWT PH2FOFCWT"
+
+</PRE>
+The Wizard will start with the phases in starting_map.mtz calculate the same map that it would normally calculate given
 these data, and then it will write the map out and stop.
 
 <H5>Calculate a prime-and-switch map </H5><P>
