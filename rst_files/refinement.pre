@@ -676,7 +676,7 @@ List of facts about occupancy refinement in ``phenix.refine``:
   If no user defined selections is provided, ``phenix.refine`` will refine:
 
     - individual occupancies for all atoms that have partial occupancy values in
-      input PDB file (1<occupancy<0), for example::
+      input PDB file (0<occupancy<1), for example::
      
         ATOM   1001 AU   AU    500      14.333   3.856  26.301  0.23  7.97 
 
