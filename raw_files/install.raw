@@ -35,58 +35,19 @@ the generation of some data files, so you will probably have to wait about
 30 minutes for the installation to complete (depending on the performance of
 your installation platform).</p>
 
-<p>PHENIX is supported on most common Linux platforms and Mac OS-X
+<p>PHENIX is supported on most common Linux platforms and Mac OS-X.  The
+binary installers are built on Fedora Core 3 (intel-linux-2.6), Fedora Core 8
+(intel-linux-2.6-x86_64), and Mac OS 10.4.11 (mac-intel-osx).  Nightly tests
+of the undlerying components are run on additional systems.  In most cases
+the binary installers should run without problems on other Linux distributions
+such as Ubuntu or SuSE.  Kernels prior to 2.6 are not supported.</p>
 
-<p>Currently, the following Redhat Linux platforms are tested, and therefore
-supported for the distribution:</p>
-<ul class="simple">
-<li>Redhat 8.0</li>
-<li>Redhat 9.0</li>
-<li>Redhat Enterprise Workstation 3 [+/- x86_64]</li>
-<li>Redhat Enterprise Server 4.2 [+/- x86_64]</li>
-<li>Fedora Core 3 [+/- x86_64]</li>
-<li>Fedora Core 5 [+/- x86_64]</li>
-<li>Fedora Core 6 [+/- x86_64]</li>
-</ul>
-<p>Redhat versions prior to 8.0 are not supported.</p>
-<p>PHENIX should install on other Linux platforms such as Mandrake, or SuSe.</p>
-<p>There are 4 different Linux installations available, based on the
-version of the kernel (2.4 or 2.6) and the CPU type (ix86 or
-x86_64). If it isn't clear which you need then type this command on
-the machine in question:</p>
-<blockquote>
-% uname -rm</blockquote>
-<p>The first item is the kernel version, the second is the machine
-hardware. Please download the appropriate installer based on this
-table:</p>
-<p>
-<table border="1">
-<colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
-</colgroup>
-<tbody valign="top">
-<tr><td rowspan="2">Hardware</td>
-<td colspan="2" align="center">Kernel</td>
-</tr>
-<tr><td align="center">2.4</td>
-<td align="center">2.6</td>
-</tr>
-<tr><td>ix86</td>
-<td>intel-linux-2.4</td>
-<td>intel-linux-2.6</td>
-</tr>
-<tr><td>x86_64</td>
-<td>intel-linux-2.4-x86_64</td>
-<td>intel-linux-2.6-x86_64</td>
-</tr>
-</tbody>
-</table>
-<p>Currently, the following other platforms are supported for the distribution:</p>
-<ul>
-<li>Mac OS-X (Intel and PPC) 10.4.10 or later (Tiger or Leopard)</li>
-</ul>
+<p>Only 32-bit objects are supported on Macintosh due to limitations of the
+GUI libraries.  For Linux, there is a choice of 32-bit and 64-bit installers;
+please select the installer appropriate to your architecture and OS.  You
+can find out what platform you are running with the command 'uname -p';
+for machines reporting "i686", use the intel-linux-2.6 installer.</p>
+
 <p>For license information please see <tt><span class="pre">LICENSE</span></tt> file.</p>
 <p>For source of components see <tt><span class="pre">SOURCES</span></tt>.</p>
 </div>
