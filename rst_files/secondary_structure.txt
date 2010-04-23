@@ -1,0 +1,88 @@
+Secondary structure restraints
+==============================
+
+.. |br| raw:: html
+
+   <br /><br />
+
+Refinement may be stabilized by addition of hydrogen-bond restraints to
+maintain (or idealize) secondary structure.  This is particularly important
+at low resolution, where the protein geometry should be kept as precise as
+possible to avoid overfitting, but it appears to help even at moderate
+resolutions (up to 2.0 A, maybe further).  Applying these restraints
+usually improves R-free by up to 0.005, and often keeps R-work and R-free
+from diverging as much as they might otherwise.  (Note that this is not
+always true, and depends strongly on the weighting and outlier filtering;
+for this reason, we recommend experimenting with this setting to see whether
+and how it helps your structure, rather than blindly enabling this feature.)
+
+General description
+-------------------
+
+To activate secondary structure restraints in phenix.refine, simply add the
+parameter ``main.secondary_structure_restraints=True`` on the command line,
+or check the box labeled "Secondary structure restraints" in the configuration
+window of the phenix.refine GUI.  Assignment of atom selections will be fully
+automatic.  We recommend using explicit hydrogens in refinement, but if you
+prefer, N-O distances may be restrained instead.  This should be automatic,
+but you can force N-O bonds by adding
+``h_bond_restraints.substitute_n_for_h=True``.  Bond lengths are restrained
+at 1.975A for H-O and 2.9A for N-O.  Outliers (defined as H-O bonds
+greater than 2.5A, or N-O bonds greater than 3.5A) will be automatically
+removed, but you may prevent this with
+``h_bond_restraints.remove_outliers=False``.  This may be helpful for very
+poor low-resolution structures, e.g. to force proper structure on a manually
+built helix, but it will also cause completely spurious bond restraints to be
+overlooked.
+
+Annotation of secondary structure is performed by KSDSSP, an open-source
+implementation by UCSF's Computer Graphics Laboratory (authors of the
+molecular graphics program Chimera) of the original DSSP algorithm (Kabsch
+and Sander 1983).  Users may also provide their own annotation in the form
+of HELIX and SHEET records from the PDB; however, because this format is
+difficult to use, we recommend using the configuration syntax used in
+phenix.refine, and/or visually editing the secondary structure in the PHENIX
+GUI (both described below).
+
+The PDB format supports 10 different types of helix, but only three of these
+(alpha, pi, and 3_10) are common in naturally occurring proteins and have
+easily deciphered hydrogen-bonding rules.  User-specified helices default to
+alpha form (hydrogen bonds between residue n and residue n+4).  Sheets may
+be either parallel or antiparallel.  Because additional details are required
+to establish the hydrogen bonding pattern, we do not recommend defining
+sheets manually unless you are certain you know what to do.  Future versions
+will include a more intelligent editor to assist in annotation.
+
+Graphical editor
+----------------
+
+Documentation coming soon!
+
+Configuration syntax
+--------------------
+
+Limitations
+-----------
+
+  - Only bond length is restrained; angles may move freely.
+
+  - Support for PDB files containing non-blank insertion codes is currently
+    limited, especially if an insertion code occurs in the middle of a
+    secondary structure element.
+
+  - The distribution of oxygen-nitrogen distances in beta sheets appears to be
+    very slightly bimodal, probably due to the difference in geometry between
+    parallel and antiparallel sheets.  Increasing the slack may compensate for
+    this, but it isn't clear whether this is necessary.
+
+  - Although hydrogen bond outliers are filtered by default, very little
+    validation of secondary structure definitions is performed.
+
+References
+----------
+
+  - Kabsch, W., & Sander, C. (1983).  Dictionary of Protein Secondary
+    Structure: Pattern Recognition of Hydrogen-Bonded and Geometrical
+    Features.  Biopolymers, 22, 2577-2637.
+
+  - Fabiola et al. (...)
