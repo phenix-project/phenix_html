@@ -266,7 +266,7 @@ where: Exray is crystallographic refinement target (least-squares, maximum-likel
 or any other), Egeom is the sum of restraints (including NCS if requested), wc
 is 1.0 by default and used to turn the restraints off, wxc ~ ratio of gradient's
 norms for geometry and X-ray targets as defined in (Adams et al, 1997, PNAS,
-Vol. 94, p. 5018), wc_scale is an 'ad hoc' scale found empirically to be ok for
+Vol. 94, p. 5018), wxc_scale is an 'ad hoc' scale found empirically to be ok for
 most of the cases.
 
 Important to note:
@@ -481,7 +481,7 @@ The total refinement target is defined as::
 
 where: Exray is crystallographic refinement target (least-squares,
 maximum-likelihood, ...), Eadp is the ADP restraints term, wu is 1.0 by default
-and used to turn the restraints off, wxu and wc_scale are defined similarly to
+and used to turn the restraints off, wxu and wxu_scale are defined similarly to
 coordinates refinement (see *Refinement of Coordinates* paragraph).
 
 It is important to keep in mind:
