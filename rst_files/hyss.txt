@@ -109,14 +109,14 @@ after this point::
 
   p = peaklist index in Patterson map
   f = peaklist index in two-site translation function
-  cc = correlation coefficient after extrapolation scan
+  ess = score after extrapolation scan
   r = number of dual-space recycling cycles
-  cc = final correlation coefficient
+  score = final score
 
-  p=000 f=000 cc=0.364 r=015 cc=0.479 [ best cc: 0.479 ]
-  p=000 f=001 cc=0.310 r=015 cc=0.477 [ best cc: 0.479 0.477 ]
+  p=000 f=000 ess=0.364 (cc) r=015 score=0.479 (cc) [ best score: 0.479 (cc) ]
+  p=000 f=001 ess=0.310 (cc) r=015 score=0.477 (cc) [ best score: 0.479 (cc) 0.477 (cc) ]
   Number of matching sites of top 2 structures: 11
-  p=000 f=002 cc=0.166 r=015 cc=0.479 [ best cc: 0.479 0.479 0.477 ]
+  p=000 f=002 ess=0.166 (cc) r=015 score=0.479 (cc) [ best score: 0.479 (cc) 0.479 (cc) 0.477 (cc) ]
   Number of matching sites of top 2 structures: 11
   Number of matching sites of top 3 structures: 11
 
@@ -132,10 +132,10 @@ and the hand ambiguity into account.  The three models have more than
 that the search is complete and prints a summary of the matching
 sites::
 
-  Top 3 correlations:
-  p=000 f=000 cc=0.364 r=015 cc=0.479
-  p=000 f=002 cc=0.166 r=015 cc=0.479
-  p=000 f=001 cc=0.310 r=015 cc=0.477
+  Top 3 scores:
+  p=000 f=000 ess=0.364 (cc) r=015 score=0.479 (cc)
+  p=000 f=001 ess=0.310 (cc) r=015 score=0.477 (cc)
+  p=000 f=002 ess=0.166 (cc) r=015 score=0.479 (cc)
   Match summary:
     Operator:
          rotation: {{-1.0, 0.0, 0.0}, {0.0, -1.0, 0.0}, {0.0, 0.0, -1.0}}
@@ -256,6 +256,12 @@ command line options::
                           Use real space squaring (as opposed to the tangent
                           formula)
     --data_label=STRING   Substring of reflection data label
+    --rescore=correlation|phaser-refine|phaser-complete
+                          Select rescoring protocol (default: correlation).
+                          Phaser-based protocols are more computationally
+                          intensive, but slightly more discriminative towards
+                          correct solutions, and may identify solutions if
+                          default protocol is not conclusive
 
   See also:
     http://www.phenix-online.org/download/documentation/cci_apps/hyss/
@@ -356,6 +362,11 @@ high-resolution limit with the ``--resolution`` option. In some cases
 the resolution limit is very critical. Truncating the high-resolution
 limit of the data can sometimes lead to a successful search, as
 more reflections with a weak anomalous signal are excluded.
+
+Enabling a phaser-based rescoring protocol can also help
+(``--rescore=phaser-complete`` is recommended). It is less affected by
+suboptimal resolution cutoffs and also provides more discrimination with noisy
+data.
 
 If there is no consensus model at the end of a HySS run please try
 alternative programs. For example, run SHELXD with the ``.ins`` and
