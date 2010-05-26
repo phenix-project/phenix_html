@@ -980,6 +980,59 @@ detected or adjusted NCS groups.
    B-factors) using NCS restraints automatically created based on input PDB
    file.
 
+Using a reference model in refinement
+-------------------------------------
+
+phenix.refine can be given a reference model that is used to steer refinement
+of the working model.  This technique is advantageous in cases where the working
+data set is low resolution, but there is a known related structure solved at higher
+resolution.  The higher resolution reference model is used to generate a set of 
+dihedral restraints that are applied to each matching dihedral in the working model.
+
+The default parameters are a good starting point::
+
+  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+    reference_model.file=reference.pdb
+
+The default sigma value for these reference dihedral restraints is 1.0 Angstrom.
+To increase the strength of these restraints, select a smaller sigma::
+
+  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+    reference_model.file=reference.pdb reference_model.sigma=0.5
+
+To decrease the strength of the restraints, select a larger sigma::
+
+  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+    reference_model.file=reference.pdb reference_model.sigma=2.0
+
+The reference restraints have a `limit` parameter which turns them off when the 
+angle in the working model differs from the reference by an amount greater than
+`limit`.  The default value is 15 degrees, but may be user-defined::
+
+  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+    reference_model.file=reference.pdb reference_model.limit=10
+
+For an optimal set of protein restraints, rotamer outliers in the working model
+that have rotameric counterparts in the reference model are automatically corrected
+to the rotamer from the reference model prior to refinement.  In practice this step
+almost always improves the final model, but can be turned off if desired::
+
+  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+    reference_model.file=reference.pdb reference_model.fix_outliers=False
+
+Automatic Asn/Gln/His corrections
+---------------------------------
+
+Asn, Gln, and His residues can often be fit favorably to the data in two orientations,
+related by a 180 degree rotation.  In many cases, however, only one of these orientations
+is sterically and electrostatically favorable.  phenix.refine uses Reduce to identify 
+Asn, Gln, and His residues that should be flipped, and then flips them automatically.
+
+To turn this feature on, run::
+
+  % phenix.refine data.hkl model.pdb main.nqh_flips=True
+
+
 Water picking
 -------------
 
