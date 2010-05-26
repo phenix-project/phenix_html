@@ -99,6 +99,7 @@ def exercise(args):
           final_cmd = final_cmd.replace("data.hkl", hkl)
           final_cmd = final_cmd.replace("data_anom.hkl", hkl_anom)
           final_cmd = final_cmd.replace("model.pdb", pdb)
+          final_cmd = final_cmd.replace("reference.pdb", pdb)
           final_cmd = final_cmd.replace("model_o5t.pdb", pdb_o5t)
           final_cmd = inject_parameter_file(final_cmd)
           if(final_cmd.count("phenix.refine")):
