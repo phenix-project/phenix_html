@@ -363,7 +363,7 @@ the resolution limit is very critical. Truncating the high-resolution
 limit of the data can sometimes lead to a successful search, as
 more reflections with a weak anomalous signal are excluded.
 
-Enabling a phaser-based rescoring protocol can also help
+Enabling a phaser_-based rescoring protocol can also help
 (``--rescore=phaser-complete`` is recommended). It is less affected by
 suboptimal resolution cutoffs and also provides more discrimination with noisy
 data.
@@ -416,3 +416,4 @@ documentation for more details.
 .. _1NSF: http://www.rcsb.org/pdb/cgi/explore.cgi?pdbId=1NSF
 .. _CCP4: http://www.ccp4.ac.uk/
 .. _CNS: http://cns.csb.yale.edu/
+.. _phaser: http://www.phaser.cimr.cam.ac.uk/
