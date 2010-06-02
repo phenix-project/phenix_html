@@ -262,6 +262,12 @@ command line options::
                           intensive, but slightly more discriminative towards
                           correct solutions, and may identify solutions if
                           default protocol is not conclusive
+    --extrapolation=fast_nv1995|phaser-map
+                          Select extrapolation protocol (default:
+                          fast_nv1995). Fast_nv1995 uses a fast translation
+                          function to find atoms in the difference Patterson
+                          function, while phaser-map calculates a SAD LLG map
+                          and locates peaks.
 
   See also:
     http://www.phenix-online.org/download/documentation/cci_apps/hyss/
@@ -366,7 +372,9 @@ more reflections with a weak anomalous signal are excluded.
 Enabling a phaser_-based rescoring protocol can also help
 (``--rescore=phaser-complete`` is recommended). It is less affected by
 suboptimal resolution cutoffs and also provides more discrimination with noisy
-data.
+data. Switching on the ``phaser-map`` extrapolation protocol is also worthwhile,
+since it increases success rate and is only a small runtime overhead compared
+to phaser_-based rescoring.
 
 If there is no consensus model at the end of a HySS run please try
 alternative programs. For example, run SHELXD with the ``.ins`` and
