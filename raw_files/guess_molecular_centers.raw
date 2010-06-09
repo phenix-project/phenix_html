@@ -1,0 +1,65 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U> Guess location of molecular centers in a map with
+ guess_molecular_centers</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>guess_molecular_centers: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+guess_molecular_centers is a tool to identify potential locations of
+molecules in an electron density map.
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How guess_molecular_centers works:</H5><P>
+
+guess_molecular_centers identifies centers of macromolecules in the 
+density map by finding local maxima of the local RMS density.  You can 
+specify the radius of the sphere used to estimate local RMS density.
+
+<PRE style="face=courier">
+</PRE>
+
+<P><H5><I>Output files from guess_molecular_centers</I></H5><P>
+
+<b>guess_molecular_centers.pdb</b>: A PDB file with pseudo-atoms marking
+the locations of centers of your molecule(s)
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of guess_molecular_centers:</H5><P>
+
+  Running guess_molecular_centers is easy. From the command-line you can
+type:
+<PRE style="face=courier">phenix.guess_molecular_centers  map_coeffs.mtz 
+</PRE>
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P>If your molecule is large, you may wish to increase the radius used for
+smoothing (smoothing_radius). If you cannot find the centers you want, you
+can try looking for more by increasing n_centers_find.
+
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->

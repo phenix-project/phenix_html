@@ -27,7 +27,14 @@ coefficients for an electron density map, and you specify the first and
 last residues to be built. Then fit_loops will attempt to build the
 loop that you specify. One loop can be done at a time with fit_loops 
 (but if you have multiple identical chains, you can fit them
-all at once). If you 
+all at once). 
+<P>You can use either of two methods to fit the loops. By default fit_loops
+uses resolve chain extension to try to trace residues from the ends of 
+segments in your input PDB file. If it can connect the segments, it writes out
+the connecting loops.  Alternatively you can use a loop library supplied
+with PHENIX to connect ends of segments from your input PDB file.
+
+<p>If you 
 want a more complete model-building process, then you will want to 
 use <a href="autobuild.htm">phenix.autobuild </a>.
 <p>fit_loops can be run from the command line or from the PHENIX GUI.
@@ -42,12 +49,9 @@ following the electron density in the map.
 
 <P><H5><I>Output files from fit_loops</I></H5><P>
 
-<b>offset.pdb</b>: The output from fit_loops is a new PDB file
+<b>model_with_loops.pdb</b>: The output from fit_loops is a new PDB file
 containing your input model with the newly-built loop inserted into
-it (if a loop could be found). The new PDB file is by default called:
-<PRE style="face=courier">
-model_with_loops_1.pdb
-</PRE>
+it (if a loop could be found).
 
 <P><H5><U>Examples</U></H5><P>
 
@@ -81,6 +85,23 @@ in the loop (default minimum correlation is 0.2):
 phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
  seq_file=nsf.seq start=37 end=43 chain_id=None \
 loop_cc_min=0.1</PRE>
+
+<p>To use the loop library in PHENIX, use the keyword loop_lib:
+<PRE style="face=courier">
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
+ seq_file=nsf.seq start=37 end=39 chain_id=None loop_lib=True
+</PRE>
+This will fit a loop starting with residue 37 and ending with residue 39.
+The maximum current length in the loop library is 3 residues.
+
+<p>To use the loop library in PHENIX and try to connect any pair of segments 
+that have an  geometrical relationship, use the keyword connect_all:
+<PRE style="face=courier">
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
+ seq_file=nsf.seq connect_all=True
+</PRE>
+This will go through all pairs of segments, trying to connect them with a loop
+from the PHENIX loop library.
 
 <P><H5><U>Possible Problems</U></H5><P>
 

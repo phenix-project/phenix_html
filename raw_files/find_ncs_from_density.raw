@@ -1,0 +1,88 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Finding NCS from density in a map with
+ find_ncs_from_density</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>find_ncs_from_density: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+find_ncs_from_density is a tool to identify NCS relationships directly from
+an electron density map specified with a map coefficients file.  It writes
+out the NCS operators in a format that can be read by find_ncs and by the
+PHENIX wizards.  Usually find_ncs_from_density is used through find_ncs 
+(phenix.find_ncs contains find_ncs_from_density).
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How find_ncs_from_density works:</H5><P>
+
+<UL><LI>
+The find_ncs_from_density algorithm first identifies potential locations 
+of centers of macromolecules in the density map by finding maxima of the 
+local RMS density using phenix.guess_molecular_centers.  </LI>
+<LI>
+Then it cuts out a sphere of density centered at a 
+trial center and carries out an FFT-based rotation-translation search 
+to find all occurrences of similar density in the asymmetric unit of your map.  
+</LI>
+The region over which NCS-related correlation is high is identified 
+and the operators are written out as a "find_ncs.ncs_spec" file that 
+can be read by the phenix wizards and a "find_ncs.phenix_refine" 
+file that can be read by phenix.refine.  
+</LI>
+<LI>You can run the algorithm as a 
+whole or you can run each part separately with 
+phenix.guess_molecular_centers and phenix.find_ncs_from_density.</LI>
+
+<PRE style="face=courier">
+</PRE>
+
+<P><H5><I>Output files from find_ncs_from_density</I></H5><P>
+
+<b>find_ncs_from_density.ncs_spec</b>: A formatted file that can be
+read by phenix.find_ncs and the PHENIX wizards that specifies the NCS
+operators.
+
+<b>temp_dir/ncs_avg_map_coeffs.mtz</b>: This is an mtz file with just one 
+averaged NCS region written out in space group P1.
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of find_ncs_from_density:</H5><P>
+
+  Running find_ncs_from_density is easy. From the command-line you can
+type:
+<PRE style="face=courier">phenix.find_ncs_from_density  map_coeffs.mtz 
+</PRE>
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P>If your molecule is large, you may wish to increase the radius used for
+NCS identification (density_radius) and the peak separation (peak_separation).
+If your molecule has pseudo-symmetry you may also want to increase these
+parameters.
+<P>If you know how many NCS copies are present, you may wish to
+specifying that with ncs_copies_max.
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->

@@ -1,0 +1,134 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Rapid phase improvement and  model-building using
+ build_model</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>build_model: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+build_model is a new and rapid method for improving the quality of 
+your map and building a model.  The approach is to carry out an 
+iterative process of building a model as rapidly as possible and using 
+this model in density modification to improve the map.  This approach is 
+related to the older phenix.autobuild approach. The difference is that in 
+phenix.autobuild much effort was spent on building the best possible model 
+at each stage before carrying out density modification, while in 
+phenix.build_model speed of model-building is optimized.  The result is 
+that phenix.build_model is 10 times faster than phenix.autobuild, yet it 
+produces nearly as good a model in the end. The phenix.build_model 
+approach will also find NCS from your starting map and apply it during 
+density modification.
+
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How build_model works:</H5><P>
+
+<UL>
+<LI><p>build_model first identifies a free set of reflections if they are not 
+supplied.  A map without the test set reflections is created for 
+real-space refinement. A set of data for density modification is created
+which contains anisotropy-corrected data (if supplied).</LI>
+
+<LI>Next build_model estimates the solvent fraction (if not supplied) from the
+sequence file and cell parameters and the maximum and most likely number of
+NCS copies.</LI>
+
+<LI>A starting map is obtained by density modification of the input data (unless
+a map coefficients file is supplied).</LI>
+
+<LI>NCS is identified from the starting map (if the maximum number of NCS copies
+is greater than 1).  If a heavy-atom file is supplied, NCS will first be
+identified from the heavy-atom sites, and the map will be used  
+if the expected number of sites is not obtained.</LI>
+
+<LI>Next one or more cycles of phase improvement are carried out. In each 
+cycle a model is built using phenix.build_one_model, the model is refined in
+real-space and/or in reciprocal space, and then the model is 
+included in density modification to create a new map.</LI>
+
+<LI>Finally, a full model-building cycle is carried out using the most recent
+map.  One or more models are built with phenix.build_one_model and are refined,
+then are combined, again with phenix.build_one_model.  The resulting model is 
+refined and sequence assignment and fitting of short loops is carried out with 
+phenix.assign_sequence.  Then longer loops are fit with phenix.fit_loops
+and the final model is refined and written out.</LI>
+</UL>
+
+
+<P><H5><I>Output files from build_model</I></H5><P>
+
+<b>build_model.pdb</b>: A PDB file with the resulting model
+<b>build_model_map_coeffs.mtz</b>: An MTZ file with optimized phases 
+
+<P><H5><I>Parameters files in build_model</I></H5><P>
+When you run phenix.build_model it will write out a 
+build_model_params.eff parameter file that can be used to 
+re-run phenix.build_model (just as for essentially all PHENIX methods).  
+In addition, phenix.build_model will write out the parameters 
+files for the intermediate methods used as part of phenix.build_model 
+to the temporary directory used in building.  You can run these with:
+
+<PRE style="face=courier">
+phenix.find_ncs temp_dir/find_ncs_params.eff # runs NCS identification
+phenix.autobuild temp_dir/AutoBuild_run_1_/autobuild.eff   # runs first cycle of density modification
+phenix.build_one_model temp_dir/build_one_model_params.eff # runs most recent model-building
+phenix.assign_sequence temp_dir/assign_sequence_params.eff # runs sequence assignment and filling short gaps
+phenix.fit_loops temp_dir/fit_loops_params.eff # runs loop fitting
+</PRE>
+
+<p>This gives you control of all the steps in map improvement and model-building in addition to letting you run them all together with phenix.build_model
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of build_model:</H5><P>
+
+  Running build_model is easy. From the command-line you can
+type:
+<PRE style="face=courier">phenix.build_model exptl_fobs_phases_freeR_flags.mtz sequence.dat
+</PRE>
+
+<p>If you want to supply a file with anisotropy-corrected data to use in
+density modification you can do so:
+
+<PRE style="face=courier">phenix.build_model data=exptl_fobs_phases_freeR_flags.mtz \
+seq_file=sequence.dat \
+aniso_corrected_data=solve_1.mtz
+</PRE>
+where solve_1.mtz is anisotropy-corrected (the amplitudes are
+not measured amplitudes, but rather are corrected with an anisotropic 
+B-factor), and exptl_fobs_phases_freeR_flags.mtz contains experimental 
+amplitudes. These two files normally will contain the same phase information.
+(Usually these files will come from phenix.autosol.)
+
+<P>You can also add a starting model or a starting map to phenix.build_model. 
+This means that you can run it once, get a new model and map, then run it 
+again to further improve your model and map. 
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+<p>phenix.build_model does not have the full flexibility of phenix.autobuild,
+so you may want to get a nearly-complete model with phenix.build_model and then
+use phenix.autobuild to increase the completeness and quality.
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->

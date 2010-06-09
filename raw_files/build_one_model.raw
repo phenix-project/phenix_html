@@ -1,0 +1,66 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Quick model-building of a single model with resolve using
+ build_one_model</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>build_one_model: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+If you have an mtz map coefficients file and a sequence file, you can use
+build_one_model to just build a single model with resolve.  You can also
+extend an existing model.
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How build_one_model works:</H5><P>
+
+build_one_model runs resolve model-building, by default in superquick_build
+mode.  If you supply a model, then resolve will try to extend the ends
+of each chain in your model.
+
+<PRE style="face=courier">
+</PRE>
+
+<P><H5><I>Output files from build_one_model</I></H5><P>
+
+<b>build_one_model.pdb</b>: A PDB file with the resulting model
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of build_one_model:</H5><P>
+
+  Running build_one_model is easy. From the command-line you can
+type:
+<PRE style="face=courier">phenix.build_one_model  map_coeffs.mtz sequence.dat
+</PRE>
+
+If you want to supply a PDB file to extend instead you can do that:
+
+<PRE style="face=courier">phenix.build_one_model map_coeffs.mtz sequence.dat \
+  model.pdb
+</PRE>
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->

@@ -1,0 +1,64 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U> Remove test set reflections from a map file with
+ remove_free_from_map</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>remove_free_from_map: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+remove_free_from_map is a tool to remove test set reflections from a 
+map coefficients file so that the map can be used in real-space refinement
+without including the test set reflections.
+
+<P>NOTE: Normally remove_free_from_map is called from build_one_model or
+build_model, but you can run it interactively if you want.
+
+<P><H5><U>Usage</U></H5><P>
+
+<P><H5>How remove_free_from_map works:</H5><P>
+
+remove_free_from_map uses resolve to set all test set reflections to
+zero.
+
+<PRE style="face=courier">
+</PRE>
+
+<P><H5><I>Output files from remove_free_from_map</I></H5><P>
+
+<b>map_coeffs_without_freer_set.mtz</b>: An MTZ file with test set reflections
+set to F=0
+
+<P><H5><U>Examples</U></H5><P>
+
+<P><H5>Standard run of remove_free_from_map:</H5><P>
+
+  Running remove_free_from_map is easy. From the command-line you can
+type:
+<PRE style="face=courier">phenix.remove_free_from_map   map_coeffs.mtz free_r.mtz
+</PRE>
+where free_r.mtz has your FreeR_flag indicating which reflections are in the test set.
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->

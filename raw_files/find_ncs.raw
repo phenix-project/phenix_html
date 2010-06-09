@@ -20,8 +20,8 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 </UL>
 
       <P><H5><U>Purpose</U></H5><P>
-The find_ncs method identifies NCS in either (a) the chains in a PDB
-file or (b) a set of heavy-atom sites,
+The find_ncs method identifies NCS in (a) the chains in a PDB
+file or (b) a set of heavy-atom sites, or (c) from the density in a map
 and writes out the NCS operators in forms suitable for phenix.refine,
 resolve, and the AutoSol and AutoBuild Wizards.
 
@@ -32,8 +32,10 @@ resolve, and the AutoSol and AutoBuild Wizards.
 <P>The basic steps that the find_ncs carries out are:
 <P><UL><LI>(1) Decide whether to use simple_ncs_from_pdb (used if the
   input file contains chains from a PDB file) or RESOLVE NCS identification
-  (used if the input file contains heavy-atom sites)
-<P><LI>(2) call either simple_ncs_from_pdb or RESOLVE to identify NCS
+  (used if the input file contains heavy-atom sites) or find_ncs_from_density
+  (used if a map is supplied and sites are not found from either of the above)
+<P><LI>(2) call either simple_ncs_from_pdb or RESOLVE or find_ncs_from_density
+   to identify NCS
 <P><LI>(3) Evaluate the NCS by calculating the correlation of NCS-related
     electron density based on the input map coefficients mtz file.
 <P><LI>(4) Report the NCS operators and correlations
@@ -52,8 +54,8 @@ resolve, and the AutoSol and AutoBuild Wizards.
 </UL>
 
 <P><H5><I>What find_ncs needs:</I></H5><P>
-<P>find_ncs needs a file containing NCS information and a file with map 
-coefficients.  
+<P>find_ncs needs a file with map coefficients and optionally a second file
+containing NCS information. 
 <P> The file with NCS information can be...
 <P><UL><LI> a PDB file with a model (find_ncs will call simple_ncs_from_pdb to
 extract NCS operators from the chains in your model)
@@ -72,11 +74,22 @@ then you can specify them with a command like:
 <P> If you have no map coefficients yet (you just have some sites and want
 to get operators, for example), you can tell find_ncs to ignore the map with:
 <PRE style="face=courier">  ncs_parameters.force_ncs=True </PRE>
+You still need to supply a map coefficients file (the map itself will be
+ignored though).
 
       <P><H5><U>Examples</U></H5><P>
 
 <P><H5>Standard run of find_ncs:</H5><P>
-<P>  Running find_ncs is easy.  From the command-line you can 
+
+<P> If you have just a map coefficients file you can say:
+<PRE style="face=courier">phenix.find_ncs mlt.mtz
+</PRE>
+and find_ncs will look for NCS-related density in mlt.mtz (see 
+<A href="find_ncs_from_density.htm">find_ncs_from_density</A> 
+ for more details on how this works)
+
+<P>  If you have a model and a map file, 
+from the command-line you can 
 type:
 <PRE style="face=courier">phenix.find_ncs anb.pdb mlt.mtz
 </PRE>
