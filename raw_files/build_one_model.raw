@@ -45,12 +45,16 @@ of each chain in your model.
 
   Running build_one_model is easy. From the command-line you can
 type:
-<PRE style="face=courier">phenix.build_one_model  map_coeffs.mtz sequence.dat
+<PRE style="face=courier">phenix.build_one_model  map_coeffs.mtz \
+   sequence.dat free_in=exptl_fobs_phases_freeR_flags.mtz
 </PRE>
+where exptl_fobs_phases_freeR_flags.mtz has your free R flags for
+refinement.
 
 If you want to supply a PDB file to extend instead you can do that:
 
-<PRE style="face=courier">phenix.build_one_model map_coeffs.mtz sequence.dat \
+<PRE style="face=courier">phenix.build_one_model map_coeffs.mtz \
+  sequence.dat free_in=exptl_fobs_phases_freeR_flags.mtz \
   model.pdb
 </PRE>
 
