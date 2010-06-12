@@ -59,7 +59,7 @@ it (if a loop could be found).
 
 A typical command-line input would be:
 <PRE style="face=courier">
-phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
  seq_file=nsf.seq start=37 end=43 chain_id=None
 </PRE>
 This will fit a loop starting with residue 37 and ending with residue
@@ -73,7 +73,7 @@ will need to tell fit_loops what FP and PHIB (and optionally FOM)
 are, in this format:
 
 <PRE style="face=courier">
-phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
  seq_file=nsf.seq start=37 end=43 chain_id=None \
 labin="FP=2FOFCWT PHIB=PH2FOFCWT"
 </PRE>
@@ -82,13 +82,13 @@ labin="FP=2FOFCWT PHIB=PH2FOFCWT"
 might want to lower the threshold for the correlation of density
 in the loop (default minimum correlation is 0.2):
 <PRE style="face=courier">
-phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
  seq_file=nsf.seq start=37 end=43 chain_id=None \
 loop_cc_min=0.1</PRE>
 
 <p>To use the loop library in PHENIX, use the keyword loop_lib:
 <PRE style="face=courier">
-phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
  seq_file=nsf.seq start=37 end=39 chain_id=None loop_lib=True
 </PRE>
 This will fit a loop starting with residue 37 and ending with residue 39.
@@ -97,7 +97,7 @@ The maximum current length in the loop library is 3 residues.
 <p>To use the loop library in PHENIX and try to connect any pair of segments 
 that have an  geometrical relationship, use the keyword connect_all:
 <PRE style="face=courier">
-phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=resolve_0.mtz \
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
  seq_file=nsf.seq connect_all=True
 </PRE>
 This will go through all pairs of segments, trying to connect them with a loop
