@@ -14,7 +14,10 @@ if [ -z "$PHENIX_HTML" ]; then
   echo "$PHENIX_HTML not found; aborting"
 fi
 
-HTML_LOG=/var/tmp/phenix_html.log
+HTML_LOG=$1
+if [ -z "$HTML_LOG" ]; then
+  HTML_LOG=/dev/null
+fi
 for arg in $*; do
   case $arg in
   --log=*)
