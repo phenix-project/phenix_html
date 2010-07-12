@@ -25,6 +25,33 @@ time, to avoid conflicts with internal database files.
 
 .. image:: images/gui_main.png
 
+-----------------------------
+Running programs from the GUI
+-----------------------------
+
+When starting a job, Phenix writes out a configuration file and calls the
+command-line version of the program.  By default, this is started directly in
+the main process, i.e. "locally", which allows communication between the
+program and the GUI in memory rather than via temporary files.  The drawback
+to this is that if the GUI is closed or crashes, the job will be ended too.
+An alternate "detached" mode is available, which starts the job as an entirely
+separate process.  This limits the speed at which the GUI can be updated,
+but allows quitting the GUI without stopping the job.
+
+|br|
+A third mode is to run jobs on a queueing system; while this could be done
+entirely on a multi-core workstation, it will usually be spread across a
+cluster of similar computers.  Currently only Sun Grid Engine is supported.
+To enable queued jobs, open the Preferences, switch to the "Processes"
+tab, and check the box to enable queueing.  The queue submission option will
+now appear when starting a job.  For this to work, the SGE binaries ('qsub',
+'qstat', and 'qdel') must be in the current environment $PATH, Phenix
+must be installed in the same location on all nodes, and the filesystem on
+which the job is being run must be mounted on all nodes.  The GUI will display
+a "waiting" status until the job is actually started.  The main interface
+has a window for viewing the current queue status (Utilities->Show queue
+status).
+
 -------
 Modules
 -------
