@@ -1,30 +1,25 @@
 refinement {
   electron_density_maps {
-    map {
-      mtz_label_amplitudes = 2FOFCWT_ml
-      mtz_label_phases = PH2FOFCWT_ml
-      likelihood_weighted = True
-      obs_factor = 2
-      calc_factor = 1
+    map_coefficients {
+      mtz_label_amplitudes = 2FOFCWT
+      mtz_label_phases = PH2FOFCWT
+      map_type = 2mFo-DFc
     }
-    map {
-      mtz_label_amplitudes = FOFCWT_ml
-      mtz_label_phases = PHFOFCWT_ml
-      likelihood_weighted = True
-      obs_factor = 1
-      calc_factor = 1
+    map_coefficients {
+      mtz_label_amplitudes = FOFCWT
+      mtz_label_phases = PHFOFCWT
+      map_type = mFo-DFc
     }
-    map {
+    map_coefficients {
       mtz_label_amplitudes = 3FO2FCWT
       mtz_label_phases = PH3FO2FCWT
-      likelihood_weighted = False
-      obs_factor = 3
-      calc_factor = 2
+      map_type = 3Fo-2Fc
     }
-    grid_resolution_factor = 1/4.
-    region = *selection cell
-    atom_selection = name CA or name N or name C
-    apply_sigma_scaling = False
-    apply_volume_scaling = True
+    map {
+      map_type = 2mFo-DFc
+      grid_resolution_factor = 1/4.
+      region = *selection cell
+      atom_selection = chain A and resseq 1
+    }
   }
 }
