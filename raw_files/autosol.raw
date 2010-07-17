@@ -27,7 +27,8 @@ The AutoSol Wizard uses HYSS, SOLVE, Phaser, RESOLVE,  xtriage and
 phenix.refine to solve a structure and generate experimental phases
 with the MAD, MIR, SIR, or SAD methods. 
 The Wizard begins with
-datafiles (.sca, .hkl, etc) containing amplitidues of structure factors,
+datafiles (.sca, .hkl, etc) containing amplitidues (or intensities)
+of structure factors,
 identifies heavy-atom sites, calculates phases, carries out density
 modification and NCS identification, and builds and refines a 
 preliminary model.
@@ -78,6 +79,8 @@ or by editing a parameters file (examples below).
 <LI>d*trek </LI>
 <LI>CNS</LI>
 </UL>
+<P>The data from any of these formats will be converted to amplitudes 
+(F+ , sigF+, and F-, sigF-) internally.
 <P>For the best scaling results, you should supply all scalepack unmerged
 original index files or all mtz unmerged files.  If all the files are 
 scalepack unmerged original index or all the files are mtz unmerged
