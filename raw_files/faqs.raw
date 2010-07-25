@@ -646,6 +646,15 @@ built from scratch) by specifying fewer cycles:
 &quot;n_cycle_rebuild_max=1&quot; will use 1 cycle of rebuilding instead 
 of the usual 5. Often that is plenty.
 
+<H5>Why does autobuild or ligandfit crash with &quot;csh: not found&quot;?</H5>
+This usually means that you do not have the application &quotcsh&quot installed
+on your system. If you have Ubuntu linux, csh and tcsh are not included in
+a normal installation.  It is easy to install csh and tcsh under linux
+and it just takes a minute. You can say:
+<pre>yum install tcsh
+</pre>
+and that should do it.
+
 <H5>When should I use multi-crystal averaging?</H5>
  Multi-crystal averaging is going to be useful only if the crystals are 
 completely different or the amplitudes are nearly uncorrelated.  In 
