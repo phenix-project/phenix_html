@@ -423,6 +423,15 @@ is probably in the size of your dataset, some formatting issue, or the like.
 <LI>If they do not run, then the problem is in your system setup. If you are
 using redhat linux, try changing the option of selinux to selinux=disabled 
 in your /etc/sysconfig/selinux file.
+<LI> It is also possible that you do not have the 
+application &quotcsh&quot installed
+on your system. If you have Ubuntu linux, csh and tcsh are not included in
+a normal installation.  It is easy to install csh and tcsh under linux
+and it just takes a minute. You can say:
+<pre>yum install tcsh
+</pre>
+and that should do it.
+
 </UL>
 <H5>If I run AutoBuild with after_autosol=True, how do I know which run of 
 AutoSol it will use?
