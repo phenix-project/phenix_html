@@ -44,8 +44,11 @@ phenix.python ../scripts/create_fmodel_txt.py
 
 echo "  building HTML files from restructured text files"
 for file in `ls *.txt` ; do
-  echo "      converting $file to `echo $file | sed -e 's|.[^.]*$||'`.html"
-  docutils.rst2html $file > `echo $file | sed -e 's|.[^.]*$||'`.html
+  disable=`grep -c "disable_rst2html" $file`
+  if [ "$disable" = "0" ]; then
+    echo "      converting $file to `echo $file | sed -e 's|.[^.]*$||'`.html"
+    docutils.rst2html $file > `echo $file | sed -e 's|.[^.]*$||'`.html
+  fi
 done
 
 
