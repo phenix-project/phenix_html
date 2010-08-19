@@ -2,8 +2,6 @@
 Experimental phasing in the AutoSol GUI
 =======================================
 
-.. contents:: :depth: 3
-
 NOTE: this document is mainly an introduction for users who are not familiar
 with AutoSol (or experimental phasing in general), rather than a comprehensive
 reference for the program.  The documentation for the `command-line version
@@ -132,11 +130,144 @@ and the difference will be made up in the phasing step.  If the number of
 sites is much less than expected, you may not have sufficient anomalous signal
 in your data, or (when not using SeMet) the heavy atom may not be bound.
 
+Phasing and density modification
+================================
+
+Phasing is done by Phaser for SAD experiments, SOLVE for everything else, but
+the reported statistics are the same, and provide the first indication whether
+the structure is solveable by AutoSol.  If Phaser is run, Additional
+heavy-atom sites will be added based on the log-likelihood gradient map, and
+phases recalculated using the new sites.  Phasing is followed by density
+modification in RESOLVE; these two steps combined take only a couple of
+minutes for an average-sized structure.  Once solutions are finished with
+each step, you may view the maps and sites in Coot or PyMOL by clicking one
+of the buttons below the solution lists:
+
 .. image:: images/autosol_solutions.png
 
-Phasing
-=======
-
-The phasing statistics
+The map produce by the phasing step will usually be uninterpretable due to
+poor phase quality, especially in SAD experiments where the phase ambiguity
+can not be resolved.  The images below show the experimental maps (over the
+entire unit cell) for the p9-sad example; first the map from Phaser, then
+the density-modified map from RESOLVE, in identical orientations and contour
+levels.  Note that while the protein region is more electron-dense even in
+the initial SAD map, the boundary between protein and bulk solvent is
+impossible to determine.  However, even in the map from Phaser, the heavy-atom
+sites should be clearly inside strong density.
 
 .. image:: images/p9_phased_maps.png
+
+The phasing and density modification steps generate several statistics; the
+`full AutoSol manual <autosol.htm>`_ provides a detailed explanation of these
+(see the section "Scoring of heavy-atom solutions").  Some approximate
+guidelines for their interpretation:
+
+  - The Figure of Merit (FOM) is an estimate of phase quality, ranging from
+    0 to 1.  For SAD, above 0.45 is very good, and between 0.25 and 0.45 is
+    marginal.  For MAD, these thresholds increase to 0.45 and 0.65.
+
+  - The Overall Score (also BAYES-CC) is simply a correlation coefficient
+    multiplied by 100.  The higher this number is, the better the solution.
+
+  - The R-factor for density modification is calculated by performing an
+    inverse Fourier transform on the density-modified map to obtain F(calc),
+    and comparing this to F(obs).  This is on the same scale as a refinement
+    R-factor, so below 0.3 is ideal; however, a low value does not guarantee
+    a usable solution.
+
+  - The "skew" is a measure of the deviation of the distribution of electron
+    density values in the raw phased map from a Gaussian;  a macromolecular
+    crystal will have a large "tail" of very high density values.  A skew of
+    0.2 is usually very good.
+
+Model-building
+==============
+
+The automated model-building step is the most time-consuming stage, but by
+far the most useful indication of success.  Building is done by RESOLVE,
+and alternated with refinement in phenix.refine.  AutoSol will automatically
+build SeMet residues when appropriate, based on heavy-atom positions.  If
+possible, the user-provided sequence will be docked into the peptide chain.
+A schematic of the sequence and current model coverage (including secondary
+structure content) will be added in a new tab once a PDB file is available.
+
+.. image:: images/autosol_seq.png
+
+The final model is rarely complete and may contain gross errors, but
+a genuine solution is usually unambiguous based on visual inspection,
+the refinement R-factors, and the correlation coefficient.
+
+.. image:: images/p9_final.png
+
+If using the full resolution range of the p9-sad example, an R-free below
+0.25 is possible; when truncating at 2.5A, the R-free is nearly 0.35, but
+this is still obviously correct.  An R-free between 0.4 and 0.5 is usually
+indicative of a solved structure, but may indicate poor resolution and/or
+low-quality phases.  In any case, running the more comprehensive (but slower)
+AutoBuild wizard often leads to significant improvement.  R-free above 0.5
+is rarely usable; even if the phases are approximately correct, the map is
+not interpretable enough to build automatically.
+
+What to do next
+===============
+
+**Important:** if you are going to use the final model from AutoSol in further
+rounds of building and refinement, it is essential that you use the
+reflections in the file exptl_fobs_phases_freeR_flags_X.mtz (where X is the
+solution number), which will be listed in the Summary tab.  This contains
+the R-free set used for refinement during building; failing to use these data
+will bias the R-free in future refinements.  It also contains experimental
+phase information (Hendrickson-Lattman coefficients), which may be useful
+as additional restraints during refinement.
+
+Assuming that you have a correct solution, there are several immediate options
+for improving the model.  Validation at this stage is usually not worthwhile,
+as many of the automatic procedures may yield a significant improvement right
+away.  We generally recommend running the AutoBuild wizard, which will
+usually drop R-free by several percent if not more.  This can be started by
+clicking the button next to the list of output files in the Summary tab;
+appropriate files will be pre-loaded, including heavy-atom sites.  AutoBuild
+may take several hours to run, but if you have a multi-core system it will
+run in parallel.
+
+With a very good solution, such as the p9-sad data with the full resolution
+range, the model from AutoSol may be good enough to jump directly to
+running phenix.refine.  At this point, simulated annealing will probably
+be helpful; at moderate-to-high resolutions (2.5A or better), you should
+also turn on rotamer fitting and solvent picking.
+
+What to do if AutoSol fails
+===========================
+
+The most common reason for experimental phasing to fail is poor data quality -
+this may mean radiation damage, low signal-to-noise ratio, severe
+incompleteness, very little anomalous signal (sometimes due to lack of
+high-occupancy heavy-atom sites), or lattice pathologies such as twinning or
+pseudo-translation.  The Xtriage output may be helpful in diagnosing faults in
+the data.
+
+If the data are of relatively good quality and anomalous signal is present
+but few or no heavy-atom sites were found, it may be helpful to supply
+additional input files.  Heavy-atom sites identified by another program are
+one possibility; another is a partial molecular replacement solution which
+can be used to bootstrap MR-SAD phasing.  MR-SAD uses rough initial phases from
+Phaser to identify heavy-atom sites, which are then used to calculate
+experimental phases which are combined with the MR phases.  This may be
+successful in situations where neither MR nor SAD is sufficient by itself.
+To run MR-SAD, first run the AutoMR GUI; when it is finished, a button will
+be available to launch AutoSol with the appropriate files pre-loaded.
+
+References
+==========
+
+  - Decision-making in structure solution using Bayesian estimates of map
+    quality: the PHENIX AutoSol wizard. T. C. Terwilliger, P. D. Adams,
+    R. J. Read, A. J. McCoy, N. W. Moriarty, R. W. Grosse-Kunstleve, P. V.
+    Afonine, P. H. Zwart and L.-W. Hung Acta Cryst. D65, 582-601 (2009)
+
+  - Phaser crystallographic software. A. J. McCoy, R. W. Grosse-Kunstleve,
+    P. D. Adams, M. D. Winn, L. C. Storoni and R. J. Read J. Appl. Cryst. 40,
+    658-674 (2007)
+
+  - Substructure search procedures for macromolecular structures. R.W.
+    Grosse-Kunstleve and P.D. Adams. Acta Cryst. D59, 1966-1973 (2003)
