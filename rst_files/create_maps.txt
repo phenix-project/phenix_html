@@ -8,18 +8,18 @@ separate programs are grouped together in the main GUI.  For omit maps, a
 modified interface to `AutoBuild <autobuild.htm>`_ is available; consult the
 AutoBuild documentation for rules on use.  Isomorphous difference maps have a
 separate GUI, which takes two reflection files as input.  For maps using
-phases from a model, use ``phenix.create_maps``.  All of these programs
-write output as an MTZ file; the latter two may optionally output XPLOR maps
-(calculated to cover the PDB file used for phasing) if desired.
+phases from a model, use the "Create Maps" module.  All of these programs
+write output as an MTZ file; the latter two may optionally output XPLOR or
+CCP4 maps (calculated to cover the PDB file used for phasing) if desired.
 
 The "Create Maps" GUI
 ---------------------
 
-The interface for calculating electron density maps uses the same code base
-as the `validation tools <validation.htm>`_ and consequently has a similar
-interface.  The primary difference is the ability to request arbitary map
-types, including user-defined difference maps.  The window shown below has
-the default maps entered: 2mFo-DFc and mFo-DFc difference maps.
+This is a frontend to `phenix.maps <maps.htm>`_, which shares a common set
+of parameters with ``phenix.refine``.  Many user-defined map types are
+possible, but the program defaults to the most common ones, 2mFo-DFc and
+mFo-DFc difference maps.  Some additional predefined types are available in
+the drop-down menus.
 
 .. image:: images/map_types.png
 
@@ -29,12 +29,12 @@ Custom map types can be defined by typing in an appropriate string in a
 format similar to those already shown; the map generator will parse the
 string to determine the components used.
 
-If the "Save maps in XPLOR format" box is checked, maps suitable for display
-in PyMOL will be generated.  You may define custom maps, using the same
-map type syntax as for MTZ format, but with additional control over the
-region covered by the map and the grid scale.  If no additional XPLOR maps
-are requested, Phenix will simply convert any map coefficients from the MTZ
-file to XPLOR format (covering the input molecule plus a buffer region).
+By default the program only generates an MTZ file containing the map
+coefficients, but you may separately define maps to be generated in X-PLOR
+or CCP4 format by clicking the button labeled "CCP4 or XPLOR maps".
+However, if you leave these undefined, the GUI will automatically run the
+FFT to generate CCP4-format files if you click the "Open in PyMOL" button
+once map coefficients are available.
 
 Guidelines for use
 ------------------

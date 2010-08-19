@@ -1,15 +1,27 @@
-=======================================
-Experimental phasing in the AutoSol GUI
-=======================================
+<!--REMARK PHENIX TITLE START  Put your title here>
 
-.. contents:: :depth: 3
 
-NOTE: this document is mainly an introduction for users who are not familiar
+<H4><U>Experimental phasing in the AutoSol GUI</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<p class="topic-title first"><a name="contents">Contents</a></p>
+<ul>
+<li><a class="reference" href="#input-files-and-mandatory-parameters" id="id1" name="id1">Input files and mandatory parameters</a></li>
+<li><a class="reference" href="#running-autosol" id="id2" name="id2">Running AutoSol</a><ul>
+<li><a class="reference" href="#xtriage" id="id3" name="id3">Xtriage</a></li>
+<li><a class="reference" href="#heavy-atom-search" id="id4" name="id4">Heavy-atom search</a></li>
+<li><a class="reference" href="#phasing" id="id5" name="id5">Phasing</a></li>
+</ul>
+</li>
+</ul>
+<p>NOTE: this document is mainly an introduction for users who are not familiar
 with AutoSol (or experimental phasing in general), rather than a comprehensive
-reference for the program.  The documentation for the `command-line version
-<autosol.htm>`_ covers the full range of options and functionality.
-
-AutoSol is an experimental phasing pipeline that combines HySS (Hybrid
+reference for the program.  The documentation for the <a class="reference" href="autosol.htm">command-line version</a> covers the full range of options and functionality.</p>
+<p>AutoSol is an experimental phasing pipeline that combines HySS (Hybrid
 Substructure Search) for finding heavy-atom sites, Phaser or SOLVE for
 calculating experimental phases, and RESOLVE for density modification and
 (optional) model-building.  It will automatically try multiple solutions as
@@ -17,42 +29,34 @@ necessary and determine which is most likely to give the desired result;
 several different measures of solution quality (discussed below) are supplied.
 With good data, a partial model can be obtained for an average-size protein
 (30kD) in under an hour, starting only from scaled reflections and a sequence
-file.
-
-The examples below mostly use the p9-sad example included in the Phenix
+file.</p>
+<p>The examples below mostly use the p9-sad example included in the Phenix
 distribution.  If you have not previously performed experimental phasing or
 used AutoSol, we recommend setting up a tutorial project in the GUI and running
 the full example.  Because these data extend to a relatively high resolution
 (1.7A), AutoSol can build a nearly complete model with R-factors well below
 0.3, but to save time you may prefer to truncate the resolution at 2.5A,
-which will finish in less than 15 minutes.
-
-------------------------------------
-Input files and mandatory parameters
-------------------------------------
-
-Most users will have anomalous data from a single crystal (or merged from
+which will finish in less than 15 minutes.</p>
+<P><H5><U><B>Input files and mandatory parameters</B></U></H5><P>
+<p>Most users will have anomalous data from a single crystal (or merged from
 multiple similar crystals); although SIR and MIR phasing (with or
 without anomalous information) is supported, these types of experiment are
 typically done as a last resort.  At a minimum, one reflections file
 containing scaled anomalous intensities or amplitudes is required.  Any input
 format is supported, and in most cases AutoSol is run immediately after data
 processing.  Files can be added to the input list by dragging them into the
-main window, or by clicking the "Browse" button and selecting them from a file
+main window, or by clicking the &quot;Browse&quot; button and selecting them from a file
 dialog.  The GUI will automatically determine the file type, usually assuming
 that a SAD or MAD experiment is being performed.  In most cases the data
 labels for reflections will be guessed automatically (in the p9-sad example,
-only one set of values is available anyway).
-
-.. image:: images/autosol_sad_input.png
-
-You should always supply a sequence file (usually in FASTA format) if you have
+only one set of values is available anyway).</p>
+<div class="image"><img alt="images/autosol_sad_input.png" src="images/autosol_sad_input.png" /></div>
+<p>You should always supply a sequence file (usually in FASTA format) if you have
 this information, although it is optional if you do not perform model-building.
 If more than one chain is present, multiple sequences may be specified in a
 single file.  At this time, AutoSol (and AutoBuild) can build either protein
-or nucleic acid structures, but not both at once.
-
-When you add a reflections file, additional controls will appear for specifying
+or nucleic acid structures, but not both at once.</p>
+<p>When you add a reflections file, additional controls will appear for specifying
 experiment details such as heavy atom type and number, and anomalous scattering
 parameters.  If you are trying to phase using selenomethionine (SeMet),
 the number of atoms can be automatically determined from the sequence.  The
@@ -65,11 +69,9 @@ difference between an uninterpretable map and an obviously correct solution.
 A different example (gene-5-mad, also included in the PHENIX distribution)
 using multiple wavelengths is shown below; the inputs are only slightly more
 complicated than for SAD.  (In this case the wavelengths and anomalous
-coefficients are listed in the file README.txt in the example directory.)
-
-.. image:: images/autosol_mad_input.png
-
-Assuming that the space group and unit cell are automatically extracted from
+coefficients are listed in the file README.txt in the example directory.)</p>
+<div class="image"><img alt="images/autosol_mad_input.png" src="images/autosol_mad_input.png" /></div>
+<p>Assuming that the space group and unit cell are automatically extracted from
 the reflection files, most of the other parameters can be left on the defaults,
 although in the first image above we have changed the resolution to 2.5A.  The
 p9-sad example contains only single protein chain in the asymmetric unit so the
@@ -77,64 +79,47 @@ number of NCS copies can be left blank, but you should enter this if you are
 confident of the crystal contents.  We recommend leaving the model-building on,
 since it is the single most useful measure of whether the final map is
 interpretable or not.  If you have an RNA or DNA crystal, you may explicitly
-set the chain type by clicking the "All parameters" button, select "Crystal
-info" from the menu, and change the drop-down menu for "Chain type".
-
-Two other types of input file are optional but may be useful in special cases:
+set the chain type by clicking the &quot;All parameters&quot; button, select &quot;Crystal
+info&quot; from the menu, and change the drop-down menu for &quot;Chain type&quot;.</p>
+<p>Two other types of input file are optional but may be useful in special cases:
 heavy-atom sites (in PDB format) from an external program such as SHELXD, or
 partial phases (in MTZ format) from another phasing program such as AutoMR.
 The use of pre-defined sites is not discussed here as it is essentially very
 simple, but combination of MR and SAD is described at the end of this
-document.
-
----------------
-Running AutoSol
----------------
-
-Once you start AutoSol, a new tab is added to the GUI, with multiple sub-tabs
+document.</p>
+<P><H5><U><B>Running AutoSol</B></U></H5><P>
+<p>Once you start AutoSol, a new tab is added to the GUI, with multiple sub-tabs
 displaying job status and results.  The first tab prints the log output and
-summary of the current best statistics for the run once they are available.
-
-.. image:: images/autosol_log.png
-
-The second tab displays a list of the most important output files in the job
+summary of the current best statistics for the run once they are available.</p>
+<div class="image"><img alt="images/autosol_log.png" src="images/autosol_log.png" /></div>
+<p>The second tab displays a list of the most important output files in the job
 directory created by AutoSol.  Buttons for viewing the results in graphics
 applications will be activated once the necessary files are detected.  The
 image below is the appearance of this tab at the end of running the p9-sad
-example.
-
-.. image:: images/autosol_summary.png
-
-Xtriage
-=======
-
-The first step in the phasing pipeline is running the data analysis program
-`phenix.xtriage <xtriage_gui.htm>`_, which identifies potential problems such
-as twinning, translational pseudo-symmetry, or weak anomalous signal.
+example.</p>
+<div class="image"><img alt="images/autosol_summary.png" src="images/autosol_summary.png" /></div>
+<P><H5><U><B>Xtriage</B></U></H5><P>
+<p>The first step in the phasing pipeline is running the data analysis program
+<a class="reference" href="xtriage_gui.htm">phenix.xtriage</a>, which identifies potential problems such
+as twinning, translational pseudo-symmetry, or weak anomalous signal. 
 (Xtriage can also be run by itself, starting from the main GUI or the toolbar
 button in AutoSol, but you do not need to do this if AutoSol has already run
 it for you.)  The graphs and summary text from Xtriage may be viewed by
 clicking the button that appears in this section.  We recommend that you read
-the `documentation for the Xtriage GUI <xtriage_gui.htm>`_ for more
+the <a class="reference" href="xtriage_gui.htm">documentation for the Xtriage GUI</a> for more
 information about interpreting the output.  If AutoSol is not successful in
 phasing your structure, it is especially important to look over the Xtriage
-results before spending more effort on the same data.
-
-Heavy-atom search
-=================
-
-Within a few minutes, information on heavy-atom site finding will appear in
+results before spending more effort on the same data.</p>
+<P><H5><U><B>Heavy-atom search</B></U></H5><P>
+<p>Within a few minutes, information on heavy-atom site finding will appear in
 the third tab.  There may be more than one solution if you are running a MAD
 or MIR experiment, but AutoSol will pick the one mostly likely to be correct
 for further analysis.  The most important statistic here is the number of
 sites located; it will usually be less than the final number of refined sites,
 and the difference will be made up in the phasing step.  If the number of
 sites is much less than expected, you may not have sufficient anomalous signal
-in your data, or (when not using SeMet) the heavy atom may not be bound.
-
-.. image:: images/autosol_solutions.png
-
-Phasing
-=======
-
-The phasing statistics
+in your data, or (when not using SeMet) the heavy atom may not be bound.</p>
+<div class="image"><img alt="images/autosol_solutions.png" src="images/autosol_solutions.png" /></div>
+<P><H5><U><B>Phasing</B></U></H5><P>
+<p>The phasing statistics</p>
+<!--REMARK PHENIX BODY END-->

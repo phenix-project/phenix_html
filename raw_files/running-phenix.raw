@@ -74,37 +74,6 @@ of PHENIX or related applications installed).</p>
 <p> Please see the other documentation files to get more details about
 the <a href="phenix_gui.htm">PHENIX GUI</a>.
 
-<H5><U>Tasks and Strategies</U></H5>
-
-<P>The PHENIX strategy interface (in the GUI) provides a way to
-construct complex networks of tasks to perform a higher-level
-function. For example, the steps required to go from initial data to a
-first electron density map in a SAD experiment can be broken down into
-well-defined tasks (available from the task window in the GUI) which
-can be reused in other procedures. Instead of requiring the user to
-run these tasks in the correct order they are connected together by
-the software developer, and can thus be run in an automated
-way. However, because the connection between tasks is dynamic they can
-be reconfigured or modified, and new tasks introduced as necessary if
-problems occur. This provides the flexibility of user input and
-control, while still permitting complete automation when
-decision-making algorithms are incorporated into the environment. The
-tasks and their connection into strategies rely on the use of plain
-text task files written using the Python scripting language. This
-enables the computational algorithms to be used easily in a
-non-graphical environment. The PHENIX GUI permits strategies to be
-visualized and manipulated. These manipulations include loading a
-strategy distributed with PHENIX, customizing and saving it for future
-recall.  Current tasks and strategies available include:
-
-<ul>
-<li>Density modification; Carries out a single run of RESOLVE
-<li>Substructure solution; Runs phenix.hyss
-<li>Molecular replacement; Computes rotation and translation functions with PHASER. 
-<li>Model building; Using RESOLVE.
-<li>Ligand identification; Using RESOLVE.
-</ul>
-
 <H5><U>Wizards</U></H5>
 
 <P> The decision-making in strategies is local, with decisions being made
