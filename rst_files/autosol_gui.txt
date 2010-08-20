@@ -54,16 +54,17 @@ When you add a reflections file, additional controls will appear for specifying
 experiment details such as heavy atom type and number, and anomalous scattering
 parameters.  If you are trying to phase using selenomethionine (SeMet),
 the number of atoms can be automatically determined from the sequence.  The
-wavelength is required; anomalous coefficients (f' and f'') are optional for
-SAD but highly recommended.  If you did not record this information at the
-beamline using a fluorescence scan, they can be guessed based on the wavelength
-by clicking the button below the file list.  For MAD phasing, the
-experimentally determined values are more essential, and often make the
-difference between an uninterpretable map and an obviously correct solution.
-A different example (gene-5-mad, also included in the PHENIX distribution)
-using multiple wavelengths is shown below; the inputs are only slightly more
-complicated than for SAD.  (In this case the wavelengths and anomalous
-coefficients are listed in the file README.txt in the example directory.)
+wavelength is optional; anomalous coefficients (f' and f'') are optional for
+SAD but highly recommended, and required for MAD.  If you did not record this
+information at the beamline using a fluorescence scan, they can be guessed
+based on the wavelength by clicking the button below the file list.  For MAD
+phasing, the experimentally determined values are more essential, and often
+make the difference between an uninterpretable map and an obviously correct
+solution.  A different example (gene-5-mad, also included in the PHENIX
+distribution) using multiple wavelengths is shown below; the inputs are only
+slightly more complicated than for SAD.  (In this case the wavelengths and
+anomalous coefficients are listed in the file README.txt in the example
+directory.)
 
 .. image:: images/autosol_mad_input.png
 
@@ -190,6 +191,8 @@ build SeMet residues when appropriate, based on heavy-atom positions.  If
 possible, the user-provided sequence will be docked into the peptide chain.
 A schematic of the sequence and current model coverage (including secondary
 structure content) will be added in a new tab once a PDB file is available.
+If you have the model and map open in Coot or PyMOL, double-clicking on any
+residue or secondary structure element will zoom to that region.
 
 .. image:: images/autosol_seq.png
 
