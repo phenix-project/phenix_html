@@ -6,14 +6,12 @@ Overview
 ========
 
 This document covers the use of the validation software in the Phenix GUI,
-which is run both as a standalone program (*phenix.validate*) and as part of
+which is run both as a standalone program and automatically as part of
 *phenix.refine*.  Much of this software is derived from the `Molprobity web
-server <http://molprobity.biochem.duke.edu>`_.  Some programs are available
-as command-line tools; their use is covered in the last section.  There are
-two versions of validation in the GUI: one which performs only geometry
-validation (phenix.validate_model), and one which also compares the model to
-an electron-density map and calculates R-factors (phenix.validate).  Since
-the geometry results are identical, this document covers the latter program.
+server <http://molprobity.biochem.duke.edu>`_.  Although it is possible to
+run validation with only a model, we recommend including experimental data,
+as interpreting geometry outliers only makes sense in the context of the
+electron density maps.
 
 The analyses performed by Phenix include:
 
@@ -23,7 +21,8 @@ The analyses performed by Phenix include:
   - all-atom contact analysis with explicit hydrogens (including clashscore)
   - suggestions for asymmetric sidechain flips (Asn, Gln, His)
   - real-space correlation to electron density (RSCC)
-  - plot of B, RSCC, and density values by residue number
+  - multi-criterion plot of B, RSCC, density values, and Molprobity outliers
+    by residue numbers
 
 Any non-protein molecule wil be included in the real-space fit evaluation,
 and if CIF files are provided, geometric outliers will be detected as well.
@@ -34,30 +33,29 @@ All of the outliers listed in the GUI link to supported molecular graphics
 programs (currently Coot, PyMOL, and the internal viewer) if launched from
 within Phenix.  Clicking an outlier will recenter the graphics window on that
 atom or residue, and in some cases will also highlight the relevant selection.
-Certain outlier lists are also automatically displayed from within Coot in a
-separate window, with similar behavior.  When the real-space correlation or
-refinement is performed, buttons in the new tabs will open the resulting maps
-and model in Coot.
+If experimental data are included, buttons in the result window will open
+the model and maps in the graphics programs.
 
 Running validation
 ==================
 
-If you are performing refinement with the
-`*phenix.refine* GUI <refine_gui.htm>`_, the validation
-will be performed automatically as soon as the final model is ready.  To
-validate a model with diffraction data, launch *phenix.validate* from the
-command-line or the main Phenix GUI.  At a minimum, you will need a PDB file,
-and a reflections file containing intensities or amplitudes and R-free flags.
+If you are performing refinement with the `*phenix.refine* GUI
+<refine_gui.htm>`_, the validation will be performed automatically as soon as
+the final model is ready.  To validate a model with diffraction data, launch
+the "Comprehensive validation" app from the main GUI.  At a minimum, you will
+need a PDB file, and should probably add a reflections file containing
+intensities or amplitudes and R-free flags, plus any CIF files required by
+non-standard ligands in the structure.
 Most parameters should be extracted automatically.
 
-.. image:: images/validate_gui.png
+.. image:: images/validation_input.png
 
-In both programs, following an initial tab reporting basic program output
-and statistics such as R-free, there will be up to three validation tabs,
-one for geometry restraints, one for advanced geometry validation, and one
-for real-space correlation.  If a problem was encountered while calculating
-geometry restraints, that tab will be absent but the other analyses will still
-be displayed.
+After running the validation, a new window will open with the results.  If
+experimental data were included, the first tab will summarize the statistics
+including R-factors, plus data plots.  Buttons for Coot and PyMOL will also
+appear.
+
+.. image:: images/validation_summary.png
 
 Geometry restraints outliers
 ============================
@@ -74,7 +72,7 @@ angles, chiral centers, planar groups (such as aromatic rings), and nonbonded
 restraint outliers, which are made redundant by the much more thorough all-atom
 contact analysis (see below).
 
-.. image:: images/validate_restraints.png
+.. image:: images/validation_geometry.png
 
 All restrained values have an associated "sigma", i.e. the observed standard
 deviation from that value in very high-resolution structures; this is used
@@ -91,48 +89,46 @@ Validation of protein geometry
 ==============================
 
 The geometry of protein chains is restricted by additional empirical
-observations that are not part of the standard restraints.  The classic
-example of this is the Ramachandran plot, which sets limits on the combination
-of Phi (CA-C-N-CA) and Psi (N-CA-C-O) dihedral angles for any residue.  In
-Phenix and Molprobity, the standard distribution of values is taken from the
-Top500 database of high-resolution protein structures.  The main window
-contains a list of scored outliers (the lower the score, the worse the
-residue), and all residues are plotted graphically in a separate window.
-The scoring depends on the residue type and relative position; Gly, Pro, and
-adjacent residues depend on different distributions, all of which can be
-viewed in the plot window.
-
-.. image:: images/validate_rama.png
-
-.. image:: images/rama_plot.png
-
-Rotamer comparisons also use the Top500 database, and all sidechain Chi
-angles for a residue are evaluated together.  Any residue which has an
-outlying sidechain dihedral restraint is likely to be flagged by this analysis
-too.  The distribution of Chi1-Chi2 angle combinations for each residue type
-is also plotted in a separate window, against a background distribution taken
-from the Top500 database.  (Note that longer residues may be flagged as
-outliers based on the value of Chi3 or Chi4, even though they fall into the
-favored region of the Chi1-Chi2 plot.)   Finally, a separate evaluation of
-C-beta positions is performed; deviations tend to be caused by incompatible
-sidechain and mainchain positions, which
-are usually due to incorrect fitting to the density.  This will most likely
-be reflected in the comparison to restraints, with significant deviation from
-chirality and bond lengths or angles.
-
-.. image:: images/validate_rota.png
-
-.. image:: images/chi_plot.png
-
-Target values for these statistics are given at the top of the tab.
+observations that are not part of the standard restraints.  The "Molprobity"
+tab contains analyses of protein structure, plus outliers from all-atom
+contacts.  The first section in the tab summarizes the statistics along with
+recommended target values.
 Many structures contain residues that have been correctly placed but are
 flagged as Ramachandran or rotamer outliers; however, there are rarely more
 than a handful of these.  At resolutions below 3.0A, any outliers should
 be considered errors.  No C-beta outliers are acceptable at anything worse
 than sub-atomic (< 0.8A) resolution.
 
-.. image:: images/validate_goals.png
+.. image:: images/validation_molprobity.png
 
+The rest of the tab is divided into several sections:
+
+  - The Ramachandran plot, sets limits on the combination of Phi (CA-C-N-CA)
+    and Psi (N-CA-C-O) dihedral angles for any residue.  In Phenix and
+    Molprobity, the standard distribution of values is taken from the
+    Top500 database of high-resolution protein structures.  The main window
+    contains a list of scored outliers (the lower the score, the worse the
+    residue), and all residues are plotted graphically in a separate window.
+    The scoring depends on the residue type and relative position; Gly, Pro,
+    and adjacent residues depend on different distributions, all of which can
+    be viewed in the plot window.
+
+  - Rotamer comparisons also use the Top500 database, and all sidechain Chi
+    angles for a residue are evaluated together.  Any residue which has an
+    outlying sidechain dihedral restraint is likely to be flagged by this
+    analysis  too.  The distribution of Chi1-Chi2 angle combinations for each
+    residue type is also plotted in a separate window, against a background
+    distribution taken from the Top500 database.  (Note that longer residues
+    may be flagged as outliers based on the value of Chi3 or Chi4, even though      they fall into the favored region of the Chi1-Chi2 plot.)
+
+  - C-beta atoms deviating from the proper position are flagged; these are
+    caused by incompatible sidechain and mainchain positions, which
+    are usually due to incorrect fitting to the density.  This will most likely
+    be reflected in the comparison to restraints, with significant deviation
+    from chirality and bond lengths or angles.
+
+  - All protein residues with missing atoms are listed; these are not
+    necessarily wrong, but may be unintentionally left out during refinement.
 
 All-atom contacts
 =================
@@ -149,8 +145,6 @@ based on hydrogen-bonding geometry and clashes caused by newly added hydrogens.
 These include Asn, Gln, and His, which are easily mis-fit due to the
 apparent symmetry of the sidechain without hydrogens.
 
-.. image:: images/validate_asn.png
-
 Once hydrogens have been added, *phenix.probe* is run to analyze the atomic
 contacts.  All atomic overlaps worse than 0.4A are listed, and a global
 "clash score" is reported for the entire structure (calculated as 1000 *
@@ -159,7 +153,7 @@ possible, although a value of zero is both difficult and unusual.  We
 strongly recommend refining with explicit hydrogens at any resolution, as this
 typically improves overall model geometry (and rarely makes anything worse).
 
-.. image:: images/validate_probe.png
+.. image:: images/validation_probe.png
 
 Since Coot is able to read the output of Probe and graphically display the
 contacts as dots and dashes, this information will be automatically read into
@@ -168,7 +162,7 @@ external validation window popped up in Coot.  Bad overlaps will be drawn
 as hot-pink dashes.  It is usually much easier to visualize the cause of
 the problem if hydrogens are drawn as well.
 
-.. image:: images/probe_dots.png
+.. image:: images/coot_probe_dots.png
 
 Real-space correlation
 ======================
@@ -181,7 +175,7 @@ residue are obtained.  At resolutions better than 2.5 Angstroms, the values
 for individual atoms will also be displayed.  In the GUI, these lists can
 be filtered and/or sorted by CC.
 
-.. image:: images/validate_rscc.png
+.. image:: images/validation_rscc.png
 
 Although real-space CC can be a useful indicator of poorly fit regions of a
 molecule, it should not be interpreted as an absolute score, and it is
@@ -191,9 +185,12 @@ for residues which score below 0.8.  Some of these will be correctly placed
 but poorly ordered; this is not a problem as long as the geometry is within
 normal bounds.  The B-factor, occupancy, and absolute density values should
 also be considered when evaluating the results, as these may indicate parts
-of the structure that are intrinsically disordered.  These values are plotted
-together in 100-residue blocks in the GUI.
+of the structure that are intrinsically disordered.  The multi-criterion
+plot displays these values (over 100-residue regions) along with validation
+outliers.  Clicking anywhere inside the plot will zoom in on the corresponding
+residue at that position in Coot or PyMOL.
 
+.. image:: images/multi_criterion_plot.png
 
 POLYGON
 =======
@@ -209,12 +206,12 @@ relatively small.
 
 .. image:: images/polygon.png
 
-
 Suggestions for improving models
 ================================
 
-Except for the pseudo-symmetric sidechain flips performed by Reduce, there
-are currently no fully automatic corrections for problems identified in
+Rotamer fixing and N/Q/H sidechain flips are now options in phenix.refine,
+the latter now part of the default settings.  There are currently no fully
+automatic corrections for any of the other problems identified in
 validation.  *phenix.autobuild* can be used to rebuild problem regions of
 the structure, but this becomes more difficult as the quality of the map
 decreases or the resolution gets worse.  Re-refinement with a slightly
@@ -222,7 +219,6 @@ different protocol is often helpful; in particular, explicit hydrogens can
 help constrain the model.  The weight applied to X-ray terms during
 refinement may need to be reduced in favor of geometric restraints;
 this can be done automatically by `phenix.refine <refinement.htm>`_.
-
 
 References
 ==========

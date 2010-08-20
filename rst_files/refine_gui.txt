@@ -24,84 +24,202 @@ At present the GUI has the following capabilities:
   - graphical comparison of structure quality measures
   - printable plots of final statistics
 
-This software is still under development; to report any problems with
-normal operation, please send email to bugs@phenix-online.org.
-
-.. |br| raw:: html
-
-   <br />
-
-Launching
-=========
-
-The GUI can be started by typing *phenix.refine_gui*, or by clicking the
-*phenix.refine* button in program list of the main GUI window.
-Any combination of PDB, CIF, reflection, and parameter (.param or .eff) files
-may be specified on the command line.  Most keyword parameters used in the
-command-line version of phenix.refine should work as well.
-
-|br|
-|br|
-
-The GUI uses a database of projects to track default settings and job
-history for a structure or group of related structures.
-The current project will be guessed based on the directory from which
-PHENIX is launched; if not determined, a dialog window will be opened
-prompting the user to enter a project ID and directory path.  Although this
-is not required for the GUI to function, we recommend using projects to
-track preferences and data files specific to your structures.  In some
-cases, such as creating custom restraints files, this will be done for you
-automatically.
-
-.. image:: images/gui_projects.png
-
 Configuration
 =============
 
 Because phenix.refine currently has nearly 500 distinct parameters, many
 of which rarely need changing, and the window controls are mostly created
 automatically, advanced settings are hidden by default.  The "user level"
-may be set within each window, or set globally in the Preferences.  For
-instance, the "Miscellaneous settings" dialog looks like this when the
-user level is "Basic":
-
-.. image:: images/gui_level0.png
-
-The same window on the "Advanced" setting:
-
-.. image:: images/gui_level2.png
-
+may be set within each window, or set globally in the Preferences.
 The most important parameters (input and output files, strategy, additional
 procedures such as solvent updating and simulated annealing) are shown
 in the main window.
 
-.. image:: images/gui_refine_main.png
+Input files
+===========
 
-Some commonly-used settings are accessible via buttons on this screen; many
-of these will open additional dialog windows in response to mouse clicks
+The first tab contains settings for input files, which can be added by
+clicking the "+" button below the file list, or by dragging files into the
+list control and releasing the mouse button.  Up to five different reflection
+files may be used (X-ray data, X-ray R-free flags, neutron data, neutron
+R-free flags, and experimental phases), but in most cases all data will be
+in a single file.  Any number of PDB files for the starting model may be
+added; these will be combined internally.  You may also specify a reference
+model for additional restraints (see below).  Other supported file formats
+are CIF (restraint) files for non-standard ligands, and phenix.refine
+parameter files.
+
+.. image:: images/refine_gui_files.png
+
+The GUI will attempt to guess the purpose of PDB and X-ray files, but you may
+change this by right-clicking on the "Data type" field associated with the
+file and selecting an option from a drop-down menu, or select the file and
+click the button labeled "Modify file data type".
+
+If your reflection and/or PDB files have the appropriate information on
+crystal symmetry and data labels, these parameters will be extracted
+automatically.  Appropriate column labels for reflection files will also be
+added to the drop-down menus; by default, anomalous intensities (I+/I-) will
+be used if present, but you may also use merged data and/or amplitudes.  The
+R-free flags are optional, since phenix.refine will add them automatically if
+none are present, but once flags have been used in refinement (including the
+automated building in AutoSol or AutoBuild) the same set should always be used.
+
+Refinement settings
+===================
+
+The second tab contains options for the refinement protocol.  Many of these
+controls will open additional dialog windows in response to mouse clicks
 or file selection.  In many cases, you can open these windows on demand
 by right-clicking on the appropriate control (for instance, right-clicking
 the "Rigid body" strategy button will show the atom selection controls for
 defining rigid groups).  All other parameters can be found in the *Settings*
-menu, which can also be displayed by right-clicking on any empty section
-of the main window:
+menu.
 
-.. image:: images/gui_refine_settings.png
+.. image:: images/refine_gui_options.png
 
-Automatic parameter updates
-===========================
+The first set of controls determines the parameterization of the model and
+the attributes to be refined.  By default, the Individual Sites, Individual
+ADPs (B-factors), and Occupancies strategies are selected, since these are
+usually appropriate at a wide range of resolutions and refinement stages.
+All strategies have associated atom selections which control what parts of
+the model are refined.  A brief summary follows; note that the resolution
+limits specified are approximate only, and in practice may vary widely
+depending on model quality, data quality, and observation-to-parameters ratio.
 
-If your reflection and/or PDB files have the appropriate information on
-crystal symmetry and data labels, parameters will be propagated to the
-GUI.  A detailed example is shown below for a reflection file containing
-R-free flags and experimental phases:
+  - **Individual sites** is standard Cartesian refinement of model geometry
+    and agreement with X-ray data.  It is almost always appropriate except
+    at low-resolution (typically 3.5A or worse), unless additional restraints
+    (NCS, reference model, etc.) are used.
 
-.. image:: images/gui_hkl_params.png
+  - **Real-space** is similar to the Individual Sites strategy, but refines
+    against the map instead of in reciprocal space.  This is generally not
+    useful as a global strategy, but real-space refinement is used in other
+    parts of phenix.refine for local optimization.
 
-These settings can be changed later by clicking any of the buttons below
-the list of input files.  Any valid space group symbol may be used (for
-instance, '19', 'P212121', and 'P 21 21 21' are all equivalent).  Data
-labels are restricted to the suitable columns found in the reflection file.
+  - **Rigid-body** refines the position of large, user-defined regions of the
+    model without changing geometry.  It is typically used immediately after
+    molecular replacement, when the R-factors are usually very high, and at
+    very low resolutions (4.5A or worse).  If both rigid-body and individual
+    sites refinement are checked (recommended), the rigid-body step will be
+    done first, in the first cycle of refinement.
+
+  - **Individual ADPs** is atomic B-factor refinement, and is always
+    appropriate except at low resolution (3.5A or worse).  Whether atoms are
+    treated as isotropic or anisotropic is defined separately (see below).
+
+  - **Group ADPs** refines B-factors for multiple atoms at a time, most often
+    single residues either as a whole or divided into mainchain and sidechain.
+    (Larger user-defined groups are also allowed.)  This is usually only
+    necessary at low resolution (3.5A or worse).
+
+  - **TLS parameters** refines anisotropic displacements for large groups of
+    atoms, typically individual domains or chains.  Because this introduces
+    only ten parameters for each group, and relatively few groups are used,
+    it is appropriate at almost any resolution unless individual anisotropic
+    B-factors are refined.  (See note about B-factors below.)  It is important
+    to provide accurate atom selections here; the TLSMD server may be
+    helpful in determining these automatically.
+
+  - **Occupancies** refines atomic occupancies.  This is appropriate at
+    high resolution (usually 1.7A or better) where alternate conformations
+    are often present, and in situations where a ligand, ion, or solvent atom
+    is not bound in every unit cell.  By default, it will only be performed
+    for atoms with partial occupancies.  Groupings are determined automatically
+    if possible, but you may specify them manually.  (This is especially
+    important if you have complex relationships betweeen alternate
+    conformations in different parts of the model.)
+
+  - **Anomalous groups** refines the anomalous coefficients f' and f'' for
+    anomalously scattering atoms such as Se or heavy metals; it is only
+    appropriate if you have anomalous data (I+/I- or F+/F-).
+
+Many other options are available for the types of optimization and restraints
+used; these typically apply globally, except as noted.
+
+  - **Automatically add hydrogens to model** runs phenix.ready_set to add
+    hydrogen atoms (or deuteriums, if performing neutron crystallography)
+    where appropriate.  This usually only affects the R-factors at high
+    resolution, but can be very helpful for improving geometry at any
+    resolution.  We recommend using explicit hydrogens throughout refinement.
+    (Note that this can be left on if you already have hydrogen atoms in
+    place.)  Hydrogen atoms will still be defined using the "riding" model
+    unless otherwise requested, so they do not add parameters during
+    refinement.
+
+  - **Update waters** automatically adds and removes solvent atoms as
+    necessary; this is usually appropriate at any resolution where water
+    molecules are visible in density (usually 2.5A or better).
+
+  - **NCS restraints** preserves non-crystallographic symmetry between
+    identical copies of a molecule.  These can be automatically detected or
+    defined manually.  If NCS is present in the crystal, these restraints are
+    usually appropriate at intermediate resolution (2.2-2.7A or worse) and
+    essential at lower resolutions.
+
+  - **Simulated annealing** uses molecular dynamics with an extra X-ray
+    term as an additional optimization method.  It is very helpful for
+    removing phase bias and overcoming energy barriers, and often yields a
+    significant improvement over simple minimization early in refinement.
+    The main disadvantage is speed.  Two types of parameterization are
+    available, **Cartesian** and **torsion angles**; the latter is more
+    suitable for low resolution.
+
+  - **Find NCS restraints automatically** instructs phenix.refine to run
+    a built-in NCS identification protocol at the start of refinement; it
+    is ignored if NCS restraints are not activated.  Note that this should
+    be disabled if you have already defined NCS restraints in the GUI!
+
+  - **Fix bad sidechain rotamers** adjusts sidechain torsion angles to agree
+    with the distribution of conformations in the PDB and the electron density,
+    if possible, and performs local real-space refinement to optimize the
+    fit.  It is most useful at intermediate-to-high resolution (2.5A or
+    better), where sidechain density is clearly visible.
+
+  - **Automatically correct N/Q/H errors** uses the program Reduce to flip
+    backwards sidechains, which appear symmetric when explicit hydrogens are
+    not present.  This is almost always a good idea and adds very little to
+    overall run time.
+
+  - **Secondary structure restraints** add distance restraints for hydrogen
+    bonds in alpha helices, beta sheets, and Watson-Crick base pairs.  These
+    are helpful for maintaining correct geometry at lower resolutions (2.5A
+    or worse).  Suitable atom selections will be detected automatically but
+    you may also specify them manually.
+
+  - **Use experimental phases** uses the experimental phase distributions
+    (Hendrickson-Lattman coefficients) from phasing programs such as AutoSol
+    as additional restraints during refinement.  This is usually helpful if
+    these phases are avilable, but only if the same data were used for both
+    phasing and refinement.
+
+  - **Model interatomic scattering** adds the contribution of electrons
+    in atomic bonds to the model-derived X-ray ampltidues; it is only
+    appropriate at ultra-high resolution (at least 0.9A).
+
+  - **Reference model restraints** use the dihedral angles of an existing
+    structure as restraints on the input model conformation, for instance,
+    refining a low-resolution structure of a molecule whose high-resolution
+    structure is available.  This is most useful at low resolutions (usually
+    worse than 3.0A).
+
+  - **Target function** describes the calculation of model-based X-ray
+    terms; "ML" means "Maximum likelihood" and is usually appropriate;
+    "MLHL" use used when experimental phase restraints are added; "ML-SAD"
+    is not suitable for general use.  The least-squares (LS) target is
+    only useful for twinned refinement or very small datasets (it will be
+    used automatically if necessary).
+
+  - **Scattering table** determines how atomic scattering is modeled; this
+    is almost always either "n_gaussian" for standard X-ray refinement, or
+    "neutron" (see below).
+
+The output tab allows you to change the destination directory and modify the
+default map coefficients and/or map files written out.  By default, an MTZ
+file containing 2mFo-DFc and mFo-DFc map coefficients will be generated.
+
+.. image:: images/refine_gui_output.png
+
 
 Creating restraints
 ===================
@@ -115,13 +233,13 @@ this process, click the *ReadySet* button in the toolbar or choose
 launch a dialog for running *phenix.ready_set*, a simple utility for
 preparing structures for phenix.refine.
 
-.. image:: images/gui_ready_set.png
+.. image:: images/ready_set.png
 
 Generating the restraints will take between 30 seconds and several minutes,
 depending on computer speed and the size of the ligand.  When ReadySet is
 finished, another window will be displayed summarizing the results.  If
 a project directory is defined, these can be saved for future runs and
-will be automatically loaded into the GUI when launched.|br|
+will be automatically loaded into the GUI when launched.
 
 If your input model does not contain hydrogen atoms and you would like to
 use them in refinement, this can also be done via the ReadySet dialog, or
@@ -134,30 +252,25 @@ Neutron crystallography
 *phenix.refine* can perform refinement using either X-ray data, neutron
 diffraction data, or both.  You can change the type of data contained in a
 reflections file by right-clicking on the "Data type" field in the file list.
-|br|
-|br|
 
 At present, *phenix.refine* always requires that you define an X-ray dataset;
 this constraint will be removed in future versions.  If you are performing
 refinement against neutron data alone, you must treat the reflections as if
 they were X-ray data.  All of the data options remain the same, and will
 be extracted automatically.  You must change the scattering table to
-"neutron" by clicking the "Other parameters. . ." button at the bottom of
-the configuration window.  If you are doing joint X-ray/neutron refinement,
+"neutron" in the "Refinement settings" tabe.
+If you are doing joint X-ray/neutron refinement,
 you should leave the scattering table set to the default, and specify one
-reflections file as neutron data (or both).  Parameters for neutron data
+reflections file as neutron data.  Parameters for neutron data
 are not chosen automatically; once you have specified a neutron reflections
 file, click the "Neutron data. . ." button to select the column labels for
 the data and test set.
-|br|
-|br|
 
 If you need to add hydrogens and deuteriums to your model before running
-phenix.refine, do not click the "Automatically add hydrogens" button in
-the main window.  Instead, click the *ReadySet* button in the toolbar or
-select "Neutron crystallography" from the Utilities menu.  This will allow
-you to choose if and where to add deuterium or hydrogen atoms.  If your
-model already includes these atoms, you do not need to run ReadySet.
+phenix.refine, you can either run *ReadySet* prior to refinement, or change
+the options for automatic hydrogen addition.  If your model already includes
+these atoms, you may wish to turn automatic hydrogen addition off to ensure
+that existing atom types are left in place.
 
 Atom selection
 ==============
@@ -181,8 +294,6 @@ chains.  However, we
 recommend that you learn the selection syntax, as it is much more flexible
 than mouse controls.  Selections made in the graphics window will be sent
 automatically to the appropriate control.
-|br|
-|br|
 
 Once this window is open, it does not need to be closed; clicking a different
 "View/pick" button will transfer control of the display.  (On Linux, you
@@ -193,32 +304,46 @@ Running phenix.refine
 =====================
 
 Each time phenix.refine is run from the GUI, a new folder is created
-(in the current output directory) named *Refine_X*, where X is an integer.
-This directory will contain all temporary and output files created during
-the course of the run.  Existing folders will not be overwritten.  All
-output files will be displayed in the GUI in the results tab.|br|
+(in the current output directory) named *Refine_X*, where X is an integer
+corresponding to the job ID.  This directory will contain all temporary and
+output files created during the course of the run.  Existing folders will not
+be overwritten.  All output files will be displayed in the GUI in the results
+tab.
 
 Once you are done configuring refinement, switch to the *Run* tab in the
 main window and start the process by clicking the "Run" button.  The
-log output will appear in the central window:
+log output will appear at the bottom of the new tab:
 
-.. image:: images/gui_refine_run.png
+.. image:: images/refine_run.png
 
 Statistics will be continually updated; any that appear to be outliers
 (e.g. excessively high R-factors) will be highlighted in red.  If an
 error occurs during refinement, a message box will pop up and the process
-will be halted.  Once the refinement is complete, another tab will appear
-containing the final statistics, buttons for opening the refined structure
-in Coot and PyMOL, and a `validation summary <validation.htm>`_.
+will be halted.
+
+After refinement
+================
+
+Once the refinement is complete, additional tabs will appear.  The first
+of these is a summary page displaying the final statistics, a list of
+output files, buttons for opening the refined structure in Coot and PyMOL,
+and links to assorted graphs.  Note that the output files may include one
+ending in "_data.mtz"; if you did not specify R-free flags as part of the
+input, the new file will contain the automatically generated flags, and should
+be re-used in future runs.
+
+.. image:: images/refine_summary.png
+
+Additional tabs contain the full `validation summary <validation.htm>`_,
+which is essentially identical to the standalone validation program.
 
 Acknowledgements
 ================
 
+*phenix.refine* was written by Pavel Afonine, Ralf Grosse-Kunstleve, and
+Peter Zwart.
 The electron-density isosurface code in the CCTBX was contributed by
 Luc Bourhis.
-
-Some of the icons used in the GUI came from the `Crystal Icons project
-<http://www.everaldo.com/crystal>`_ which is licensed under the LGPL.
 
 References
 ==========
@@ -237,6 +362,6 @@ References
 
   - *POLYGON* :
     Urzhumtseva L, Afonine PV, Adams PD, Urzhumtsev A.
-    **Crystallographic model quality at a glance.** |br|
+    **Crystallographic model quality at a glance.**
     `Acta Cryst. 2009,  D65:297-300.
     <http://www.ncbi.nlm.nih.gov/pubmed/19237753>`_
