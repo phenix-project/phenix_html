@@ -50,7 +50,9 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents-->
  <li> Download coordinate &amp; graphics files for further work on local corrections</li>
 </ol>
 <p style="margin: 10px 0 0 5px;">
- An increasingly broad subset of MolProbity functionalities are integrated directly into PHENIX for use in refinement, Resolve, and wizard decisions.  Phenix.reduce provides optimized hydrogen addition, phenix.probe and quick_clashlist.py provide all-atom clash analysis, and python versions of the Ramachandran and rotamer scores are available in the mmtbx.  Interactive all-atom contact dots are also available in Coot.
+ An increasingly broad subset of MolProbity functionalities are integrated directly into PHENIX for use in refinement, Resolve, and wizard decisions.  These are all available in the PHENIX GUI as part of the `comprehensive validation
+interface <validation.htm>`_, which runs all available analyses and provides
+convenient links to molecular graphics software.  Phenix.reduce provides optimized hydrogen addition, phenix.probe and quick_clashlist.py provide all-atom clash analysis, and python versions of the Ramachandran and rotamer scores are available in the mmtbx.  Interactive all-atom contact dots are also available in Coot.
 </p>
 
 <P><H5>Possible Problems</H5><P>
