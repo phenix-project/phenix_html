@@ -28,9 +28,8 @@ Once the Coot window appears, you should see additional buttons on the
 toolbar for toggling communication with PHENIX and showing/hiding hydrogen
 atoms.  There will also be a new menu titled PHENIX.  Currently this only
 enables launching of phenix.refine with an open model pre-loaded.  If you do
-not see any modifications to the Coot window it is possible that your
-installation is incomplete, but communication with PHENIX will usually be
-unaffected.
+not see any modifications to the Coot window, you probably downloaded a version
+without Python (see "Common problems" below for details).
 
 As long as Coot is open, any PDB file can be viewed there by right-clicking the
 magnifying glass icon next to the file name and choosing "Open in Coot" from

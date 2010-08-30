@@ -35,9 +35,11 @@ Reference: Adams (2001) <i>Acta Cryst</i> D<b>57</b>. 990-995. </dd>
       and refinement modes for multiple search models and a set of possible spacegroups. 
  </p>
 <p>
- The phenix AUTO_MR wizard runs Phaser in default mode and allows some key changes to the default mode which may give structure solution in more difficult cases. 
+ The PHENIX AutoMR wizard runs Phaser in default mode and allows some key changes to the default mode which may give structure solution in more difficult cases. 
 Experience has shown that most structures that can be solved by Phaser can be solved by relatively simple strategies.
-  However, if the AUTO_MR wizard doesn't give a solution even with non-default input you need to run Phaser outside the wizard to access the full range of Phaser control options.
+  However, if the AutoMR wizard doesn't give a solution even with non-default input you need to run Phaser outside the wizard to access the full range of Phaser control options.  This can be done in the <a href="phenix_gui.htm">PHENIX
+graphical interface</a> by running the <a href="phaser_mr.htm">Phaser-MR GUI
+</a>, or on the command line.
    Details of how to run Phaser using keyword input or from python scripts are found at <a href="http://www-structmed.cimr.cam.ac.uk/phaser">the Phaser home page</a>.
 </p>
   <P><H5><U><B>How to Define Models</B></U></H5><P>
@@ -135,7 +137,7 @@ The composition is calculated from the molecular weight of the protein and nucle
 The composition is calculated from the amino acid sequence of the protein and the base sequence of the nucleic acid in fasta format.
   <P><H5><U><B>How to Select Peaks</B></U></H5><P>
   
-    If the AUTO_MR wizard fails to find a solution with default input, a solution may be found by changing the default selection criteria for peaks from the rotation function that are carried through to the translation funciton. The selection criterion can be changed by choosing the "edit rarely used inputs" option in the wizard.
+    If the AutoMR wizard fails to find a solution with default input, a solution may be found by changing the default selection criteria for peaks from the rotation function that are carried through to the translation funciton. The selection criterion can be changed by choosing the "edit rarely used inputs" option in the wizard.
     Selection can be done in four different ways.
 </p>
     <P><H5>Select by Percent</H5><P>

@@ -2,6 +2,9 @@
 Molecular replacement with the Phaser GUI
 =========================================
 
+Overview
+--------
+
 Although the `AutoMR wizard <automr.htm>`_ presents a user-friendly and
 automated frontend to Phaser, especially difficult cases may require finer
 control over parameters.  The Phaser-MR GUI exposes all options available in
@@ -10,16 +13,12 @@ modes besides MR_AUTO.  It can, for instance, be used to search for individual
 components one at a time with modified parameters, or run each stage of the
 search (rotation, translation, packing, phasing+refinement) separately.
 
-.. |br| raw:: html
-
-   <br /><br />
-
-|br|
 This document only covers configuration of the Phaser GUI; for a detailed
 explanation of the various terms and search procedures referenced here as well
 as interpretation of results, consult the
 documentation for `AutoMR <automr.htm>`_ or `Phaser <phaser.htm>`_, or the
-`Phaser WIKI <http://www.phaser.cimr.cam.ac.uk/index.php/Phaser_Crystallographic_Software>`_.
+`Phaser WIKI <http://www.phaser.cimr.cam.ac.uk/index.php/Phaser_Crystallographic_Software>`_.  Some common user questions are discussed at the end of this
+section.
 
 Input files and mandatory parameters
 ------------------------------------
@@ -40,20 +39,17 @@ ensemble does not automatically include it in the search; you may, for
 instance, supply several alternate ensembles for a chain, and instruct Phaser
 to try each in turn (see below).
 
-|br|
 You must also define the composition of the asymmetric unit (ASU); this is
 usually done by supplying information for each chain as a sequence, mass, or
 type and number of residues.  Alternately, you may give the fractional
 composition of each search ensemble, if known.  It is also possible to
 additionally specify heavy atoms that contribute to scattering, but this is
 rarely necessary.  Note that the composition data does not necessarily have
-a 1:1 correspondence with the search ensembles; for instance, an ensemble
-might be made up of two chains, each of which is defined as a separate
-component using sequence files.  Even if you are only searching for a single
+a 1:1 correspondence with the search ensembles (see FAQ list below for
+details).  Even if you are only searching for a single
 ensemble out of several (e.g. the protein in a protein-DNA complex), you
 must still supply the expected composition of the entire crystal.
 
-|br|
 Finally, the "Search procedure" tab defines the steps in the MR search,
 selected from each input ensemble.  Enabling more than one ensemble per
 search will result in the single best solution being used.  You do not need
@@ -73,8 +69,6 @@ by selecting options in the "User level" menu at the bottom of the window.)
 The available parameters will be slightly different depending on which mode
 you have selected.
 
-|br|
-
 .. image:: images/phaser_keywords.png
 
 Re-using previous results
@@ -85,16 +79,78 @@ not use a partial PDB file, but rather the saved results of a previous run.
 For example, a two-part MR solution may be obtained by running in MR_AUTO
 mode to place one ensemble, then modifying the parameters, selecting the
 previous run as the partial solution, and searching for the second ensemble.
-To do this, click the "Partial solution" button and select the result which
-you want to use as input (all previous Phaser jobs for the current project
-will be listed).
-
-.. image:: images/phaser_partial.png
+To do this, select the result which you want to use as input from the menu
+labeled "Use partial solution from previous job" (all previous Phaser jobs for
+the current project will be listed in the menu).
 
 You may also run each mode separately, e.g. the fast rotation function
 followed by the fast translation function using the previous result, and so
 on.  There are some restrictions on which modes may use which results, thus
 you may not follow a fast rotation function with packing analysis.
+
+Frequently Asked Questions
+--------------------------
+
+Note that most of these questions apply mainly to the "automated molecular
+replacement" (MR_AUTO) mode of Phaser.
+
+  - **How do I know if Phaser has solved my structure?**  This is answered in
+    detail in the section "Has Phaser solved it?" in the `main Phaser manual
+    <phaser.htm>`_, but it can be summarized as follows: the final translation
+    function Z score (TFZ) should be above 8, and the log-likelihood gain
+    (LLG) should be positive and as high as possible.  Of course, as with
+    experimental phasing, the ability to `autobuild most of the model
+    <autobuild.htm>`_ is the single best measure of a correct solution;
+    alternately, running a single round of `refinement <refine_gui.htm>`_
+    should result in an R-free below 0.50.
+
+  - **Why doesn't Phaser report an R-factor?**  The R-factor is far less
+    sensitive than the TFZ and LLG scores, especially when searching for
+    remote homologs or a small part of the overall scattering mass.  (Even in
+    MR programs which do report R, the value is often above the random
+    threshold even for a correct solution!)
+
+  - **What if I don't get a good solution?** This is also covered in detail
+    in the `main Phaser manual <phaser.htm>`_, in the section "What to do in
+    difficult cases".
+
+  - **What resolution cutoff should I use?**  You are not required to specify a
+    resolution cutoff, but specifying a lower resolution may improve the
+    search results.  (It will also lead to a significant improvement in speed.)
+
+  - **What is the difference between "high resolution" and "high resolution for
+    refinement"?**  The latter is applied during the "refinement and phasing"
+    step only; for rotation and translation searches, the first parameter is
+    used.
+
+  - **Should I use the output MTZ file from Phaser for refinement?** No, the
+    amplitudes (Fs) in this file have been corrected for anisotropy, which is
+    helpful for the MR search but may significantly alter them from the
+    experimental values.  The MTZ file is only useful for map coefficients,
+    but in most cases you will find that much better maps can be obtained by
+    immediately running a round of refinement or automated re-building.
+
+  - **How are the composition and search ensembles related?**  Technically,
+    they aren't connected.  The ensembles are used in the actuall MR search;
+    the composition only tells Phaser what to expect for the overall scattering
+    mass of the asymmetric unit (an important factor in the maximum likelihood
+    scoring).  Although you may only specify one sequence per component, you
+    can instead provide a molecular weight for a collection of chains.  You
+    may also split a model into smaller ensembles (for instance, different
+    domains) while keeping the composition the same, or use a multi-chain
+    search model while specifying a sequence file for each chain.
+
+  - **How do I search for multiple unique components?** or **How do I tell
+    Phaser to search for the best ensemble out of several?**  The "Search
+    procedure" tab allows you to set up either - or both - of these procedures.
+    To try multiple alternative ensembles at once ("a OR b OR c"), check the
+    box next to each ensemble you want Phaser to try for a single search; only
+    one of these will actually be placed in the output model.  To search for
+    multiple independent components ("a AND b AND c"), click the "Add search"
+    button below the tab, and for each search, check the ensemble(s) to be
+    used at that step.  The searches will be performed in the order they appear
+    in the GUI.  (You can, of course, combine these methods and search for
+    "(a OR b) AND c".)
 
 Reference
 ---------
