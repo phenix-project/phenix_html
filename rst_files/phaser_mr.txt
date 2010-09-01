@@ -106,17 +106,23 @@ replacement" (MR_AUTO) mode of Phaser.
 
   - **Why doesn't Phaser report an R-factor?**  The R-factor is far less
     sensitive than the TFZ and LLG scores, especially when searching for
-    remote homologs or a small part of the overall scattering mass.  (Even in
-    MR programs which do report R, the value is often above the random
-    threshold even for a correct solution!)
+    remote homologs or a small part of the overall scattering mass.  Phaser
+    does record R-factors for the rigid-body refinement step towards the
+    end of a run, which can be found in the logfile.  However, unless these
+    values are relatively low (< 40%), they are not reliable indicators of
+    solution quality, which is why only the Z-scores and LLG are reported in
+    the GUI.
 
   - **What if I don't get a good solution?** This is also covered in detail
     in the `main Phaser manual <phaser.htm>`_, in the section "What to do in
     difficult cases".
 
-  - **What resolution cutoff should I use?**  You are not required to specify a
-    resolution cutoff, but specifying a lower resolution may improve the
-    search results.  (It will also lead to a significant improvement in speed.)
+  - **What resolution cutoff should I use?**  By default Phaser uses all
+    data to 2.5 A.  We recommend leaving the resolution alone, but in some
+    cases reducing it may improve results (it will also lead to a significant
+    improvement in speed).  The effects of bulk solvent at low resolution are
+    already taken into account internally, so you do not need to specify
+    a low-resolution cutoff either.
 
   - **What is the difference between "high resolution" and "high resolution for
     refinement"?**  The latter is applied during the "refinement and phasing"
