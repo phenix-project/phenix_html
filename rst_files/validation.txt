@@ -53,9 +53,20 @@ Most parameters should be extracted automatically.
 After running the validation, a new window will open with the results.  If
 experimental data were included, the first tab will summarize the statistics
 including R-factors, plus data plots.  Buttons for Coot and PyMOL will also
-appear.
+appear.  Additional tabs contain the Molprobity validation suite, sanity
+checks for atomic properties (B-factor and occupancy), and real-space
+correlation.
 
 .. image:: images/validation_summary.png
+
+Molprobity summary
+==================
+
+An initial tab shows the target and actual values for assorted validation
+criteria (mostly specific to proteins).  See below for advice on interpreting
+these results.
+Residues with missing atoms are listed in a separate section; although these
+are not necessarily errors, they are often unintentionally left incomplete.
 
 Geometry restraints outliers
 ============================
@@ -89,10 +100,8 @@ Validation of protein geometry
 ==============================
 
 The geometry of protein chains is restricted by additional empirical
-observations that are not part of the standard restraints.  The "Molprobity"
-tab contains analyses of protein structure, plus outliers from all-atom
-contacts.  The first section in the tab summarizes the statistics along with
-recommended target values.
+observations that are not part of the standard restraints.  The "Protein"
+tab contains these analyses.
 Many structures contain residues that have been correctly placed but are
 flagged as Ramachandran or rotamer outliers; however, there are rarely more
 than a handful of these.  At resolutions below 3.0A, any outliers should
@@ -127,9 +136,6 @@ The rest of the tab is divided into several sections:
     be reflected in the comparison to restraints, with significant deviation
     from chirality and bond lengths or angles.
 
-  - All protein residues with missing atoms are listed; these are not
-    necessarily wrong, but may be unintentionally left out during refinement.
-
 All-atom contacts
 =================
 
@@ -163,6 +169,18 @@ as hot-pink dashes.  It is usually much easier to visualize the cause of
 the problem if hydrogens are drawn as well.
 
 .. image:: images/coot_probe_dots.png
+
+RNA validation
+==============
+
+A more robust set of target bond and angle values for RNA chains is applied
+separately from the parameters in the CCP4 monomer library.  This includes
+conformation-dependent restraints on the backbone sugar pucker, illustrated
+below.  Improvement of geometric refinement of RNA structures is an ongoing
+project withing PHENIX; currently, most RNA structures exhibit at least a few
+outliers (and sometimes many).
+
+.. image:: images/rna_pucker.png
 
 Real-space correlation
 ======================
