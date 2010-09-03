@@ -23,7 +23,8 @@ maps to follow them.  This is usually done for publication purposes, to
 compare electron density for the same feature(s) in different crystal forms.
 The examples shown here are structures of the protein kinase PKA, one in
 space group P4(2) (PDB ID 1syk), one in space group P2(1)2(1)2(1) (PDB ID
-3fhi).</p>
+3fhi).  (These are included in the PHENIX distribution as part of the
+&quot;pka-compare&quot; example.)</p>
 <p>We recommend running this program from the GUI, and this document covers the
 GUI version; however, the command-line program should work equally well, and
 parameters are listed below.</p>
@@ -55,10 +56,9 @@ multiple sets of maps are involved.</li>
 positive (placing the new map in a simple P1 box).  For the first model,
 only a translation will be involved.</li>
 <li>There is currently no simple way to recover the initial frames of
-reference for the input models; however, the structure comparison GUI does
-include this feature (allowing editing of transformed models in Coot,
-followed by refinement in the original orientations), although it is
-limited to a few pre-defined map types.</li>
+reference for the input models; however, the <a class="reference" href="structure_comparison.htm">structure comparison GUI</a> does include this feature (allowing editing
+of transformed models in Coot, followed by refinement in the original
+orientations), although it is limited to a few pre-defined map types.</li>
 <li>Because maps are sampled along a simple grid, reorientation of the map
 requires re-sampling for the new grid.  This requires interpolation of the
 new grid values, and some accuracy will be lost in the process (partly

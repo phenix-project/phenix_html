@@ -1,0 +1,78 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Using the LigandFit GUI</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<P><H5><U><B>Overview</B></U></H5><P>
+<p>LigandFit is one of the four PHENIX &quot;wizards&quot; for automated structure
+determination.  It performs flexibile ligand fitting into difference maps
+using RESOLVE, followed by optional real-space refinement.  As elsewhere, this
+documentation covers the use of the GUI specifically, and is not a
+general-purpose reference for program function.  See the <a class="reference" href="ligandfit.htm">command-line
+documentation</a> for a complete list of parameters and details
+on usage.</p>
+<P><H5><U><B>Configuration</B></U></H5><P>
+<p>The first tab in the LigandFit window contains a field for adding input files,
+which can be dragged and dropped from the desktop, or picked from a file
+browser by clicking the &quot;+&quot; button.</p>
+<div class="image"><img alt="images/ligandfit_config.png" src="images/ligandfit_config.png" /></div>
+<p>To run, you will need the following input files:</p>
+<blockquote>
+<ul>
+<li>A PDB file containing the initial ligand-free model.  (It is okay for this
+to contain previously-placed ligands as long as the intended binding site
+is empty.)  Water molecules will be automatically removed if necessary.</li>
+<li>An MTZ file containing either experimental amplitudes (F,SIGF) or
+pre-calculated difference map coefficients.</li>
+<li>A file describing your ligand.  This should be either a PDB file containing
+a single residue, or a text file containing a SMILES string.  In the
+latter case, eLBOW will be used to generate the starting geometry.</li>
+</ul>
+</blockquote>
+<p>Additional optional files:</p>
+<blockquote>
+<ul>
+<li>A PDB file containing ligand coordinates for comparison at the end of
+the program.</li>
+<li>A PDB file containing previously fit ligands (in addition to the starting
+model), which will be used to exclude occupied regions from fitting.</li>
+<li>CIF files defining ligand restraints for refinement.</li>
+<li>A reflections file containg F/I, SIGF/SIGI, and FreeR_flag for running
+a full round of phenix.refine after fitting.</li>
+</ul>
+</blockquote>
+<p>Ligandfit will try to guess what each input file should be used for
+automatically.  If it does not choose the desired data type, you can change
+this by right-clicking the &quot;Data type&quot; column for that file, or selecting
+the file and clicking the &quot;Modify file data type&quot; button below the list.</p>
+<div class="image"><img alt="images/ligandfit_file_type.png" src="images/ligandfit_file_type.png" /></div>
+<p>MTZ column labels (and map type, if applicable) will be extracted automatically
+when a file is loaded.</p>
+<p>By default, LigandFit runs multiple slightly different jobs in parallel and
+picks the best result from these; however, check the &quot;Quick search&quot; box if
+you want it to run a fast single job instead.</p>
+<P><H5><U><B>Output</B></U></H5><P>
+<p>LigandFit will generate a difference map used for fitting, and a separate PDB
+file for each copy placed.  All of these can be opened at once in one of
+the graphics programs by clicking the buttons next to the file list.  The
+button labeled &quot;Run phenix.refine&quot; will launch that GUI with the start model,
+reflections (if amplitudes were supplied), and all ligand output files already
+loaded.</p>
+<div class="image"><img alt="images/ligandfit_summary.png" src="images/ligandfit_summary.png" /></div>
+<P><H5><U><B>References</B></U></H5><P>
+<blockquote>
+<ul>
+<li><strong>Ligand identification using electron-density map correlations.</strong> T. C.
+Terwilliger, P. D. Adams, N. W. Moriarty and J. D. Cohn. <a class="reference" href="http://www.iucr.org/cgi-bin/paper?ba5092">Acta Cryst. D63,
+101-107 (2007)</a></li>
+<li><strong>Automated ligand fitting by core-fragment fitting and extension into
+density.</strong> T. C. Terwilliger, H. Klei, P. D. Adams, N. W. Moriarty and
+J. D. Cohn. <a class="reference" href="http://www.iucr.org/cgi-bin/paper?dz5066">Acta Cryst. D62, 915-922 (2006)</a></li>
+</ul>
+</blockquote>
+<!--REMARK PHENIX BODY END-->

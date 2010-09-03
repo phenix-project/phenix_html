@@ -59,6 +59,7 @@ for file in `ls *.html` ; do
   if [ $? -eq 0 ]; then
     mv `echo $file | sed -e 's|.[^.]*$||'`.raw ../raw_files
   fi
+  rm $file
 done
 
 echo "  converting raw HTML files, creating tables-of-contents, and indexing"
@@ -77,7 +78,7 @@ mkdir -p $PHENIX/doc
 cp -r $PHENIX_HTML/icons   $PHENIX/doc
 cp -r $PHENIX_HTML/images  $PHENIX/doc
 cp    $PHENIX_HTML/*.html  $PHENIX/doc
-cp    $PHENIX_HTML/*.htm   $PHENIX/doc
+mv    $PHENIX_HTML/*.htm   $PHENIX/doc
 /bin/rm $PHENIX/doc/phenix_documentation.html
 VERSION=${PHENIX_VERSION}-${PHENIX_RELEASE_TAG}
 sed "s/INSTALLED_VERSION/$VERSION/;" $PHENIX_HTML/phenix_documentation.html > $PHENIX/doc/phenix_documentation.html

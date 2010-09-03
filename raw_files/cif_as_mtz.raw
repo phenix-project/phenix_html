@@ -28,8 +28,9 @@ and the PDB and CIF files will be fetched automatically from the RCSB web
 server.</p>
 <P><H5><U><B>Command-line use</B></U></H5><P>
 <p>The output of <tt class="docutils literal"><span class="pre">phenix.cif_as_mtz</span></tt> without arguments is show below:</p>
-<p>Usage: phenix.cif_as_mtz [reflection_cif_file] [options]</p>
 <pre class="literal-block">
+Usage: phenix.cif_as_mtz [reflection_cif_file] [options]
+
 Options:
   -h, --help            show this help message and exit
   --unit-cell=10,10,20,90,90,120|FILENAME
@@ -53,7 +54,9 @@ Options:
 Example: phenix.cif_as_mtz r1o9ksf.ent --symmetry=pdb1o9k.ent
 </pre>
 <p>The <tt class="docutils literal"><span class="pre">--symmetry</span></tt> argument is frequently required due to missing symmetry
-information; in these cases you should use the equivalent PDB file.</p>
+information; in these cases you should use the equivalent PDB file.  Most of
+the other options are usually not necessary, but <tt class="docutils literal"><span class="pre">--use-model</span></tt> is often
+helpful to get the data type right.</p>
 <p>As a shortcut to download the files from the RCSB (or mirror) website, PHENIX
 includes a tool for fetching data for a given PDB code:</p>
 <blockquote>
