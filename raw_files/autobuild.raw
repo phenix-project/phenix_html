@@ -969,6 +969,11 @@ use a command like this:
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb \
    maps_only=True seq_file=seq.dat 
 </PRE>
+or
+<PRE style="face=courier">phenix.autobuild data=data.mtz  \
+   maps_only=True seq_file=seq.dat 
+</PRE>
+
 The Wizard will calculate the same map that it would normally calculate given
 these data, and then it will write the map out and stop.
 
