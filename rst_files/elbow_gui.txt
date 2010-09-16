@@ -23,8 +23,8 @@ Input files
 
 eLBOW has extremely flexible options for describing ligand information.  The
 only mandatory data are some description of the molecular topology, i.e. atomic
-composition and bond connectivity.  Four different sources of information may
-be used:
+composition and (optionally) bond connectivity.  Four different sources of 
+information may be used:
 
   - **SMILES string**: this is a simplified syntax for uniquely representing
     molecules as text strings, invented by `Daylight CIS
