@@ -521,9 +521,17 @@ re-run phenix.mr_rosetta (just as for essentially all PHENIX methods).
 <P><H5><U>Examples</U></H5><P>
 
 <P><H5>Standard run of mr_rosetta:</H5><P>
+Before you run mr_rosetta, you need to get fragment files from the 
+Robetta server (see Setting up for a run of mr_rosetta, part A, above).
+Then you need an hhr alignment information file from the hhpred server 
+(see Setting up for a run of mr_rosetta, part B, above), or else
+a search model and an alignment file to go with it.</p>
 
-  Running mr_rosetta is easy. From the command-line you can
-type:
+<p>Once you have these files, running mr_rosetta is easy. 
+If you have a search model (coords1.pdb) and an alignment file for it
+(coords1.ali), and fragment files test3.gz and test9.gz, and
+a data file fobs.mtz with FP SIGFP and FreeR_flag,  you can type:
+
 <PRE style="face=courier">phenix.mr_rosetta seq_file = seq.dat \
     alignment_files = coords1.ali \
     data = fobs.mtz \
@@ -534,7 +542,13 @@ type:
 </PRE>
 and mr_rosetta will run automatically, generating 20 rosetta models during
 structure determination.
-<P>Usually you will want to edit a parameters file so that you can specify more
+<p>If you have an hhr alignment information file, you can specify that instead
+of search_models and alignment_files,
+with the command hhr_files=myhhpred.hhr. Then you can tell 
+mr_rosetta how many of the PDB files to use with 
+read_hhpred.number_of_models=1 (to use just the best one, for example). 
+</p>
+<p>Usually you will want to edit a parameters file so that you can specify more
 details of the run. You can get a default parameters file with:
 <PRE style="face=courier">phenix.mr_rosetta 
 </PRE>
