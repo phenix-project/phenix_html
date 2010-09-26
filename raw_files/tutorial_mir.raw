@@ -55,7 +55,7 @@ copy the directory <b>$PHENIX/examples/rh-dehalogenase-mir</b>
 to your current directory (<b>tutorials</b>) 
 and call it <b>tutorials/rh-dehalogenase-mir/</b>
 . Then it will run AutoSol using the command file 
-<b>run.csh</b> 
+<b>run.sh</b> 
 that is present in this <b>tutorials/rh-dehalogenase-mir/</b> directory.
 
 </p><p>We are going to run this MIR dataset using a parameters file
@@ -63,17 +63,17 @@ that is present in this <b>tutorials/rh-dehalogenase-mir/</b> directory.
 files and heavy-atom parameters to specify, it is easiest to run MIR
 by editing a simple file.
 
-</p><p>This command file <b>run.csh</b> is simple. It says:
+</p><p>This command file <b>run.sh</b> is simple. It says:
 
 </p><PRE style="face=courier">
-#!/bin/csh
+#!/bin/sh
 echo "Running AutoSol on rhodococcus dehalogenase data..."
 phenix.autosol rh-dehalogenase-mir.eff
 
 </PRE>
-The first line (<b>#!/bin/csh</b>) tells the system 
+The first line (<b>#!/bin/sh</b>) tells the system
 to interpret the remainder of the text in
-the file using the C-shell (<b>csh</b>).</p><p>
+the file using the sh (or bash) -shell (<b>sh</b>).</p><p>
 The command <b>phenix.autosol</b> runs the 
 command-line version of AutoSol (see 
 <a href="autosol.htm">Automated Structure Solution using AutoSol</a> for
@@ -175,7 +175,7 @@ derivative, and if any one of them works well, then all the derivatives
 can be solved.
 
 </p><p>Although the <b>phenix.run_example rh-dehalogenase-mir</b> command has just run
-AutoSol from a script (<b>run.csh</b>), you can run AutoSol yourself from
+AutoSol from a script (<b>run.sh</b>), you can run AutoSol yourself from
 this script  with the same <b>phenix.autosol rh-dehalogenase-mir.eff</b> 
 command.
 You can also run AutoSol from a GUI.  All these possibilities are described in 

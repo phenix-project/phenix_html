@@ -127,7 +127,7 @@ in relax procedure.
 <LI>
 	Sample relaxation script used to run relaxation in Rosetta:
 <PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
-#!/bin/csh -f 
+#!/bin/sh 
 cd MR_ROSETTA_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
  /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
 -database /net/terwill/rosetta/rosetta_database \
@@ -159,7 +159,7 @@ map as part of the target function, generating total of
 (rosetta_rebuild.nstruct=2000) rebuilt models.  Sample rebuild script used:
 
 <PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
-#!/bin/csh -f 
+#!/bin/sh 
 cd MR_ROSETTA_1/WORK_1/REBUILD_IN_SETS_1/RUN_1/WORK_1
  /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
 -database /net/terwill/rosetta/rosetta_database \
@@ -212,7 +212,7 @@ each. Score each relaxed model with LLG, take best LLG as score.  Save
 best relaxed model as new solution. Sample relax script used:
 
 <PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
-#!/bin/csh -f 
+#!/bin/sh 
 cd MR_ROSETTA_1/GROUP_OF_RESCORE_MR_ROSETTA_2/RUN_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
  /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
 -database /net/terwill/rosetta/rosetta_database \
@@ -251,7 +251,7 @@ of the model and its history, the map_coefficients and labels, etc.
 </LI>
 <LI>
 Jobs can be run on a single machine or on a cluster.  A run command for 
-single jobs (single_run_command="csh -f") and a run command for batch 
+single jobs (single_run_command="sh") and a run command for batch 
 jobs (group_run_command="qsub") can be specified as well as the number of 
 processors to use (nproc=32).
 </LI>
@@ -377,7 +377,7 @@ if you are using the bash or sh shells:
 export PHENIX_ROSETTA_PATH=/net/sigma/raid1/rosetta
 </PRE>
 
-or csh (C-shell):
+or sh (C-shell):
 
 <PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
 setenv PHENIX__ROSETTA_PATH /net/sigma/raid1/rosetta

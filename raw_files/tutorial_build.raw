@@ -57,20 +57,20 @@ copy the directory <b>$PHENIX/examples/p9-build</b>
 to your current directory (<b>tutorials</b>) 
 and call it <b>tutorials/p9-build/</b>
 . Then it will run AutoBuild using the command file 
-<b>run.csh</b> 
+<b>run.sh</b> 
 that is present in this <b>tutorials/p9-build/</b> directory.
-</p><p>This command file <b>run.csh</b> is simple. It says:
+</p><p>This command file <b>run.sh</b> is simple. It says:
 
 </p><PRE style="face=courier">
-#!/bin/csh
+#!/bin/sh
 echo "Running AutoBuild on P9 data..."
 phenix.autobuild seq_file=p9.seq data=p9-solve.mtz \
   input_map_file=p9-resolve.mtz resolution=2.4  \
   ncs_copies=1
 </PRE>
-The first line (<b>#!/bin/csh</b>) tells the system 
+The first line (<b>#!/bin/sh</b>) tells the system 
 to interpret the remainder of the text in
-the file using the C-shell (<b>csh</b>).</p><p>
+the file using the sh (or bash) -shell (<b>sh</b>).</p><p>
 The command <b>phenix.autobuild</b> runs the 
 command-line version of AutoBuild (see 
 <a href="autobuild.htm">Automated Structure Solution using AutoBuild</a> for
@@ -97,7 +97,7 @@ binary file that contains summary information about the dataset as well as the
 reflection data.
  
 </p><p>Although the <b>phenix.run_example p9-build</b> command has just run
-AutoBuild from a script (<b>run.csh</b>), you can run AutoBuild yourself from
+AutoBuild from a script (<b>run.sh</b>), you can run AutoBuild yourself from
 the command line with the same <b>phenix.autobuild seq_file= ...</b> command.
 You can also run AutoBuild from a GUI, or by putting commands in another
 type of script file. All these possibilities are described in 
@@ -275,7 +275,7 @@ Try:  1 building 1 model
 Try:  2 building 1 model
 Try:  3 building 1 model
 Running up to  1  jobs in parallel... with total of  3  jobs
-Splitting work into 3 jobs and running 1 at a time with csh in
+Splitting work into 3 jobs and running 1 at a time with sh in
 /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0
 
 Starting job 1...

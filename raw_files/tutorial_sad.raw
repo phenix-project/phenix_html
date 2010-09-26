@@ -56,18 +56,19 @@ copy the directory <b>$PHENIX/examples/p9-sad</b>
 to your current directory (<b>tutorials</b>) 
 and call it <b>tutorials/p9-sad/</b>
 . Then it will run AutoSol using the command file 
-<b>run.csh</b> 
+<b>run.sh</b> 
 that is present in this <b>tutorials/p9-sad/</b> directory.
-</p><p>This command file <b>run.csh</b> is simple. It says:
+</p><p>This command file <b>run.sh</b> is simple. It says:
 
 </p><PRE style="face=courier">
-#!/bin/csh
+#!/bin/sh
 phenix.autosol  seq_file=seq.dat sites=4 atom_type=Se  data=p9_se_w2.sca  \
 space_group=&quot;I4&quot; unit_cell=&quot;113.949 113.949  32.474 90.000  90.000  90.00&quot;  \
 resolution=2.4 thoroughness=quick
 </PRE>
-The first line (<b>#!/bin/csh</b>) tells the system to interpret the remainder of the text in
-the file using the C-shell (<b>csh</b>).</p><p>
+The first line (<b>#!/bin/sh</b>) tells the system
+to interpret the remainder of the text in
+the file using the sh (or bash) -shell (<b>sh</b>).</p><p>
 The command <b>phenix.autosol</b> runs the 
 command-line version of AutoSol (see 
 <a href="autosol.htm">Automated Structure Solution using AutoSol</a> for
@@ -114,7 +115,7 @@ to give a less comprehensive search for heavy-atom sites and a less thorough
 model-building than if you use  the default of
 <b>thoroughness=thorough</b>.  
 <p>Although the <b>phenix.run_example p9-sad</b> command has just run
-AutoSol from a script (<b>run.csh</b>), you can run AutoSol yourself from
+AutoSol from a script (<b>run.sh</b>), you can run AutoSol yourself from
 the command line with the same <b>phenix.autosol seq_file= ...</b> command.
 You can also run AutoSol from a GUI, or by putting commands in another
 type of script file. All these possibilities are described in 

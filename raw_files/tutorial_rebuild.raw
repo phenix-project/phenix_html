@@ -58,20 +58,20 @@ copy the directory <b>$PHENIX/examples/a2u-globulin-rebuild</b>
 to your current directory (<b>tutorials</b>) 
 and call it <b>tutorials/a2u-globulin-rebuild/</b>
 . Then it will run AutoBuild using the command file 
-<b>run.csh</b> 
+<b>run.sh</b> 
 that is present in this <b>tutorials/a2u-globulin-rebuild/</b> directory.
-</p><p>This command file <b>run.csh</b> is simple. It says:
+</p><p>This command file <b>run.sh</b> is simple. It says:
 
 </p><PRE style="face=courier">
-#!/bin/csh
+#!/bin/sh
 echo "Running AutoBuild on a2u-globulin MR data "
 phenix.autobuild mup_mr_solution.pdb a2u-sigmaa.mtz a2u-globulin.seq  \
 input_map_file=a2u-sigmaa.mtz input_map_labels="FWT PHIC"
 
 </PRE>
-The first line (<b>#!/bin/csh</b>) tells the system 
+The first line (<b>#!/bin/sh</b>) tells the system
 to interpret the remainder of the text in
-the file using the C-shell (<b>csh</b>).</p><p>
+the file using the sh (or bash) -shell (<b>sh</b>).</p><p>
 The command <b>phenix.autobuild</b> runs the 
 command-line version of AutoBuild (see 
 <a href="autobuild.htm">Automated Structure Solution using AutoBuild</a> for
@@ -104,7 +104,7 @@ binary file that contains summary information about the dataset as well as the
 reflection data.
  
 </p><p>Although the <b>phenix.run_example a2u-globulin-rebuild</b> command has just run
-AutoBuild from a script (<b>run.csh</b>), you can run AutoBuild yourself from
+AutoBuild from a script (<b>run.sh</b>), you can run AutoBuild yourself from
 the command line with the same <b>phenix.autobuild ...</b> command.
 You can also run AutoBuild from a GUI, or by putting commands in another
 type of script file. All these possibilities are described in 
@@ -327,7 +327,7 @@ several very good models if you want).
 Setting up to build 5 models to be combined into final model #1
 
 Setting background=False as nproc=1
-Building  5  models ...Splitting work into 5 jobs and running 1 at a time with csh in
+Building  5  models ...Splitting work into 5 jobs and running 1 at a time with sh in
 /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/AutoBuild_run_1_/TEMP0
 
 Starting job 1...

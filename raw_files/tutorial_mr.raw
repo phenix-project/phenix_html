@@ -54,12 +54,12 @@ copy the directory <b>$PHENIX/examples/a2u-globulin-mr</b>
 to your current directory (<b>tutorials</b>) 
 and call it <b>tutorials/a2u-globulin-mr/</b>
 . Then it will run AutoMR using the command file 
-<b>run.csh</b> 
+<b>run.sh</b> 
 that is present in this <b>tutorials/a2u-globulin-mr/</b> directory.
-</p><p>This command file <b>run.csh</b> is simple. It says:
+</p><p>This command file <b>run.sh</b> is simple. It says:
 
 </p><PRE style="face=courier">
-#!/bin/csh
+#!/bin/sh
 echo "Running AutoMR on a2u-globulin data without building..."
 phenix.automr mup_search.pdb scale.mtz mass=18000. resolution=2.5 \
     component_type=protein RMS=1.0 sequence.dat copies=4  \
@@ -67,8 +67,9 @@ phenix.automr mup_search.pdb scale.mtz mass=18000. resolution=2.5 \
     build=False
 
 </PRE>
-The first line (<b>#!/bin/csh</b>) tells the system to interpret the remainder of the text in
-the file using the C-shell (<b>csh</b>).</p><p>
+The first line (<b>#!/bin/sh</b>) tells the system
+to interpret the remainder of the text in
+the file using the sh (or bash) -shell (<b>sh</b>).</p><p>
 The command <b>phenix.automr</b> runs the 
 command-line version of AutoMR (see 
 <a href="automr.htm">Automated Molecular Replacement using AutoMR</a> for
@@ -100,7 +101,7 @@ current line. There must be no characters (not even a space) after
 the backslash for this to work.</p>
 
 <p>Although the <b>phenix.run_example a2u-globulin-mr</b> command has just run
-AutoMR from a script (<b>run.csh</b>), you can run AutoMR yourself from
+AutoMR from a script (<b>run.sh</b>), you can run AutoMR yourself from
 the command line with the same <b>phenix.automr seq_file= ...</b> command.
 You can also run AutoMR from a GUI, or by putting commands in another
 type of script file. All these possibilities are described in 

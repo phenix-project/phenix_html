@@ -661,7 +661,7 @@ background=False   # probably false if this is a cluster, true if this is a mult
 
 If you have a queueing system with 20 nodes, then you probably submit jobs with something like 
 
-"qsub -someflags myjob.csh"   # where someflags are whatever flags you use (or just "qsub myjob.csh" if no flags)
+"qsub -someflags myjob.sh"   # where someflags are whatever flags you use (or just "qsub myjob.sh" if no flags)
 
 Then you might use 
 
@@ -676,10 +676,10 @@ or
 
 If you have a 20-processor machine instead, then you might say
 
-<PRE style="face=courier"> run_command=csh  background=True nproc=20 nbatch=20
+<PRE style="face=courier"> run_command=sh  background=True nproc=20 nbatch=20
 </PRE>
 
-so that it would run your jobs with csh on your machine, and run them all in the background (i.e., all at one time).
+so that it would run your jobs with sh on your machine, and run them all in the background (i.e., all at one time).
 
 
 <P><H5><I>Model editing during rebuilding with the Coot-PHENIX interface 
@@ -1127,7 +1127,7 @@ value of &quot;nbatch&quot; will normally change the results of running the
 Wizard. (Changing the value of &quot;nproc&quot; does not change the results,
 it changes only how many jobs are run at once.)
 
-<LI>In many versions of the shell tcsh (and csh), the length of the
+<LI>In many versions of the shell tcsh (and sh), the length of the
 shell variable PATH is limited (for example to 4096 characters).  If your
 PATH is quite long then when AutoBuild runs a sub-process, it may
 accidentally increase the PATH to a value that is over the limit.  The

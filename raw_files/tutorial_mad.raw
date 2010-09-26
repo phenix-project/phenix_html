@@ -56,17 +56,17 @@ copy the directory <b>$PHENIX/examples/gene-5-mad</b>
 to your current directory (<b>tutorials</b>) 
 and call it <b>tutorials/gene-5-mad/</b>
 . Then it will run AutoSol using the command file 
-<b>run.csh</b> 
+<b>run.sh</b> 
 that is present in this <b>tutorials/gene-5-mad/</b> directory.
-</p><p>This command file <b>run.csh</b> is simple. It says:
+</p><p>This command file <b>run.sh</b> is simple. It says:
 
-</p><PRE style="face=courier">#!/bin/csh
+</p><PRE style="face=courier">#!/bin/sh
 echo "Running AutoSol on gene-5 protein data..."
 phenix.autosol  gene-5-mad.eff
 </PRE>
-The first line (<b>#!/bin/csh</b>) tells the system 
+The first line (<b>#!/bin/sh</b>) tells the system
 to interpret the remainder of the text in
-the file using the C-shell (<b>csh</b>).</p><p>
+the file using the sh (or bash) -shell (<b>sh</b>).</p><p>
 The command <b>phenix.autosol gene-5-mad.eff</b> runs the 
 command-line version of AutoSol with the parameters in the
 file gene-5-mad.eff (see 
@@ -131,7 +131,7 @@ so we do not need to provide the cell parameters or the space group
  
 </p><p>The resolution of the data is to about 2.6 A.
 </p><p>Although the <b>phenix.run_example gene-5-mad</b> command has just run
-AutoSol from a script (<b>run.csh</b>), you can run AutoSol yourself from
+AutoSol from a script (<b>run.sh</b>), you can run AutoSol yourself from
 the command line with the same <b>phenix.autosol gene-5-mad.eff</b> command.
 You can also run AutoSol from a GUI.
 <a href="running-wizards.htm">

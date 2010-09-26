@@ -19,14 +19,14 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 </p><PRE style="face=courier">phenix.run_example  p9-sad </PRE>
 <p>This command copies the <b>$PHENIX/examples/p9-sad</b> directory to 
 your working directory and executes the commands in the file 
-<b>run.csh</b>.</p>
+<b>run.sh</b>.</p>
 
 <H5>What sample data are available to run automatically?</H5>
 <p>You can see which sample data are set up to run automatically
 by typing: 
 </p><PRE style="face=courier">phenix.run_example  --help </PRE>
 <p>This command lists all the directories in <b>$PHENIX/examples/</b> that
-have a command file <b>run.csh</b> ready to use. For example:
+have a command file <b>run.sh</b> ready to use. For example:
 </p><PRE style="face=courier">phenix.run_example  --help 
 
 PHENIX run_example script. Fri Jul  6 12:07:08 MDT 2007

@@ -30,11 +30,11 @@ prime-and-switch map.
 
 
 <H5>Why does AutoBuild bomb and say &quot;word too long&quot;?</H5>
-<p>When Autobuild runs a sub-process it uses csh to run the subprocess.
+<p>When Autobuild runs a sub-process it uses sh to run the subprocess.
 When the subprocess is run, a few additions are made to the $PATH variable.
 If your $PATH variable is already very long, this can sometimes make it too
-long for csh.
-<p>Solution #1:   install a new csh so that any length $PATH is ok. You can
+long for sh.
+<p>Solution #1:   install a new sh so that any length $PATH is ok. You can
 get it from ftp://ftp.astron.com/pub/tcsh/
 <p>Solution #2:   add the keyword remove_path_word_list="coot cns" to remove
 a few entries in your path (coot and cns in this case) that are not used
@@ -68,14 +68,14 @@ in <b>$PHENIX/phaser/tutorial</b>.
 </p><PRE style="face=courier">phenix.run_example  p9-sad </PRE>
 <p>This command copies the <b>$PHENIX/examples/p9-sad</b> directory to 
 your working directory and executes the commands in the file 
-<b>run.csh</b>.</p>
+<b>run.sh</b>.</p>
 
 <H5>What sample data are available to run automatically?</H5>
 <p>You can see which sample data are set up to run automatically
 by typing: 
 </p><PRE style="face=courier">phenix.run_example  --help </PRE>
 <p>This command lists all the directories in <b>$PHENIX/examples/</b> that
-have a command file <b>run.csh</b> ready to use. For example:
+have a command file <b>run.sh</b> ready to use. For example:
 </p><PRE style="face=courier">phenix.run_example  --help 
 
 PHENIX run_example script. Fri Jul  6 12:07:08 MDT 2007
@@ -328,7 +328,7 @@ of your AutoBuild runs.
 <LI>Put all the files together in one directory, and then
 run an edited version of the script below to combine them:
 </p><PRE style="face=courier">  
-#!/bin/csh -f
+#!/bin/sh
 phenix.resolve&lt;&lt;EOD
 hklin exptl_fobs_phases_freeR_flags.mtz
 labin FP=FP SIGFP=SIGFP
@@ -365,7 +365,7 @@ phenix.fmodel high_resolution=5 refine_1.pdb
 
 <LI>Generate histograms with phenix.resolve. Here is a script:
 </p><PRE style="face=courier">
-#!/bin/csh -f
+#!/bin/sh
 phenix.resolve<<EOD
 hklin refine_1.pdb.mtz
 labin FP=FMODEL PHIB=PHIFMODEL
@@ -577,9 +577,9 @@ If you have a queueing system with 20 nodes, then you probably submit jobs
 with something like
 
 </p><PRE style="face=courier">
-"qsub -someflags myjob.csh"   # where someflags are whatever flags you use
+"qsub -someflags myjob.sh"   # where someflags are whatever flags you use
 </PRE>
-(or just "qsub myjob.csh" if no flags)
+(or just "qsub myjob.sh" if no flags)
 
 Then you might use
 
@@ -590,10 +590,10 @@ run_command="qsub -someflags"  background=False nproc=20 nbatch=20
 If you have a 20-processor machine instead, then you might say
 
 </p><PRE style="face=courier">
-run_command=csh  background=True nproc=20 nbatch=20
+run_command=sh  background=True nproc=20 nbatch=20
 </PRE>
 
-so that it would run your jobs with csh on your machine, and run them all
+so that it would run your jobs with sh on your machine, and run them all
 in the background (i.e., all at one time).
 
 <H5>How do I tell AutoBuild to use phenix.refine maps instead of density-modified maps for model-building?</H5>
@@ -655,7 +655,7 @@ built from scratch) by specifying fewer cycles:
 &quot;n_cycle_rebuild_max=1&quot; will use 1 cycle of rebuilding instead 
 of the usual 5. Often that is plenty.
 
-<H5>Why does autobuild or ligandfit crash with &quot;csh: not found&quot;?</H5>
+<H5>Why does autobuild or ligandfit crash with &quot;sh: not found&quot;?</H5>
 This usually means that you do not have the application &quotcsh&quot installed
 on your system. If you have Ubuntu linux, csh and tcsh are not included in
 a normal installation.  It is easy to install csh and tcsh under linux

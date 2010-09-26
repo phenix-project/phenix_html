@@ -57,17 +57,17 @@ copy the directory <b>$PHENIX/examples/1J4R-ligand</b>
 to your current directory (<b>tutorials</b>) 
 and call it <b>tutorials/1J4R-ligand/</b>
 . Then it will run LigandFit using the command file 
-<b>run.csh</b> 
+<b>run.sh</b> 
 that is present in this <b>tutorials/1J4R-ligand/</b> directory.
-</p><p>This command file <b>run.csh</b> is simple. It says:
+</p><p>This command file <b>run.sh</b> is simple. It says:
 
-</p><PRE style="face=courier"> #!/bin/csh
+</p><PRE style="face=courier"> #!/bin/sh
 echo "Running LigandFit on 1J4R data..."
 phenix.ligandfit data=1J4R.mtz model=1J4R_no_ligand.pdb ligand=1J4R_random.pdb
 </PRE>
-The first line (<b>#!/bin/csh</b>) tells the system 
+The first line (<b>#!/bin/sh</b>) tells the system
 to interpret the remainder of the text in
-the file using the C-shell (<b>csh</b>).</p><p>
+the file using the sh (or bash) -shell (<b>sh</b>).</p><p>
 The command <b>phenix.ligandfit</b> runs the 
 command-line version of LigandFit (see 
 <a href="ligandfit.htm">Automated Structure Solution using LigandFit</a> for
@@ -87,7 +87,7 @@ binary file that contains summary information about the dataset as well as the
 reflection data.
  
 </p><p>Although the <b>phenix.run_example 1J4R-ligand</b> command has just run
-LigandFit from a script (<b>run.csh</b>), you can run LigandFit yourself from
+LigandFit from a script (<b>run.sh</b>), you can run LigandFit yourself from
 the command line with the same <b>phenix.ligandfit data= ...</b> command.
 You can also run LigandFit from a GUI, or by putting commands in another
 type of script file. All these possibilities are described in 
@@ -215,7 +215,7 @@ Trying fit with n_indiv_tries_min = 300
                 n_group_search    = 6
                 ligand_file       = random.pdb
 Running 5 jobs on 1 processors
-Splitting work into 5 jobs and running 1 at a time with csh in
+Splitting work into 5 jobs and running 1 at a time with sh in
 /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/LigandFit_run_1_/TEMP0
 
 Starting job 1...
