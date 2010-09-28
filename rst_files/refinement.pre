@@ -980,6 +980,50 @@ detected or adjusted NCS groups.
    B-factors) using NCS restraints automatically created based on input PDB
    file.
 
+Using secondary structure restraints
+------------------------------------
+
+At low resolutions it is often beneficial to restrain hydrogen bonding
+distances in helices, sheets, and nucleic acid base pairs.  These can be used
+with or without explicit hydrogen atoms.  Appropriate atom selections will
+be detected automatically if none are provided by the user, but in most
+cases careful manual annotation will probably yield better results, especially
+if the starting model is of low quality.  To turn on the additional restraints
+a single extra parameter is sufficient::
+
+  % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True
+
+You can also generate starting parameters for secondary structure restraints
+using a standalone utility::
+
+  % phenix.secondary_structure_restraints model.pdb
+
+This will print a set of parameters suitable for use in phenix.refine, which
+may be edited to correct errors or add undetected groups.
+
+Like other restraints, the hydrogen bond distances have adjustable sigma and
+target values.  The sigma defaults to 0.05 Angstrom; the targets will be
+different depending on whether explicit hydrogens are used or not (defaults
+are 1.975A or 2.9A)::
+
+  % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
+    h_bond_restraints.h_o_distance_ideal=2.95 h_bond_restraints.sigma=0.04
+
+  % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
+    h_bond_restraints.n_o_distance_ideal=2.95 h_bond_restraints.sigma=0.02
+
+A relatively strict outlier filtering procedure is applied by default, to
+prevent improperly restraining incorrectly annotated residues.  Any bonds
+longer than the outlier cutoffs (2.5A for H-O, or 3.5A for N-O) will be
+excluded from the final restraints.  If you are certain of your annotations,
+you can increase the cutoff or turn off outlier filtering altogether::
+
+  % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
+    h_bond_restraints.h_o_distance_max=4.0
+
+  % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
+    h_bond_restraints.remove_outliers=False
+
 Using a reference model in refinement
 -------------------------------------
 
