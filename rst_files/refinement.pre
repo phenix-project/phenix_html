@@ -1071,21 +1071,20 @@ only part of a chain is desirable to restrain, etc.
 
 To specify selections, create a ``reference.params`` file with selections like::
 
-     refinement.reference_model.reference_group {
+  refinement.reference_model.reference_group {
        reference = chain A and resseq 2:119
        selection = chain A and resseq 2:119
      }
-     refinement.reference_model.reference_group {
+  refinement.reference_model.reference_group {
        reference = chain A and resseq 130:134
        selection = chain A and resseq 120:124
      }
-     refinement.reference_model.reference_group {
+  refinement.reference_model.reference_group {
        reference = chain A
        selection = chain B
      }  
 
-Specify ``reference.params`` as an additional input when running
-  ``phenix.refine``::
+Specify ``reference.params`` as an additional input when running ``phenix.refine``::
 
   % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
     reference_model.file=reference.pdb reference.params
