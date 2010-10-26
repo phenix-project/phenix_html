@@ -1,0 +1,63 @@
+==============================================
+Model building (and more) in the AutoBuild GUI
+==============================================
+
+NOTE:  this document is mainly an introduction for users who are not familiar
+with AutoBuild (or the GUI), rather than a comprehensive
+reference for the program.  The documentation for the `command-line version
+<autobuild.htm>`_ covers the full range of options and functionality.
+
+AutoBuild is the main model-building program in PHENIX; it combines density
+modification and chain tracing in RESOLVE with phenix.refine to generate a
+high-quality model.  It is optimized to be very thorough by default, and as
+a result is one of the most processor-intensive programs in PHENIX.  Most
+common protocols can be parallelized over an arbitary number of processors or
+cluster nodes, however.  If you need a faster alternative, there are several
+simpler building programs in PHENIX:
+
+  - `phenix.find_helices_strands <find_helices_strands.htm>`_ performs very
+    fast secondary structure fitting and chain-tracing.  It will generate a
+    partial protein (or nucleic acid) backbone in a few minutes (depending on
+    processor speed) but performs no refinement or sequence docking.  This
+    method tends to work well for low-resolution maps, and AutoBuild has a
+    similar mode.
+
+  - `phenix.fit_loops <fit_loops.htm>`_ docks small protein loops missing from
+    an incomplete model into electron density.  It can perform simple
+    real-space refinement to clean up the structure.
+
+  - `phenix.phase_and_build <phase_and_build.htm>`_ is essentially the
+    model-building component of AutoSol, and like AutoBuild, it performs
+    iterative density modification, model-building, and refinement.  It is
+    still substantially faster than AutoBuild, usually at the cost of a few
+    percent higher R-factors.  Currently only available as a command-line
+    program.
+
+-------------
+Configuration
+-------------
+
+Like several other programs in PHENIX, the AutoBuild GUI can accept a variety
+of files in bulk; it is also designed to be started directly from other
+programs (e.g. the AutoSol and AutoMR wizards) with files pre-loaded.  At a
+minimum, it requires experimental amplitudes and a source of phases (PHI/FOM
+columns in the MTZ file, or a partial model), and works best when supplied with
+the sequence(s) to be built.  If Hendrickson-Lattman coefficients or R-free
+flags are present in the reflections file(s), these will be used as well.
+Additional files for starting map coefficients and high-resolution data are
+optional.
+
+.. image:: images/autobuild_input.png
+
+AutoBuild is limited to building one chain type at a time, and performs no
+ligand fitting (the `LigandFit wizard <ligandfit_gui.htm>`_ should be used for
+this).  However, additional chains may be included as a "ligand file", which
+contains any existing parts of the model that you want AutoBuild to leave
+untouched (it will still be used in refinement).  For non-standard ligands,
+you will need to include CIF files.  Custom settings for `phenix.refine
+<refine.htm>`_ (i.e. the ".eff file") may also be supplied.
+
+If you are running AutoBuild directly from experimental phasing, the PDB file
+containing heavy atoms should be included.  For selenomethionine-derivatized
+proteins, the heavy atom sites will be used to anchor the methionines in the
+sequence.
