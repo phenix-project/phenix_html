@@ -14,11 +14,24 @@ refinement and an overall anisotropic ADP for the entire crystal.
 
 **B-factors**: see ADPs.
 
+**Bulk-solvent correction**: Scaling of low-resolution model-based amplitudes,
+F(calc), to account for the effects of unmodelled disordered solvent in the
+crystal.  Because the bulk solvent comprises such a large scattering mass in
+macromolecular crystals, and the low-resolution reflections tend to dominate
+the R-factor calculations, the correction step significantly decreases the
+R-factors and is an essential step during refinement and map calculation.
+
 **Constraints**: In refinement, constraints force specific parameters to be
 refined together.  Examples of this include rigid-body refinement (atomic
 coordinates constrained), "riding" hydrogen atoms, or grouped ADPs.  Since
 constraints reduce the number of refined parameters, they are particularly
 useful at low resolution. See also **restraints**.
+
+**Density modification**: A statistically-based method of phase improvement by
+real-space manipulation of electron density, which dramatically improves
+experimentally phased maps.  For SAD phasing, density modification is essential
+to resolve phase ambiguity and obtain an interpretable map, but it is also
+very helpful for other methods.
 
 **Figure of Merit (FOM)**: An approximate measure of phase quality, calculated
 for each reflection.  Scale is from 0 to 1, higher being better.  Although it
@@ -62,8 +75,14 @@ involves simple refinement of the modified structure to remove phase bias, and
 simulated annealing is recommended for best results.  A variant, the
 **composite omit map**, stitches together the contribution of many individual
 omit maps, which collectively omit all atoms.  In PHENIX, these may be
-calculated using the ``AutoBuild <autobuild.htm>`_ wizard.  See also the entry
+calculated using the `AutoBuild <autobuild.htm>`_ wizard.  See also the entry
 for "kicked map".
+
+**Overfitting*: Optimization of R-work at the expense of other quality metrics,
+especially R-free.  The most obvious indication of overfitting is divergence
+of R-work and R-free, which ideally should decrease in sync throughout
+refinement.  In most cases, the solution is to add or tighten restraints, or
+reduce the number of refined parameters.
 
 **Restraints**: In refinement, restraints keep specific independent parameters
 from diverging too far.  At most resolutions, basic geometry restraints
@@ -77,6 +96,16 @@ proper geometry and prevent overfitting.  However, they become less necessary
 as resolution increases, and restraining a high-resolution model too tightly
 will actually make it worse.  See also **constraints**.
 
+**Rotamer**: A well-defined unique combination of dihedral angle values in
+a group of atoms; the term is almost always used in reference to amino acid
+sidechains.  The rotamers used in Phenix are extracted from a set of
+high-quality, high-resolution structures (the Top500 database).  The vast
+majority of sidechains in a finished structure should be recognizably
+rotameric unless the density very clearly supports an outlier conformation.
+Because the standard geometry restraints and minimization methods often do a
+poor job moving sidechains into rotameric positions, a separate rotamer-
+fitting step is available in ``phenix.refine``.
+
 **Simulated annealing**: An optimization method which heats up a system and
 allows it to slowly cool, as a way of escaping local energy minima where
 simple gradient-based minimization fails.  In crystallography, this means
@@ -86,6 +115,11 @@ additional pseudo-energy term.  Especially useful for poorly built structures
 early in refinement, and as a method to remove phase bias (e.g. for omit maps).
 In PHENIX, both Cartesian and torsion-angle dynamics are available; the latter
 is intended for low-resolution refinement as it uses fewer parameters.
+
+**Skew**: Statistic derived from the distribution of electron density values
+in an experimentally phased map.  The skew describes the deviation from a
+Gaussian distribution; a correct map will have a slight skew towards higher
+values.  A skew above 0.2 is usually indicative of successful phasing.
 
 **Turn, Libration, and Screw (TLS)**: A way of describing anisotropic motion
 for rigid groups of atoms which move collectively in the crystal.  These are

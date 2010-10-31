@@ -33,6 +33,12 @@ simpler building programs in PHENIX:
     percent higher R-factors.  Currently only available as a command-line
     program.
 
+Several other programs have features similar to functions in AutoBuild; in
+particular, ``phenix.refine`` includes simple local rebuilding for sidechain
+rotamers, and both ``phenix.refine`` and ``phenix.maps`` can generate "kicked"
+maps, a possible alternative to composite omit maps (discussed below).  Ligand
+placement is done separately in the `LigandFit wizard <ligandfit_gui.htm>`_.
+
 -------------
 Configuration
 -------------
@@ -45,7 +51,8 @@ columns in the MTZ file, or a partial model), and works best when supplied with
 the sequence(s) to be built.  If Hendrickson-Lattman coefficients or R-free
 flags are present in the reflections file(s), these will be used as well.
 Additional files for starting map coefficients and high-resolution data are
-optional.
+optional.  (An example of the latter would be building into an isomorphous
+native dataset after solving a SeMet SAD/MAD structure in AutoSol.)
 
 .. image:: images/autobuild_input.png
 
@@ -60,4 +67,107 @@ you will need to include CIF files.  Custom settings for `phenix.refine
 If you are running AutoBuild directly from experimental phasing, the PDB file
 containing heavy atoms should be included.  For selenomethionine-derivatized
 proteins, the heavy atom sites will be used to anchor the methionines in the
-sequence.
+sequence.  AutoBuild can also be directed to build actual SeMet residues in
+place of Met.
+
+AutoBuild has two different modes for using an PDB file supplied as a starting
+model, set by the "Rebuild in place" control.  By default, the model will be
+rebuilt as necessary and refined without adding or removing atoms ("Auto" or
+"True").  If False, the model will be used as a source of phasing information
+but a new model will be built into the density-modified map.  You can still
+incorporate parts of the initial model by checking the "Include input model"
+box.  Currently, if you want to extend an existing model without removing any
+of the input atoms, we recommend using `phenix.fit_loops <fit_loops.htm>`_
+instead.
+
+------------------------------------
+Multiprocessing and queueing systems
+------------------------------------
+
+To build as thorough a model as possible, AutoBuild will spawn many similar
+processes, each of which will produce a slightly different result (depending
+on build options and random number generation).  This can be disabled by
+checking the "Quick mode" box, but the parallel builds typically result in
+more residues placed and a few percent lower R-free.  As many processors as
+are available may be utilized, although for building only three or four
+processes will be run at a time.  The GUI will automatically set the maximum
+number of processors to one less than are present in the system (or just
+one for older, single-core machines).
+
+This type of parallelism is very well suited for execution across a cluster,
+and AutoBuild supports spawning of processes using a queuing system such
+as Sun Grid Engine (SGE).  To enable this method, open the Preferences,
+switch to the "Processes" section, and click the box labeled "Activate
+queuing system support", then re-launch the AutoBuild GUI.  Another control
+will now appear labeled "Use queuing system to distribute tasks".  If this is
+checked, all child processes will be submitted to the queue instead of being
+run locally.  Note that this is independent of the option to run the entire
+AutoBuild process on the cluster, which only appears when the "Run" button is
+clicked.  Both options may be combined, but only if the cluster setup allows
+submitting jobs from the individual nodes.
+
+For composite omit map generation (described below), the parallelism is even
+more effective, since each omitted box can be processed separately.
+
+------
+Output
+------
+
+TODO
+
+---------
+Omit maps
+---------
+
+For clarity, the omit map functionality has been moved to a separate GUI,
+with similar behavior but different configuration options.
+
+.. image:: images/autobuild_omit.png
+
+Omit maps may be generated for either a specific (usually small) region of
+the structure, such as a ligand or problematic loop, or a composite of the
+entire structure.  In the latter mode, the program will iterate over boxes
+covering the unit cell, calculate maps for each box with the atoms inside
+left out, and assemble a complete map at the end.  (Note that an omit map
+for a specific region could also be generated manually by deleting part of
+a model or setting the occupancies to zero, then running phenix.refine.)
+
+Because of the interdependency of all reflections and all atoms, re-calculating
+maps immediately after deleting atoms does not reliably remove phase bias.
+The "Omit map type" control offers three choices for handling the partial
+models; the simplest of these will run ``phenix.refine`` with simple
+minimization and ADP refinement alone.  A much more thorough method of removing
+bias is a simulated annealing omit map, which allows the structure to escape
+local minima.  (Currently this only supports the Cartesian dynamics; torsion
+angle SA will be available in a future version.)  A third, even more robust
+option is the iterative build omit map, which rebuilds the partial structure.
+In addition to thoroughly removing bias, the resulting models provide an
+estimate of uncertainty for atomic coordinates.
+
+The main disadvantage of these methods is the long running time especially for
+the iterative build omit maps.  However, because AutoBuild is highly parallel,
+we recommend always using the simulated annealing or iterative build options.
+If you only want to generate figures for publication, specifying a region of
+the structure to leave out will be more efficient than running the full
+composite omit map calculation.
+
+-------------------------------
+Standalone density modification
+-------------------------------
+
+A third variant of the AutoBuild GUI is dedicated to generating density
+modified maps with no additional building.  This version of the GUI is
+single-processor only, but runs in much less time than the more advanced
+versions.  Users who wish to create a prime-and-switch map after molecular
+replacement should use this interface.  Note that if an input model is
+supplied, the default behavior is still to run refinement first, which
+considerably increases runtime.  (This can be disabled by checking the
+"Refine model" box.)
+
+.. image:: images/autobuild_dm.png
+
+----------
+References
+----------
+
+TODO
