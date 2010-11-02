@@ -134,7 +134,44 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     anomalously scattering atoms such as Se or heavy metals; it is only
     appropriate if you have anomalous data (I+/I- or F+/F-).
 
-Many other options are available for the types of optimization and restraints
+The refinement protocol can be further modified by manipulating various
+restraints (structural and otherwise):
+
+  - **NCS restraints** preserves non-crystallographic symmetry between
+    identical copies of a molecule.  These can be automatically detected or
+    defined manually.  If NCS is present in the crystal, these restraints are
+    usually appropriate at intermediate resolution (2.2-2.7A or worse) and
+    essential at lower resolutions.
+
+  - **Find NCS restraints automatically** instructs phenix.refine to run
+    a built-in NCS identification protocol at the start of refinement; it
+    is ignored if NCS restraints are not activated.  Note that this should
+    be disabled if you have already defined NCS restraints in the GUI!
+
+  - **Reference model restraints** use the dihedral angles of an existing
+    structure as restraints on the input model conformation, for instance,
+    refining a low-resolution structure of a molecule whose high-resolution
+    structure is available.  This is most useful at low resolutions (usually
+    worse than 3.0A).
+
+  - **Secondary structure restraints** add distance restraints for hydrogen
+    bonds in alpha helices, beta sheets, and Watson-Crick base pairs.  These
+    are helpful for maintaining correct geometry at lower resolutions (2.5A
+    or worse).  Suitable atom selections will be detected automatically but
+    you may also specify them manually.
+
+  - **Ramachandran restraints** guide protein backbone phi/psi angles towards
+    the optimal regions of the Ramachandran plot.  This can be very useful at
+    low resolutions (usually worse than 3.0A), although it will not by itself
+    eliminate outliers.
+
+  - **Use experimental phases** uses the experimental phase distributions
+    (Hendrickson-Lattman coefficients) from phasing programs such as AutoSol
+    as additional restraints during refinement.  This is usually helpful if
+    these phases are avilable, but only if the same data were used for both
+    phasing and refinement.
+
+Several other options are available for the types of optimization and restraints
 used; these typically apply globally, except as noted.
 
   - **Automatically add hydrogens to model** runs phenix.ready_set to add
@@ -151,12 +188,6 @@ used; these typically apply globally, except as noted.
     necessary; this is usually appropriate at any resolution where water
     molecules are visible in density (usually 2.5A or better).
 
-  - **NCS restraints** preserves non-crystallographic symmetry between
-    identical copies of a molecule.  These can be automatically detected or
-    defined manually.  If NCS is present in the crystal, these restraints are
-    usually appropriate at intermediate resolution (2.2-2.7A or worse) and
-    essential at lower resolutions.
-
   - **Simulated annealing** uses molecular dynamics with an extra X-ray
     term as an additional optimization method.  It is very helpful for
     removing phase bias and overcoming energy barriers, and often yields a
@@ -164,11 +195,6 @@ used; these typically apply globally, except as noted.
     The main disadvantage is speed.  Two types of parameterization are
     available, **Cartesian** and **torsion angles**; the latter is more
     suitable for low resolution.
-
-  - **Find NCS restraints automatically** instructs phenix.refine to run
-    a built-in NCS identification protocol at the start of refinement; it
-    is ignored if NCS restraints are not activated.  Note that this should
-    be disabled if you have already defined NCS restraints in the GUI!
 
   - **Fix bad sidechain rotamers** adjusts sidechain torsion angles to agree
     with the distribution of conformations in the PDB and the electron density,
@@ -181,27 +207,9 @@ used; these typically apply globally, except as noted.
     not present.  This is almost always a good idea and adds very little to
     overall run time.
 
-  - **Secondary structure restraints** add distance restraints for hydrogen
-    bonds in alpha helices, beta sheets, and Watson-Crick base pairs.  These
-    are helpful for maintaining correct geometry at lower resolutions (2.5A
-    or worse).  Suitable atom selections will be detected automatically but
-    you may also specify them manually.
-
-  - **Use experimental phases** uses the experimental phase distributions
-    (Hendrickson-Lattman coefficients) from phasing programs such as AutoSol
-    as additional restraints during refinement.  This is usually helpful if
-    these phases are avilable, but only if the same data were used for both
-    phasing and refinement.
-
   - **Model interatomic scattering** adds the contribution of electrons
     in atomic bonds to the model-derived X-ray ampltidues; it is only
     appropriate at ultra-high resolution (at least 0.9A).
-
-  - **Reference model restraints** use the dihedral angles of an existing
-    structure as restraints on the input model conformation, for instance,
-    refining a low-resolution structure of a molecule whose high-resolution
-    structure is available.  This is most useful at low resolutions (usually
-    worse than 3.0A).
 
   - **Target function** describes the calculation of model-based X-ray
     terms; "ML" means "Maximum likelihood" and is usually appropriate;

@@ -34,10 +34,11 @@ simpler building programs in PHENIX:
     program.
 
 Several other programs have features similar to functions in AutoBuild; in
-particular, ``phenix.refine`` includes simple local rebuilding for sidechain
-rotamers, and both ``phenix.refine`` and ``phenix.maps`` can generate "kicked"
-maps, a possible alternative to composite omit maps (discussed below).  Ligand
-placement is done separately in the `LigandFit wizard <ligandfit_gui.htm>`_.
+particular, `phenix.refine <refine_gui.htm>`_ includes simple local rebuilding
+for sidechain rotamers, and both ``phenix.refine`` and `phenix.maps
+<create_maps.htm>`_ can generate "kicked" maps, a possible alternative to
+composite omit maps (discussed below).  Ligand placement is done separately in
+the `LigandFit wizard <ligandfit_gui.htm>`_.
 
 -------------
 Configuration
@@ -54,7 +55,7 @@ Additional files for starting map coefficients and high-resolution data are
 optional.  (An example of the latter would be building into an isomorphous
 native dataset after solving a SeMet SAD/MAD structure in AutoSol.)
 
-.. image:: images/autobuild_input.png
+.. image:: images/autobuild_config.png
 
 AutoBuild is limited to building one chain type at a time, and performs no
 ligand fitting (the `LigandFit wizard <ligandfit_gui.htm>`_ should be used for
@@ -62,7 +63,7 @@ this).  However, additional chains may be included as a "ligand file", which
 contains any existing parts of the model that you want AutoBuild to leave
 untouched (it will still be used in refinement).  For non-standard ligands,
 you will need to include CIF files.  Custom settings for `phenix.refine
-<refine.htm>`_ (i.e. the ".eff file") may also be supplied.
+<refine_gui.htm>`_ (i.e. the ".eff file") may also be supplied.
 
 If you are running AutoBuild directly from experimental phasing, the PDB file
 containing heavy atoms should be included.  For selenomethionine-derivatized
@@ -113,7 +114,35 @@ more effective, since each omitted box can be processed separately.
 Output
 ------
 
-TODO
+As soon as AutoBuild starts running, a new tab will appear for the current
+job.  This will be divided into sub-tabs, starting with job status and console
+output.  A second sub-tab will display a list of output files and additional
+results as they appear; these will include the `Xtriage <xtriage_gui.htm>`_
+report on the experimental data, which can be loaded into the GUI by clicking
+the "Results and graphs" button.  Once maps and a model are available,
+clicking the Coot or PyMOL buttons will load these into the desired viewer.
+
+.. image:: images/autobuild_final.png
+
+The map file will be named ``overall_best_denmod_map_coeffs.mtz``, which
+contains only an F(obs) map.  Users who want difference maps like those
+produced by phenix.refine should run the separate `phenix.maps GUI
+<create_maps.htm>`_.
+AutoBuild will output two PDB files, one containing all built residues
+(``overall_best.pdb``), and one with only those residues for which the known
+sequence could be docked (``overall_best_placed.pdb``).  The final tab,
+"Structure status", will display a schematic of the sequence and secondary
+structure for each chain.
+
+.. image:: images/autobuild_seq_ss.png
+
+While the wizard is running in parallel build mode, the "Model-building" tab
+will show the progress of the individual jobs.  Although the output of these
+should not be used since a higher-quality final consensus model will be
+assembled by AutoBuild, you can view the current model for any job by
+selecting from the list and clicking the Coot button.
+
+.. image:: images/autobuild_multi.png
 
 ---------
 Omit maps
@@ -170,4 +199,10 @@ considerably increases runtime.  (This can be disabled by checking the
 References
 ----------
 
-TODO
+  - CITATION:autobuild
+
+  - CITATION:autobuild_omit
+
+  - CITATION:prime_and_switch
+
+  - CITATION:phenix.refine

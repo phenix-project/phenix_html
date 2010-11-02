@@ -5,7 +5,7 @@ Creating maps using the Phenix GUI
 Because of the differences in calculation method and input data, there is no
 single unified interface for creating any electron density maps; instead,
 separate programs are grouped together in the main GUI.  For omit maps, a
-modified interface to `AutoBuild <autobuild.htm>`_ is available; consult the
+modified interface to `AutoBuild <autobuild_gui.htm>`_ is available; consult the
 AutoBuild documentation for rules on use.  Isomorphous difference maps have a
 separate GUI, which takes two reflection files as input.  For maps using
 phases from a model, use the "Create Maps" module.  All of these programs
@@ -61,3 +61,8 @@ Guidelines for use
 
   - If you are using neutron data, set the scattering table to "neutron";
     otherwise, leave it set to "n_gaussian".
+
+References
+----------
+
+  - CITATION:kicked_maps
