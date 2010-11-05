@@ -54,7 +54,8 @@ Additional files for starting map coefficients and high-resolution data are
 optional.  (An example of the latter would be building into an isomorphous
 native dataset after solving a SeMet SAD/MAD structure in AutoSol.)</p>
 <div class="image"><img alt="images/autobuild_config.png" src="images/autobuild_config.png" /></div>
-<p>AutoBuild is limited to building one chain type at a time, and performs no
+<p>AutoBuild is limited to building one chain type at a time (protein, DNA, or
+RNA), and performs no
 ligand fitting (the <a class="reference" href="ligandfit_gui.htm">LigandFit wizard</a> should be used for
 this).  However, additional chains may be included as a &quot;ligand file&quot;, which
 contains any existing parts of the model that you want AutoBuild to leave
@@ -66,14 +67,15 @@ proteins, the heavy atom sites will be used to anchor the methionines in the
 sequence.  AutoBuild can also be directed to build actual SeMet residues in
 place of Met.</p>
 <p>AutoBuild has two different modes for using an PDB file supplied as a starting
-model, set by the &quot;Rebuild in place&quot; control.  By default, the model will be
+model, set by the &quot;Rebuild in place&quot; control.  By default, if the sequence
+identity versus the supplied sequence file is at least 50%, the model will be
 rebuilt as necessary and refined without adding or removing atoms (&quot;Auto&quot; or
-&quot;True&quot;).  If False, the model will be used as a source of phasing information
-but a new model will be built into the density-modified map.  You can still
-incorporate parts of the initial model by checking the &quot;Include input model&quot;
-box.  Currently, if you want to extend an existing model without removing any
-of the input atoms, we recommend using <a class="reference" href="fit_loops.htm">phenix.fit_loops</a>
-instead.</p>
+&quot;True&quot;).  If False (or if sequence identity is low), the model will be used
+as a source of phasing information but a new model will be built into the
+density-modified map.  You can still incorporate parts of the initial model
+by checking the &quot;Include input model&quot; box.  Currently, if you want to extend
+an existing model without removing any of the input atoms, we recommend using
+<a class="reference" href="fit_loops.htm">phenix.fit_loops</a> instead.</p>
 <P><H5><U><B>Multiprocessing and queueing systems</B></U></H5><P>
 <p>To build as thorough a model as possible, AutoBuild will spawn many similar
 processes, each of which will produce a slightly different result (depending
@@ -107,7 +109,8 @@ the &quot;Results and graphs&quot; button.  Once maps and a model are available,
 clicking the Coot or PyMOL buttons will load these into the desired viewer.</p>
 <div class="image"><img alt="images/autobuild_final.png" src="images/autobuild_final.png" /></div>
 <p>The map file will be named <tt class="docutils literal"><span class="pre">overall_best_denmod_map_coeffs.mtz</span></tt>, which
-contains only an F(obs) map.  Users who want difference maps like those
+contains only an mFo map (FOM-weighted F(obs), and possibly
+anisotropy- corrected).  Users who want difference maps like those
 produced by phenix.refine should run the separate <a class="reference" href="create_maps.htm">phenix.maps GUI</a>.
 AutoBuild will output two PDB files, one containing all built residues
 (<tt class="docutils literal"><span class="pre">overall_best.pdb</span></tt>), and one with only those residues for which the known
@@ -121,6 +124,7 @@ should not be used since a higher-quality final consensus model will be
 assembled by AutoBuild, you can view the current model for any job by
 selecting from the list and clicking the Coot button.</p>
 <div class="image"><img alt="images/autobuild_multi.png" src="images/autobuild_multi.png" /></div>
+<a class="target" id="omit-maps" name="omit-maps"></a></div>
 <P><H5><U><B>Omit maps</B></U></H5><P>
 <p>For clarity, the omit map functionality has been moved to a separate GUI,
 with similar behavior but different configuration options.</p>
@@ -135,7 +139,8 @@ a model or setting the occupancies to zero, then running phenix.refine.)</p>
 <p>Because of the interdependency of all reflections and all atoms, re-calculating
 maps immediately after deleting atoms does not reliably remove phase bias.
 The &quot;Omit map type&quot; control offers three choices for handling the partial
-models; the simplest of these will run <tt class="docutils literal"><span class="pre">phenix.refine</span></tt> with simple
+models (&quot;Simple&quot;, &quot;Simulated annealing&quot;, and &quot;Iterative build&quot;); the first
+will run <tt class="docutils literal"><span class="pre">phenix.refine</span></tt> with simple
 minimization and ADP refinement alone.  A much more thorough method of removing
 bias is a simulated annealing omit map, which allows the structure to escape
 local minima.  (Currently this only supports the Cartesian dynamics; torsion
@@ -149,6 +154,7 @@ we recommend always using the simulated annealing or iterative build options.
 If you only want to generate figures for publication, specifying a region of
 the structure to leave out will be more efficient than running the full
 composite omit map calculation.</p>
+<a class="target" id="density-modification" name="density-modification"></a></div>
 <P><H5><U><B>Standalone density modification</B></U></H5><P>
 <p>A third variant of the AutoBuild GUI is dedicated to generating density
 modified maps with no additional building.  This version of the GUI is
