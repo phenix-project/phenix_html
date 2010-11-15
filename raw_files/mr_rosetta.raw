@@ -136,7 +136,7 @@ cd MR_ROSETTA_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
 -in:file:fasta MR_ROSETTA_1/WORK_1/EDITED_1crb_fasta.txt \
 -in:file:alignment MR_ROSETTA_1/WORK_1/EDITED_1crb_2qo4.ali \
 -in:file:template_pdb MR_ROSETTA_1/AutoMR_run_1_/2QO4.1.pdb \
--relax:fastrelax_repeats 4 \
+-relax:default_repeats 4 \
 -relax:jump_move true \
 -edensity:mapreso   3.00 \
 -edensity:grid_spacing 1.5 \
@@ -175,8 +175,8 @@ cd MR_ROSETTA_1/WORK_1/REBUILD_IN_SETS_1/RUN_1/WORK_1
 -loops:random_grow_loops_by 5 \
 -loops:extended \
 -loops:remodel quick_ccd \
--loops:relax fastrelax \
--relax:fastrelax_repeats 4 \
+-loops:relax relax \
+-relax:default_repeats 4 \
 -relax:jump_move true \
 -edensity:mapreso     3.00 \
 -edensity:grid_spacing 1.5 \
@@ -219,7 +219,7 @@ cd MR_ROSETTA_1/GROUP_OF_RESCORE_MR_ROSETTA_2/RUN_1/RESCORE_MR_1/RELAX_AND_SCORE
 -MR:mode relax \
 -in::file::s \
  MR_ROSETTA_1/WORK_1/REBUILD_IN_SETS_1/RUN_8/WORK_1/S_2QO4B_0001_edited.pdb \
--relax:fastrelax_repeats 4 \
+-relax:default_repeats 4 \
 -relax:jump_move true \
 -edensity:mapreso   3.00 \
 -edensity:grid_spacing 1.5 \

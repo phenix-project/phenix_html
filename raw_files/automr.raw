@@ -177,7 +177,7 @@ RMS=0.8 or identity=75)
 <P>It may be advantageous to search using an ensemble of similar 
 structures, rather than a single structure.
 If you have an ensemble of search models to search for, then specify it as
-<PRE style="face=courier">coords="model_1.pdb" coords="model_2.pdb" coords"model_3.pdb"
+<PRE style="face=courier">coords="model_1.pdb" coords="model_2.pdb" coords="model_3.pdb"
 </PRE>
 <P>In this case you need to give the RMS or identity for each model:
 identity='45 40 35'.  Each of the models in the ensemble must be in the
