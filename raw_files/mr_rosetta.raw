@@ -27,7 +27,7 @@ modification and refinement.  The approach is described in
 (Dimaio et al., to be published)
 
 The basic process is to find MR solutions with phenix.automr, rebuild 
-them with Rosetta, then rebuild those models with phenix.phase_and_build.  
+them with Rosetta, then rebuild those models with phenix.autobuild.  
 The combination of Rosetta rebuilding and phenix rebuilding is the key 
 part of this method.
 
@@ -36,7 +36,7 @@ phenix.automr (Phaser), score with LLG following Rosetta relaxation,
 pick the best solutions, rebuild with Rosetta including map information, 
 score the resulting models with Rosetta, score the highest with LLG, 
 verify that the top solutions are all about the same, and rebuild the top 
-models with phenix.phase_and_build.
+models with phenix.autobuild.
 
 <P><H5><U>
 	Tools from Rosetta that are used in phenix.mr_rosetta
@@ -233,7 +233,7 @@ cd MR_ROSETTA_1/GROUP_OF_RESCORE_MR_ROSETTA_2/RUN_1/RESCORE_MR_1/RELAX_AND_SCORE
 </LI>
 <LI>
 Take the top (number_to_autobuild=5) relaxed refined rebuilt solutions 
-from step 11 and rebuild them with phenix.phase_and_build.  Report the 
+from step 11 and rebuild them with phenix.autobuild.  Report the 
 R/freeR of each model.
 </LI>
 </OL>
@@ -508,11 +508,12 @@ edited your template PDB to match the target sequence, the number will be 0.
  
 
 <P><H5><U>Output files from mr_rosetta</U></H5><P>
-The output files from mr_rosetta are the same as those from phase_and_build:
+The output files from mr_rosetta are the same as those from phenix.autobuild:
 a model and map coefficients. These will be in a subdirectory listed at the
 end of your log file.  The files will be something like:
-<b>MR_ROSETTA_1/build_one_model.pdb</b>: A PDB file with the resulting model
-<b>MR_ROSETTA_1/WORK_1/RUN_1/denmod_cycle_2.mtz</b>: An MTZ file with optimized phases 
+<b>MR_ROSETTA_1/..../AutoBuild_run_1_/overall_best.pdb</b>
+ and 
+<b>MR_ROSETTA_1/..../AutoBuild_run_1_/overall_best_denmod_map_coeffs.mtz</b>.
 
 <P><H5><U>Parameters files in mr_rosetta</U></H5><P>
 When you run phenix.mr_rosetta it will write out a 
