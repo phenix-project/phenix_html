@@ -491,7 +491,8 @@ is how many residues at the N-terminus of this sequence are to be ignored
 in generating a model. Usually this is 0, but if you supply a sequence that
 is not what is in your crystal, it could have some other number.
 If you are supplying a template PDB file that has residues to be removed,
-indicate these positions with a dash (-) in your sequence.
+indicate these positions with a dash (-) in your sequence. Note: the
+sequence on this line cannot start with a dash.
 </LI>
 <LI>
  Line 5 has a number, then the matching sequence of the template PDB, using
