@@ -15,7 +15,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P><H5><U>Author(s)</U></H5><P>
 
 <UL>
-<LI>mr_rosetta: Tom Terwilliger, Frank DiMaio
+<LI>mr_rosetta: Tom Terwilliger, Frank DiMaio, Randy Read, David Baker
 </LI></UL>
 
 <P><H5><U>Purpose</U></H5><P>
@@ -43,7 +43,7 @@ models with phenix.autobuild.
 </U></H5><P>
 <UL>
 <LI>
-. Model relaxation (rebuilding) including both the Rosetta standard 
+Model relaxation (rebuilding) including both the Rosetta standard 
 energy terms and a term for fit of the model to an electron density 
 map (Dimaio et al., 2009)
 </LI>
@@ -260,8 +260,11 @@ of the model and its history, the map_coefficients and labels, etc.
 <LI>
 Jobs can be run on a single machine or on a cluster.  A run command for 
 single jobs (single_run_command="sh") and a run command for batch 
-jobs (group_run_command="qsub") can be specified as well as the number of 
+jobs (group_run_command=qsub) can be specified as well as the number of 
 processors to use (nproc=200).
+<P>The qsub command is used in Sun Grid Engine clusters. You can also
+use mr_rosetta on a Condor cluster, using 
+group_run_command=&quot;condor_submit &quot;.
 </LI>
 <LI>
 All files are stored on a single file system that must be accessible to 
