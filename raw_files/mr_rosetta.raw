@@ -32,7 +32,7 @@ The combination of Rosetta rebuilding and phenix rebuilding is the key
 part of this method.
 
 In slightly more detail, this process is to find MR solutions with 
-phenix.automr (Phaser), score with LLG following Rosetta relaxation, 
+phenix.automr (Phaser), score with LLG (optionally following Rosetta relaxation), 
 pick the best solutions, rebuild with Rosetta including map information, 
 score the resulting models with Rosetta, score the highest with LLG, 
 verify that the top solutions are all about the same, and rebuild the top 
@@ -115,14 +115,16 @@ number_of_output_models=5).
 </LI>
 <LI>
 Refine (if refine_after_mr=True) each MR solution with phenix.refine.  Use 
-resulting 2mFo-DFc map as current density map for this refined solution. 
+resulting 2mFo-DFc map as starting point for density modification, yielding
+density-modified current density map for this refined solution. 
 Ignore refined model.  Note (but ignore) LLG of refined model.
 </LI>
 <LI>
-Rescore each MR solution by relaxation (rebuilding rescore_mr.nstruct models 
-without filling in missing sections) and recalculation of LLG, taking the 
-best LLG as the score for the original model from MR. Use electron density
-in relax procedure.
+Rescore each MR solution. If desired, first relax (rebuild) model
+(rebuilding rescore_mr.nstruct models 
+without filling in missing sections). Then recalculate LLG, taking the 
+best LLG for any rebuilt model as the score for the original model from MR. 
+Use electron density in relax procedure.
 </LI>
 <LI>
 	Sample relaxation script used to run relaxation in Rosetta:
@@ -156,7 +158,11 @@ cd MR_ROSETTA_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
 Take the top (max_solutions_to_rebuild=5) models from step 5 and rebuild them 
 with Rosetta, filling in missing sections and including current density 
 map as part of the target function, generating total of 
-(rosetta_rebuild.nstruct=2000) rebuilt models.  Sample rebuild script used:
+(rosetta_rebuild.nstruct=20) rebuilt models.  Note: in many cases 20 models
+is sufficient...in others far more models will make the method work
+better (i.e., 1000 or 2000 models). This can take a lot of time unless you
+have a cluster to run on.
+Sample rebuild script used:
 
 <PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
 #!/bin/sh 
@@ -202,11 +208,13 @@ model with each of at least required_cc=0.20).  If not, stop.
 <LI>
 Refine with phenix.refine the top solutions from step 8 based on LLG 
 (if refine_top_models.run_refine_top_models=True, number_relax=5). Save 
-new 2mFo-DFc map as current density map for this refined rebuilt model. 
+new 2mFo-DFc map, density modify the map, and then average the top density-modified
+maps (top based on Rosetta score) to yield an averaged density map used in the
+next relaxation step.
 Ignore the refined model.
 </LI>
 <LI>
-Relax the solutions from step 8 into their corresponding density maps from 
+Relax (rebuild) the solutions from step 8 into their corresponding density maps from 
 step 10 with Rosetta, generating (relax_top_models.nstruct=5) models for 
 each. Score each relaxed model with LLG, take best LLG as score.  Save 
 best relaxed model as new solution. Sample relax script used:
@@ -253,7 +261,7 @@ of the model and its history, the map_coefficients and labels, etc.
 Jobs can be run on a single machine or on a cluster.  A run command for 
 single jobs (single_run_command="sh") and a run command for batch 
 jobs (group_run_command="qsub") can be specified as well as the number of 
-processors to use (nproc=32).
+processors to use (nproc=200).
 </LI>
 <LI>
 All files are stored on a single file system that must be accessible to 
@@ -263,7 +271,8 @@ all jobs.
 Read/write to files are (generally) accompanied by a wait for appearance of the new file of up to max_wait_time=100 sec.
 </LI>
 <LI>
-mr_rosetta runs most jobs as sub-processes. When it submits a sub process to 
+mr_rosetta runs all cpu-intensive jobs as sub-processes. 
+When it submits a sub process to 
 do the work it lists the name of the corresponding log file. You can work 
 your way down to the bottom level at any time by reading through these log 
 files, copying the name of the next log file, and opening it until you get 
@@ -275,6 +284,9 @@ file "RUN_FILE_1" that contains the information to run the sub-process,
 a parameter file PARAMS_1.eff and a log file "RUN_FILE_1.log" with the 
 log file of running that sub-process.
 Note that you can use the parameters files to re-run any jobs that you want.
+You can say something like:
+<PRE style="face=courier">phenix.mr_rosetta PARAMS_1.eff</PRE>
+and that will rerun the job specified in that directory.
 </LI>
 <LI>
 If any sub-process fails, it will write a file "STOPWIZARD" to the top 
@@ -297,11 +309,11 @@ you will need for running mr_rosetta.
 <P>Note: this set of instructions is for Rosetta version 3.1...presumably 
 future versions will look very similar except for the numbering.
 </P>
-<P>Additional Note: As of Sept. 2010, the distributed version of Rosetta
-does not have the necessary features for phenix.mr_rosetta...you will
-need to get the working version of Rosetta instead by contacting the
-Rosetta authors directly. A new version of Rosetta is expected out soon
-that will have all the features needed.
+<P>Additional Note: As of Dec. 4, 2010, the distributed version of Rosetta (3.1)
+does not yet have the necessary features for phenix.mr_rosetta...you will
+need to get the development version of Rosetta instead by contacting the
+Rosetta authors directly (<a href="http://depts.washington.edu/uwc4c/express-licenses/assets/rosetta/">http://depts.washington.edu/uwc4c/express-licenses/assets/rosetta/</a>.
+ A new version of Rosetta is expected out soon that will have all the features needed.
 </P>
 <P>
 Downloading and installing Rosetta is pretty easy if your computer is 
@@ -460,7 +472,7 @@ alignment files need to look like (very specific formatting; any small
 errors usually cause mr_rosetta to fail; mr_rosetta tries to tell you what
 is wrong but is not always successful).
 
-<P>Here is what the alignment file needs to look like. It is a .ali file.
+<P>Here is what the alignment file needs to look like. It is a MODELLER-style .ali file.
 Here is a sample:
 <PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
 ## 1CRB_ 2qo4_A
@@ -535,13 +547,21 @@ If you have a search model (coords1.pdb) and an alignment file for it
 (coords1.ali), and fragment files test3.gz and test9.gz, and
 a data file fobs.mtz with FP SIGFP and FreeR_flag,  you can type:
 
-<PRE style="face=courier">phenix.mr_rosetta seq_file = seq.dat \
-    alignment_files = coords1.ali \
-    data = fobs.mtz \
-    search_models = coords1.pdb \
-    fragment_files = test3.gz \
-    fragment_files = test9.gz \
-    rosetta_rebuild.nstruct = 20 
+<PRE style="face=courier">
+phenix.mr_rosetta \
+  seq_file=seq.dat \
+  data=coords1.mtz \
+  search_models=coords1.pdb \
+  already_placed=True \
+  fragment_files = test3.gz \
+  fragment_files = test9.gz \
+  rescore_mr.relax=False \
+  rosetta_models=20 \
+  ncs_copies=2 \
+  space_group=p212121  \
+  use_all_plausible_sg=False \
+  nproc=200 \
+  group_run_command=qsub
 </PRE>
 and mr_rosetta will run automatically, generating 20 rosetta models during
 structure determination.
@@ -551,6 +571,55 @@ with the command hhr_files=myhhpred.hhr. Then you can tell
 mr_rosetta how many of the PDB files to use with 
 read_hhpred.number_of_models=1 (to use just the best one, for example). 
 </p>
+
+<P><H5>Running mr_rosetta with a model that is already place in the unit cell</H5><P>
+<P>You can run mr_rosetta as a purely model-building tool as well. This is convenient
+if you have found a MR solution but cannot rebuild it successfully.  Here
+is an example. The keyword to use is already_placed=True:
+
+<PRE style="face=courier">
+phenix.mr_rosetta \
+  seq_file=seq.dat \
+  data=coords1.mtz \
+  search_models=coords1.pdb \
+  already_placed=True \
+  fragment_files = test3.gz \
+  fragment_files = test9.gz \
+  rescore_mr.relax=False \
+  rosetta_models=20 \
+  ncs_copies=2 \
+  space_group=p212121  \
+  use_all_plausible_sg=False \
+  nproc=200 \
+  group_run_command=qsub
+</PRE>
+
+
+<P><H5>Rebuilding your model with Rosetta before MR </H5><P>
+If your search model is too distant to find a molecular replacement solution, you
+can prerefine your model with Rosetta before carrying out molecular replacement.
+Here is an example. The keyword to use is: run_prerefine=True.
+
+<PRE style="face=courier">phenix.mr_rosetta seq_file = seq.dat \
+phenix.mr_rosetta \
+  seq_file=seq.dat \
+  data=coords1.mtz \
+  search_models=coords1.pdb \
+  run_prerefine=True \
+  number_of_prerefine_models=1000 \
+  fragment_files = test3.gz \
+  fragment_files = test9.gz \
+  rescore_mr.relax=False \
+  rosetta_models=20 \
+  ncs_copies=2 \
+  space_group=p212121  \
+  use_all_plausible_sg=False \
+  nproc=200 \
+  group_run_command=qsub
+</PRE>
+
+
+<P><H5>Getting a default parameters file for mr_rosetta:</H5><P>
 <p>Usually you will want to edit a parameters file so that you can specify more
 details of the run. You can get a default parameters file with:
 <PRE style="face=courier">phenix.mr_rosetta 
