@@ -246,18 +246,21 @@ R/freeR of each model.
 </LI>
 </OL>
 
-<P><H5><U>
-Notes on the procedure used in mr_rosetta 
-</U></H5><P>
+<P><H5><U> Notes on the procedure used in mr_rosetta </U></H5><P>
 <OL>
 <LI>
+<P><H5><U>Viewing and using saved solutions </U></H5><P>
 At each stage, existing solutions are saved as a python "pkl" file and can 
 be read back in to mr_rosetta with "mr_rosetta_solutions=xxx.pkl". These 
 solutions can be displayed with "display_solutions=True".  Existing 
 solutions are stored as "mr_rosetta_solution" objects which keep track 
 of the model and its history, the map_coefficients and labels, etc.
+These can be read in to mr_rosetta with the 
+keyword &quot;rosetta_solutions=results.pkl&quot; and used as inputs for
+subsequent runs, starting at any step that can use those solutions.
 </LI>
 <LI>
+<P><H5><U>Running mr_rosetta on a cluster</U></H5><P>
 Jobs can be run on a single machine or on a cluster.  A run command for 
 single jobs (single_run_command="sh") and a run command for batch 
 jobs (group_run_command=qsub) can be specified as well as the number of 
@@ -267,13 +270,16 @@ use mr_rosetta on a Condor cluster, using
 group_run_command=&quot;condor_submit &quot;.
 </LI>
 <LI>
+<P><H5><U>Single file system required for mr_rosetta</U></H5><P>
 All files are stored on a single file system that must be accessible to 
 all jobs.
 </LI>
 <LI>
+<P><H5><U>Read/write delay allows for slow NSF disks</U></H5><P>
 Read/write to files are (generally) accompanied by a wait for appearance of the new file of up to max_wait_time=100 sec.
 </LI>
 <LI>
+<P><H5><U>Tracking your log files</U></H5><P>
 mr_rosetta runs all cpu-intensive jobs as sub-processes. 
 When it submits a sub process to 
 do the work it lists the name of the corresponding log file. You can work 
@@ -282,6 +288,7 @@ files, copying the name of the next log file, and opening it until you get
 to the place where the actual work is done.
 </LI>
 <LI>
+<P><H5><U>Re-running parts of your mr_rosetta jobs</U></H5><P>
 Sub-processes are always run in sub-directories. Each sub-process has a 
 file "RUN_FILE_1" that contains the information to run the sub-process, 
 a parameter file PARAMS_1.eff and a log file "RUN_FILE_1.log" with the 
@@ -292,6 +299,7 @@ You can say something like:
 and that will rerun the job specified in that directory.
 </LI>
 <LI>
+<P><H5><U>Failures and stopping mr_rosetta</U></H5><P>
 If any sub-process fails, it will write a file "STOPWIZARD" to the top 
 level directory (i.e., MR_ROSETTA_1/).  Each job in the entire process will 
 then stop as soon as 
