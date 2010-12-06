@@ -1,0 +1,197 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Overview of molecular replacement in PHENIX</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<p>Molecular replacement (MR) is a phasing method that uses prior information in
+the form of a related or homologous structure.  The procedure is roughly
+divided into two steps, a <strong>rotation function</strong> (RF) to determine the
+orientation of the search model(s), and a <strong>translation function</strong> (TF) to
+determine the absolute position(s) in the unit cell.  Because it requires no
+additional experimental procedures or data, and additionally simplifies
+model-building, MR is usually the method of choice for structure determination
+when a suitable search model is available.  (See the <em>Limitations</em> section
+below for advice on search models.)</p>
+<p>In PHENIX, MR is performed by the program <a class="reference" href="phaser.htm">Phaser</a>, written by
+Randy Read's group at the University of Cambridge.  Although Phaser may be run
+on the command line with CCP4-style inputs, we recommend using either the
+<a class="reference" href="automr.htm">AutoMR</a> wizard (command line and <a class="reference" href="automr_gui.htm">GUI</a>), or
+the <a class="reference" href="phaser_mr.htm">Phaser-MR GUI</a>.  AutoMR presents a user-friendly and
+automated frontend to Phaser, and interfaces directly with the <a class="reference" href="autobuild.htm">AutoBuild
+wizard</a> for model-building.  We recommend that new users,
+and anyone who expects MR to work for their specific structure, start with the
+AutoMR GUI.  The Phaser-MR GUI is more complex, but enables finer control over
+parameters and multi-step searches, which may be necessary for difficult
+structures.  The <a class="reference" href="ensembler.htm">Sculptor &lt;sculptor.htm&gt;`_and `Ensembler</a>
+utilities are available for preparing search models.</p>
+<p>(Phaser is also used for experimental phasing, but this functionality is
+exposed through the <a class="reference" href="autosol.htm">AutoSol wizard</a> and <a class="reference" href="phaser_ep.htm">Phaser-EP GUI</a>.)</p>
+<P><H5><U><B>Input files and mandatory parameters</B></U></H5><P>
+<p>All of the MR programs in PHENIX require a single reflections file containing
+experimental data (with sigmas); AutoMR and the GUI will accept any file format
+or data type, including intensities.  The procedure traditionally uses all
+reflections, so R-free flags are not required.  (Unlike refinement, this does
+not severely bias the final R-free value, since the placement of molecules
+will be approximate and some conformational changes usually occur.)</p>
+<p>At least one search model is required.  In most cases this will be a PDB file
+containing a partial structure.  For more variable structures, an ensemble
+model may be used instead - either a PDB file with multiple MODEL records, or
+multiple similar PDB files.  When using an ensemble, all models must be
+superposed in the same orientation; the <a class="reference" href="ensembler.htm">Ensembler</a> utility
+is used for this.    There are no limitations on the size or number of search
+models.  For large complexes, if the relative positions of individual subunits
+do not change, the entire assembly may be used as a search model instead of
+placing each component separately.  All heteroatoms (ligands and waters)
+should be removed from the PDB file(s) before use.</p>
+<p>Another option, only available in Phaser itself (not
+AutoMR), is to search using a map (or rather, an MTZ file containing
+pre-weighted map coefficients), often solved at low resolution.  This
+requires additional information about the center and extent of the map section
+to search with.</p>
+<p>The maximum likelihood phasing methods used in Phaser require prior knowledge
+about the deviation (or variance) of the search model(s) from the real
+structure, and the expected composition or scattering mass of the crystal.  To
+specify the model variance, either an RMSD value or percent sequence identity
+may be used (these will be converted internally, and a sequence identity of
+100% is assumed to mean an approximate RMSD of 1.0A).  It is important to
+minimize the variance if possible (see <em>Limitations</em> below for guidelines),
+which often requires eliminating atoms or modifying B-factors.  The <a class="reference" href="sculptor.htm">Sculptor</a> utility will perform this step, given a PDB file and a
+sequence alignment.  (This is usually unnecessary for search models with high
+sequence identity to the target molecule.)</p>
+<p>For composition, you may supply a sequence file (protein or nucleic acid), or
+simply enter the molecular weight.  The standalone versions of Phaser also
+accept the fractional composition of each search ensemble, if known.
+Note that the composition data does not necessarily have
+a 1:1 correspondence with the search ensembles (see FAQ list below for
+details).  Even if you are only searching for a single
+ensemble out of several (e.g. the protein in a protein-DNA complex), you
+must still supply the expected composition of the entire crystal.</p>
+<P><H5><U><B>Outline of MR procedure</B></U></H5><P>
+<p>The automated molecular replacement method in Phaser involves several discrete
+steps:</p>
+<blockquote>
+<ul>
+<li><strong>Anisotropy correction</strong>: scales reflections as necessary to overcome
+anisotropy (weak data in a particular direction).</li>
+<li><strong>Rotation function</strong>: identifies orientation of model(s).</li>
+<li><strong>Translation function</strong>: given the orientation(s) from the RF, finds the
+absolute position(s) in the unit cell.</li>
+<li><strong>Packing analysis</strong>: filters TF results based on number of clashes
+between atoms, given a certain cutoff.  (By default, this uses a very
+conservative cutoff, which may not be ideal for searching with distant
+homologues.)</li>
+<li><strong>Refinement and phasing</strong>: performs simple rigid-body refinement of the
+placed molecules, and calculates phases from the final solution.</li>
+<li><strong>Log-likelihood gain calculation</strong>: determines the final LLG, which can
+be used to evaluate the success of MR.</li>
+</ul>
+</blockquote>
+<p>If multiple search models are used, these steps will be performed sequentially
+for each model.  Although each step may be run individually in the Phaser-MR
+GUI, this is necessary only in exceptionally difficult cases.</p>
+<P><H5><U><B>Limitations</B></U></H5><P>
+<p>The main restriction on the use of molecular replacement is the requirement
+for a suitably similar search model.  Although there is no exact rule for this,
+the relationship between sequence identity and MR success is roughly as
+follows:</p>
+<blockquote>
+<ul>
+<li><strong>Better than 40% identity</strong>: usually easy, unless large conformational
+changes are involved.</li>
+<li><strong>30-40%</strong>: MR possible, but sometimes more difficult.</li>
+<li><strong>20-30%</strong>: MR difficult, careful model preparation required.</li>
+<li><strong>Less than 20%</strong>: MR unlikely to work in most cases.</li>
+<li>In terms of RMSD, above 2.5A is very unlikely to work, while 1.5A or less
+is preferrable.</li>
+</ul>
+</blockquote>
+<p>Structures which undergo large conformational changes may need to be split
+into separate domains for searching, regardless of sequence identity.  Where
+multiple similar search models are available, combining these into an ensemble
+may improve the likelihood of success.  Processing models with the <a class="reference" href="sculptor.htm">Sculptor</a> utility is highly recommended, especially at lower sequence
+identity.</p>
+<p>Additional problems include:</p>
+<blockquote>
+<ul>
+<li>Low resolution; although MR often works best with a reduced set of
+reflections, the assumption is that these are measured very accurately,
+which is not the case when the overall resolution limit is already 4A or
+worse.</li>
+<li>Packing clashes due to model deviations and/or extra residues.  This can
+result in an otherwise valid solution being thrown out.  Removing the
+offending residues or lowering the packing cutoff can circumvent the
+problem.</li>
+</ul>
+</blockquote>
+<p>For cases where anomalous data from a SAD experiment are available, a poor
+(but genuine) MR solution may be used to identify heavy-atom sites and
+combined with SAD phases, a technique known as MR-SAD.  This may provide a
+decent-quality map where neither technique is independently sufficient.  The
+AutoMR and AutoSol manuals have details on running this in Phenix.</p>
+<P><H5><U><B>Frequently Asked Questions</B></U></H5><P>
+<p>Note that most of these questions apply mainly to the &quot;automated molecular
+replacement&quot; (MR_AUTO) mode of Phaser.</p>
+<blockquote>
+<ul>
+<li><strong>How do I know if Phaser has solved my structure?</strong>  This is answered in
+detail in the section &quot;Has Phaser solved it?&quot; in the <a class="reference" href="phaser.htm">main Phaser manual</a>, but it can be summarized as follows: the final translation
+function Z score (TFZ) should be above 8, and the log-likelihood gain
+(LLG) should be positive and as high as possible.  Of course, as with
+experimental phasing, the ability to <a class="reference" href="autobuild.htm">autobuild most of the model</a> is the single best measure of a correct solution;
+alternately, running a single round of <a class="reference" href="refine_gui.htm">refinement</a>
+should result in an R-free below 0.50.</li>
+<li><strong>Why doesn't Phaser report an R-factor?</strong>  The R-factor is far less
+sensitive than the TFZ and LLG scores, especially when searching for
+remote homologs or a small part of the overall scattering mass.  Phaser
+does record R-factors for the rigid-body refinement step towards the
+end of a run, which can be found in the logfile.  However, unless these
+values are relatively low (&lt; 40%), they are not reliable indicators of
+solution quality, which is why only the Z-scores and LLG are reported in
+the GUI.</li>
+<li><strong>What if I don't get a good solution?</strong> This is also covered in detail
+in the <a class="reference" href="phaser.htm">main Phaser manual</a>, in the section &quot;What to do in
+difficult cases&quot;.</li>
+<li><strong>What resolution cutoff should I use?</strong>  By default Phaser uses all
+data to 2.5 A.  We recommend leaving the resolution alone, but in some
+cases reducing it may improve results (it will also lead to a significant
+improvement in speed).  The effects of bulk solvent at low resolution are
+already taken into account internally, so you do not need to specify
+a low-resolution cutoff either.</li>
+<li><strong>Should I use the output MTZ file from Phaser for refinement?</strong> No, the
+amplitudes (Fs) in this file have been corrected for anisotropy, which is
+helpful for the MR search but may significantly alter them from the
+experimental values.  The MTZ file is only useful for map coefficients,
+but in most cases you will find that much better maps can be obtained by
+immediately running a round of refinement or automated re-building.</li>
+<li><strong>How are the composition and search ensembles related?</strong>  Technically,
+they aren't connected.  The ensembles are used in the actuall MR search;
+the composition only tells Phaser what to expect for the overall scattering
+mass of the asymmetric unit (an important factor in the maximum likelihood
+scoring).  Although you may only specify one sequence per component, you
+can instead provide a molecular weight for a collection of chains.  You
+may also split a model into smaller ensembles (for instance, different
+domains) while keeping the composition the same, or use a multi-chain
+search model while specifying a sequence file for each chain.</li>
+<li><strong>How can I make Phaser go faster?</strong> The new MR_FAST mode will reduce the
+redundancy of multi-copy TF searches, and can significantly reduce overall
+runtime.  In many cases, adjusting the resolution limit will dramatically
+increase speed, at some cost to accuracy (depending largely on model
+similarity).</li>
+</ul>
+</blockquote>
+<p>See the <a class="reference" href="phaser_mr.htm">Phaser-MR GUI</a> manual for additional details
+specific to that interface.</p>
+<P><H5><U><B>Reference</B></U></H5><P>
+<blockquote>
+<ul>
+<li>McCoy AJ, Grosse-Kunstleve RW, Adams PD, Winn Md, Storoni LC, Read RJ.
+<em>Phaser crystallographic software.</em>
+<a class="reference" href="http://www.ncbi.nlm.nih.gov/pubmed/19461840">J. Appl. Cryst. (2007) 40:658-674.</a></li>
+</ul>
+</blockquote>
+<!--REMARK PHENIX BODY END-->

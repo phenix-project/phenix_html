@@ -18,11 +18,12 @@ on the command line with CCP4-style inputs, we recommend using either the
 `AutoMR <automr.htm>`_ wizard (command line and `GUI <automr_gui.htm>`_), or
 the `Phaser-MR GUI <phaser_mr.htm>`_.  AutoMR presents a user-friendly and
 automated frontend to Phaser, and interfaces directly with the `AutoBuild
-wizard <autobuild.htm>`_ for model-building.  The Phaser-MR GUI is more
-complex, but enables finer control over parameters and multi-step searches,
-which may be necessary for difficult structures.  The `Sculptor
-<sculptor.htm>`_and `Ensembler <ensembler.htm>`_ utilities are available for
-preparing search models.
+wizard <autobuild.htm>`_ for model-building.  We recommend that new users,
+and anyone who expects MR to work for their specific structure, start with the
+AutoMR GUI.  The Phaser-MR GUI is more complex, but enables finer control over
+parameters and multi-step searches, which may be necessary for difficult
+structures.  The `Sculptor <sculptor.htm>`_and `Ensembler <ensembler.htm>`_
+utilities are available for preparing search models.
 
 (Phaser is also used for experimental phasing, but this functionality is
 exposed through the `AutoSol wizard <autosol.htm>`_ and `Phaser-EP GUI
@@ -32,11 +33,11 @@ Input files and mandatory parameters
 ------------------------------------
 
 All of the MR programs in PHENIX require a single reflections file containing
-experimental data; AutoMR and the GUI will accept any file format or data
-type, including intensities.  The procedure traditionally uses all reflections,
-so R-free flags are not required.  (Unlike refinement, this does not severely
-bias the final R-free value, since the placement of molecules will be
-approximate and some conformational changes usually occur.)
+experimental data (with sigmas); AutoMR and the GUI will accept any file format
+or data type, including intensities.  The procedure traditionally uses all
+reflections, so R-free flags are not required.  (Unlike refinement, this does
+not severely bias the final R-free value, since the placement of molecules
+will be approximate and some conformational changes usually occur.)
 
 At least one search model is required.  In most cases this will be a PDB file
 containing a partial structure.  For more variable structures, an ensemble
@@ -76,11 +77,73 @@ details).  Even if you are only searching for a single
 ensemble out of several (e.g. the protein in a protein-DNA complex), you
 must still supply the expected composition of the entire crystal.
 
+Outline of MR procedure
+-----------------------
+
+The automated molecular replacement method in Phaser involves several discrete
+steps:
+
+  - **Anisotropy correction**: scales reflections as necessary to overcome
+    anisotropy (weak data in a particular direction).
+
+  - **Rotation function**: identifies orientation of model(s).
+
+  - **Translation function**: given the orientation(s) from the RF, finds the
+    absolute position(s) in the unit cell.
+
+  - **Packing analysis**: filters TF results based on number of clashes
+    between atoms, given a certain cutoff.  (By default, this uses a very
+    conservative cutoff, which may not be ideal for searching with distant
+    homologues.)
+
+  - **Refinement and phasing**: performs simple rigid-body refinement of the
+    placed molecules, and calculates phases from the final solution.
+
+  - **Log-likelihood gain calculation**: determines the final LLG, which can
+    be used to evaluate the success of MR.
+
+If multiple search models are used, these steps will be performed sequentially
+for each model.  Although each step may be run individually in the Phaser-MR
+GUI, this is necessary only in exceptionally difficult cases.
+
 Limitations
 -----------
 
 The main restriction on the use of molecular replacement is the requirement
-for a suitably similar search model.  
+for a suitably similar search model.  Although there is no exact rule for this,
+the relationship between sequence identity and MR success is roughly as
+follows:
+
+  - **Better than 40% identity**: usually easy, unless large conformational
+    changes are involved.
+
+  - **30-40%**: MR possible, but sometimes more difficult.
+
+  - **20-30%**: MR difficult, careful model preparation required.
+
+  - **Less than 20%**: MR unlikely to work in most cases.
+
+  - In terms of RMSD, above 2.5A is very unlikely to work, while 1.5A or less
+    is preferrable.
+
+Structures which undergo large conformational changes may need to be split
+into separate domains for searching, regardless of sequence identity.  Where
+multiple similar search models are available, combining these into an ensemble
+may improve the likelihood of success.  Processing models with the `Sculptor
+<sculptor.htm>`_ utility is highly recommended, especially at lower sequence
+identity.
+
+Additional problems include:
+
+  - Low resolution; although MR often works best with a reduced set of
+    reflections, the assumption is that these are measured very accurately,
+    which is not the case when the overall resolution limit is already 4A or
+    worse.
+
+  - Packing clashes due to model deviations and/or extra residues.  This can
+    result in an otherwise valid solution being thrown out.  Removing the
+    offending residues or lowering the packing cutoff can circumvent the
+    problem.
 
 For cases where anomalous data from a SAD experiment are available, a poor
 (but genuine) MR solution may be used to identify heavy-atom sites and
@@ -140,6 +203,12 @@ replacement" (MR_AUTO) mode of Phaser.
     may also split a model into smaller ensembles (for instance, different
     domains) while keeping the composition the same, or use a multi-chain
     search model while specifying a sequence file for each chain.
+
+  - **How can I make Phaser go faster?** The new MR_FAST mode will reduce the
+    redundancy of multi-copy TF searches, and can significantly reduce overall
+    runtime.  In many cases, adjusting the resolution limit will dramatically
+    increase speed, at some cost to accuracy (depending largely on model
+    similarity).
 
 See the `Phaser-MR GUI <phaser_mr.htm>`_ manual for additional details
 specific to that interface.
