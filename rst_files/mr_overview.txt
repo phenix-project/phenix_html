@@ -15,14 +15,14 @@ below for advice on search models.)
 In PHENIX, MR is performed by the program `Phaser <phaser.htm>`_, written by
 Randy Read's group at the University of Cambridge.  Although Phaser may be run
 on the command line with CCP4-style inputs, we recommend using either the
-`AutoMR <automr.htm>`_ wizard (command line and `GUI <automr_gui.htm>`_), or
+`AutoMR <automr_gui.htm>`_ wizard (GUI or `command line <automr.htm>`_), or
 the `Phaser-MR GUI <phaser_mr.htm>`_.  AutoMR presents a user-friendly and
 automated frontend to Phaser, and interfaces directly with the `AutoBuild
 wizard <autobuild.htm>`_ for model-building.  We recommend that new users,
 and anyone who expects MR to work for their specific structure, start with the
 AutoMR GUI.  The Phaser-MR GUI is more complex, but enables finer control over
 parameters and multi-step searches, which may be necessary for difficult
-structures.  The `Sculptor <sculptor.htm>`_and `Ensembler <ensembler.htm>`_
+structures.  The `Sculptor <sculptor.htm>`_ and `Ensembler <ensembler.htm>`_
 utilities are available for preparing search models.
 
 (Phaser is also used for experimental phasing, but this functionality is
@@ -150,6 +150,8 @@ For cases where anomalous data from a SAD experiment are available, a poor
 combined with SAD phases, a technique known as MR-SAD.  This may provide a
 decent-quality map where neither technique is independently sufficient.  The
 AutoMR and AutoSol manuals have details on running this in Phenix.
+
+.. _faq:
 
 Frequently Asked Questions
 --------------------------

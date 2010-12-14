@@ -107,14 +107,10 @@ Phasing
     phasing.  We recommend trying AutoSol first, but this GUI exposes
     additional parameters.
 
-  - `Density modification <autobuild.htm>`_: This is just a simplified
-    interface for running the `AutoBuild wizard <autobuild.htm>`_ in
-    map-only mode.
-
 Molecular replacement
 ---------------------
 
-  - `AutoMR <automr.htm>`_: automated molecular replacement using Phaser;
+  - `AutoMR <automr_gui.htm>`_: automated molecular replacement using Phaser;
     feeds directly into AutoBuild.  (This is also the starting point for
     running MR-SAD.)
 
@@ -168,6 +164,10 @@ Maps
 
   - `AutoBuild - create omit map <autobuild.htm>`_: similar to the main
     AutoBuild GUI, but used for omit map generation rather than building.
+
+  - `Density modification <autobuild.htm>`_: This is just a simplified
+    interface for running the `AutoBuild wizard <autobuild.htm>`_ in
+    map-only mode.
 
   - Isomorphous difference map: simple utility for creating a map from two
     sets of amplitudes.  Corresponds to the command-line program
@@ -239,6 +239,9 @@ Utilities
   - `Calculate model-map correlations <get_cc_mtz_pdb.htm>`_: interface to
     ``phenix.get_cc_mtz_pdb``.
 
+  - Generate Table 1: utility for extracting statistics from PDB, reflection,
+    and log files required for publication.
+
 --------
 Projects
 --------
@@ -256,7 +259,7 @@ project management:
     for a directory that is part of an existing project, or that has a
     subdirectory that is owned by another project.
 
-When a project is created Phenix will create a folder "phenix" in the project
+When a project is created Phenix will create a folder ".phenix" in the project
 directory; this is used to store job history, temporary files, and other
 internal data.  Users should not need to modify this folder unless deleting
 the project.  All functions related to project management are available

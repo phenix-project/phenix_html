@@ -90,6 +90,25 @@ displayed.  The maps are usually very noisy (and if a high-resolution cutoff
 was imposed, this will also be applied), but inspecting the crystal packing may
 provide additional clues to whether MR was successful.
 
+Next steps
+----------
+
+The model and maps obtained by molecular replacement are usually not directly
+useful for manual rebuilding or ligand placement, since they often are
+generated at a lower resolution limit and have undergone only minimal
+rigid-body refinement.  Either automated model-building in `AutoBuild
+<autobuild_gui.htm>`_ or full refinement in `phenix.refine <refine_gui.htm>`_ is
+usually appropriate, depending on data quality and similarity of
+the search model(s) to the crystallized protein(s).  For refinement, a
+combination of rigid-body, individual sites, and individual ADPs is usually
+recommended, except at low resolution where grouped ADPs may be necessary.
+Simulated annealing may also be very helpful at this stage.
+
+For very marginal solutions, if you are confident of the approximate placement
+of the model(s) but automated rebuilding and/or refinement fails, the
+`MR-Rosetta <mr_rosetta.htm>`_ protocol is able to improve a poor map by
+extensive optimization of the model with an electron-density target.
+
 MR-SAD
 ------
 

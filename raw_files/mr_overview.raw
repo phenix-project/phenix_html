@@ -20,14 +20,14 @@ below for advice on search models.)</p>
 <p>In PHENIX, MR is performed by the program <a class="reference" href="phaser.htm">Phaser</a>, written by
 Randy Read's group at the University of Cambridge.  Although Phaser may be run
 on the command line with CCP4-style inputs, we recommend using either the
-<a class="reference" href="automr.htm">AutoMR</a> wizard (command line and <a class="reference" href="automr_gui.htm">GUI</a>), or
+<a class="reference" href="automr_gui.htm">AutoMR</a> wizard (GUI or <a class="reference" href="automr.htm">command line</a>), or
 the <a class="reference" href="phaser_mr.htm">Phaser-MR GUI</a>.  AutoMR presents a user-friendly and
 automated frontend to Phaser, and interfaces directly with the <a class="reference" href="autobuild.htm">AutoBuild
 wizard</a> for model-building.  We recommend that new users,
 and anyone who expects MR to work for their specific structure, start with the
 AutoMR GUI.  The Phaser-MR GUI is more complex, but enables finer control over
 parameters and multi-step searches, which may be necessary for difficult
-structures.  The <a class="reference" href="ensembler.htm">Sculptor &lt;sculptor.htm&gt;`_and `Ensembler</a>
+structures.  The <a class="reference" href="sculptor.htm">Sculptor</a> and <a class="reference" href="ensembler.htm">Ensembler</a>
 utilities are available for preparing search models.</p>
 <p>(Phaser is also used for experimental phasing, but this functionality is
 exposed through the <a class="reference" href="autosol.htm">AutoSol wizard</a> and <a class="reference" href="phaser_ep.htm">Phaser-EP GUI</a>.)</p>
@@ -133,6 +133,7 @@ problem.</li>
 combined with SAD phases, a technique known as MR-SAD.  This may provide a
 decent-quality map where neither technique is independently sufficient.  The
 AutoMR and AutoSol manuals have details on running this in Phenix.</p>
+<a class="target" id="faq" name="faq"></a></div>
 <P><H5><U><B>Frequently Asked Questions</B></U></H5><P>
 <p>Note that most of these questions apply mainly to the &quot;automated molecular
 replacement&quot; (MR_AUTO) mode of Phaser.</p>
