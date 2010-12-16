@@ -78,6 +78,8 @@ menu.
 
 .. image:: images/refine_gui_options.png
 
+.. _strategy:
+
 The first set of controls determines the parameterization of the model and
 the attributes to be refined.  By default, the Individual Sites, Individual
 ADPs (B-factors), and Occupancies strategies are selected, since these are
@@ -134,6 +136,8 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     anomalously scattering atoms such as Se or heavy metals; it is only
     appropriate if you have anomalous data (I+/I- or F+/F-).
 
+.. _restraints:
+
 The refinement protocol can be further modified by manipulating various
 restraints (structural and otherwise):
 
@@ -171,7 +175,9 @@ restraints (structural and otherwise):
     these phases are avilable, but only if the same data were used for both
     phasing and refinement.
 
-Several other options are available for the types of optimization and restraints
+.. _optimization:
+
+Several other options are available for the types of optimization
 used; these typically apply globally, except as noted.
 
   - **Automatically add hydrogens to model** runs phenix.ready_set to add
