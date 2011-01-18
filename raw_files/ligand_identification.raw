@@ -12,48 +12,70 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
       <P><H5><U><B>Author(s)</B></U></H5><P>
-<UL><LI>Resolve_ligand_identification task: Li-Wei Hung
+<UL><LI>phenix.ligand_identification: Li-Wei Hung
 <LI>PHENIX GUI and PDS Server: Nigel W. Moriarty
 <LI>RESOLVE: Tom Terwilliger
 </UL>
 
       <P><H5><U>Purpose</U></H5><P>
 
-<P><H5>Purpose of the Resolve_ligand_identification task</H5><P>
+<P><H5>Purpose of the phenix.ligand_identification command</H5><P>
 
-<P>The Resolve_ligand_identification task carries out fitting of a library of <a href="ligand_identification.htm#anch49">200 most frequently observed ligands</a> in the PDB  to a given electron density map. The program also conducts the analysis and ranking of the ligand fitting results.  
+<P>The phenix.ligand_identification command carries out fitting of a library of <a href="ligand_identification.htm#anch66">200 most frequently observed ligands</a> in the PDB  to a given electron density map. The program also conducts the analysis and ranking of the ligand fitting results.  
 
-<P>The current Resolve_ligand_identification task work with the ligand library provided with the Phenix program by default.  It is also capable of fitting and ranking ligands in a custom PDB library provided by the users. 
+<P>The phenix.ligand_identification command works with the ligand library provided with the Phenix program by default.  It can also take a <a href="ligand_identification.htm#anch25">custom ligand library</a> provided by the users.  
+
+
+
+
 
       <P><H5><U>Usage</U></H5><P>
-<P>The Resolve_ligand_identification task can be run from the PHENIX GUI as a stand-alone strategy, or as a task in  a multi-task strategy.   
+<P>The phenix.ligand_identification task can be run from <a href="ligand_identification.htm#anch45">command line</a>, or from the PHENIX GUI. 
 <P>
-<P><H5>How the Resolve_ligand_identification task works:</H5><P>
+<P><H5>How the phenix.ligand_identification works:</H5><P>
 <P>
-<P>The Resolve_ligand_identification task provides a graphical user interface allowing the user to select either (1) a datafile containing crystallographic structure factor information and a PDB file with a partial model of the structure without the ligand, or (2) an mtz file containing the information of an electron density map of the potential ligand to be identified.
-
-
-<P>The ligand fitting routine is done by RESOLVE as described in the <a href="ligandfit.htm">LigandFit wizard documentation.</a> The Resolve_ligand_identification task carries out this fitting process for a library of <a href="ligand_identification.htm#anch49">200 most frequently observed ligands</a> in the Protein Data Bank, ranks and analyzes the overall fitting results.   The output of the task consists of a list of the best fitted ligands from the library.  The task display provides options to view the top ranked ligand in Pymol with or without the electron density.
+<P>The phenix.ligand_identification command uses RESOLVE ligand fitting methods as described in the <a href="ligandfit.htm">LigandFit documentation.</a> The phenix.ligand_identification carries out this fitting process for a library of <a href="ligand_identification.htm#anch66">200 most frequently observed ligands</a> in the Protein Data Bank, or a custom library as described above, scores and ranks the overall fitting results.  A real-space refinement is carried out on the ligand by default between RESOLVE fitting and Phenix scoring.  The scoring algorythm takes into consideration of density correlation between ligand and density as well as non-bonded interactions between fitted ligand and the input model. The output consists of a list of the best fitted ligands from the library.  The command provides options to view the top ranked ligand in coot with or without the electron density (use keyword "--open_in_coot=True").   
 
 
 
-<P><H5>How to run the Resolve_ligand_identification task</H5><P>
-<P>  An example 'ligand identification' strategy is located in the 'ligands' section in the Phenix strategy menu.  Follow the directions and helps in the GUI.
+<P><H5>How to run the phenix.ligand_identification </H5><P>
+<P>  Example commmands are provided below.  The nsf-d2 files are in $PHENIX/phenix_examples/nsf-d2-ligand
 
 
-<P><H5>What the Resolve_ligand_identification task needs to run:</H5><P>
+<P><H5>What the phenix.ligand_identification command needs to run:</H5><P>
 
-    The Resolve_ligand_identification task needs:
-<P><UL><LI>(1) a mtz file containing structure factors
-<P><LI>(2) (optional), a PDB file with your protein model without ligand
+    The phenix.ligand_identification command needs:
+<P><UL>(1) a mtz file containing structure factors
+<P>(2) (optional), a PDB file with your protein model without ligand
+
+<P><H5><I>Choice of ligand library </I>(keywords+examples)</H5><P> 
+
+<P>*<a href="ligand_identification.htm#anch66">default ligand library</a>: 
+  no keyword needed
+
+<P>*to specifiy a list of ligands in 3-letter codes:
+<PRE style="face=courier">--ligand_list="ATP CTP TTP GTP"  </PRE>
+
+<P>*to use all small molecules with a .pdb extension in the 'ligand_dir' as the search library:
+<PRE style="face=courier">--ligand_dir=/my/compound/library/A1217321
+</PRE>
+
+<P>*to use all ligands associate with proteins of specific function found in the PDB as the search library:  
+<PRE style="face=courier">--function="tyrosine kinase"
+</PRE>
+
+
+<P>*to use all ligands found in proteins with a specific Enzyme Classfication number in the PDB:
+<PRE style="face=courier">--EC=1.1.1.3
+</PRE>
 
 
 
 
-<P><H5><I>Output files from Resolve_ligand_identification task</I></H5><P>
-<P>When you run Resolve_ligand_identification task the output files will be in the directory you started Phenix:
+<P><H5><I>Output files from phenix.ligand_identification command</I></H5><P>
+<P>When you run phenix.ligand_identification command, the output files will be in the directory you started Phenix:
 
-<P><LI> A summary file of the sitting results of all ligands:
+<P><LI> A summary file of the fitting results of all ligands:
 <PRE style="face=courier">overall_ligand_scores.log
 </PRE>
 
@@ -63,24 +85,98 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P>The last column "Sequence in library' contains numbers '###' indicating the sequence number of  the corresponding ligands.  The final fitted ligand coordinates and all the log files are in the corresponding'###' files described below.
 
 <P><LI>PDB files with the fitted ligands:
-<PRE style="face=courier">resolve_ligand_###.pdb
+<PRE style="face=courier">ligand_fit_pdbs/RSR_FITTED_[3-letter code]_###.pdb
 </PRE>
 
-<P><LI>A log file with the fitting of the ligand:
-<PRE style="face=courier">resolve_fit_id_###.log
-</PRE>
-
-<P><LI>A log file with the fit of the ligand to the map:
-<PRE style="face=courier">resolve_cc_id_###.log
+<P><LI>Resolve fitting Score files:
+<PRE style="face=courier">ligand_fit_scores/[3-letter code].scores
 </PRE>
 
 <P><LI>Map coefficients for the map used for fitting:
 <PRE style="face=courier">resolve_map.mtz
 </PRE>
+
+<P><LI>Command file to display results in coot:
+<PRE style="face=courier">display.com (uses ligid.scm, also in the same directory)
+</PRE>
 </UL>
 
+<P><H5>Multi-thread computing </H5><P>
+<P> The phenix.ligand_identification program has build-in multi-thread processing capability. Use keyword
+<PRE style="face=courier">--nproc=[number of threads] 
+</PRE>
+to run the command in multi-threaded mode.  The processing speed generally scales linearly with the number of threads used, up to the number of free cores the system can allocate to the master process. For example, it takes about 25 minutes for the nsf-d2 example to run in 8 threaded mode on a dual-Xeon W5580 machine.
+
+     <P><H5><U>Running from a parameters file</U></H5><P>
+<P>You can run phenix.ligand_identification from a parameters file. This is often convenient because you can generate a default one with: 
+<PRE style="face=courier">phenix.ligand_identification --show_defaults > my_ligand.eff
+</PRE>
+and then you can just edit this file to match your needs and run it with: 
+<PRE style="face=courier">phenix.ligand_identification  my_ligand.eff
+</PRE>
+
+
       <P><H5><U>Examples</U></H5><P>
-<P>  An example 'ligand identification' strategy is located in the 'ligands' section of the Phenix strategy menu.
+<P><H5> Sample command_line inputs</H5><P>
+
+<P><UL><LI>Standard run of ligand_identification (input protein model and data file, default ligand library, 8 CPUs)
+<PRE style="face=courier">phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+ input_labels=F nproc=8\   
+</PRE>
+
+<P><LI>Search ligand from a difference map or pre-calculated map coefficients from phenix.refine
+<P>If your refine a model with a command such as,
+<PRE style="face=courier">phenix.refine data.mtz partial.pdb
+</PRE>
+then you will end up with the refined model,
+<PRE style="face=courier">partial_refine_001.pdb
+</PRE>
+and a map coefficients file:
+<PRE style="face=courier">partial_refine_001_map_coeffs.mtz
+</PRE>
+You can then run ligand_identification using the 2Fo-Fc map calculated from these map
+coefficients:
+
+<PRE style="face=courier">phenix.ligand_identification mtz_type=diffmap \ mtz_in=partial_refine_001_map_coeffs.mtz  input_labels="2FOFCWT PH2FOFCWT" \
+model=partial_refine_001.pdb nproc=8\
+</PRE>
+For Fo-Fc map from the same file you can say:
+<PRE style="face=courier">phenix.ligand_identification mtz_type=diffmap \ mtz_in=partial_refine_001_map_coeffs.mtz  input_labels="FOFCWT PHFOFCWT" \
+model=partial_refine_001.pdb nproc=8\
+</PRE>
+
+In the above two cases, "model" keyword is optional.  If provided, non-bonded terms will be used in scoring. 
+
+<P><LI>Identify ligand from a series of ligands in 3-letter codes
+<PRE style="face=courier">phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+ input_labels=F ligand_list="ATP GTP CTP TTP ADP GDP CDP TDP A3P GSP NAP AMP GMP CMP TMP"
+</PRE>
+
+<P><LI>Identify ligand from a given set of pdb files (could be your compound library) in a specific directory
+<PRE style="face=courier">phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+ input_labels=F ligand_dir=/my/compound/library/A1217321
+</PRE>
+This command will take all .pdb files in the ligand_dir and a make a custom library to carry out the search
+
+<P><LI>Identify ligand from a library composed of all ligands found in Tyrosine kinases in the PDB
+<PRE style="face=courier">phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+ input_labels=F function="Tyrosine kinase"
+</PRE>
+This command could be useful when you want to use a function-specific ligand library. The 'function' should be in one of the EC terms.  Note in the above example, if only "kinase" is specified, ligand found in all types of kinases will be searched.
+
+
+<P><LI>Identify ligand from a library composed of all ligands found in proteins belong to a specific Enzyme Classfication
+<PRE style="face=courier">phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+ input_labels=F EC=1.1.3
+</PRE>
+This command could be useful when you want to use a function-specific ligand library, and your protein belongs to a EC.  Note the EC can be any parent set of the actual EC. (e.g. you can use 1.1.3 instead of 1.1.3.1 although you'll get a boarder library with EC=1.1.3).
+
+
+
+
+</UL>
+
+<P>  The nsf-d2 files in the above examples can be found in $PHENIX/phenix_examples/nsf-d2-ligand
 
       <P><H5><U>Possible Problems</U></H5><P>
 
@@ -97,213 +193,191 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P><H5><U>Literature</U></H5><P>
 <P><H5><U>Additional information</U></H5><P>
 
-<P><H5>List of ligands in the PHENIX ligand identification library</H5><P>
+<P><H5>List of ligands in the PHENIX ligand_identification default library</H5><P>
 <P>---------------------------------------------------------------
 
       
 <PRE style="face=courier">
-PDB  #ATOM  LIG_ID
-103m     6    NBN
-1a99     6    PUT
-1bio     6    GOL
-1dc1     6    DIO
-1dwk     6    OXL
-1g29     6    DOX
-1g8t     6    MO5
-1h16     6    PYR
-1k26     6    CRY
-1fc5     7    MO6
-1gaj     7    PEG
-1l5j     7    F3S
-1ad2     8    MPD
-1b6i     8    HED
-1cpf     8    TRS
-1e42     8    DTT
-1gth     8    URA
-1jll     8    COA
-1knp     8    SIN
-1m6z     8    TMN
-1nhz     8    HEZ
-1o94     8    SF4
-1s8l     8    LI1
-1a0j     9    BEN
-1amk     9    PGA
-1bzy     9    POP
-1d0v     9    NIO
-1djr     9    BEZ
-1f4l     9    MET
-1gck     9    ASP
-1bf3    10    PHB
-1bjq    10    ADE
-1dan    10    FUC
-1e1d    10    FSO
-1e1o    10    LYS
-1e7f    10    DAO
-1e7h    10    PLM
-1ewk    10    GLU
-1fwn    10    PEP
-1i0i    10    7HP
-1kjp    10    PHQ
-1kwn    10    TAR
-1lrj    10    PGE
-1os7    10    AKG
-1akd    11    CAM
-1d3g    11    ORO
-1f98    11    HC4
-10gs    12    MES
-1amu    12    PHE
-1e7e    12    DKA
-1f7u    12    ARG
-1bj5    13    MYR
-1bxh    13    AMG
-1f07    13    MPO
-1gcz    13    CIT
-1gni    13    OLA
-1h9x    13    NHE
-1j4u    13    MMA
-1p0z    13    FLC
-1e6r    14    NAA
-1gkl    14    FER
-1o7v    14    NDG
-1rff    14    SPM
-1a5a    15    PLP
-1afb    15    NGA
-1ajk    15    EPE
-1c9s    15    TRP
-1avd    16    BTN
-1bg3    16    G6P
-1cnq    16    F6P
-1f7s    16    LDA
-1fi1    16    FTT
-1jsl    16    1PE
-1d1v    17    BH4
-1d7c    17    1PG
-1e2j    17    THM
-1n2n    17    H4B
-1ho5    19    ADN
-1o57    19    P6G
-1b4w    20    BOG
-1brr    20    RET
-1dnc    20    GTT
-1dug    20    GSH
-1ere    20    EST
-1fkp    20    NVP
-1hvy    20    UMP
-1ldn    20    FBP
-1ldn    20    OXM
-1bh3    21    C8E
-1d2s    21    DHT
-1e2d    21    TMP
-1h7f    21    C5P
-1o28    21    UFP
-1c3m    22    MAN-MAN
-1cx4    22    CMP
-1fsg    22    PRP
-1gz1    22    BGC-BGC
-1l4f    22    NCN
-1ocj    22    BGC
-1a0f    23    GTS
-1aer    23    AMP
-1cdg    23    MAL
-1ex2    23    SUC
-1gim    23    IMP
-1gwv    23    LAT
-1a97    24    5GP
-1bir    24    2GP
-1cq1    24    PQQ
-1goy    24    3GP
-1hk3    24    T44
-1jcq    24    FPP
-1ay2    25    GAL-NAG
-1c3j    25    UDP
-1h7l    25    TYD
-1af7    26    SAH
-1bfd    26    TPP
-1k3l    26    GTX
-1mcz    26    TDP
-1ao0    27    ADP
-1ao0    27    FS4
-1cg1    27    IMO
-1efh    27    A3P
-1fpx    27    SAM
-1a4r    28    GDP
-1ao5    28    NAG-NAG
-1b30    28    XYS-XYS-XYS
-1b3v    28    XYS
-1lv5    28    DCP
-1opx    28    2PE
-1cjk    29    FOK
-1cjv    29    DAD
-1g2v    29    TTP
-1i52    29    CTP
-1cr2    30    DTP
-1ag9    31    FMN
-1aq2    31    ATP
-1aux    31    SAP
-1b63    31    ANP
-1f9h    31    APC
-1gll    31    ACP
-1r3k    31    DGA
-1a2b    32    GSP
-1b23    32    CYS
-1b23    32    GNP
-1ckm    32    GTP
-1pj6    32    FOL
-1d1g    33    MTX
-1bos    34    GAL
-1bos    34    GAL-GAL-GLC
-1bwu    34    MAN
-1byh    34    GLC-GLC
-1bzw    34    GAL-GLC
-1cvn    34    MAN-MAN-MAN
-1e40    34    GLC-GLC-GLC
-1kzj    35    CB3
-1n9b    35    MA4
-1ek6    36    UPG
-1b0f    38    NAG-FUC-NAG
-1fuj    38    NAG-FUC
-1g82    38    NAG-NAG-FUC
-1d7d    39    NAG-NAG-MAN
-1foa    39    UD1
-1nb3    39    NAG-NAG-BMA
-1kby    42    SPO
-106m    43    HEM
-1at5    43    NAG-NAG-NAG
-1e85    43    HEC
-1ek6    44    NAI
-1esw    44    ACR
-1p9l    44    NAD
-1ece    45    GLC-GLC-GLC-GLC
-1c3v    48    NDP
-1c3v    48    PG4
-1r2c    48    7MQ
-1ti7    48    NAP
-1aof    49    DHE
-1gsl    49    NAG-NAG-MAN-FUC
-1jnd    50    NAG-NAG-MAN-MAN
-1dv3    51    BCL
-1dv3    51    BPH
-1dv3    51    U10
-1p0h    51    ACO
-1fnd    53    FAD
-1lsh    53    PLD
-1lsh    53    UPL
-1f0y    54    CAA
-1okc    54    PC2
-1a65    56    NAG
-1bdg    56    GLC
-1en2    56    NAG-NAG-NAG-NAG
-1f9d    56    GLC-GLC-GLC-GLC-GLC
-1aky    57    AP5
-1myr    58    NAG-FUC-NAG-MAN-XYS
-1fq8    61    NAG-NAG-MAN-MAN-MAN
-1prc    65    BPB
-1cxp    71    NAG-NAG-MAN-MAN-MAN-FUC
-1deo    72    NAG-NAG-MAN-MAN-MAN-MAN
-1ax0    80    NAG-FUC-NAG-MAN-XYS-MAN-MAN
-1kby    81    CDL
-1dio    91    B12
-
+ PG4
+ CRY
+ CYS
+ DIO
+ DOX
+ GOL
+ MO5
+ NBN
+ OXL
+ OXM
+ PUT
+ PYR
+ F3S
+ MO6
+ PEG
+ COA
+ DTT
+ FS4
+ HED
+ HEZ
+ LI1
+ MPD
+ SF4
+ SIN
+ TMN
+ TRS
+ URA
+ BEN
+ BEZ
+ MET
+ NIO
+ PGA
+ POP
+ ASP
+ DAO
+ FSO
+ FUC
+ GLU
+ LYS
+ PEP
+ PGE
+ PHB
+ PHQ
+ PLM
+ TAR
+ XYS
+ ADE
+ AKG
+ 7HP
+ BGC
+ CAM
+ HC4
+ ORO
+ DKA
+ GAL
+ GLC
+ MAN
+ MES
+ ARG
+ PHE
+ CIT
+ FLC
+ MMA
+ MPO
+ MYR
+ NHE
+ OLA
+ PG4
+ AMG
+ FER
+ NAA
+ NAG
+ NDG
+ SPM
+ EPE
+ NGA
+ PLP
+ TRP
+ BTN
+ F6P
+ FTT
+ G6P
+ LDA
+ UPL
+ 1PE
+ BH4
+ H4B
+ THM
+ 1PG
+ P6G
+ U10
+ ADN
+ BOG
+ EST
+ FBP
+ GSH
+ GTT
+ NVP
+ RET
+ UMP
+ C5P
+ C8E
+ DHT
+ TMP
+ UFP
+ CMP
+ NCN
+ PRP
+ BGC
+ MAN
+ GTS
+ IMP
+ LAT
+ MAL
+ SUC
+ GLC
+ AMP
+ FPP
+ PQQ
+ T44
+ 2GP
+ 3GP
+ 5GP
+ TYD
+ UDP
+ GTX
+ SAH
+ TDP
+ TPP
+ IMO
+ SAM
+ A3P
+ ADP
+ DCP
+ GDP
+ NAG
+ XYS
+ 2PE
+ CTP
+ DAD
+ FOK
+ TTP
+ DTP
+ DGA
+ FMN
+ SAP
+ ACP
+ ANP
+ APC
+ ATP
+ FOL
+ GNP
+ GSP
+ GTP
+ MTX
+ MAN
+ CB3
+ MA4
+ UPG
+ UD1
+ SPO
+ HEC
+ HEM
+ NAG
+ NAD
+ NAI
+ ACR
+ GLC
+ NAP
+ NDP
+ DHE
+ BPH
+ ACO
+ BCL
+ FAD
+ CAA
+ GLC
+ AP5
+ BPB
+ B12
 
 </PRE>
 
