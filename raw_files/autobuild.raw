@@ -919,7 +919,7 @@ will be carried out and multiple_models_starting_resolution is ignored.
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb \
 touch_up=True worst_percent_res_rebuild=2 min_cc_res_rebuild=0.8
 </PRE>
- You can rebuild just the worst parts of your model by settting
+ You can rebuild just the worst parts of your model by setting
         touch_up=True.  You can decide what parts to rebuild based on
         a minimum model-map correlation (by residue).
         You can decide how much to rebuild
