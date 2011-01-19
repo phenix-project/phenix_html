@@ -29,16 +29,18 @@ a model you can also specify ps_in_rebuild=True to get a
 prime-and-switch map.
 
 
-<H5>Why does AutoBuild bomb and say &quot;word too long&quot;?</H5>
-<p>When Autobuild runs a sub-process it uses sh to run the subprocess.
-When the subprocess is run, a few additions are made to the $PATH variable.
-If your $PATH variable is already very long, this can sometimes make it too
-long for sh.
-<p>Solution #1:   install a new sh so that any length $PATH is ok. You can
-get it from ftp://ftp.astron.com/pub/tcsh/
-<p>Solution #2:   add the keyword remove_path_word_list="coot cns" to remove
-a few entries in your path (coot and cns in this case) that are not used
-by autobuild
+<H5>Why does AutoBuild bomb and say &quot;Corrupt gradient calculations&quot;?</H5>
+<p>If an atom is placed very near a special position then sometimes refinement
+will fail and an error message starting with  
+&quot;Corrupt gradient calculations&quot; is printed out. If the starting
+PDB file has the atom near a special position, then the best thing to do is
+move it away from the special position. If AutoBuild builds a model that
+has this problem, then it may be easier to rerun the job, specifying 
+&quot;ignore_errors_in_subprocess=True&quot; which should allow it to
+continue past this error (by simply ignoring that refinement step). You 
+can also try setting correct_special_position_tolerance=0 (to turn off
+the check) or correct_special_position_tolerance=5 (to check over a wider
+range of distances from the special position; default=1).
 
 
 <H5>Why does AutoBuild bomb and say it cannot find a TEMP file?</H5>
