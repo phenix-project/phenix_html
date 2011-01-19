@@ -60,7 +60,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <PRE style="face=courier">--ligand_dir=/my/compound/library/A1217321
 </PRE>
 
-<P>*to use all ligands associate with proteins of specific function found in the PDB as the search library:  
+<P>*to use all ligands associated with proteins of specific function found in the PDB as the search library:  
 <PRE style="face=courier">--function="tyrosine kinase"
 </PRE>
 
@@ -105,7 +105,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P> The phenix.ligand_identification program has build-in multi-thread processing capability. Use keyword
 <PRE style="face=courier">--nproc=[number of threads] 
 </PRE>
-to run the command in multi-threaded mode.  The processing speed generally scales linearly with the number of threads used, up to the number of free cores the system can allocate to the master process. For example, it takes about 25 minutes for the nsf-d2 example to run in 8 threaded mode on a dual-Xeon W5580 machine.
+to run the command in multi-threaded mode.  In general, the processing speed is proportional to the the number of threads used, up to the maximum free cores the system can allocate at run time. For example, it takes about 25 minutes for the nsf-d2 example to run in 8 threaded mode, while single-process uses about 180 minutes for the same job on a dual-Xeon W5580 machine.
 
      <P><H5><U>Running from a parameters file</U></H5><P>
 <P>You can run phenix.ligand_identification from a parameters file. This is often convenient because you can generate a default one with: 
