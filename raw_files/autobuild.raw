@@ -636,11 +636,7 @@ batches and running them on one or more processors works:
 <UL>
 <LI><b>nbatch</b> is the number of batches of work. As long as nbatch is
 fixed then the results of running the Wizard will be the same, no matter
-how many processors are used.  It is most efficient however to have
-nbatch be at least as large as nproc, the number of processors. Otherwise
-some processors may end up doing nothing. The default is nbatch=3. The
-value of nbatch is used to set other defaults 
-(such as number_of_parallel_models).
+how many processors are used.  Normally you will not need to adjust it.
  
 <LI><b>nproc</b> is the number of processors to split the work among
 
@@ -653,7 +649,18 @@ and recombined into a single model).
 
 </UL>
 <P>
-Phenix.autobuild is set up so that you can specify the number of processors (nproc) and  the number of batches (nbatch) as you indicated in your command.  Additionally you will want to set two more parameters:
+Phenix.autobuild is set up so that you can specify the number of processors 
+(nproc).  Here is how to choose how to set it:
+</P>
+<UL>
+<LI>If you are using <b>rebuild_in_place=False</b>, then use nproc=4. 
+(Any more will not make any difference.)
+<LI>If you are using <b>rebuild_in_place=True</b>, then use nproc=5. 
+(Again, any more will not make any difference.)
+<LI> If you are calculating <b>an omit map</b>, then use nproc=5 * number of omit
+regions (i.e., up to 100 or more, depending on how many processors you have)
+</UL>
+Additionally you will want to set two more parameters:
 
 <PRE style="face=courier">run_command ="command you use to submit a job to your system"
 background=False   # probably false if this is a cluster, true if this is a multiprocessor machine
@@ -665,10 +672,10 @@ If you have a queueing system with 20 nodes, then you probably submit jobs with 
 
 Then you might use 
 
-<PRE style="face=courier"> run_command="qsub -someflags"  background=False nproc=20 nbatch=20
+<PRE style="face=courier"> run_command="qsub -someflags"  background=False nproc=20 
 </PRE>
 or
-<PRE style="face=courier"> run_command="qsub"  background=False nproc=20 nbatch=20
+<PRE style="face=courier"> run_command="qsub"  background=False nproc=20 
 </PRE>
 or
 
@@ -676,7 +683,7 @@ or
 
 If you have a 20-processor machine instead, then you might say
 
-<PRE style="face=courier"> run_command=sh  background=True nproc=20 nbatch=20
+<PRE style="face=courier"> run_command=sh  background=True nproc=20 
 </PRE>
 
 so that it would run your jobs with sh on your machine, and run them all in the background (i.e., all at one time).
