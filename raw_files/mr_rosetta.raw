@@ -23,46 +23,62 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 mr_rosetta is a procedure for extending the range of molecular replacement 
 by combining tools from the structure-modeling field (Rosetta) with 
 crystallographic molecular replacement, model-building, density 
-modification and refinement.  The approach is described in 
-(Dimaio et al., to be published)
+modification and refinement. The approach is described in 
+Dimaio et al. (2011).
+ 
+<P>The basic process is to find MR solutions with phenix.automr, 
+rebuild them with Rosetta, then rebuild those modelswith 
+phenix.phase_and_build. The combination of Rosetta rebuilding and 
+phenix rebuilding is the key part of this method. In slightly more 
+detail, this process is to select possible MR solutions (one of which 
+must later be shown to be correct for the procedure to succeed)with 
+phenix.automr (Phaser), score with LLG following Rosetta relaxation, 
+pick the best solutions, rebuild each of these with Rosetta including 
+map information (density term), score the resulting models with 
+Rosetta, select the highest and score with LLG, verify that the top 
+solutions are all about the same (electron density maps are correlated), 
+and rebuild the top models with phenix.phase_and_build.
 
-The basic process is to find MR solutions with phenix.automr, rebuild 
-them with Rosetta, then rebuild those models with phenix.autobuild.  
-The combination of Rosetta rebuilding and phenix rebuilding is the key 
-part of this method.
-
-In slightly more detail, this process is to find MR solutions with 
-phenix.automr (Phaser), score with LLG (optionally following Rosetta relaxation), 
-pick the best solutions, rebuild with Rosetta including map information, 
-score the resulting models with Rosetta, score the highest with LLG, 
-verify that the top solutions are all about the same, and rebuild the top 
-models with phenix.autobuild.
+mr_rosetta can handle a single copy of a single chain, or multiple 
+copies of a single chain (NCS), or multiple copies of multiple chains
+(groups of NCS).  If you supply one or more input search models, then the
+entire crystallographic asymmetric unit must contain some multiple
+of the search models you supply (phenix.phaser will be used to find
+copies of the search model).  NCS will be found automatically in
+your search model and in any models assembled by mr_rosetta.
 
 <P><H5><U>
 	Tools from Rosetta that are used in phenix.mr_rosetta
 </U></H5><P>
 <UL>
 <LI>
-Model relaxation (rebuilding) including both the Rosetta standard 
-energy terms and a term for fit of the model to an electron density 
-map (Dimaio et al., 2009)
+Calculation of Rosetta energies for a model.
+</LI>
+<LI>
+Model relaxation (rebuilding) including just the Rosetta standard 
+energy term. This optional rebuilding can be carried out before molecular
+replacement, improving the starting model. 
 </LI>
 <LI>
 Model completion and relaxation (filling in missing sections and rebuilding) 
-with Rosetta energies and fit to a map. Note: Sequence-specific fragment 
-libraries are used in this process.
-</LI>
-<LI>
-Calculation of Rosetta energies for a model.
+with Rosetta energies and fit to a map (Dimaio et al., 2009).
+This step is carried out after
+an MR solution has been found. The placed model is used to calculate a
+2Fo-Fc map and fit to this map is used as a target in addition to the
+standard Rosetta energies. Note: Sequence-specific fragment 
+libraries are used in this process (obtained from the Robetta webserver).
 </LI>
 </UL>
-
 
 
 <P><H5><U>
 	Steps where mr_rosetta uses structure-modeling algorithms
 </U></H5><P>
 <UL>
+<LI>
+Prior to MR. Edited templates are optionally rebuilt before carrying out
+molecular replacement.
+</LI>
 <LI>
 In scoring MR solutions.  MR solutions are scored by Phaser LLG scores 
 calculated after model relaxation with Rosetta including the term for 
@@ -74,6 +90,18 @@ rebuilt using Rosetta model completion and relaxation including the term
 for fit to the current density map
 </LI>
 </UL>
+
+<P><H5><U>Summary of the procedure used in mr_rosetta </U></H5><P>
+The overall process in one cycle of mr_rosetta is: (a) edit the model and 
+place it in the unit cell (e.g., MR, molecular replacement), (b) score all MR
+solutions and take the best ones by LLG for further steps, (c) rebuild each 
+model 20-2000 times using Rosetta and density-modified 2Fo-Fc map to yield
+Rosetta models, (d) refine Rosetta models, average density from top 20%, 
+continue rebuilding each Rosetta model using averaged density, and (e) take top
+models based on LLG score and rebuild with autobuild.
+An optional prerefinement step is to carry out Rosetta modeling in 
+step (a) above, before carrying out molecular replacement. 
+</P>
 
 <P><H5><U>
 Details of the procedure used in mr_rosetta 
@@ -91,10 +119,13 @@ Read reflections file (must be CCP4 mtz and have a freeR set; use phenix GUI
 or phenix.import_and_add_free to set up)
 </LI>
 <LI>
-If an hhpred .hhr file  is supplied, read through this file, download the
+An optional model editing step. If an hhpred .hhr file  is supplied, 
+read through this file, download the
 PDB files specified, apply alignments specified to generate pairs of
 alignment files and edited models (e.g., 2cng.ali, 2cng_mr.pdb based on
-2cng.pdb)
+2cng.pdb). This step is carried out by phenix.sculptor using a default
+protocol. (For tailoring of this step, use phenix.mr_model_preparation and
+then supply the aligned model to mr_rosetta.)
 </LI>
 <LI>
 NOTE: The steps below are carried out for each model/alignment file pair 
@@ -104,10 +135,16 @@ file is supplied with alignment information).
 <LI>
 Check model, alignment file and sequence file to verify that they match 
 (i.e., that the alignment file can be applied to the model to yield a model 
-with the sequence in the sequence file).  Generate overall B-factor and 
+with the sequence in the sequence file).  Copy overall B-factor and 
 list of B-factors for atoms from the model to be substituted into subsequent 
 models before scoring. Rewrite the sequence file into standard (fasta) 
 format.  
+</LI>
+<LI> Optional Rosetta modelling prior to molecular replacement (prerefinement).
+The edited starting model (template) is rebuilt with Rosetta using the
+standard Rosetta energy functions and a fragments library specific to the
+target sequence to fill in gaps.
+(If no gaps are present, no fragments files are necessary).
 </LI>
 <LI>
 Run phenix.automr to find molecular replacement solutions (default 
@@ -116,15 +153,21 @@ number_of_output_models=5).
 <LI>
 Refine (if refine_after_mr=True) each MR solution with phenix.refine.  Use 
 resulting 2mFo-DFc map as starting point for density modification, yielding
-density-modified current density map for this refined solution. 
+density-modified current density map for this refined solution, to be used
+in Rosetta rebuilding below. 
 Ignore refined model.  Note (but ignore) LLG of refined model.
 </LI>
-<LI>
-Rescore each MR solution. If desired, first relax (rebuild) model
-(rebuilding rescore_mr.nstruct models 
-without filling in missing sections). Then recalculate LLG, taking the 
-best LLG for any rebuilt model as the score for the original model from MR. 
-Use electron density in relax procedure.
+<LI> Determine the baseline LLG for model improvement. 
+This LLG can either be the LLG obtained in the previous step, or an LLG
+obtained after rebuilding the MR model with Rosetta.  Optionally
+perform rosetta 
+relaxation (rebuilding rescore_mr.nstruct models, typically 5) models
+without filling in missing sections, including a density term from the map in the prevous step.  The sequence of all parts of the
+model at this point will match the target sequence. 
+Score each solution by LLG. These models are not carried forward, but 
+taking the best LLG for any rebuilt model as the score for the original 
+model from MR. This score will be used later to prioritize MR solutions
+for further analysis.
 </LI>
 <LI>
 	Sample relaxation script used to run relaxation in Rosetta:
@@ -156,12 +199,21 @@ cd MR_ROSETTA_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
 
 <LI>
 Take the top (max_solutions_to_rebuild=5) models from step 5 and rebuild them 
-with Rosetta, filling in missing sections and including current density 
-map as part of the target function, generating total of 
-(rosetta_rebuild.nstruct=20) rebuilt models.  Note: in many cases 20 models
+with Rosetta, this time filling in missing sections and including 
+the density term with the current map (the same map as used above in relaxation)
+as part of the target function, generating total of 
+(rosetta_rebuild.nstruct=20) rebuilt models. 
+These are Rosetta models.
+The sequence of these models
+will be the same as that of the target (unless there are long gaps in the
+template that cannot be filled by Rosetta).
+Note: in many cases 20 models
 is sufficient...in others far more models will make the method work
 better (i.e., 1000 or 2000 models). This can take a lot of time unless you
-have a cluster to run on.
+have a cluster to run on.  This Rosetta rebuilding step uses a library of
+fragments specific to the target sequence to fill in any gaps. 
+(If no gaps are present, no fragments files are necessary).
+
 Sample rebuild script used:
 
 <PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
@@ -201,21 +253,22 @@ cd MR_ROSETTA_1/WORK_1/REBUILD_IN_SETS_1/RUN_1/WORK_1
 score (including density term) and rescore them based on LLG
 </LI>
 <LI>
-Determine whether the top (number_of_required_cc=5) best LLG score models 
-from step 8 are all similar (map correlation between map for top 
-model with each of at least required_cc=0.20).  If not, stop.
+Determine whether the top (number_of_required_cc=5) best LLG score Rosetta 
+models are all similar (map correlation between map for top 
+model with each )
 </LI>
 <LI>
-Refine with phenix.refine the top solutions from step 8 based on LLG 
-(if refine_top_models.run_refine_top_models=True, number_relax=5). Save 
-new 2mFo-DFc map, density modify the map, and then average the top density-modified
-maps (top based on Rosetta score) to yield an averaged density map used in the
-next relaxation step.
-Ignore the refined model.
+Refine with phenix.refine the top Rosetta models based on LLG 
+(if refine_top_models.run_refine_top_models=True, percent_to_refine=20). 
+Save new 2mFo-DFc map, density modify the map, and then average the 
+top density-modified
+maps (top based on Rosetta score) to yield an averaged density map 
+used in the next relaxation step.  Ignore the refined model.
 </LI>
 <LI>
-Relax (rebuild) the solutions from step 8 into their corresponding density maps from 
-step 10 with Rosetta, generating (relax_top_models.nstruct=5) models for 
+Relax (rebuild) the Rosetta models from into their corresponding 
+density maps from 
+with Rosetta, generating (relax_top_models.nstruct=5) models for 
 each. Score each relaxed model with LLG, take best LLG as score.  Save 
 best relaxed model as new solution. Sample relax script used:
 
@@ -240,9 +293,9 @@ cd MR_ROSETTA_1/GROUP_OF_RESCORE_MR_ROSETTA_2/RUN_1/RESCORE_MR_1/RELAX_AND_SCORE
 </PRE>
 </LI>
 <LI>
-Take the top (number_to_autobuild=5) relaxed refined rebuilt solutions 
-from step 11 and rebuild them with phenix.autobuild.  Report the 
-R/freeR of each model.
+Take the top (number_to_autobuild=5) relaxed refined rebuilt Rosetta models 
+from the previous step (scored by LLG) and rebuild them with phenix.autobuild.  
+Report the R/freeR of each model.
 </LI>
 </OL>
 
@@ -275,7 +328,7 @@ All files are stored on a single file system that must be accessible to
 all jobs.
 </LI>
 <LI>
-<P><H5><U>Read/write delay allows for slow NSF disks</U></H5><P>
+<P><H5><U>Read/write delay allows for slow NFS disks</U></H5><P>
 Read/write to files are (generally) accompanied by a wait for appearance of the new file of up to max_wait_time=100 sec.
 </LI>
 <LI>
@@ -308,7 +361,6 @@ finish).  You can accomplish the same thing by creating a STOPWIZARD file
 in the top level directory.
 </LI>
 </OL>
-
 
 <P><H5><U>Installing Rosetta for use with mr_rosetta</U></H5><P>
 To run mr_rosetta, you need to install Rosetta from the Baker laboratory
@@ -653,6 +705,21 @@ You may also want to take the output of mr_rosetta and then put it back in
 as input to mr_rosetta and re-run it to improve your model.
 
 <P><H5><U>Literature</U></H5><P>
+
+<p>
+Frank DiMaio, Thomas C. Terwilliger, Randy J. Read, Alexander Wlodawer, Gustav
+Oberdorfer, Eugene Valkov, Assaf Alon, Deborah Fass, Herbert L. Axelrod,
+Debanu Das, Sergey M. Vorobiev, Hideo Iwai, P. Raj Pokkuluri & David Baker
+"Increasing the Radius of Convergence of Molecular Replacement by
+Density and Energy Guided Protein Structure Optimization" 
+(Nature, 2011, in press)
+
+<p>
+DiMaio, F., Tyka, M.D., Baker, M.L., Chiu, W., 
+Baker, D. (2009). 
+"Refinement of Protein Structures into Low-Resolution Density Maps 
+Using Rosetta" 
+J. Mol. Biol. 392, 181-190.
 
 <P><H5><U>Additional information</U></H5><P>
 
