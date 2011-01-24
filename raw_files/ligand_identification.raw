@@ -21,7 +21,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 <P><H5>Purpose of the phenix.ligand_identification command</H5><P>
 
-<P>The phenix.ligand_identification command carries out fitting of a library of <a href="ligand_identification.htm#anch66">180 most frequently observed ligands</a> in the PDB  to a given electron density map. The program also conducts the analysis and ranking of the ligand fitting results.  
+<P>The phenix.ligand_identification command carries out fitting of a library of <a href="ligand_identification.htm#anch70">180 most frequently observed ligands</a> in the PDB  to a given electron density map. The program also conducts the analysis and ranking of the ligand fitting results.  
 
 <P>The phenix.ligand_identification command works with the ligand library provided with the Phenix program by default.  It can also take a <a href="ligand_identification.htm#anch25">custom ligand library</a> provided by the users.  
 
@@ -34,7 +34,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P>
 <P><H5>How the phenix.ligand_identification works:</H5><P>
 <P>
-<P>The phenix.ligand_identification command uses RESOLVE ligand fitting methods as described in the <a href="ligandfit.htm">LigandFit documentation.</a> The phenix.ligand_identification carries out this fitting process for a library of <a href="ligand_identification.htm#anch66">180 most frequently observed ligands</a> in the Protein Data Bank, or a custom library as described above, scores and ranks the overall fitting results.  A real-space refinement is carried out on the ligand by default between RESOLVE fitting and Phenix scoring.  The scoring algorythm takes into consideration of density correlation between ligand and density as well as non-bonded interactions between fitted ligand and the input model. The output consists of a list of the best fitted ligands from the library.  The command provides options to view the top ranked ligand in coot with or without the electron density (use keyword "--open_in_coot=True").   
+<P>The phenix.ligand_identification command uses RESOLVE ligand fitting methods as described in the <a href="ligandfit.htm">LigandFit documentation.</a> The phenix.ligand_identification carries out this fitting process for a library of <a href="ligand_identification.htm#anch70">180 most frequently observed ligands</a> in the Protein Data Bank, or a custom library as described above, scores and ranks the overall fitting results.  A real-space refinement is carried out on the ligand by default between RESOLVE fitting and Phenix scoring.  The scoring algorythm takes into consideration of density correlation between ligand and density as well as non-bonded interactions between fitted ligand and the input model. The output consists of a list of the best fitted ligands from the library.  The command provides options to view the top ranked ligand in coot with or without the electron density (use keyword "--open_in_coot=True").   
 
 
 
@@ -50,7 +50,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 <P><H5><I>Choice of ligand library </I>(keywords+examples)</H5><P> 
 
-<P>*<a href="ligand_identification.htm#anch66">default ligand library</a>: 
+<P>*<a href="ligand_identification.htm#anch70">default ligand library</a>: 
   no keyword needed
 
 <P>*to specifiy a list of ligands in 3-letter codes:
