@@ -171,7 +171,7 @@ for further analysis.
 </LI>
 <LI>
 	Sample relaxation script used to run relaxation in Rosetta:
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
+<PRE style="face=courier">
 #!/bin/sh 
 cd MR_ROSETTA_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
  /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
@@ -216,7 +216,7 @@ fragments specific to the target sequence to fill in any gaps.
 
 Sample rebuild script used:
 
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
+<PRE style="face=courier">
 #!/bin/sh 
 cd MR_ROSETTA_1/WORK_1/REBUILD_IN_SETS_1/RUN_1/WORK_1
  /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
@@ -226,7 +226,7 @@ cd MR_ROSETTA_1/WORK_1/REBUILD_IN_SETS_1/RUN_1/WORK_1
 -in:file:fasta MR_ROSETTA_1/WORK_1/EDITED_1crb_fasta.txt \
 -in:file:alignment MR_ROSETTA_1/WORK_1/EDITED_1crb_2qo4.ali \
 -in:file:template_pdb MR_ROSETTA_1/AutoMR_run_1_/2QO4.1.pdb \
--loops:frag_sizes 9 3 1 \
+-loops:frag_sizes 9 3.2 \
 -loops:frag_files inputs/aa1crb_09_05.200_v1_3.gz \
    inputs/aa1crb_03_05.200_v1_3.gz none \
 -loops:random_order \
@@ -272,7 +272,7 @@ with Rosetta, generating (relax_top_models.nstruct=5) models for
 each. Score each relaxed model with LLG, take best LLG as score.  Save 
 best relaxed model as new solution. Sample relax script used:
 
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
+<PRE style="face=courier">
 #!/bin/sh 
 cd MR_ROSETTA_1/GROUP_OF_RESCORE_MR_ROSETTA_2/RUN_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
  /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
@@ -369,14 +369,8 @@ is given below.  Once you have installed Rosetta you need to set the
 environmental variable $PHENIX_ROSETTTA_PATH.  Then you have all the software
 you will need for running mr_rosetta.
 
-<P>Note: this set of instructions is for Rosetta version 3.1...presumably 
+<P>Note: this set of instructions is for Rosetta version 3.2...presumably 
 future versions will look very similar except for the numbering.
-</P>
-<P>Additional Note: As of Jan. 18, 2011, the distributed version of Rosetta (3.1)
-does not yet have the necessary features for phenix.mr_rosetta...you will
-need to get the development version of Rosetta instead by contacting the
-Rosetta authors directly (<a href="http://depts.washington.edu/uwc4c/express-licenses/assets/rosetta/">http://depts.washington.edu/uwc4c/express-licenses/assets/rosetta/</a>.
- A new version of Rosetta is expected out soon that will have all the features needed.
 </P>
 <P>
 Downloading and installing Rosetta is pretty easy if your computer is 
@@ -385,7 +379,7 @@ machine...or just a few minutes if you have  a multiprocessor machine to
 compile with.
 </P>
 
-<P>NOTE: If trouble...see the FULL INSTRUCTIONS at  http://www.rosettacommons.org/manuals/archive/rosetta3.1_user_guide/
+<P>NOTE: If trouble...see the FULL INSTRUCTIONS at  http://www.rosettacommons.org/manuals/archive/rosetta3.2_user_guide/
 
 <OL>
 <LI>
@@ -395,6 +389,7 @@ receive by email a link to the download site and a login/password.
 </LI>
 
 <LI>
+Go to Rosetta 3.2 on the download site, select Download, and
 Download Rosetta "as one bundle". Note if you have a mac you may need to 
 install some additional patches (please see the instructions on the download 
 page).
@@ -402,25 +397,25 @@ page).
 
 <LI>
 Unpack and install Rosetta.  Go to the directory where you want to install 
-it and move the downloaded file "rosetta3.1_Bundles.tgz" there. Then...
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
-tar xzf rosetta3.1_Bundles.tgz
-tar xzf rosetta3.1_database.tgz
-tar xzf rosetta3.1_demos.tgz
-tar xzf rosetta3.1_fragments.tgz
-tar xzf rosetta3.1_source.tgz
-tar xzf BioTools-3.1.tgz
-tar xzf rosetta3.1_user_guide.tgz
+it and move the downloaded file "rosetta3.2_Bundles.tgz" there. Then...
+<PRE style="face=courier">
+tar xzf rosetta3.2_Bundles.tgz
+tar xzf rosetta3.2_database.tgz
+tar xzf rosetta3.2_demos.tgz
+tar xzf rosetta3.2_fragments.tgz
+tar xzf rosetta3.2_source.tgz
+tar xzf BioTools-3.2.tgz
+tar xzf rosetta3.2_user_guide.tgz
 </PRE>
 This should give you:
 
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
-BioTools/		rosetta3.1_database.tgz    rosetta_database/
-BioTools-3.1.tgz	rosetta3.1_demos.tgz	   rosetta_demos/
-README.platforms	rosetta3.1_fragments.tgz   rosetta_fragments/
-README.version		rosetta3.1_source.tgz	   rosetta_source/
-release.note		rosetta3.1_user_guide/
-rosetta3.1_Bundles.tgz	rosetta3.1_user_guide.tgz
+<PRE style="face=courier">
+BioTools/		rosetta3.2_database.tgz    rosetta_database/
+BioTools-3.2.tgz	rosetta3.2_demos.tgz	   rosetta_demos/
+README.platforms	rosetta3.2_fragments.tgz   rosetta_fragments/
+README.version		rosetta3.2_source.tgz	   rosetta_source/
+release.note		rosetta3.2_user_guide/
+rosetta3.2_Bundles.tgz	rosetta3.2_user_guide.tgz
 </PRE>
 </LI>
 <LI>
@@ -430,7 +425,7 @@ you will need to install it from http://www.python.org/
 <P>In the scons command below the "-j2" means use 2 processors....adjust for 
 your system. Takes about 1 hour with 2 processors.
 
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
+<PRE style="face=courier">
 cd rosetta_source
 python external/scons-local/scons.py -j2 bin mode=release
 cd ..
@@ -448,13 +443,13 @@ mark where rosetta is located:
 
 if you are using the bash or sh shells:  
 
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
+<PRE style="face=courier">
 export PHENIX_ROSETTA_PATH=/net/sigma/raid1/rosetta
 </PRE>
 
 or sh (C-shell):
 
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
+<PRE style="face=courier">
 setenv PHENIX__ROSETTA_PATH /net/sigma/raid1/rosetta
 </PRE>
 </LI>
@@ -537,7 +532,7 @@ is wrong but is not always successful).
 
 <P>Here is what the alignment file needs to look like. It is a MODELLER-style .ali file.
 Here is a sample:
-<PRE style="face=courier">phenix.mr_rosetta exptl_fobs_phases_freeR_flags.mtz sequence.dat
+<PRE style="face=courier">
 ## 1CRB_ 2qo4_A
 # hhsearch
 scores_from_program: 0 1.00
