@@ -396,26 +396,17 @@ page).
 </LI>
 
 <LI>
-Unpack and install Rosetta.  Go to the directory where you want to install 
+Unpack and install Rosetta:  Go to the directory where you want to install 
 it and move the downloaded file "rosetta3.2_Bundles.tgz" there. Then...
 <PRE style="face=courier">
 tar xzf rosetta3.2_Bundles.tgz
-tar xzf rosetta3.2_database.tgz
-tar xzf rosetta3.2_demos.tgz
-tar xzf rosetta3.2_fragments.tgz
-tar xzf rosetta3.2_source.tgz
-tar xzf BioTools-3.2.tgz
-tar xzf rosetta3.2_user_guide.tgz
 </PRE>
-This should give you:
+This should give you a directory rosetta-3.2 that contains:
 
 <PRE style="face=courier">
-BioTools/		rosetta3.2_database.tgz    rosetta_database/
-BioTools-3.2.tgz	rosetta3.2_demos.tgz	   rosetta_demos/
-README.platforms	rosetta3.2_fragments.tgz   rosetta_fragments/
-README.version		rosetta3.2_source.tgz	   rosetta_source/
-release.note		rosetta3.2_user_guide/
-rosetta3.2_Bundles.tgz	rosetta3.2_user_guide.tgz
+BioTools		new_apps.note		rosetta_demos
+foldit			release.note		rosetta_fragments
+manual			rosetta_database	rosetta_source
 </PRE>
 </LI>
 <LI>
@@ -437,20 +428,20 @@ If you get to "scons: done building targets."  you are all set!
 Notice where you have installed rosetta.  The directory you just set up, 
 now containing "rosetta_source" and "rosetta_database" is to be 
 called "PHENIX_ROSETTA_PATH".   If this directory is... 
-/net/sigma/raid1/rosetta then you can now set a local environmental 
+/net/sigma/raid1/rosetta-3.2 then you can now set a local environmental 
 variable in your ".profile" (sh or bash shell) or ".cshrc" (c-shell) to 
 mark where rosetta is located:
 
 if you are using the bash or sh shells:  
 
 <PRE style="face=courier">
-export PHENIX_ROSETTA_PATH=/net/sigma/raid1/rosetta
+export PHENIX_ROSETTA_PATH=/net/sigma/raid1/rosetta-3.2
 </PRE>
 
 or sh (C-shell):
 
 <PRE style="face=courier">
-setenv PHENIX__ROSETTA_PATH /net/sigma/raid1/rosetta
+setenv PHENIX__ROSETTA_PATH /net/sigma/raid1/rosetta-3.2
 </PRE>
 </LI>
 
