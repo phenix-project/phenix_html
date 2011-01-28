@@ -29,6 +29,25 @@ a model you can also specify ps_in_rebuild=True to get a
 prime-and-switch map.
 
 
+<H5>Why does mr_rosetta or mr_model_preparation bomb and say
+ &quot;RuntimeError: Cannot contact EBI DbFetch service&quot;?</H5>
+<p>This could mean just what it says...but also it could mean 
+that you are behind a firewall and there is a proxy server you need
+to go through.  If this is the case, you can use this command to
+specify the proxy server (replacing it with YOUR proxy server):
+if you are using the bash or sh shells:
+</p>
+<PRE style="face=courier">
+export HTTP_PROXY=proxyout.mydomain.edu:8080
+</PRE>
+
+or sh (C-shell):
+
+<PRE style="face=courier">
+setenv HTTP_PROXY proxyout.mydomain.edu:8080
+</PRE>
+
+
 <H5>Why does AutoBuild bomb and say &quot;Corrupt gradient calculations&quot;?</H5>
 <p>If an atom is placed very near a special position then sometimes refinement
 will fail and an error message starting with  

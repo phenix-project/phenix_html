@@ -445,6 +445,22 @@ setenv PHENIX__ROSETTA_PATH /net/sigma/raid1/rosetta-3.2
 </PRE>
 </LI>
 
+<LI>If your machine is behind a firewall and there is a proxy server you need
+to go through, then if you use a .hhr file to download files from the PDB
+then you will need to specify your proxy server.  You can use the following
+command to specify the proxy server (replacing it with YOUR proxy server).
+</p><p>If you are using the bash or sh shells:
+</p>
+<PRE style="face=courier">
+export HTTP_PROXY=proxyout.mydomain.edu:8080</PRE>
+
+or sh (C-shell):
+
+<PRE style="face=courier">
+setenv HTTP_PROXY proxyout.mydomain.edu:8080
+</PRE>
+</LI>
+
 <LI>
 Now you are completely ready to go with Rosetta and with phenix.mr_rosetta.
 </LI>
