@@ -33,9 +33,10 @@ prime-and-switch map.
  &quot;RuntimeError: Cannot contact EBI DbFetch service&quot;?</H5>
 <p>This could mean just what it says...but also it could mean 
 that you are behind a firewall and there is a proxy server you need
-to go through.  If this is the case, you can use this command to
-specify the proxy server (replacing it with YOUR proxy server):
-if you are using the bash or sh shells:
+to go through.  
+You can use the following
+command to specify the proxy server (replacing it with YOUR proxy server).
+</p><p>If you are using the bash or sh shells:
 </p>
 <PRE style="face=courier">
 export HTTP_PROXY=proxyout.mydomain.edu:8080
