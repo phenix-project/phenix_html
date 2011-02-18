@@ -1,0 +1,61 @@
+=========================
+Guided Ligand Replacement
+=========================
+
+Overview
+--------
+
+The Guided Ligand Replacement (GLR) tool is designed to use prior
+knowledge from a previously fit ligand to expedite the fitting of a
+"similar" ligand into the same or "similar" protein. The similarity
+required between the pair of ligands can be as little as a few atoms.
+
+The proteins are overlayed using ``phenix.superpose_pdbs``. The ligands
+are matched using the electronic Ligand Builder and Optimization
+Workbench (eLBOW) via another tool called ``phenix.superpose_ligands``. 
+Once the ligand has been fit, a Real-Space Refinement (RSR) is
+performed and the final model written to disk.
+
+.. _input-files:
+
+Input files
+-----------
+
+GLR requires a number of inputs and also has some options, all of which
+are provided using the ``phil`` formalism. The list of
+required inputs:
+
+  - **guide_pdb_file_name**: this is a PDB file containing a model-ligand
+    model.
+
+  - **protein_pdb_file_name**: this is a file containing the protein
+    model of current interest into which the ligand is to be fit.
+
+  - **map_coeffs_file_name**: this is a maps coefficients file output from
+    a ``phenix.refine`` run.
+
+  - **Ligand file**: this is any input file that is readable by eLBOW and
+    is added via the ``ligand_input_file_name`` phil parameter. There is
+    also an optional parameter, ``ligand_cif_file_name``, for the addition
+    of a ligand restraints file for the RSR step.
+
+Optional inputs include:
+
+  - **ligand_selection_in_guide_model**: this selects a ligand in the guiding
+    model. While GLR tries to make a sensible selection based on ligand code
+    or uniqueness, it may be necessary to make an explicit selection.
+
+  - **phenix.superpose_pdbs**: this allows selection of the same parameters
+    as in the standalone program.
+
+Output files
+------------
+
+By default, GLR will generate a PDB file with the fit ligand.
+
+References
+----------
+
+  - Moriarty NW, Grosse-Kunstleve RW, Adams PD. **electronic Ligand Builder
+    and Optimization Workbench (eLBOW): a tool for ligand coordinate and
+    restraint generation.** *Acta Cryst.* 2009, D65:1074-1080.
