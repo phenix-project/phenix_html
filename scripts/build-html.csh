@@ -7,6 +7,7 @@ cd "$phenix_html/rst_files"
 if ($status != 0) exit $status
 phenix.python ../scripts/create_refinement_txt.py
 phenix.python ../scripts/create_fmodel_txt.py
+phenix.python ../scripts/create_phenix_maps.py
 
 echo "  building HTML files from restructured text files"
 
