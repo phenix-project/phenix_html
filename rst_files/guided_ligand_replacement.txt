@@ -34,10 +34,15 @@ required inputs:
   - **map_coeffs_file_name**: this is a maps coefficients file output from
     a ``phenix.refine`` run.
 
-  - **Ligand file**: this is any input file that is readable by eLBOW and
-    is added via the ``ligand_input_file_name`` phil parameter. There is
-    also an optional parameter, ``ligand_cif_file_name``, for the addition
-    of a ligand restraints file for the RSR step.
+The input for the ligand can be any input file that is readable by eLBOW.
+Either or both of the following phil parameters can be used.
+
+  - **ligand_input_file_name**: this is a file containing chemical information
+    about the ligand.
+  
+  - **ligand_cif_file_name**: this is the
+    of a ligand restraints file for the RSR step. If not supplied, the 
+    restraints are generated from **ligand_input_file_name**.
 
 Optional inputs include:
 
