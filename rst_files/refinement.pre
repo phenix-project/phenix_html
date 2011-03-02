@@ -1008,11 +1008,11 @@ The sigma defaults to 0.05 Angstrom; the targets will be different depending
 on whether explicit hydrogens are used or not (defaults are 1.975A or 2.9A)::
 
   % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
-    hydrogen_bonding.simple.distance_ideal_h_o=2.0 \
+    hydrogen_bonding.distance_ideal_h_o=2.0 \
     hydrogen_bonding.simple.sigma=0.04
 
   % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
-    hydrogen_bonding.simple.distance_ideal_n_o=3.0 \
+    hydrogen_bonding.distance_ideal_n_o=3.0 \
     hydrogen_bonding.simple.slack=0.1
 
 A relatively strict outlier cutoff is applied by default, to
@@ -1023,10 +1023,10 @@ bond length decreases).  If you are certain of your annotations,
 you can increase or remove the cutoff:
 
   % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
-    hydrogen_bonding.simple.distance_cut_h_o=3.0
+    hydrogen_bonding.distance_cut_h_o=3.0
 
   % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
-    hydrogen_bonding.simple.distance_cut_h_o=None
+    h_bond_restraints.remove_outliers=False
 
 Using a reference model in refinement
 -------------------------------------
