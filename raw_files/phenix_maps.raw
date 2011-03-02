@@ -1,0 +1,166 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U></U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<dl class="docutils">
+<dt>phenix.maps: a command line tool to compute various maps and save them in most</dt>
+<dd>of known formats.</dd>
+</dl>
+<p>How to run the command line version:</p>
+<blockquote>
+<ol>
+<li>Run phenix.maps without any arguments: just type phenix.maps in the command
+line and hit Enter. This will creare a parameter file called maps.params,
+which can be renamed if desired.</li>
+<li>Edit maps.params file to specify input/output file names, data labels and
+the desired maps. It is possible to request as many maps as desired. By
+default, the file maps.params specifies 5 maps to be created: 2mFo-DFc,
+2mFo-DFc with missing Fobs filled with DFcalc, mFo-DFc and anomalous
+difference maps will be output in MTZ format, and one 2mFo-DFc map will be
+output in X-plor formatted file.
+NOTE: the anomalous difference map will only be created if the input
+reflection data file contains Bijvoet maps (F+/F- or I+/I-).</li>
+<li>Run this command to compute requested maps: phenix.maps maps.params</li>
+</ol>
+</blockquote>
+<p>Important Facts:</p>
+<blockquote>
+<ul>
+<li>phenix.maps is available in PHENIX GUI.</li>
+<li>The scope of parameters 'map_coefficients' defines the map that will be
+output as Fourier map coefficients. The scope of parameters 'map' defines
+the map that will be output as X-plor formatted map.</li>
+<li>To create several maps: duplicate either 'map_coefficients' or 'map' or both
+scopes of parameters as many times as many maps is desired. Then edit each
+of them to define the maps.</li>
+<li>A map is defined by specifying a map type using 'map_type' keyword available
+within each scope of parameters: 'map_coefficients' or 'map'. The general
+supported format for 'map_type' is: [p][m]Fo+[q][D]Fc[_kick][_filled]. For
+example: 2Fo-Fc, 2mFobs-DFcalc, 3Fobs-2Fmodel, Fo-Fc, mfobs-Dfcalc, anom.
+The 'map_type' parser will automatically recognize which map is requested.</li>
+<li>The program creates as many files with X-plor formatted maps as many X-plor
+formatted maps is requested, and it creates only one MTZ formatted file with
+all Fourier map coefficients in it.</li>
+<li>The X-plor formatted map can be computed in the entire unit cell or around
+selected atoms only.</li>
+<li>Kick maps and missing Fobs filling is done (if requested) as described in
+Adams et al. (2010). Acta Cryst. D66, 213-221.</li>
+<li>Twinning (if detected) will be accounted for automatically. This can be
+disabled by using &quot;skip_twin_detection=True&quot; keyword.</li>
+<li>All arrays used in map calculation, for example: Fobs, Fmodel, Fcalc, Fmask,
+m, D, etc., can be output into a CNS or MTZ formatted reflection file.</li>
+<li>For those who likes to experiment: bulk solvent correction and anisotropic
+scaling can be turned off, the data can be filtered by sigma and resolution.</li>
+<li>For some map types certain 'map_coefficients' or 'map' scope parameters may
+not be applicable. For example, for &quot;map_type=anomalous&quot; the keywords
+&quot;kicked&quot;, &quot;fill_missing_f_obs&quot; and some other are not applicable.</li>
+</ul>
+</blockquote>
+<hr class="docutils" />
+<p>All phenix.maps parameters:</p>
+<pre class="literal-block">
+maps {
+  input {
+    pdb_file_name = None
+    reflection_data {
+      file_name = None
+      labels = None
+      high_resolution = None
+      low_resolution = None
+      outliers_rejection = True
+      french_wilson_scale = False
+      french_wilson {
+        include scope cctbx.french_wilson.master_phil
+      }
+      sigma_fobs_rejection_criterion = 0.0
+      sigma_iobs_rejection_criterion = 0.0
+      r_free_flags {
+        file_name = None
+        label = None
+        test_flag_value = None
+        ignore_r_free_flags = False
+      }
+    }
+  }
+  output {
+    directory = None
+    prefix = None
+    title = None
+    fmodel_data_file_format = mtz cns
+  }
+  bulk_solvent_correction = True
+  anisotropic_scaling = True
+  skip_twin_detection = False
+  map_coefficients {
+    map_type = 2mFo-DFc
+    format = *mtz phs
+    mtz_label_amplitudes = 2mFoDFc
+    mtz_label_phases = P2mFoDFc
+    kicked = False
+    fill_missing_f_obs = False
+    acentrics_scale = 2.0
+    centrics_pre_scale = 1.0
+    sharpening = False
+    sharpening_b_factor = None
+  }
+  map_coefficients {
+    map_type = 2mFo-DFc
+    format = *mtz phs
+    mtz_label_amplitudes = 2mFoDFc_fill
+    mtz_label_phases = P2mFoDFc_fill
+    kicked = False
+    fill_missing_f_obs = True
+    acentrics_scale = 2.0
+    centrics_pre_scale = 1.0
+    sharpening = False
+    sharpening_b_factor = None
+  }
+  map_coefficients {
+    map_type = mFo-DFc
+    format = *mtz phs
+    mtz_label_amplitudes = mFoDFc
+    mtz_label_phases = PmFoDFc
+    kicked = False
+    fill_missing_f_obs = False
+    acentrics_scale = 2.0
+    centrics_pre_scale = 1.0
+    sharpening = False
+    sharpening_b_factor = None
+  }
+  map_coefficients {
+    map_type = anomalous
+    format = *mtz phs
+    mtz_label_amplitudes = ANOM
+    mtz_label_phases = PANOM
+    kicked = False
+    fill_missing_f_obs = False
+    acentrics_scale = 2.0
+    centrics_pre_scale = 1.0
+    sharpening = False
+    sharpening_b_factor = None
+  }
+  map {
+    map_type = 2mFo-DFc
+    format = *xplor ccp4
+    file_name = None
+    kicked = False
+    fill_missing_f_obs = False
+    grid_resolution_factor = 1/4.
+    scale = *sigma volume
+    region = *selection cell
+    atom_selection = None
+    atom_selection_buffer = 3
+    acentrics_scale = 2.0
+    centrics_pre_scale = 1.0
+    sharpening = False
+    sharpening_b_factor = None
+  }
+}
+</pre>
+<!--REMARK PHENIX BODY END-->
