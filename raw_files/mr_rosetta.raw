@@ -617,7 +617,7 @@ phenix.mr_rosetta \
   seq_file=seq.dat \
   data=coords1.mtz \
   search_models=coords1.pdb \
-  already_placed=True \
+  already_placed=False\
   fragment_files = test3.gz \
   fragment_files = test9.gz \
   rescore_mr.relax=False \
