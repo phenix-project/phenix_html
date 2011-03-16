@@ -73,9 +73,10 @@ All phenix.maps parameters::
        high_resolution = None
        low_resolution = None
        outliers_rejection = True
-       french_wilson_scale = False
+       french_wilson_scale = True
        french_wilson {
-         include scope cctbx.french_wilson.master_phil
+         max_bins = 60
+         min_bin_size = 40
        }
        sigma_fobs_rejection_criterion = 0.0
        sigma_iobs_rejection_criterion = 0.0
@@ -103,10 +104,9 @@ All phenix.maps parameters::
      mtz_label_phases = P2mFoDFc
      kicked = False
      fill_missing_f_obs = False
-     acentrics_scale = 2.0
-     centrics_pre_scale = 1.0
      sharpening = False
      sharpening_b_factor = None
+     exclude_free_r_reflections = False
    }
    map_coefficients {
      map_type = 2mFo-DFc
@@ -115,10 +115,9 @@ All phenix.maps parameters::
      mtz_label_phases = P2mFoDFc_fill
      kicked = False
      fill_missing_f_obs = True
-     acentrics_scale = 2.0
-     centrics_pre_scale = 1.0
      sharpening = False
      sharpening_b_factor = None
+     exclude_free_r_reflections = False
    }
    map_coefficients {
      map_type = mFo-DFc
@@ -127,10 +126,9 @@ All phenix.maps parameters::
      mtz_label_phases = PmFoDFc
      kicked = False
      fill_missing_f_obs = False
-     acentrics_scale = 2.0
-     centrics_pre_scale = 1.0
      sharpening = False
      sharpening_b_factor = None
+     exclude_free_r_reflections = False
    }
    map_coefficients {
      map_type = anomalous
@@ -139,10 +137,9 @@ All phenix.maps parameters::
      mtz_label_phases = PANOM
      kicked = False
      fill_missing_f_obs = False
-     acentrics_scale = 2.0
-     centrics_pre_scale = 1.0
      sharpening = False
      sharpening_b_factor = None
+     exclude_free_r_reflections = False
    }
    map {
      map_type = 2mFo-DFc
@@ -151,13 +148,11 @@ All phenix.maps parameters::
      kicked = False
      fill_missing_f_obs = False
      grid_resolution_factor = 1/4.
-     scale = *sigma volume
      region = *selection cell
      atom_selection = None
      atom_selection_buffer = 3
-     acentrics_scale = 2.0
-     centrics_pre_scale = 1.0
      sharpening = False
      sharpening_b_factor = None
+     exclude_free_r_reflections = False
    }
  }

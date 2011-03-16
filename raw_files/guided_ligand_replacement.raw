@@ -31,10 +31,17 @@ model.</li>
 model of current interest into which the ligand is to be fit.</li>
 <li><strong>map_coeffs_file_name</strong>: this is a maps coefficients file output from
 a <tt class="docutils literal"><span class="pre">phenix.refine</span></tt> run.</li>
-<li><strong>Ligand file</strong>: this is any input file that is readable by eLBOW and
-is added via the <tt class="docutils literal"><span class="pre">ligand_input_file_name</span></tt> phil parameter. There is
-also an optional parameter, <tt class="docutils literal"><span class="pre">ligand_cif_file_name</span></tt>, for the addition
-of a ligand restraints file for the RSR step.</li>
+</ul>
+</blockquote>
+<p>The input for the ligand can be any input file that is readable by eLBOW.
+Either or both of the following phil parameters can be used.</p>
+<blockquote>
+<ul>
+<li><strong>ligand_input_file_name</strong>: this is a file containing chemical information
+about the ligand.</li>
+<li><strong>ligand_cif_file_name</strong>: this is the
+of a ligand restraints file for the RSR step. If not supplied, the 
+restraints are generated from <strong>ligand_input_file_name</strong>.</li>
 </ul>
 </blockquote>
 <p>Optional inputs include:</p>
