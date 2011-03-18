@@ -90,9 +90,9 @@ limits specified are approximate only, and in practice may vary widely
 depending on model quality, data quality, and observation-to-parameters ratio.
 
   - **Individual sites** is standard Cartesian refinement of model geometry
-    and agreement with X-ray data.  It is almost always appropriate except
-    at low-resolution (typically 3.5A or worse), unless additional restraints
-    (NCS, reference model, etc.) are used.
+    and agreement with X-ray data.  It is almost always appropriate, but at
+    low-resolution (typically 3.5A or worse), additional restraints
+    (NCS, reference model, etc.) are often necessary to prevent overfitting.
 
   - **Real-space** is similar to the Individual Sites strategy, but refines
     against the map instead of in reciprocal space.  This is generally not
