@@ -19,6 +19,7 @@ At present the GUI has the following capabilities:
   - graphical mirroring and picking of any atom selection
   - project-specific default settings and restraints
   - NCS restraint group detection and editing tool
+  - TLS group detection and editing tool
   - real-time visualization of current model and maps during refinement
   - model validation using programs from the Molprobity server
   - graphical comparison of structure quality measures
@@ -166,8 +167,11 @@ restraints (structural and otherwise):
 
   - **Ramachandran restraints** guide protein backbone phi/psi angles towards
     the optimal regions of the Ramachandran plot.  This can be very useful at
-    low resolutions (usually worse than 3.0A), although it will not by itself
-    eliminate outliers.
+    low resolutions (usually worse than 3.0A), where large numbers of outliers
+    are common when using the default restraints.  However, this option is
+    potentially dangerous, and should not be used without carefully inspecting
+    the electron density and fixing as many problems as possible manually
+    first.
 
   - **Use experimental phases** uses the experimental phase distributions
     (Hendrickson-Lattman coefficients) from phasing programs such as AutoSol
@@ -260,6 +264,15 @@ use them in refinement, this can also be done via the ReadySet dialog, or
 by clicking the box labeled "Automatically add hydrogens to model" in the
 main window.
 
+**Note:** ReadySet look in the PDB's Chemical Components Database (distributed
+with PHENIX) for the three-letter code of any unknown ligands it finds, and use
+the database information to generate restraints.  For non-standard ligands,
+users are advised to run `eLBOW <elbow_gui.htm>`_ with a SMILES string or
+equivalent source of information.
+Generating robust geometry restraints from a PDB file alone is
+problematic, because the coordinates are not a reliable guide to molecular
+topology, chirality, etc.
+
 Neutron crystallography
 =======================
 
@@ -314,6 +327,27 @@ Once this window is open, it does not need to be closed; clicking a different
 will first need to open the *Actions* menu and click *Restore parent window*
 to transfer mouse and keyboard controls back to the configuration dialog.)
 
+Identifying and editing TLS groups
+==================================
+
+PHENIX includes a tool (phenix.find_tls_groups) for fast identification of
+appropriate TLS groupings based on isotropic ADPs in a PDB file.  This is
+integrated into the phenix.refine GUI, and can be accessed from the TLS group
+editor (the "TLS" button on the toolbar, also available on the "Refinement
+settings" configuration tab).  The editor is essentially just an atom selection
+list control similar to others in PHENIX:
+
+.. image:: images/tls_editor.png
+
+Clicking the "Find TLS groups" button will launch the identification program,
+which typically takes a few seconds to a few minutes to run depending on the
+size of the structure and the number of processors available.  All CPU cores
+will be used by default, but this can be adjusted using the control near the
+bottom of the window.  You may alternately specify TLS groups manually, or
+upload a file from the `TLSMD server <skuld.bmsc.washington.edu/~tlsmd>`_.
+Once you have the desired groups input, close the editor by clicking either
+of the buttons at the upper or lower left of the window.
+
 Running phenix.refine
 =====================
 
@@ -351,13 +385,47 @@ be re-used in future runs.
 Additional tabs contain the full `validation summary <validation.htm>`_,
 which is essentially identical to the standalone validation program.
 
+Frequently Asked Questions
+==========================
+
+  - **Where is the switch for anisotropic vs. isotropic B-factors/ADPs?**
+    phenix.refine does not have a single global switch for defining ADP
+    parameterization; rather, when the "Individual ADPs" strategy is defined,
+    the program uses several criteria to determine how atoms should be
+    treated:
+      - By default, atoms that are anisotropic in the input model (i.e. have
+        ANISOU records) will be kept anisotropic if the resolution is at least
+        1.7A; isotropic atoms remain isotropic.
+      - If the resolution is lower, all atoms will be converted to isotropic
+        unless otherwise specified.
+      - The atom selections for isotropic and anisotropic atoms may also be
+        defined explicitly.  Typically, the hydrogens will always be isotropic;
+        protein atoms will be anisotropic at high resolution, and sometimes
+        waters as well.
+    Several common parameterizations are pre-defined in the dialog for
+    entering ADP selections.  Note that although it is possible to combine
+    all of the different ADP refinement strategies in a single run, the
+    atom selections for individual and grouped refinement may not overlap,
+    nor may the selections for anisotropic ADPs and TLS groups.
+
+  - **I have a parameter file that I want to use; how do I load this in the
+    GUI?**  You have two options: add it to the list of input files in the
+    "Input data" tab, or select "Load parameter file" from the File menu.
+    If you do the latter, the parameters will be immediately incorporated into
+    the working parameters and the GUI will be redrawn to reflect any changes.
+    The disadvantage of this method is that there is no easy way to revert to
+    the previous settings.  Adding the file to the input list will postpone
+    parsing until the program is run, so you will not be able to edit the
+    parameters graphically, but you may remove the file at any time.
+
 Acknowledgements
 ================
 
 *phenix.refine* was written by Pavel Afonine, Ralf Grosse-Kunstleve, and
-Peter Zwart.
-The electron-density isosurface code in the CCTBX was contributed by
-Luc Bourhis.
+Peter Zwart, with additional contributions from Jeff Headd, Nat Echols,
+Nigel Moriarty, and Tom Terwilliger.
+The electron-density isosurface and anisotropic ellipsoid code in the CCTBX
+(used in the internal graphics viewer) was contributed by Luc Bourhis.
 
 References
 ==========
