@@ -393,6 +393,7 @@ Frequently Asked Questions
     parameterization; rather, when the "Individual ADPs" strategy is defined,
     the program uses several criteria to determine how atoms should be
     treated:
+
       - By default, atoms that are anisotropic in the input model (i.e. have
         ANISOU records) will be kept anisotropic if the resolution is at least
         1.7A; isotropic atoms remain isotropic.
@@ -402,6 +403,7 @@ Frequently Asked Questions
         defined explicitly.  Typically, the hydrogens will always be isotropic;
         protein atoms will be anisotropic at high resolution, and sometimes
         waters as well.
+
     Several common parameterizations are pre-defined in the dialog for
     entering ADP selections.  Note that although it is possible to combine
     all of the different ADP refinement strategies in a single run, the
