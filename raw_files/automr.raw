@@ -119,16 +119,15 @@ by the Wizard during the run (some parts are binary and are not printed)
 <P><LI>Molecular replacement model, structure factors, and map coefficients:
 <PRE style="face=courier">MR.1.pdb
 MR.1.mtz
-MR.MAP_COEFFS.1.mtz
 </PRE>
-The AutoMR wizard writes out MR.1.pdb and MR.1.mtz and
-MR.MAP_COEFFS.1.mtz well as output log files. The MR.1.pdb file will contain
+The AutoMR wizard writes out MR.1.pdb and MR.1.mtz
+as well as output log files. The MR.1.pdb file will contain
 all the components of your MR solution. If there are multiple PDB files in an
 ensemble, the model with the lowest estimated rmsd is chosen to represent the
 whole ensemble and is written to MR.1.pdb. 
 If there are multiple copies of a model, the chains are lettered
 sequentially A B C... The MR.1.mtz file contains the data from your input file
-to the full resolution available. The MR.MAP_COEFFS.1.mtz file contains
+to the full resolution available, as well as
 sigmaA-weighted 2Fo-Fc map coefficients based on the rigid-body-refined model.
 </UL>
 <P><B>Model rebuilding</B>. 
@@ -136,8 +135,7 @@ After PHASER molecular replacement the AutoMR Wizard loads
 the AutoBuild Wizard and sets the defaults based on the MR solution that has
 just been found. You can use the default values, or you may choose to use
 2Fo-Fc maps instead of density-modified maps for rebuilding, or you may choose
-to start the model-rebuilding with the map coefficients from
-MR.MAP_COEFFS.1.mtz.
+to start the model-rebuilding with the map coefficients from MR.1.mtz.
 
 <P>
 <P><H5>How to run the AutoMR Wizard</H5><P>
