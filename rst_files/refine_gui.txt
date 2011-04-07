@@ -420,12 +420,71 @@ Frequently Asked Questions
     parsing until the program is run, so you will not be able to edit the
     parameters graphically, but you may remove the file at any time.
 
+  - **My resolution is X Angstroms, and my R and R-free are Y and Z.  Am I
+    done refining?**  A partial answer can be obtained by looking at the
+    `POLYGON tool in the validation summary <validation.htm#polygon>`_, which
+    plots histograms of statistics for PDB structures solved at similar
+    resolutions, and compares these to the statistics for your output model.
+    As a general rule, R-factors alone should not be used to decide if a
+    structure is "done", but should be examined in combination with the
+    validation report.
+
+  - **My resolution is X Angstroms, the structure is complete and
+    well-validated, the maps look great, bu my R and R-free are still really
+    high.  How can I make them lower?**  There are several possible
+    explanations for this:
+
+      - Twinning with a relatively small twin fraction (perhaps 10%) may not
+        obviously affect map quality, but can still have a significant impact
+        on R-factors.  Run `Xtriage <xtriage_gui.htm>`_ to look for evidence
+        of twinning, and possible twin laws for using in phenix.refine.  (Note
+        that we currently only support a single twin domain in refinement.)
+      - Undiagnosed translational NCS (AKA translational pseudosymmetry) can
+        have a similar effect.  In this case, the diffraction images may have
+        been processed incorrectly, thus missing the fainter spots that result
+        from tNCS.  The program `LABELIT <http://cci.lbl.gov/labelit/>`_, or
+        more specifically the command *labelit.index* (distributed with
+        PHENIX, but not yet available in the GUI) can be run on the original
+        images to provide appropriate indexing parameters.
+
+  - **The gap between R-work and R-free is very large - how can I fix this?**
+    Overfitting during refinement is usually helped by adding more restraints,
+    and/or tightening the standard geometry restraints.  If the output geometry
+    is already within reasonable limits (typically RMS(bonds) < 0.016 and
+    RMS(angles) < 1.8), ideas to try include adding NCS restraints if NCS is
+    present, secondary structure restraints, or reference model restraints (if
+    a high-resolution structure is available).  At lower resolutions (worse
+    than 3.0A), it may also be prudent to try grouped ADP refinement, and if
+    desperate, Ramachandran restraints.  TLS refinement can often improve
+    overfitting across a wide range of resolutions.  However, depending on the
+    degree of overfitting, it may be necessary to perform extensive manual
+    rebuilding first.  *(Note that if the large R/R-free gap suddenly appears
+    after refinement of a model that was previously not overfit, this usually
+    indicates incorrect parameterization of the refinement, e.g. using
+    anisotropic ADPs at an inappropriate resolution.)*
+
+  - **Why is phenix.refine messing up my ligand geometry?**  This often happens
+    when the restraints were generated using *ReadySet* from a PDB file, and
+    the ligand code is not recognizable in the Chemical Components Database.
+    `eLBOW <elbow_gui.htm>`_ will try to guess the molecular topology based on
+    the coordinates alone, but this is imprecise and may not yield the desired
+    result.  For best results, restraints for non-standard ligands should be
+    generated in eLBOW using a SMILES string or similar source of topology
+    information.
+
+  - **I have experimental phases for this structure, but the initial maps were
+    poor.  Should I still use phase restraints?**  The experimental phases
+    used to restraint refinement describe a bimodal probability distribution
+    for every angle, rather than the single values used to generate a map.  In
+    most cases the additional restraints will not hurt refinement, and can
+    often help.
+
 Acknowledgements
 ================
 
-*phenix.refine* was written by Pavel Afonine, Ralf Grosse-Kunstleve, and
-Peter Zwart, with additional contributions from Jeff Headd, Nat Echols,
-Nigel Moriarty, and Tom Terwilliger.
+*phenix.refine* was primarily written by Pavel Afonine and Ralf
+Grosse-Kunstleve, with additional contributions from Peter Zwart, Jeff Headd,
+Nat Echols, Nigel Moriarty, and Tom Terwilliger.
 The electron-density isosurface and anisotropic ellipsoid code in the CCTBX
 (used in the internal graphics viewer) was contributed by Luc Bourhis.
 
