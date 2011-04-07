@@ -434,8 +434,7 @@ atom_type=Se   # Se is the heavy-atom
 seq_file=seq.dat   # sequence file (1-aa code, separate chains with >>>>)
 quick=True  # try to find sites quickly
 data=w1.sca  # input datafile
-f_prime=-5  # f-prime value for SAD
-f_double_prime=4.5  # f-double-prime value for SAD
+lambda=0.9798  # wavelength for SAD
 </PRE>
 
 <P><H5>Running from a parameters file</H5><P>
@@ -482,17 +481,16 @@ you can update in the PHENIX-Coot Interface to the current best model and
 map with the button <b>Update with current files from PHENIX</b>.
       <P><H5><U>Examples</U></H5><P>
 <P><H5>SAD dataset</H5><P>
-<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se lambda=0.9798
 </PRE>
 The sequence file is used to estimate the solvent content of the
-crystal and for model-building.
-Note that for a SAD dataset the value of f_prime and f_double_prime are not 
-critical. If you are off by a factor of 2 on  f_double_prime, 
-the refined occupancies of heavy-atom sites might be 1/2 their correct
-values.
+crystal and for model-building.  The wavelength (lambda) is used to look up
+values for f_prime and f_double_prime from a table, but if measured values
+are available from a fluorescence scan, these should be given in addition to
+the wavelength.
 
 <P><H5>SAD dataset specifying solvent fraction</H5><P>
-<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se lambda=0.9798 \
     solvent_fraction=0.45
 </PRE>
 This will force the solvent fraction to be 0.45.  This illustrates a
@@ -501,13 +499,13 @@ parameters, but if you input them directly, they will use your input
 values.
 
 <P><H5>SAD dataset without model-building</H5><P>
-<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se lambda=0.9798 \
     build=False
 </PRE>
 This will carry out the usual structure solution, but will skip model-building
 
 <P><H5>SAD dataset, building RNA instead of protein</H5><P>
-<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se lambda=0.9798 \
     chain_type=RNA
 </PRE>
 This will carry out the usual structure solution, but will build an RNA
@@ -522,7 +520,7 @@ and with chain_type=DNA.
 <P><H5>SAD dataset, selecting a particular dataset from an MTZ file</H5><P>
 If you have an input MTZ file with more than one anomalous dataset, you can 
 type something like:
-<PRE style="face=courier">phenix.autosol w1.mtz seq.dat 2 Se f_prime=-8 f_double_prime=4.5 \
+<PRE style="face=courier">phenix.autosol w1.mtz seq.dat 2 Se lambda=0.9798 \
 labels='F SIGF DANO SIGDANO'
 </PRE>
 This will carry out the usual structure solution, but will choose the
@@ -598,7 +596,7 @@ depending on how good your MR model is.
 <P><H5>SAD dataset, reading heavy-atom sites from a PDB file 
 written by <b>phenix.hyss</b></H5>
 <PRE style="face=courier">phenix.autosol 11 Pb data=deriv.sca seq_file=seq.dat \
-  sites_file=deriv_hyss_consensus_model.pdb 
+  sites_file=deriv_hyss_consensus_model.pdb lambda=0.95
 </PRE>
 This will carry out the usual structure solution process, but will read sites
 from deriv_hyss_consensus_model.pdb, try both hands, and carry on from there.
@@ -705,12 +703,18 @@ autosol {
 scattering atom. Specify one atom type (Se) in the usual way. Then specify 
 any additional ones like this if you are running AutoSol from the
 command line:
-<PRE style="face=courier">mad_ha_add_list="Br Pt"
+<PRE style="face=courier">
+mad_ha_add_list="Br Pt"
+</PRE>
+Optionally, you can add f_prime and f_double_prime values for the additional 
+atom types with commands like
+<PRE style="face=courier">
 mad_ha_add_f_prime_list=" -7 -10"
 mad_ha_add_f_double_prime_list=" 4.2 12"
 </PRE>
-There must be the same number of entries in each of these three keyword
-lists. During phasing Phaser will try to add whichever atom types 
+but the values from table lookup should be fine.  Note that
+there must be the same number of entries in each of these three keyword
+lists, if given. During phasing Phaser will try to add whichever atom types 
 best fit the scattering from each new site. This option is available
 for SAD phasing only and only for a single dataset (not with SAD+MIR etc).
 
