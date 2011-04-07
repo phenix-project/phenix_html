@@ -77,10 +77,9 @@ placements as starting points for finding the next ensemble, until all the
 contents of the asymmetric unit are found and a consistent solution is
 obtained. You can specify any number of different ensembles to search for, and
 you can search for any number of copies of each ensemble. The order of
-searching for ensembles does make a difference. If possible, you want to 
-search for the biggest, best-ordered, most accurate ensemble first. 
-You specify the order when you list the ensembles to search for on the 
-last main window of the AutoMR wizard. 
+searching for ensembles makes a difference, but Phaser chooses a sensible
+default search order based on the size and assumed accuracy of the different
+ensembles.  In difficult cases you could try permuting the search order.
 
 <P>
 Each ensemble can be specified by a single PDB file or a set of PDB files. The
