@@ -683,6 +683,36 @@ phenix.mr_rosetta \
   group_run_command=qsub
 </PRE>
 
+<P><H5>Running mr_rosetta from a homology search (with an hhr file)</H5><P>
+If you have run hhpred and obtained a .hhr file with a list of alignments
+of proteins in the PDB with your sequence, you can run starting from your
+sequence file and this .hhr file.
+
+Here is an example. The keyword to use is: hhr_files=my_hhr_file.hhr.
+
+<PRE style="face=courier"> phenix.mr_rosetta \
+  seq_file=bfr258e.fasta \
+  data=bfr258e_data.mtz \
+  hhr_files=bfr258e.hhr \
+  read_hhpred.number_of_models=1 \
+  read_hhpred.number_of_models_to_skip=0 \
+  fragment_files=aabfr__03_05.200_v1_3.gz \
+  fragment_files=aabfr__09_05.200_v1_3.gz \
+  rescore_mr.relax=False \
+  rosetta_models=20 \
+  ncs_copies=1 \
+  nproc=200 \
+  group_run_command=qsub 
+</PRE>
+NOTE: it is generally a good idea to run several separate mr_rosetta jobs, 
+one for each homology model you want to extract from the PDB, and possibly
+also separately for each possible number of NCS copies. You can do this by
+adjusting the "read_hhpred.number_of_models_to_skip" from 0 to N  and the
+value of "ncs_copies" in the script above. In this way, you
+can just pick the first job that gives you a good solution. If you run them all 
+at once, then all jobs will wait for the slowest job to finish at each step.
+If there are multiple NCS copies and some search models are poor, this can
+sometimes take a very long time.
 
 <P><H5>Getting a default parameters file for mr_rosetta:</H5><P>
 <p>Usually you will want to edit a parameters file so that you can specify more
@@ -693,7 +723,7 @@ and then just edit that file.
 
 <P><H5>Testing mr_rosetta:</H5><P>
 You can do a test of mr_rosetta to make sure everything is ok with:
-<PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta
+<PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick_tests
 </PRE>
 
 
@@ -715,6 +745,7 @@ Debanu Das, Sergey M. Vorobiev, Hideo Iwai, P. Raj Pokkuluri & David Baker
 "Increasing the Radius of Convergence of Molecular Replacement by
 Density and Energy Guided Protein Structure Optimization" 
 (Nature, 2011, in press)
+</p>
 
 <p>
 DiMaio, F., Tyka, M.D., Baker, M.L., Chiu, W., 
@@ -722,6 +753,7 @@ Baker, D. (2009).
 "Refinement of Protein Structures into Low-Resolution Density Maps 
 Using Rosetta" 
 J. Mol. Biol. 392, 181-190.
+</p>
 
 <P><H5><U>Additional information</U></H5><P>
 
