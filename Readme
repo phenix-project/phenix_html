@@ -2,6 +2,23 @@
 Building the PHENIX documentation 
 =================================
 
+FYI, the documentation may now be built with a single command:
+
+  phenix_html.rebuild_docs
+
+This depends on the environment variables PHENIX, PHENIX_VERSION, and
+PHENIX_RELEASE_TAG being refined.  If you are working out of a Phenix
+installation updated to use SVN, this should not be a problem.  Note that you
+many need to run 'libtbx.configure phenix_html' in the build directory for
+the command to appear on your path.
+
+After running the update, the new HTML files will be available in $PHENIX/doc,
+and may be viewed by running 'phenix.doc' (or clicking the help button in the
+PHENIX GUI).
+
+Original instructions
+---------------------
+
 Paul Adams, July 2007.
 
 The process for building the complete documentation is as follows:

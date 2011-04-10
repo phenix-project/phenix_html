@@ -1,0 +1,113 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Frequently asked questions for phenix.refine</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<p><em>(Note: questions specific to the GUI can be found in its `documentation
+&lt;refine_gui.htm&gt;`_)</em></p>
+<p><strong>Where is the switch for anisotropic vs. isotropic B-factors/ADPs?</strong></p>
+<p>phenix.refine does not have a single global switch for defining ADP
+parameterization; rather, when the &quot;Individual ADPs&quot; strategy is defined,
+the program uses several criteria to determine how atoms should be
+treated:</p>
+<blockquote>
+<ul>
+<li>By default, atoms that are anisotropic in the input model (i.e. have
+ANISOU records) will be kept anisotropic if the resolution is at least
+1.7A; isotropic atoms remain isotropic.</li>
+<li>If the resolution is lower, all atoms will be converted to isotropic
+unless otherwise specified.</li>
+<li>The atom selections for isotropic and anisotropic atoms may also be
+defined explicitly.  Typically, the hydrogens will always be isotropic;
+protein atoms will be anisotropic at high resolution, and sometimes
+waters as well.</li>
+</ul>
+</blockquote>
+<p>In the GUI, several common parameterizations are pre-defined in the dialog for
+entering ADP selections.  Note that although it is possible to combine
+all of the different ADP refinement strategies in a single run, the
+atom selections for individual and grouped refinement may not overlap,
+nor may the selections for anisotropic ADPs and TLS groups.</p>
+<p><strong>My resolution is X Angstroms, and my R/R-free are Y and Z.  Am I done refining?</strong></p>
+<p>A partial answer can be obtained by looking at the
+<a class="reference" href="validation.htm#polygon">POLYGON tool in the validation summary</a>, which
+plots histograms of statistics for PDB structures solved at similar
+resolutions, and compares these to the statistics for your output model.
+As a general rule, R-factors alone should not be used to decide if a
+structure is &quot;done&quot;, but should be examined in combination with the
+validation report.</p>
+<p><strong>My resolution is X Angstroms, the structure is complete and
+well-validated, the maps look great, bu my R and R-free are still really
+high.  How can I make them lower?</strong></p>
+<p>There are several possible explanations for this:</p>
+<blockquote>
+<ul>
+<li>Twinning with a relatively small twin fraction (perhaps 10%) may not
+obviously affect map quality, but can still have a significant impact
+on R-factors.  Run <a class="reference" href="xtriage_gui.htm">Xtriage</a> to look for evidence
+of twinning, and possible twin laws for using in phenix.refine.  (Note
+that we currently only support a single twin domain in refinement.)</li>
+<li>Undiagnosed translational NCS (AKA translational pseudosymmetry) can
+have a similar effect.  In this case, the diffraction images may have
+been processed incorrectly, thus missing the fainter spots that result
+from tNCS.  The program <a class="reference" href="http://cci.lbl.gov/labelit/">LABELIT</a>, or
+more specifically the command <em>labelit.index</em> (distributed with
+PHENIX, but not yet available in the GUI) can be run on the original
+images to provide appropriate indexing parameters.</li>
+</ul>
+</blockquote>
+<p><strong>The gap between R-work and R-free is very large - how can I fix this?</strong></p>
+<p>Overfitting during refinement is usually helped by adding more restraints,
+and/or tightening the standard geometry restraints.  If the output geometry
+is already within reasonable limits (typically RMS(bonds) &lt; 0.016 and
+RMS(angles) &lt; 1.8), ideas to try include adding NCS restraints if NCS is
+present, secondary structure restraints, or reference model restraints (if
+a high-resolution structure is available).  At lower resolutions (worse
+than 3.0A), it may also be prudent to try grouped ADP refinement, and if
+desperate, Ramachandran restraints.  TLS refinement can often improve
+overfitting across a wide range of resolutions.  However, depending on the
+degree of overfitting, it may be necessary to perform extensive manual
+rebuilding first.  <em>(Note that if the large R/R-free gap suddenly appears
+after refinement of a model that was previously not overfit, this usually
+indicates incorrect parameterization of the refinement, e.g. using
+anisotropic ADPs at an inappropriate resolution.)</em></p>
+<p><strong>Why is phenix.refine messing up my ligand geometry?</strong></p>
+<p>This often happens
+when the restraints were generated using <em>ReadySet</em> from a PDB file, and
+the ligand code is not recognizable in the Chemical Components Database.
+<a class="reference" href="elbow_gui.htm">eLBOW</a> will try to guess the molecular topology based on
+the coordinates alone, but this is imprecise and may not yield the desired
+result.  For best results, restraints for non-standard ligands should be
+generated in eLBOW using a SMILES string or similar source of topology
+information.</p>
+<p><strong>I have experimental phases for this structure, but the initial maps were
+poor.  Should I still use phase restraints?</strong></p>
+<p>The experimental phases
+used to restraint refinement describe a bimodal probability distribution
+for every angle, rather than the single values used to generate a map.  In
+most cases the additional restraints will not hurt refinement, and can
+often help.</p>
+<P><H5><U><B>References</B></U></H5><P>
+<blockquote>
+<ul>
+<li><em>phenix.refine</em> :
+Afonine, P.V., Grosse-Kunstleve, R.W. &amp; Adams, P.D. (2005). CCP4 Newsl.
+42, contribution 8.</li>
+<li><em>Molprobity</em> :
+Davis IW, Leaver-Fay A, Chen VB, Block JN, Kapral GJ, Wang X, Murray LW,
+Arendall WB 3rd, Snoeyink J, Richardson JS, Richardson DC.
+<strong>MolProbity: all-atom contacts and structure validation for proteins
+and nucleic acids.</strong>
+<a class="reference" href="http://www.ncbi.nlm.nih.gov/pubmed/17452350">Nucleic Acids Res. 2007 35:W375-83.</a></li>
+<li><em>POLYGON</em> :
+Urzhumtseva L, Afonine PV, Adams PD, Urzhumtsev A.
+<strong>Crystallographic model quality at a glance.</strong>
+<a class="reference" href="http://www.ncbi.nlm.nih.gov/pubmed/19237753">Acta Cryst. 2009,  D65:297-300.</a></li>
+</ul>
+</blockquote>
+<!--REMARK PHENIX BODY END-->
