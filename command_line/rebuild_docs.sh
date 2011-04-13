@@ -42,6 +42,7 @@ cd $PHENIX_HTML/rst_files
 phenix.python ../scripts/create_refinement_txt.py
 phenix.python ../scripts/create_fmodel_txt.py
 phenix.python ../scripts/create_phenix_maps.py
+phenix.python ../scripts/create_map_value_at_point_txt.py
 
 echo "  building HTML files from restructured text files"
 for file in `ls *.txt` ; do
