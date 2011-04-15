@@ -883,6 +883,69 @@ Coefficients for the output simulated-annealing composite
 omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 
+<H5>Combine composite OMIT 
+files from a set of parallel runs on different computers</H5><P>
+If you run a composite OMIT job but it fails at the last step of combining 
+files, or if you run all the individual omit boxes on different machines, 
+you can still combine them all into one single composite omit map.  
+
+<P>You can do this by copying all the individual mtz files with map
+coefficients for omit regions to a single directory.
+<P>
+Here is a script you can edit and use to combine omit maps 
+representing different omit regions into one.  
+<P>
+NOTE: you need to ensure that the OMIT regions are defined the same in
+the runs where you got your
+overall_best_denmod_map_coeffs.mtz_OMIT_REGION_1 etc files and this run.
+You ensure that with the n_xyz command that sets the grid.  You can copy
+this from one of your resolve log files created when you ran your omit
+(i.e., AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/TEMP0/resolve.log will have
+a line like "nu nv nw:           32          32          32 " and you copy
+those numbers).
+
+<P>
+<PRE style="face=courier"> ------------------------------------
+#!/bin/csh -f
+# COMBINE OMIT SCRIPT
+phenix.resolve &lt;&lt;EOD
+hklin exptl_fobs_phases_freeR_flags.mtz
+labin FP=FP SIGFP=SIGFP
+n_xyz 32 32 32  # YOU MUST SET THIS BASED ON THE nu nv nw in a resolve log
+file.
+solvent_content 0.85
+no_build
+ha_file NONE
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_1
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_2
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_3
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_4
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_5
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_6
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_7
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_8
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_9
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_10
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_11
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_12
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_13
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_14
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_15
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_16
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_17
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_18
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_19
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_20
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_21
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_22
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_23
+combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_24
+omit
+EOD
+# END OF COMBINE OMIT SCRIPT
+</PRE>
+
+
 <H5>Make an iterative-build omit map around atoms in target.pdb</H5><P>
 <PRE style="face=courier">phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=target.pdb \
    composite_omit_type=iterative_build_omit
@@ -943,6 +1006,57 @@ each individually consistent with the data, and yet are diverse. The variation
 among these models is an indication of the uncertainty in each of the models.
 Note that the ensemble of models is not a representation of the ensemble of
 structures that is truly present in the crystal.
+
+<H5> Combining files from a nearly-complete autobuild run with
+ rebuild-in-place=true </H5><P>
+
+If you have run autobuild with rebuild_in_place=True then the last step is 
+combining the models that have been produced. If you ran the job in separate
+batches and want to combine the final models, you can use the script
+below.
+<P>
+Note that all the models must have exactly
+the same set of atoms (aside from any solvent). 
+<P>
+Basically you run a dummy autobuild run to create a directory and
+database entries, then you copy your files there, then you run autobuild
+and tell it to carry on and do the combine step.
+
+<PRE style="face=courier">--------------------------------------------------------
+#!/bin/csh -f
+#COMBINE_MODELS SCRIPT
+
+if (-d PDS || -d AutoBuild_run_1_) then
+ echo "Please run in a directory without PDS or AutoBuild_run_1_"
+ exit 1
+endif
+
+echo "Setting up combine models with a dummy run. NOTE:
+multiple_models_group_number must be correct"
+
+phenix.autobuild fobs.mtz multiple_models=true seq_file=seq.dat
+combine_only=true multiple_models_group_number=2
+multiple_models_number=1&gt; dummy_autobuild.log
+
+echo "Copying files to AutoBuild_run_1_/MULTIPLE_MODELS"
+mkdir AutoBuild_run_1_/MULTIPLE_MODELS
+cp coords1.pdb AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_1 
+cp coords2.pdb AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_2 
+cp map_coeffs_1.mtz AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.mtz_1_1
+cp map_coeffs_2.mtz AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.mtz_1_2
+
+ls AutoBuild_run_1_/MULTIPLE_MODELS/
+
+echo "Running autobuild to combine files in
+AutoBuild_run_1_/MULTIPLE_MODELS"
+
+phenix.autobuild combine_only=true seq_file=seq.dat carry_on=true run=1 &gt; 
+autobuild_combine.log
+
+# END OF COMBINE_MODELS SCRIPT
+-------------------------------------------------------
+</PRE>
+
 
 <H5>Morph an MR model and rebuild it</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=MR.pdb \
