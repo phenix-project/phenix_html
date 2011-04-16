@@ -908,7 +908,7 @@ those numbers).
 <PRE style="face=courier"> ------------------------------------
 #!/bin/csh -f
 # COMBINE OMIT SCRIPT
-phenix.resolve &lt;&lt;EOD
+phenix.resolve << EOD
 hklin exptl_fobs_phases_freeR_flags.mtz
 labin FP=FP SIGFP=SIGFP
 n_xyz 32 32 32  # YOU MUST SET THIS BASED ON THE nu nv nw in a resolve log
@@ -1036,7 +1036,7 @@ multiple_models_group_number must be correct"
 
 phenix.autobuild fobs.mtz multiple_models=true seq_file=seq.dat
 combine_only=true multiple_models_group_number=2
-multiple_models_number=1&gt; dummy_autobuild.log
+multiple_models_number=1 > dummy_autobuild.log
 
 echo "Copying files to AutoBuild_run_1_/MULTIPLE_MODELS"
 mkdir AutoBuild_run_1_/MULTIPLE_MODELS
@@ -1050,8 +1050,7 @@ ls AutoBuild_run_1_/MULTIPLE_MODELS/
 echo "Running autobuild to combine files in
 AutoBuild_run_1_/MULTIPLE_MODELS"
 
-phenix.autobuild combine_only=true seq_file=seq.dat carry_on=true run=1 &gt; 
-autobuild_combine.log
+phenix.autobuild combine_only=true seq_file=seq.dat carry_on=true run=1 > autobuild_combine.log
 
 # END OF COMBINE_MODELS SCRIPT
 -------------------------------------------------------
