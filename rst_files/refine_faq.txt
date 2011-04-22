@@ -2,8 +2,8 @@
 Frequently asked questions for phenix.refine
 ============================================
 
-*(Note: questions specific to the GUI can be found in its
-`documentation <refine_gui.htm>`_.)*
+Note: questions specific to the GUI can be found in its
+`documentation <refine_gui.htm>`_.
 
 **Where is the switch for anisotropic vs. isotropic B-factors/ADPs?**
 
@@ -77,7 +77,8 @@ anisotropic ADPs at an inappropriate resolution.)*
 **Why is phenix.refine messing up my ligand geometry?**
 
 This often happens
-when the restraints were generated using *ReadySet* from a PDB file, and
+when the restraints were generated using `ReadySet <ready_set.htm>`_ from a
+PDB file, and
 the ligand code is not recognizable in the Chemical Components Database.
 `eLBOW <elbow_gui.htm>`_ will try to guess the molecular topology based on
 the coordinates alone, but this is imprecise and may not yield the desired
