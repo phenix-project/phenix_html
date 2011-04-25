@@ -8,8 +8,8 @@
 
 <!--REMARK PHENIX BODY START   Put your text here.
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
-<p><em>(Note: questions specific to the GUI can be found in its `documentation
-&lt;refine_gui.htm&gt;`_)</em></p>
+<p>Note: questions specific to the GUI can be found in its
+<a class="reference" href="refine_gui.htm">documentation</a>.</p>
 <p><strong>Where is the switch for anisotropic vs. isotropic B-factors/ADPs?</strong></p>
 <p>phenix.refine does not have a single global switch for defining ADP
 parameterization; rather, when the &quot;Individual ADPs&quot; strategy is defined,
@@ -78,7 +78,8 @@ indicates incorrect parameterization of the refinement, e.g. using
 anisotropic ADPs at an inappropriate resolution.)</em></p>
 <p><strong>Why is phenix.refine messing up my ligand geometry?</strong></p>
 <p>This often happens
-when the restraints were generated using <em>ReadySet</em> from a PDB file, and
+when the restraints were generated using <a class="reference" href="ready_set.htm">ReadySet</a> from a
+PDB file, and
 the ligand code is not recognizable in the Chemical Components Database.
 <a class="reference" href="elbow_gui.htm">eLBOW</a> will try to guess the molecular topology based on
 the coordinates alone, but this is imprecise and may not yield the desired

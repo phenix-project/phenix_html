@@ -90,7 +90,7 @@ the model are refined.  A brief summary follows; note that the resolution
 limits specified are approximate only, and in practice may vary widely
 depending on model quality, data quality, and observation-to-parameters ratio.
 
-  - **Individual sites** is standard Cartesian refinement of model geometry
+  - **XYZ coordinates** is standard Cartesian refinement of model geometry
     and agreement with X-ray data.  It is almost always appropriate, but at
     low-resolution (typically 3.5A or worse), additional restraints
     (NCS, reference model, etc.) are often necessary to prevent overfitting.
@@ -107,11 +107,11 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     sites refinement are checked (recommended), the rigid-body step will be
     done first, in the first cycle of refinement.
 
-  - **Individual ADPs** is atomic B-factor refinement, and is always
+  - **Individual B-factors** is atomic B-factor refinement, and is always
     appropriate except at low resolution (3.5A or worse).  Whether atoms are
     treated as isotropic or anisotropic is defined separately (see below).
 
-  - **Group ADPs** refines B-factors for multiple atoms at a time, most often
+  - **Group B-factors** refines B-factors for multiple atoms at a time, most often
     single residues either as a whole or divided into mainchain and sidechain.
     (Larger user-defined groups are also allowed.)  This is usually only
     necessary at low resolution (3.5A or worse).
