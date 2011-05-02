@@ -39,6 +39,18 @@ This routine cuts density out of a map and writes an MTZ file
       and the output map will extend to the high-resolution limit.)
 
 <P><H5><U>Usage</U></H5><P>
+The main uses of phenix.cut_out_density are:
+<UL>
+<LI>Cutting out a small part of a map and molecule to work on independently of 
+the rest of the structure. This can be useful if you have a very large 
+structure, as working with a small piece may be much quicker.  Note that you
+can only carry out real-space methods on the extracted map and model.
+<LI>Cutting density out of a map to use in molecular replacement.
+</UL>
+Please note: you should not use phenix.cut_out_density to select regions near
+your model for display purposes.  You can create a highly 
+misleading map by displaying only density that is within a small radius of
+atoms in your model.
 
 <P><H5>How cut_out_density works:</H5><P>
 
