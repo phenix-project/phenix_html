@@ -524,7 +524,11 @@ type something like:
 labels='F SIGF DANO SIGDANO'
 </PRE>
 This will carry out the usual structure solution, but will choose the
-input data columns based on the  labels: 'F SIGF DANO SIGDANO'. If you run the
+input data columns based on the  labels: 'F SIGF DANO SIGDANO'. 
+NOTE: to specify anomalous data with DANO like this, 
+these 4 columns must be adjacent to each other in the MTZ file with
+no other columns in between. 
+ If you run the
 AutoSol Wizard with SAD data and an MTZ file containing more than one
 anomalous dataset and don't tell it which one to use, 
 all possible values of labels are 
