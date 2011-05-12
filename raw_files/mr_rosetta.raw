@@ -616,6 +616,7 @@ a data file fobs.mtz with FP SIGFP and FreeR_flag,  you can type:
 phenix.mr_rosetta \
   seq_file=seq.dat \
   data=coords1.mtz \
+  alignment_files=coords1.ali \
   search_models=coords1.pdb \
   already_placed=False\
   fragment_files = test3.gz \

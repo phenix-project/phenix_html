@@ -44,6 +44,27 @@ a model you can also specify ps_in_rebuild=True to get a
 prime-and-switch map.
 
 
+<H5>Why does mr_rosetta bomb and say
+ &quot;error while loading shared libraries: libdevel.so: cannot open shared 
+object file: No such file or directory ?</H5>
+<p>
+This may indicate that somewhere your system is defining the shared libraries
+that Rosetta needs, and these are for a place that is not where Rosetta
+expects them to be. You can try to ignore the previous definitions
+this way:
+</p><p>If you are using the bash or sh shells:
+</p>
+<PRE style="face=courier">
+export PHENIX_TRUST_OTHER_ENV=1
+</PRE>
+
+or csh (C-shell):
+<PRE style="face=courier">
+setenv PHENIX_TRUST_OTHER_ENV 1
+</PRE>
+in the script where you run mr_rosetta, or before you run it from the command
+line.
+
 <H5>Why does mr_rosetta or mr_model_preparation bomb and say
  &quot;RuntimeError: Cannot contact EBI DbFetch service&quot;?</H5>
 <p>This could mean just what it says...but also it could mean 
@@ -57,7 +78,7 @@ command to specify the proxy server (replacing it with YOUR proxy server).
 export HTTP_PROXY=proxyout.mydomain.edu:8080
 </PRE>
 
-or sh (C-shell):
+or csh (C-shell):
 
 <PRE style="face=courier">
 setenv HTTP_PROXY proxyout.mydomain.edu:8080
