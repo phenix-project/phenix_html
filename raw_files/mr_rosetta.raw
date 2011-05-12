@@ -536,8 +536,44 @@ a corresponding list of alignment files. This section describes what the
 alignment files need to look like (very specific formatting; any small
 errors usually cause mr_rosetta to fail; mr_rosetta tries to tell you what
 is wrong but is not always successful).
+<p>Here are your options for supplying alignment information:
+<UL>
+<LI> If you have a pre-edited PDB file (i.e., you ran
+something beforehand to make the sequence be just what you want), then you
+just supply the PDB file and the sequence file (which may be identical or
+the PDB file may have deletions relative to the sequence file) as in the
+sample scripts.
+</LI>
 
-<P>Here is what the alignment file needs to look like. It is a MODELLER-style .ali file.
+<LI>Otherwise if you have a .ali alignment file (see below) , 
+you can supply that along with the PDB
+file and the sequence file, and then phenix will use sculptor to apply the
+alignment .
+</LI>
+
+<LI>Otherwise, and commonly, you supply a .hhr file, and mr_rosetta downloads
+the pdb and applys the alignment in the hhr file (and you don't have to
+supply either sequence or hhr file).
+</LI>
+
+<LI>If you want to apply an alignment yourself with an hhr file, you can use
+phenix.mr_model_preparation
+</LI>
+<LI>If you want to apply an alignment yourself with an alignment file
+that just contains 4 lines 
+(1) > (greater-than-symbol), then title for target sequence 
+(2) target sequence with - for gaps 
+(3) >the sequence of the target and 
+(4) the sequence of the protein in the template PDB you are supplying, 
+then you can use phenix.mr_model_preparation <pdb-file> <alignment-file>
+</LI>
+</UL>
+
+<P>Here is what the alignment file for mr_rosetta needs to look like  if
+you are going to use one (note that this is not the recommended or easiest
+approach.)
+(This file is different than the alignment file for phenix.mr_model_preparation.)
+It is a MODELLER-style .ali file.
 Here is a sample:
 <PRE style="face=courier">
 ## 1CRB_ 2qo4_A
