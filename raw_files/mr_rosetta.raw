@@ -542,9 +542,8 @@ If you supply an hhr analysis file from hhpred, you do not need to worry
 (usually) about the details of your search models and alignment files.
 However you can supply mr_rosetta with your own list of search models and
 a corresponding list of alignment files. This section describes what the
-alignment files need to look like (very specific formatting; any small
-errors usually cause mr_rosetta to fail; mr_rosetta tries to tell you what
-is wrong but is not always successful).
+alignment files need to look like (two ways you can format these files.)
+
 <p>Here are your options for supplying alignment information:
 <UL>
 <LI> If you have a pre-edited PDB file (i.e., you ran
@@ -578,11 +577,21 @@ then you can use phenix.mr_model_preparation <pdb-file> <alignment-file>
 </LI>
 </UL>
 
-<P>Here is what the alignment file for mr_rosetta needs to look like  if
-you are going to use one (note that this is not the recommended or easiest
-approach.)
-(This file is different than the alignment file for phenix.mr_model_preparation.)
-It is a MODELLER-style .ali file.
+<P>You have two options for alignment files if you are going to use one.
+<UL>
+<LI>You can use an alignment file that sculptor can recognize. This file looks like this (there must be exactly the same number of characters for the target
+and the template sequences (including dashes for gaps):
+<PRE style="face=courier">
+&gt; title text for sequence of target to follow
+VDFNGYWKMLSNENFEEYLRALDVNVALRKIANLLKPDKEIVQDGDHMIIRTLSTFRNYIMDFQVGKEFEEDLTGIDD
+&gt; title text for sequence of template (supplied PDB) to follow
+-AFSGTWQVYAQENYEEFLRAISLPEEVIKLAKDVKPVTEIQQNGSDFTITSKTPGKTVTNSFTIGKEAEIT--TMDG
+</PRE>
+</LI>
+<LI>
+Alternatively, you can use a second format for the alignment file for 
+mr_rosetta (This file is different than the alignment file for 
+sculptor phenix.mr_model_preparation; it is a MODELLER-style .ali file).
 Here is a sample:
 <PRE style="face=courier">
 ## 1CRB_ 2qo4_A
