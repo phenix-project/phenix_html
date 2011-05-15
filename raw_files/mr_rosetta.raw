@@ -24,7 +24,16 @@ mr_rosetta is a procedure for extending the range of molecular replacement
 by combining tools from the structure-modeling field (Rosetta) with 
 crystallographic molecular replacement, model-building, density 
 modification and refinement. The approach is described in 
-Dimaio et al. (2011).
+Dimaio et al. (2011). It can also be used to rebuild a model with a combination
+of Rosetta and Phenix tools.
+
+<P>A key requirement for using mr_rosetta is that you have to have a
+sequence alignment of the protein used as a template
+to model your target protein.  You can try several different alignments,
+but a good alignment has to be in your set of alignments or the procedure
+will be unlikely to be successful.  The reason is that Rosetta homology
+modeling makes strong use of the sequence, so if your alignment is incorrect
+you are essentially trying to build the wrong molecule.
  
 <P>The basic process is to find MR solutions with phenix.automr, 
 rebuild them with Rosetta, then rebuild those modelswith 
