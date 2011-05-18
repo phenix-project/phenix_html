@@ -784,6 +784,120 @@ You can do a test of mr_rosetta to make sure everything is ok with:
 
 <P><H5><U>Possible Problems</U></H5><P>
 
+<P><H5>Debugging problems with running mr_rosetta:</H5><P>
+
+If mr_rosetta fails, the first thing (after just checking the commands you 
+used) is to run the mr_rosetta regression tests to make sure that the
+installations of phenix and rosetta are both ok:
+
+<PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick_tests
+</PRE>
+
+That should take 10-20 minutes to run and say "OK" for all the tests.
+
+If one or more of these say instead "FAILED" ...you can go into the failed run 
+(for example, test_autobuild/) and run the script there 
+(e.g., ./test_autobuild.com) which should fail..
+and you can track down what is not working.
+</P>
+<P>If the tests all are OK, then there is something specific to 
+your data or script.
+
+The best way to debug this is to go to the last sub-process that has 
+failed or hung and look at the log file, and possibly re-run that step
+from the terminal.  Here is how to get there:
+
+<OL>
+<LI>
+In your main log file the last lines will be something like...
+
+<PRE style="face=courier">Starting job 1...Log will be: /net/omega/raid1/scratch1/terwillMR_ROSETTA_2/GROUP_OF_PLACE_MODEL_1/RUN_FILE_1.log
+</PRE>
+</LI>
+<LI>This log file in turn may say that further jobs were submitted...if so, 
+go to the end of that log file...find the name of the next log file...etc...
+until you are at the very last thing done.
+</LI>
+
+<LI>Your last run is in the directory where RUN_FILE_1.log is located.  
+There will be the following files (more if there are lots of runs in 
+this directory of course):
+
+<PRE style="face=courier">
+terwill@sigma> cd MR_ROSETTA_2/GROUP_OF_PLACE_MODEL_1/
+terwill@sigma> ls -tlr
+total 60
+-rwx------ 1 terwill lanl  1495 Feb  5 14:54 RUN_FILE_1.sh*
+-rwx------ 1 terwill lanl   282 Feb  5 14:54 RUN_FILE_1*
+-rw-r--r-- 1 terwill lanl  6431 Feb  5 14:54 PARAMS_1.eff
+-rw-r--r-- 1 terwill lanl  6564 Feb  5 14:54 mr_rosetta_params.eff
+-rw-r--r-- 1 terwill lanl   130 Feb  5 14:54 INFO_FILE_1
+drwxr-xr-x 6 terwill lanl  4096 Feb  5 16:44 RUN_1/
+-rw-r--r-- 1 terwill lanl 21575 Feb  5 16:45 RUN_FILE_1.log
+-rw-r--r-- 1 terwill lanl    51 Feb  5 16:46 JOBS_RUNNING
+</PRE>
+
+Here:
+<UL>
+<LI>PARAMS_1.eff are the parameters used in the run</LI>
+<LI>RUN_FILE_1.sh actually runs the job (e.g., phenix.mr_rosetta PARAMS_1.eff)
+  NOTE: usually this is phenix.mr_rosetta but it could also be another 
+routine, so you do have to look at it or the first line of PARAMS_1.eff 
+which will name the routine used.</LI>
+<LI>RUN_FILE_1.log is the log file for this run.  Look at the end of this file.</LI>
+<LI>The job is run in RUN_1/ </LI>
+</UL>
+<B>The key here is that you can type
+<PRE style="face=courier">
+  phenix.mr_rosetta PARAMS_1.eff
+</PRE>
+
+and the exact same job that failed or ran will be run again. You can use 
+this to debug what is going on.
+</B>
+</LI>
+<LI>Look at the log file RUN_FILE_1.log and the files in RUN_1/.  
+Notice what the last file written in RUN_1/ is...this may give a 
+clue as to when and where the problem occurred. Usually there will be an 
+error message in RUN_FILE_1.log that may be informative.
+</LI>
+<LI> If the run in question is a Rosetta job, then the actual Rosetta job is run in a subdirectory of RUN_1/  This will be in a directory like:
+<PRE style="face=courier">
+MR_ROSETTA_2/GROUP_OF_ROSETTA_REBUILD_1/RUN_1/REBUILD_IN_SETS_1/RUN_5/WORK_1
+</PRE>
+
+Here this is in RUN_1 of a group of rosetta models, set 1, run 5, 
+working directory.  In this directory you will find something like:
+
+<PRE style="face=courier">
+terwill@sigma> cd WORK_1/
+terwill@sigma> ls -tlr
+total 684
+-rw-r--r-- 1 terwill lanl   1475 Feb  5 16:48 rebuild.flags
+-rwxr-xr-x 1 terwill lanl    304 Feb  5 16:48 run_rebuild.sh*
+-rw-r--r-- 1 terwill lanl 422921 Feb  5 17:26 S_3DZB__0001.pdb
+-rw-r--r-- 1 terwill lanl    665 Feb  5 17:26 score.sc
+-rw-r--r-- 1 terwill lanl  97437 Feb  5 17:26 rebuild.log
+-rw-r--r-- 1 terwill lanl 158717 Feb  5 18:17 S_3DZB__0001_ed.pdb
+</PRE>
+
+Here:
+<UL>
+<LI> rebuild.flags are the commands to Rosetta</LI>
+<LI>run_rebuild.sh  is a command file to run Rosetta with rebuild.flags</LI>
+ <LI>rebuild.log is the log file</LI>
+</UL>
+You can look at the log file and see if there are any messages.  Then you can rerun the Rosetta job in a scratch directory with:
+
+<PRE style="face=courier">
+mkdir junk
+cd junk
+../run_rebuild.sh
+</PRE>
+With luck, you will get the same errors and you can debug from there by 
+changing the parameters or input files in rebuild.flags to see what 
+was causing the problems.
+
 <P><H5>Specific limitations and problems:</H5><P>
 <P>phenix.mr_rosetta does not have the full flexibility of phenix.autobuild,
 so you may want to get a nearly-complete model with phenix.mr_rosetta and then
@@ -793,23 +907,22 @@ as input to mr_rosetta and re-run it to improve your model.
 
 <P><H5><U>Literature</U></H5><P>
 
-<p>
-Frank DiMaio, Thomas C. Terwilliger, Randy J. Read, Alexander Wlodawer, Gustav
+<UL>
+<LI>Frank DiMaio, Thomas C. Terwilliger, Randy J. Read, Alexander Wlodawer, Gustav
 Oberdorfer, Eugene Valkov, Assaf Alon, Deborah Fass, Herbert L. Axelrod,
 Debanu Das, Sergey M. Vorobiev, Hideo Iwai, P. Raj Pokkuluri & David Baker
 "Increasing the Radius of Convergence of Molecular Replacement by
 Density and Energy Guided Protein Structure Optimization" 
 (Nature, 2011, in press)
-</p>
-
-<p>
+</LI>
+<LI>
 DiMaio, F., Tyka, M.D., Baker, M.L., Chiu, W., 
 Baker, D. (2009). 
 "Refinement of Protein Structures into Low-Resolution Density Maps 
 Using Rosetta" 
 J. Mol. Biol. 392, 181-190.
-</p>
-
+</LI>
+</UL>
 <P><H5><U>Additional information</U></H5><P>
 
 
