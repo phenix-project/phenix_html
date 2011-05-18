@@ -35,29 +35,29 @@ will be unlikely to be successful.  The reason is that Rosetta homology
 modeling makes strong use of the sequence, so if your alignment is incorrect
 you are essentially trying to build the wrong molecule.
  
-<P>The basic process is to find MR solutions with phenix.automr, 
+<P>The basic process is to find MR solutions with automr, 
 rebuild them with Rosetta, then rebuild those modelswith 
-phenix.phase_and_build. The combination of Rosetta rebuilding and 
+phase_and_build. The combination of Rosetta rebuilding and 
 phenix rebuilding is the key part of this method. In slightly more 
 detail, this process is to select possible MR solutions (one of which 
 must later be shown to be correct for the procedure to succeed)with 
-phenix.automr (Phaser), score with LLG following Rosetta relaxation, 
+automr (Phaser), score with LLG following Rosetta relaxation, 
 pick the best solutions, rebuild each of these with Rosetta including 
 map information (density term), score the resulting models with 
 Rosetta, select the highest and score with LLG, verify that the top 
 solutions are all about the same (electron density maps are correlated), 
-and rebuild the top models with phenix.phase_and_build.
+and rebuild the top models with phase_and_build.
 
 mr_rosetta can handle a single copy of a single chain, or multiple 
 copies of a single chain (NCS), or multiple copies of multiple chains
 (groups of NCS).  If you supply one or more input search models, then the
 entire crystallographic asymmetric unit must contain some multiple
-of the search models you supply (phenix.phaser will be used to find
+of the search models you supply (phaser will be used to find
 copies of the search model).  NCS will be found automatically in
 your search model and in any models assembled by mr_rosetta.
 
 <P><H5><U>
-	Tools from Rosetta that are used in phenix.mr_rosetta
+	Tools from Rosetta that are used in mr_rosetta
 </U></H5><P>
 <UL>
 <LI>
@@ -125,15 +125,15 @@ rosetta_database_dir)
 </LI>
 <LI>
 Read reflections file (must be CCP4 mtz and have a freeR set; use phenix GUI 
-or phenix.import_and_add_free to set up)
+or import_and_add_free to set up)
 </LI>
 <LI>
 An optional model editing step. If an hhpred .hhr file  is supplied, 
 read through this file, download the
 PDB files specified, apply alignments specified to generate pairs of
 alignment files and edited models (e.g., 2cng.ali, 2cng_mr.pdb based on
-2cng.pdb). This step is carried out by phenix.sculptor using a default
-protocol. (For tailoring of this step, use phenix.mr_model_preparation and
+2cng.pdb). This step is carried out by sculptor using a default
+protocol. (For tailoring of this step, use mr_model_preparation and
 then supply the aligned model to mr_rosetta.)
 </LI>
 <LI>
@@ -156,11 +156,11 @@ target sequence to fill in gaps.
 (If no gaps are present, no fragments files are necessary).
 </LI>
 <LI>
-Run phenix.automr to find molecular replacement solutions (default 
+Run automr to find molecular replacement solutions (default 
 number_of_output_models=5).
 </LI>
 <LI>
-Refine (if refine_after_mr=True) each MR solution with phenix.refine.  Use 
+Refine (if refine_after_mr=True) each MR solution with refine.  Use 
 resulting 2mFo-DFc map as starting point for density modification, yielding
 density-modified current density map for this refined solution, to be used
 in Rosetta rebuilding below. 
@@ -471,7 +471,7 @@ setenv HTTP_PROXY proxyout.mydomain.edu:8080
 </LI>
 
 <LI>
-Now you are completely ready to go with Rosetta and with phenix.mr_rosetta.
+Now you are completely ready to go with Rosetta and with mr_rosetta.
 </LI>
 </OL>
 
@@ -565,7 +565,7 @@ supply either sequence or hhr file).
 </LI>
 
 <LI>If you want to apply an alignment yourself with an hhr file, you can use
-phenix.mr_model_preparation
+mr_model_preparation
 </LI>
 <LI>If you want to apply an alignment yourself with an alignment file
 that just contains 4 lines 
@@ -573,7 +573,7 @@ that just contains 4 lines
 (2) target sequence with - for gaps 
 (3) >the sequence of the target and 
 (4) the sequence of the protein in the template PDB you are supplying, 
-then you can use phenix.mr_model_preparation <pdb-file> <alignment-file>
+then you can use mr_model_preparation <pdb-file> <alignment-file>
 </LI>
 </UL>
 
@@ -591,7 +591,7 @@ VDFNGYWKMLSNENFEEYLRALDVNVALRKIANLLKPDKEIVQDGDHMIIRTLSTFRNYIMDFQVGKEFEEDLTGIDD
 <LI>
 Alternatively, you can use a second format for the alignment file for 
 mr_rosetta (This file is different than the alignment file for 
-sculptor phenix.mr_model_preparation; it is a MODELLER-style .ali file).
+sculptor or mr_model_preparation; it is a MODELLER-style .ali file).
 Here is a sample:
 <PRE style="face=courier">
 ## 1CRB_ 2qo4_A
@@ -640,7 +640,7 @@ edited your template PDB to match the target sequence, the number will be 0.
  
 
 <P><H5><U>Output files from mr_rosetta</U></H5><P>
-The output files from mr_rosetta are the same as those from phenix.autobuild:
+The output files from mr_rosetta are the same as those from .autobuild:
 a model and map coefficients. These will be in a subdirectory listed at the
 end of your log file.  The files will be something like:
 <b>MR_ROSETTA_1/..../AutoBuild_run_1_/overall_best.pdb</b>
@@ -648,9 +648,9 @@ end of your log file.  The files will be something like:
 <b>MR_ROSETTA_1/..../AutoBuild_run_1_/overall_best_denmod_map_coeffs.mtz</b>.
 
 <P><H5><U>Parameters files in mr_rosetta</U></H5><P>
-When you run phenix.mr_rosetta it will write out a 
+When you run mr_rosetta it will write out a 
 mr_rosetta_params.eff parameter file that can be used to 
-re-run phenix.mr_rosetta (just as for essentially all PHENIX methods).  
+re-run mr_rosetta (just as for essentially all PHENIX methods).  
 
 <P><H5><U>Examples</U></H5><P>
 
@@ -841,7 +841,7 @@ Here:
 <UL>
 <LI>PARAMS_1.eff are the parameters used in the run</LI>
 <LI>RUN_FILE_1.sh actually runs the job (e.g., phenix.mr_rosetta PARAMS_1.eff)
-  NOTE: usually this is phenix.mr_rosetta but it could also be another 
+  NOTE: usually this is mr_rosetta but it could also be another 
 routine, so you do have to look at it or the first line of PARAMS_1.eff 
 which will name the routine used.</LI>
 <LI>RUN_FILE_1.log is the log file for this run.  Look at the end of this file.</LI>
@@ -899,9 +899,9 @@ changing the parameters or input files in rebuild.flags to see what
 was causing the problems.
 
 <P><H5>Specific limitations and problems:</H5><P>
-<P>phenix.mr_rosetta does not have the full flexibility of phenix.autobuild,
-so you may want to get a nearly-complete model with phenix.mr_rosetta and then
-use phenix.autobuild to increase the completeness and quality.
+<P>mr_rosetta does not have the full flexibility of autobuild,
+so you may want to get a nearly-complete model with mr_rosetta and then
+use autobuild to increase the completeness and quality.
 You may also want to take the output of mr_rosetta and then put it back in
 as input to mr_rosetta and re-run it to improve your model.
 
