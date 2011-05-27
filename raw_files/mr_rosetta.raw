@@ -720,7 +720,7 @@ If your search model is too distant to find a molecular replacement solution, yo
 can prerefine your model with Rosetta before carrying out molecular replacement.
 Here is an example. The keyword to use is: run_prerefine=True.
 
-<PRE style="face=courier">phenix.mr_rosetta seq_file = seq.dat \
+<PRE style="face=courier">
 phenix.mr_rosetta \
   seq_file=seq.dat \
   data=coords1.mtz \
