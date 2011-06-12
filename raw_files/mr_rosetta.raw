@@ -361,13 +361,20 @@ You can say something like:
 and that will rerun the job specified in that directory.
 </LI>
 <LI>
-<P><H5><U>Failures and stopping mr_rosetta</U></H5><P>
-If any sub-process fails, it will write a file "STOPWIZARD" to the top 
-level directory (i.e., MR_ROSETTA_1/).  Each job in the entire process will 
-then stop as soon as 
+<P><H5><U>Failures in sub-processes</U></H5><P>
+If some sub-processes fail, normally the failures will be ignored. This
+is useful as your overall job can often continue even if a few
+refinement or rosetta jobs fail. However if the failure is from the
+queueing system (rather than in the actual running of the jobs)
+then the overall job may still fail.
+</LI>
+<LI>
+<P><H5><U>Stopping mr_rosetta</U></H5><P>
+If you create a file "STOPWIZARD" in the top 
+level directory (i.e., MR_ROSETTA_1/), then each job in the entire 
+process will stop as soon as 
 any Phenix part of the process takes over (i.e., as soon as Rosetta jobs 
-finish).  You can accomplish the same thing by creating a STOPWIZARD file 
-in the top level directory.
+finish).  
 </LI>
 </OL>
 
@@ -719,6 +726,13 @@ phenix.mr_rosetta \
 If your search model is too distant to find a molecular replacement solution, you
 can prerefine your model with Rosetta before carrying out molecular replacement.
 Here is an example. The keyword to use is: run_prerefine=True.
+NOTE: It is best to specify the number of ncs_copies if you use
+run_prerefine.  If you do not, then you may end up running several parallel
+jobs, each of which is independently carrying out prerefinement on the
+same input model (to be used later with different numbers of ncs copies).
+Once you have run your job with one value of ncs_copies, you can just use
+the best prerefined model from that job as a search model in your other
+runs.
 
 <PRE style="face=courier">
 phenix.mr_rosetta \
