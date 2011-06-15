@@ -36,8 +36,8 @@ modeling makes strong use of the sequence, so if your alignment is incorrect
 you are essentially trying to build the wrong molecule.
  
 <P>The basic process is to find MR solutions with automr, 
-rebuild them with Rosetta, then rebuild those modelswith 
-phase_and_build. The combination of Rosetta rebuilding and 
+rebuild them with Rosetta, then rebuild those models with 
+phenix.autobuild. The combination of Rosetta rebuilding and 
 phenix rebuilding is the key part of this method. In slightly more 
 detail, this process is to select possible MR solutions (one of which 
 must later be shown to be correct for the procedure to succeed)with 
@@ -46,8 +46,9 @@ pick the best solutions, rebuild each of these with Rosetta including
 map information (density term), score the resulting models with 
 Rosetta, select the highest and score with LLG, verify that the top 
 solutions are all about the same (electron density maps are correlated), 
-and rebuild the top models with phase_and_build.
+and rebuild the top models with autobuild.
 
+<p>
 mr_rosetta can handle a single copy of a single chain, or multiple 
 copies of a single chain (NCS), or multiple copies of multiple chains
 (groups of NCS).  If you supply one or more input search models, then the
@@ -133,8 +134,9 @@ read through this file, download the
 PDB files specified, apply alignments specified to generate pairs of
 alignment files and edited models (e.g., 2cng.ali, 2cng_mr.pdb based on
 2cng.pdb). This step is carried out by sculptor using a default
-protocol. (For tailoring of this step, use mr_model_preparation and
-then supply the aligned model to mr_rosetta.)
+protocol. 
+<p>NOTE 1: For tailoring of this step, use mr_model_preparation and then supply the aligned model to mr_rosetta.
+<p>NOTE 2: If your structure contains more than one chain or requires more than one homology model to represent the structure, then you need to use mr_model_preparation and phenix.automr to place your model. Then you can supply the aligned, placed structure to mr_rosetta for rebuilding.
 </LI>
 <LI>
 NOTE: The steps below are carried out for each model/alignment file pair 
