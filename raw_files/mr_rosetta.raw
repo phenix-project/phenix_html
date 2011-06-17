@@ -57,6 +57,13 @@ of the search models you supply (phaser will be used to find
 copies of the search model).  NCS will be found automatically in
 your search model and in any models assembled by mr_rosetta.
 
+<p>NOTE: if your molecule has multiple chain types, then you cannot use
+the simple hhr file input (see below) and you cannot automatically run 
+pre-refinement
+with rosetta on your molecule. Instead you need to use mr_model_preparation 
+and phenix.automr to place your model. Then you can supply the aligned, 
+placed structure to mr_rosetta for rebuilding.
+
 <P><H5><U>
 	Tools from Rosetta that are used in mr_rosetta
 </U></H5><P>
@@ -512,6 +519,17 @@ and one a 3 like: aat000_09_05.200_v1_3.gz and aat000_03_05.200_v1_3.gz)
 <LI>
 These are your fragment files. You will need to list them in your mr_rosetta
 parameters file
+</LI>
+<LI>
+NOTE: if your chain has more than 650 residues, then you will need to split
+it up into pieces of 650 residues or fewer before submitting the sequence 
+to the Robetta server. Then you will get several 3-mer and 9-mer fragments 
+files, one for each piece that you submit. You can then simply paste these
+together after editing all but the first to fix the residue numbers.  To edit
+the files just use
+<PRE style="face=courier">phenix.offset_robetta_resid &lt;fragment_file_name&gt; &lt;new_fragment_file_name&gt; &lt;offset-for-residue numbers&gt;
+</PRE>
+
 </LI>
 </OL>
 
