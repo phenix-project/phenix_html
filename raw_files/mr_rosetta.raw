@@ -62,7 +62,9 @@ the simple hhr file input (see below) and you cannot automatically run
 pre-refinement
 with rosetta on your molecule. Instead you need to use mr_model_preparation 
 and phenix.automr to place your model. Then you can supply the aligned, 
-placed structure to mr_rosetta for rebuilding.
+placed structure to mr_rosetta for rebuilding. Additionally in this
+case you will need to supply a different set of fragments files for each
+chain type.
 
 <P><H5><U>
 	Tools from Rosetta that are used in mr_rosetta
@@ -521,7 +523,7 @@ These are your fragment files. You will need to list them in your mr_rosetta
 parameters file
 </LI>
 <LI>
-NOTE: if your chain has more than 650 residues, then you will need to split
+NOTE1: if your chain has more than 650 residues, then you will need to split
 it up into pieces of 650 residues or fewer before submitting the sequence 
 to the Robetta server. Then you will get several 3-mer and 9-mer fragments 
 files, one for each piece that you submit. You can then simply paste these
@@ -529,8 +531,30 @@ together after editing all but the first to fix the residue numbers.  To edit
 the files just use
 <PRE style="face=courier">phenix.offset_robetta_resid &lt;fragment_file_name&gt; &lt;new_fragment_file_name&gt; &lt;offset-for-residue numbers&gt;
 </PRE>
-
 </LI>
+<LI>
+NOTE2: if you have multiple chain types in your structure then you will
+want to have a separate set of fragments files for each chain type.  You can
+specify these with: fragment_files_chain_list, fragment_files_3_mer_by_chain,
+                and fragment_files_9_mer_by_chain instead of fragment_files.
+                Use fragment_files_chain_list to define which chain ID each
+                of your fragment_files_3_mer_by_chain and
+                fragment_files_9_mer_by_chain go with.
+</LI>
+<LI>
+                NOTE3: You only need one set of fragments files for each 
+                UNIQUE chain. So if chains A and C are the same, you just 
+                need to specify fragments for chain A.
+                 If you have two different chains A
+                and B and fragment files frag_A_3 frag_A_9 frag_B_3 frag_B_9
+                then you should use: fragment_files_chain_list=A 
+                 fragment_files_chain_list=B
+                 fragment_files_3_mer_by_chain=frag_A_3
+                 fragment_files_9_mer_by_chain=frag_A_9
+                 fragment_files_3_mer_by_chain=frag_B_3
+                 fragment_files_9_mer_by_chain=frag_B_9 
+</LI>
+
 </OL>
 
 <P><H5><U>Setting up for a run of mr_rosetta B. Alignment files from
