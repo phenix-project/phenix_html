@@ -995,6 +995,25 @@ touch_up=True worst_percent_res_rebuild=2 min_cc_res_rebuild=0.8
         You can decide how much to rebuild
         using worst_percent_res_rebuild or with min_cc_res_rebuild, or both.
 
+<H5>Remove the worst-fitting residues from a model </H5><P>
+<PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb \
+ delete_bad_residues_only=True \
+ input_map_file=map_coeffs.mtz \
+ worst_percent_res_rebuild=2 min_cc_res_rebuild=0.8
+</PRE>
+ You can delete just the worst parts of your model by setting
+        delete_bad_residues_only=True.  
+        You can decide what parts to remove based on
+        a minimum model-map correlation (by residue).
+        You can decide how much to remove
+        using worst_percent_res_rebuild or with min_cc_res_rebuild, or both.
+        (these are the same parameters used to decide which residues to
+        rebuild in touch_up=True).
+<p>
+ Here the input_map_file is optional; if you do not provide it then a model-
+ based density modified map will be used to evaluate your model.
+
+
 <H5>Create 20 very good rebuilt models that are as different as possible</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
    multiple_models_number=20 n_cycle_rebuild_max=5

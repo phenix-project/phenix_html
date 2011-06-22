@@ -770,7 +770,7 @@ phenix.mr_rosetta \
 If your search model is too distant to find a molecular replacement solution, you
 can prerefine your model with Rosetta before carrying out molecular replacement.
 Here is an example. The keyword to use is: run_prerefine=True.
-NOTE: It is best to specify the number of ncs_copies if you use
+NOTE 1: It is best to specify the number of ncs_copies if you use
 run_prerefine.  If you do not, then you may end up running several parallel
 jobs, each of which is independently carrying out prerefinement on the
 same input model (to be used later with different numbers of ncs copies).
@@ -795,6 +795,22 @@ phenix.mr_rosetta \
   nproc=200 \
   group_run_command=qsub
 </PRE>
+
+NOTE 2: if you have a model and just want to run pre-refinement and not
+anything else...then you can do so without any data:
+
+<PRE style="face=courier">
+phenix.mr_rosetta \
+  seq_file=seq.dat \
+  search_models=coords1.pdb \
+  run_prerefine=True \
+  number_of_prerefine_models=1
+</PRE>
+Your pre-refined model(s) will be listed in
+<PRE style="face=courier">
+MR_ROSETTA_1/GROUP_OF_PLACE_MODEL_1/RUN_FILE_1.log
+</PRE>
+and you can pick the best of these (most negative score, listed first).
 
 <P><H5>Running mr_rosetta from a homology search (with an hhr file)</H5><P>
 If you have run hhpred and obtained a .hhr file with a list of alignments
