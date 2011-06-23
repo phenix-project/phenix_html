@@ -1001,6 +1001,12 @@ touch_up=True worst_percent_res_rebuild=2 min_cc_res_rebuild=0.8
  input_map_file=map_coeffs.mtz \
  worst_percent_res_rebuild=2 min_cc_res_rebuild=0.8
 </PRE>
+The trimmed model will be in the file (the run number may vary):
+<PRE style="face=courier">AutoBuild_run_1_/starting_model_trimmed.pdb
+</PRE>
+and the removed residues will be in the file:
+<PRE style="face=courier">AutoBuild_run_1_/starting_model_removed_residues.pdb
+</PRE>
  You can delete just the worst parts of your model by setting
         delete_bad_residues_only=True.  
         You can decide what parts to remove based on
