@@ -74,6 +74,15 @@ after refinement of a model that was previously not overfit, this usually
 indicates incorrect parameterization of the refinement, e.g. using
 anisotropic ADPs at an inappropriate resolution.)*
 
+**I have experimental phases for this structure, but the initial maps were
+poor.  Should I still use phase restraints?**
+
+The experimental phases
+used to restraint refinement describe a bimodal probability distribution
+for every angle, rather than the single values used to generate a map.  In
+most cases the additional restraints will not hurt refinement, and can
+often help.
+
 **Why is phenix.refine messing up my ligand geometry?**
 
 This often happens
@@ -86,14 +95,15 @@ result.  For best results, restraints for non-standard ligands should be
 generated in eLBOW using a SMILES string or similar source of topology
 information.
 
-**I have experimental phases for this structure, but the initial maps were
-poor.  Should I still use phase restraints?**
+**Why are my hydrogen atoms added by PHENIX exploding when I run real-space
+refinement in Coot?**
 
-The experimental phases
-used to restraint refinement describe a bimodal probability distribution
-for every angle, rather than the single values used to generate a map.  In
-most cases the additional restraints will not hurt refinement, and can
-often help.
+Coot uses a version of the CCP4 monomer library with hydrogen atoms named
+according to the PDB format version 2 standard; PHENIX can recognize these, but
+defaults to PDB v.3.  To reconcile the different conventions, you can download
+the newer version of the monomer library (currently available
+`here <http://www.ysbl.york.ac.uk/~garib/refmac/data/refmac_experimental/refmac_dictionary_v5.29.tar.gz>`_) and set the environment variable
+COOT_REFMAC_LIB_DIR to point to the directory in which you unpack it.
 
 References
 ==========
