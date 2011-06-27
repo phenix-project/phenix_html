@@ -314,8 +314,7 @@ Important to note:
      selection language, see below)::
 
        % phenix.refine data.hkl model.pdb strategy=rigid_body \
-         rigid_groups_mode=group_selection sites.rigid_body="chain A" \
-         sites.rigid_body="chain B"
+         sites.rigid_body="chain A" sites.rigid_body="chain B"
 
      This will refine the chain A and chain B as two rigid bodies. The rest of
      the model will be kept fixed.
@@ -329,7 +328,7 @@ Important to note:
      The command line will then be::
 
        % phenix.refine data.hkl model.pdb strategy=rigid_body \
-         rigid_groups_mode=group_selection rigid_body_selections.params
+         rigid_body_selections.params
 
      Files like this can be created, for example, by copy-and-paste from
      the complete list of parameters (phenix.refine --show-defaults=all).
