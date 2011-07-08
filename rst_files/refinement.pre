@@ -1590,6 +1590,32 @@ Changing the number of refinement cycles and minimizer iterations
   % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=5 \
     main.max_number_of_iterations=20
 
+.. _nproc:
+
+Parallelizing for multi-core systems
+------------------------------------
+::
+
+  % phenix.refine data.hkl model.pdb optimize_xyz_weight=True nproc=4
+
+The *nproc* parameter instructures phenix.refine to use multiple processors
+for several highly parallel routines.  Currently this applies to the following
+procedures:
+
+  - Automatic TLS identification (tls.find_automatically=True)
+  - Bulk solvent mask optimization (optimize_mask=True, on by default)
+  - XYZ restraints weight optimization (optimize_xyz_weight=True)
+  - ADP restraints weight optimization (optimize_adp_weight=True)
+
+When used with the default settings, nproc will have a minimal effect on
+overall runtime, but when the optimization grid searches are enabled, a
+speedup of 4-5x is possible.  Values of nproc above 18 are unlikely to yield
+further speed improvement.
+
+**Note:** this parallelization method is not compatible with OpenMP, and is
+limited to Mac and Linux systems.  (It is, however, available in the Phenix
+GUI.)
+
 Creating R-free flags (if not present in the input reflection files)
 --------------------------------------------------------------------
 ::
