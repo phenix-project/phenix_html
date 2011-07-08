@@ -10,6 +10,80 @@
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <p>Note: questions specific to the GUI can be found in its
 <a class="reference" href="refine_gui.htm">documentation</a>.</p>
+<P><H5><U><B>General</B></U></H5><P>
+<p><strong>How can I make phenix.refine run faster?</strong></p>
+<p>There are currently two options for this:</p>
+<blockquote>
+<ul>
+<li>compile from source with OpenMP support, which parallelizes the Fast
+Fourier Transform (FFT) used in structure factor and gradient calculation</li>
+<li>specify the 'nproc' parameter (or equivalent control in the GUI), which
+parallelizes various grid searches by starting multiple Python jobs</li>
+</ul>
+</blockquote>
+<p>The OpenMP parallelization is not particularly efficient, since the FFTs
+take less than half of the typical runtime; a speedup of 40% is usually the
+maximum.  The process-level parallelization with 'nproc' is most useful when
+restraint weight optimization is enabled, since these procedures can be run
+as multiple separate processes.  In these circumstances a speedup of 4-5x is
+possible.  However, a run using default parameters will not significantly
+benefit from setting 'nproc'.</p>
+<p>There are several limitations to these options:</p>
+<blockquote>
+<ul>
+<li>OpenMP support is incompatible with the Phenix GUI</li>
+<li>'nproc' is incompatible with Windows</li>
+<li>these approaches are incompatible with each other</li>
+</ul>
+</blockquote>
+<p><strong>When should I use simulated annealing?</strong></p>
+<p>Simulated annealing (SA) is most useful early in refinement, when the model
+is far from convergence.  Manually built models, or MR solutions involving
+significant local conformational changes, are common inputs where SA can
+improve over simple gradient-driven refinement.  It is generally less helpful
+later in refinement, and/or at high resolution.</p>
+<P><H5><U><B>Restraints</B></U></H5><P>
+<p><strong>When should I use NCS restraints?</strong></p>
+<p>An approximate cutoff for NCS restraints is 2.0 Angstrom - at higher
+resolution the data alone are sufficient, but at lower resolution additional
+restraints are usually necessary.  This is somewhat subjective due to the
+behavior of the global NCS restraints currently used by default in PHENIX,
+but will be addressed in future versions.</p>
+<p><strong>My resolution is X Angstroms; what should RMS(bonds) and RMS(angles) be?</strong></p>
+<p>This is somewhat controversial, but absolute upper limits for a well-refined
+protein structure at high resolution are typically 0.02 for RMS(bonds) and
+2.0 for RMS(angles); usually they will be significantly lower.  As resolution
+decreases the acceptable deviation from geometry restraints also decreases,
+so at 3.5 Angstrom, more appropriate values would be 0.01 and 1.0.  We
+recommend using the <a class="reference" href="validation.htm#polygon">POLYGON tool in the validation summary</a> to judge your structure relative to others at
+similar resolutions.</p>
+<p><strong>Why does my output model have very poor geometry (RMS(bonds) and
+RMS(angles))?</strong></p>
+<p>This usually means that the automatic X-ray/geometry weighting did not work
+properly; this can sometimes happen if the starting model also has poor
+geometry.  Optimizing the weight (optimize_xyz_weight=True, or equivalent
+GUI control in the &quot;Refinement settings&quot; tab) will usually fix this problem.</p>
+<p><strong>I have experimental phases for this structure, but the initial maps were
+poor.  Should I still use phase restraints?</strong></p>
+<p>The experimental phases
+used to restraint refinement describe a bimodal probability distribution
+for every angle, rather than the single values used to generate a map.  In
+most cases the additional restraints will not hurt refinement, and can
+often help.</p>
+<p><strong>Why is phenix.refine messing up my ligand geometry?</strong></p>
+<p>This often happens
+when the restraints were generated using <a class="reference" href="ready_set.htm">ReadySet</a> from a
+PDB file, and
+the ligand code is not recognizable in the Chemical Components Database.
+<a class="reference" href="elbow_gui.htm">eLBOW</a> will try to guess the molecular topology based on
+the coordinates alone, but this is imprecise and may not yield the desired
+result.  For best results, restraints for non-standard ligands should be
+generated in eLBOW using a SMILES string or similar source of topology
+information.</p>
+<P><H5><U><B>B-factors/ADPs/TLS</B></U></H5><P>
+<p><strong>Can I use both TLS and anisotropic ADPs?</strong></p>
+<p>Yes, but not for the same atoms - since TLS is essentially constrained
+anisotropic refinement, the two methods are mutually exclusive.</p>
 <p><strong>Where is the switch for anisotropic vs. isotropic B-factors/ADPs?</strong></p>
 <p>phenix.refine does not have a single global switch for defining ADP
 parameterization; rather, when the &quot;Individual ADPs&quot; strategy is defined,
@@ -33,9 +107,31 @@ entering ADP selections.  Note that although it is possible to combine
 all of the different ADP refinement strategies in a single run, the
 atom selections for individual and grouped refinement may not overlap,
 nor may the selections for anisotropic ADPs and TLS groups.</p>
-<p><strong>My resolution is X Angstroms, and my R/R-free are Y and Z.  Am I done refining?</strong></p>
-<p>A partial answer can be obtained by looking at the
-<a class="reference" href="validation.htm#polygon">POLYGON tool in the validation summary</a>, which
+<p><strong>When should I refine grouped B-factors/ADPs instead of individual?</strong></p>
+<p>It is difficult to give an exact rule for this, since it depends on several
+properties of the crystal including resolution, solvent content, presence of
+NCS, etc.  In general, the higher the data-to-parameter ratio, the more
+likely individual ADPs are to work well.  As an approximate example, consider
+these two hypothetical structures:</p>
+<blockquote>
+<ul>
+<li>a 3.3 Angstrom structure of a single protein chain per asymmetric unit,
+with 38% solvent content</li>
+<li>a 4.0 Angstrom structure of 3 NCS-related chains, with 70% solvent
+content</li>
+</ul>
+</blockquote>
+<p>In this case, the latter structure can probably be refined with individual
+ADPs, while the former is more marginal.  If in doubt, early rounds of
+refinement may be done with grouped ADPs, switching to individual as the
+structure nears convergence.  In general, it is usually worth trying
+individual ADPs at some point; ultimately the effect on R-factors (primarily
+R-free, but also the gap between R-work and R-free) is the most important
+guideline.</p>
+<P><H5><U><B>Interpreting results</B></U></H5><P>
+<p><strong>My resolution is X Angstroms, and my R/R-free are Y and Z.  Am I done
+refining?</strong></p>
+<p>A partial answer can be obtained by looking at POLYGON, which
 plots histograms of statistics for PDB structures solved at similar
 resolutions, and compares these to the statistics for your output model.
 As a general rule, R-factors alone should not be used to decide if a
@@ -76,23 +172,49 @@ rebuilding first.  <em>(Note that if the large R/R-free gap suddenly appears
 after refinement of a model that was previously not overfit, this usually
 indicates incorrect parameterization of the refinement, e.g. using
 anisotropic ADPs at an inappropriate resolution.)</em></p>
-<p><strong>Why is phenix.refine messing up my ligand geometry?</strong></p>
-<p>This often happens
-when the restraints were generated using <a class="reference" href="ready_set.htm">ReadySet</a> from a
-PDB file, and
-the ligand code is not recognizable in the Chemical Components Database.
-<a class="reference" href="elbow_gui.htm">eLBOW</a> will try to guess the molecular topology based on
-the coordinates alone, but this is imprecise and may not yield the desired
-result.  For best results, restraints for non-standard ligands should be
-generated in eLBOW using a SMILES string or similar source of topology
-information.</p>
-<p><strong>I have experimental phases for this structure, but the initial maps were
-poor.  Should I still use phase restraints?</strong></p>
-<p>The experimental phases
-used to restraint refinement describe a bimodal probability distribution
-for every angle, rather than the single values used to generate a map.  In
-most cases the additional restraints will not hurt refinement, and can
-often help.</p>
+<P><H5><U><B>Hydrogens</B></U></H5><P>
+<p><strong>Why are my hydrogen atoms added by PHENIX exploding when I run real-space
+refinement in Coot?</strong></p>
+<p>Coot uses a version of the CCP4 monomer library with hydrogen atoms named
+according to the PDB format version 2 standard; PHENIX can recognize these, but
+defaults to PDB v.3.  To reconcile the different conventions, you can download
+the newer version of the monomer library (currently available
+<a class="reference" href="http://www.ysbl.york.ac.uk/~garib/refmac/data/refmac_experimental/refmac_dictionary_v5.29.tar.gz">here</a>) and set the environment variable
+COOT_REFMAC_LIB_DIR to point to the directory in which you unpack it.</p>
+<p><strong>Why can't PHENIX automatically remove hydrogens from the output PDB file?</strong></p>
+<p>We strongly discourage removing any atoms used in refinement from the model,
+as it makes reproducing the published R-factors very difficult and eliminates
+essential information about how the structure was refined.</p>
+<P><H5><U><B>Miscellaneous</B></U></H5><P>
+<p><strong>I can't see density for an arginine sidechain beyond the C-gamma atom.  How
+should I model it?</strong></p>
+<p>Opinion in the crystallography differs on the proper approach to disordered
+sidechains, with significant support for both of the following methods voiced
+on the PHENIX and CCP4 mailing lists:</p>
+<blockquote>
+<ul>
+<li>Delete all atoms not visible in density, but leave the residue name alone.
+This is arguably the most conservative approach, as it avoids modeling any
+features not supported by the data, and it is consistent with the
+treatment of missing loops.  The main disadvantage is aesthetic,
+since it is more difficult to visualize and interpret the biological
+effects of a structure with missing sidechains.  Anecdotal evidence
+suggests that some non-crystallographers may be confused by this.</li>
+<li>Pick an appropriate rotamer, and let the B-factors rise to account for
+disorder.  This avoids truncated sidechains that may be mistaken for other
+residues, and is more realistic when interpreting surface electrostatics.
+The atomic B-factors and coordinates are actually refined against the
+data, however weak.  It is potentially dangerous because it implies a
+greater level of confidence in these positions than is justified by the
+data.  Additionally, the ADP restraints will keep the B-factors of nearby
+atoms similar (within some tolerance), which is normally essential for
+stable refinement but may artificially lower the B-factors of disordered
+sidechains.</li>
+</ul>
+</blockquote>
+<p>A third approach, setting the occupancy of missing atoms to zero but leaving
+them in the model, is strongly disfavored, as the resulting positions and
+B-factors are entirely theoretical (but not immediately obvious as such).</p>
 <P><H5><U><B>References</B></U></H5><P>
 <blockquote>
 <ul>
