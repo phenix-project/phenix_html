@@ -20,13 +20,7 @@ The operations below can be applied to the whole model or selected parts
 
 **Comprehensive model statistics**
 
-- Atomic Displacement parameters (ADP) statistics::
-
-  % phenix.pdbtools model.pdb --show-adp-statistics
-
-- Geometry (stereochemistry) statistics::
-
-  % phenix.pdbtools model.pdb --show-geometry-statistics
+% phenix.pdbtools model.pdb model_statistics=true
 
 In the absence of a CRYST1 record in the PDB file, functionality
 that doesn't require knowledge of the crystal symmetry is still
