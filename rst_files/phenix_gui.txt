@@ -72,6 +72,18 @@ Reflection tools
     automatically fetch data for a known ID from the PDB, or you may supply
     your own files.
 
+  - French & Wilson data correction: procedure for estimating appropriate
+    values for weak and negative intensities.  This is also run automatically
+    as part of several programs, including phenix.refine and the Phaser GUIs.
+
+  - `Model-based phases <reciprocal_space_arrays.htm>`_: calculate phases and
+    structure factors in a variety of formats (including Hendrickson-Lattman
+    coefficients).
+
+  - 3D and 2D data viewers: these display data from reflection files (usually
+    amplitudes or intensities) as they appear in reciprocal space, either in
+    a full 3D view or a pseudo-precession camera section.
+
 Model tools
 -----------
 
@@ -103,6 +115,9 @@ Phasing
     experiment types (SAD, MAD, MIR, etc.); also performs simple model-building
     after phasing.  Combines HySS, Phaser, SOLVE, RESOLVE, and phenix.refine.
 
+  - `Hybrid substructure search <hyss.htm>`_: heavy-atom site identification
+    program.  Used automatically as part of AutoSol.
+
   - `Phaser-EP <phaser_ep.htm>`_: Another Phaser interface, for SAD and MR-SAD
     phasing.  We recommend trying AutoSol first, but this GUI exposes
     additional parameters.
@@ -112,7 +127,9 @@ Molecular replacement
 
   - `AutoMR <automr_gui.htm>`_: automated molecular replacement using Phaser;
     feeds directly into AutoBuild.  (This is also the starting point for
-    running MR-SAD.)
+    running MR-SAD.)  There are two interfaces, one for simple structures
+    with one or more copies of a single chain, and a more complex interface
+    for heterogeneous structures.
 
   - `Phaser-MR <phaser_mr.htm>`_: Interface for molecular replacement using
     standalone `Phaser <phaser.htm>`_, with all parameters available as well
@@ -134,6 +151,9 @@ Model building
   - `AutoBuild <autobuild.htm>`_: automated model-building and refinement with
     RESOLVE and phenix.refine.  This GUI only encapsulates the building
     functions; a separate GUI is available for omit-map calculations.
+
+  - `Phase and build <phase_and_build.htm>`_: similar to AutoBuild, but
+    significantly faster (although less accurate).
 
   - `Find Helices and Strands <find_helices_strands.htm>`_: fast building of
     secondary structure (as poly-ALA) into maps with RESOLVE and PULCHRA.
@@ -162,10 +182,16 @@ Maps
     others, including averaged "kick" maps.  Currently works only on untwinned
     data. (GUI only)
 
+  - `FFT map coefficients <mtz2map.htm>`_: convert an MTZ file containing
+    map coefficients to one or more CCP4 or XPLOR-format maps suitable for
+    viewing in PyMOL, etc.  (Note that the main maps GUI and many other
+    programs can also output these files, and the GUI will generate them for
+    you as necessary for PyMOL.)
+
   - `AutoBuild - create omit map <autobuild.htm>`_: similar to the main
     AutoBuild GUI, but used for omit map generation rather than building.
 
-  - `Density modification <autobuild.htm>`_: This is just a simplified
+  - `RESOLVE density modification <autobuild.htm>`_: This is just a simplified
     interface for running the `AutoBuild wizard <autobuild.htm>`_ in
     map-only mode.
 
@@ -173,9 +199,14 @@ Maps
     sets of amplitudes.  Corresponds to the command-line program
     phenix.fobs_minus_fobs_map.
 
-  - Superpose maps: given two PDB files and accompanying map coefficients
+  - `Superpose maps <superpose_maps.htm>`_: given two PDB files and
+    accompanying map coefficients
     (in MTZ format), superposes the PDB files and reorients the maps to
     follow them.  Output is the reoriented PDB files and maps in CCP4 format.
+
+  - `Cut out density <cut_out_density.htm>`_: extracts a section of electron
+    density from input map coefficients, and outputs new map coefficients
+    (suitable for running molecular replacement in Phaser).
 
 Ligands
 -------
