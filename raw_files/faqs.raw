@@ -406,7 +406,7 @@ combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_11
 combine_map overall_best_denmod_map_coeffs.mtz_OMIT_REGION_12
 omit
 EOD
-</pre>
+</PRE>
 <LI>You will want to edit this to match the number of OMIT regions
 in your case.
 </UL>
@@ -424,7 +424,7 @@ phenix.fmodel high_resolution=5 refine_1.pdb
 <LI>Generate histograms with phenix.resolve. Here is a script:
 </p><PRE style="face=courier">
 #!/bin/sh
-phenix.resolve<<EOD
+phenix.resolve &quot;&quot;EOD
 hklin refine_1.pdb.mtz
 labin FP=FMODEL PHIB=PHIFMODEL
 get_histograms
@@ -438,7 +438,7 @@ EOD
 
 
 <LI>Now the file  hist_values.dat will have your histograms:
-</p><PRE style="face=courier">
+<PRE style="face=courier">
 5.002693       32.71021      !  resolution Boverall
 1   ! 1=protein 2 = solvent
 0.10198E-01    1.8145       0.41525E-01  ! a1 a2 a3
@@ -449,6 +449,7 @@ EOD
 0.27101E-01    6.4460      -0.61802      ! a1 a2 a3
 0.12788E-01   0.55421      -0.39797E-02  ! a4 a5 a6
 0.0000        0.0000        0.0000      ! a7 a8 a9
+
 </PRE>
 
 
@@ -878,6 +879,31 @@ because the ncs copy won't be used in density modification during the
 process. However NCS will be used to restrain any coordinates.
 </UL>
 
+
+<H5>Problems installing Rosetta? Here are some suggestions:</H5>
+<LI>Download rosetta_source and rosetta_database separately.  The bundle
+doesn't contain all the files.
+</LI>
+
+<LI>Compilation fails on RHEL 6.1 (gcc 4.5 issue) but sails on RHEL 5.5.
+</LI>
+
+<LI>
+ <PREstyle="face=courier">
+  $PHENIX_ROSETTA_PATH
+ </PRE>
+ must point to the Rosetta installation directory
+(where rosetta_source and rosetta_database sit). (Note there was a typo
+in documentation with ROSETTTA instead of ROSETTA; fixed now.) 
+</LI>
+
+<LI>all directories in the Rosetta installation must be made accessible to
+users:
+</p><PRE style="face=courier">
+   find $PHENIX_ROSETTA_PATH -type d -exec chmod 755 '{}' \;
+</PRE>
+</LI>
+</UL>
 
 <!--REMARK PHENIX BODY END-->
 
