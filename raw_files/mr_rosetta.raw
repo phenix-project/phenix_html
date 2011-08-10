@@ -979,6 +979,9 @@ use autobuild to increase the completeness and quality.
 You may also want to take the output of mr_rosetta and then put it back in
 as input to mr_rosetta and re-run it to improve your model.
 
+<P>File names of PDB files for mr_rosetta need to have at least 4 characters
+before the .pdb.  So test.pdb is fine, but my.pdb is not.
+
 <P><H5><U>Literature</U></H5><P>
 
 <UL>
