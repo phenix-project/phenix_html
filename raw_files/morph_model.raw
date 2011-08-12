@@ -45,7 +45,7 @@ residue
 <P>After morphing, the morphed model is refined.  This process is
 then repeated morph_cycles (typically 6) times.</P>
 
-<P><H5>Maps for morph_model:</H5><P>
+<P><H5>Maps for morph_model</H5><P>
 Normally you should specify that morph-model use a prime-and-switch
 map (map_type=prime_and_switch), as that is usually the most effective
 map for morphing. You can however choose instead to use a 2mFo-DFc map,
@@ -55,7 +55,7 @@ once the initial model-based map is calculated (priming), the
 model information is no longer used (switching). This map is typically
 quite unbiased by the model.
 
-<P><H5>Standard run of morph_model:</H5><P>
+<P><H5>Standard run of morph_model</H5><P>
 
 <p>Running morph_model is easy. 
 If you have a template (coords1.pdb) and a
@@ -66,7 +66,7 @@ phenix.morph_model data=coords1.mtz model=coords1.pdb
 </PRE>
 and morph_model will run automatically.
 
-<P><H5>Supplying a map for  morph_model:</H5><P>
+<P><H5>Supplying a map for  morph_model</H5><P>
 
 <p>If you have your own map you want to use in morph_model, you can type:
 
@@ -79,7 +79,7 @@ calculating a new map.  If you specify update_map=True (default) then
 new maps will be calculated on each subsequent cycle. If you specify
 update_map=False then your map will be used throughout.
 
-<P><H5>Getting a default parameters file for morph_model:</H5><P>
+<P><H5>Getting a default parameters file for morph_model</H5><P>
 <p>Usually you will want to edit a parameters file so that you can specify more
 details of the run. You can get a default parameters file with:
 <PRE style="face=courier">phenix.morph_model 
@@ -89,7 +89,7 @@ and then just edit the file morph_model_params.dat.
 
 <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>Specific limitations and problems:</H5><P>
+<P><H5>Specific limitations and problems</H5><P>
 
 <P><H5><U>Literature</U></H5><P>
 
