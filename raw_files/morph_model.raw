@@ -1,0 +1,99 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Morphing a model with morph_model </U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+<P><H5><U>Author(s)</U></H5><P>
+
+<UL>
+<LI>morph_model: Tom Terwilliger
+</LI></UL>
+
+<P><H5><U>Purpose</U></H5><P>
+
+morph_model is a procedure for distorting a model to match an 
+electron density map. It is suited for a case where a poor but unbiased
+map is available and a model that is generally
+locally similar to the target structure but where longer-range distances
+are not conserved.  This is often the case in homologous structures.
+
+
+<P><H5><U>Summary of the procedure used in morph_model </U></H5><P>
+The basic idea in morph_model is to apply a smoothly-varying offset to the
+template structure so as to make it match the map as closely as possible. In
+this way information about the local structure of the template is retained
+while allowing longer-range changes in structure.
+</P>
+<P>Morphing is carried out in 3 steps:
+<UL>
+<LI>For each residue in the structure an offset is identified that optimizes
+the match of the map to a sphere of atoms within rad_morph (typically 6 A)
+of the CA atom of that residue.  </LI>
+<LI>The offsets are smoothed in a window of 10 residues</LI>
+<LI>The smoothed offset for each residue is applied to all the atoms in that
+residue
+</UL>
+</P>
+<P>After morphing, the morphed model is refined.  This process is
+then repeated morph_cycles (typically 6) times.</P>
+
+<P><H5>Maps for morph_model:</H5><P>
+Normally you should specify that morph-model use a prime-and-switch
+map (map_type=prime_and_switch), as that is usually the most effective
+map for morphing. You can however choose instead to use a 2mFo-DFc map,
+a density-modified map, or an omit map.  The prime-and-switch map is a
+map calculated in the same way as a density-modified map, except that
+once the initial model-based map is calculated (priming), the 
+model information is no longer used (switching). This map is typically
+quite unbiased by the model.
+
+<P><H5>Standard run of morph_model:</H5><P>
+
+<p>Running morph_model is easy. 
+If you have a template (coords1.pdb) and a
+ data file fobs.mtz with FP SIGFP and FreeR_flag,  you can type:
+
+<PRE style="face=courier">
+phenix.morph_model data=coords1.mtz model=coords1.pdb 
+</PRE>
+and morph_model will run automatically.
+
+<P><H5>Supplying a map for  morph_model:</H5><P>
+
+<p>If you have your own map you want to use in morph_model, you can type:
+
+<PRE style="face=courier">
+phenix.morph_model data=coords1.mtz \
+   model=coords1.pdb map_coeffs=my_map_coeffs.mtz
+</PRE>
+and morph_model will start off with your map coefficients instead of 
+calculating a new map.  If you specify update_map=True (default) then
+new maps will be calculated on each subsequent cycle. If you specify
+update_map=False then your map will be used throughout.
+
+<P><H5>Getting a default parameters file for morph_model:</H5><P>
+<p>Usually you will want to edit a parameters file so that you can specify more
+details of the run. You can get a default parameters file with:
+<PRE style="face=courier">phenix.morph_model 
+</PRE>
+and then just edit the file morph_model_params.dat.
+
+
+<P><H5><U>Possible Problems</U></H5><P>
+
+<P><H5>Specific limitations and problems:</H5><P>
+
+<P><H5><U>Literature</U></H5><P>
+
+<P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->
