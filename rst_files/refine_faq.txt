@@ -39,6 +39,17 @@ significant local conformational changes, are common inputs where SA can
 improve over simple gradient-driven refinement.  It is generally less helpful
 later in refinement, and/or at high resolution.
 
+**What type of experimental data should I use for refinement?**
+
+Either amplitudes (F) or intensities (I) may be used in refinement (in any
+file format), but intensities will be used preferentially.  Both anomalous and
+non-anomalous data are supported; there does not appear to be any particular
+benefit to model quality using one or the other with the default strategy.
+However, anomalous data may be used to refine anomalous scattering factors
+for heavy atoms, and anomalous difference map coefficients will automatically
+be created in the output MTZ file.  For this reason, anomalous data are
+recommended.
+
 Restraints
 ==========
 
