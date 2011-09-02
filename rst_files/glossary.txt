@@ -112,7 +112,8 @@ proper geometry and prevent overfitting.  However, they become less necessary
 as resolution increases, and restraining a high-resolution model too tightly
 will actually make it worse.  See also **constraints**.
 
-**R-factor**: Crystallographic residual, equal to sum(|Fo|-|Fc|) / sum(|Fo|).
+**R-factor**: Crystallographic residual, equal to sum(abs(Fobs)-abs(Fcalc)) /
+sum(abs(Fobs)).
 R-merge, R-sym, etc. are calculated similarly using redundant observations
 instead of Fc.  Generating Fc at random will typically result in an R-factor
 of 0.55, which is therefore the threshold for determining if a model is placed
