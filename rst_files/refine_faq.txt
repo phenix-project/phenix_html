@@ -140,7 +140,7 @@ NCS, etc.  In general, the higher the data-to-parameter ratio, the more
 likely individual ADPs are to work well.  As an approximate example, consider
 these two hypothetical structures:
 
-  - a 3.3 Angstrom structure of a single protein chain per asymmetric unit,
+  - a 3.5 Angstrom structure of a single protein chain per asymmetric unit,
     with 38% solvent content
   - a 4.0 Angstrom structure of 3 NCS-related chains, with 70% solvent
     content
@@ -208,7 +208,8 @@ Hydrogens
 **Why are my hydrogen atoms added by PHENIX exploding when I run real-space
 refinement in Coot?**
 
-Coot uses a version of the CCP4 monomer library with hydrogen atoms named
+Versions of Coot prior to 0.6.2 used a version of the CCP4 monomer library
+with hydrogen atoms named
 according to the PDB format version 2 standard; PHENIX can recognize these, but
 defaults to PDB v.3.  To reconcile the different conventions, you can download
 the newer version of the monomer library (currently available
