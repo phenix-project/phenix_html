@@ -165,13 +165,11 @@ restraints (structural and otherwise):
     or worse).  Suitable atom selections will be detected automatically but
     you may also specify them manually.
 
-  - **Ramachandran restraints** guide protein backbone phi/psi angles towards
-    the optimal regions of the Ramachandran plot.  This can be very useful at
-    low resolutions (usually worse than 3.0A), where large numbers of outliers
-    are common when using the default restraints.  However, this option is
-    potentially dangerous, and should not be used without carefully inspecting
-    the electron density and fixing as many problems as possible manually
-    first.
+  - The **Conformation-Dependent Library** (Berkholz et al. 2009, Tronrud
+    et al. 2010) modifies the default protein backbone restraints, especially
+    the C-Calpha-N bond angle.  It results in lower bond/angle RMSDs across a
+    wide resolution range.  (This will probably be turned on by default in
+    future versions of Phenix.)
 
   - **Use experimental phases** uses the experimental phase distributions
     (Hendrickson-Lattman coefficients) from phasing programs such as AutoSol
@@ -430,3 +428,13 @@ References
     **Crystallographic model quality at a glance.**
     `Acta Cryst. 2009,  D65:297-300.
     <http://www.ncbi.nlm.nih.gov/pubmed/19237753>`_
+
+  - *Conformation-dependent library* :
+    Berkholz DS, Shapovalov MV, Dunbrack RL Jr, Karplus PA. **Conformation
+    dependence of backbone geometry in proteins.** `Structure. 2009
+    17:1316-25. <http://www.ncbi.nlm.nih.gov/pubmed/19836332>`_
+
+    Tronrud DE, Berkholz DS, Karplus PA. **Using a conformation-dependent
+    stereochemical library improves crystallographic refinement of proteins.**
+    `Acta Cryst. 2010 D66:834-42.
+    <http://www.ncbi.nlm.nih.gov/pubmed/20606264>`_

@@ -42,6 +42,15 @@ is far from convergence.  Manually built models, or MR solutions involving
 significant local conformational changes, are common inputs where SA can
 improve over simple gradient-driven refinement.  It is generally less helpful
 later in refinement, and/or at high resolution.</p>
+<p><strong>What type of experimental data should I use for refinement?</strong></p>
+<p>Either amplitudes (F) or intensities (I) may be used in refinement (in any
+file format), but intensities will be used preferentially.  Both anomalous and
+non-anomalous data are supported; there does not appear to be any particular
+benefit to model quality using one or the other with the default strategy.
+However, anomalous data may be used to refine anomalous scattering factors
+for heavy atoms, and anomalous difference map coefficients will automatically
+be created in the output MTZ file.  For this reason, anomalous data are
+recommended.</p>
 <P><H5><U><B>Restraints</B></U></H5><P>
 <p><strong>When should I use NCS restraints?</strong></p>
 <p>An approximate cutoff for NCS restraints is 2.0 Angstrom - at higher
@@ -115,7 +124,7 @@ likely individual ADPs are to work well.  As an approximate example, consider
 these two hypothetical structures:</p>
 <blockquote>
 <ul>
-<li>a 3.3 Angstrom structure of a single protein chain per asymmetric unit,
+<li>a 3.5 Angstrom structure of a single protein chain per asymmetric unit,
 with 38% solvent content</li>
 <li>a 4.0 Angstrom structure of 3 NCS-related chains, with 70% solvent
 content</li>
@@ -175,7 +184,8 @@ anisotropic ADPs at an inappropriate resolution.)</em></p>
 <P><H5><U><B>Hydrogens</B></U></H5><P>
 <p><strong>Why are my hydrogen atoms added by PHENIX exploding when I run real-space
 refinement in Coot?</strong></p>
-<p>Coot uses a version of the CCP4 monomer library with hydrogen atoms named
+<p>Versions of Coot prior to 0.6.2 used a version of the CCP4 monomer library
+with hydrogen atoms named
 according to the PDB format version 2 standard; PHENIX can recognize these, but
 defaults to PDB v.3.  To reconcile the different conventions, you can download
 the newer version of the monomer library (currently available
