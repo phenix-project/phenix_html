@@ -165,17 +165,18 @@ restraints (structural and otherwise):
     or worse).  Suitable atom selections will be detected automatically but
     you may also specify them manually.
 
-  - The **Conformation-Dependent Library** (Berkholz et al. 2009, Tronrud
-    et al. 2010) modifies the default protein backbone restraints, especially
-    the C-Calpha-N bond angle.  It results in lower bond/angle RMSDs across a
-    wide resolution range.  (This will probably be turned on by default in
-    future versions of Phenix.)
-
   - **Use experimental phases** uses the experimental phase distributions
     (Hendrickson-Lattman coefficients) from phasing programs such as AutoSol
     as additional restraints during refinement.  This is usually helpful if
     these phases are available, but only if the same data were used for both
     phasing and refinement.
+
+..
+  - The **Conformation-Dependent Library** (Berkholz et al. 2009, Tronrud
+    et al. 2010) modifies the default protein backbone restraints, especially
+    the C-Calpha-N bond angle.  It results in lower bond/angle RMSDs across a
+    wide resolution range.  (This will probably be turned on by default in
+    future versions of Phenix.)
 
 .. _optimization:
 
@@ -423,12 +424,14 @@ References
     `Nucleic Acids Res. 2007 35:W375-83.
     <http://www.ncbi.nlm.nih.gov/pubmed/17452350>`_
 
+..
   - *POLYGON* :
     Urzhumtseva L, Afonine PV, Adams PD, Urzhumtsev A.
     **Crystallographic model quality at a glance.**
     `Acta Cryst. 2009,  D65:297-300.
     <http://www.ncbi.nlm.nih.gov/pubmed/19237753>`_
 
+..
   - *Conformation-dependent library* :
     Berkholz DS, Shapovalov MV, Dunbrack RL Jr, Karplus PA. **Conformation
     dependence of backbone geometry in proteins.** `Structure. 2009
