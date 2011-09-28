@@ -31,16 +31,17 @@ then "Set up tutorial data..." in the dialog which appears, and select
 Limitations
 -----------
 
+  - Only protein chains are supported at this time.  Any associated heteroatoms
+    (including water and ligands) will be ignored.
+
   - Only a single set of chains can be compared at a time; if you have
     a set of heterogeneous complexes, the components need to be dealt with
     separately.
 
-  - All protein chains must be numbered identically; the assumption is that
-    the original biological sequences are identical.  Support for homologous
-    structures is planned for the near future.
-
-  - Insertion codes are not handled well (if at all), especially if the
-    insertions interrupt the sequential numbering of the adjacent regions.
+  - This tool is of limited use for comparing proteins which diverge
+    significantly in sequence; the program will quit with a warning if the
+    fractional identity drops below 0.8 (this can be adjusted if desired).
+    See below for additional details.
 
 Configuration and required inputs
 ---------------------------------
@@ -63,7 +64,8 @@ containing multiple allowed file types, you may simply drag the directory in,
 and it will automatically guess the appropriate use for each file.  Reflections
 will not appear in the main list, but can be viewed by clicking either of the
 buttons labeled "X-ray data" or "Map coefficients".  If the PDB files and
-reflections use similar root filenames, the association between them will
+reflections use similar root filenames, or occur in pairs in the same
+directories, the association between them will
 be guessed automatically.  For instance, the following pair of files will
 automatically be recognized as model and experimental data:
 
@@ -101,6 +103,25 @@ available).  Otherwise, the original models will be used for viewing.
 still be run on the original models, and the coordinates mapped to their
 new positions.)
 
+In addition to the models actually being compared, you may also provide a
+"reference model" on which all other chains will be superposed.  If you do
+not explicitly provide a reference model, the first chain found in the list of
+input files will be used instead.
+
+Handling heterogeneous sequences
+--------------------------------
+
+Homologous structures and insertion codes are now supported.  To ensure that
+the residue numbering is interpreted correctly, you will need to uncheck the
+box labeled "Assume identical chain numbering".  The sequence you provide as
+input will be used to pick out similar chains, which will then be aligned to
+the reference model.  The numbering displayed in the output grids will reflect
+the residue IDs in the reference model; for residues present in other chains
+but not the reference model, the residue ID will be displayed as "--", but the
+residue name(s) will still be shown.  The primary limitation at this point is
+the lack of any direct link back to the original residue IDs, but the models
+displayed in Coot and PyMOL preserve these IDs.
+
 Results
 -------
 
@@ -110,12 +131,15 @@ there will be a separate PDB file for each chain, plus CCP4 map files if
 map coefficients were available.  If the map coefficients were calculated from
 input X-ray data (not pre-calculated) these will also be written out.
 
-When the application is finished running, a new window will open with separate
-tabs for each analysis.  Each tab contains a grid with chains organized one
+When the application is finished running, a summary tab will show a list of
+all chains used for the analysis, with basic statistics.  Additional tabs will
+be added for each analysis.  Each tab contains a grid with chains organized one
 per row, and residues of interest in columns.  Color coding indicates the
 relationship of the specific residue in each cell to the equivalent residues,
 and/or properties such as validation outlier or multiple conformations.
 Cells colored in grey indicated residues missing from the input chain.
+
+.. image:: images/structure_comparison_summary.png
 
 .. image:: images/structure_comparison_results.png
 
@@ -133,12 +157,15 @@ difference, homogeneous regions will usually be omitted from the grid.
 
   - **Ramachandran angles:** Any set of matching residues with phi,psi angles
     falling outside the "favored" regions of the Ramachandran plot will be
-    displayed.  Coloring: red for outliers, yellow for "allowed" angles,
+    displayed.  Additionally, residues which fall into more than one distinct
+    "favored" region will be included (although this is somewhat redundant with
+    the secondary structure comparison).
+    Coloring: red for outliers, yellow for "allowed" angles,
     green for "favored", blue for multiple conformations.
 
   - **Secondary structure:** Any set of matching residues with more than one
     type of secondary structure assignment will be included.  (This uses
-    the program KSDSSP to annotate the structure.)  Coloring: yellow for
+    the program ksDSSP to annotate the structure.)  Coloring: yellow for
     unstructured/loop, green for helical, blue for beta-sheet.
 
   - **Missing atoms:** Any set of matching residues with at least one atom
