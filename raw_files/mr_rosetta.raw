@@ -406,7 +406,7 @@ machine...or just a few minutes if you have  a multiprocessor machine to
 compile with.
 </P>
 
-<P>NOTE: If trouble...see the FULL INSTRUCTIONS at  http://www.rosettacommons.org/manuals/archive/rosetta3.2_user_guide/
+<P>NOTE: If trouble...see the FULL INSTRUCTIONS at  http://www.rosettacommons.org/manuals/archive/rosetta3.2_user_guide/ or http://www.rosettacommons.org/manuals/archive/rosetta3.2_ or  http://www.rosettacommons.org/manuals/archive/rosetta3.2.1_user_guide/
 
 <OL>
 <LI>
@@ -435,12 +435,29 @@ BioTools		new_apps.note		rosetta_demos
 foldit			release.note		rosetta_fragments
 manual			rosetta_database	rosetta_source
 </PRE>
+NOTE: if your directory contains .tgz files instead of the listing above
+you may need to also run the same tar command on the individual .tgz files.
 </LI>
 <LI>
 Now you want to compile.  You must have python on your machine...if not 
-you will need to install it from http://www.python.org/ 
-
-<P>In the scons command below the "-j2" means use 2 processors....adjust for 
+you will need to install it from http://www.python.org/.  You will also
+need scons. If you don't have scons you can get it from www.scons.org/.
+NOTE: you will need version 2.2 or later of python and 0.96.1 of scons.
+You can check your versions with:
+<PRE style="face=courier">
+  python --version
+  scons --version
+</PRE>
+<LI>
+NOTE 2: on Ubuntu you may also need zlib1g-dev.  You can get 
+this library and scons with:
+<PRE style="face=courier">
+    sudo su   # UBUNTU ONLY FOR INSTALLING zlib1g and scons
+    apt-get install zlib1g-dev
+    apt-get install scons
+</PRE>
+</LI>
+<LI><P>In the scons command below the "-j2" means use 2 processors....adjust for 
 your system. Takes about 1 hour with 2 processors.
 
 <PRE style="face=courier">
@@ -462,13 +479,13 @@ mark where rosetta is located:
 if you are using the bash or sh shells:  
 
 <PRE style="face=courier">
-export PHENIX_ROSETTA_PATH=/net/sigma/raid1/rosetta-3.2
+export PHENIX_ROSETTA_PATH=/your-path-to-rosetta-here/rosetta-3.2
 </PRE>
 
 or sh (C-shell):
 
 <PRE style="face=courier">
-setenv PHENIX_ROSETTA_PATH /net/sigma/raid1/rosetta-3.2
+setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/rosetta-3.2
 </PRE>
 </LI>
 
