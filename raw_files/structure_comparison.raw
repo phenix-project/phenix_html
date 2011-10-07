@@ -33,6 +33,8 @@ then &quot;Set up tutorial data...&quot; in the dialog which appears, and select
 <P><H5><U><B>Limitations</B></U></H5><P>
 <blockquote>
 <ul>
+<li>Only protein chains are supported at this time.  Any associated heteroatoms
+(including water and ligands) will be ignored.</li>
 <li>Only a single set of chains can be compared at a time; if you have
 a set of heterogeneous complexes, the components need to be dealt with
 separately.</li>

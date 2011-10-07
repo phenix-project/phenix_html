@@ -281,6 +281,48 @@ be accessed by clicking the button labeled "Other tools" on the toolbar.
 
 .. image:: images/gui_misc_tools.png
 
+Current options include:
+
+  - **Fetch PDB data**: Download structure data in PDB, FASTA, or CIF/MTZ
+    format.  (Command line equivalent: ``phenix.fetch_pdb``.)
+
+  - **Convert PDB file(s) to FASTA**: Extract sequences of polymer chains
+    in a model, with flexible options for handling gaps, insertions, etc.
+    (Command line equivalent: ``iotbx.pdb_as_fasta``.)
+
+  - **Multiple sequence alignment**: uses the public-domain program MUSCLE
+    (Edgar 2005) to perform alignment of sequences in various formats
+    (including automatic extraction of sequences from PDB files).
+    (Command line equivalent: none, but MUSCLE can be run in PHENIX with
+    the command ``phenix.muscle``.)
+
+  - **Plot average B-factors in PDB file**: Plots residue B-factors (for
+    all atoms, backbone, or sidechain) as a horizontal line graph.
+    (Command line equivalent: ``mmtbx.bfactor_plot``.)
+
+  - **Reindex reflections**: Performs change-of-basis operations on reflection
+    files.  (Command-line equivalent: ``phenix.reindex``.)
+
+  - **Modify PDB file**: Shortcuts for performing some of the most common
+    tasks in ``phenix.pdbtools`` (also available as a full GUI).
+
+  - **PDB remediation**: Convert between versions 2 and 3 of the PDB format.
+    (Command-line equivalent: ``iotbx.pdb_remediator``.)
+
+  - **Import data and flags**: Prepares data for use in refinement; this tool
+    is especially useful when bringing in new high-resolution reflections for
+    an already-refined structure.
+
+  - **Plot PDB statistics**: Generates scatter plots or histograms of
+    statistics output by phenix.model_vs_data for a large fraction of the PDB
+    (nearly all X-ray structures with experimental data available).  The same
+    database is used to generate the plots in **POLYGON**.
+
+  - **Inspect R-free flags**: Plots distribution of R-free flags in a
+    reflections file; this is primarily used to determine whether the flags
+    have been created in thin resolution shells.  (Command line equivalent:
+    ``wxtbx.inspect_r_free_flags``.)
+
 --------
 Projects
 --------
@@ -388,7 +430,22 @@ data is sent.
 Acknowledgments
 ---------------
 
+The PHENIX GUI is written in Python 2.7, using the wxPython toolkit for
+most features, plus matplotlib for plotting.
 Some of the icons used in the GUI came from the `Crystal Icons project
 <http://www.everaldo.com/crystal>`_ which is licensed under the LGPL.  Many
 additional icons (anything with a molecular representation) were generated
 using PyMOL.
+
+Several open-source programs have been included with PHENIX and
+are used in various ways in the GUI; we are grateful to their authors for
+permission to redistribute the code:
+
+  - `**MUSCLE** <http://www.drive5.com/muscle>`_ written by Bob Edgar.
+    Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy
+    and high throughput.Nucleic Acids Res. 32(5):1792-1797.
+
+  - `**ksDSSP** <http://plato.cgl.ucsf.edu/chimera/docs/UsersGuide/midas/ksdssp.html>`_ written by UCSF Computer Graphics Laboratory.  Original method
+    (independently reimplemented): W. Kabsch and C. Sander, "Dictionary of
+    Protein Secondary Structure: Pattern Recognition of Hydrogen-Bonded and
+    Geometrical Features" Biopolymers 22:2577 (1983).
