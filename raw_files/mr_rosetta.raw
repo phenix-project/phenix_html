@@ -546,7 +546,7 @@ to the Robetta server. Then you will get several 3-mer and 9-mer fragments
 files, one for each piece that you submit. You can then simply paste these
 together after editing all but the first to fix the residue numbers.  To edit
 the files just use
-<PRE style="face=courier">phenix.offset_robetta_resid &lt;fragment_file_name&gt; &lt;new_fragment_file_name&gt; &lt;offset-for-residue numbers&gt;
+<PRE style="face=courier">phenix.phenix.adjust_robetta_resid &lt;fragment_file_name&gt; &lt;new_fragment_file_name&gt; &lt;offset-for-residue numbers&gt;
 </PRE>
 </LI>
 <LI>
