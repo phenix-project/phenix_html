@@ -135,11 +135,16 @@ type:
 <PRE style="face=courier"># run_multi.eff  commands for running phenix.multi_crystal_average
 # use:   "phenix.multi_crystal_average run_multi.eff"
 multi {
-  pdb_list = "crystal_1.pdb" "crystal_2.pdb"
-  map_coeff_list = "crystal_1_map_coeffs.mtz"  None
-  datafile_list = "crystal_1_data.mtz" "crystal_2_data.mtz"
-  datafile_labin_list = "FP=FP"   "FP=F SIGFP=SIGF PHIB=PHI FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD"
-  solvent_content_list = "0.43" "0.50"
+  pdb_list = "crystal_1.pdb" 
+  pdb_list = "crystal_2.pdb"
+  map_coeff_list = "crystal_1_map_coeffs.mtz"  
+  map_coeff_list = "None"
+  datafile_list = "crystal_1_data.mtz" 
+  datafile_list = "crystal_2_data.mtz"
+  datafile_labin_list = "FP=FP"   
+  datafile_labin_list = "FP=F SIGFP=SIGF PHIB=PHI FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD"
+  solvent_content_list = 0.43
+  solvent_content_list = 0.50
   cycles = 5
 }
 </PRE>
@@ -161,7 +166,10 @@ coefficients, and you will want to supply experimental phases and
 HL coefficients for your datfiles.
 <P>
 The column label strings like "FP=FP" are optional...if you say instead
-"None" then phenix.multi_crystal_average will guess them for you.
+"None" then phenix.multi_crystal_average will guess them for you. NOTE: You
+need to put quotes around the None. Also note: the order of entering
+pdb_list, map_coeff_list, dadta_file_list, solvent_content_list etc matters. They
+must all match.
 
 <P><H5>Run of phenix.multi_crystal_average with multiple domains:</H5><P>
 <P> If your PDB files have more than one NCS domain within a chain, then
@@ -213,6 +221,10 @@ structure.
 
 <P><H5>Specific limitations and problems:</H5><P>
 <UL>
+<LI>The format for the parameters file for phenix.multi_crystal_average has changed
+as of version 1.7-869 (from a list of inputs for pdb_list etc, to several 
+lines of inputs, one for each crystal.)
+</LI>
 <LI>If the NCS asymmetric unit of your crystal contains
 more than one chain, phenix.multi_crystal_average will consider it to have more than one
 domain. This limitation comes from phenix.simple_ncs_from_pdb, which assigns
