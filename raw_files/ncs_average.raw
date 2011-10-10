@@ -1,0 +1,28 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Calculating a simple NCS averaged map</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<p>If you already have map coefficients in an MTZ file and have identified
+your NCS with 
+<tt class="docutils literal"><span class="pre">phenix.find_ncs</span></tt>
+and just want to calculate the average density in all your NCS copies, you
+can use 
+<tt class="docutils literal"><span class="pre">phenix.ncs_average</span></tt>.
+ 
+In most cases this can be run automatically by passing the name of the MTZ file and
+the ncs_spec file with NCS information.
+<P>
+The output of <tt class="docutils literal"><span class="pre">phenix.ncs_average</span></tt> is a CCP4-style map file.
+
+<P>
+These simple NCS averaged maps can be accurate maps for cases with high NCS 
+symmetry and they are useful for evaluating what an NCS density modified 
+map should be expected to look like.
+
+<!--REMARK PHENIX BODY END-->
