@@ -30,8 +30,21 @@ Ensembler can be run from the PHENIX GUI and the command line, the only
 difference being the way commands are taken from the user.
 </P>
 
+<P><H5>Input files</H5></P>
+<UL>
+<LI><B>Structures</B> <I>(compulsory)</I>. The chains that are to be
+superposed. Protein chains are automatically identified, other chains are
+discarded. In case the structure contains multiple chains, these will all be
+used for superposition. Accepted formats: PDB. Recognized extensions:
+<TT>.pdb</TT>, <TT>.ent</TT>.</LI>
+<LI><B>Alignment</B> <I>(optional)</I>. In case a user-supplied residue mapping
+is desired, this can be achieved by selecting the appropriate mode and
+supplying alignment files. Accepted extensions (with the corresponding format)
+are <TT>.aln</TT> (CLUSTAL format), <TT>.pir</TT> (PIR-format) and <TT>.ali</TT>
+(relaxed PIR-like format).</LI>
+</UL>
+
 <P><H5>Command line</H5></P>
-<P>
 <PRE><TT><B>phenix.ensembler</B> \
     [ command-line switches ] \
     [ PHIL-format parameter files ] \
@@ -42,7 +55,7 @@ difference being the way commands are taken from the user.
 <P><H6>Command-line switches:</H6></P>
 <PRE><TT>
   <B>-h, --help</B>            show this help message and exit
-  <B>-p, --phil</B>            print PHIL and exit
+  <B>--show-defaults</B>       print PHIL and exit
   <B>-i, --stdin</B>           read PHIL from stdin as well
   <B>-v, --verbosity</B>       set verbosity level (DEBUG,INFO,WARNING,VERBOSE)
 </TT></PRE>
@@ -51,7 +64,8 @@ difference being the way commands are taken from the user.
 <P>
 Everything not starting with a dash('-') is interpreted as a PHIL argument.
 This can be a PHIL-format file containing parameters, command-line assignment
-or a file whose type is automatically recognized (based on file extension).
+or a file whose type is automatically recognized (based on file extension;
+structure files and alignment files are recognized automatically).
 </P>
 
 <P><H5>GUI</H5></P>
@@ -62,19 +76,6 @@ generation settings...</B>. Input files are specified either by the
 <B>+</B>/<B>-</B> button pair, or by drag-and-drop onto the window area. File
 types are automatically recognized, and added to the relevant input section.
 </P>
-<P><H5>Input files</H5></P>
-<UL>
-<LI><B>Structures</B> <I>(compulsory)</I>. The chains that are to be
-superposed. Protein chains are automatically identified, other chains are
-discarded. In case the structure contains multiple chains, these will all be
-used for superposition. Accepted formats: PDB. Recognized extensions:
-<TT>.pdb</TT>, <TT>.ent</TT>.</LI>
-<LI><B>Alignment</B> <I>(optional)</I>. In case a user-supplied residue mapping
-is desired, this can be achieved by selecting the appropriate mode and
-supplying alignment files. Accepted extensions (with the correspond format) are
-<TT>.aln</TT> (CLUSTAL format), <TT>.pir</TT> (PIR-format) and <TT>.ali</TT>
-(relaxed PIR-like format).</LI>
-</UL>
 
 <P><H5>Output files</H5></P>
 <P>
@@ -94,6 +95,7 @@ The workflow consists of several stages that can be independently configured.
 These are listed in order of execution. For a summary of all keywords with the
 corresponding defaults, see the <B>Additional information</B> section.
 </P>
+
 <P><H5>Residue mapping</H5></P>
 <P>
 Establishes the equivalence of residues among the input chains. There are
@@ -116,6 +118,7 @@ Most common residue mapping mode is <TT><B>ssm</B></TT>. If no SSM alignment can
 be done or this is imprecise (e.g. no secondary structure),
 <TT><B>muscle</B></TT> is a good second choice.
 </P>
+
 <P><H5>Atom mapping</H5></P>
 <P>
 Maps selected atoms within equivalent residues to each other. The mapping is
@@ -125,6 +128,7 @@ a gap will be filled where necessary. Atom selection is controlled by the
 <TT><B>atoms</B></TT> parameter of the <TT><B>configuration</B></TT> scope.
 Default atom selection: CA.
 </P>
+
 <P><H5>Superposition</H5></P>
 <P>
 Equivalent positions are superposed iteratively to find a globally optimal
@@ -152,6 +156,7 @@ pairwise superpositions. The convergence criterion is controlled by the
 scope), which is the r.m.s. difference change between two consecutive
 iterations.
 </P>
+
 <P><H5>Weighting</H5></P>
 <P>
 Automatic weighting can be used to improve superposition, either to amplify
@@ -188,6 +193,7 @@ done automatically (in steps controlled by the
 <TT><B>max_damping_factor</B></TT> parameter of the <TT><B>weighting</B></TT>
 scope) is reached, at which point an exception is raised.
 </P>
+
 <P><H5>Cluster analysis</H5></P>
 <P>
 Hierarchical cluster analysis is performed using the pairwise r.m.s.
@@ -195,6 +201,7 @@ differences as a distance measure. The <TT><B>clustering</B></TT> parameter of
 the <TT><B>configuration</B></TT> score can be used to adjust cluster
 boundaries.
 </P>
+
 <P><H5>Chain trimming</H5></P>
 <P>
 This option trims residues from the final superposed model where the unweighted
@@ -202,6 +209,7 @@ r.m.s.d. is above a certain threshold (<TT><B>threshold</B></TT> parameter of
 the <TT><B>trimming</B></TT> scope). Useful in removing flexible loops, etc.
 Default: no trimming.
 </P>
+
 <P><H5>Sorting</H5></P>
 <P>
 After superposition is complete, the chains can be sorted by sequence identity
@@ -211,7 +219,9 @@ or unweighted r.m.s.d. (<TT><B>unwrmsd</B></TT>). This is controlled by the
 <TT><B>sort</B></TT> parameter of the <TT><B>output</B></TT> scope. Default:
 input order (<TT><B>input</B></TT>).
 </P>
+
 <P><H5><U>Specific limitations and possible problems</U></H5></P>
+
 <P><H5>Processing features</H5></P>
 <UL>
 <LI>Ensembler considers each chain individually and therefore it is not
@@ -224,6 +234,7 @@ round.</LI>
 reliably aligned to the sequence, and these will be discarded from the
 superposition.</LI>
 </UL>
+
 <P><H5>Warning and error messages</H5></P>
 <UL>
 <LI><TT><B>No alignments given</B></TT>: no alignments were specified and a
