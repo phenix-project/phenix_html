@@ -322,7 +322,7 @@ Report the R/freeR of each model.
 <P><H5><U> Notes on the procedure used in mr_rosetta </U></H5><P>
 <OL>
 <LI>
-<P><H5><U>Viewing and using saved solutions </U></H5><P>
+<P><H5><U>Viewing solutions and restarting with saved solutions </U></H5><P>
 At each stage, existing solutions are saved as a python "pkl" file and can 
 be read back in to mr_rosetta with "mr_rosetta_solutions=xxx.pkl". These 
 solutions can be displayed with "display_solutions=True".  Existing 
@@ -331,6 +331,17 @@ of the model and its history, the map_coefficients and labels, etc.
 These can be read in to mr_rosetta with the 
 keyword &quot;rosetta_solutions=results.pkl&quot; and used as inputs for
 subsequent runs, starting at any step that can use those solutions.
+
+<p>NOTE: 
+You can re-start mr_rosetta only at the beginning of major stages (like
+"place_model", "rosetta_rebuild" etc)...but not in between.
+<p>
+Normally at the end of a major stage a .pkl file is written out with text
+like "type this to see all the results".  You can almost always give your
+original command, the command "start_point=xxx" and 
+"mr_rosetta_solutions=my_pickle_file.pkl" and it should then continue on
+from there.
+
 </LI>
 <LI>
 <P><H5><U>Running mr_rosetta on a cluster</U></H5><P>
