@@ -124,12 +124,6 @@ full phenix.refine manual page for details on each):
     removes spurious bonds but also some genuine ones.  It has a small effect
     on validation statistics, and typically none on R-free, but it does keep
     secondary structures stable.
-  - **Ramachandran restraints**: these restrain the phi/psi angles of the
-    protein backbone (normally unrestrained) to fall within the favored
-    regions of the Ramachandran plot.  We recommend using this only as a last
-    resort, and only at very low resolution (4 Angstrom or worse).  You should
-    fix as many Ramachandran outliers as possible manually before turning
-    these restraints on.
 
 B-factors/ADPs/TLS
 ==================
