@@ -47,13 +47,13 @@ non-anomalous data are supported; there does not appear to be any particular
 benefit to model quality using one or the other with the default strategy.
 However, anomalous data may be used to refine anomalous scattering factors
 for heavy atoms, and anomalous difference map coefficients will automatically
-be created in the output MTZ file.  For this reason, anomalous data are
+be created in the output MTZ file.  For these reasons, anomalous data are
 recommended.
 
 Restraints
 ==========
 
-**When should I use NCS restraints?**
+**When should I use non-crystallographic symmetry (NCS) restraints?**
 
 An approximate cutoff for NCS restraints is 2.0 Angstrom - at higher
 resolution the data alone are sufficient, but at lower resolution additional
@@ -101,8 +101,45 @@ result.  For best results, restraints for non-standard ligands should be
 generated in eLBOW using a SMILES string or similar source of topology
 information.
 
+**What can I do to make my low-resolution structure better?**
+
+In general, if NCS is present in your structure, you should always use NCS
+restraints at low resolution; it is worth trying both the Cartesian (global)
+and torsion restraints to see which works best for your model.  This alone
+usually helps with the geometry and overfitting, although it is rarely
+sufficient by itself.  There are also several different types of restraint
+specifically designed to help with low-resolution refinement (consult the
+full phenix.refine manual page for details on each):
+
+  - **Reference model**: this restraints the torsion angles to a
+    high-resolution model, using a potential that gently releases angles which
+    are genuinely different (allowing both local deformations or domain
+    movements).  This is usually the best option, and typically improves both
+    R-free, overfitting, and validation statistics.  However, it depends on
+    the availability of a suitable reference model.
+  - **Secondary structure restraints**: these are simply harmonic distance
+    restraints between hydrogen-bonding atoms in protein helices and sheets,
+    and nucleic acid base pairs.  Annotation can be either automatic or manual.
+    The primary limitation is currently the need for outlier filtering, which
+    removes spurious bonds but also some genuine ones.  It has a small effect
+    on validation statistics, and typically none on R-free, but it does keep
+    secondary structures stable.
+  - **Ramachandran restraints**: these restrain the phi/psi angles of the
+    protein backbone (normally unrestrained) to fall within the favored
+    regions of the Ramachandran plot.  We recommend using this only as a last
+    resort, and only at very low resolution (4 Angstrom or worse).  You should
+    fix as many Ramachandran outliers as possible manually before turning
+    these restraints on.
+
 B-factors/ADPs/TLS
 ==================
+
+**When should I use TLS?**
+
+TLS refinement is generally valid at any resolution; at low resolution, it may
+be best to make each chain a single group, instead of trying to split them
+into smaller pieces.  However, it is best to wait until near the end of
+refinement to add TLS; until then you should refine with isotropic ADPs only.
 
 **Can I use both TLS and anisotropic ADPs?**
 
@@ -132,9 +169,26 @@ all of the different ADP refinement strategies in a single run, the
 atom selections for individual and grouped refinement may not overlap,
 nor may the selections for anisotropic ADPs and TLS groups.
 
+**When should I refine anisotropic ADPs instead of TLS groups?**
+
+There is no precise cutoff where you should turn on anisotropic ADPs, but
+these are approximate guidelines:
+
+  - At 1.5 Angstrom resolution or better, refine protein/nucleic acid/ligand
+    heavy atoms (C/N/O or heavier) anisotropically, and waters isotropically.
+  - At 1.2 Angstrom or better, waters should also be anisotropic.
+  - It is almost never appropriate to refine hydrogens anisotropically.
+
+There may be circumstances where anisotropic refinement is permissible at
+slightly lower resolution, but 1.7 Angstrom is probably a lower limit.
+Exceptions may sometimes be made for metal ions, since they scatter very
+strongly.  As always, you should use the drop in R-free to judge whether the
+change in parameterization was appropriate - a decrease of 0.5% (i.e. 0.005)
+or better indicates success.
+
 **When should I refine grouped B-factors/ADPs instead of individual?**
 
-It is difficult to give an exact rule for this, since it depends on several
+It is again difficult to give an exact rule, since it depends on several
 properties of the crystal including resolution, solvent content, presence of
 NCS, etc.  In general, the higher the data-to-parameter ratio, the more
 likely individual ADPs are to work well.  As an approximate example, consider
@@ -204,6 +258,16 @@ anisotropic ADPs at an inappropriate resolution.)*
 
 Hydrogens
 =========
+
+**When should I refine with hydrogens?**
+
+This is largely a matter of personal preference.  Using explicit riding
+hydrogen atoms can improve geometry at any resolution; at higher resolutions,
+approximately 2 Angstrom or better, they will generally improve R-free as well.
+At atomic resolution (1.5 A or better) they should always be part of the final
+model.  Note that at unless you have true subatomic resolution (0.9 A or
+better), the hydrogens should always be refined as "riding", meaning that their
+coordinates are defined by the heavy atoms, not individually refined.
 
 **Why are my hydrogen atoms added by PHENIX exploding when I run real-space
 refinement in Coot?**
