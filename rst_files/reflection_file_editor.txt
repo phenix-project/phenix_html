@@ -76,9 +76,18 @@ Notes on usage
     merging anomalous data, which halves the number of output arrays (and
     makes the trailing (+) and (-) unnecessary).  This will be checked at
     runtime.
+  - Some data processing programs output the columns F SIGF DANO SIGDANO, which
+    if they occur sequentially in an MTZ file will be treated as a single data
+    array.  Internally, these are converted to anomalous data (i.e. F(+)
+    SIGF(+) F(-) SIGF(-)), instead of keeping the original non-anomalous
+    amplitudes and separate anomalous differences.  We recommend against using
+    these data in PHENIX, as they are less reliable than the original anomalous
+    amplitudes or intensities (and are not otherwise used here).
   - The editor will not otherwise attempt to impose sensible label names,
     except when converting between intensities and amplitudes.
   - All input files must either have the same symmetry (allowing for slight
     differences in unit cell dimensions and screw axes) or leave it undefined
     (e.g. CNS format).  To mix arrays from files with different symmetry,
     first convert each to the desired final symmetry, then combine them.
+  - All output arrays must also have the same symmetry, including isomorphous
+    unit cells.  (You may, however, disable the check for isomorphism.)
