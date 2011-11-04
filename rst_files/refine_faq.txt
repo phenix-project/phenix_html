@@ -125,6 +125,21 @@ full phenix.refine manual page for details on each):
     on validation statistics, and typically none on R-free, but it does keep
     secondary structures stable.
 
+**I have ions very close to water molecules/protein atoms, and phenix.refine
+keeps tring to move them apart.  How can I prevent this?**
+
+Use ``phenix.ready_set`` or ``phenix.metal_coordination`` to generate custom
+bond (and optionally, bond angle) restraints, which will be output to a
+parameter file ending in ".edits".  If you are using the PHENIX GUI,
+there is a toolbar button for ReadySet in the phenix.refine interface, which
+will automatically load the output files for use in phenix.refine.
+
+**I had previously generated custom restraints using ReadySet in the PHENIX
+GUI, but the atoms have changed.  Now phenix.refine crashes because it can't
+find the atom selections.  How do I remove the old custom restraints?**
+
+In the Utilities menu, select "Clear custom restraints."
+
 B-factors/ADPs/TLS
 ==================
 
