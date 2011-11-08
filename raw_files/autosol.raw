@@ -126,12 +126,12 @@ experimental data if any of the files in the first dataset read in have a very
 strong anisotropy. You can tell the Wizard how much anisotropy there must be
 before applying this correction by default using the keywords
 
-<PRE style="face=courier">correct_aniso=True  # (if True or False then always or never apply correction)
+<PRE style="face=courier">remove_aniso=True  # (if True or False then always or never apply correction)
 
-delta_b_for_auto_correct_aniso=20  # correct if range of anisotropic B 
+delta_b_for_auto_remove_aniso=20  # correct if range of anisotropic B 
                                    #is greater than 20
 
-ratio_b_for_auto_correct_aniso=1.5  #correct if the ratio of the largest 
+ratio_b_for_auto_remove_aniso=1.5  #correct if the ratio of the largest 
                                   #to smallest anisotropic B is greater than 1.5
 </PRE>
 <P>If an anisotropy correction is applied then a separate 
