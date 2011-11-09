@@ -61,10 +61,8 @@ Non-matching chains will be ignored.
 Currently the options for adding large numbers of files are limited.  PDB files
 may be dragged into the list at the top of the window.  If you have a directory
 containing multiple allowed file types, you may simply drag the directory in,
-and it will automatically guess the appropriate use for each file.  Reflections
-will not appear in the main list, but can be viewed by clicking either of the
-buttons labeled "X-ray data" or "Map coefficients".  If the PDB files and
-reflections use similar root filenames, or occur in pairs in the same
+and it will automatically guess the appropriate use for each file.  If the PDB
+and reflection files use similar root filenames, or occur in pairs in the same
 directories, the association between them will
 be guessed automatically.  For instance, the following pair of files will
 automatically be recognized as model and experimental data:
@@ -106,7 +104,9 @@ new positions.)
 In addition to the models actually being compared, you may also provide a
 "reference model" on which all other chains will be superposed.  If you do
 not explicitly provide a reference model, the first chain found in the list of
-input files will be used instead.
+input files will be used instead.  However, it may be advantageous to
+explicitly define this model if you are concerned about the quality or
+consistency of the structural alignments.
 
 Handling heterogeneous sequences
 --------------------------------
@@ -172,6 +172,18 @@ difference, homogeneous regions will usually be omitted from the grid.
     missing will be displayed.  Coloring: red for residues missing backbone
     atoms (C, O, N, CA, or CB), yellow for residues missing sidechain atoms,
     green for complete residues.
+
+  - **B-factors:** Unlike the other analyses, this result does not identify
+    heterogeneity on a per-residue basis, but instead plots the mean B-factor
+    for each residue by chain, with the option of viewing only the main-chain
+    or sidechain average.  In addition to the absolute mean values, it can also
+    display the values normalized to the overall mean for each chain, which
+    may be useful when the structures being compared differ significantly in
+    the scale of their B-factors.  Points denoting rotamer and Ramachandran
+    outliers will also be displayed.  (Note that this plot does not interact
+    directly with Coot or PyMOL.)
+
+.. image:: image/structure_comparison_bfactors.png
 
 Interacting with Coot
 ---------------------
