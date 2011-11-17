@@ -58,10 +58,8 @@ Non-matching chains will be ignored.</p>
 <p>Currently the options for adding large numbers of files are limited.  PDB files
 may be dragged into the list at the top of the window.  If you have a directory
 containing multiple allowed file types, you may simply drag the directory in,
-and it will automatically guess the appropriate use for each file.  Reflections
-will not appear in the main list, but can be viewed by clicking either of the
-buttons labeled &quot;X-ray data&quot; or &quot;Map coefficients&quot;.  If the PDB files and
-reflections use similar root filenames, or occur in pairs in the same
+and it will automatically guess the appropriate use for each file.  If the PDB
+and reflection files use similar root filenames, or occur in pairs in the same
 directories, the association between them will
 be guessed automatically.  For instance, the following pair of files will
 automatically be recognized as model and experimental data:</p>
@@ -95,7 +93,9 @@ new positions.)</p>
 <p>In addition to the models actually being compared, you may also provide a
 &quot;reference model&quot; on which all other chains will be superposed.  If you do
 not explicitly provide a reference model, the first chain found in the list of
-input files will be used instead.</p>
+input files will be used instead.  However, it may be advantageous to
+explicitly define this model if you are concerned about the quality or
+consistency of the structural alignments.</p>
 <P><H5><U><B>Handling heterogeneous sequences</B></U></H5><P>
 <p>Homologous structures and insertion codes are now supported.  To ensure that
 the residue numbering is interpreted correctly, you will need to uncheck the
@@ -149,8 +149,18 @@ unstructured/loop, green for helical, blue for beta-sheet.</li>
 missing will be displayed.  Coloring: red for residues missing backbone
 atoms (C, O, N, CA, or CB), yellow for residues missing sidechain atoms,
 green for complete residues.</li>
+<li><strong>B-factors:</strong> Unlike the other analyses, this result does not identify
+heterogeneity on a per-residue basis, but instead plots the mean B-factor
+for each residue by chain, with the option of viewing only the main-chain
+or sidechain average.  In addition to the absolute mean values, it can also
+display the values normalized to the overall mean for each chain, which
+may be useful when the structures being compared differ significantly in
+the scale of their B-factors.  Points denoting rotamer and Ramachandran
+outliers will also be displayed.  (Note that this plot does not interact
+directly with Coot or PyMOL.)</li>
 </ul>
 </blockquote>
+<div class="image"><img alt="image/structure_comparison_bfactors.png" src="image/structure_comparison_bfactors.png" /></div>
 <P><H5><U><B>Interacting with Coot</B></U></H5><P>
 <p>To show controls for sending data to and from Coot, click the icon on the
 toolbar of the results window.  A small panel will appear:</p>

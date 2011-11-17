@@ -716,7 +716,7 @@ edited your template PDB to match the target sequence, the number will be 0.
  line 6 has two dashes:  --
 </LI>
 </OL>
- 
+</UL> 
 
 <P><H5><U>Output files from mr_rosetta</U></H5><P>
 The output files from mr_rosetta are the same as those from .autobuild:
@@ -725,6 +725,51 @@ end of your log file.  The files will be something like:
 <b>MR_ROSETTA_1/..../AutoBuild_run_1_/overall_best.pdb</b>
  and 
 <b>MR_ROSETTA_1/..../AutoBuild_run_1_/overall_best_denmod_map_coeffs.mtz</b>.
+
+<P><H5><U>Graphical interface</U></H5><P>
+A GUI for MR-Rosetta is now available in the "Molecular replacement" category.
+Its function is essentially identical to that of the command-line version,
+but many of the details are not shown by default.  In addition to the methods
+described above for configuring your system to use Rosetta from PHENIX, the
+GUI also includes a preferences setting in the "Wizards" section for defining
+the path to the Rosetta installation.  If the GUI does not detect that you
+have the environment set up correctly, it will issue a warning when started.
+
+<p>The configuration tab in the GUI
+includes a list into which any combination of input files may be added; the
+file types should be recognized (and any relevant data they contain extracted,
+such as space group and MTZ label information) automatically.  For more
+complex inputs involving fragment files, click the button labeled "Other
+inputs" below the list of files.
+<br>
+<img src="images/mr_rosetta_config.png">
+
+<p>The number of
+processors to use will be set to one fewer than the total the number of CPU
+cores PHENIX thinks are available, but if you are using a queueing system this
+number can be increased.  You can change how MR-Rosetta runs child processes
+by clicking the "Job control" button in the lower left-hand corner of the
+configuration tab.
+
+<p>
+Because it usually takes hours to run, MR-Rosetta will always be launched by
+the GUI as a "detached" job, meaning that you can close the GUI without
+killing the process, and resume it later.
+While MR-Rosetta is running, the current set of solutions will be continuously
+updated in a tab labeled "Current results", with the relevant score (LLG from
+Phaser, Rosetta score, or R-factor).  You may view any of these solutions
+by clicking the buttons next to them.
+<br>
+<img src="images/mr_rosetta_solutions.png">
+
+<p>Once the job is complete, a simply summary tab will be displayed, listing
+the output files and basic statistics such as R-factors.  If the program was
+successful, the R-free will usually be below 50%, although this may vary
+depending on resolution and data quality.  Buttons are provided to start
+additional programs or view the model and maps.
+<br>
+<img src="images/mr_rosetta_result.png">
+<br>
 
 <P><H5><U>Parameters files in mr_rosetta</U></H5><P>
 When you run mr_rosetta it will write out a 
