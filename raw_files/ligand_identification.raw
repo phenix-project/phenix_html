@@ -70,6 +70,26 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 </PRE>
 
 
+<P>*to use all ligands found in proteins with a specific Pfam accession number in the PDB:
+<PRE style="face=courier">--pfam=PF00042
+</PRE>
+
+
+<P>*to use all ligands found in proteins with specific SCOP and/or CATH terms in the PDB:
+<PRE style="face=courier">--scop='DNA/RNA-binding 3-helical bundle' 
+</PRE>
+<PRE style="face=courier">--cath='Trypsin-like serine proteases'  
+</PRE>
+
+
+<P>*to use all ligands found in proteins with a specific Gene Ontology (GO) accession number in the PDB:
+<PRE style="face=courier">--GO=0009253
+</PRE>
+
+
+<P>*to use all ligands found in proteins with a specific InterPro ID in the PDB:
+<PRE style="face=courier">--ipro=014838
+</PRE>
 
 
 <P><H5><I>Output files from phenix.ligand_identification command</I></H5><P>
