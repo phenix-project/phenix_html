@@ -187,11 +187,16 @@ used; these typically apply globally, except as noted.
     hydrogen atoms (or deuteriums, if performing neutron crystallography)
     where appropriate.  This usually only affects the R-factors at high
     resolution, but can be very helpful for improving geometry at any
-    resolution.  We recommend using explicit hydrogens throughout refinement.
-    (Note that this can be left on if you already have hydrogen atoms in
-    place.)  Hydrogen atoms will still be defined using the "riding" model
+    resolution.  We recommend using explicit hydrogens on protein, nucleic
+    acid, and ligand molecules throughout refinement.  (We do not reocmmend
+    adding hydrogens to waters unless you have exceptionally high resolution.)
+    Hydrogen atoms will still be defined using the "riding" model
     unless otherwise requested, so they do not add parameters during
-    refinement.
+    refinement.  (Note that this option can be left on if you already have
+    hydrogen atoms in place and are refining as "riding"; if you are
+    refining against neutron data and/or allowing hydrogen atoms to refine
+    individually, you should uncheck the box, as it will otherwise replace
+    the existing atoms.)
 
   - **Update waters** automatically adds and removes solvent atoms as
     necessary; this is usually appropriate at any resolution where water
