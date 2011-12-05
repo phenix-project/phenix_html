@@ -151,7 +151,10 @@ restraints (structural and otherwise):
   - **Find NCS restraints automatically** instructs phenix.refine to run
     a built-in NCS identification protocol at the start of refinement; it
     is ignored if NCS restraints are not activated.  Note that this should
-    be disabled if you have already defined NCS restraints in the GUI!
+    be disabled if you have already defined NCS groups in the GUI!  This
+    setting only affects the global NCS restraints; for the torsion restraints,
+    phenix.refine will always use automatic annotation unless the user supplies
+    restraint groups (which will not be overwritten).
 
   - **Reference model restraints** use the dihedral angles of an existing
     structure as restraints on the input model conformation, for instance,
