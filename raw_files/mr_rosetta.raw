@@ -656,12 +656,43 @@ then you can use mr_model_preparation <pdb-file> <alignment-file>
 </LI>
 </UL>
 
+<P>You can generate an alignment file with phenix.muscle if you do not have
+one from another source.
+
+Use a command like this:
+
+<PRE style="face=courier">
+phenix.muscle -in my_two_sequences.dat -out my_alignment.ali
+</PRE>
+
+where my_two_sequences.dat looks like:
+
+<PRE style="face=courier">
+&gt; title text for sequence of target (your structure) to follow
+LVLKWVMSTKYVEAGELKEGSYVVIDGEPCRVVEIEKSKTGKHGSAKARIVAVGVFDGGKRTLSLPVDAQVEVPIIEKFT
+AQILSVSGDVIQLMDMRDYKTIEVPMKYVEEEAKGRLAPGAEVEVWQILDRYKIIRVKG
+&gt; title text for sequence of template (supplied PDB) to follow
+qlmdmrd AQILSVSGDVIQLMDMRDYKTIEVPMKYVEEEAKGRLAPGAEVEVWQILDRYKIIRVKG qlmdmrd
+</PRE>
+
+and my_alignment.ali (your .ali file) looks like:
+<PRE style="face=courier">
+&gt; title text for sequence of target (your structure) to follow
+LVLKWVMSTKYVEAGELKEGSYVVIDGEPCRVVEIEKSKTGKHGSAKARIVAVGVFDGGK
+RTLSLPVDAQVEVPIIEKFTAQILSVSGDVIQLMDMRDYKTIEVPMKYVEEEAKGRLAPG
+AEVEVWQILDRYKIIRVKG-------
+&gt; title text for sequence of template (supplied PDB) to follow
+------------------------------------------------------------
+-------------QLMDMRDAQILSVSGDVIQLMDMRDYKTIEVPMKYVEEEAKGRLAPG
+AEVEVWQILDRYKIIRVKGQLMDMRD
+</PRE>
+
 <P>You have two options for alignment files if you are going to use one.
 <UL>
 <LI>You can use an alignment file that sculptor can recognize. This file looks like this (there must be exactly the same number of characters for the target
 and the template sequences (including dashes for gaps):
 <PRE style="face=courier">
-&gt; title text for sequence of target to follow
+&gt; title text for sequence of target (your structure) to follow
 VDFNGYWKMLSNENFEEYLRALDVNVALRKIANLLKPDKEIVQDGDHMIIRTLSTFRNYIMDFQVGKEFEEDLTGIDD
 &gt; title text for sequence of template (supplied PDB) to follow
 -AFSGTWQVYAQENYEEFLRAISLPEEVIKLAKDVKPVTEIQQNGSDFTITSKTPGKTVTNSFTIGKEAEIT--TMDG

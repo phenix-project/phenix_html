@@ -248,6 +248,10 @@ At atomic resolution (1.5 A or better) they should always be part of the final
 model.  Note that at unless you have true subatomic resolution (0.9 A or
 better), the hydrogens should always be refined as &quot;riding&quot;, meaning that their
 coordinates are defined by the heavy atoms, not individually refined.</p>
+<p><strong>What about water molecules?</strong></p>
+<p>Although phenix.ready_set includes an option to add hydrogens to waters, we
+do not recommend this unless you have exceptionally high resolution and/or
+neutron data.</p>
 <p><strong>Why are my hydrogen atoms added by PHENIX exploding when I run real-space
 refinement in Coot?</strong></p>
 <p>Versions of Coot prior to 0.6.2 used a version of the CCP4 monomer library
