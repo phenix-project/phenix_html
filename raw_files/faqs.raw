@@ -615,6 +615,19 @@ consider_main_chain_list=" coords2.pdb coords3.pdb" \
 number_of_parallel_models=1 n_cycle_rebuild_max=1
 </PRE>
 </UL>
+
+<H5> Why am I not allowed to use a file with FAVG SIGFAVG DANO SIGDANO in autosol or autobuild? </H5>
+The group of MTZ columns FAVG SIGFAVG DANO SIGDANO is a special one that 
+should normally not be used in Phenix. The reason is that Phenix stores this 
+data as F+ SIGF+ F- SIGF-, but in the conversion process between F+/F- and
+FAVG/DANO, information is lost.  Therefore you should normally supply data
+files with  F+ SIGF+ F- SIGF- (or intensities), or fully merged data (F,SIG)
+to Phenix routines.  As a special case, if you have anomalous data saved as
+FAVG SIGFAVG DANO SIGDANO you can supply this to AutoSol, however this requires
+either that (1) you supply a refinement file with F SIG, or that (2) your 
+data file has a separate F SIG pair of columns (other than the 
+FAVG SIGFAVG columns that are part of the FAVG/DANO group).
+
 <H5> I am using phenix.automr with a dimer (copies=1). However, Phenix 
 gives me a warning that the unit cell is too full.</H5>
 In this case, check to make sure that you have specified that the 

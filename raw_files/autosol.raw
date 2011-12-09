@@ -521,13 +521,21 @@ and with chain_type=DNA.
 If you have an input MTZ file with more than one anomalous dataset, you can 
 type something like:
 <PRE style="face=courier">phenix.autosol w1.mtz seq.dat 2 Se lambda=0.9798 \
-labels='F SIGF DANO SIGDANO'
+labels='F+ SIGF+ F- SIGF-'
 </PRE>
 This will carry out the usual structure solution, but will choose the
-input data columns based on the  labels: 'F SIGF DANO SIGDANO'. 
-NOTE: to specify anomalous data with DANO like this, 
+input data columns based on the  labels: 'F+ SIGF+ F- SIGF-'
+
+NOTE: to specify anomalous data with F+ SIGF+ F- SIGF- like this, 
 these 4 columns must be adjacent to each other in the MTZ file with
 no other columns in between. 
+FURTHER NOTE: to instead use a FAVG SIGFAVG DANO SIGDANO
+array in AutoSol, the data file or an input refinement file MUST also contain
+a separate array for FP SIGFP or I SIGI or equivalent. This is because
+FAVG DANO arrays are ONLY allowed as anomalous information, not as amplitudes
+or intensities. You can use F+ SIGF+ F- SIGF- arrays as a source of both 
+anomalous differences and amplitudes if you want, however.
+<P>
  If you run the
 AutoSol Wizard with SAD data and an MTZ file containing more than one
 anomalous dataset and don't tell it which one to use, 
