@@ -136,6 +136,12 @@ Molecular replacement
     as different modes of operation.  We recommend starting with AutoMR
     first, but this GUI is useful for tough cases.
 
+  - `MR-Rosetta <mr_rosetta.htm>`_: automation pipeline for exceptionally
+    difficult structures, which uses the
+    `Rosetta <http://www.rosettacommons.org>`_ software for protein structure
+    prediction and design to rebuild poor MR solutions, along with Phaser and
+    AutoBuild.  (Separate installation of Rosetta is required.)
+
   - `Sculptor <sculptor.htm>`_: prepare a search model for molecular
     replacement by trimming the structure, modifying B-factors, etc.
 
@@ -359,6 +365,29 @@ and can restore the parameters and results of any successful previous run.
 
 You may switch between projects while a GUI program is running; however, each
 program window stays associated with the project it was opened with.
+
+------------------------
+Running PHENIX tutorials
+------------------------
+
+A number of examples using published structures are included in the PHENIX
+installation, and can be automatically loaded into the GUI as new projects.
+To load tutorial data, click on "New project" in the main GUI; this window
+also appears the first time the PHENIX GUI is started (before any projects
+have been created).  The button "Set up tutorial data" will open a new dialog
+with a list of examples, grouped by the methods they are intended to
+demonstrate.
+
+.. image:: images/tutorial_setup.png
+
+For live demonstration, we normally use the **P. aerophilum translation
+initiation-factor 5a** or *p9-sad* example for experimental phasing,
+**TEM-1 Beta-lactamase/beta-lactamase inhibitor complex** (*beta-blip*) for
+molecular replacement, **S. aureofaciens ribonuclease Sa** (*rnase-s*) for
+refinement, and **N-ethylmaleimide sensitive factor + ATP** (*nsf-d2-ligand*)
+for ligand fitting.  All of these datasets run relatively quickly (5-30
+minutes) in the intended programs.  (These examples are also used extensively
+in this documentation.)
 
 -----------
 Preferences

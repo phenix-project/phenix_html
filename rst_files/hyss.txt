@@ -215,6 +215,41 @@ HySS reads the reflection data from the ``mbp.hkl`` file. The
 for unit cell parameters and a space group symbol. HySS
 finishes after about 26 seconds (2.8GHz Pentium 4 Linux).
 
+Graphical interface
+===================
+
+The HySS GUI is listed in the "Experimental phasing" category of the main
+PHENIX GUI.  Most options are shown in the main window, but only the fields
+highlighted below are mandatory.  The data labels will be selected
+automatically if the reflections file contains anomalous arrays, and any
+symmetry information present in the file will be loaded in the unit cell and
+space group fields.
+
+.. image:: images/hyss_config.png
+
+It may be helpful to run Xtriage first to determine an appropriate high
+resolution cutoff, as most datasets do not have significant anomalous signal
+in the highest resolution shells.  The wavelength is only required if Phaser
+is being used for rescoring.  Additional options are described below in
+the command-line documentation.
+
+At the end of the run, a tab will be added showing output files and basic
+statistics.  A correlation coefficient of XXX usually indicates that the sites
+are real.  If you are happy with the sites, you can load them into
+`AutoSol <autosol_gui.htm>`_ or `Phaser <phaser_ep.txt>`_ directly from this
+window.
+
+.. image:: images/hyss_result.png
+
+A full list on sites is displayed in the "Edit sites" tab.  For a typical
+high-quality selenomethionine dataset, such as the p9-sad tutorial data used
+here, valid sites should have an occupancy close to 1, but for certain types
+of heavy-atom soaks (such as bromine) all sites may have partial occupancy.
+You can edit the sites by changing the occupancy or unchecking any that you
+wish to discard, then clicking the "Save selected" button.
+
+.. image:: images/hyss_edit.png
+
 Command line options
 ====================
 
