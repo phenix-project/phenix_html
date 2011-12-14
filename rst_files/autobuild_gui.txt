@@ -72,6 +72,8 @@ proteins, the heavy atom sites will be used to anchor the methionines in the
 sequence.  AutoBuild can also be directed to build actual SeMet residues in
 place of Met.
 
+.. image:: images/autobuild_config2.png
+
 AutoBuild has two different modes for using an PDB file supplied as a starting
 model, set by the "Rebuild in place" control.  By default, if the sequence
 identity versus the supplied sequence file is at least 50%, the model will be

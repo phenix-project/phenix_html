@@ -124,21 +124,36 @@ experimental HL phase information in refinement as the NCS-based information
 would come from your NCS restraints in refinement).
 
 
+<P><H5><U>Graphical interface</U></H5>
+
+<p>The GUI is listed in the "Maps" category of the main interface.  The
+configuration tab contains a set of tabs for the crystal forms:
+
+<img src="images/average_crystal_input.png">
+
+The label strings are automatically filled in when an MTZ file is loaded;
+these normally do not need to be further edited.  At least one crystal form
+must have map coefficients, and all are required to have PDB and data files,
+as well as the estimated solvent content.  All other options are on the second
+tab of the configuration panel:
+
+<img src="images/average_options.png">
+
+At the end of the run, the final density-modified and averaged map coefficients
+will be listed in a new tab.  Selecting one of these and clicking the Coot or
+PyMOL buttons below will load the map coefficients and corresponding model for
+that crystal form.
+
+<img src="images/average_results.png">
 
 <P><H5><U>Examples</U></H5><P>
 
 <P><H5>Standard run of phenix.multi_crystal_average:</H5><P>
 
-  Running phenix.multi_crystal_average is easy. Usually you will want to edit a small parameter
+Running phenix.multi_crystal_average from the command line is easy. Usually you will want to edit a small parameter
 file (run_multi.eff) to contain your commands like this:
-type:
 <PRE style="face=courier"># run_multi.eff  commands for running phenix.multi_crystal_average
 # use:   "phenix.multi_crystal_average run_multi.eff"
-  datafile_labin_list = "FP=F SIGFP=SIGF PHIB=PHI FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD"
-  solvent_content_list = 0.43
-  solvent_content_list = 0.50
-  cycles = 5
-}
 multi {
   crystal {
      pdb_file= "gene-5.pdb" 

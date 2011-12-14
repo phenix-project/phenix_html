@@ -154,8 +154,8 @@ Molecular replacement
 Model building
 --------------
 
-  - `AutoBuild <autobuild.htm>`_: automated model-building and refinement with
-    RESOLVE and phenix.refine.  This GUI only encapsulates the building
+  - `AutoBuild <autobuild_gui.htm>`_: automated model-building and refinement
+    with RESOLVE and phenix.refine.  This GUI only encapsulates the building
     functions; a separate GUI is available for omit-map calculations.
 
   - `Phase and build <phase_and_build.htm>`_: similar to AutoBuild, but
@@ -194,11 +194,11 @@ Maps
     programs can also output these files, and the GUI will generate them for
     you as necessary for PyMOL.)
 
-  - `AutoBuild - create omit map <autobuild.htm>`_: similar to the main
+  - `AutoBuild - create omit map <autobuild_gui.htm>`_: similar to the main
     AutoBuild GUI, but used for omit map generation rather than building.
 
-  - `RESOLVE density modification <autobuild.htm>`_: This is just a simplified
-    interface for running the `AutoBuild wizard <autobuild.htm>`_ in
+  - `RESOLVE density modification <autobuild_gui.htm>`_: This is just a
+    simplified interface for running the `AutoBuild wizard <autobuild.htm>`_ in
     map-only mode.
 
   - Isomorphous difference map: simple utility for creating a map from two
@@ -213,6 +213,10 @@ Maps
   - `Cut out density <cut_out_density.htm>`_: extracts a section of electron
     density from input map coefficients, and outputs new map coefficients
     (suitable for running molecular replacement in Phaser).
+
+  - `Multi-crystal averaging <multi_crystal_average.htm>`_: performs density
+    modification on different crystal forms of the same structure and averages
+    the maps around the models.
 
 Ligands
 -------
