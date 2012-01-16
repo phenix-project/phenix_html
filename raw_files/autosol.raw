@@ -121,24 +121,20 @@ data is scaled with SOLVE. For MAD data, FA values are calculated as well.
 
 <P>Note on anisotropy corrections:
 
-<P>The AutoSol wizard will apply an anistropy correction to all the raw
-experimental data if any of the files in the first dataset read in have a very
-strong anisotropy. You can tell the Wizard how much anisotropy there must be
-before applying this correction by default using the keywords
-
-<PRE style="face=courier">remove_aniso=True  # (if True or False then always or never apply correction)
-
-delta_b_for_auto_remove_aniso=20  # correct if range of anisotropic B 
-                                   #is greater than 20
-
-ratio_b_for_auto_remove_aniso=1.5  #correct if the ratio of the largest 
-                                  #to smallest anisotropic B is greater than 1.5
+<P>The AutoSol wizard will apply an anistropy correction and B-factor
+sharpening to all the raw experimental data by default 
+(controlled by they keyword remove_aniso=True).  The target overall Wilson
+B factor can be set with the keyword b_iso, as in  b_iso=25. By default the target
+Wilson B will be 10 times the resolution of the data (e.g., if the resolution
+is 3 A then b_iso=30.), or the actual Wilson B of the data, whichever is lower.
 </PRE>
-<P>If an anisotropy correction is applied then a separate 
-refinement file must be specified if refinement is to be carried out. 
-This is because it is best to
-refine against data that have not been corrected for anisotropy (instead
-applying the correction as part of refinement).
+<P>If an anisotropy correction is applied then the entire AutoSol run will be
+carried out with anisotropy-corrected and sharpened data.  At the very end of the
+run the final model will be re-refined against the uncorrected refinement data
+and this re-refined model and the uncorrected refinement data (with freeR flags)
+will be written out as overall_best.pdb and  exptl_fobs_phases_freeR_flags_xx.mtz
+(where xx is the solution number).
+
 
 <P><H5><I>Finding heavy-atom (anomalously-scattering atom) sites</I></H5><P>
 <P>The AutoSol Wizard uses HYSS to find heavy-atom sites. 
