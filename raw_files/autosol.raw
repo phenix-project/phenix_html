@@ -132,8 +132,9 @@ is 3 A then b_iso=30.), or the actual Wilson B of the data, whichever is lower.
 carried out with anisotropy-corrected and sharpened data.  At the very end of the
 run the final model will be re-refined against the uncorrected refinement data
 and this re-refined model and the uncorrected refinement data (with freeR flags)
-will be written out as overall_best.pdb and  exptl_fobs_phases_freeR_flags_xx.mtz
-(where xx is the solution number).
+will be written out. For the top solution this will be
+ as overall_best.pdb and  overall_best_refine_data.mtz; for all other solutions the
+files will be listed at the end of the log file.
 
 
 <P><H5><I>Finding heavy-atom (anomalously-scattering atom) sites</I></H5><P>
@@ -360,7 +361,11 @@ your run number:
 </PRE>
 <P>The key output files that are produced are:
 
-<P><UL><LI>A summary file listing the results of the run and 
+<P><UL><LI>A log file describing everything in the run and the files produced:
+<PRE style="face=courier">AutoSol_run_1_1.log # overall log file
+</PRE>
+
+<P><LI>A summary file listing the results of the run and 
 the other files produced:
 <PRE style="face=courier">AutoSol_summary.dat  # overall summary
 </PRE>
@@ -369,38 +374,43 @@ the other files produced:
 <PRE style="face=courier">AutoSol_warnings.dat  # any warnings
 </PRE>
 
-<P><LI>A file that lists all parameters and knowledge accumulated
-by the Wizard during the run (some parts are binary and are not printed)
-<PRE style="face=courier">AutoSol_Facts.dat   # all Facts about the run
+<P><LI>Density-modified map coefficients 
+(NOTE: These files be aniso-corrected and sharpened if remove_aniso=True)
+<PRE style="face=courier">overall_best_denmod_map_coeffs.mtz # map coefficients (density modified phases)
 </PRE>
 
-<P><LI>NCS information  (if any)
-<PRE style="face=courier">AutoSol_15.ncs_spec   # NCS information. The number is the solution number
+<P><LI>Current preliminary model
+<PRE style="face=courier"> overall_best.pdb # model produced for top solution
 </PRE>
-
-<P><LI>Experimental phases and HL coefficients
-<PRE style="face=courier">solve_15.mtz  # either solve or phaser depending on which was run
-phaser_15.mtz
-</PRE>
-
-<P><LI>Density-modified phases from RESOLVE
-<PRE style="face=courier">current_cycle_map_coeffs.mtz  # map coefficients (density modified phases)
-resolve_15.mtz   # density-modified phases; same as above
-</PRE>
-For either of these, use FP PHIM FOMM for PHI F FOM. If you are using
-Coot to display them, select "Open MTZ" (rather than "Auto Open MTZ").
 
 <P><LI>An mtz file for use in refinement
-<PRE style="face=courier">exptl_fobs_phases_freeR_flags_15.mtz  # F Sigma HL coeffs, freeR-flags for refinement
+(NOTE: not aniso corrected and not sharpened).
+<PRE style="face=courier"> overall_best_refine_data.mtz # F Sigma HL coeffs, freeR-flags for refinement
 </PRE>
 
 <P><LI>Heavy atom sites in PDB format
-<PRE style="face=courier">ha_15.pdb_formatted.pdb
+<PRE style="face=courier"> overall_best_ha_pdb.pdb # ha file for top solution
 </PRE>
 
-<P><LI>Current preliminary model and evaluation of model
-<PRE style="face=courier">current_cycle.pdb
-current_cycle_eval.log
+<P><LI>NCS information  (if any)
+<PRE style="face=courier">overall_best_ncs_file.ncs_spec # NCS information for top solution
+</PRE>
+
+<P><LI>Experimental phases and HL coefficients 
+(NOTE: These files be aniso-corrected and sharpened if remove_aniso=True)
+<PRE style="face=courier">overall_best_hklout_phased.mtz # phases and HL coeffs for top solution
+</PRE>
+
+<P><LI>Log file for experimental phasing
+<PRE style="face=courier">overall_best_log_phased.log # experimental phasing log file for top solution
+</PRE>
+
+<P><LI>Log file for scaling
+<PRE style="face=courier">overall_best_log_phased.log # experimental phasing log file for top solution
+</PRE>
+
+<P><LI>Log file for heavy-atom substructure search
+<PRE style="face=courier">overall_best_log_hyss.log # ha search log file for top solution
 </PRE>
 
 </UL>

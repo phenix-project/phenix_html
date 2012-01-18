@@ -170,7 +170,7 @@ is 3 A then b_iso=30.), or the actual Wilson B of the data, whichever is lower.
 carried out with anisotropy-corrected and sharpened data.  At the very end of the
 run the final model will be re-refined against the uncorrected refinement data
 and this re-refined model and the uncorrected refinement data (with freeR flags)
-will be written out as overall_best.pdb and  exptl_fobs_phases_freeR_flags.mtz.
+will be written out as overall_best.pdb and overall_best_refine_data.mtz.
 
 
 <P><H5>Specifying which columns of data to use from input data files</H5><P>
@@ -528,57 +528,64 @@ your run number:
 <PRE style="face=courier">AutoBuild_run_1_/   # subdirectory with results
 </PRE>
 
+The key output files that are produced are:
 
 <UL><LI>A summary file listing the results of the run and
 the other files produced:
 <PRE style="face=courier">AutoBuild_summary.dat  # overall summary
 </PRE>
 
-<LI>A warnings file listing any warnings about the run
-<PRE style="face=courier">AutoBuild_warnings.dat  # any warnings
+<LI>A log file describing the entire run:
+the other files produced:
+<PRE style="face=courier">AutoBuild_run_1_1.log # overall log file
 </PRE>
 
-<LI>A file that lists all parameters and knowledge accumulated
-by the Wizard during the run (some parts are binary and are not printed)
-<PRE style="face=courier">AutoBuild_Facts.dat   # all Facts about the run
+<LI>A warnings file listing any warnings about the run
+<PRE style="face=courier">AutoBuild_warnings.dat  # any warnings
 </PRE>
 
 <LI>Final refined model
 <PRE style="face=courier">overall_best.pdb
 </PRE>
-<p>NOTE: The &quot;overall_best.pdb&quot; file is always the current best
- model. Similarly &quot;overall_best_denmod_map_coeffs.mtz&quot; is always
-the best map_coefficients file. The AutoBuild_summary.dat file lists
-the names of the current best set of files. The contents of 
- &quot;overall_best.pdb&quot; and of the best model 
-listed in AutoBuild_summary.dat will be the same.
+<p>NOTE: The &quot;working_best.pdb&quot; file is the current working best
+ model. If an anisotropy correction and sharpening are applied (remove_aniso=True)
+then working_best.pdb will be refined against the corrected data. At the end of the
+run the last working_best.pdb will be re-refined against the original data (overall B
+refined only) and written out as overall_best.pdb.</P>
+<P></P>
 
-<LI>Final map coefficients used to build refined model. Use FP PHIM FOMM in
-maps. Normally this is a density-modified map from resolve. See also the
-map coefficients from phenix.refine below. If you are using
-Coot to display them, select "Open MTZ" (rather than AutoOpen MTZ).
+<LI>Final map coefficients used to build refined model. Use FWT PHWT in
+maps. Normally this is a density-modified map from resolve. 
 <PRE style="face=courier">overall_best_denmod_map_coeffs.mtz
 </PRE>
 
-<LI>Final sigmaA-weighted 2mFo-DFc and Fo-Fc map coefficients from 
-phenix.refine based on overall_best.pdb final model. The map coefficients
+<LI>sigmaA-weighted 2mFo-DFc and Fo-Fc map coefficients from 
+phenix.refine based on the last working_best.pdb model 
+These map coefficients will be sharpened anisotropy-corrected if the 
+remove_aniso=True. 
+(The file working_best.pdb is the same as overall_best.pdb,
+except it is refined against sharpened, anisotropy-corrected data if remove_aniso=True). 
+The map coefficients
 are 2FOFCWT PH2FOFCWT for the 2mFo-DFc map and FOFC and PHFOFC for the Fo-Fc
-difference map.  See also the map coefficients from density modification above.
+difference map.  These map coefficients are filled (missing reflections are given
+Fc values.)
 <PRE style="face=courier">overall_best_refine_map_coeffs.mtz
 </PRE>
 
 <LI>MTZ file with FP, phases and HL coeffs if present, and freeR_flags
-used in refinement
-<PRE style="face=courier">exptl_fobs_phases_freeR_flags.mtz
+for refinement
+<PRE style="face=courier">overall_best_refine_data.mtz
 </PRE>
 NOTE: The labels for this mtz file are typically:
 <PRE style="face=courier"> FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag
 </PRE>
-The file exptl_fobs_phases_freeR_flags.mtz has a copy of the (experimental) 
+The file overall_best_refine_data.mtz (identical to the 
+file exptl_fobs_phases_freeR_flags.mtz) has a copy of the (experimental) 
 HL coefficients that were input to autobuild.  The labels HLAM HLBM etc 
 have the ending "M" because they were copied by resolve and it outputs these
 labels...but in fact they are not density modified phases from autobuild, 
 just copied straight from the input data file.
+<P></P>
 
 <LI>Final log file for model-building
 <PRE style="face=courier">overall_best.log
@@ -593,7 +600,7 @@ just copied straight from the input data file.
 </PRE>
 
 <LI>Summary of NCS information
-<PRE style="face=courier">ncs_info.ncs
+<PRE style="face=courier">overall_best_ncs_info.ncs
 </PRE>
 </LI>
 </UL>
