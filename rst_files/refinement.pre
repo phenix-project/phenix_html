@@ -2086,6 +2086,22 @@ The edits will be included into the ``.def`` files. I.e. it is not
 necessary to manually specify them again if further refinement runs
 are started with ``.def`` files.
 
+For bonds to symmetry copies, specify the symmetry operation in
+xyz notation, for example::
+
+  symmetry_operation = -x-1/2,y-1/2,-z+1/2
+
+To obtain the ``symmetry_operation``, either use Coot (turn on drawing
+on symmetry copies, then click on the copy and look for the symmetry
+operation in the status bar), or run this command::
+
+  iotbx.show_distances your.pdb > all_distances
+
+This will produce a potentially long ``all_distances file``, but if
+you search for ``sym=`` there will probably only be a few matches
+from which it is easy to pick the one you are interested in, based
+on the pdb atom labels.
+
 The ``bond.slack`` parameter above can be used to disable a bond
 restraint within the ``slack`` tolerance around ``distance_ideal``.
 This is useful for hydrogen bond restraints, or when refining with

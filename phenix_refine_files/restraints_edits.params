@@ -6,6 +6,7 @@ refinement.geometry_restraints.edits {
     action = *add
     atom_selection_1 = $zn_selection
     atom_selection_2 = $his117_selection
+    symmetry_operation = None
     distance_ideal = 2.1
     sigma = 0.02
     slack = None
@@ -14,6 +15,7 @@ refinement.geometry_restraints.edits {
     action = *add
     atom_selection_1 = $zn_selection
     atom_selection_2 = $asp130_selection
+    symmetry_operation = None
     distance_ideal = 2.1
     sigma = 0.02
     slack = None
