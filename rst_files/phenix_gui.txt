@@ -168,6 +168,9 @@ Model building
   - `Fit Loops <fit_loops.htm>`_: simple GUI for building missing loops into
     a map based on a sequence and start model.
 
+  - `Morph model <morph_model.htm>`_: improvement of poor molecular replacement
+    solutions by "morphing" into density and rebuilding.
+
 Refinement
 ----------
 
@@ -280,8 +283,11 @@ Utilities
   - `Calculate model-map correlations <get_cc_mtz_pdb.htm>`_: interface to
     ``phenix.get_cc_mtz_pdb``.
 
-  - Generate Table 1: utility for extracting statistics from PDB, reflection,
-    and log files required for publication.
+  - `Generate Table 1 <table_one.htm>`_: utility for extracting statistics from
+    PDB, reflection, and log files required for publication.
+
+  - Diffraction image viewer: a simple utility for inspecting images in a
+    variety of common detector formats (ADSC, MAR, R-AXIS, Pilatus, etc.).
 
 Other tools
 -----------
