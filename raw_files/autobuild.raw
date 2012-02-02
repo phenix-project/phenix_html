@@ -884,8 +884,6 @@ Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 An additional map coefficients file omit_region.mtz will show you the
 region that has been omitted. 
-(Note: be sure to use the weights in both
-resolve_composite_map.mtz and omit_region.mtz).
 
 <H5>Make a simple composite omit map</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb composite_omit_type=simple_omit
@@ -971,8 +969,6 @@ Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 An additional map coefficients file omit_region.mtz will show you the
 region that has been omitted.
-(Note: be sure to use the weights in both
-resolve_composite_map.mtz and omit_region.mtz).
 
 <H5>Make a sa-omit map around residues 3 and 4 in chain A of coords.pdb</H5><P>
 <PRE style="face=courier">phenix.autobuild data=w1.sca model=coords.pdb omit_box_pdb=coords.pdb \
@@ -983,8 +979,6 @@ Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 An additional map coefficients file omit_region.mtz will show you the
 region that has been omitted.
-(Note 1: be sure to use the weights in both 
-resolve_composite_map.mtz and omit_region.mtz).
 
 <H5>Create one very good rebuilt model</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb multiple_models=True \
