@@ -129,7 +129,7 @@ quick=False      # specify if you want to look hard for a good conformation
 ligand_cc_min=0.75   # quit if the CC of ligand to map is 0.75 or better
 number_of_ligands=3  # find 3 copies of the ligand
 n_group_search=3     # try 3 different fragments of the ligand in initial search
-resolve_command="'ligand_start side.pdb'" # build ligand superimposing on side.pdb
+ligand_start=side.pdb # build ligand superimposing on side.pdb
 </PRE>
 
 <P><H5><I>Output files from LigandFit</I></H5><P>
@@ -248,11 +248,15 @@ it just as listed above.
 the remainder of the ligand, fixing the coordinates of the corresponding
 atoms:
 <PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=GTP \
-   resolve_command="'ligand_start start.pdb'"  # NOTE ' and " quotes necessary
+   ligand_start=start.pdb  
 </PRE>
-Note that the formatting is slightly tricky and requires the two different
-quotation marks on either end of the command. This is an example of passing a
-specific keyword to RESOLVE.
+
+<P><LI>Use NCS from the model and the first ligand fitted to guess
+ the positions of NCS-related ligands:
+<PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=GTP \
+   ligands_from_ncs=True
+</PRE>
+
 
 </UL>
       <P><H5><U>Possible Problems</U></H5><P>
