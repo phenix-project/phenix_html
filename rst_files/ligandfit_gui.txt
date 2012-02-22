@@ -14,6 +14,12 @@ general-purpose reference for program function.  See the `command-line
 documentation <ligandfit.htm>`_ for a complete list of parameters and details
 on usage.
 
+Note that waters will be omitted when placing the ligand.  However, if you
+are using pre-calculated map coefficients, you may need to remove waters
+beforehand to avoid "flattening" the difference density around the ligand.
+Protein atoms overlapping with the ligand density will prevent a successful
+placement, so some editing of the input structure is generally recommended.
+
 Configuration
 -------------
 
@@ -62,6 +68,28 @@ when a file is loaded.
 By default, LigandFit runs multiple slightly different jobs in parallel and
 picks the best result from these; however, check the "Quick search" box if
 you want it to run a fast single job instead.
+
+Other options:
+
+  - **Ligand map type** tells LigandFit what type of map to calculate or
+    expect in the input file.  If you are supplying map coefficients from
+    phenix.refine or another program, "Pre-calculated" is appropriate.  If
+    you are using raw data, "Fo-Fc" is the standard, but you may use "Fobs"
+    instead.
+
+  - **Minimum CC** sets the correlation to density required to consider a
+    placement successful.
+
+  - **Real-space refinement** will optimize the fit to density after placing
+    the ligand.  This is optional (and may be unnecessary if you intend to
+    run phenix.refine immediately afterward), but is usually very fast and
+    improves the fit.
+
+  - **Number of conformers to create** determines how the ligand is partitioned
+    for placement of fragments.  When this is set to 1, RESOLVE will try to
+    identify rigid groups automatically.  Larger numbers will instead use
+    eLBOW to generate multiple conformations which are used to identify the
+    rigid groups.  This is somewhat slower, but often more accurate.
 
 Output
 ------

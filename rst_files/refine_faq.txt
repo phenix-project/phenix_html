@@ -39,6 +39,13 @@ significant local conformational changes, are common inputs where SA can
 improve over simple gradient-driven refinement.  It is generally less helpful
 later in refinement, and/or at high resolution.
 
+**When should I use rigid-body refinement?**
+
+This typically only needs to be performed once after molecular replacement,
+unless you dock in additional domains later.  Continuing to use rigid-body
+refinement in later runs will not improve your structure, and only adds to the
+runtime.
+
 **What type of experimental data should I use for refinement?**
 
 Either amplitudes (F) or intensities (I) may be used in refinement (in any
@@ -49,6 +56,19 @@ However, anomalous data may be used to refine anomalous scattering factors
 for heavy atoms, and anomalous difference map coefficients will automatically
 be created in the output MTZ file.  For these reasons, anomalous data are
 recommended.
+
+**Why does phenix.refine not use all data in refinement?**
+
+Reflections with abnormal values tend to reduce the performance of the
+refinement engine.  These are identified based on several criteria (see
+Read 1999 for details) and filtered out at the beginning of each macro-cycle.
+You can prevent this by setting xray_data.remove_outliers=False.
+
+**How many macro-cycles should I run?**
+
+We recommend at least five to ensure convergence, but in some cases (especially
+poorly refined structures) considerably more may be required for optimal
+results.  (The default is three macro-cycles due to speed considerations.)
 
 Restraints
 ==========

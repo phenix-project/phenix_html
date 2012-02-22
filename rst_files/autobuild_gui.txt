@@ -85,6 +85,35 @@ by checking the "Include input model" box.  Currently, if you want to extend
 an existing model without removing any of the input atoms, we recommend using
 `phenix.fit_loops <fit_loops.htm>`_ instead.
 
+General options:
+
+  - **Twin law** determines whether twinned refinement should be performed.
+    If you have a noticeably twinned structure this is essential to obtain
+    interpretable maps.
+  - **Include input model** is only relevant when rebuild-in-place mode is
+    not used; if true, the input model will be combined with the autobuilt
+    model using the best segments of each.
+  - **Build outside model** will only add new residues outside of the existing
+    model.
+  - **Refine model during building** runs phenix.refine between each cycle of
+    model-building; this adds to the runtime but is strongly recommended as
+    it will always lead to a better final model.
+  - **Build helices and strands only** will only place secondary structure
+    elements.  This is most useful at lower resolutions.
+  - **Build SeMet residues** places SeMet instead of Met residues (as dictated
+    by the sequence file).
+  - **Place waters in refinement** uses the ordered_solvent option in
+    phenix.refine; this is highly recommended at medium-to-high resolution
+    (better than 3.0A).
+  - **Morph input model into density** tries to move the model to match the
+    density-modified map before rebuilding and refining.  This is often an
+    effective method to improve poor MR solutions.
+  - **Refine input model before rebuilding** will run phenix.refine first;
+    this should be unchecked if you have just come from refinement.
+  - **Use simulated annealing** turns on the Cartesian-space simulated
+    annealing during refinement.  This adds significantly to runtime, but can
+    often improve convergence and fix building mistakes.
+
 ------------------------------------
 Multiprocessing and queueing systems
 ------------------------------------
