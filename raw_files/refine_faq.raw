@@ -52,12 +52,34 @@ for heavy atoms, and anomalous difference map coefficients will automatically
 be created in the output MTZ file.  For these reasons, anomalous data are
 recommended.</p>
 <P><H5><U><B>Restraints</B></U></H5><P>
+<p><strong>When should I optimize the geometry and/or B-factor restraint weights?</strong></p>
+<p>This may be beneficial if the automatic weighting does not pick a good scale
+for the X-ray and restraint terms; this will often be recognizable by
+higher-than-expected bond and angle RMSDs.  In general it rarely hurts to
+optimize the weights, and often results in a significantly better refinement,
+but it is several times slower than ordinary refinement unless you have a
+highly parallel system.  However, we strongly recommend weight optimization in
+the final round of refinement, where it becomes essential to prevent
+overfitting.</p>
 <p><strong>When should I use non-crystallographic symmetry (NCS) restraints?</strong></p>
 <p>An approximate cutoff for NCS restraints is 2.0 Angstrom - at higher
-resolution the data alone are sufficient, but at lower resolution additional
-restraints are usually necessary.  This is somewhat subjective due to the
-behavior of the global NCS restraints currently used by default in PHENIX,
-but will be addressed in future versions.</p>
+resolution the data alone are usually sufficient, but at lower resolution
+additional restraints are usually necessary.  This is somewhat subjective
+due to the behavior of the global NCS restraints currently used by default in
+PHENIX, but will be addressed in future versions.</p>
+<p><strong>What is the difference between global and torsion NCS, and which one should
+I pick?</strong></p>
+<p>The global NCS restraints groups as rigid bodies, where all atoms in each
+group are expected to be related to the others by a single rotation and
+translation operation.  This does not respect local deformations in the
+related molecules, which are common even at lower resolution.  The torsion
+NCS restraints restraint dihedral angles instead, and allow them to be
+unrestrained if genuinely different.  This will eventually become the default,
+since it often results in significantly better refinement.</p>
+<p><strong>Both NCS restraint types make my structure worse - what should I do?</strong></p>
+<p>In most cases this is due to the restraint of B-factors between NCS groups,
+which may actually have very different levels of disorder.
+Setting the NCS B-factor weight term to zero usually fixes the problem.</p>
 <p><strong>My resolution is X Angstroms; what should RMS(bonds) and RMS(angles) be?</strong></p>
 <p>This is somewhat controversial, but absolute upper limits for a well-refined
 protein structure at high resolution are typically 0.02 for RMS(bonds) and
@@ -266,6 +288,18 @@ COOT_REFMAC_LIB_DIR to point to the directory in which you unpack it.</p>
 as it makes reproducing the published R-factors very difficult and eliminates
 essential information about how the structure was refined.</p>
 <P><H5><U><B>Miscellaneous</B></U></H5><P>
+<p><strong>How can I model a charged atom?</strong></p>
+<p>The charge occupies columns 79-80 at the end of each ATOM or HETATM record,
+immediately following the element symbol.  The format is the number of
+electrons followed by the charge sign, for example &quot;1-&quot; or &quot;2+&quot;.  You can edit
+the PDB file manually to add this, but we recommend using phenix.pdbtools:</p>
+<blockquote>
+phenix.pdbtools model.pdb charge_selection=&quot;element Mn&quot; charge=2</blockquote>
+<p>This is also available in the GUI under &quot;Model tools&quot;.
+The effect of setting the charge will be to use modified scattering factors
+for X-ray refinement, which can be helpful if you notice difference density
+appearing at ion sites.  Note that it will have no effect on the geometry,
+since phenix.refine does not take electrostatics into account.</p>
 <p><strong>I can't see density for an arginine sidechain beyond the C-gamma atom.  How
 should I model it?</strong></p>
 <p>Opinion in the crystallography differs on the proper approach to disordered
