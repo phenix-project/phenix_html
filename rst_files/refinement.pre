@@ -124,7 +124,7 @@ When you do this a number of things happen:
  2) a reflection file with map coefficients for use in Coot or XtalView 
     (e.g. lysozyme_refine_001_map_coeffs.mtz);
  3) Optionally, two maps: likelihood weighted mFo-DFc and 2mFo-DFc can be requested. 
-    These are in ASCII X-PLOR format.
+    These are in binary CCP4 format.
  4) a new defaults file to run the next cycle of refinement, e.g.
     lysozyme_refine_002.def. This means you can run the next cycle of
     refinement by typing::
@@ -1920,7 +1920,7 @@ These are the map coefficients generated for use in Coot.
 The user can also choose between likelihood-weighted or regular maps with any
 specified coefficients, for example: 2mFo-DFc, 2.7mFo-1.3DFc, Fo-Fc, 3Fo-2Fc.
 Any number of maps can be created.
-Optionally, the result can be output as ASCII X-PLOR format. The example below
+Optionally, the result can be output as binary CCP4 format. The example below
 illustrates the main options::
 
   % phenix.refine data.hkl model.pdb map.params write_maps=true
