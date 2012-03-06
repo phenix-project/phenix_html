@@ -77,6 +77,37 @@ density-modified map.  You can still incorporate parts of the initial model
 by checking the &quot;Include input model&quot; box.  Currently, if you want to extend
 an existing model without removing any of the input atoms, we recommend using
 <a class="reference" href="fit_loops.htm">phenix.fit_loops</a> instead.</p>
+<p>General options:</p>
+<blockquote>
+<ul>
+<li><strong>Twin law</strong> determines whether twinned refinement should be performed.
+If you have a noticeably twinned structure this is essential to obtain
+interpretable maps.</li>
+<li><strong>Include input model</strong> is only relevant when rebuild-in-place mode is
+not used; if true, the input model will be combined with the autobuilt
+model using the best segments of each.</li>
+<li><strong>Build outside model</strong> will only add new residues outside of the existing
+model.</li>
+<li><strong>Refine model during building</strong> runs phenix.refine between each cycle of
+model-building; this adds to the runtime but is strongly recommended as
+it will always lead to a better final model.</li>
+<li><strong>Build helices and strands only</strong> will only place secondary structure
+elements.  This is most useful at lower resolutions.</li>
+<li><strong>Build SeMet residues</strong> places SeMet instead of Met residues (as dictated
+by the sequence file).</li>
+<li><strong>Place waters in refinement</strong> uses the ordered_solvent option in
+phenix.refine; this is highly recommended at medium-to-high resolution
+(better than 3.0A).</li>
+<li><strong>Morph input model into density</strong> tries to move the model to match the
+density-modified map before rebuilding and refining.  This is often an
+effective method to improve poor MR solutions.</li>
+<li><strong>Refine input model before rebuilding</strong> will run phenix.refine first;
+this should be unchecked if you have just come from refinement.</li>
+<li><strong>Use simulated annealing</strong> turns on the Cartesian-space simulated
+annealing during refinement.  This adds significantly to runtime, but can
+often improve convergence and fix building mistakes.</li>
+</ul>
+</blockquote>
 <P><H5><U><B>Multiprocessing and queueing systems</B></U></H5><P>
 <p>To build as thorough a model as possible, AutoBuild will spawn many similar
 processes, each of which will produce a slightly different result (depending

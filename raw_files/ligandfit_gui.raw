@@ -16,6 +16,11 @@ documentation covers the use of the GUI specifically, and is not a
 general-purpose reference for program function.  See the <a class="reference" href="ligandfit.htm">command-line
 documentation</a> for a complete list of parameters and details
 on usage.</p>
+<p>Note that waters will be omitted when placing the ligand.  However, if you
+are using pre-calculated map coefficients, you may need to remove waters
+beforehand to avoid &quot;flattening&quot; the difference density around the ligand.
+Protein atoms overlapping with the ligand density will prevent a successful
+placement, so some editing of the input structure is generally recommended.</p>
 <P><H5><U><B>Configuration</B></U></H5><P>
 <p>The first tab in the LigandFit window contains a field for adding input files,
 which can be dragged and dropped from the desktop, or picked from a file
@@ -56,6 +61,27 @@ when a file is loaded.</p>
 <p>By default, LigandFit runs multiple slightly different jobs in parallel and
 picks the best result from these; however, check the &quot;Quick search&quot; box if
 you want it to run a fast single job instead.</p>
+<p>Other options:</p>
+<blockquote>
+<ul>
+<li><strong>Ligand map type</strong> tells LigandFit what type of map to calculate or
+expect in the input file.  If you are supplying map coefficients from
+phenix.refine or another program, &quot;Pre-calculated&quot; is appropriate.  If
+you are using raw data, &quot;Fo-Fc&quot; is the standard, but you may use &quot;Fobs&quot;
+instead.</li>
+<li><strong>Minimum CC</strong> sets the correlation to density required to consider a
+placement successful.</li>
+<li><strong>Real-space refinement</strong> will optimize the fit to density after placing
+the ligand.  This is optional (and may be unnecessary if you intend to
+run phenix.refine immediately afterward), but is usually very fast and
+improves the fit.</li>
+<li><strong>Number of conformers to create</strong> determines how the ligand is partitioned
+for placement of fragments.  When this is set to 1, RESOLVE will try to
+identify rigid groups automatically.  Larger numbers will instead use
+eLBOW to generate multiple conformations which are used to identify the
+rigid groups.  This is somewhat slower, but often more accurate.</li>
+</ul>
+</blockquote>
 <P><H5><U><B>Output</B></U></H5><P>
 <p>LigandFit will generate a difference map used for fitting, and a separate PDB
 file for each copy placed.  All of these can be opened at once in one of

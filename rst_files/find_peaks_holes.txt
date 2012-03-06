@@ -1,0 +1,56 @@
+==========================================
+Finding and analyzing difference map peaks
+==========================================
+
+Overview
+--------
+
+``phenix.find_peaks_holes`` is a utility for identifying points of interest in
+difference maps, typically at the end of refinement.  It will calculate an
+mFo-DFc map and locate peaks and holes, plus anomalous map peaks (if anomalous
+data are provided) and flagging of waters with suspiciously high mFo-DFc
+values.  This information may be used to improve the model, especially in the
+addition of solvent and small ions.
+
+Configuration
+-------------
+
+The program requires only a PDB file and data (including R-free flags).  The
+default options should be sufficient for most cases, although for very large
+structures or especially noisy maps, you may find it helpful to increase the
+sigma cutoff.
+
+.. image:: images/find_peaks_config.png
+
+Additional options are available by clicking the "Peak search" button.  These
+can be modified to look for peaks which overlap with the model, if desired.
+
+.. image:: images/peak_search_config.png
+
+On the command line, the minimal input is simply the paths to your model and
+data files (column labels may need to be specified if the choice is ambiguous).
+Running the program without arguments will print out a summary of available
+options, which are also listed below.
+
+Output
+------
+
+.. image:: images/find_peaks_summary.png
+
+A summary tab will appear at the end of the run with peak counts, plus output
+files and buttons to view them.
+By default the program will write a PDB file containing up to five "chains",
+all with atoms labeled UNK:
+
+  - **A**: mFo-DFc peaks (positive).  
+  - **B**: mFo-DFc holes (negative)
+  - **C**: anomalous map peaks
+  - **D**: waters in mFo-DFc peaks
+  - **E**: waters in anomalous peaks
+
+The program will also write the 2mFo-DFc, mFo-DFc, and anomalous (if available)
+maps.  Additional tabs will display each type of result in a list;
+clicking these items will recenter the view in Coot and/or PyMOL on the
+selected point.
+
+.. image:: images/find_peaks_result.png
