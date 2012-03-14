@@ -3,13 +3,13 @@
 if [ -z "$PHENIX" ]; then
   echo "PHENIX environment variable not set."
   exit 1
-elif [ ! -d $PHENIX ]; then
+elif [ ! -d "$PHENIX" ]; then
   echo "PHENIX environment variable is set, but not a directory:"
   echo "  $PHENIX"
   exit 1
 fi
 
-PHENIX_HTML=`libtbx.find_in_repositories phenix_html`
+PHENIX_HTML="`libtbx.find_in_repositories phenix_html`"
 if [ -z "$PHENIX_HTML" ]; then
   echo "$PHENIX_HTML not found; aborting"
 fi
@@ -18,7 +18,7 @@ HTML_LOG=$1
 if [ -z "$HTML_LOG" ]; then
   HTML_LOG=/dev/null
 fi
-for arg in $*; do
+for arg in "$@"; do
   case $arg in
   --log=*)
     log_tmp=`echo $arg | awk 'BEGIN{FS="="}{print $2}'`
@@ -26,19 +26,19 @@ for arg in $*; do
       echo "Error: Usage: phenix_html.rebuild_doc [--log=log.txt]"
       exit 1
     else
-      HTML_LOG=$log_tmp
+      HTML_LOG="$log_tmp"
     fi
     ;;
   esac
 done
 
-cd $PHENOX_HTML
+cd "$PHENOX_HTML"
 echo "Building PHENIX documentation in $PHENIX_HTML"
 echo "The complete documentation will be in:"
 echo "  $PHENIX/doc"
 
 echo "  creating restructured text files"
-cd $PHENIX_HTML/rst_files
+cd "$PHENIX_HTML/rst_files"
 phenix.python ../scripts/create_refinement_txt.py
 phenix.python ../scripts/create_fmodel_txt.py
 phenix.python ../scripts/create_phenix_maps.py
@@ -68,25 +68,26 @@ done
 
 echo "  converting raw HTML files, creating tables-of-contents, and indexing"
 
-cd $PHENIX_HTML
-phenix.python $PHENIX/phenix/phenix/utilities/toc_and_index.py >> $HTML_LOG
+cd "$PHENIX_HTML"
+phenix.python "$PHENIX/phenix/phenix/utilities/toc_and_index.py" >> "$HTML_LOG"
 
 echo "  populating documentation directory $PHENIX/doc"
 
-if [ -d $PHENIX/doc ]; then
-  /bin/rm -rf $PHENIX/doc
+if [ -d "$PHENIX/doc" ]; then
+  /bin/rm -rf "$PHENIX/doc"
 fi
 
-mkdir -p $PHENIX/doc
+mkdir -p "$PHENIX/doc"
 
-cp -r $PHENIX_HTML/icons   $PHENIX/doc
-cp -r $PHENIX_HTML/images  $PHENIX/doc
-cp    $PHENIX_HTML/*.html  $PHENIX/doc
-mv    $PHENIX_HTML/*.htm   $PHENIX/doc
-/bin/rm $PHENIX/doc/phenix_documentation.html
+cp -r "$PHENIX_HTML/icons"   "$PHENIX/doc"
+cp -r "$PHENIX_HTML/images"  "$PHENIX/doc"
+cp    "$PHENIX_HTML/*.html"  "$PHENIX/doc"
+mv    "$PHENIX_HTML/*.htm"   "$PHENIX/doc"
+/bin/rm "$PHENIX/doc/phenix_documentation.html"
 VERSION=${PHENIX_VERSION}-${PHENIX_RELEASE_TAG}
-sed "s/INSTALLED_VERSION/$VERSION/;" $PHENIX_HTML/phenix_documentation.html > $PHENIX/doc/phenix_documentation.html
-ln -s $PHENIX/doc/phenix_documentation.html $PHENIX/doc/index.html
+sed "s/INSTALLED_VERSION/$VERSION/;" "$PHENIX_HTML/phenix_documentation.html" \
+   > "$PHENIX/doc/phenix_documentation.html"
+ln -s "$PHENIX/doc/phenix_documentation.html" "$PHENIX/doc/index.html"
 
 echo "done."
 
