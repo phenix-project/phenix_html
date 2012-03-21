@@ -18,7 +18,7 @@ HTML_LOG=$1
 if [ -z "$HTML_LOG" ]; then
   HTML_LOG=/dev/null
 fi
-for arg in "$@"; do
+for arg in $*; do
   case $arg in
   --log=*)
     log_tmp=`echo $arg | awk 'BEGIN{FS="="}{print $2}'`
@@ -79,15 +79,15 @@ fi
 
 mkdir -p "$PHENIX/doc"
 
-cp -r "$PHENIX_HTML/icons"   "$PHENIX/doc"
-cp -r "$PHENIX_HTML/images"  "$PHENIX/doc"
-cp    "$PHENIX_HTML/*.html"  "$PHENIX/doc"
-mv    "$PHENIX_HTML/*.htm"   "$PHENIX/doc"
+cp -r $PHENIX_HTML/icons   $PHENIX/doc
+cp -r $PHENIX_HTML/images  $PHENIX/doc
+cp    $PHENIX_HTML/*.html  $PHENIX/doc
+mv    $PHENIX_HTML/*.htm   $PHENIX/doc
 /bin/rm "$PHENIX/doc/phenix_documentation.html"
 VERSION=${PHENIX_VERSION}-${PHENIX_RELEASE_TAG}
 sed "s/INSTALLED_VERSION/$VERSION/;" "$PHENIX_HTML/phenix_documentation.html" \
    > "$PHENIX/doc/phenix_documentation.html"
-ln -s "$PHENIX/doc/phenix_documentation.html" "$PHENIX/doc/index.html"
+ln -s $PHENIX/doc/phenix_documentation.html $PHENIX/doc/index.html
 
 echo "done."
 
