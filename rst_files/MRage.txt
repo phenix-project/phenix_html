@@ -1,0 +1,214 @@
+======================================
+MRage: automated molecular replacement
+======================================
+
+**MRage** is generic molecular replacement program that is designed to run
+efficiently with a large number of possible models on parallel hardware. It
+accepts multiple model definitions that are internally processed with
+integrated tools to search models and used for molecular replacement.
+Identified solutions can be used to speed up the search even further by
+model assembly algorithms and limiting search space.
+
+Input
+=====
+
+The composition of the unit cell is specified by inputting components, and
+potential models for the corresponding component in a hierarchical way. It is
+recommended to specify the sequence of a component, which allows for better
+handling of partial models (see `Composition stage`_). A stoichiometry of each
+component in the final assembly is also assigned at this stage. The overall
+count of assemblies in the unit cell can either be input or determined
+automatically from the Matthews coefficient. In case no model is known for a
+component, the list of potential models should be left empty.
+
+Models
+======
+
+Models for a component can be specified stepwise with the amount of
+preprocessing required. The following options are available:
+
+  - **ensemble**. This model is used as specified.
+
+  - model_collection. These models will be superposed and optionally trimmed
+    using ``phenix.ensembler``.
+
+  - **template**. This model is run through ``phenix.sculptor`` with a given
+    set of active protocols (*default*: use all protocols) to remove unrelated
+    chain segments and solvent, trim sidechains and weight the model according
+    to structure and homology. An alignment can be specified to be used to
+    process the structure; in case this is omitted, ``phenix.muscle`` will be
+    used to align the model to the target sequence.
+
+  - **homology**. Homology search results. Hits will be fetched from the wwPDB,
+    and preprocessed as a **template**. It is possible to limit the homology
+    search to the top N hits.
+
+  - **search**. Performs a BLAST search and inputs the results as a
+    **homology** scope to the program. Requires component sequence.
+
+These steps are performed on-demand, i.e. if no clear solution could be found
+with available **ensembles**, the program processes the next **template**, or
+fetches the next **homology** search hit, etc.
+
+
+Search organization
+===================
+
+**MRage** employs a sequential search algorithm, in which molecules are found
+consecutively. The algorithm consists of several stages, and also allows the
+exploration of potential space groups.
+
+Composition stage
+-----------------
+
+The composition of each partial structure (located in previous macrocycles) is
+compared with the composition of the unit cell. Available models that fit in
+the missing composition are selected for search. In case the modelled sequence
+for a search model is known, the program can account for the fact that a model
+may only be a partial model for a component (e.g. one domain only).
+
+Search stage
+------------
+
+Calculations are organized into a search tree that is explored according to
+depth-first traversal. For the underlying calculations, available functions
+from **phaser** [PHASER]_ are used.
+
+For each partial structure and applicable model, a rotation function is
+calculated. This is then followed up by a translation function calculation.
+Each translation function peaks are checked for packing clashes, and if
+accepted, checked whether are significant, probable solutions or not.
+Calculations are performed in the order of peak score (RF/TF), model quality
+(sequence identity) or partial structure quality (LLG score). Exploration
+continues until a significant solution is found (*quick mode*) or all
+possibilities has been exhausted (*full mode*). There is also no thresholding
+step for rotation (*rationale*: weak signal in rotation function) and
+translation function peaks (*rationale*: packing check fast). As a consequence,
+more work is performed, but simultaneously this allows weighting translation
+function results with packing overlap, and also avoids pipe stalls, which would
+adversely effect scaling in a parallel environment.
+
+In quick mode, if a significant solution is found, conventional search
+terminates. However, all models that are alternatives of the model that gave
+this clear solution are superposed onto the solution and refined. This allows
+the quick evaluation of model quality for a potentially large number of
+alternative models. Currently, **SSM** [SSM]_ is used for superposition.
+
+Parallelisation is done at a function level. Calculations are dispatched until
+the number of assigned CPUs are filled up. Execution can either take place in
+a shared memory environment using threads and processes or using a submission
+queue (currently *SGE*, *LSF* and *PBS* are supported). The degree of
+parallelisation scales with the complexity of the search, and given unlimited
+resources, reduces the runtime to a constant. However, in simple cases (e.g.
+a good model that gives a clear rotation and translation peak), no parallel
+resources can be used.
+
+Refinement
+----------
+
+Peaks above a certain threshold of the best peak and those that are identified
+as significant solutions are subjected to refinement. After refinement is
+completed, a second thresholding step is performed. Top peaks will be
+subjected to post-processing and also carried forward for the next macrocycle.
+Significant peaks that are below the threshold (e.g. a correct solution for a
+small domain) are also input to the post-processing step, but will not be
+propagated to the next cycle.
+
+Post-processing
+---------------
+
+Significant solutions are analysed for specific features so that the search
+could be improved.
+
+  - **Amalgamation**. Assembly of solutions that come from the same starting
+    point. In case the "starting point" is empty, allowed origin shifts are
+    added to the search. In case the origin is undefined and the space group
+    has floating origin, only the rotation component is extracted.
+
+  - **Rotation peak salvage**. Propagates significant rotation peaks to the
+    next stage.
+
+  - **Regular assembly recognition**. Identifies local point group symmetry
+    from the solution.
+
+  - **Assembly completion**. In case assembly definitions are available (e.g.
+    from **regular assembly completion**), and a partial assembly has been
+    located, missing molecules are filled in.
+
+No actual calculation is performed, only the possibilities are noted. In case
+the given solution enters the next `Search stage`_ (as determined by
+`Composition stage`_), these possibilities will be scored as a priority.
+
+Space group exploration
+-----------------------
+
+Search progress in possible space groups is compared. Space groups having
+significant solutions or above the threshold (determined by the best score
+over all space groups) are propagated to the next macrocycle.
+
+Output
+======
+
+The program logs all operations it performs. However, this may be difficult to
+follow on the screen, especially when multiple space groups are explored, and
+therefore, after each macrocycle, a summary of all searches performed is
+printed.
+
+Models generated during the solution process are also saved. This includes
+structure files fetched from the PDB, but also alignments and homology
+searches performed.
+
+Solutions
+---------
+
+If the search finishes, solutions are written out in all likely space groups.
+For each space group, the top solution is selected, and all partial solutions
+above a threshold relative to the top solution is considered. Solutions that
+are fully "contained" in a higher scoring solution (i.e. all models correspond
+to a model in the higher scoring solution) are discarded. This way, the top
+solution is output even if the composition is overestimated, but at the same
+time removing incomplete solutions (e.g. 14 molecules out of the total 15)
+that cannot be distinguised based on the final score.
+
+Solutions are written out in an internal compressed format, which is capable
+of storing a high number of solutions without onerous storage requirements, and
+can be manipulated with provided tools.
+
+Usage
+=====
+
+Command line
+------------
+
+``phaser.MRage [command-line switches] [PHIL-format parameter files]``
+
+Command-line switches::
+
+  -h, --help            show this help message and exit
+  --show-defaults       print PHIL and exit
+  -i, --stdin           read PHIL from stdin as well
+  -v, --verbosity       set verbosity level (DEBUG,INFO,WARNING,VERBOSE)
+
+PHIL arguments
+
+Everything not starting with a dash('-') is interpreted as a PHIL argument.
+This can be a PHIL-format file containing parameters or a command-line
+assignment.
+
+GUI
+---
+
+References
+==========
+
+.. [PHASER] McCoy AJ, Grosse-Kunstleve RW, Adams PD, Winn Md, Storoni LC, Read RJ.
+    *Phaser crystallographic software.*
+    `J. Appl. Cryst. (2007) 40:658-674.
+    <http://www.ncbi.nlm.nih.gov/pubmed/19461840>`_
+
+.. [SSM] Krissinel, E. & Henrick, K. 
+    *Secondary-structure matching (SSM), a new tool for fast protein structure
+    alignment in three dimensions.*
+    `Acta Cryst. (2004) D60:2256-2268.
+    <http://www.ncbi.nlm.nih.gov/pubmed/15572779>`_
+
