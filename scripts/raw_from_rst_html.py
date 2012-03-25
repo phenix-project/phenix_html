@@ -19,7 +19,8 @@ raw_footer = """\
 <!--REMARK PHENIX BODY END-->
 """
 
-def run(args):
+def run(args, out=None):
+  if (out is None) : out = sys.stdout
   assert len(args) == 1
   title = ""
   lines_init = iter(open(args[0]).read().splitlines())
@@ -35,15 +36,15 @@ def run(args):
       break
   else:
     raise RuntimeError("<body> line not found.")
-  sys.stdout.write(raw_header_1)
-  sys.stdout.write(title)
-  sys.stdout.write(raw_header_2)
+  out.write(raw_header_1)
+  out.write(title)
+  out.write(raw_header_2)
   for line in lines:
     if (   line == "</body>"
         or line == '<hr class="docutils footer" />'):
       break
     if (line.startswith('<div class="image">')):
-      print line
+      print >> out, line
       continue
     if (line.startswith('<h1 class="title">')):
       continue
@@ -65,10 +66,10 @@ def run(args):
     elif (   line.startswith("<ul ")
           or line.startswith("<ol ")):
       line = line[:3]+">"
-    print line
+    print >> out, line
   else:
     raise RuntimeError("</body> line not found.")
-  sys.stdout.write(raw_footer)
+  out.write(raw_footer)
 
 if (__name__ == "__main__"):
   run(sys.argv[1:])
