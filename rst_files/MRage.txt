@@ -27,10 +27,11 @@ Models
 Models for a component can be specified stepwise with the amount of
 preprocessing required. The following options are available:
 
-  - **ensemble**. This model is used as specified.
+  - **ensemble**. This model is used without modification.
 
-  - model_collection. These models will be superposed and optionally trimmed
-    using ``phenix.ensembler``.
+  - **model collection**. These models will be superposed and optionally trimmed
+    using ``phenix.ensembler``, but no modification of sequence, sidechains, or
+    B-factors will be performed.
 
   - **template**. This model is run through ``phenix.sculptor`` with a given
     set of active protocols (*default*: use all protocols) to remove unrelated
@@ -43,8 +44,8 @@ preprocessing required. The following options are available:
     and preprocessed as a **template**. It is possible to limit the homology
     search to the top N hits.
 
-  - **search**. Performs a BLAST search and inputs the results as a
-    **homology** scope to the program. Requires component sequence.
+  - **search**. Performs a BLAST search for homologs and processes the results
+    as described above.  Requires component sequence.
 
 These steps are performed on-demand, i.e. if no clear solution could be found
 with available **ensembles**, the program processes the next **template**, or
@@ -177,6 +178,97 @@ can be manipulated with provided tools.
 Usage
 =====
 
+Graphical interface
+-------------------
+
+As with the generic Phaser GUI, two interfaces are available for running MRage,
+one designed for single-component searches with minimal customization of input
+models, and an advanced interface that allows all available features to be used.
+These are launched from a single button in the main GUI, which will initially
+pop up an information dialog describing the available options.
+
+.. image:: images/mrage_info.png
+
+The simple GUI is centered around a single input control allowing any combination
+of files to be dragged in:
+
+  - **Reflections (mandatory)**: these can be in any file or data format;
+    only amplitudes or intensities are required.
+
+  - **Sequence:** should contain a single polymer sequence, in any format.  This
+    is highly recommended, and required if you want to perform an automatic
+    homology search.
+
+  - **Template models**: unprocessed PDB files, which will be treated by
+    Sculptor as described above.
+
+  - **Homology search**: HHPred or BLAST results.
+
+.. image:: images/mrage_simple.png
+
+In the simplest cases, only the data and sequence are required; you should then
+select a homology search method in the Options section.  "NCBI BLAST" requires
+internet access; "Local BLAST" requires that BLAST is installed and available
+on the command line.  At this point you can run the program without further
+input.
+
+Other settings:
+
+  - **Max. number of hits to use** controls how many PDB entries from the
+    homology search are processed by the pipeline.  Increasing this provides
+    greater coverage, but at the cost of significantly longer runtimes.
+
+  - **Resolution cutoff** determines the resolution used for running Phaser;
+    this does not need to be changed, but increasing the cutoff will result in
+    a faster but less accurate run.
+
+  - **Parallelization method** controls how the jobs are distributed across the
+    available computing resources.  ``multiprocessing`` and ``threading`` are
+    essentially equivalent (although in practice they may behave slightly
+    differently), and run locally.  The other options require that you have
+    access to one of the supported queuing systems and can submit jobs from the
+    computer where you are running the GUI.
+
+  - **Number of CPUs** controls how many jobs are run at once.  It should not
+    exceed the number of processors available, either on the local system or the
+    queuing system.  (Note: if you plan to use your computer for other tasks
+    while MRage is running, you may wish to leave one CPU core free if possible.)
+
+  - **Search mode:** sets the thoroughness of the search, as describe in the
+    `Search stage`_ section.
+
+  - **Symmetry exploration**: ???
+
+  - **Overall count** is the number of copies of the component to search for in
+    the asymmetric unit.
+
+Advanced GUI
+------------
+
+This version of the GUI moves the description of the crystal contents and search
+information to a separate tab, with input options grouped by component.  The
+first tab is essentially similar to the simple GUI, but the only input field is
+for the reflections file.
+
+.. image:: images/mrage_advanced.png
+
+The composition tab contains another set of tabs for each unique component.
+These allow the full range of input files to be specified; some of these have
+additional parameters (such as the mandatory sequence identity for ensembles and
+model collections).  The "Basic info" tab allows the NCBI BLAST search to be run
+interactively if desired (the results will be loaded as a homology result).
+A link to the HHPred server, which does not allow automated queries, is
+available on the "Homology searches" tab.
+
+.. image:: images/mrage_component.png
+
+You must specify the component stoichiometry, i.e. the number of copies of the
+component in the overall assembly.  This is distinct from the "Overall count"
+parameter in the main tab: for instance, if you are trying to solve a structure
+of a hexamer bound to a monomer and expect two copies of the complex in the
+asymmetric unit of the crystal, the overall count is two, and the stoichiometry
+of the components is 6 and 1 for the hexamer and monomer respectively.
+
 Command line
 ------------
 
@@ -194,9 +286,6 @@ PHIL arguments
 Everything not starting with a dash('-') is interpreted as a PHIL argument.
 This can be a PHIL-format file containing parameters or a command-line
 assignment.
-
-GUI
----
 
 References
 ==========

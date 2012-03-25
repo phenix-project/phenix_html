@@ -54,6 +54,30 @@ including map coefficients and Hendrickson-Lattman phase distributions
 usually very noisy and difficult to interpret, and typically requires
 density modification to become useful.
 
+Frequently Asked Questions
+--------------------------
+
+  - **How do I tell Phaser to look for more anomalous scatterers?**
+    Click on the "Composition and sites" tab.  A control at the bottom labeled
+    "Enable substructure completion by log-likelihood gradient maps" turns on
+    this feature (and is already on by default).  However, Phaser also needs to
+    be told what type of scatterers to look for.  Clicking the "Options..."
+    button opens a new window which will allow you to enter scatterer symbols
+    (typically element codes).  You may enter as many of these as you think are
+    present and ordered in your crystal - note however that at the wavelengths
+    commonly used for macromolecular crystallography, some atom types may
+    be difficult to distinguish (such as sulfur and chlorine).
+
+  - **How do I phase a structure with tantalum bromide clusters in Phenix?**
+    This is possible, but not really optimal at present.  Phaser has built-in
+    support for Ta6Br12 clusters, which have the scatterer type "TX".  However,
+    they are represented as point scatterers rather than the actual cluster.
+    Therefore, although Phaser can perform LLG substructure completion, it will
+    output sites as single TX pseudo-atoms, rather than the actual cluster.
+
+
+.. image:: images/phaser_ep_llg.png
+
 References
 ----------
 
