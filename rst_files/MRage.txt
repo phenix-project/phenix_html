@@ -51,6 +51,26 @@ These steps are performed on-demand, i.e. if no clear solution could be found
 with available **ensembles**, the program processes the next **template**, or
 fetches the next **homology** search hit, etc.
 
+Symmetry exploration
+====================
+
+Specifies the set of space groups to try in the search. Currently, there are
+three options available:
+
+  - **dataset**. The space group as specified on the input or read from the
+    mtz-file.
+
+  - **enantiomorph**. The space group has been determined from systematic
+    absences. The input space group and its enantiomorph (if exists) will be
+    used in the search.
+
+  - **pointgroup**. Only the point group of the data has been established. All
+    space groups compatible with the point group will be tried.
+
+Space group exploration is exhaustive and can take several macrocycles to
+complete. Space groups with clearly inferior results to others are
+incrementally removed from the search until the correct space group is
+established.
 
 Search organization
 ===================
@@ -237,7 +257,8 @@ Other settings:
   - **Search mode:** sets the thoroughness of the search, as describe in the
     `Search stage`_ section.
 
-  - **Symmetry exploration**: ???
+  - **Symmetry exploration** determines the space groups to try (`Symmetry
+    exploration`_)
 
   - **Overall count** is the number of copies of the component to search for in
     the asymmetric unit.
