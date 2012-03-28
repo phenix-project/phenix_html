@@ -1046,6 +1046,9 @@ data set is low resolution, but there is a known related structure solved at hig
 resolution.  The higher resolution reference model is used to generate a set of 
 dihedral restraints that are applied to each matching dihedral in the working model.
 
+Reference chains are matched to working chains automatically, and sequences
+need not match exactly.
+
 The default parameters are a good starting point::
 
   % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
@@ -1104,6 +1107,35 @@ Specify ``reference.params`` as an additional input when running ``phenix.refine
 
 Each selection (both reference and selection entries as above) may only specify
 one chainID and/or one resseq range.
+
+Multiple reference models may also be specified in cases where a working complex
+has reference structures from different coordinate files. To specify multiple
+reference model input files, the command line or parameter file should contain::
+
+  refinement.reference_model.file = reference_A.pdb
+  refinement.reference_model.file = reference_B.pdb
+
+Reference chain/model chain pairs are determined automatically, and details are
+written to the .log file and .eff file. If you want to specify your own matching,
+include a parameter file that contains::
+
+  refinement.reference_model.file = reference_A.pdb
+  refinement.reference_model.file = reference_B.pdb
+  refinement.reference_model.reference_group {
+       reference = chain A
+       selection = chain A
+       file_name = reference_A.pdb
+     }
+  refinement.reference_model.reference_group {
+       reference = chain A
+       selection = chain B
+       file_name = reference_B.pdb
+     }
+
+The refinement.reference_model.reference_group.file_name parameter is only required
+when more than one reference file is used. This parameter allows the reference model
+restraint generation to disambiguate between reference files that contain chains
+with the same chainID.
 
 Automatic Asn/Gln/His corrections
 ---------------------------------
