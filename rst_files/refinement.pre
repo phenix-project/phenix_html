@@ -1680,10 +1680,6 @@ R-free_flags can be written out (in MTZ format)::
 
   % phenix.refine data.hkl model.pdb export_final_f_model=mtz
 
-To output the reflections in CNS reflection file format::
-
-  % phenix.refine data.hkl model.pdb export_final_f_model=cns
-
 Note: Fmodel is the total model structure factor including all scales:
 
   Fmodel = scale_k1 * exp(-h*U_overall*ht) * (Fcalc + k_sol * exp(-B_sol*s^2) * Fmask)
@@ -1880,12 +1876,7 @@ defined as::
     % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=1 \
       strategy=none export_final_f_model=mtz
 
-3. To output CNS/Xplor formatted reflection file::
-
-     % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=1 \
-       strategy=none export_final_f_model=cns
-
-4. Resolution limits can be applied::
+3. Resolution limits can be applied::
 
      % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=1 \
        strategy=none xray_data.low_resolution=15.0 xray_data.high_resolution=2.0
