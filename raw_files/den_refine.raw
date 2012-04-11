@@ -1,0 +1,113 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>phenix.den_refine: DEN refinement in Phenix</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<p>Deformable elastic network (DEN) refinement is a refinement protocol that
+uses a sparse restraint network to maintain local model geometry while
+allowing for larger global domain motions over the course of
+several macrocycles of slow-cooling simulated annealing.</p>
+<p>The DEN restraint network is a set of atom-atom distance restraints between
+atoms 3 to 5 Angstrom apart and within 0 and 10 residues
+in sequence space. The initial target values for these distance restraints
+may be set to corresponding distances in a reference model (such as a higher
+resolution structure or homology model) or to the distances in the input
+model. Over the course of a simulated annealing cycle, the target distances
+are frequently updated to allow for improved global fit to the diffraction
+data. DEN restraints have been shown to be particularly useful in improving
+models with low resolution data.</p>
+<p>DEN was originally described by Brunger and colleagues in:</p>
+<p>Schroder GF, Levitt M, and Brunger AT. (2010)
+<strong>Super-resolution biomolecular crystallography with low-resolution data.</strong>
+<a class="reference" href="http://www.ncbi.nlm.nih.gov/pubmed/20376006">Nature 464(7292), 1218-22.</a></p>
+<P><H5><U><B>Optimization</B></U></H5><P>
+<p>The impact of the DEN restraint network is controlled by two variable
+parameters, gamma, which controls the deformability of the network, and
+the weight, which controls how large of a contribution the DEN restraints
+make to the overall refinement energy term (see the above reference
+for details). To get the most out of a DEN refinement, it is important
+to run a grid search over combinations of gamma and weight values. This process
+is very time intensive, and is best carried out on a machine with many
+processors.</p>
+<p>The default behavior is to optimize with six gamma values [0.0, 0.2, 0.4,
+0.6, 0.8, 1.0] and five weights [3.0, 10.0, 30.0, 100.0, 300.0], which will
+run most optimally on a machine with at least 30 processor cores. The number
+of processors used by Phenix is controlled by the main.nproc parameter, so
+setting main.nproc=30 will run the optimization step on 30 processors.</p>
+<P><H5><U><B>Using DEN</B></U></H5><P>
+<p>How to run the command line version:</p>
+<blockquote>
+% phenix.den_refine model.pdb data.mtz</blockquote>
+<p>To include a reference model, run:</p>
+<blockquote>
+% phenix.den_refine model.pdb data.mtz den.reference_file=reference.pdb</blockquote>
+<p>See the full list of options below.</p>
+<p>There is also a DEN refinement GUI for those who prefer a graphical interface.</p>
+<hr class="docutils" />
+<p>phenix.den_refine uses a modified version of the default <em>phenix.refine</em>
+parameters optimized for DEN refinement.</p>
+<p>The DEN-specific subset of refinement parameters:</p>
+<pre class="literal-block">
+refinement {
+  main {
+    nproc = Auto
+  }
+  refine {
+    strategy = *individual_sites rigid_body *individual_adp \
+    group_adp tls occupancies group_anomalous *den
+  }
+  den {
+    reference_file = None
+    gamma = 0.5
+    kappa = 0.1
+    weight = 30
+    sigma = 0.44
+    optimize = True
+    opt_gamma_values = 0 0.2 0.4 0.6 0.8 1
+    opt_weight_values = 3 10 30 100 300
+    num_cycles = 10
+    kappa_burn_in_cycles = 2
+    bulk_solvent_and_scale = True
+    refine_adp = True
+    final_refinement_cycle = False
+    verbose = False
+    annealing_type = *torsion cartesian
+    output_kinemage = False
+    restraint_network {
+      lower_distance_cutoff = 3
+      upper_distance_cutoff = 15
+      sequence_separation_low = 0
+      sequence_separation_limit = 10
+      exclude_hydrogens = True
+      ndistance_ratio = 1
+      export_den_pairs = False
+      den_network_file = None
+    }
+  }
+  tardy {
+    mode = *every_macro_cycle second_and_before_last once first first_half
+    start_temperature_kelvin = 3300
+    final_temperature_kelvin = 300
+    number_of_cooling_steps = 1440
+    number_of_time_steps = 1
+    time_step_pico_seconds = 0.001
+    prolsq_repulsion_function_changes {
+      c_rep = 100
+      k_rep = 1
+    }
+  }
+  simulated_annealing {
+    start_temperature = 3300
+    final_temperature = 300
+    cool_rate = 50
+    number_of_steps = 24
+    time_step = 0.001
+  }
+}
+</pre>
+<!--REMARK PHENIX BODY END-->

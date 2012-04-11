@@ -21,9 +21,10 @@ default options should be sufficient for most cases, although for very large
 structures or especially noisy maps, you may find it helpful to increase the
 sigma cutoff.</p>
 <div class="image"><img alt="images/find_peaks_config.png" src="images/find_peaks_config.png" /></div>
-<p>Additional options are available by clicking the &quot;Peak search&quot; button.  These
-can be modified to look for peaks which overlap with the model, if desired.</p>
-<div class="image"><img alt="images/peak_search_config.png" src="images/peak_search_config.png" /></div>
+<p>By default, peaks which overlap with the input atoms (within a cutoff distance)
+will not be included.  If you want to find all peaks, set the minimum
+peak-model distance to zero.  Additional options are available by clicking the
+&quot;Peak search&quot; button.</p>
 <p>On the command line, the minimal input is simply the paths to your model and
 data files (column labels may need to be specified if the choice is ambiguous).
 Running the program without arguments will print out a summary of available
