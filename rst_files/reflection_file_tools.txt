@@ -46,11 +46,18 @@ results in::
                           CNS output only).
     --use-lattice-symmetry-in-r-free-flag-generation
                           group twin/pseudo symmetry related reflections
-                          together in r-free set.
+                          together in r-free set (this is the default).
+    --no-lattice-symmetry-in-r-free-flag-generation
+                          opposite of --use-lattice-symmetry-in-r-free-flag-
+                          generation
     --r-free-flags-fraction=FLOAT
                           Target fraction free/work reflections (default: 0.10).
     --r-free-flags-max-free=INT
                           Maximum number of free reflections (default: 2000).
+    --r-free-flags-format=cns|ccp4
+                          Convention for generating R-free flags
+    --random-seed=INT     Seed for random number generator (affects generation
+                          of R-free flags).
     --change-of-basis=STRING
                           Change-of-basis operator: h,k,l or x,y,z or
                           to_reference_setting, to_primitive_setting,
