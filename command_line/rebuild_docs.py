@@ -59,8 +59,8 @@ def run (out=None, log=None) :
   print >> out, "  converting restructured text HTML files to raw HTML files"
   for file_name in html_files :
     raw_file = os.path.splitext(os.path.basename(file_name))[0] + ".raw"
-    print >> out, "    converting %s to %s" % (os.path.basename(file_name),
-      raw_file)
+    #print >> out, "    converting %s to %s" % (os.path.basename(file_name),
+    #  raw_file)
     f = open(os.path.join(html_dir, "raw_files", raw_file), "w")
     raw_from_rst_html.run(args=[file_name], out=f)
     f.close()
