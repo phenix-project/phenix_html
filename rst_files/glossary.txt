@@ -115,6 +115,8 @@ work related to direct methods in reciprocal space. However, direct
 methods are more intuitively understood in the direct-space formulation,
 based on the Sayre equation.
 
+**f-prime (f') and f-double-prime (f'')**: see **anomalous scattering**.
+
 **Figure of Merit (FOM)**: An approximate measure of phase quality, calculated
 for each reflection.  Range is from 0 to 1, higher being better.  Although it
 is sometimes reported in the context of refinement and density modification,
@@ -123,9 +125,9 @@ solution will typically have an FOM greater than 0.4, while a SAD solution
 should usually be greater than 0.3.
 
 **Friedel's law**: a phenomenon in which each reflection (h,k,l) and its
-mirror-image across the origin have identical amplitudes (but inverse phase).
-Anomalous scattering breaks this symmetry, which can be taken advantage of to
-locate heavy-atom sites and phase the structure.
+mirror-image across the origin (-h,-k,-l) have identical amplitudes (but
+inverse phase).  Anomalous scattering breaks this symmetry, which can be taken
+advantage of to locate heavy-atom sites and phase the structure.
 
 **Hendrickson-Lattman coefficients**: Phase probability values, calculated
 either experimentally based on heavy-atom methods (SAD, MAD, etc.) or directly
@@ -213,7 +215,8 @@ into a single Miller array containing both amplitudes and sigmas).
 for more than three-quarters of all new structures.  MR uses known structures
 to phase (and also provide an initial model for refinement), by determining
 their rotation and translation in the unit cell of the collected data.  Unlike
-phasing methods (SAD, MAD, MIR, etc.), MR does not require special experimental
+other phasing methods (SAD, MAD, MIR, etc.), MR does not require special
+experimental
 setup or especially high-quality data.  The search model may either be a single
 PDB file, an ensemble of superimposed PDB files of similar structure, or a
 processed electron density map (containing only the region of interest).  The
@@ -224,12 +227,39 @@ solved, and significantly lower-identity models may still be used with
 additional processing if their structures are similar enough.  In Phenix, MR
 is performed by `Phaser <phaser_mr.htm>`_ and various derivatives.
 
+**Multi-wavelength Anomalous Difraction (MAD)**: a popular method for
+experimental phasing using heavy atoms.  MAD takes advantage of the tunability
+of synchrotron beamlines to collect data for (ideally) a single crystal at
+multiple wavelengths (at least two, but rarely more than four), clustered
+around the anomalous "edge" of the heavy atom of interest (most commonly
+selenium, but any atom whose edge is accessible with synchrotron radiation is
+suitable, including many heavy metals).  The differences in anomalous
+scattering around the edge allow calculation of phase angles without the
+phase ambiguity present in **SAD** experiments, although density modification
+will usuallly still be necessary to obtain an easily interpretable map.
+Because of the sensitivity to small differences in f' and f'', which diverge
+significantly from theoretical values around the anomalous edges, these values
+should be experimentally measured at the beamline (or suitable approximations
+obtained from beamline staff).  Although very powerful, MAD phasing has
+declined somewhat in popularity relative to SAD because of the more limited
+choice of heavy atoms, the difficulty of avoiding radiation damage, and the
+requirement for a synchrotron beamline, but it is still a much easier method
+than **isomorphous replacement**.  In Phenix, MAD is performed by the
+`AutoSol wizard <autosol_gui.htm>`_, using the underlying program SOLVE.
+
 **Non-crystallographic symmetry (NCS)**: Symmetry within a crystal that is
 independent of the lattice type; this is very common in biomolecules,
-especially homo-oligomeric proteins.  Information about NCS can be used during
-density modification, and as additional restraints on the conformation of
+especially homo-oligomeric proteins.  Information about NCS can be used to
+great advantage during density modification, and as additional restraints on
+the conformation of
 related groups during refinement.  (PHENIX does not currently support NCS
-constraints, which force related molecules to be identical.)
+constraints, which force related molecules to be identical.)  NCS is most
+easily identified by comparing chains in a model, but can also be detected by
+analysis of heavy-atom sites or even electron density; several tools exist in
+Phenix for this purpose, and it can be performed automatically by the
+`AutoSol wizard <autosol_gui.htm>`_ and `phenix.refine <refine_gui.htm>`_.
+See the `refinement FAQs <refine_faq.htm>`_ for additional information about
+the use of NCS restraints.
 
 **Occupancy**: an attribute of atoms in a structure, equal to the fraction of
 unit cells in which the atom occurs in the given position.  High-resolution
@@ -315,7 +345,9 @@ sidechains, although RNA backbone angles are also rotameric.  The sidechain
 rotamers used in Phenix are extracted from a set of
 high-quality, high-resolution structures (the Top500 database).  The vast
 majority of sidechains in a finished structure should be recognizably
-rotameric unless the density very clearly supports an outlier conformation.
+rotameric unless the density very clearly supports an outlier conformation,
+and flagging of rotamer outliers is an important part of `validation
+<validation.htm>`_.
 Because the standard geometry restraints and minimization methods often do a
 poor job moving sidechains into rotameric positions, a separate rotamer-
 fitting step is available in ``phenix.refine``.
@@ -410,7 +442,10 @@ restriction on the size of groups.  Refining TLS parameters will result in
 all atoms that are part of a TLS group being treated as anisotropic - in this
 sense, it is essentially constrained anisotropic refinement.  Because it
 only adds ten parameters per group, TLS refinement is suitable for almost any
-resolution.
+resolution.  (Note that while ``phenix.refine`` allows you to perform
+either TLS or anisotropic refinement for separate atom selections within a
+single run, the two methods may not be combined, as they effectively refine
+the same parameters.)
 
 **Twinning**: a common crystal pathology in which different regions of the
 crystal assume different orientations.  In the simplest case, epitaxial
