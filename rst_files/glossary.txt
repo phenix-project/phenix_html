@@ -2,17 +2,66 @@
 Glossary of common terms used in PHENIX
 =======================================
 
-**Atomic Displacement Parameters (ADPs)**: Also known as B-factors, ADPs
-describe the variability or uncertainty in atomic positions.  The simplest
+**Anisotropic**: not equal in all directions, or in practice, ellipsoidal in
+shape.  In crystallography this is used in two very different contexts:
+
+  - **Anisotropic B-factors** model the atomic displacement as an ellipsoid,
+    which introduces six parameters per atom (versus one for
+    isotropic B-factors).  This is more accurate, but refinement of individual
+    B-factors using this parameterization is only possible at atomic resolution
+    (approximately 1.5A or better, depending on data quality and solvent
+    content).  At moderate resolution, **TLS** parameters for groups of atoms
+    can be refined instead.
+
+  - **Anisitropic data** does not extend to the same resolution in all
+    directions; typically, the anisotropy is along the direction of the
+    unit cell axes (or h,k,l in reciprocal space).  This is an effect of
+    varying crystal quality.  Programs such as phenix.refine and Phaser will
+    perform anisotropic scaling during phasing, refinement, and map generation
+    to compensate for some of the effects of anisotropy, but in some cases
+    the diffraction images will need to be processed specially.
+
+**Anomalous scattering**: a phenomenon in which the scattering of X-rays by
+electrons has both imaginary and real components, leading to breaking of
+**Friedel's law**.  Anomalous scattering is most pronounced in heavy atoms and
+is wavelength-dependent; each atom has several "edges" at which the effect
+reaches a maximum.  The change in scatttering at a given wavlength is
+represented by two numbers, f' (f-prime), which describes the "dispersive
+difference" or change in the real component, and f'' (f-double-priume), which
+describes the "anomalous difference" or change in the imaginary component.
+Anomalous scattering has several uses:
+
+  - The result will be small but measurable differences in Friedel pairs (F+
+    and F-), which can be exploited to locate the heavy-atom substructure and
+    phase the entire structure, as used in **SAD** and **MAD** phasing methods.
+
+  - Anomalous data may also be used after phases are available to calculate an
+    **anomalous difference map**, which also shows the location of heavy
+    atoms.  Because this map is automatically calculated in phenix.refine and
+    is very useful in completing the model, we recommend refining against
+    anomalous data if available, even if no additional anomalous scatterers
+    were introduced as part of the experiment.
+
+  - In addition to map calculation, it is also possible in phenix.refine to
+    refine the anomalous scattering of specific atoms, which may be more
+    accurate than using the non-anomalous **scattering factors.**
+
+**B-factors** or **Atomic Displacement Parameters (ADPs)**: B-factors or ADPs
+describe the variability or uncertainty in atomic positions, and (unlike
+**occupancy**) have a resolution-dependent effect on the diffraction amplitude.
+The simplest
 model for these (**isotropic**) is a sphere centered around the atomic position,
 but at high resolution (approximately 1.5A or better) it becomes possible to
 model them as ellipsoids (**anisotropic**).  At low resolution (worse than
 3-3.5A) it may be necessary to refine ADPs for small groups such as entire
 residues, instead of individual atoms.  The total ADPs will also include
 contribution from larger displacements such as those modeled by TLS
-refinement and an overall anisotropic ADP for the entire crystal.
+refinement and an overall anisotropic ADP for the entire crystal.  (Note that
+in other contexts, "ADP" may instead mean "anisotropic displacement parameter".)
 
-**B-factors**: see ADPs.
+**Bijvoet mates**: F+ and F-, which are related by **Friedel's law**, except to
+the extent that **anomalous scattering** is present.  Also sometimes called
+"Friedel pairs".
 
 **Bulk-solvent correction**: Scaling of low-resolution model-based amplitudes,
 F(calc), to account for the effects of unmodelled disordered solvent in the
@@ -21,17 +70,47 @@ macromolecular crystals, and the low-resolution reflections tend to dominate
 the R-factor calculations, the correction step significantly decreases the
 R-factors and is an essential step during refinement and map calculation.
 
+**Clashscore**: a validation statistic used in the `Molprobity web server
+<http://molprobity.biochem.duke.edu>`_ and the related `validation tools
+<validation.htm>`_ in Phenix (on the command line, the program
+``phenix.clashscore`` can also be used).  It is equal to the number of severe
+atomic clashes (overlaps greater than 0.4A) per 1000 atoms.  A well-refined
+structure should have a clashscore below 20; clashscores of zero are
+exceptionally uncommon and very difficult to obtain.  Note that while the
+VDW restraints used in refinement will help prevent the clashscore from
+increasing, many severe clashses will require manual rebuilding to fix.
+
 **Constraints**: In refinement, constraints force specific parameters to be
 refined together.  Examples of this include rigid-body refinement (atomic
 coordinates constrained), "riding" hydrogen atoms, or grouped ADPs.  Since
 constraints reduce the number of refined parameters, they are particularly
 useful at low resolution. See also **restraints**.
 
+**Crystallographic Information Format (CIF)**: a type of structured file
+format developed specifically for crystallography.  Although CIF files may be
+used to represent any type of data, they are most commonly used in Phenix to
+define **geometry restraints**, which are generated primarily by `eLBOW
+<elbow_gui.htm>`_.  They are also used by the PDB (in a subset
+of the format called "mmCIF") to store reflection data; these files may be
+read directly by most programs in Phenix, or converted to MTZ format.
+
 **Density modification**: A statistically-based method of phase improvement by
 real-space manipulation of electron density, which dramatically improves
 experimentally phased maps.  For SAD phasing, density modification is essential
 to resolve phase ambiguity and obtain an interpretable map, but it is also
 very helpful for other methods.
+
+**Direct methods**: a phasing method based on mathematical relationships
+between reflections, which does not require any additional information beyond
+the diffracted amplitudes.  Direct methods are standard for small-molecule
+crystallography, but because they require atomic-resolution data and only work
+for relatively small structures (typically 1000 atoms or less), they are rarely
+able to phase protein crystal data.  However, they can be used to locate heavy
+atom sites if anomalous data of sufficient quality are available; in Phenix,
+the program HySS uses direct methods to perform the heavy-atom search.
+Herbert Hauptman and Jerome Karle won the `Nobel Prize in Chemistry in 1985
+<http://www.nobelprize.org/nobel_prizes/chemistry/laureates/1985/>`_ for their
+discovery of direct methods.
 
 **Figure of Merit (FOM)**: An approximate measure of phase quality, calculated
 for each reflection.  Scale is from 0 to 1, higher being better.  Although it
@@ -40,16 +119,69 @@ it is only useful for evaluating initial experimental phases.  A good MAD
 solution will typically have an FOM greater than 0.4, while a SAD solution
 should usually be greater than 0.3.
 
-**Hendrickson-Lattman coefficients**: Experimental phase probability values,
-used in density modification and as additional restraints during refinement.
-Consists of four coefficients per reflection, which describe a bimodal phase
-distribution.
+**Friedel's law**: a phenomenon in which each reflection (h,k,l) and its
+mirror-image across the origin have identical amplitudes (but inverse phase).
+Anomalous scattering breaks this symmetry, which can be taken advantage of to
+locate heavy-atom sites and phase the structure.
+
+**Hendrickson-Lattman coefficients**: Phase probability values, calculated
+either experimentally based on heavy-atom methods (SAD, MAD, etc.) or directly
+from the model, used in density modification and (if experimentally obtained)
+as additional restraints during refinement.  Consists of four coefficients per
+reflection, which describe a bimodal phase distribution.  (If calculated from
+a model, the distribution will in fact be unimodal, but the same representation
+is used by convention.)
+
+**Insertion code**: a single column in the ATOM records of a PDB file, used to
+supplement the residue number.  Insertion codes are used when a specific
+numbering convention is desired, e.g. to preserve the identity of key residues
+in related proteins, or to reflect an expressed sequence modified from the
+genomic equivalent.  In these cases, consecutive residues might be numbered
+25, 26, 26A, 26B, 26C, 27, etc.  When defining atom selections in Phenix,
+the syntax "``icode A``" is used; the insertion code can also be combined with
+the residue number to uniquely identify a residue, using the syntax
+"``resid 26A``".
+
+**Isomorphous replacement**: an older method for phasing protein
+crystal structures, in which a native dataset is collected, followed by one
+or more heavy-atom derivatives which are isomorphous to the native data, and
+the differences in amplitudes are used to locate the heavy-atom substructure
+and calculate experimental phases.  For many years isomorphous replacement
+was the standard tool for phasing, but it is very time-consuming compared to
+SAD or MAD, let alone molecular replacement, and is rarely used now except
+for very difficult structures.  Several variants exist: SIR (single
+isomorphous replacement), which like **SAD** requires density modification to
+resolve the phase ambiguity; MIR (multiple isomorphous replacement); and
+SIRAS or MIRAS, in which the anomalous signal of the heavy atoms is also
+employed.  In Phenix, isomorphous replacement is performed by the `AutoSol
+<autosol_gui.htm>`_ wizard.
+
+**Isotropic**: moving equally in all directions.  In crystallography, this
+is usually used to describe the simplest (and most common) parameterization of
+B-factors or atomic displacement parameters (ADPs).  Only one parameter per
+atom is refined, the
+mean atomic displacement **u** (where B = 8 * pi^2 * u^2).  Visually, the
+B-factor is represented as a sphere.  See also **anisotropic** and **TLS**.
 
 **Kicked map**: A faster alternative to omit maps.  All coordinates are
 shaken randomly by a small amount, and the map recalculated; this is done
 repeatedly and the maps averaged.  This can help remove bias and in some cases
 noise as well.  Available in both `phenix.refine <refine_gui.htm>`_ and
 `phenix.maps <create_maps.htm>`_.
+
+**Least squares**: an older refinement methodology, no longer in widespread
+use for macromolecular crystallography.  A least-squares target assumes that
+the error in experimental observations takes a Gaussian distribution; modern
+maximum-likelihood targets do a better job weighting the observations and
+accounting for sources of error.  (The optimization methods used, such as
+minimization or simulated annealing, are the same regardless of the specific
+target.)  In Phenix, a least-squares target is still used when performing
+twinned refinement, or refinement against a very small number of reflections.
+
+**Log-likelihood gain (LLG)**: a statistical measure used by Phaser; in the
+context of molecular replacement, it essentially scores the model placement
+in comparison to a random model.  The LLG should be positive and relatively
+large if the MR solution is correct.
 
 **Map coefficients**: This is simply the Fourier coefficients for an
 electron density map, in MTZ format.  Graphics programs such as Coot (and
@@ -61,8 +193,9 @@ rather than pre-calculated maps, but the terms are often used interchangeably.
 for refinement and phasing, in which the probability of the model given the
 data is maximized.  Maximum likelihood is much better at weighting the data
 appropriately than the previously used least-squares method, and leads to
-greater sensitivity and improved maps.  See McCoy Acta Cryst. (2004). D60,
-2169-2183 for an introduction to the method as used in crystallography.
+greater sensitivity and improved maps.  See `McCoy Acta Cryst. (2004). D60,
+2169-2183 <http://www.ncbi.nlm.nih.gov/pubmed/15572770>`_ for an introduction
+to the method as used in crystallography.
 
 **Miller array**: Any set of data indexed by ``h,k,l`` ("Miller indices").
 This can include experimental intensities or amplitudes, phases, weights
@@ -70,6 +203,23 @@ This can include experimental intensities or amplitudes, phases, weights
 the basic unit of reflection data in PHENIX, and may combine multiple columns
 from the input file (for instance, F and SIGF in an MTZ file will be grouped
 into a single Miller array containing both amplitudes and sigmas).
+
+**MIR**: see **Isomorphous replacement**.
+
+**Molecular replacement (MR)**: the most popular phasing method, accounting
+for more than three-quarters of all new structures.  MR uses known structures
+to phase (and also provide an initial model for refinement), by determining
+their rotation and translation in the unit cell of the collected data.  Unlike
+phasing methods (SAD, MAD, MIR, etc.), MR does not require special experimental
+setup or especially high-quality data.  The search model may either be a single
+PDB file, an ensemble of superimposed PDB files of similar structure, or a
+processed electron density map (containing only the region of interest).  The
+search model is often nearly identical to the target structure (e.g. when the
+goal is a known protein in complex with a ligand, or a point mutant), but
+search models with sequence identities as low as 40% are usually still easily
+solved, and significantly lower-identity models may still be used with
+additional processing if their structures are similar enough.  In Phenix, MR
+is performed by `Phaser <phaser_mr.htm>`_ and various derivatives.
 
 **Non-crystallographic symmetry (NCS)**: Symmetry within a crystal that is
 independent of the lattice type; this is very common in biomolecules,
@@ -83,7 +233,10 @@ unit cells in which the atom occurs in the given position.  High-resolution
 structures (usually 1.6A or better) will often need occupancy refinement for
 sidechains which occur in more than one conformation, or for ligands which
 are not 100% bound.  The occupancy should never be set to zero in a deposited
-structure.
+structure.  Note that B-factor and occupancy are correlated in practice and
+the effects of each may be difficult to tell apart; however, partial occupancy
+has an equal effect at any resolution, unlike B-factors whose effect is
+resolution-dependent.
 
 **Omit map**: a map generated by deleting part of the structure (for instance,
 a bound ligand) and recalculating phases and F(calc).  This almost always
@@ -100,10 +253,32 @@ divergence of R-work and R-free, which ideally should decrease in sync
 throughout refinement.  In most cases, the solution is to add or tighten
 restraints, or reduce the number of refined parameters.
 
+**Ramachandran plot**: a two-dimensional graph of the phi,psi angle
+combinations of their allowed backbone; also refers to the expected/allowed
+distribution of points on this graph.  This distribution is dictated by
+steric constraints on the backbone conformation, originally identified by
+`Ramachandran et al. (1963) J Mol Biol 7:95-99
+<http://www.ncbi.nlm.nih.gov/pubmed/13990617>`_.  Because the Ramachandran
+plot is an essential validation metric, phi and psi are typically left
+unrestrained during refinement.  In the `Molprobity server
+<http://molprobity.biochem.duke.edu>`_ and the Phenix validation tools, the
+plot is divided into "favored", "allowed", and "outlier" regions; a
+well-refined structure should have 98% of residues favored, and less than 0.2%
+outliers, although at lower resolutions it may be difficult to obtain these
+statistics.  Note that the expected distribution varies depending on residue
+type and environment; in the current version of Phenix, six different
+distributions are used.
+
+.. image:: images/ramachandran.png
+
+*A representative Ramachandran plot, with outliers shown in red; the
+contours define the borders of the favored and allowed regions.*
+
 **Restraints**: In refinement, restraints keep specific independent parameters
 from diverging too far.  At most resolutions, basic geometry restraints
 (bonds, bond angles, dihedral angles, chiral centers, planar groups, and
-VDW interactions) and ADP similarity restraints will be used.  Depending on
+VDW interactions) and ADP similarity restraints will be used, usually taking
+the form of a simple harmonic potential.  Depending on
 the specific structure and data, additional restraints may include experimental
 phase distributions (see **Hendrickson-Lattman coefficients**) or restraints
 between related molecules (**NCS** or a reference structure).  Restraints do
@@ -127,17 +302,46 @@ typically 5-10% of the data (in statistical terminology this is called
 the R-free should be reduced along with the R-factor the "working" set (R-work),
 although it will always be a higher value.  An increase in R-free indicates
 an incorrect optimization, even if R-work decreases.  A large spread between
-R-work and R-free is a primary symptom of overfitting.
+R-work and R-free is a primary symptom of overfitting.  See `Brunger AT (1992)
+Nature 355:472-475 <http://www.ncbi.nlm.nih.gov/pubmed/18481394>`_ for
+full rationale.
 
 **Rotamer**: A well-defined unique combination of dihedral angle values in
 a group of atoms; the term is almost always used in reference to amino acid
-sidechains.  The rotamers used in Phenix are extracted from a set of
+sidechains, although RNA backbone angles are also rotameric.  The sidechain
+rotamers used in Phenix are extracted from a set of
 high-quality, high-resolution structures (the Top500 database).  The vast
 majority of sidechains in a finished structure should be recognizably
 rotameric unless the density very clearly supports an outlier conformation.
 Because the standard geometry restraints and minimization methods often do a
 poor job moving sidechains into rotameric positions, a separate rotamer-
 fitting step is available in ``phenix.refine``.
+
+**Rotation function (RF)**: the first part of molecular replacement, which
+establishes the rotational orientation of the search model in the crystal.
+This is independent of the exact space group, e.g. the same rotation will
+be correct whether the space group is P6(2) or P6(4).  The rotation function
+is typically very fast in Phaser, but the resulting **Z-score** is almost
+never useful for determining whether the rotation is correct or not.
+
+**Scattering factors**: the numbers describing the scattering of X-rays by
+a given atom type (usually its electrons).  These are used in refinement to
+calculate the
+expected electron density and structure factors given a set of atomic
+parameters (XYZ coordinates, B-factor, occupancy, and alternately, anomalous
+scattering).  A variety of parameterizations of scattering factors are
+available in Phenix, but the most commonly used (for X-ray refinement) is
+called "n_gaussian".  Scattering factors for neutron diffraction experiments
+(where the nucleus, rather than the electrons, is responsible for the
+scattering) are also available.
+
+**Sigma-A weighting**: a method of weighting difference map coefficients to
+more accurately account for errors in the model.  This is standard practice
+in macromolecular crystallography, as it leads to improved maps.  A sigma-A
+weighted map will typically described as "2mFo-DFc" or "mFo-DFc", with the "D"
+being the relevant value ("m" is the **Figure of Merit** for each reflection).
+The maximum likelihood target in Phaser is a derivation of this methodology.
+See Read, R.J.: Acta Cryst. A42 (1986) 140-149 for original derivation.
 
 **Simulated annealing**: An optimization method which heats up a system and
 allows it to slowly cool, as a way of escaping local energy minima where
@@ -149,10 +353,52 @@ early in refinement, and as a method to remove phase bias (e.g. for omit maps).
 In PHENIX, both Cartesian and torsion-angle dynamics are available; the latter
 is intended for low-resolution refinement as it uses fewer parameters.
 
+**Single-wavelength anomalous diffraction (SAD)**: probably the most popular
+experimental phasing method currently in use, SAD requires only a single
+wavelength from one crystal.  The experimental phases themselves will be of
+poor quality because the SAD experiment cannot resolve the phase ambiguity,
+but density modification will lead to a significantly improved map in most
+cases.  SAD is often performed with selenomethionine-incorporated protein,
+but any anomalously scattering atom (including sulfur, if the data are of
+very high quality) may be used.  In Phenix, SAD may be performed by either
+the `AutoSol wizard <autosol_gui.htm>`_ or `Phaser-EP <phaser_ep.htm>`_,
+although the latter only calculates initial phases and completes the heavy-atom
+substructure, whereas AutoSol will also perform initial heavy-atom location,
+density modification, and preliminary model-building.
+
 **Skew**: Statistic derived from the distribution of electron density values
 in an experimentally phased map.  The skew describes the deviation from a
 Gaussian distribution; a correct map will have a slight skew towards higher
 values.  A skew above 0.2 is usually indicative of successful phasing.
+
+**SMILES string**: a simple textual representation of molecular structure,
+originally developed by `Daylight Chemical Information Systems
+<http://www.daylight.com>`_ and now in wide
+use by the chemistry community.  Although SMILES strings do not encode
+coordinates, unlike PDB files they uniquely encode the connectivity of
+molecules, and can optionally even specify chirality.  They are therefore one
+of the prefered input formats for eLBOW.  As an example, the SMILES string for
+benzene is ``c1ccccc1``.
+
+**Translation function (TF)**: the second step of molecular replacement, which
+starts from the output of the **rotation function** and determines the exact
+position of the search model within the unit cell.  The TF is significantly
+more time-consuming than the RF, but it can resolve space-group ambiguity, and
+the resulting Z-score (TFZ), in combination with the **LLG**, will usually be
+sufficient to determine whether the solution is correct or not.
+
+**Translational pseudo-symmetry (TNCS)**: a common crystal pathology in which
+the unit cell size is effectively doubled due to a near-symmetric translation
+operator which breaks higher symmetry.  The effect of this on data is to double
+the number of reflections, with the additional reflections systematically
+weaker.  TNCS can be detected by this signature, and by the presence of a large
+off-origin peak in the Patterson map; `Xtriage <xtriage_gui.htm>`_ is used in
+Phenix for this purpose.  Although not as severe as twinning, TNCS
+can cause problems during phasing and (to a lesser extend) refinement, because
+it breaks some of the assumptions used in the maximum-likelihood equations used
+in Phenix.  This is now handled by Phaser for molecular replacement and SAD
+phasing.  See `Zwart et al. (2008) Acta Cryst D. 64:99-107
+<http://www.ncbi.nlm.nih.gov/pubmed/18094473>`_ for more information.
 
 **Turn, Libration, and Screw (TLS)**: A way of describing anisotropic motion
 for rigid groups of atoms which move collectively in the crystal.  These are
@@ -162,3 +408,34 @@ all atoms that are part of a TLS group being treated as anisotropic - in this
 sense, it is essentially constrained anisotropic refinement.  Because it
 only adds ten parameters per group, TLS refinement is suitable for almost any
 resolution.
+
+**Twinning**: a common crystal pathology in which different regions of the
+crystal assume different orientations.  In the simplest case, epitaxial
+twinning, this is simply two or more crystals stacked together, without
+superimposed lattices, and the result is multiple distinct lattices visible in
+the diffraction pattern, which can often be handled by data processing
+programs.  Merohedral twinning preserves the overall lattice symmetry, so
+that the diffraction spots contain the contribution of two or more "twin
+domains" which cannot easily be disambiguated.  Small twin fractions (perhaps
+10% or less) are not usually problematic and can easily be overlooked.
+Larger fractions, up to 50% ("perfect twinning"), can make experimental
+phasing very difficult, and result in abnormally high R-factors and poor map
+quality during refinement.  This can be handled by refining with a twin law,
+although this needs to be performed with caution.  Twinning is usually
+easily detected by the systematic deviation from expected intensity statistics;
+in Phenix, `Xtriage <xtriage_gui.htm>`_ is the program used to diagnose and
+analyze possible twinning.  See `Zwart et al. (2008) Acta Cryst D. 64:99-107
+<http://www.ncbi.nlm.nih.gov/pubmed/18094473>`_ for more information.
+
+**Wilson plot**: a plot showing the average intensity value for each
+resolution bin (typically using a relatively large number of bins, e.g. 30).
+Among other things, the Wilson plot shows the falloff of intensity with
+resolution due to the B-factors of the atoms, and can be used to determine an
+approximate overall B-factor for the data.  Because of the non-random
+distribution of atoms in the unit cell, the Wilson plot has a distinctive
+appearance, especially for protein and nucleic acid structures, and deviations
+from the expected plot may indicate data pathologies.
+
+.. image:: images/wilson_plot.png
+
+*A typical Wilson plot for a protein dataset (PDB ID 3dnd).*
