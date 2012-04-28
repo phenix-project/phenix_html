@@ -27,7 +27,7 @@ electrons has both imaginary and real components, leading to breaking of
 is wavelength-dependent; each atom has several "edges" at which the effect
 reaches a maximum.  The change in scatttering at a given wavlength is
 represented by two numbers, f' (f-prime), which describes the "dispersive
-difference" or change in the real component, and f'' (f-double-priume), which
+difference" or change in the real component, and f'' (f-double-prime), which
 describes the "anomalous difference" or change in the imaginary component.
 Anomalous scattering has several uses:
 
@@ -90,9 +90,10 @@ useful at low resolution. See also **restraints**.
 format developed specifically for crystallography.  Although CIF files may be
 used to represent any type of data, they are most commonly used in Phenix to
 define **geometry restraints**, which are generated primarily by `eLBOW
-<elbow_gui.htm>`_.  They are also used by the PDB (in a subset
-of the format called "mmCIF") to store reflection data; these files may be
-read directly by most programs in Phenix, or converted to MTZ format.
+<elbow_gui.htm>`_.  They are also used by the PDB to store reflection data
+(these files may be read directly by most programs in Phenix, or
+converted to MTZ format) and coordinate data (which phenix does not
+actively use at the moment).
 
 **Density modification**: A statistically-based method of phase improvement by
 real-space manipulation of electron density, which dramatically improves
@@ -110,10 +111,12 @@ atom sites if anomalous data of sufficient quality are available; in Phenix,
 the program HySS uses direct methods to perform the heavy-atom search.
 Herbert Hauptman and Jerome Karle won the `Nobel Prize in Chemistry in 1985
 <http://www.nobelprize.org/nobel_prizes/chemistry/laureates/1985/>`_ for their
-discovery of direct methods.
+work related to direct methods in reciprocal space. However, direct
+methods are more intuitively understood in the direct-space formulation,
+based on the Sayre equation.
 
 **Figure of Merit (FOM)**: An approximate measure of phase quality, calculated
-for each reflection.  Scale is from 0 to 1, higher being better.  Although it
+for each reflection.  Range is from 0 to 1, higher being better.  Although it
 is sometimes reported in the context of refinement and density modification,
 it is only useful for evaluating initial experimental phases.  A good MAD
 solution will typically have an FOM greater than 0.4, while a SAD solution
