@@ -1,0 +1,109 @@
+====================================
+Refinement tutorial: RNase-S example
+====================================
+
+Overview
+--------
+
+This tutorial will show you how to refine a simple structure using the
+`PHENIX graphical user interface (GUI) <phenix_gui.htm>`_.  Please read the
+`phenix.refine documentation <refine_gui.htm>`_ before running this tutorial,
+as it will familiarize you with the GUI and the options available for
+refinement.  You may also find the `glossary of terms <glossary.htm>`_
+helpful.
+
+Setup
+-----
+
+The example used
+for this tutorial is called **rnase-s**, and can be set up in the GUI as
+`described here <examples.htm>`_.  In the tutorial setup window, select the
+dataset labeled "S. aureofaciens ribonuclease Sa" under "Refinement", and
+click "Okay".
+
+  .. image:: images/tutorial_refine_setup.png
+
+Once you have created the project, click the button labeled "phenix.refine"
+in the main GUI under "Refinement".
+
+Input files
+-----------
+
+Only two input files are required for running phenix.refine with this dataset,
+the starting model and the reflections.  These can be added either by dragging
+and dropping them into the input file list from the desktop, or by clicking
+"Add file" and selecting them from the dialog window.
+
+  .. image:: images/tutorial_refine_files.png
+
+The space group and unit cell will be loaded automatically; these will always
+be taken from the last symmetry-containing file to be added (in this case, the
+PDB file and reflections file both contain the symmetry information).  The
+available data arrays for refinement will be listed in the "Data labels"
+drop-down menu; the first of these is what we want to use, and will be
+selected automatically.  Because this structure predates the use of the R-free
+statistic in refinement, no R-free flags are available; these will be
+generated once refinement starts.
+
+If you wish you may also input the file **1sar.fa**, which is the protein
+sequence; this is not necessary for refinement itself but will be used to
+validate the model sequence at the end of the run.
+
+Refinement options
+------------------
+
+The second configuration tab, **Refinement settings** contains most of the
+essential options for
+running phenix.refine.  The first section controls the model parameters to be
+refined.  For the rnase-s example, the **XYZ coordinates**, **Real-space**,
+**Individual B-factors**, and **TLS** strategies are appropriate.  The
+**Occupancies** strategy is also selected by default, but since the default
+behavior will not affect any of the atoms in the rnase-s input model, it can
+be left on without negatively impacting runtime or the result quality.
+
+All strategies can be applied to specific atoms by defining atom selections.
+For most of the strategies the default of refining all atoms is appropriate,
+but for TLS a more fine-grained division of groups is appropriate.  Select
+"TLS parameters" from the drop-down menu labeled "Modify selections for".
+A new window will appear for defining TLS groups (the same window can also be
+opened by clicking "TLS" on the toolbar).  Since PHENIX includes a
+built-in program to identify suitable TLS groups based on the input B-factors,
+we will use this.  Click "Find TLS groups" on the toolbar to start this
+program; it will typically take 15 seconds to several minutes depending on the
+size of the structure and the number of processors used (on Windows this is
+limited to one).
+
+  .. image:: images/tutorial_refine_tls.png
+
+When the program is finished, atom selections for the TLS groups will be
+loaded into the list.  Select one of these and click the button labeled
+"View/pick" to display the selection visually; you can modify the selection
+manually if you want, but in this case the automatic selections are suitable.
+You can now save the TLS selections by clicking "Update and exit" on the
+toolbar of the TLS editor window.
+
+  .. image:: images/tutorial_refine_select.png
+
+In the "Restraints and weighting" section, you should activate the NCS
+restraints option, as the RNase-S structure contains two copies of the
+protein chain.  For "NCS type", select "torsion-angle"; this will restrain
+the dihedral angles to be similar, instead of the older global-superposition
+based method, which does not allow for the small local deformations between
+chains which are present in this model.
+
+For this particular structure, optimizing the X-ray/stereochemistry weight
+will be helpful, producing a model with a lower R-free and a smaller gap
+between R-work and R-free.  However, since this takes significantly longer to
+finish, the optimization may be left off for the purposes of running the
+tutorial.  The remainder of the options can also be left in the default state,
+although we recommend experimenting with **Automatically add hydrogens to
+model**, **Update waters**, **Simulated annealing**, and **Fix bad sidechain
+rotamers** to get a feel for how these options affect performance.
+
+At this point the **Refinement settings** tab should look approximately like
+the image below:
+
+The final tab controls output settings; these can also be left alone, but you
+may wish to set the run title, as this will appear in the job history in the
+main GUI.  The output map coefficients will include a 2mFo-DFc and mFo-DFc
+map.

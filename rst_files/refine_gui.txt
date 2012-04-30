@@ -79,6 +79,36 @@ menu.
 
 .. image:: images/refine_gui_options.png
 
+Most of the refinement options presented on this tab essentially fall into
+three categories:
+
+  - **Model parameterization**.  This determines which properties of the model
+    will be refined, and how they are grouped.  Options include coordinate
+    refinement (individually against reciprocal-space data or real-space maps;
+    or as rigid-body groups against reciprocal-space data); B-factor or ADP
+    (atomic displacement parameter) refinement, with several options for
+    grouping and isotropic versus anisotropic; atomic occupancies (i.e. the
+    fraction of the time the atom is present in the refined position in the
+    crystal); and anomalous groups.
+
+  - **Optimization target**.  This defines the function to be minimized; by
+    default this is at least the agreement of the model amplitudes with the
+    experimentally measured amplitudes.  For almost all macromolecular
+    structures restraints on covalent geometry and the B-factors of nearby
+    atoms will also be necessary, and a variety of customizations of the
+    geometry restraints are possible.
+
+  - **Optimization method**.  The standard optimization method used in
+    phenix.refine and similar programs is gradient-driven minimization, but
+    other options are available.  These often have a significantly wider
+    radius of convergence, but at the cost of increased runtime.
+
+The default options have been chosen to work well for partially refined
+structures at moderate resolutions, which comprise the majority of structures
+in the Protein Data Bank.  However, at significantly higher or lower
+resolution, or for structures at the early or final stages of refinement,
+additional options may be necessary or beneficial.
+
 .. _strategy:
 
 The first set of controls determines the parameterization of the model and
