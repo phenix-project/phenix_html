@@ -161,10 +161,11 @@ should usually be greater than 0.3.
 context also includes the bulk-solvent contribution.  Sometimes also referred
 to as "F(calc)".
 
-**Friedel's law**: a phenomenon in which each reflection (h,k,l) and its
-mirror-image across the origin (-h,-k,-l) have identical amplitudes (but
-inverse phase).  Anomalous scattering breaks this symmetry, which can be taken
-advantage of to locate heavy-atom sites and phase the structure.
+**Friedel's law**: a phenomenon in which pairs of refections related by
+a center of inversion, (h,k,l) and (-h,-k,-l), have identical amplitudes
+(but conjugate phases).  Anomalous scattering breaks the Friedel
+symmetry, which can be taken advantage of to locate heavy-atom sites and
+phase the structure.
 
 **Hendrickson-Lattman coefficients**: Phase probability values, calculated
 either experimentally based on heavy-atom methods (SAD, MAD, etc.) or directly
@@ -285,7 +286,7 @@ pervasive and difficult to avoid.
 
 **Molecular replacement (MR)**: the most popular phasing method, accounting
 for more than three-quarters of all new structures.  MR uses known structures
-to phase (and also provide an initial model for refinement), by determining
+to phase (and also provides an initial model for refinement), by determining
 their rotation and translation in the unit cell of the collected data.  Unlike
 other phasing methods (SAD, MAD, MIR, etc.), MR does not require special
 experimental
