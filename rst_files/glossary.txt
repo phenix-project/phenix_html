@@ -300,6 +300,18 @@ solved, and significantly lower-identity models may still be used with
 additional processing if their structures are similar enough.  In Phenix, MR
 is performed by `Phaser <phaser_mr.htm>`_ and various derivatives.
 
+**MTZ**: a binary format for reflection data, developed as part of the
+`CCP4 suite <http://www.ccp4.ac.uk>`_.  It can contain essentially any
+combination of data commonly used in refinement, including amplitudes or
+intensities (with or without sigmas), phases, **Hendrickson-Lattman
+coefficients**, and various integer arrays (including **R-free** flags).
+Each one-dimensional data array in an MTZ file has a unique "column label",
+although Phenix will often work with groups of these arrays, for instance
+grouping "F" and "SIGF" together if they appear sequentially in the file.
+MTZ files are usually the prefered format for reflections files, as they are
+very versatile, reasonably compact, and supported by a wide range of modern
+software, including Phenix, CCP4, and Coot.
+
 **Multi-wavelength Anomalous Difraction (MAD)**: a popular method for
 experimental phasing using heavy atoms.  MAD takes advantage of the tunability
 of synchrotron beamlines to collect data for (ideally) a single crystal at
@@ -350,8 +362,8 @@ involves simple refinement of the modified structure to remove phase bias, and
 simulated annealing is recommended for best results.  A variant, the
 **composite omit map**, stitches together the contribution of many individual
 omit maps, which collectively omit all atoms.  In PHENIX, these may be
-calculated using the `AutoBuild <autobuild.htm>`_ wizard.  See also the entry
-for "kicked map".
+calculated using the `AutoBuild <autobuild_gui.htm>`_ wizard.  See also the
+entry for "kicked map".
 
 **Overfitting**: Optimization of R-work at the expense of other quality
 metrics, especially R-free.  The most obvious indication of overfitting is
@@ -449,6 +461,17 @@ an incorrect optimization, even if R-work decreases.  A large spread between
 R-work and R-free is a primary symptom of overfitting.  See `Brunger AT (1992)
 Nature 355:472-475 <http://www.ncbi.nlm.nih.gov/pubmed/18481394>`_ for
 full rationale.
+
+**R-free flags**: an integer array that marks each reflection for use in
+either refinement or the calculation of **R-free**.  Usually a set of R-free
+flags is generated at the beginning of the model-building and refinement
+process, and used throughout (usually as part of a single MTZ file including
+experimental data); programs such as `AutoSol <autosol_gui.htm>`_,
+`AutoBuild <autobuild_gui.htm>`_, and `phenix.refine <refine_gui.htm>`_ will
+do this automatically if no flags have previously been generated.  Extension of
+an existing set of flags to higher resolution, or transfer to an
+**isomorphous** dataset, can be done by the `reflection file editor
+<reflection_file_editor.htm>`_.
 
 **Rotamer**: A well-defined unique combination of dihedral angle values in
 a group of atoms; the term is almost always used in reference to amino acid
@@ -578,6 +601,15 @@ resolution.  (Note that while ``phenix.refine`` allows you to perform
 either TLS or anisotropic refinement for separate atom selections within a
 single run, the two methods may not be combined, as they effectively refine
 the same parameters.)
+
+**Twin law**: an operator describing the relationship between distinct
+reflections due to **twinning**.  Each lattice has a limited set of
+permitted twin laws, which can be identified by `Xtriage <xtriage_gui.htm>`_.
+These are typically represented in terms of **Miller indices**, for example,
+the R3 space group has the allowed merohedral twinning operator ``-h-k,k,-l``,
+which signifies that the ``h,k,l`` reflection will be actually be overlapped
+in reciprocal space with ``-h-k,k,-l``.  The twin law can be used during
+refinement if necessary, although some caution should be taken when doing this.
 
 **Twinning**: a common crystal pathology in which different regions of the
 crystal assume different orientations.  In the simplest case, epitaxial
