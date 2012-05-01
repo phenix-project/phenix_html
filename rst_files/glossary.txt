@@ -256,7 +256,7 @@ although technically 2mFo-DFc maps also fall into this category.  The mFo-DFc
 map is usually viewed at positive and negative contours (typicall +/- 3 sigma).
 The positive density indicates features present in the data that are not
 accounted for by the model; the negative density indicates parts of the model
-that are not supported by the model.  Note that in a well-refined structure
+that are not supported by the data.  Note that in a well-refined structure
 some residual difference density is always expected, and interpretation of
 the maps needs to also take into account the 2mFo-DFC map and local model
 features.
@@ -285,7 +285,8 @@ but for low-resolution structures (especially below 3.0A) the effect is both
 pervasive and difficult to avoid.
 
 **Molecular replacement (MR)**: the most popular phasing method, accounting
-for more than three-quarters of all new structures.  MR uses known structures
+for more than three-quarters of all new PDB depositions.
+MR uses known structures
 to phase (and also provides an initial model for refinement), by determining
 their rotation and translation in the unit cell of the collected data.  Unlike
 other phasing methods (SAD, MAD, MIR, etc.), MR does not require special
@@ -317,7 +318,7 @@ experimental phasing using heavy atoms.  MAD takes advantage of the tunability
 of synchrotron beamlines to collect data for (ideally) a single crystal at
 multiple wavelengths (at least two, but rarely more than four), clustered
 around the anomalous "edge" of the heavy atom of interest (most commonly
-selenium, but any atom whose edge is accessible with synchrotron radiation is
+selenium, but any element whose edge is accessible with synchrotron radiation is
 suitable, including many heavy metals).  The differences in anomalous
 scattering around the edge allow calculation of phase angles without the
 phase ambiguity present in **SAD** experiments, although density modification
@@ -422,19 +423,22 @@ contours define the borders of the favored and allowed regions.*
 be somewhat arbitrary depending on the space group).  Examples of real-space
 data are model coordinates and electron density maps.
 
-**Reciprocal space**: an imaginary construction describing the positions of
-reflections in a "reciprocal lattice", whose parameters are directly related
-to the crystal lattice parameters.  The dimensions in reciprocal space are
-expressed in terms of 1/Angstrom, i.e. the reciprocal of the resolution for
-a given reflection, and positions are indexed by the **Miller indices**
-``h, k, l``.  The process of data collection can be thought of as sampling
-reciprocal space, which rotates along with the crystal lattice.
+**Reciprocal space**: a mathematical construction describing the
+positions of reflections in a "reciprocal lattice", whose parameters are
+directly related to the crystal lattice parameters; the reciprocal
+lattice vectors are perpendicular to real-space planes.  The dimensions
+in reciprocal space are expressed in terms of 1/Angstrom, i.e. the
+reciprocal of the resolution for a given reflection, and positions are
+indexed by the **Miller indices** ``h, k, l``.  The process of data
+collection can be thought of as sampling reciprocal space, which rotates
+along with the crystal lattice.
 
 **Restraints**: In refinement, restraints keep specific independent parameters
 from diverging too far.  At most resolutions, basic geometry restraints
 (bonds, bond angles, dihedral angles, chiral centers, planar groups, and
 VDW interactions) and ADP similarity restraints will be used, usually taking
-the form of a simple harmonic potential.  Depending on
+the form of a simple harmonic potential, mimicking a spring pulling
+parameters back to ideal values.  Depending on
 the specific structure and data, additional restraints may include experimental
 phase distributions (see **Hendrickson-Lattman coefficients**) or restraints
 between related molecules (**NCS** or a reference structure).  Restraints do
@@ -488,14 +492,15 @@ rotamer-fitting step is available in ``phenix.refine``.
 
 **Rotation function (RF)**: the first part of molecular replacement, which
 establishes the rotational orientation of the search model in the crystal.
-This is independent of the exact space group, e.g. the same rotation will
-be correct whether the space group is P6(2) or P6(4).  The rotation function
-is typically very fast in Phaser, but the resulting **Z-score** is almost
-never useful for determining whether the rotation is correct or not.
+This is independent of the exact space group in some cases, e.g. the
+same rotation will be correct whether the space group is P6(2) or P6(4).
+The rotation function is typically very fast in Phaser, but the
+resulting **Z-score** is almost never useful for determining whether the
+rotation is correct or not.
 
-**Scattering factors**: the numbers describing the scattering of X-rays by
-a given atom type (usually its electrons).  These are used in refinement to
-calculate the
+**Scattering factors**: values describing the scattering of X-rays by
+a given atom type, related to the number of electrons in the atom or ion.
+These are used in refinement to calculate the
 expected electron density and structure factors given a set of atomic
 parameters (XYZ coordinates, B-factor, occupancy, and alternately, anomalous
 scattering).  A variety of parameterizations of scattering factors are
@@ -525,15 +530,18 @@ standard sigma levels (e.g. the Coot defaults of 1.5 sigma for **2mFo-DFc**
 and +/- 3.0 sigma for **mFo-DFc** maps), the sigma values are actually very
 subjective, depending greatly on solvent content and model quality.
 
-**Simulated annealing**: An optimization method which heats up a system and
-allows it to slowly cool, as a way of escaping local energy minima where
-simple gradient-based minimization fails.  In crystallography, this means
+**Simulated annealing**:
+An optimization method which simulates heating up a system and
+slowly cooling it down, as a way of escaping local energy minima trapping
+simple gradient-based minimization methods.  In crystallography, this means
 running a simple molecular dynamics simulation starting at very high
-temperatures (2500-500 K), with the agreement with X-ray data included as an
+temperatures (2500-5000 K), with the agreement with X-ray data included as an
 additional pseudo-energy term.  Especially useful for poorly built structures
 early in refinement, and as a method to remove phase bias (e.g. for omit maps).
 In PHENIX, both Cartesian and torsion-angle dynamics are available; the latter
 is intended for low-resolution refinement as it uses fewer parameters.
+However, in practice Cartesian simulated annealing in phenix.refine
+often outperforms torsion-angle dynamics.
 
 **Single-wavelength anomalous diffraction (SAD)**: probably the most popular
 experimental phasing method currently in use, SAD requires only a single
@@ -561,6 +569,17 @@ coordinates, unlike PDB files they uniquely encode the connectivity of
 molecules, and can optionally even specify chirality.  They are therefore one
 of the prefered input formats for eLBOW.  As an example, the SMILES string for
 benzene is ``c1ccccc1``.
+
+**Special positions**: locations on crystallographic symmetry elements.
+For macro-molecular structures special positions are always on rotation
+axes (2, 3, 4, 6-fold rotations); for small-molecule structures special
+positions may also be on centers of inversions, mirror planes, and
+roto-inversions. Atoms on special positions are restricted in the way
+they can move during refinement. For example an atom on a 2-fold axis
+can only move along the axis. It is also possible that atoms or
+molecules are disordered around special positions; in this case the
+occupancy found in the PDB file is usually 1/N or smaller, where N is
+the order of the rotational symmetry.
 
 **Structure factors**: the individual reflections corresponding to the Fourier
 transform of the electron density of the crystal.  Both **F(obs)** and
@@ -610,6 +629,9 @@ the R3 space group has the allowed merohedral twinning operator ``-h-k,k,-l``,
 which signifies that the ``h,k,l`` reflection will be actually be overlapped
 in reciprocal space with ``-h-k,k,-l``.  The twin law can be used during
 refinement if necessary, although some caution should be taken when doing this.
+In rare cases a crystal can be a multiple twin, with more than one
+twin law.  Note that phenix.refine does not currently support multiple
+twin laws.
 
 **Twinning**: a common crystal pathology in which different regions of the
 crystal assume different orientations.  In the simplest case, epitaxial
