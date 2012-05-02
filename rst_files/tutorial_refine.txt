@@ -103,7 +103,99 @@ rotamers** to get a feel for how these options affect performance.
 At this point the **Refinement settings** tab should look approximately like
 the image below:
 
+  .. image:: images/tutorial_refine_options.png
+
 The final tab controls output settings; these can also be left alone, but you
 may wish to set the run title, as this will appear in the job history in the
 main GUI.  The output map coefficients will include a 2mFo-DFc and mFo-DFc
 map.
+
+Running the program
+-------------------
+
+Click the "Run" button on the toolbar to start the program.  Depending on the
+operating system and local setup, you may have multiple options to run the
+job: by default it will be start in the same process, which will allow faster
+communication with the GUI, but this also means that closing the GUI will
+kill the job.  On Mac and Linux you will also have the option to run the job
+as "detached", which allows you to close the GUI, but lacks some features.
+Queuing systems are also supported on Linux.  You can also view or edit the
+complete parameters file before running if desired.  In this case, you should
+choose the first item in the menu ("Run now").
+
+Because no R-free flags were present in the input file, a dialog will appear
+asking if you want to create new flags, with instructions for how to use these
+flags after refinement:
+
+  .. image:: images/tutorial_refine_newflags1.png
+
+You should click "Okay" to proceed; if you want to adjust the parameters used
+for creating the flags, click "Cancel" and then edit settings in the dialog
+opened by clicking "Options" under "X-ray data" in the first configuration
+tab, then re-run.  Immediately after the job starts, another window will
+appear warning you that new flags have been created:
+
+  .. image:: images/tutorial_refine_newflags2.png
+
+This is not an error message, but prevents against unknowingly generating
+new R-free flags by mistake.
+
+When the process starts, a new tab will appear, which contains two inner
+tabs.  The second tab will be visible at first, and displays the basic
+refinement statistics (including R-factors, bond and angle deviations, and
+validation scores), both for the current model and plotted over the course of
+refinement:
+
+  .. image:: images/tutorial_refine_stats.png
+
+The appearance of the R-factor plot is an important indicator of whether the
+selected refinement options are appropriate or not.  In this case, since R-free
+flags were not previously used in refinement, the R-work and R-free will
+start out the same and immediately diverge.  This is expected; however, the
+gap between the two values should stay relatively low, and R-free should still
+decrease over the course of refinement.  A large increase in
+the gap indicates overfitting, and additional restraints and/or a more
+conservative optimization strategy may be required.  If R-free increases
+during refinement, the changes in the model are not justified and the result
+should be discarded.
+
+The first tab shows the complete log output:
+
+  .. image:: images/tutorial_refine_log.png
+
+You can also view the log file itself by clicking "View log". Experienced
+users may not find it necessary to inspect the log, but we recommend that you
+familiarize yourself with its contents, as it contains additional information
+that may be useful for debugging, as well as providing an overview of the
+program logic and workflow.
+
+While refinement is running, if Coot is available on your system, it will
+be started and the current model and maps will be automatically loaded each
+time they change.  This behavior can be disabled in the preferences (under
+"Graphics", but Coot can also be started during refinement by clicking
+"Show graphics" in the "Run status" tab.  PyMOL is also supported.  During
+refinement, the current model will be colored in cyan; at the end of
+refinement, the final model will be colored yellow.
+
+Once the job completes, additional tabs will appear reporting the output files,
+final statistics and a variety of `validation criteria <validation.htm>`_.  Of
+particular importans is the file ending in "_data.mtz", which contains the
+input amplitudes used in refinement, and the new R-free flags.  This file
+should now be used for all subsequent refinements.
+
+  .. image:: images/tutorial_refine_summary.png
+
+References
+----------
+
+  - Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW,
+    Mustyakimov M, Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012)
+    Towards automated crystallographic structure refinement with phenix.refine.
+    ``Acta Crystallogr D Biol Crystallogr.`` **68**:352-67.
+    PMID: `22505256 <http://www.ncbi.nlm.nih.gov/pubmed/22505256>`_
+
+  - Sevcik J, Dodson EJ, Dodson GG.  (1991)  Determination and restrained
+    least-squares refinement of the structures of ribonuclease Sa and its
+    complex with 3'-guanylic acid at 1.8 A resolution.
+    ``Acta Crystallogr., Sect.B`` **47**:240-253.  PMID: `1654932
+    <http://www.ncbi.nlm.nih.gov/pubmed/1654932>`_

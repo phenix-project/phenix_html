@@ -2235,8 +2235,11 @@ manually.
 Referencing phenix.refine
 *************************
 
-Afonine, P.V., Grosse-Kunstleve, R.W. & Adams, P.D. (2005). CCP4 Newsl. 42,
-contribution 8.
+Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW, 
+Mustyakimov M, Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012)
+Towards automated crystallographic structure refinement with phenix.refine.
+``Acta Crystallogr D Biol Crystallogr.`` **68**:352-67.
+PMID: `22505256 <http://www.ncbi.nlm.nih.gov/pubmed/22505256>`_
 
 Relevant reading
 ****************
@@ -2292,7 +2295,14 @@ or used to implement specific features in phenix.refine:
    - P.V. Afonine, R.W. Grosse-Kunstleve & P.D. Adams. Acta Cryst. (2005). D61, 850-855.
      "A robust bulk-solvent correction and anisotropic scaling procedure"
 
-5. Refinement at subatomic resolution:
+5. Refinement at low resolution:
+
+  - Headd, J.J., Echols, N., Afonine, P.V., Grosse-Kunstleve, R.W., Chen, V.B.,
+    Moriarty, N.W., Richardson, D.C., Richardson, J.S., Adams, P.D. (2012).
+    Use of knowledge-based restraints in phenix.refine to improve
+    macromolecular refinement at low resolution. Acta Cryst. D68:381-90.
+
+6. Refinement at subatomic resolution:
 
    - Afonine, P.V., Pichon-Pesme, V., Muzet, N., Jelsch, C., Lecomte, C. &
      Urzhumtsev, A. (2002). CCP4 Newsletter on Protein Crystallography. 41.
@@ -2304,12 +2314,12 @@ or used to implement specific features in phenix.refine:
      "On macromolecular refinement at subatomic resolution with interatomic scatterers"
      (submitted to Acta Cryst. D).
 
-6. LBFGS minimization:
+7. LBFGS minimization:
 
    - Liu, D.C. & Nocedal, J. (1989). Mathematical Programming, 45, 503-528.
      "On the limited memory BFGS method for large scale optimization"
 
-7. Dynamics, simulated annealing:
+8. Dynamics, simulated annealing:
 
    - Brunger, A.T., Kuriyan, J., Karplus, M. (1987). Science. 235, 458-460.
      "Crystallographic R factor refinement by molecular dynamics"
@@ -2322,7 +2332,7 @@ or used to implement specific features in phenix.refine:
    - Brunger, A.T & Adams, P.D. (2002). Acc. Chem. Res. 35, 404-412.
      "Molecular dynamics applied to X-ray structure refinement"
 
-8. Target weights calculation:
+9. Target weights calculation:
 
    - Brunger, A.T., Karplus, M. & Petsko, G.A. (1989). Acta Cryst. A45, 50-61.
      "Crystallographic refinement by simulated annealing: application to crambin"
@@ -2331,20 +2341,20 @@ or used to implement specific features in phenix.refine:
      Acad. Sci. 94, 5018-5023. "Cross-validated maximum likelihood enhances
      crystallographic simulated annealing refinement"
 
-9. Electron density maps (Fourier syntheses) calculation:
+10. Electron density maps (Fourier syntheses) calculation:
 
    - A.G. Urzhumtsev, T.P. Skovoroda & V.Y. Lunin. J. Appl. Cryst. (1996). 29, 741-744.
      "A procedure compatible with X-PLOR for the calculation of electron-density
      maps weighted using an R-free-likelihood approach"
 
-10. Monomer Library:
+11. Monomer Library:
 
     - Vagin, A.A., Steiner, R.A., Lebedev, A.A, Potterton, L., McNicholas, S.,
       Long, F. & Murshudov, G.N. (2004). Acta Cryst. D60, 2184-2195.
       "REFMAC5 dictionary: organization of prior chemical knowledge and
       guidelines for its use"
 
-11. Scattering factors:
+12. Scattering factors:
 
     - D. Waasmaier & A. Kirfel. Acta Cryst. (1995). A51, 416-431.
       "New analytical scattering-factor functions for free atoms and ions"
@@ -2354,7 +2364,7 @@ or used to implement specific features in phenix.refine:
     - Grosse-Kunstleve RW, Sauter NK & Adams PD. Newsletter of the IUCr
       Commission on Crystallographic Computing 2004, 3:22-31. "cctbx news"
 
-12. Neutron and joint X-ray/neutron refinement:
+13. Neutron and joint X-ray/neutron refinement:
 
     - A. Wlodawer & W.A. Hendrickson. Acta Cryst. (1982). A38, 239-247.
       "A procedure for joint refinement of macromolecular structures with X-ray
@@ -2362,13 +2372,13 @@ or used to implement specific features in phenix.refine:
     - A. Wlodawer, H. Savage & G. Dodson. Acta Cryst. (1989). B45, 99-107.
       "Structure of insulin: results of joint neutron and X-ray refinement"
 
-13. Stereochemical restraints:
+14. Stereochemical restraints:
 
     - Grosse-Kunstleve, R.W., Afonine, P.V., Adams, P.D. (2004). Newsletter of
       the IUCr Commission on Crystallographic Computing, 4, 19-36.
       "cctbx news: Geometry restraints and other new features"
 
-14. Parameters parsing and interpretation:
+15. Parameters parsing and interpretation:
 
     - Grosse-Kunstleve RW, Afonine PV, Sauter NK, Adams PD. Newsletter of the
       IUCr Commission on Crystallographic Computing 2005, 5:69-91.
@@ -2382,4 +2392,4 @@ Feedback, more information
 - Questions: phenixbb@phenix-online.org
 - More information: www.phenix-online.org or type::
 
-  % phenix.about
+   phenix.about
