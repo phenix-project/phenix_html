@@ -177,13 +177,66 @@ time they change.  This behavior can be disabled in the preferences (under
 refinement, the current model will be colored in cyan; at the end of
 refinement, the final model will be colored yellow.
 
+After refinement
+----------------
+
 Once the job completes, additional tabs will appear reporting the output files,
-final statistics and a variety of `validation criteria <validation.htm>`_.  Of
-particular importance is the file ending in "_data.mtz", which contains the
-input amplitudes used in refinement, and the new R-free flags.  This file
-should now be used for all subsequent refinements.
+final statistics and a variety of `validation criteria <validation.htm>`_:
 
   .. image:: images/tutorial_refine_summary.png
+
+The output files will mostly take the form **${PREFIX}_${RUN_ID}.${EXTENSION}**,
+for instance "rnase-s_refine_19.mtz" in the image above;
+the prefix can be modified in the Output configuration tab.  The run ID will
+be set automatically by the GUI.  Files named using this convention include:
+
+  - **.log**: the same log output that appears in the GUI.
+  - **.eff**: the final effective parameters, including any automatic
+    modifications performed internally.
+  - **.geo**: a complete listing of geometry restraints at the start of
+    refinement, including both target and actual values, sorted by deviation
+    from ideal.
+  - **.pdb**: the final refined model.
+  - **.mtz**: all reflection data associated with the run, including the
+    R-free flags, the input data, the filtered data used in refinement
+    (excluding outliers), the final "F(model)" (the calculated structure
+    factors, including bulk solvent contribution), and map coefficients
+    (including, by default, the 2mFo-DFc map with and without missing F-obs
+    substituted by F-calc, the mFo-DFc map, and if anomalous data were used
+    in refinement, the anomalous difference map).
+
+Additionally, if modifications were made to the input data, including the
+generation of R-free flags, a file named **${PREFIX}_data.mtz** will be
+included.  If you created a new set of flags, as was done for this tutorial,
+you should always use this MTZ file for future refinements.
+
+Guidelines for interpreting the validation results can be found in the
+`documentation for the validation GUI <validation.htm>`_ or the external
+`Molprobity tutorial <http://kinemage.biochem.duke.edu/teaching/csh2008/>`_
+from the Cold Spring Harbor Laboratory crystallography course.
+
+Command-line usage
+------------------
+
+This tutorial can also be run from the command line, although the final
+validation is only available from the GUI.  The example files can be found
+here::
+
+  $PHENIX/examples/rnase-s
+
+The equivalent command line arguments for the run described above are::
+
+  phenix.refine rnase-s.pdb rnase25.mtz xray_data.labels=FNAT,SIGFNAT,merged \
+    xray_data.r_free_flags.generate=True ncs=True ncs.type=torsion \
+    refine.strategy=individual_sites+individual_sites_real_space+individual_adp+tls+occupancies \
+    tls.find_automatically=True
+
+Note that in the GUI, the identification of TLS groups was run interactively
+as a separate step prior to starting the job, rather than automatically
+during refinement.  On the command line, you can run this command to obtain
+the TLS parameters::
+
+  phenix.find_tls rnase-s.pdb
 
 References
 ----------
