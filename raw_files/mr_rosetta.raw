@@ -957,7 +957,7 @@ and then just edit that file.
 
 <P><H5>Testing mr_rosetta:</H5><P>
 You can do a test of mr_rosetta to make sure everything is ok with:
-<PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick_tests
+<PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick
 </PRE>
 
 
@@ -969,7 +969,7 @@ If mr_rosetta fails, the first thing (after just checking the commands you
 used) is to run the mr_rosetta regression tests to make sure that the
 installations of phenix and rosetta are both ok:
 
-<PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick_tests
+<PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick
 </PRE>
 
 That should take 10-20 minutes to run and say "OK" for all the tests.
