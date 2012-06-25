@@ -84,6 +84,15 @@ highly parallel system.  However, we strongly recommend weight optimization in
 the final round of refinement, where it becomes essential to prevent
 overfitting.
 
+**How can I set the restraint weight manually?**
+
+Our usual response is: don't do this manually, use the automatic optimization
+instead.  Although this takes significantly longer to run, in practice most
+users will spend an equivalent amount of time manually adjusting the weights
+by trial-and-error.  If you are certain you need to have manual control, the
+parameters fix_wxc (for geometry restraints) and fix_wxu (for B-factor
+restraints) will set the weights.
+
 **When should I use non-crystallographic symmetry (NCS) restraints?**
 
 An approximate cutoff for NCS restraints is 2.0 Angstrom - at higher
@@ -396,6 +405,20 @@ on the PHENIX and CCP4 mailing lists:
 A third approach, setting the occupancy of missing atoms to zero but leaving
 them in the model, is strongly disfavored, as the resulting positions and
 B-factors are entirely theoretical (but not immediately obvious as such).
+
+**Running phenix.model_vs_data (or the validation GUI) results in a slightly
+different R-factor than reported in the PDB header by phenix.refine.  Shouldn't
+these be the same?**
+
+phenix.refine and phenix.model_vs_data use the same code to perform the bulk
+solvent correction and scaling, so they should report approximately the same
+R-factors given identical inputs.  The discrepancy arises when taking a PDB
+file from refinement and running it back through phenix.model_vs_data.  Because
+of the limited precision of the PDB format (three digits after the decimal
+point for coordinates, two digits for B-factors and occupancy), the atomic
+properties recorded in the PDB file will not be exactly the same as their
+actual refined values.  In practice the difference in R-factors is
+statistically insignificant, however.
 
 References
 ==========
