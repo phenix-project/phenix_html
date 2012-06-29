@@ -133,7 +133,8 @@ difference, homogeneous regions will usually be omitted from the grid.</p>
 rotamer type will be included, plus all outliers.  Coloring: red for
 outliers, yellow for &quot;minority&quot; conformations, green for &quot;majority&quot;
 conformations (at least 50% of chains under consideration), blue for
-multiple conformations.</li>
+multiple conformations.  The rotamer IDs are taken from the Penultimate
+Rotamer Library, which is described in <a class="reference" href="http://www.ncbi.nlm.nih.gov/pubmed/10861930">Lovell et al. (2001)</a>.</li>
 <li><strong>Ramachandran angles:</strong> Any set of matching residues with phi,psi angles
 falling outside the &quot;favored&quot; regions of the Ramachandran plot will be
 displayed.  Additionally, residues which fall into more than one distinct
@@ -183,6 +184,9 @@ out to the result directory, renamed with the extension &quot;_modified.pdb&quot
 <P><H5><U><B>References</B></U></H5><P>
 <blockquote>
 <ul>
+<li>Lovell SC, Word JM, Richardson JS, Richardson DC.  The penultimate rotamer
+library.  Proteins 2000 40:389-408.
+PubMed PMID: 10861930</li>
 <li>Madhusudan, Akamine P, Xuong NH, Taylor SS. Crystal structure of a
 transition  state mimic of the catalytic subunit of cAMP-dependent protein
 kinase. Nat Struct Biol. 2002 9:273-7.

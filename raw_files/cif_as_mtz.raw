@@ -50,6 +50,13 @@ Options:
   --show-details-if-error
                         Show data details for some errors.
   --show-log            Show some output.
+  --merge               Merge non-unique data (preserves anomalous pairs)
+  --eliminate_sys_absent
+                        Remove systematic absences
+  --map_to_asu          Map HKL indices to canonical asymmetric unit
+  --incompatible_flags_to_work_set
+                        When merging place reflections with incompatible
+                        flags into the working set.
 
 Example: phenix.cif_as_mtz r1o9ksf.ent --symmetry=pdb1o9k.ent
 </pre>
