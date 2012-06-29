@@ -1,0 +1,163 @@
+
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Identify equivalent MR solutions of the same dataset irrespective of origin and symmetry operation</U></H4> 
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here. 
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+
+
+      <P><H5><U><B>Author(s)</B></U></H5><P>
+<UL><LI>phenix.find_alt_orig_sym_mate: Robert Oeffner
+<LI>PHENIX GUI Nat Echols
+</UL>
+
+      <P><H5><U>Purpose</U></H5><P>
+
+<P><H5>Purpose of phenix.find_alt_orig_sym_mate</H5><P>
+
+<P>For different molecular replacement solutions from the same dataset phenix.find_alt_orig_sym_mate.py
+finds for each chain in the moving solution the copy closest to chains in the fixed solution with
+respect to all symmetry operations and alternative origin shifts permitted by the
+spacegroup of the crystal.  
+
+      <P><H5><U>Usage</U></H5><P>
+<P>
+phenix.find_alt_orig_sym_mate.py can be run from the command-line with phil input 
+in either a text file or as keywords like
+<PRE style="face=courier">
+find_alt_orig_sym_mate.py moving.xyzfname=pdbfile1 fixed.xyzfname=pdbfile2
+</PRE>
+or
+<PRE style="face=courier">
+phenix.find_alt_orig_sym_mate.py my_phil_input.txt
+</PRE>.
+
+For more information on the PHIL input see the bottom of this page.
+
+<P>
+Both of the scopes "moving" and "fixed" must be valid. These two scopes
+hold the parameter "xyzfname" and the scopes "mrsolution" and "pickle_solution".
+An MR solution is specified by following only one of the procedures a, b and c:
+<P>
+(a) Assign the "xyzfname parameter" to the pdb file from one of the MR solutions
+in question.
+<P>
+(b) Specify a Phaser MR solution by assigning the file name
+of the solution file to the "mrsolution.solfname" parameter as well as assigning
+the IDs of the ensembles and the corresponding MR models to the parameters
+"mrsolution.ensembles.name" and "mrsolution.ensembles.xyzfname" respectively.
+Multiple components are specified as multiple ensembles. This way of specifying
+solutions is useful for solutions produced when Phaser is run directly from the
+command line.
+<P>
+(c) Specify a pickle solution. In that case the parameter
+pickle_solution.pklfname is assigned to the solution file that is produced
+by PHENIX after an MR calculation. The pickle_solution.philfname is then
+assigned to the input file for the MR calculation. This way of specifying
+solutions is useful when MR solutions are available from having run Phaser
+through the PHENIX interface.
+<P>
+All three ways may be combined. If space group and the unit cell dimensions
+is not available when for instance (b) is used for both the moving and the
+fixed scopes then these need to be specified by assigning the parameter,
+"spacegroupfname", to a pdb file with a CRYST1 record or to an mtz file with
+that information.
+
+<P>
+<P><H5>Output</H5><P>
+<P>
+<P>The closest match between chains in the moving section to chains in the fixed
+section is saved with the name of the reference_pdb,
+concatenated with the name of the moving_pdb but prepended with "MinMLAD_".
+A log file with the name of the reference_pdb, concatenated with the name of the
+moving_pdb but prepended with "AltOrigSymMLAD_" contains all screen output.
+All files are saved in the folder containing reference_pdb. A good match
+between two chains usually have a MLAD value less than 1.5
+whereas a bad match usually have a value larger than 2. This is a rule of thumb
+and exceptions do occur.
+
+
+<P><H5>Algorithm</H5><P>
+<P>find_alt_orig_sym_mate.py computes configurations by looping over all
+symmetry operations and alternative origin shifts. These are computed using
+procedures outlined in R. W. Grosse-Kunstleve, Acta Cryst. 1999, A55, 383-395.
+An alignment between C-alpha atoms from moving_pdb and reference_pdb is
+computed using SSM (E. Krissinel* and K. Henrick, Acta Cryst. 2004. D60, 2256-2268).
+To estimate the best match a distance measure between the aligned atoms is
+computed for each configuration. The mean log absolute deviation (MLAD) is
+defined as:
+<P>
+  MLAD(dR) = Sum( log(dr*dr/(|dr| + 0.9) + max(0.9, min(dr*dr,1)))),
+<P>
+where dr is the difference vector between a pair of aligned C-alpha atoms and the sum
+is taken over all atom pairs in the alignment. MLAD is used as the distance measure.
+MLAD will downplay the contributions of spatially distant C-alpha atom pairs which
+may otherwise lead to incorrect matches when the space group has a floating origin
+and the chains tested against one another consists of large unaligned domains.
+<P>
+find_alt_orig_sym_mate.py will for each chain in reference_pdb find the
+smallest MLAD with a copy of each chain in moving_pdb for a given symmetry
+operation and alternative origin. When all chains in reference_pdb have been
+tested these copies will be saved to a file. A warning is issued if not all
+saved copies of chains in moving_pdb have the same origin.
+<P>
+For spacegroups with floating origin the minimum MLAD is found
+by doing a Golden Sectioning minimization along the polar axis for each copy
+of chains in moving_pdb.
+<P>
+
+
+<P><H5>Debug mode</H5><P>
+<P>
+Invoking the debug flag produces individual pdb files of the C-alpha atoms used for
+each SSM alignment of moving_pdb for each permitted symmetry operation and alternative
+origin. A gold atom is placed at the centroid of the C-alpha atoms. Similar files are
+produced for the reference_pdb. These files are stored in a subfolder named
+"AltOrigSymMatesFiles".
+
+If a floating origin is present in the space group a table of MLAD values is produced by
+sliding a copy of moving_pdb along the polar axis in the fractional interval [-0.5, 0.5]
+for each permitted symmetry operation and alternative origin.
+
+
+
+
+      <P><H5><U>Literature</U></H5><P>
+
+<TABLE width=670 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=3 cellPadding=1 width="100%" align=center border=0>
+        <TBODY>
+
+        <TR id=terwilliger2007a>
+          <TD align=left bgColor=eeeee8><FONT 
+            color=000000 size=2><B>Secondary-structure matching (SSM), a new tool 
+	    for fast protein structure alignment in three dimensions.
+	    </B> E. Krissinel* and K. Henrick <A
+            href="http://dx.doi.org/10.1107/S0907444904026460"><I>Acta Cryst.</I>
+            <B>D60</B>, 2256-2268 (2004)</A><BR></FONT></TD>
+	</TR>
+        <TR id=terwilliger2006>
+          <TD align=left bgColor=eeeee8><FONT 
+            color=000000 size=2><B>Algorithms for deriving crystallographic 
+	    space-group information </B> R. W. Grosse-Kunstleve <A
+            href="http://dx.doi.org/10.1107/S0108767398010186"><I>Acta Cryst.</I>
+            <B>A55</B>, 383-395 (1999)</A><BR></FONT></TD>
+	</TR>
+        </TBODY>
+     </TABLE>
+    </TD>
+  </TR>
+  </TBODY>
+</TABLE>
+      <P><H5><U>Additional information</U></H5><P>
+
+
+<!--REMARK PHENIX BODY END-->
