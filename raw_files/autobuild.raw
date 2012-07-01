@@ -622,7 +622,12 @@ ends. This is repeated for overlapping segments covering the entire model.
 NOTE: If you are using rebuild_in_place then your model must be quite
 similar to your sequence file, and in particular the model must not 
 extend in the N-terminal direction beyond your sequence file. Minor edits
-(amino acid replacements) will be done automatically.
+(amino acid replacements) will be done automatically. 
+Also NOTE: rebuild_in_place is not designed for models that contain
+alternate conformations. It is designed for a model with a single conformation.
+If you supply a model with some residues or side-chains with a blank
+altloc, and some with an altloc of A and some with B, then all those with
+A or B will be ignored (only the first conformer is considered).
 </p>
 <p>The multiple-models approach really has two levels of multiple models.
 At the first level, several (multiple_models_group_number, default is

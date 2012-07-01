@@ -82,7 +82,7 @@ types are automatically recognized, and added to the relevant input section.
 The superposed chains can be written out either as a quasi multiple model PDB
 file that is readable by phaser directly (output style <TT><B>merged</B></TT>,
 output file name <TT><B>root_merged.pdb</B></TT>) or as a series of files
-containing each chain separately (output syle <TT><B>separate</B></TT>, file
+containing each chain separately (output style <TT><B>separate</B></TT>, file
 name <TT><B>root_pdb_chain.pdb</B></TT>, where pdb is the name of the PDB file
 the chain was read from, and chain is the chain identifier). The file name
 <TT><B>root</B></TT> can be changed via the <TT><B>root</B></TT> parameter of
