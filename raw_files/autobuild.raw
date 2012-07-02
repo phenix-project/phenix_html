@@ -547,11 +547,17 @@ the other files produced:
 <LI>Final refined model
 <PRE style="face=courier">overall_best.pdb
 </PRE>
-<p>NOTE: The &quot;working_best.pdb&quot; file is the current working best
+<p>NOTE 1: The &quot;working_best.pdb&quot; file is the current working best
  model. If an anisotropy correction and sharpening are applied (remove_aniso=True)
 then working_best.pdb will be refined against the corrected data. At the end of the
 run the last working_best.pdb will be re-refined against the original data (overall B
 refined only) and written out as overall_best.pdb.</P>
+<P>
+NOTE 2: If there are multiple chains or multiple ncs copies, each chain will
+be given its own chainID (A B C D...).  Segments that are not assigned to a 
+chain are given a separate chainID and are given a segid of "UNK" to indicate
+that their assignment is unknown.  ChainID's for ligands are kept as input.
+The chainID for solvent molecules is normally S.
 <P></P>
 
 <LI>Final map coefficients used to build refined model. Use FWT PHWT in

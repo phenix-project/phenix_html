@@ -382,6 +382,11 @@ the other files produced:
 <P><LI>Current preliminary model
 <PRE style="face=courier"> overall_best.pdb # model produced for top solution
 </PRE>
+NOTE: If there are multiple chains or multiple ncs copies, each chain will
+be given its own chainID (A B C D...).  Segments that are not assigned to a 
+chain are given a separate chainID and are given a segid of "UNK" to indicate
+that their assignment is unknown.  The chainID for solvent molecules is
+normally S, and the chainID for heavy-atoms is normally Z.
 
 <P><LI>An mtz file for use in refinement
 (NOTE: not aniso corrected and not sharpened).
