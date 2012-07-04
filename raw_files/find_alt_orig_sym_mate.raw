@@ -11,8 +11,6 @@
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 
-
-      
 <P><a name="anch2" id="Author_s_"></a>
 <H5><U><B>Author(s)</B></U></H5>
 <P><a name="anch3" id="Author_s__2"></a>
@@ -38,21 +36,14 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 For different molecular replacement solutions from the same dataset phenix.find_alt_orig_sym_mate.py
 finds for each chain in the moving solution the copy closest to chains in the fixed solution with
 respect to all symmetry operations and alternative origin shifts permitted by the
-spacegroup of the crystal.  
-    <p>
-        &nbsp;</p>
-
-      
-<P><a name="anch9" id="Usage"></a>
+spacegroup of the crystal.<P><a name="anch9" id="Usage"></a>
 <H5><U>Usage</U></H5>
 <P><a name="anch10" id="Usage_2"></a>
 
 
-<P><a name="anch11" id="Usage_3"></a>
-
-phenix.find_alt_orig_sym_mate.py can be run from the command-line with phil input 
+<P><a name="anch11" id="Usage_3"></a>phenix.find_alt_orig_sym_mate can be run from the command-line with PHIL input 
 in either a text file or as keywords like
-<PRE style="face=courier">find_alt_orig_sym_mate.py moving.xyzfname=pdbfile1 fixed.xyzfname=pdbfile2
+<PRE style="face=courier">phenix.find_alt_orig_sym_mate.py moving.xyzfname=pdbfile1 fixed.xyzfname=pdbfile2
 </PRE>
 or
 <PRE style="face=courier">phenix.find_alt_orig_sym_mate.py my_phil_input.txt.
@@ -60,41 +51,119 @@ or
     <br />
     The PHIL input has two scopes, "moving" and "fixed".
 
-Both of the scopes must hold
-    valid content for the program to work. The two scopes
+Both these scopes must hold
+    valid content. The two scopes
 hold the parameter "xyzfname" and the sub-scopes "mrsolution" and "pickle_solution". For a scope to be valid one
-    and only of the procedures a, b and c must be followed.<P><a name="anch13" id="Usage_5"></a>
-
-(a) Assign the "xyzfname parameter" to the pdb file from one of the MR solutions
-in question.
-
-<P><a name="anch14" id="Usage_6"></a>
-
-(b) Specify a Phaser MR solution by assigning the file name
+    and only of the methods (1), (2) and (3) must be followed:<ol>
+        <li> Assign the "xyzfname" parameter to the pdb file from one of the MR solutions
+in question. This is useful for simple cases such as when the solution comes from the
+            PHENIX AutoMR GUI is or when it is from a different molecular replacement program
+            other than Phaser.<li>Specify a Phaser MR solution by assigning the file name
 of the solution file to the "mrsolution.solfname" parameter as well as assigning
 the IDs of the ensembles and the corresponding MR models to the parameters
 "mrsolution.ensembles.name" and "mrsolution.ensembles.xyzfname" respectively.
 Multiple components are specified as multiple ensembles. This way of specifying
 solutions is useful for solutions produced when Phaser is run directly from the
-command line.
-
-<P><a name="anch15" id="Usage_7"></a>
-
-(c) Specify a pickle solution. In that case the parameter
+command line. </li>
+            <li>Use a solution from the PhaserMR GUI in PHENIX. In that case the parameter
 pickle_solution.pklfname is assigned to the solution file that is produced
 by PHENIX after an MR calculation. The pickle_solution.philfname is then
 assigned to the input file for the MR calculation. This way of specifying
 solutions is useful when MR solutions are available from having run Phaser
-through the PHENIX interface.
+through the PHENIX interface. </li>
+    </ol>
 
 <P><a name="anch16" id="Usage_8"></a>
 
-All three ways may be combined. If space group and the unit cell dimensions
-is not available when for instance (b) is used for both the moving and the
+All three methods may be combined. If space group and the unit cell dimensions
+is not available when for instance (2) is used for both the moving and the
 fixed scopes then these need to be specified by assigning the parameter,
 "spacegroupfname", to a pdb file with a CRYST1 record or to an mtz file with
 that information.
+    <h5>
+        Examples of PHIL input</h5>
     <p>
+        Unless the input just constitutes of two PDB files a PHIL file is the easiest way
+        to enter input. A few examples of PHIL for phenix.find_alt_orig_sym_mate are given
+        below.
+    </p>
+    <p>
+    Testing a command-line Phaser MR solution file against a solution specified as a
+        PDB file:
+    </p>
+    <PRE style="face=courier">
+AltOrigSymMates.fixed.mrsolution
+{
+  solfname = "testdata/MR_3ECI_A0_2P82_A0.sol"
+  ensembles
+  {
+    name = "MR_2P82_A0"
+    xyzfname = "testdata/sculpt_2P82_A0.pdb"
+  }
+  ensembles
+  {
+    name = "MR_3ECI_A0"
+    xyzfname = "testdata/sculpt_3ECI_A0.pdb"
+  }
+}
+AltOrigSymMates.moving.xyzfname="testdata/2z0d.pdb"
+</PRE>
+<br />
+Testing two set of solution files from the PHENIX Phaser-MR GUI against one another:
+<PRE style="face=courier">AltOrigSymMates.fixed.pickle_solution
+{
+  philfname = "testdata/phaser_mr_13.eff"
+  pklfname = "testdata/phaser_mr_13.pkl"
+}
+
+AltOrigSymMates.moving.pickle_solution
+{
+  philfname = "testdata/phaser_mr_11.eff"
+  pklfname = "testdata/phaser_mr_11.pkl"
+}
+</PRE>
+    <br />
+    <br />
+    Testing two solution files from the command-line version of Phaser against one another:
+<PRE style="face=courier">
+AltOrigSymMates.fixed.mrsolution
+{
+  solfname = "testdata/MR_3ECI_A0_2P82_A0.sol"
+  ensembles
+  {
+    name = "MR_2P82_A0"
+    xyzfname = "testdata/sculpt_2P82_A0.pdb"
+  }
+  ensembles
+  {
+    name = "MR_3ECI_A0"
+    xyzfname = "testdata/sculpt_3ECI_A0.pdb"
+  }
+}
+
+AltOrigSymMates.moving.mrsolution
+{
+  solfname = "testdata/MR_2ZPN_A0_2P82_A0.sol"
+  ensembles
+  {
+    name = "MR_2P82_A0"
+    xyzfname = "testdata/sculpt_2P82_A0.pdb"
+  }
+  ensembles
+  {
+    name = "MR_2ZPN_A0"
+    xyzfname = "testdata/sculpt_2ZPN_A0.pdb"
+  }
+}
+AltOrigSymMates.spacegroupfname = "testdata/2Z0D.mtz"
+</PRE>
+
+
+
+
+
+
+        <p>
 For more information on the PHIL input see the bottom of this page.
     </p>
 
@@ -112,52 +181,53 @@ For more information on the PHIL input see the bottom of this page.
 
 <P><a name="anch21" id="Output_4"></a>
 The closest match between chains in the moving section to chains in the fixed
-section is saved with the name of the fixed_pdb,
-concatenated with the name of the moving_pdb but prepended with "MinMLAD_".
-A log file with the name of the fixed_pdb, concatenated with the name of the
-moving_pdb but prepended with "AltOrigSymMLAD_" contains all screen output.
-All files are saved in the current working directory. A good match
-between two chains usually have a MLAD value less than 1.5
-whereas a bad match usually have a value larger than 2. This is a rule of thumb
-and exceptions do occur. If MR solutions specified in the
-    PHIL contains multiple solutions then find_alt_orig_sym_mate will output mulitple
-    log files corresponding to each MR solution.<P><a name="anch22" id="Algorithm"></a>
+section is saved with the name of the pdb file in
+    the fixed scope, concatenated with the name of the pdb file in the moving scope
+    but prepended with "MinMLAD_".
+A log file with the name of the pdb file in the fixed scope, concatenated with the name
+    of the pdb file in the moving scope but prepended with "AltOrigSymMLAD_" is written
+    containing standard output.
+All files are saved in the current working directory. If MR solutions specified in the PHIL contains multiple solutions then phenix.find_alt_orig_sym_mate
+    will output mulitple
+    log files corresponding to each MR solution.<h5>
+        Do the MR solutions match?</h5>
+    <p>
+        A good match
+between two chains usually have a MLAD value below 1.5
+whereas a bad match usually have a value above 2.0. This is a rule of thumb
+and exceptions do occur. If the fixed scope contains more chains and phenix.find_alt_orig_sym_mate
+        did not place them all on the same origin with respect to the chains in the moving
+        scope then a warning will be issued.</p>
+    <P><a name="anch22" id="Algorithm"></a>
 <H5>Algorithm</H5>
 <P><a name="anch23" id="Algorithm_2"></a>
 
 
-<P><a name="anch24" id="Algorithm_3"></a>
-find_alt_orig_sym_mate.py computes configurations by looping over all
-symmetry operations and alternative origin shifts. These are computed using
-procedures outlined in R. W. Groﬂe-Kunstleve, Acta Cryst. 1999, A55, 383-395.
+<P><a name="anch24" id="Algorithm_3"></a>phenix.find_alt_orig_sym_mate computes configurations by looping over all
+symmetry operations and alternative origin shifts. 
 An alignment between C-alpha atoms from moving_pdb and fixed_pdb is
-computed using SSM (E. Krissinel* and K. Henrick, Acta Cryst. 2004. D60, 2256-2268).
+computed using SSM.
 To estimate the best match a distance measure between the aligned atoms is
-computed for each configuration. The mean log absolute deviation (MLAD) is
+computed for each configuration. The <em>mean log absolute deviation</em> (MLAD) is
 defined as:
 
-<P><a name="anch25" id="Algorithm_4"></a>
-
-  MLAD(dR) = Sum( log(dr*dr/(|dr| + 0.9) + max(0.9, min(dr*dr,1)))),
+<P><a name="anch25" id="Algorithm_4"></a>MLAD(d<strong>R</strong>) = &#x3a3;( log(d<strong>r</strong>*d<strong>r</strong>/(|d<strong>r</strong>|
+    + 0.9) + max(0.9, min(d<strong>r</strong>*d<strong>r</strong>,1)))),
 
 <P><a name="anch26" id="Algorithm_5"></a>
 
-where dr is the difference vector between a pair of aligned C-alpha atoms and the sum
+where d<strong>r</strong> is the difference vector between a pair of aligned C-alpha atoms and the sum
 is taken over all atom pairs in the alignment. MLAD is used as the distance measure.
 MLAD will downplay the contributions of spatially distant C-alpha atom pairs which
 may otherwise lead to incorrect matches when the space group has a floating origin
 and the chains tested against one another consists of large unaligned domains.
 
-<P><a name="anch27" id="Algorithm_6"></a>
-
-find_alt_orig_sym_mate.py will for each chain in fixed_pdb find the
-smallest MLAD with a copy of each chain in moving_pdb for a given symmetry
-operation and alternative origin. When all chains in fixed_pdb
+<P><a name="anch27" id="Algorithm_6"></a>phenix.find_alt_orig_sym_mate.py will for
+    each chain in the fixed scope find the
+smallest MLAD with a copy of each chain in the moving scope for a given symmetry
+operation and alternative origin. When all chains in the fixed scope
     have been
-tested these copies will be saved to a file. A warning is issued if not all
-saved copies of chains in moving_pdb have the same origin.
-
-<P><a name="anch28" id="Algorithm_7"></a>
+tested these copies will be saved to a file. 
 
 For spacegroups with floating origin the minimum MLAD is found
 by doing a Golden Sectioning minimization along the polar axis for each copy
@@ -175,17 +245,15 @@ of chains in moving_pdb.
 <P><a name="anch32" id="Debug_mode_3"></a>
 
 Invoking the debug flag produces individual pdb files of the C-alpha atoms used for
-each SSM alignment of moving_pdb for each permitted symmetry operation and alternative
+each SSM alignment of the moving scope for each permitted symmetry operation and alternative
 origin. A gold atom is placed at the centroid of the C-alpha atoms. Similar files are
-produced for the fixed_pdb. These files are stored in a subfolder named
+produced for the fixed scope.
+    These files are stored in a subfolder named
 "AltOrigSymMatesFiles".
 
 If a floating origin is present in the space group a table of MLAD values is produced by
-sliding a copy of moving_pdb along the polar axis in the fractional interval [-0.5, 0.5]
-for each permitted symmetry operation and alternative origin.
-
-      
-<P><a name="anch33" id="Literature"></a>
+sliding a copy of the chains in the moving scope along the polar axis in the fractional interval [-0.5, 0.5]
+for each permitted symmetry operation and alternative origin.<P><a name="anch33" id="Literature"></a>
 <H5><U>Literature</U></H5>
 <P><a name="anch34" id="Literature_2"></a>
 
@@ -210,14 +278,14 @@ for each permitted symmetry operation and alternative origin.
         <TR id=terwilliger2006>
           <TD align=left bgColor=eeeee8><FONT 
             color=000000 size=2><B>Algorithms for deriving crystallographic 
-	    space-group information </B> R. W. Groﬂe-Kunstleve <A
+	    space-group information </B> R. W. Gro&#xDF;e-Kunstleve <A
             href="http://dx.doi.org/10.1107/S0108767398010186"><I>Acta Cryst.</I>
             <B>A55</B>, 383-395 (1999)</A><BR></FONT></TD>
 	    </TR>
         <TR id=TR1>
           <TD align=left bgColor=eeeee8><FONT 
             color=000000 size=2><B>phenix.find_alt_orig_sym_mate </B> 
-            Robert D. Oeffner, G·bor BunkÛczi and Randy J. Read 
+            Robert D. Oeffner, G&#xE1;bor Bunk&#xF3;czi and Randy J. Read 
             <A href="http://www.phenix-online.org/newsletter/CCN_2012_01.pdf">
             <I>Computational Crystallography Newsletter 2012 January</I>,
             5-10 (2012)</A><BR></FONT></TD>
@@ -232,6 +300,7 @@ for each permitted symmetry operation and alternative origin.
 <P><a name="anch36" id="Additional_information"></a>
 <H5><U>Additional information</U></H5>
 <P><a name="anch37" id="Additional_information_2"></a>
+
 
 
 <!--REMARK PHENIX BODY END-->
