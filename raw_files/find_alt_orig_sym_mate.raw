@@ -15,7 +15,7 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <H5><U><B>Author(s)</B></U></H5>
 
 <UL><LI>phenix.find_alt_orig_sym_mate: Robert D. Oeffner
-<LI>PHENIX GUI Nat Echols
+<LI>PHENIX GUI: Nat Echols
 </UL>
 
       
@@ -67,6 +67,7 @@ fixed scopes then these need to be specified by assigning the parameter,
 "spacegroupfname", to a PDB file with a CRYST1 record or to an MTZ file with
 that information. Typically this would be the data file used for the molecular 
 replacement calculation.
+
 
 <H5>Examples of PHIL input</H5>
 
@@ -217,8 +218,17 @@ against all solutions present in solution files entered as moving scope. Consequ
 execution time is proportional to the number of solutions in fixed scope times the number of
 solutions in moving scope.
 <P>
-The execution time is proportional to the number of SSM alignments being used tested.
+The execution time is proportional to the number of SSM alignments being tested; if SSM 
+identifies 12 alignments the program will take 12 times as long.
 </P>
+
+
+<H5>Changes</H5>
+<P>
+The command-line syntax mentioned in the Computational Crystallography Newsletter 2012 January
+has been replaced by PHIL syntax.
+</P>
+
 
 <H5><U>Literature</U></H5>
 
@@ -229,29 +239,28 @@ The execution time is proportional to the number of SSM alignments being used te
     <TD>
       <TABLE cellSpacing=3 cellPadding=1 width="100%" align=center border=0>
         <TBODY>
-
-        <TR id=terwilliger2007a>
-          <TD align=left bgColor=eeeee8><FONT 
-            color=000000 size=2><B>Secondary-structure matching (SSM), a new tool 
-	    for fast protein structure alignment in three dimensions.
-	    </B> E. Krissinel* and K. Henrick <A
-            href="http://dx.doi.org/10.1107/S0907444904026460"><I>Acta Cryst.</I>
-            <B>D60</B>, 2256-2268 (2004)</A><BR></FONT></TD>
-	    </TR>
-        <TR id=terwilliger2006>
+        <TR id=article1>
           <TD align=left bgColor=eeeee8><FONT 
             color=000000 size=2><B>Algorithms for deriving crystallographic 
 	    space-group information </B> R. W. Gro&#xDF;e-Kunstleve <A
             href="http://dx.doi.org/10.1107/S0108767398010186"><I>Acta Cryst.</I>
             <B>A55</B>, 383-395 (1999)</A><BR></FONT></TD>
 	    </TR>
-        <TR id=TR1>
+        <TR id=article1>
           <TD align=left bgColor=eeeee8><FONT 
             color=000000 size=2><B>phenix.find_alt_orig_sym_mate </B> 
             Robert D. Oeffner, G&#xE1;bor Bunk&#xF3;czi and Randy J. Read 
             <A href="http://www.phenix-online.org/newsletter/CCN_2012_01.pdf">
             <I>Computational Crystallography Newsletter 2012 January</I>,
             5-10 (2012)</A><BR></FONT></TD>
+	    </TR>
+        <TR id=article3>
+          <TD align=left bgColor=eeeee8><FONT 
+            color=000000 size=2><B>Secondary-structure matching (SSM), a new tool 
+	    for fast protein structure alignment in three dimensions.
+	    </B> E. Krissinel* and K. Henrick <A
+            href="http://dx.doi.org/10.1107/S0907444904026460"><I>Acta Cryst.</I>
+            <B>D60</B>, 2256-2268 (2004)</A><BR></FONT></TD>
 	    </TR>
         </TBODY>
      </TABLE>
