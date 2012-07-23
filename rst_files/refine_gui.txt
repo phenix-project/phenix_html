@@ -122,7 +122,7 @@ depending on model quality, data quality, and observation-to-parameters ratio.
 
   - **XYZ coordinates** is standard Cartesian refinement of model geometry
     and agreement with X-ray data.  It is almost always appropriate, but at
-    low-resolution (typically 3.5A or worse), additional restraints
+    low-resolution (typically 3.0A or worse), additional restraints
     (NCS, reference model, etc.) are often necessary to prevent overfitting.
 
   - **Real-space** is similar to the Individual Sites strategy, but refines
@@ -138,13 +138,14 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     done first, in the first cycle of refinement.
 
   - **Individual B-factors** is atomic B-factor refinement, and is always
-    appropriate except at low resolution (3.5A or worse).  Whether atoms are
-    treated as isotropic or anisotropic is defined separately (see below).
+    appropriate except at very low resolution (around 5.0A or worse).  Whether
+    atoms are treated as isotropic or anisotropic is defined separately (see
+    below).
 
-  - **Group B-factors** refines B-factors for multiple atoms at a time, most often
-    single residues either as a whole or divided into mainchain and sidechain.
-    (Larger user-defined groups are also allowed.)  This is usually only
-    necessary at low resolution (3.5A or worse).
+  - **Group B-factors** refines B-factors for multiple atoms at a time, most
+    often single residues either as a whole or divided into mainchain and
+    sidechain.  (Larger user-defined groups are also allowed.)  This is usually
+    only necessary at very low resolution.
 
   - **TLS parameters** refines anisotropic displacements for large groups of
     atoms, typically individual domains or chains.  Because this introduces
