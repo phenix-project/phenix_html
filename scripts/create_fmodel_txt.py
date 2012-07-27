@@ -4,10 +4,8 @@ from cStringIO import StringIO
 import mmtbx.command_line.fmodel
 
 def run():
-  log = StringIO()
-  mmtbx.command_line.fmodel.run(args=[], log = log)
   ofn = open("fmodel.txt","w")
-  ofn.write(log.getvalue())
+  ofn.write(mmtbx.command_line.fmodel.legend)
   ofn.close()
 
 if (__name__ == "__main__"):
