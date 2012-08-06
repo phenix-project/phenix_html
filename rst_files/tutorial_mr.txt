@@ -18,7 +18,10 @@ cases when a set of superposed models (generated using `Ensembler
 and for easily solved structures, such as the tutorial datasets used here,
 a single PDB file will be sufficient.  Furthermore, while Phaser can search
 for multiple alternative ensembles and output only the best solution, here we
-will use just one candidate per component.
+will use just one candidate per component.  Also note that the search models
+used here are single proteins, but this is not a requirement if the relative
+orientation of multiple chains are known (such as physiological dimers,
+multi-subunit complexes, or DNA helices).
 
 An essential feature of Phaser is that it scores possible solutions based on
 the expected crystal composition (that is, the scattering mass).  Therefore,
@@ -32,6 +35,87 @@ with multiple sequences, and the result will be identical.  While it is
 technically possible to run Phaser with just a search model and extrapolate
 the molecular weight based on the desired number of copies, this is not
 recommended.
+
+Single-component searches
+-------------------------
+
+For homogeneous structures where only one component needs to be placed, a
+streamlined interface is available.  The tutorial data for this example is
+the A2U-globulin structure, which includes one each of data, PDB, and sequence
+files.  In this interface, it is assumed that multiple PDB files are part of
+a single ensemble; if you instead want to try multiple equally likely
+ensembles and let Phaser pick the best one, use the advanced interface
+(described below).
+
+Start the GUI by clicking "Phaser-MR (simple interface)", the first item in
+the list under "Molecular replacement."  This interface has a single input
+field for all file types, and on most operation systems you can simply drag
+the three files from the project folder into the input field.  Alternately,
+click "Add file" to open a file dialog.
+
+.. image:: images/a2u-globulin_input.png
+
+The symmetry information and labels list will automatically be populated when
+the reflections are loaded; you do not need to change the defaults.  You
+must enter either the sequence identity or RMSD for each model in the
+ensemble; in this case an RMSD of 1.0 is appropriate for the single model used.
+Because we already entered a sequence, no molecular weight is required, but
+the value for "Component copies" should be set to 4.
+
+The next tab contains basic search options; you should change "Number of copies
+to search for" to 4.  (While it may seem inefficient to specify the number
+of component copies and the number of search copies separately, this would
+allow us to search for a tetramer, while still only supplying the sequence of
+one chain.)
+
+.. image:: images/a2u-globulin_search.png
+
+The maximum-likelihood equations used in Phaser make it unnecessary to
+truncate the data to lower resolution in most cases.  The only advantage to
+doing this here is that it will significantly decrease the runtime, at the
+expense of a less accurate (though still valid) solution.
+
+The other controls on this tab do not need to modified, but the option for
+alternative space groups deserves special mention.  If there is any ambiguity
+about the precise space group, for instance, if the data were processed as
+P222 but the exact combination of screw axes is unknown, or the space group
+could be either P6(1) or P6(5), Phaser can try multiple space groups and
+identify the best one at the translation function stage.  The default is to
+try only the enantiomeric space group; this will have no effect for the
+examples used here
+(the MTZ files already contain the correct symmetry), but it would be
+appropriate for the P6(1) versus P6(5) case.  The most permissive setting is
+"All possible in the same pointgroup".
+
+Now we are ready to run Phaser: click the Run button on the toolbar.  A new
+tab will appear with a status panel, a list of warnings, and summary output
+(basically excerpted from the log file).  For many structures (including this
+one) there will be one or more warnings, but these do not necessarily mean
+that Phaser will not be successful.  This example should finish in several
+minutes.
+
+.. image:: images/a2u-globulin_run.png
+
+Once the run is complete, a results tab will appear, showing a summary of the
+solution and output files, with buttons to launch other programs.  The two
+statitistics are the log-likelihood gain (LLG), which expresses the
+probability of this solution compared to a random-atom model, and the
+translation function Z-score, which denotes the signal-to-noise ratio of
+the solution.  In this case both are excellent, indicating that Phaser found
+an unambiguous solution.
+
+.. image:: images/a2u-globulin_results.png
+
+At this point we recommend inspecting the maps and crystal packing in Coot.
+Because Phaser only performs rigid-body and group B-factor refinement, the map
+quality will most likely be relatively poor compared to a refined map, with
+many unexplained difference peaks, but they should still be interpretable
+for a correct solution.
+
+The appropriate next step would be either rebuilding or refinement, both of
+which can be launched directly from the results tab.  For this example we
+could go straight to refinement; if the structure was instead solved using
+homologous proteins, running AutoBuild would be a better choice.
 
 Multi-component searches
 ------------------------
@@ -51,12 +135,9 @@ suitable choices (only one in this case).
 
 .. image:: images/beta_blip_1.png
 
-The maximum-likelihood equations used in Phaser make it unnecessary to
-truncate the data to lower resolution in most cases.  The only advantage to
-doing this here is that it will significantly decrease the runtime, at the
-expense of a less accurate (though still valid) solution.  Other options
-should be left alone; since this dataset does not have translational NCS
-(TNCS), the checkbox for TNCS support will have no effect.
+The other options in this window are equivalent to those in the simple
+interface, and do not need to be modified (unless you are very impatient and
+want Phaser to run quickly at lower resolution).
 
 The second tab, "Ensembles", is where the search models are entered.  First
 we will load the beta-lactamase model: for "Model ID", enter "beta", then
@@ -104,42 +185,7 @@ search tab.
 
 .. image:: images/blip_search.png
 
-The other controls on this tab do not need to modified, but the option for
-alternative space groups deserves special mention.  If there is any ambiguity
-about the precise space group, for instance, if the data were processed as
-P222 but the exact combination of screw axes is unknown, or the space group
-could be either P6(1) or P6(5), Phaser can try multiple space groups and
-identify the best one at the translation function stage.  The default is to
-try only the enantiomeric space group; this will have no effect for beta-blip
-(the MTZ file already contains the correct symmetry), but it would be
-appropriate for the P6(1) versus P6(5) case.  The most permissive setting is
-"All possible in the same pointgroup".
-
-Now we are ready to run Phaser: click the Run button on the toolbar.  A new
-tab will appear with a status panel, a list of warnings, and summary output
-(basically excerpted from the log file).  For many structures there will be
-one or more warnings, but these do not necessarily mean that Phaser will not
-be successful.  This example should finish in several minutes without errors.
-
-.. image:: images/beta_blip_run.png
-
-Once the run is complete, a results tab will appear, showing a summary of the
-solution and output files, with buttons to launch other programs.  The two
-statitistics are the log-likelihood gain (LLG), which expresses the
-probability of this solution compared to a random-atom model, and the
-translation function Z-score, which denotes the signal-to-noise ratio of
-the solution.  In this case both are excellent, indicating that Phaser found
-an unambiguous solution.
+At this point we are ready to run Phaser, which should again take only a few
+minutes to complete successfully.
 
 .. image:: images/beta_blip_results.png
-
-At this point we recommend inspecting the maps and crystal packing in Coot.
-Because Phaser only performs rigid-body and group B-factor refinement, the map
-quality will most likely be relatively poor compared to a refined map, with
-many unexplained difference peaks, but they should still be interpretable
-for a correct solution.
-
-The appropriate next step would be either rebuilding or refinement, both of
-which can be launched directly from the results tab.  For this example we
-could go straight to refinement; if the structure was instead solved using
-homologous proteins, running AutoBuild would be a better choice.
