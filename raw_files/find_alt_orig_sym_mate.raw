@@ -27,37 +27,41 @@ respect to all symmetry operations and alternative origin shifts permitted by th
 
 <H5><U>Usage</U></H5>
 phenix.find_alt_orig_sym_mate can be run from the command-line with PHIL input in either a text file or as keywords like
-<PRE style="face=courier">phenix.find_alt_orig_sym_mate.py moving.xyzfname=pdbfile1 fixed.xyzfname=pdbfile2
+<PRE style="face=courier">
+phenix.find_alt_orig_sym_mate.py moving_pdb=pdbfile1 fixed_pdb=pdbfile2
 </PRE>
 or
 <PRE style="face=courier">phenix.find_alt_orig_sym_mate.py my_phil_input.txt.
 </PRE>
-
-The PHIL input has two scopes, "moving" and "fixed". Both these scopes must hold
+The PHIL input specifies the MR solution files either as "moving_pdb" and "fixed_pdb"
+or as the scopes, "moving" and "fixed". Both these scopes must hold
 valid content. The two scopes hold the parameter "xyzfname" and the sub-scopes 
 "mrsolution" and "pickle_solution". For a scope to be valid one and only of the 
 methods (1), (2) and (3) must be followed:
 <ol>
-<li> Assign the "xyzfname" parameter to the pdb file from one of the MR solutions
+<LI> Assign the "moving_pdb" or "fixed_pdb" parameter to the pdb file from one of the MR solutions
 in question. This is useful for simple cases such as when the solution comes from the
 PHENIX AutoMR GUI is or when it is from a different MR program
 other than Phaser.
-</li>
-<li>Specify a Phaser MR solution by assigning the file name
-of the solution file to the "mrsolution.solfname" parameter as well as assigning
+</LI>
+<LI>Specify a Phaser MR solution by assigning the file name
+of the solution file to the "moving.mrsolution.solfname" or "fixed.mrsolution.solfname" parameter as well as assigning
 the IDs of the ensembles and the corresponding MR models to the parameters
-"mrsolution.ensembles.name" and "mrsolution.ensembles.xyzfname" respectively.
+"moving.mrsolution.ensembles.name" or&nbsp; "fixed.mrsolution.ensembles.name" and
+"moving.mrsolution.ensembles.xyzfname" or "fixed.mrsolution.ensembles.xyzfname"
+respectively.
 Multiple components are specified as multiple ensembles. This way of specifying
 solutions is useful for solution files produced when Phaser is run from the
 command line. 
-</li>
-<li>Use a solution from the PhaserMR GUI in PHENIX. In that case the parameter
-pickle_solution.pklfname is assigned to the solution file that is produced
-by PHENIX after an MR calculation. The pickle_solution.philfname is then
+</LI>
+<LI>Use a solution from the PhaserMR GUI in PHENIX. In that case the parameter "moving.pickle_solution.pklfname"
+or "fixed.pickle_solution.pklfname" is assigned to the solution file that is produced
+by PHENIX after an MR calculation. The "moving.pickle_solution.philfname" or "fixed.pickle_solution.philfname"
+is then
 assigned to the input file for the MR calculation. This way of specifying
 solutions is useful when MR solutions are available from having run Phaser
 through the PHENIX interface. 
-</li>
+</LI>
 </ol>
 
 There is no restriction on what method to use for the fixed scope depending on the 
@@ -74,9 +78,11 @@ replacement calculation.
 Unless the input just constitutes of two PDB files a PHIL file is the easiest way
 to enter input. A few examples of PHIL for phenix.find_alt_orig_sym_mate are given
 below.
-<P>
+
+<P><a name="anch10" id="Examples_of_PHIL_input_3"></a>
+
 Testing a command-line Phaser MR solution file against a solution specified as a PDB file:
-</P>
+
 <PRE style="face=courier">
     AltOrigSymMates.fixed.mrsolution
     {
@@ -92,14 +98,15 @@ Testing a command-line Phaser MR solution file against a solution specified as a
         xyzfname = "testdata/sculpt_3ECI_A0.pdb"
       }
     }
-    AltOrigSymMates.moving.xyzfname="testdata/2z0d.pdb"
+    AltOrigSymMates.moving_pdb="testdata/2z0d.pdb"
 </PRE>
 
-<P>
+
+<P><a name="anch11" id="Examples_of_PHIL_input_4"></a>
+
 Testing two set of solution files from the PHENIX Phaser-MR GUI against one another:
-</P>
-<PRE style="face=courier">
-    AltOrigSymMates.fixed.pickle_solution
+
+<PRE style="face=courier">    AltOrigSymMates.fixed.pickle_solution
     {
       philfname = "testdata/phaser_mr_13.eff"
       pklfname = "testdata/phaser_mr_13.pkl"
@@ -112,11 +119,12 @@ Testing two set of solution files from the PHENIX Phaser-MR GUI against one anot
     }
 </PRE>
 
-<P>
+
+<P><a name="anch12" id="Examples_of_PHIL_input_5"></a>
+
 Testing two solution files from the command-line version of Phaser against one another:
-</P>
-<PRE style="face=courier">
-    AltOrigSymMates.fixed.mrsolution
+
+<PRE style="face=courier">    AltOrigSymMates.fixed.mrsolution
     {
       solfname = "testdata/MR_3ECI_A0_2P82_A0.sol"
       ensembles
@@ -147,6 +155,7 @@ Testing two solution files from the command-line version of Phaser against one a
     }
     AltOrigSymMates.spacegroupfname = "testdata/2Z0D.mtz"
 </PRE>
+
 
 <P>
 For more information on the PHIL input see the bottom of this page.
