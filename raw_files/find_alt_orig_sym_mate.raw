@@ -185,7 +185,8 @@ did not place them all on the same origin a warning will be printed.
 phenix.find_alt_orig_sym_mate computes configurations by looping over all
 symmetry operations and alternative origin shifts. 
 An alignment between C-alpha atoms from moving_pdb and fixed_pdb is
-computed using secondary structure matching (SSM). If that fails the 
+computed using secondary structure matching (SSM). If that fails or if the MLAD score
+achieved with SSM is larger than 2.0 an 
 alignment is computed using MMTBX alignment functions which is part of the CCTBX.
 To estimate the best match a distance measure between the aligned C-alpha atoms is
 computed for each configuration. The <em>mean log absolute deviation</em> (MLAD) is
