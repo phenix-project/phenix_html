@@ -28,10 +28,10 @@ respect to all symmetry operations and alternative origin shifts permitted by th
 <H5><U>Usage</U></H5>
 phenix.find_alt_orig_sym_mate can be run from the command-line with PHIL input in either a text file or as keywords like
 <PRE style="face=courier">
-phenix.find_alt_orig_sym_mate.py moving_pdb=pdbfile1 fixed_pdb=pdbfile2
+phenix.find_alt_orig_sym_mate moving_pdb=pdbfile1 fixed_pdb=pdbfile2
 </PRE>
 or
-<PRE style="face=courier">phenix.find_alt_orig_sym_mate.py my_phil_input.txt.
+<PRE style="face=courier">phenix.find_alt_orig_sym_mate my_phil_input.txt.
 </PRE>
 The PHIL input specifies the MR solution files either as "moving_pdb" and "fixed_pdb"
 or as the scopes, "moving" and "fixed". Both these scopes must hold
