@@ -1,0 +1,23 @@
+============================================================================
+Tutorial 7: Fitting a flexible ligand into a difference electron density map
+============================================================================
+
+Overview
+--------
+
+This tutorial describes how to use the `LigandFit wizard <ligandfit_gui.htm>`_
+to automatically place a ligand structure in a difference map.
+
+Setup
+-----
+
+The dataset for this tutorial is "N-ethylmaleimide sensitive factor + ATP",
+which can be automatically created as a project in the Phenix GUI.  Three
+files are included: a ligand-free model, experimental data (MTZ file), and
+the ligand itself.  Once you have creatd the project, open the LigandFit GUI
+under the "Ligands" category.  The files can be added to the input list by
+dragging them from the desktop, or by clicking the "Add file" button and
+selecting them from the browser window.
+
+.. image:: images/nsfd2_ligandfit_input.png
+
