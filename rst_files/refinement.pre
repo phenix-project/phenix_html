@@ -1678,7 +1678,7 @@ Reflection output
 At the end of refinement a file with Fobs, Fmodel, Fcalc, Fmask, FOM,
 R-free_flags can be written out (in MTZ format)::
 
-  % phenix.refine data.hkl model.pdb export_final_f_model=mtz
+  % phenix.refine data.hkl model.pdb export_final_f_model=true
 
 Note: Fmodel is the total model structure factor including all scales:
 
@@ -1869,12 +1869,12 @@ defined as::
    modeling or scaling)::
 
     % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=0 \
-      main.bulk_solvent_and_scale=false export_final_f_model=mtz
+      main.bulk_solvent_and_scale=false export_final_f_model=true
 
 2. Calculate Fcalc from atomic model including bulk solvent and all scales::
 
     % phenix.refine data.hkl model.pdb main.number_of_macro_cycles=1 \
-      strategy=none export_final_f_model=mtz
+      strategy=none export_final_f_model=true
 
 3. Resolution limits can be applied::
 
