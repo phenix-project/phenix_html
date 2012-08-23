@@ -99,7 +99,7 @@ def run (out=None, log=None) :
   if (sys.platform == "win32") :
     shutil.copy("phenix_documentation.html", "index.html")
   else :
-    os.symlink("phenix.documentation.html", "index.html")
+    os.symlink("phenix_documentation.html", "index.html")
 
 if (__name__ == "__main__") :
   run()
