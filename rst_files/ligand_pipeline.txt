@@ -1,0 +1,180 @@
+============================================================================
+Automated protein-ligand structure determination with phenix.ligand_pipeline
+============================================================================
+
+Overview
+--------
+
+``phenix.ligand_pipeline`` is an automation system combining `Xtriage
+<xtriage.htm>`_, `Phaser <mr_overview.htm>`_, `eLBOW <elbow.htm>`_,
+`phenix.refine <refinement.htm>`_, `AutoBuild <autobuild.htm>`_, and
+`LigandFit <ligandfit.htm>`_, with optional interaction with `Coot
+<coot.htm>`_.  In favorable cases, it can produce a near-finished structure
+of a protein-ligand complex starting from minimal inputs, and can significantly
+reduce the manual effort required for more difficult structures.
+
+Input files
+-----------
+
+
+Program workflow
+----------------
+
+
+Interactive mode
+----------------
+
+For users desiring more control over the rebuilding process, or for difficult
+cases where more aggressive model modifications are required, the program can
+be run semi-interactively by adding the flag ``interactive=True`` (or
+alternately, ``--interactive``).  This will launch Coot after the first
+round of refinement, with model and maps loaded, allowing rebuilding to take
+place.  The recommended procedure is to locate the putative ligand density
+in the mFo-DFc map, and adjust the protein structure as necessary to remove
+overlap with the ligand binding site (as well as any other modifications
+that will not be automatically fixed by refinement and/or AutoBuild).  Once
+rebuilding is complete, click the button "Return to PHENIX" to save the
+edited model and resume the pipeline (the next step will be LigandFit, with
+new maps).
+
+.. image:: images/pipeline_coot.png
+
+Because the interactive mode overcomes many of the limitations present when
+significant rebuilding is required, it is the reocmmended method for running
+the pipeline, especially for new users.
+
+Output files
+------------
+
+
+Next steps
+----------
+
+Although the pipeline can produce nearly-complete models in favorable cases
+(typically at moderate-to-high resolution, approximately 2.2 to 1.8Å), the
+structures are unlikely to be truly complete.  Several recommendations for
+finishing the refinement in Coot:
+
+  - **Inspect the ligand binding closely.** A number of structures in the PDB
+    have been shown to exhibit ligand placements which are not supported by
+    the data, leading to several retractions so far.  Although the CC cutoff
+    for ligand placement is designed to avoid this outcome, **it is essential
+    that you visually confirm the refined ligand position.**  Of particular
+    concern:
+
+      - Does the difference map show residual positive or (especially) negative
+        peaks around the ligand binding site?  Even if the overall position is
+        approximately correct, this may indicate problems with the specific
+        conformation and/or geometry; it is not uncommon, for example, for
+        nearly-symmetric rings to be fit backwards.
+
+      - Does the overall shape of the 2mFo-DFc map approximate that of the
+        ligand?  If not, this could mean that the ligand has been mistakenly
+        placed in density for missing protein atoms, or for another unrelated
+        ligand (such as contaminants from the crystallization solution).  Note
+        that it is quite possible for flexible ligands to be partially
+        disordered, but in such cases the remainder of the ligand should still
+        be clearly defined in the map.
+
+      - Does the binding make biological sense?  Pay special attention to
+        hydrogen bond donors and acceptors in both the ligand and the protein,
+        and especially the interactions of charged groups.  Chemically
+        nonsensical binding usually indicates an incorrect fit (or, in extreme
+        cases, an incorrect ligand).
+
+  - **Look for additional ligands.** It is quite common for protein structures
+    to co-crystallize with buffer molecules, ions, and endogenous contaminants.
+    These can be placed by running LigandFit, or interactively in Coot.
+
+  - **Check for errors or missing pieces in the protein model.** Even after
+    refinement and/or rebuilding, some local fitting problems may be present
+    (especially at lower resolution).  Additionally, it is very common for
+    pieces of the start model to be missing from the refined structure, or
+    vice-versa; this will usually be obvious from the maps.  Alternate
+    conformations will normally be stripped out before molecular replacement,
+    so at high resolution (typically 1.6Å or better), these may need to be
+    added manually.  You should also check the validation results to identify
+    geometry problems and misfitting.
+
+  - If none of the above steps requires further adjustments, your model is
+    probably complete.  Otherwise, if you make any changes, you should run a
+    final round of refinement with weight optimization to get the best possible
+    model, and a final set of maps which should also be inspected.
+
+More generally, with any automation system, two rules apply: **exercise
+appropriate skepticism** and **seek expert opinion if unsure of the results**.
+(If a local expert is not available, email help@phenix-online.org for advice.)
+
+Limitations
+-----------
+
+- Only one type of ligand is supported at present.  Essential cofactors or
+  other molecules whose binding mode is already known may included in the
+  input model; in these cases, you should add keep_hetatms=True to instruct
+  Phaser to leave the occupancies unmodified.  Any additional ligands will
+  need to be placed after the final refinement.
+
+- Structures such as HIV protease which exhibit symmetry binding of inhibitors
+  will not be handled properly.
+
+- The pipeline is designed to work at resolutions of 3.0A or better; while
+  it is possible to solve complexes at lower resolution, the ligand fitting
+  procedure is not expected to work as well.
+
+- There is no high-resolution limit, but structures at atomic resolution will
+  inevitably require more manual effort to complete due to the presence of
+  alternate conformations and (often) additional small-molecule ligands, which
+  are not presently handled by Phenix.
+
+Troubleshooting
+---------------
+
+The pipeline may fail for a number of reasons, usually because LigandFit could
+not successfully place any copies of the ligand.  If this happens, the program
+will skip the final refinement step and exit early with an error message.  You
+can still run the Coot script to load the output of the previous refinement
+or AutoBuild, which may provide clues about the cause of failure.  Several
+common problems are listed below.  Note that these may also apply to cases
+where the pipeline runs to completion but was unable to place all copies of
+the ligand successfully (in which case a warning message will be printed).
+
+  - **The protein blocks the ligand site.** This is one of the most common
+    problems, especially in structures which undergo extensive conformational
+    changes or local rearrangements, such as kinases.  Even a single stray
+    sidechain may prevent LigandFit from placing the ligand correctly, both
+    due to flattened difference density, and steric clashes.  For structures
+    with NCS, this can sometimes be overcome by the NCS application procedure
+    described above, but this still requires that at least one copy was placed
+    correctly.  Running AutoBuild can sometimes help, but this also has the
+    risk of moving the protein into ligand density.  The interactive mode is
+    strongly recommended for overcoming this problem.
+
+  - **Poor or incomplete difference density.**  In some cases, a particularly
+    flexible ligand may not fit entirely into difference density; this is not
+    uncommon or necessarily problematic, but it can reduce the CC below the
+    cutoff required to continue.  More common is poor density quality for the
+    entire molecule; this can be caused by an incompletely refined model, low
+    resolution, or partial binding.  In some cases, it means that the ligand
+    is not bound at all.  While reducing the CC cutoff may allow some
+    structures to proceed, we recommend inspecting the density interactively,
+    both before and after ligand placement.
+
+  - **Poor ligand geometry.** In some cases eLBOW is unable to automatically
+    determine the optimal geometry from the inputs.  Running AM1 optimization
+    may help for structures where the initial geometry is partially correct.
+    However, in extreme cases the geometry will be too distorted for AM1 to
+    work, and additional information on geometry is required.  For this reason,
+    we recommend supplying as rich a source of information as possible;
+    in particular, if geometry from a crystal structure of the target compound
+    is available, this should be included in the inputs.
+
+References
+----------
+
+  - Xtriage
+  - Phaser
+  - ELBOW
+  - phenix.refine
+  - AutoBuild
+  - LigandFit
+  - MolProbity

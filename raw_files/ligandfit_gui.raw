@@ -90,6 +90,34 @@ button labeled &quot;Run phenix.refine&quot; will launch that GUI with the start
 reflections (if amplitudes were supplied), and all ligand output files already
 loaded.</p>
 <div class="image"><img alt="images/ligandfit_summary.png" src="images/ligandfit_summary.png" /></div>
+<p>As a general rule, a correlation coefficient (CC) above 0.7 is considered a
+good fit; CCs below this value usually indicate that the ligand is not
+correctly (although in rare cases the fit may be partially correct).  In any
+case, you should always visually inspect the ligand placement in Coot, both
+before and after refinement.  If LigandFit was unable to place the ligand
+correctly, there are several recommendations for troubleshooting:</p>
+<p>If you do not obtain a good fit of your ligand to the map, there are a few things you should check:</p>
+<blockquote>
+<ul>
+<li>Does your starting model have other molecules where the ligand needs to be
+placed? If so, then you will need to remove these before LigandFit can fit
+the ligand there. The LigandFit Wizard excludes all locations that are
+occupied by atoms in the starting model.  <strong>Note that waters are the
+exception to this rule, and will be ignored as necessary - however, if
+you are fitting to an Fo-Fc difference map, the presence of waters may
+obscure ligand density.</strong></li>
+<li>Have a careful look at all the output files. Work your way through the main
+log file (e.g., LigandFit_run_1_1.log). Is there anything strange or
+unusual in any of them that may give you a clue as to what to try next?</li>
+<li>Have a look at the difference electron density map. Does it have clear
+density for the ligand? If not, you may want to try other types of maps.
+You can run <a class="reference" href="create_maps.htm">phenix.maps</a> to obtain a sigmaA-weighted
+mFo-DFc map that should optimally show the placement of your ligand.</li>
+<li>If you have atomic-resolution data, try setting the high-resolution limit
+slightly lower; data beyond approximately 1.8A rarely improve the fit, and
+may actually make it more difficult.</li>
+</ul>
+</blockquote>
 <P><H5><U><B>References</B></U></H5><P>
 <blockquote>
 <ul>

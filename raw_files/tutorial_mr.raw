@@ -15,7 +15,7 @@ Phenix distribution.  We recommend reading the
 <a class="reference" href="mr_overview.htm">MR overview</a> before running these tutorials (and for
 adventurous users, the primary Phaser reference as well).</p>
 <p>A brief word about terminology: the search models used in Phaser are
-customarily named &quot;ensembles&quot;, and in fact Phaser will often work best in 
+customarily named &quot;ensembles&quot;, and in fact Phaser will often work best in
 difficult cases when a set of superposed models (generated using <a class="reference" href="ensembler.htm">Ensembler</a> or similar tools) is used.  However, this is not required
 and for easily solved structures, such as the tutorial datasets used here,
 a single PDB file will be sufficient.  Furthermore, while Phaser can search
@@ -54,7 +54,7 @@ click &quot;Add file&quot; to open a file dialog.</p>
 the reflections are loaded; you do not need to change the defaults.  You
 must enter either the sequence identity or RMSD for each model in the
 ensemble; in this case an RMSD of 1.0 is appropriate for the single model used.
-If you have no specific idea of the accuracy of the model, it is best to simply 
+If you have no specific idea of the accuracy of the model, it is best to simply
 provide the sequence identity to the target and let Phaser provide the
 corresponding RMSD.
 Because we already entered a sequence, no molecular weight is required, but
@@ -67,9 +67,9 @@ one chain.)</p>
 <div class="image"><img alt="images/a2u-globulin_search.png" src="images/a2u-globulin_search.png" /></div>
 <p>Usually it is best not to specify a resolution limit.  Phaser chooses a
 resolution limit based on the particular problem (accuracy and completeness
-of the model, number of reflections).  If the problem is expected to be 
+of the model, number of reflections).  If the problem is expected to be
 straightforward, the resolution will automatically be limited to reduce
-runtime while preserving an excellent chance of solving the structure on the 
+runtime while preserving an excellent chance of solving the structure on the
 first pass.</p>
 <p>The other controls on this tab do not need to modified, but the option for
 alternative space groups deserves special mention.  If there is any ambiguity
@@ -151,8 +151,8 @@ have been entered appropriately, the tab will initially look like this:</p>
 <p>Check &quot;beta&quot;, leaving the number of copies set to 1, then click &quot;Add search&quot;,
 and in the new tab, check &quot;blip&quot; (still with 1 copy).  This interface allows
 you to check multiple ensembles in a single search, but this would instead
-try both as alternatives for the same component and pick just one, which is 
-not what we want here.  Each unique ensemble (or set of equally likely 
+try both as alternatives for the same component and pick just one, which is
+not what we want here.  Each unique ensemble (or set of equally likely
 candidates) should get its own separate search tab.</p>
 <div class="image"><img alt="images/blip_search.png" src="images/blip_search.png" /></div>
 <p>At this point we are ready to run Phaser, which should again take only a few
