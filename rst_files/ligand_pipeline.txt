@@ -16,10 +16,86 @@ reduce the manual effort required for more difficult structures.
 Input files
 -----------
 
+The typical input for the pipeline consists of processed experimental data,
+a starting model for molecular replacement, a sequence file equivalent to the
+starting model (with the same number of chains), and a source of ligand
+information.  File types will be automatically detected if explicit parameter
+names are not used, for instance:
+
+  elbow.ligand_pipeline model.pdb data.mtz seq.fa lig.smi
+
+The data may be in any format; if R-free flags are not found they will be
+generated automatically, but you may also supply the flags in a separate file
+(``r_free_flags.file_name=flags.mtz``).  The sequence file is optional but
+highly recommended.
+
+To specify the ligand geometry, several mutually exclusive options are
+available:
+
+  - Chemical file, such as SMILES, MOL2, or CIF (this can include existing
+    restraints): ``ligand=lig.smi``
+
+  - SMILES string: ``ligand_smiles=c1ccccc1``
+
+  - For ligands already present in the PDB, if you know the three-letter code
+    used, you may specify this instead: ``ligand_code=ATP``
+
+You may also supply a PDB file (``ligand_file=lig.pdb``) containing the atom
+names to use.  However, PDB files should **not** be the primary source of
+ligand geometry information!  Additionally, if you have additional ligands in
+your input model, you can supply CIF files for refinement with the ``extra_cif``
+keyword.  You should also specify ``keep_hetatms=True`` to prevent Phaser
+from resetting the occupancies to zero.
+
+Finally, if all files are in the same directory and their uses can be
+unambiguously determined, you may supply the path name as a single argument
+when launching the program:
+
+  elbow.ligand_pipeline /path/to/data [options]
 
 Program workflow
 ----------------
 
+**Data preparation**.
+
+**Ligand generation**.
+
+**Molecular replacement**.
+
+**Initial refinement**.
+
+**Rebuilding**.
+
+**Ligand placement**.  Currently only LigandFit is supported, although
+additional options will be available in the future.  The target map will be
+the mFo-DFc map from phenix.refine.  The parameters have been adjusted slightly
+for optimal performance at the expense of slightly longer runtime; you may
+specify ``quick=True`` or ``aggressive=True`` to override the defaults.
+Real-space refinement will be performed on ligands after placement to obtain
+an optimized fit and local geometry.
+
+An essential feature of automatic ligand fitting is a cutoff model-to-map CC
+to prevent false positives (i.e. spurious placement).  By default this is set
+to 0.7, which has been empirically determined to nearly always indicate a
+successful fit.  Any ligands with a CC below this value will be omitted from
+the model.  In some cases this may actually reject correct fits (see
+Troubleshooting section below), but we recommend that these solutions be
+viewed with suspicion.  If no acceptable ligand fits are obtained, the
+pipeline will skip further refinement and exit early with an error message.
+
+In many cases the one or more ligands will be placed, but fewer than the
+desired number; in these situations, a separate post-LigandFit routine will
+first attempt to use NCS operators to place additional copies of the ligand,
+pruning the model as necessary to avoid clashes.  If there are still fewer
+copies than desired, the pipeline will continue with refinement but print a
+warning at the end of the run.
+
+**Final refinement and validation**.  If the ligand placement was at least
+partially successful, a final round of refinement will be performed on the
+combined model.  In this run, waters will be added automatically if the
+resolution is at least 2.9Å, and the geometry weight will be optimized (this
+is much slower but can run on multiple processors, and generally produces
+a superior model).
 
 Interactive mode
 ----------------
@@ -35,7 +111,7 @@ overlap with the ligand binding site (as well as any other modifications
 that will not be automatically fixed by refinement and/or AutoBuild).  Once
 rebuilding is complete, click the button "Return to PHENIX" to save the
 edited model and resume the pipeline (the next step will be LigandFit, with
-new maps).
+a freshly calculated mFo-DFc map).
 
 .. image:: images/pipeline_coot.png
 
@@ -46,6 +122,33 @@ the pipeline, especially for new users.
 Output files
 ------------
 
+All files will be written to a directory named ``pipeline_X``, where X is
+an automatically incremented integer.  Most of the important output files will
+be named after the ligand code, by default LIG:
+
+  - ``LIG_data.mtz``: filtered data and R-free flags
+  - ``LIG_final.pdb``: final output model
+  - ``LIG_final.mtz``: final map coefficients (as well as data and flags)
+  - ``LIG_ligand.cif``: ligand geometry restraints
+  - ``LIG_ligand.pdb``: single ligand model used for fitting
+  - ``pipeline.log``: log file for the entire run
+  - ``visualize_coot.py``: script for loading results in Coot
+
+The Coot script can be run like this:
+
+  coot --script pipeline_1/visualize_coot.py
+
+This will open the final model and map coefficients, and if ligand fitting
+was successful, a window will be created containing buttons to zoom in on
+the ligand(s).
+
+Inside the output directory, separate subdirectories will be created for each
+stage of the pipeline, e.g. ``phaser_0``, ``refine_0``, ``refine_1``,
+``LigandFit_run_1_``.  You do not normally need any of the files in these
+directories, but they may be useful for debugging purposes.  In particular,
+if LigandFit failed to place one or more copies, the ligand PDB files will not
+be incorporated into the final model, but will still be available in the
+LigandFit output directory.
 
 Next steps
 ----------
@@ -171,10 +274,16 @@ the ligand successfully (in which case a warning message will be printed).
 References
 ----------
 
-  - Xtriage
-  - Phaser
-  - ELBOW
-  - phenix.refine
-  - AutoBuild
-  - LigandFit
-  - MolProbity
+  - CITATION:xtriage
+
+  - CITATION:phaser
+
+  - CITATION:elbow
+
+  - CITATION:phenix.refine
+
+  - CITATION:autobuild
+
+  - CITATION:ligand_fit
+
+  - CITATION:molprobity
