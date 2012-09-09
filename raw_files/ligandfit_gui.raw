@@ -82,6 +82,34 @@ eLBOW to generate multiple conformations which are used to identify the
 rigid groups.  This is somewhat slower, but often more accurate.</li>
 </ul>
 </blockquote>
+<P><H5><U><B>Running the program</B></U></H5><P>
+<p>Unless quick mode is enabled, LigandFit typically works by starting multiple
+similar jobs with slightly different parameters, to sample as many candidate
+ligand conformations and density fits as possible.  Although this increases
+runtime substantially, it parallelizes well across multiple CPUs if they are
+available, and a queuing system may be utilized to split up tasks.</p>
+<p>Depending on how you have configured your computer and
+your Phenix installation, as well as the operating system used, you may
+have several options for starting LigandFit:</p>
+<blockquote>
+<ul>
+<li>Run locally; this is the default mode (and on Windows, the only
+mode), and offers the best integration with the GUI, but has the
+limitation that the GUI may not be closed while the program is running.</li>
+<li>Run &quot;detached&quot;: this starts a completely separate process, which will
+allow you to close the GUI and resume later.  (Not available on Windows.)</li>
+<li>Run on a queuing system: this is usually only available on Linux, and
+requires that queuing support be enabled in the GUI preferences.
+Currently Sun Grid Engine is the prefered system, although PBS can be
+made to work with some customization.  <strong>If you use this option, be sure
+to set the number of processors to 1, or the job may interfere with
+other processes on the queuing system.</strong></li>
+</ul>
+</blockquote>
+<p>Additionally, if queuing system support is enabled, the GUI will also present
+an option to distribute the individual jobs across the queue.  If this option
+is selected, either local or detached mode should be used, and the primary job
+will be run locally, with child processes submitted to the queue.</p>
 <P><H5><U><B>Output</B></U></H5><P>
 <p>LigandFit will generate a difference map used for fitting, and a separate PDB
 file for each copy placed.  All of these can be opened at once in one of
@@ -91,7 +119,7 @@ reflections (if amplitudes were supplied), and all ligand output files already
 loaded.</p>
 <div class="image"><img alt="images/ligandfit_summary.png" src="images/ligandfit_summary.png" /></div>
 <p>As a general rule, a correlation coefficient (CC) above 0.7 is considered a
-good fit; CCs below this value usually indicate that the ligand is not
+good fit; CCs below this value usually indicate that the ligand is not placed
 correctly (although in rare cases the fit may be partially correct).  In any
 case, you should always visually inspect the ligand placement in Coot, both
 before and after refinement.  If LigandFit was unable to place the ligand
@@ -121,12 +149,8 @@ may actually make it more difficult.</li>
 <P><H5><U><B>References</B></U></H5><P>
 <blockquote>
 <ul>
-<li><strong>Ligand identification using electron-density map correlations.</strong> T. C.
-Terwilliger, P. D. Adams, N. W. Moriarty and J. D. Cohn. <a class="reference" href="http://www.iucr.org/cgi-bin/paper?ba5092">Acta Cryst. D63,
-101-107 (2007)</a></li>
-<li><strong>Automated ligand fitting by core-fragment fitting and extension into
-density.</strong> T. C. Terwilliger, H. Klei, P. D. Adams, N. W. Moriarty and
-J. D. Cohn. <a class="reference" href="http://www.iucr.org/cgi-bin/paper?dz5066">Acta Cryst. D62, 915-922 (2006)</a></li>
+<li>CITATION:ligand_fit</li>
+<li>CITATION:ligand_id</li>
 </ul>
 </blockquote>
 <!--REMARK PHENIX BODY END-->

@@ -10,7 +10,7 @@
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P><H5><U><B>Overview</B></U></H5><P>
 <p>This tutorial describes how to use the <a class="reference" href="ligandfit_gui.htm">LigandFit wizard</a>
-to automatically place a ligand structure in a difference map.</p>
+to automatically place an ATP molecule in a difference map.</p>
 <P><H5><U><B>Setup</B></U></H5><P>
 <p>The dataset for this tutorial is &quot;N-ethylmaleimide sensitive factor + ATP&quot;,
 which can be automatically created as a project in the Phenix GUI.  Three
@@ -20,4 +20,43 @@ under the &quot;Ligands&quot; category.  The files can be added to the input lis
 dragging them from the desktop, or by clicking the &quot;Add file&quot; button and
 selecting them from the browser window.</p>
 <div class="image"><img alt="images/nsfd2_ligandfit_input.png" src="images/nsfd2_ligandfit_input.png" /></div>
+<p>The space group and unit cell will be automatically loaded from the data
+file, and suitable column labels added to the &quot;Input labels&quot; menu.  In this
+case, we only have amplitudes available, so these will be used as input, and
+LigandFit will calculate an Fo-Fc map using model phases.</p>
+<p>For this example, the rest of the parameters can be left on default settings;
+consult the <a class="reference" href="ligandfit_gui.htm">full documentation</a> for explanation of what
+these mean.  The only exception is &quot;Number of processors&quot;; if you have
+multiple processor cores available, you can set this higher.  Note that since
+the ligand structure has already been
+characterized in the PDB, we could simply enter the three-letter residue name
+(&quot;ATP&quot;) under &quot;Ligand code&quot;, instead of supplying the ATP as a PDB file.
+However, this will increase the runtime, since <a class="reference" href="elbow_gui.htm">eLBOW</a> will
+be run to generate coordinates.</p>
+<P><H5><U><B>Running the program</B></U></H5><P>
+<p>Click &quot;Run&quot; on the toolbar ot launch LigandFit.  A new tab will appear
+showing the log output:</p>
+<div class="image"><img alt="images/nsfd2_ligandfit_status.png" src="images/nsfd2_ligandfit_status.png" /></div>
+<p>LigandFit will start several child processes to sample a wide variety of
+ligand conformations.  The &quot;Parallel jobs&quot; tab will show the output of the
+individual runs as they progress; the best result will be selected for
+real-space refinement and be copied to the main output directory.</p>
+<div class="image"><img alt="images/nsfd2_ligandfit_jobs.png" src="images/nsfd2_ligandfit_jobs.png" /></div>
+<p>At the end of the run, the summary tab will list the essential output files
+and the statistics for the final result, and active the buttons to launch
+other programs.</p>
+<div class="image"><img alt="images/nsfd2_ligandfit_summary.png" src="images/nsfd2_ligandfit_summary.png" /></div>
+<p>Clicking &quot;Open in Coot&quot; will start Coot and load the difference map, starting
+model, and ligand structure.  Click on the result in the summary tab to
+zoom in on the ligand in Coot.  Further refinement is essential, but we can
+see that the fit is already very good.  (The excess difference density near
+the phosphate atoms belongs to an unmodeled magnesium ion and coordinating
+waters.)</p>
+<div class="image"><img alt="images/nsfd2_ligandfit_coot.png" src="images/nsfd2_ligandfit_coot.png" /></div>
+<P><H5><U><B>References</B></U></H5><P>
+<blockquote>
+<ul>
+<li>CITATION:ligand_fit</li>
+</ul>
+</blockquote>
 <!--REMARK PHENIX BODY END-->
