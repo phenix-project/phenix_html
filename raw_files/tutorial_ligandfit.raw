@@ -10,12 +10,13 @@
 Anything enclosed in header html H4 H5 etc will go in the table of contents>
 <P><H5><U><B>Overview</B></U></H5><P>
 <p>This tutorial describes how to use the <a class="reference" href="ligandfit_gui.htm">LigandFit wizard</a>
-to automatically place an ATP molecule in a difference map.</p>
+to automatically place an ATP molecule in a difference map.  An older tutorial
+covering use of LigandFit on the command line is <a class="reference" href="tutorial_ligandfit_cmdline.htm">still available</a>.</p>
 <P><H5><U><B>Setup</B></U></H5><P>
 <p>The dataset for this tutorial is &quot;N-ethylmaleimide sensitive factor + ATP&quot;,
 which can be automatically created as a project in the Phenix GUI.  Three
 files are included: a ligand-free model, experimental data (MTZ file), and
-the ligand itself.  Once you have creatd the project, open the LigandFit GUI
+the ligand itself.  Once you have created the project, open the LigandFit GUI
 under the &quot;Ligands&quot; category.  The files can be added to the input list by
 dragging them from the desktop, or by clicking the &quot;Add file&quot; button and
 selecting them from the browser window.</p>
@@ -23,7 +24,9 @@ selecting them from the browser window.</p>
 <p>The space group and unit cell will be automatically loaded from the data
 file, and suitable column labels added to the &quot;Input labels&quot; menu.  In this
 case, we only have amplitudes available, so these will be used as input, and
-LigandFit will calculate an Fo-Fc map using model phases.</p>
+LigandFit will calculate an Fo-Fc map using model phases.  However, in many
+cases you will obtain optimal results by using an mFo-DFc map such as those
+output by <a class="reference" href="refine_gui.htm">phenix.refine</a> or <a class="reference" href="create_maps.htm">phenix.maps</a>.</p>
 <p>For this example, the rest of the parameters can be left on default settings;
 consult the <a class="reference" href="ligandfit_gui.htm">full documentation</a> for explanation of what
 these mean.  The only exception is &quot;Number of processors&quot;; if you have

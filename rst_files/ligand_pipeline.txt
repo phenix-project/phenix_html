@@ -22,7 +22,7 @@ starting model (with the same number of chains), and a source of ligand
 information.  File types will be automatically detected if explicit parameter
 names are not used, for instance:
 
-  elbow.ligand_pipeline model.pdb data.mtz seq.fa lig.smi
+  phenix.ligand_pipeline model.pdb data.mtz seq.fa lig.smi
 
 The data may be in any format; if R-free flags are not found they will be
 generated automatically, but you may also supply the flags in a separate file
@@ -40,7 +40,7 @@ available:
   - For ligands already present in the PDB, if you know the three-letter code
     used, you may specify this instead: ``ligand_code=ATP``
 
-You may also supply a PDB file (``ligand_file=lig.pdb``) containing the atom
+You may also supply a PDB file (``template_pdb=lig.pdb``) containing the atom
 names to use.  However, PDB files should **not** be the primary source of
 ligand geometry information!  Additionally, if you have additional ligands in
 your input model, you can supply CIF files for refinement with the ``extra_cif``
@@ -51,20 +51,67 @@ Finally, if all files are in the same directory and their uses can be
 unambiguously determined, you may supply the path name as a single argument
 when launching the program:
 
-  elbow.ligand_pipeline /path/to/data [options]
+  phenix.ligand_pipeline /path/to/data [options]
 
 Program workflow
 ----------------
 
-**Data preparation**.
+**Data preparation**.  The program begins by importing the experimental data
+and converting it to amplitudes with standard MTZ column labels (this
+simplifies later steps).  R-free flags will be generated if not available,
+otherwise the user-supplied flags will be used (extended to higher resolution
+if necessary).  Xtriage will be run to assess data quality and guess an
+appropriate number of search copies for MR (which, by default, will be the
+same as the number of ligands to look for).
 
-**Ligand generation**.
+**Ligand generation**.  eLBOW will be run on the input ligand definition to
+generate suitable geometry restraints and a starting structure for LigandFit.
+The most important option is the choice of whether to run the semi-empirical
+AM1 quantum-mechanical optimization or
+not (``optimize=True``).  This is not done by default because it is more
+time-consuming, but in some cases it may lead to improved geometry.  For
+troublesome cases, we recommend generating the ligand restraints and structure
+manually prior to running the pipeline, then supplying the output CIF as
+input to the pipeline.  In this case, eBLOW will only be used to generate a
+PDB file, and the input restraints will be used for refinement.
 
-**Molecular replacement**.
+**Molecular replacement**.  Although molecular replacement is optional if the
+starting model is already nearly-complete and isomorphous to the target
+structure, in most cases it is preferable to run Phaser.  The number of search
+copies will be determined automatically by Xtriage (``copies=Auto``), but
+since this will occasionally guess too few copies, you can explicitly set
+the search number instead (e.g. ``copies=2``).  If Phaser finds fewer copies
+than expected, the number of expected ligands will automatically be adjusted.
 
-**Initial refinement**.
+**Initial refinement**.  The MR solution (or starting model, if MR was not
+performed) will be refined using a relatively conservative resolution-dependent
+strategy, typically including rigid-body refinement, rotamer fitting,
+real-space and reciprocal-space coordinate minimization, individual B-factor
+refinement, and TLS groups.  Torsion NCS will be used if appropriate.  Water
+molecules will not be added at this stage because they interfere with the
+difference map required for ligand fitting.  Simulated annealing may be run
+if desired (``anneal=True``), but this will significantly increase the
+runtime.  Because rapid convergence is more important at this point than
+ideal geometry, weight optimization will not be used by default.
 
-**Rebuilding**.
+If the refined R-free is above 0.5, the program will immediately exit, since
+this indicates that the structure may be incorrect or at least in need of
+extensive manual rebuilding (or possibly additional search copies for MR).  If
+R-free is above 0.3, the default behavior (``build=Auto``) is to rebuild the
+model in AutoBuild.  Otherwise, the structure is considered suitable for
+ligand fitting.
+
+**Rebuilding**.  Rebuilding is optional but may be essential in some cases
+where large rearrangements are required.  AutoBuild will be run with
+rebuild_in_place=Auto, which in most cases means that residues will not be
+added or removed.  If run, AutoBuild is generally the most time-consuming
+stage in the pipeline, although it can take advantage of multiple processors.
+
+An alternate protocol is to simply delete those residues with poor fit to
+density, with the goal of moving them out of the way of the ligand binding
+site.  This can be turned on by specifying ``prune=True``; you may also wish
+to set ``build=False``.  Note that residues deleted this way will not be
+restored by running AutoBuild in rebuild-in-place mode.
 
 **Ligand placement**.  Currently only LigandFit is supported, although
 additional options will be available in the future.  The target map will be
@@ -72,7 +119,10 @@ the mFo-DFc map from phenix.refine.  The parameters have been adjusted slightly
 for optimal performance at the expense of slightly longer runtime; you may
 specify ``quick=True`` or ``aggressive=True`` to override the defaults.
 Real-space refinement will be performed on ligands after placement to obtain
-an optimized fit and local geometry.
+an optimized fit and local geometry.  Unlike most of the other steps, here the
+resolution will be truncated by default to 1.8Å (``ligandfit.d_min=1.8``),
+because higher-resolution data tend to lead to lower correlations even when
+the fit is excellent.
 
 An essential feature of automatic ligand fitting is a cutoff model-to-map CC
 to prevent false positives (i.e. spurious placement).  By default this is set
@@ -111,9 +161,10 @@ overlap with the ligand binding site (as well as any other modifications
 that will not be automatically fixed by refinement and/or AutoBuild).  Once
 rebuilding is complete, click the button "Return to PHENIX" to save the
 edited model and resume the pipeline (the next step will be LigandFit, with
-a freshly calculated mFo-DFc map).
-
-.. image:: images/pipeline_coot.png
+a freshly calculated mFo-DFc map).  At any point during rebuilding, you can
+obtain new maps for the edited model by clicking "Fetch new maps" on the
+toolbar, which will write out a temporary model and recalculate maps in the
+background, automatically loading these into Coot when finished.
 
 Because the interactive mode overcomes many of the limitations present when
 significant rebuilding is required, it is the reocmmended method for running
@@ -229,6 +280,11 @@ Limitations
   alternate conformations and (often) additional small-molecule ligands, which
   are not presently handled by Phenix.
 
+- Building is currently limited to either rebuild-in-place mode or building
+  an entirely new model from scratch, and rebuilds the entire model.  This
+  means that for structures where local rebuilding or addition of a few
+  residues is required, interactive mode will probably be more successful.
+
 Troubleshooting
 ---------------
 
@@ -251,6 +307,12 @@ the ligand successfully (in which case a warning message will be printed).
     correctly.  Running AutoBuild can sometimes help, but this also has the
     risk of moving the protein into ligand density.  The interactive mode is
     strongly recommended for overcoming this problem.
+
+  - **Spurious difference density for protein.**  If large regions of positive
+    mFo-DFc density corresponding to missing protein residues are present,
+    LigandFit may sometimes place the ligand in these sites instead of the
+    correct binding site.  Again, interactive mode is the recommended
+    solution (and an optimal search model can help too).
 
   - **Poor or incomplete difference density.**  In some cases, a particularly
     flexible ligand may not fit entirely into difference density; this is not

@@ -15,7 +15,8 @@ using RESOLVE, followed by optional real-space refinement.  As elsewhere, this
 documentation covers the use of the GUI specifically, and is not a
 general-purpose reference for program function.  See the <a class="reference" href="ligandfit.htm">command-line
 documentation</a> for a complete list of parameters and details
-on usage.</p>
+on usage.  If you want to see an example of how LigandFit works, we recommend
+reading the <a class="reference" href="tutorial_ligandfit.txt">tutorial</a> first.</p>
 <p>Note that waters will be omitted when placing the ligand.  However, if you
 are using pre-calculated map coefficients, you may need to remove waters
 beforehand to avoid &quot;flattening&quot; the difference density around the ligand.

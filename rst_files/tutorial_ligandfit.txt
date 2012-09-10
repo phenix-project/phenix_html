@@ -6,7 +6,9 @@ Overview
 --------
 
 This tutorial describes how to use the `LigandFit wizard <ligandfit_gui.htm>`_
-to automatically place an ATP molecule in a difference map.
+to automatically place an ATP molecule in a difference map.  An older tutorial
+covering use of LigandFit on the command line is `still available
+<tutorial_ligandfit_cmdline.htm>`_.
 
 Setup
 -----
@@ -14,7 +16,7 @@ Setup
 The dataset for this tutorial is "N-ethylmaleimide sensitive factor + ATP",
 which can be automatically created as a project in the Phenix GUI.  Three
 files are included: a ligand-free model, experimental data (MTZ file), and
-the ligand itself.  Once you have creatd the project, open the LigandFit GUI
+the ligand itself.  Once you have created the project, open the LigandFit GUI
 under the "Ligands" category.  The files can be added to the input list by
 dragging them from the desktop, or by clicking the "Add file" button and
 selecting them from the browser window.
@@ -24,7 +26,9 @@ selecting them from the browser window.
 The space group and unit cell will be automatically loaded from the data
 file, and suitable column labels added to the "Input labels" menu.  In this
 case, we only have amplitudes available, so these will be used as input, and
-LigandFit will calculate an Fo-Fc map using model phases.
+LigandFit will calculate an Fo-Fc map using model phases.  However, in many
+cases you will obtain optimal results by using an mFo-DFc map such as those
+output by `phenix.refine <refine_gui.htm>`_ or `phenix.maps <create_maps.htm>`_.
 
 For this example, the rest of the parameters can be left on default settings;
 consult the `full documentation <ligandfit_gui.htm>`_ for explanation of what
