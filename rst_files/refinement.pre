@@ -50,7 +50,7 @@ Available features
 - Complex refinement strategies in one run
 - Refinement at subatomic resolution (approx. < 1.0 A) with IAS model
 - Refinement with twinned data
-- Automatic fixing amino-acid side chains by doing local real-space refinement combined 
+- Automatic fixing amino-acid side chains by doing local real-space refinement combined
   with torsion angle grid search fit into density.
 
 Current limitations
@@ -121,9 +121,9 @@ When you do this a number of things happen:
 - At the end of refinement the program generates:
 
  1) a new PDB file, with the refined model, called for example lysozyme_refine_001.pdb;
- 2) a reflection file with map coefficients for use in Coot or XtalView 
+ 2) a reflection file with map coefficients for use in Coot or XtalView
     (e.g. lysozyme_refine_001_map_coeffs.mtz);
- 3) Optionally, two maps: likelihood weighted mFo-DFc and 2mFo-DFc can be requested. 
+ 3) Optionally, two maps: likelihood weighted mFo-DFc and 2mFo-DFc can be requested.
     These are in binary CCP4 format.
  4) a new defaults file to run the next cycle of refinement, e.g.
     lysozyme_refine_002.def. This means you can run the next cycle of
@@ -659,24 +659,24 @@ List of facts about occupancy refinement in ``phenix.refine``:
 
 - ``phenix.refine`` can perform the following types of occupancy refinement:
 
-    - individual occupancy refinement - refinement of one occupancy per atom. 
+    - individual occupancy refinement - refinement of one occupancy per atom.
       In this case the refined occupancy value will be constrained between
       ``main.occupancy_min`` and ``main.occupancy_max``, which is 0 and 1 by
       default.
-    - group (constrained) occupancy refinement. There are two typical uses of 
+    - group (constrained) occupancy refinement. There are two typical uses of
       this option:
-      
-        - refine one occupancy per selected set of atoms, such as a partially 
-          occupied ligand or ion. The refined occupancy will be constrained 
+
+        - refine one occupancy per selected set of atoms, such as a partially
+          occupied ligand or ion. The refined occupancy will be constrained
           between 0 and 1.
 
-        - refine occupancies of atoms in alternative conformations. For example, 
-          if a residue has two alternative conformations, A and B, then there 
-          will be one refinable occupancy parameter. All occupancies within the 
-          conformer A will be equal to each other, and the same will be for 
-          conformer B. The sum of occupancies of A and B will add up to one. In 
-          general, for a constrained group containing N coupled conformers (for 
-          example, N=2 for alternative conformations A and B) there will be 
+        - refine occupancies of atoms in alternative conformations. For example,
+          if a residue has two alternative conformations, A and B, then there
+          will be one refinable occupancy parameter. All occupancies within the
+          conformer A will be equal to each other, and the same will be for
+          conformer B. The sum of occupancies of A and B will add up to one. In
+          general, for a constrained group containing N coupled conformers (for
+          example, N=2 for alternative conformations A and B) there will be
           (N-1) refinable occupancies. Currently N has to be less or equal to 4.
 
 - The occupancy refinement is ON by default. This does not mean that
@@ -686,16 +686,16 @@ List of facts about occupancy refinement in ``phenix.refine``:
 
     - individual occupancies for all atoms that have partial occupancy values in
       input PDB file (0<occupancy<1), for example::
-     
-        ATOM   1001 AU   AU    500      14.333   3.856  26.301  0.23  7.97 
 
-      NOTE: occupancies of atoms with starting 0 or 1 occupancy value will not 
+        ATOM   1001 AU   AU    500      14.333   3.856  26.301  0.23  7.97
+
+      NOTE: occupancies of atoms with starting 0 or 1 occupancy value will not
       be refined.
 
-    - occupancies of atoms in alternative conformations. Atoms in alternative 
-      conformations will be automatically determined based on ``altLoc`` 
-      identifiers (a one-letter code in front of three-letter residue name in 
-      ATOM record) in input PDB file and the group constrained occupancy 
+    - occupancies of atoms in alternative conformations. Atoms in alternative
+      conformations will be automatically determined based on ``altLoc``
+      identifiers (a one-letter code in front of three-letter residue name in
+      ATOM record) in input PDB file and the group constrained occupancy
       refinement for these atoms will be performed. For example::
 
         ATOM   5085  N  AALA   270      19.772  -6.267  40.250  0.75  5.17
@@ -709,95 +709,95 @@ List of facts about occupancy refinement in ``phenix.refine``:
         ATOM   5093  C  BALA   270      20.673  -4.426  41.454  0.25  4.77
         ATOM   5094  O  BALA   270      20.381  -3.268  41.761  0.25  5.70
 
-      NOTE 1: The starting occupancy values can be any: they can already be set 
-      to some reasonable values, like 0.75 and 0.25 above, can be all zero or 1, 
-      or any random value. The refined occupancy values will be looking like in 
-      the above example: identical for all atoms within each conformer (in the 
-      above example: 0.75 for conformer A and 0.25 for conformer B), and the sum 
+      NOTE 1: The starting occupancy values can be any: they can already be set
+      to some reasonable values, like 0.75 and 0.25 above, can be all zero or 1,
+      or any random value. The refined occupancy values will be looking like in
+      the above example: identical for all atoms within each conformer (in the
+      above example: 0.75 for conformer A and 0.25 for conformer B), and the sum
       of unique occupancies across all conformers will be exactly 1 (=0.25+0.75).
 
-      NOTE 2: If there are two or more consecutive residues in the same chain 
-      that have alternative conformations, then their occupancies will be 
+      NOTE 2: If there are two or more consecutive residues in the same chain
+      that have alternative conformations, then their occupancies will be
       automatically grouped and refined. For example::
-      
-        ATOM      0  N  AGLY A   1       2.650   4.221   1.463  0.70 18.35   
-        ATOM      1  CA AGLY A   1       2.206   4.688   2.763  0.70 17.27   
-        ATOM      2  C  AGLY A   1       3.296   4.604   3.813  0.70  4.90   
-        ATOM      3  O  AGLY A   1       4.143   3.711   3.772  0.70 10.35   
-        ATOM      4  N  BGLY A   1       3.650   6.221   4.463  0.30 18.35   
-        ATOM      5  CA BGLY A   1       3.206   6.688   5.763  0.30 17.27   
-        ATOM      6  C  BGLY A   1       4.296   6.604   6.813  0.30  4.90   
-        ATOM      7  O  BGLY A   1       5.143   5.711   6.772  0.30 10.35   
-        ATOM      8  N  AALA A   2       3.276   5.538   4.758  0.70  8.03   
-        ATOM      9  CA AALA A   2       2.260   6.584   4.782  0.70  4.94   
-        ATOM     10  C  AALA A   2       2.886   7.964   4.606  0.70  8.07   
-        ATOM     11  O  AALA A   2       3.307   8.594   5.576  0.70  2.01   
-        ATOM     12  CB AALA A   2       1.465   6.522   6.077  0.70  4.52   
-        ATOM     13  N  BALA A   2       4.276   7.538   7.758  0.30  8.03   
-        ATOM     14  CA BALA A   2       3.260   8.584   7.782  0.30  4.94   
-        ATOM     15  C  BALA A   2       3.886   9.964   7.606  0.30  8.07   
-        ATOM     16  O  BALA A   2       4.307  10.594   8.576  0.30  2.01   
-        ATOM     17  CB BALA A   2       2.465   8.522   9.077  0.30  4.52   
 
-      where the occupancies of conformer A (in residue numbers 1 and 2) are all 
-      equal to each other (0.7), the occupancies of conformer B are all equal to 
+        ATOM      0  N  AGLY A   1       2.650   4.221   1.463  0.70 18.35
+        ATOM      1  CA AGLY A   1       2.206   4.688   2.763  0.70 17.27
+        ATOM      2  C  AGLY A   1       3.296   4.604   3.813  0.70  4.90
+        ATOM      3  O  AGLY A   1       4.143   3.711   3.772  0.70 10.35
+        ATOM      4  N  BGLY A   1       3.650   6.221   4.463  0.30 18.35
+        ATOM      5  CA BGLY A   1       3.206   6.688   5.763  0.30 17.27
+        ATOM      6  C  BGLY A   1       4.296   6.604   6.813  0.30  4.90
+        ATOM      7  O  BGLY A   1       5.143   5.711   6.772  0.30 10.35
+        ATOM      8  N  AALA A   2       3.276   5.538   4.758  0.70  8.03
+        ATOM      9  CA AALA A   2       2.260   6.584   4.782  0.70  4.94
+        ATOM     10  C  AALA A   2       2.886   7.964   4.606  0.70  8.07
+        ATOM     11  O  AALA A   2       3.307   8.594   5.576  0.70  2.01
+        ATOM     12  CB AALA A   2       1.465   6.522   6.077  0.70  4.52
+        ATOM     13  N  BALA A   2       4.276   7.538   7.758  0.30  8.03
+        ATOM     14  CA BALA A   2       3.260   8.584   7.782  0.30  4.94
+        ATOM     15  C  BALA A   2       3.886   9.964   7.606  0.30  8.07
+        ATOM     16  O  BALA A   2       4.307  10.594   8.576  0.30  2.01
+        ATOM     17  CB BALA A   2       2.465   8.522   9.077  0.30  4.52
+
+      where the occupancies of conformer A (in residue numbers 1 and 2) are all
+      equal to each other (0.7), the occupancies of conformer B are all equal to
       each other as well (0.3), and their sum is 1 (0.7+0.3).
 
-      NOTE 3: It is possible to have multiple different (having different 
-      residue name) alternative conformers within the same residue number of the 
+      NOTE 3: It is possible to have multiple different (having different
+      residue name) alternative conformers within the same residue number of the
       same chain::
 
-        ATOM      0  N  APRO A  22       4.915  12.683  -3.102  0.25 11.83   
-        ATOM      1  CA APRO A  22       6.042  13.429  -2.601  0.25 11.82   
-        ATOM      2  C  APRO A  22       6.387  13.122  -1.160  0.25 11.66   
-        ATOM      3  O  APRO A  22       5.480  13.006  -0.345  0.25 12.09   
-        ATOM      4  CB APRO A  22       5.655  14.896  -2.744  0.25 12.86   
-        ATOM      5  CG APRO A  22       4.661  14.854  -4.058  0.25 12.66   
-        ATOM      6  CD APRO A  22       3.957  13.505  -3.910  0.25 12.27   
-        ATOM      7  CA BSER A  22       6.034  13.399  -2.687  0.30 11.55   
-        ATOM      8  C  BSER A  22       6.367  13.062  -1.223  0.30 12.92   
-        ATOM      9  O  BSER A  22       5.412  13.050  -0.345  0.30 11.87   
-        ATOM     10  CB BSER A  22       5.409  14.835  -2.876  0.30 12.60   
-        ATOM     11  OG BSER A  22       4.760  15.243  -1.635  0.30 12.11   
-        ATOM     12  CA CSER A  22       6.112  13.653  -2.656  0.45 12.31   
-        ATOM     13  C  CSER A  22       6.354  13.275  -1.187  0.45 11.92   
-        ATOM     14  O  CSER A  22       5.636  12.705  -0.270  0.45 11.77   
-        ATOM     15  CB CSER A  22       5.605  15.097  -2.687  0.45 13.56   
-        ATOM     16  OG CSER A  22       6.750  15.771  -2.280  0.45 16.38   
+        ATOM      0  N  APRO A  22       4.915  12.683  -3.102  0.25 11.83
+        ATOM      1  CA APRO A  22       6.042  13.429  -2.601  0.25 11.82
+        ATOM      2  C  APRO A  22       6.387  13.122  -1.160  0.25 11.66
+        ATOM      3  O  APRO A  22       5.480  13.006  -0.345  0.25 12.09
+        ATOM      4  CB APRO A  22       5.655  14.896  -2.744  0.25 12.86
+        ATOM      5  CG APRO A  22       4.661  14.854  -4.058  0.25 12.66
+        ATOM      6  CD APRO A  22       3.957  13.505  -3.910  0.25 12.27
+        ATOM      7  CA BSER A  22       6.034  13.399  -2.687  0.30 11.55
+        ATOM      8  C  BSER A  22       6.367  13.062  -1.223  0.30 12.92
+        ATOM      9  O  BSER A  22       5.412  13.050  -0.345  0.30 11.87
+        ATOM     10  CB BSER A  22       5.409  14.835  -2.876  0.30 12.60
+        ATOM     11  OG BSER A  22       4.760  15.243  -1.635  0.30 12.11
+        ATOM     12  CA CSER A  22       6.112  13.653  -2.656  0.45 12.31
+        ATOM     13  C  CSER A  22       6.354  13.275  -1.187  0.45 11.92
+        ATOM     14  O  CSER A  22       5.636  12.705  -0.270  0.45 11.77
+        ATOM     15  CB CSER A  22       5.605  15.097  -2.687  0.45 13.56
+        ATOM     16  OG CSER A  22       6.750  15.771  -2.280  0.45 16.38
 
-      If a structure contains a residue or ligand with all equal non-zero 
+      If a structure contains a residue or ligand with all equal non-zero
       occupancies, for example::
 
-        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00 
-        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.70 11.00 
-        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.70 10.00 
-        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00 
-        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00 
+        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00
+        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.70 11.00
+        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.70 10.00
+        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00
+        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00
 
-      in this case one occupancy per whole ligand will be refined automatically 
-      and it will be constrained between 0 and 1. If at least one occupancy is 
+      in this case one occupancy per whole ligand will be refined automatically
+      and it will be constrained between 0 and 1. If at least one occupancy is
       different from the rest::
-      
-        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00   
-        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.21 11.00   
-        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.70 10.00   
-        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00   
-        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00   
 
-      then the occupancies of all atoms in the above SO4 ion will refined 
+        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00
+        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.21 11.00
+        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.70 10.00
+        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00
+        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00
+
+      then the occupancies of all atoms in the above SO4 ion will refined
       individually. And in the example below::
 
-        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00    
-        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.70 11.00    
-        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.00 10.00    
-        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00    
-        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00    
-        
-      all occupancies will be refined individually except for atom O2 where it 
+        ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00
+        ATOM      7  O1  SO4     1       1.497   1.295   0.118  0.70 11.00
+        ATOM      8  O2  SO4     1       1.098   0.095   2.140  0.00 10.00
+        ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00
+        ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00
+
+      all occupancies will be refined individually except for atom O2 where it
       will stay zero.
 
-- A special case is refinement of a partially deuterated structure against 
-  neutron data. Such a structure contains exchangeable H/D sites that in 
+- A special case is refinement of a partially deuterated structure against
+  neutron data. Such a structure contains exchangeable H/D sites that in
   ``phenix.refine`` are modeled as alternative conformations, for example::
 
     ATOM     54  N   GLY L   2       2.908 -22.755  25.168  1.00 12.24           N
@@ -809,7 +809,7 @@ List of facts about occupancy refinement in ``phenix.refine``:
     ATOM     60  H  AGLY L   2       2.349 -22.638  24.525  0.25 18.77           H
     ATOM     61  D  BGLY L   2       2.349 -22.638  24.525  0.75 18.77           D
 
-  This situation is detected automatically and the occupancies of H and D atoms 
+  This situation is detected automatically and the occupancies of H and D atoms
   are refined in such a way so their sum is one.
 
 - Turning OFF the occupancy refinement can be done by removing the star
@@ -823,7 +823,7 @@ List of facts about occupancy refinement in ``phenix.refine``:
   automatically. For example, if an atom is automatically selected for
   individual occupancy refinement, but the user defined a group of atoms for
   which one occupancy factor will be refined (group occupancy refinement),
-  and this particular atom belongs to user defined group, then the individual 
+  and this particular atom belongs to user defined group, then the individual
   occupancy will not be refined for this atom.
 
 - User can withhold the occupancy refinement for any atoms that were
@@ -882,22 +882,22 @@ Examples:
 
   - group occupancy refinement for residue number 1 in chain A (as selected with
     ``chain A and resseq 1``). One occupancy for all atoms in this residue
-    will be refined and it will be constrained between ``main.occupancy_min`` 
+    will be refined and it will be constrained between ``main.occupancy_min``
     and ``main.occupancy_min``, which by default is 0 and 1, correspondingly.
 
   - another constrained occupancy group, where the occupancies of atoms
     in ``chain A and resseq 2`` and ``chain A and resseq 3`` will be coupled.
-    That is all occupancies within ``chain A and resseq 2`` will have the 
-    exact same value between 0 and 1, and same for ``chain A and resseq 3``. 
-    The sum of occupancies of ``chain A and resseq 2`` and ``chain A and resseq 3`` 
+    That is all occupancies within ``chain A and resseq 2`` will have the
+    exact same value between 0 and 1, and same for ``chain A and resseq 3``.
+    The sum of occupancies of ``chain A and resseq 2`` and ``chain A and resseq 3``
     will be 1.0, making it one constrained group.
 
   - another constrained group contains three residues (number 42 and 121, and
     MAN) and their occupancies will be refined similarly as described above.
 
   - occupancies of atoms ``O`` in residues 1 and 3 of chain B will not be
-    refined as requested using ``remove_selection`` keyword (even though 
-    these atoms have partial occupancies in input PDB file and so they would 
+    refined as requested using ``remove_selection`` keyword (even though
+    these atoms have partial occupancies in input PDB file and so they would
     normally be refined by default).
 
 f' and f'' refinement
@@ -955,21 +955,62 @@ Run without arguments for usage information::
 Using NCS restraints in refinement
 ----------------------------------
 
-phenix.refine can find NCS automatically or use NCS selections defined by the
-user. Gaps in selected sequences are allowed - a sequence alignment is performed
+phenix.refine has both torsion-based and Cartesian-based NCS implementations.
+NCS-related atoms can be identified automatically or be defined by the
+user.
+
+The default NCS implementation in phenix.refine restrains NCS-related chains
+in torsion space.
+
+Torsion NCS (default)
+
+Torsion-based NCS restraints use a flexible target function that is smoothly
+shut off as the difference between related torsions increases, allowing for
+local differences between NCS-related chains. The default behavior identifies
+related chains automatically, but users may also specify NCS groups.
+
+Automatic rotamer outlier correction and rotamer consistency checks between
+NCS-related sidechains are carried out for refinements against data at 3.0 A
+and better.
+
+1. Refinement with automatic group determination::
+
+     % phenix.refine data.hkl model.pdb main.ncs=True
+
+2. Refinement with user provided NCS selections:
+
+   Create a ``torsion_ncs.params`` file with selections like::
+
+     refinement.ncs.torsion.restraint_group {
+       selection = chain A
+       selection = chain B
+       selection = chain C
+     }
+
+   Specify ``torsion_ncs.params`` as an additional input when running ``phenix.refine``::
+
+     % phenix.refine data.hkl model.pdb main.ncs=True torsion_ncs.params
+
+Cartesian NCS (optional)
+
+Cartesian-based NCS restraints are also available in phenix.refine. Atoms in
+NCS-related chains are restrained to the average xyz position.
+
+Gaps in selected sequences are allowed - a sequence alignment is performed
 to detect insertions or deletions. We recommend to check the automatically
 detected or adjusted NCS groups.
 
-1. Refinement with user provided NCS selections.
+1. Refinement with user provided NCS selections:
 
    Create a ``ncs_groups.params`` file with the NCS selections::
 
      #include_params ncs_groups.params
 
-   Specify ``ncs_groups.params`` as an additional input when running
+2. Specify ``ncs_groups.params`` as an additional input when running
    ``phenix.refine``::
 
-     % phenix.refine data.hkl model.pdb ncs_groups.params main.ncs=True
+     % phenix.refine data.hkl model.pdb ncs_groups.params \
+       main.ncs=True ncs.type=cartesian
 
    This will perform the default refinement round (individual coordinates and
    B-factors) using NCS restraints on coordinates and B-factors.
@@ -979,11 +1020,11 @@ detected or adjusted NCS groups.
    automatic adjustment::
 
      % phenix.refine data.hkl model.pdb ncs_groups.params main.ncs=True \
-       ncs.find_automatically=False
+       ncs.type=cartesian ncs.find_automatically=False
 
-2. Automatic detection of NCS groups::
+   Automatic detection of NCS groups::
 
-     % phenix.refine data.hkl model.pdb main.ncs=True
+     % phenix.refine data.hkl model.pdb main.ncs=True ncs.type=cartesian
 
    This will perform the default refinement round (individual coordinates and
    B-factors) using NCS restraints automatically created based on input PDB
@@ -1043,7 +1084,7 @@ Using a reference model in refinement
 phenix.refine can be given a reference model that is used to steer refinement
 of the working model.  This technique is advantageous in cases where the working
 data set is low resolution, but there is a known related structure solved at higher
-resolution.  The higher resolution reference model is used to generate a set of 
+resolution.  The higher resolution reference model is used to generate a set of
 dihedral restraints that are applied to each matching dihedral in the working model.
 
 Reference chains are matched to working chains automatically, and sequences
@@ -1065,7 +1106,7 @@ To decrease the strength of the restraints, select a larger sigma::
   % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
     reference_model.file=reference.pdb reference_model.sigma=2.0
 
-The reference restraints have a `limit` parameter which turns them off when the 
+The reference restraints have a `limit` parameter which turns them off when the
 angle in the working model differs from the reference by an amount greater than
 `limit`.  The default value is 15 degrees, but may be user-defined::
 
@@ -1082,8 +1123,8 @@ almost always improves the final model, but can be turned off if desired::
 
 Selections may also be used with reference_model restraints.  Selections are useful
 in cases where multiple chains in the working model should be restrained to the same
-reference chain, the model or reference have insertions that change the register, 
-only part of a chain is desirable to restrain, etc. 
+reference chain, the model or reference have insertions that change the register,
+only part of a chain is desirable to restrain, etc.
 
 To specify selections, create a ``reference.params`` file with selections like::
 
@@ -1098,7 +1139,7 @@ To specify selections, create a ``reference.params`` file with selections like::
   refinement.reference_model.reference_group {
        reference = chain A
        selection = chain B
-     }  
+     }
 
 Specify ``reference.params`` as an additional input when running ``phenix.refine``::
 
@@ -1142,7 +1183,7 @@ Automatic Asn/Gln/His corrections
 
 Asn, Gln, and His residues can often be fit favorably to the data in two orientations,
 related by a 180 degree rotation.  In many cases, however, only one of these orientations
-is sterically and electrostatically favorable.  phenix.refine uses Reduce to identify 
+is sterically and electrostatically favorable.  phenix.refine uses Reduce to identify
 Asn, Gln, and His residues that should be flipped, and then flips them automatically.
 
 To turn this feature on, run::
@@ -1202,7 +1243,7 @@ annealing, TLS refinement, etc. Some useful commands are:
 Hydrogens in refinement
 -----------------------
 
-Depending on data type (X-ray or neutron), data quality (resolution, 
+Depending on data type (X-ray or neutron), data quality (resolution,
 completeness) phenix.refine offers different options for parametrization of
 hydrogen atoms:
 
@@ -1210,51 +1251,51 @@ hydrogen atoms:
 - complete refinement of H (H atoms will be refined as other atoms in the model).
 
 Using the riding model does not add additional refinable parameters, since position
-of a hydrogen atom H in X-H bond is recalculated from the current position of 
+of a hydrogen atom H in X-H bond is recalculated from the current position of
 atom X. Also, H atom inherits the occupancy of X atom and its B-factor. Sometime
-the B-factor of H atom is the product of B-factor of X atoms and a scale from 1 
+the B-factor of H atom is the product of B-factor of X atoms and a scale from 1
 to 1.5. The riding model should be used to parametrize H atoms at almost all
 resolutions in X-ray refinement. An exception can be a subatomic resolution (
 ~0.7A and higher), where the hydrogen's parameters can be refined individually.
 
-Although the contribution of hydrogen atoms to X-ray scattering is weak, the H 
-atoms are still present in real structures irrespective the data quality. 
-Including them as riding model at any resolution makes other model atoms aware 
-of their positions and hence preventing non-physical (bad) contacts at no cost 
+Although the contribution of hydrogen atoms to X-ray scattering is weak, the H
+atoms are still present in real structures irrespective the data quality.
+Including them as riding model at any resolution makes other model atoms aware
+of their positions and hence preventing non-physical (bad) contacts at no cost
 in terms of refinable parameters (= no risk of overfitting).
 
-The scattering contribution of Hydrogens by default is always accounted for, 
+The scattering contribution of Hydrogens by default is always accounted for,
 however there is a parameter to turn it off::
 
   % phenix.refine model.pdb data.hkl hydrogens.contribute_to_f_calc=false
 
-If neutron data is used then the parameters of H atoms should always be refined 
-individually, except the cases where data resolution and/or completeness are 
-poor. In that case riding model can be used. If partially deuterated structure 
-is used in refinement then the constrained occupancies of exchangeable H/D sites 
-are refined so they add up to 1. 
+If neutron data is used then the parameters of H atoms should always be refined
+individually, except the cases where data resolution and/or completeness are
+poor. In that case riding model can be used. If partially deuterated structure
+is used in refinement then the constrained occupancies of exchangeable H/D sites
+are refined so they add up to 1.
 
-Currently, ``phenix.refine`` does not add the H atoms (except a few cases 
+Currently, ``phenix.refine`` does not add the H atoms (except a few cases
 mentioned below), so it is necessary to use a different program from PHENIX suite
 (ReadySet!) to add H, D or H/D atoms to your structure. Internally ReadySet!
-uses Reduce program to add hydrogens to macromolecule (protein, DNA/RNA) and it 
+uses Reduce program to add hydrogens to macromolecule (protein, DNA/RNA) and it
 uses its own resources to add hydrogens to ligands or water. Hydrogens are added
 to their ideal geometrical positions.
 
-If a structure contains a ligand unknown to ``phenix.refine``, ReadySet! will 
+If a structure contains a ligand unknown to ``phenix.refine``, ReadySet! will
 create a library CIF file which will include the definitions for all newly added
 hydrogens.
- 
+
 ``phenix.refine`` can build H or D atoms for water molecules only. To do so it
-uses residual density map, mFo-DFc. This option is normally used at relatively 
-high resolution neutron data (~2.0...2.5A and higher) or at subatomic X-ray 
+uses residual density map, mFo-DFc. This option is normally used at relatively
+high resolution neutron data (~2.0...2.5A and higher) or at subatomic X-ray
 resolution::
 
   % phenix.refine model.pdb data.hkl main.find_and_add_hydrogens=true
-  
-Although this is not thoroughly studied yet, it seems that hydrogens should not be 
-included into NCS or TLS groups. This is why they are automatically excluded from 
-them. However, if NCS selections are created manually and the structure contains 
+
+Although this is not thoroughly studied yet, it seems that hydrogens should not be
+included into NCS or TLS groups. This is why they are automatically excluded from
+them. However, if NCS selections are created manually and the structure contains
 H atoms, it might be a good idea to add ``and not (element H or element D)`` to
 all selection strings.
 
@@ -1262,19 +1303,19 @@ Below are some useful commands:
 
 1. Add hydrogens::
 
-     % phenix.ready_set model.pdb 
-     
+     % phenix.ready_set model.pdb
+
 2. Add deuteriums::
 
      % phenix.ready_set model.pdb perdeuterate=true
-     
+
 3. Add H and exchangeable H/D::
 
      % phenix.ready_set model.pdb neutron_exchange_hydrogens=true
-     
+
 4. Add H to water::
 
-     % phenix.ready_set model.pdb add_h_to_water=true 
+     % phenix.ready_set model.pdb add_h_to_water=true
 
 5. Once hydrogens added to a model, by default they will be refined as riding
    model::
@@ -1293,9 +1334,9 @@ Below are some useful commands:
 7. To remove hydrogens from a model::
 
      % phenix.pdbtools model.pdb remove="element H or element D"
-     
+
    or Reduce programs can be used for this::
-   
+
      % phenix.reduce model_h.pdb -trim > model_noH.pdb
 
    We strongly recommend to not remove hydrogen atoms after refinement since it
@@ -1339,7 +1380,7 @@ Neutron and joint X-ray and neutron refinement
 ----------------------------------------------
 
 Refinement using neutron data requires having H or/and D atoms added to the
-model. Use ReadySet! program to add all H, D or H/D atoms. See 
+model. Use ReadySet! program to add all H, D or H/D atoms. See
 "Hydrogens in refinement" section for details.
 
 1. Running refinement with neutron data only::
@@ -1430,10 +1471,10 @@ Guidelines for structure refinement at high resolution:
     to be relaxed. Use ``wxc_scale`` and ``wxu_scale`` for this; lower values,
     like 1/2, 1/3, 1/4, ... etc of the default ones should be tried.
     ``phenix.refine`` allows automatically optimize these values (
-    ``optimize_xyz_weight=True`` and ``optimize_adp_weight=True``), however this 
-    is a very slow task so it may be considered for an over night run or even 
-    longer. At ultra-high resolutions (approx. 0.8A or higher) a complete 
-    unrestrained refinement should be definitely tried out for well ordered 
+    ``optimize_xyz_weight=True`` and ``optimize_adp_weight=True``), however this
+    is a very slow task so it may be considered for an over night run or even
+    longer. At ultra-high resolutions (approx. 0.8A or higher) a complete
+    unrestrained refinement should be definitely tried out for well ordered
     parts of the model (single conformations, low B-factors).
 
   - at ultra-high resolution the residual maps show the electron density
@@ -1952,12 +1993,12 @@ where ``map.params`` contains::
 
   #include_params map.params
 
-This will output one file with map coefficients for 2mFo-DFc, mFo-DFc and 
+This will output one file with map coefficients for 2mFo-DFc, mFo-DFc and
 3Fo-2Fc maps, and one X-plor formatted file containing 2mFo-DFc map computed
 around residue 1 in chain A. The map finesse will be (data
-resolution)*grid_resolution_factor. If ``atom_selection`` is set to ``None`` or 
+resolution)*grid_resolution_factor. If ``atom_selection`` is set to ``None`` or
 ``all`` then map will be computed for all atoms.
-  
+
 Refining with anomalous data (or what phenix.refine does with Fobs+ and Fobs-).
 -------------------------------------------------------------------------------
 
@@ -2235,7 +2276,7 @@ manually.
 Referencing phenix.refine
 *************************
 
-Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW, 
+Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW,
 Mustyakimov M, Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012)
 Towards automated crystallographic structure refinement with phenix.refine.
 ``Acta Crystallogr D Biol Crystallogr.`` **68**:352-67.
