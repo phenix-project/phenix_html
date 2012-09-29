@@ -72,8 +72,9 @@ not (``optimize=True``).  This is not done by default because it is more
 time-consuming, but in some cases it may lead to improved geometry.  For
 troublesome cases, we recommend generating the ligand restraints and structure
 manually prior to running the pipeline, then supplying the output CIF as
-input to the pipeline.  In this case, eBLOW will only be used to generate a
-PDB file, and the input restraints will be used for refinement.
+input to the pipeline with the additional argument
+``keep_input_restraints=True``.  In this case, eBLOW will only be used to
+generate a PDB file, and the input restraints will be used for refinement.
 
 **Molecular replacement**.  Although molecular replacement is optional if the
 starting model is already nearly-complete and isomorphous to the target
@@ -227,7 +228,7 @@ finishing the refinement in Coot:
         placed in density for missing protein atoms, or for another unrelated
         ligand (such as contaminants from the crystallization solution).  Note
         that it is quite possible for flexible ligands to be partially
-        disordered, but in such cases the remainder of the ligand should still
+        disordered, but in such cases the majority of the ligand should still
         be clearly defined in the map.
 
       - Does the binding make biological sense?  Pay special attention to
