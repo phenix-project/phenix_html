@@ -108,7 +108,7 @@ it, you can type:
    second_pdb_in=second.pdb \
    seq.dat \
    map_coeffs.mtz \
-   second_pdb_in_selection=&quot;(chain A and resid 21:30)&quot; \
+   second_pdb_in_atom_selection=&quot;(chain A and resid 21:30)&quot; \
 </PRE>
 
 <P><H5>Replacing a specific segment: </H5><P>
@@ -121,8 +121,8 @@ consider only residues C10-C20 and D10-D20 of second.pdb:
    second_pdb_in=second.pdb \
    seq.dat \
    map_coeffs.mtz \
-   pdb_in_selection=&quot;(not  ( (chain A or chain B) and resid 22:29) )&quot; \
-   second_pdb_in_selection=&quot;( (chain C or chain D) and resid 10:20)&quot; \
+   pdb_in_atom_selection=&quot;(not  ( (chain A or chain B) and resid 22:29) )&quot; \
+   second_pdb_in_atom_selection=&quot;( (chain C or chain D) and resid 10:20)&quot; \
 </PRE>
 
 <P><H5>Crossing two models that have entirely matched residues:</H5><P>
