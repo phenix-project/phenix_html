@@ -1103,6 +1103,35 @@ phenix.autobuild combine_only=true seq_file=seq.dat carry_on=true run=1 > autobu
 -------------------------------------------------------
 </PRE>
 
+<H5>Build starting from a very accurate but very small part of a model</H5><P>
+<PRE style="face=courier">phenix.autobuild data=data.mtz model=MR.pdb \
+rebuild_in_place=False \
+seq_file=seq.dat \
+two_fofc_denmod_in_rebuild=True \
+all_maps_in_rebuild=True   \
+consider_main_chain_list=MR.pdb \
+i_ran_seed=124881 \
+nproc=4
+</PRE>
+<p>You can have autobuild try to start rebuilding from fragments of a 
+model. For example you might look for ideal helices using Phaser, then 
+rebuild the resulting partial model, as in the 
+<A href="http://chango.ibmb.csic.es/ARCIMBOLDO/">Arcimboldo</A> procedure.  
+The special feature of finding helices is that they can be very accurately
+placed in some cases. This really helps the subsequent rebuilding.
+If you have enough computer time,
+then run it several or even many times with different values of i_ran_seed. 
+Each time you'll get a slightly different result.
+Here two different types of density-modified maps are calculated and models
+are built with each. The starting phases and phase probabilities for one
+type are based on a sigmaA-weighted 2mFo-DFc map. Those for the other type
+come from density modification using a model-based map as a target map and 
+finding phases that yield a map that is as close to this one as possible.  In
+either case the starting phases and phase probabilities are used in a second
+cycle of density modification in which part of the density modification target
+is a calculated map and part is standard density modification (including 
+solvent flattening, histogram matching, NCS).
+</p>
 
 <H5>Morph an MR model and rebuild it</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=MR.pdb \
