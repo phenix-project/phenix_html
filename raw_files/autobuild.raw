@@ -1105,16 +1105,17 @@ phenix.autobuild combine_only=true seq_file=seq.dat carry_on=true run=1 > autobu
 
 <H5>Build starting from a very accurate but very small part of a model</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=MR.pdb \
-rebuild_in_place=False \
+rebuild_from_fragments=True\
 seq_file=seq.dat \
-two_fofc_denmod_in_rebuild=True \
-all_maps_in_rebuild=True   \
-consider_main_chain_list=MR.pdb \
 i_ran_seed=124881 \
 nproc=4
 </PRE>
 <p>You can have autobuild try to start rebuilding from fragments of a 
-model. For example you might look for ideal helices using Phaser, then 
+model. Keyword is rebuild_from_fragments=True.  This sets the parameters
+two_fofc_denmod_in_rebuild=True, all_maps_in_rebuild=True, 
+rebuild_in_place=False, and sets
+consider_main_chain_list to include your input model. 
+You might want to use this if you look for ideal helices using Phaser, then 
 rebuild the resulting partial model, as in the 
 <A href="http://chango.ibmb.csic.es/ARCIMBOLDO/">Arcimboldo</A> procedure.  
 The special feature of finding helices is that they can be very accurately
