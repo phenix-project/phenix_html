@@ -803,6 +803,23 @@ additional programs or view the model and maps.
 <img src="images/mr_rosetta_result.png">
 <br>
 
+<P><H5><U>Adding a specific Rosetta command (disulfides to fix)
+to mr_rosetta</U></H5><P>
+When you run mr_rosetta you can specify a command or commands to be
+added to the Rosetta scripts.  For example, if your model has disulfide
+bonds between residues 12 and 15 and between 22 and 39 you can say:
+<PRE style="face=courier">rosetta_command="-MR::disulf 12:15 22:39"
+</PRE>
+In this command, each disulfide is colon-separated, and the numbering 
+corresponds to the input fasta file.
+If you have multiple commands you can just give multiple rosetta_command 
+statements. Note that any commands will be applied to all rosetta scripts. 
+That means that you can't have different command for different Rosetta runs. 
+It also means that you cannot specify chain names or use different commands
+for different chains. At the moment this feature is most useful if you
+are supplying a single chain (or multiple chains with identical sequences).
+
+
 <P><H5><U>Parameters files in mr_rosetta</U></H5><P>
 When you run mr_rosetta it will write out a 
 mr_rosetta_params.eff parameter file that can be used to 
@@ -810,7 +827,7 @@ re-run mr_rosetta (just as for essentially all PHENIX methods).
 
 <P><H5><U>Examples</U></H5><P>
 
-<P><H5>Standard run of mr_rosetta:</H5><P>
+<P><H5>Standard run of mr_rosetta</H5><P>
 Before you run mr_rosetta, you need to get fragment files from the 
 Robetta server (see Setting up for a run of mr_rosetta, part A, above).
 Then you need an hhr alignment information file from the hhpred server 
@@ -948,14 +965,14 @@ at once, then all jobs will wait for the slowest job to finish at each step.
 If there are multiple NCS copies and some search models are poor, this can
 sometimes take a very long time.
 
-<P><H5>Getting a default parameters file for mr_rosetta:</H5><P>
+<P><H5>Getting a default parameters file for mr_rosetta</H5><P>
 <p>Usually you will want to edit a parameters file so that you can specify more
 details of the run. You can get a default parameters file with:
 <PRE style="face=courier">phenix.mr_rosetta 
 </PRE>
 and then just edit that file.
 
-<P><H5>Testing mr_rosetta:</H5><P>
+<P><H5>Testing mr_rosetta</H5><P>
 You can do a test of mr_rosetta to make sure everything is ok with:
 <PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick
 </PRE>
@@ -963,7 +980,7 @@ You can do a test of mr_rosetta to make sure everything is ok with:
 
 <P><H5><U>Possible Problems</U></H5><P>
 
-<P><H5>Debugging problems with running mr_rosetta:</H5><P>
+<P><H5>Debugging problems with running mr_rosetta</H5><P>
 
 If mr_rosetta fails, the first thing (after just checking the commands you 
 used) is to run the mr_rosetta regression tests to make sure that the
@@ -1077,7 +1094,7 @@ With luck, you will get the same errors and you can debug from there by
 changing the parameters or input files in rebuild.flags to see what 
 was causing the problems.
 
-<P><H5>Specific limitations and problems:</H5><P>
+<P><H5>Specific limitations and problems</H5><P>
 <P>mr_rosetta does not have the full flexibility of autobuild,
 so you may want to get a nearly-complete model with mr_rosetta and then
 use autobuild to increase the completeness and quality.
