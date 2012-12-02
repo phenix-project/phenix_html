@@ -1,0 +1,106 @@
+=================================
+Analyzing unmerged data in Phenix
+=================================
+
+Introduction
+------------
+
+Most of the programs in Phenix assume that the input data, regardless of
+type or format, are already both scaled and merged to contain only unique
+reflections.  The major exception is AutoSol, which can accept certain unmerged
+files (for a more limited set of formats, primarily Scalepack) and performs its
+own local scaling.  In other situations, some programs will automatically merge
+the data themselves if necessary, discarding any information about the variance
+of individual observations.
+
+Several utilities are available in Phenix which use unmerged intensities to
+calculate various data quality-related metrics.  These include `Xtriage
+<xtriage_gui.htm>`_, which will display standard merging statistics, the
+standalone version of this routine, phenix.merging_statistics, a separate
+utility for calculating CC* (Karplus & Diederichs 2012), phenix.cc_star, and
+the `Table 1 generation program <table_one.htm>`_.  Their use as it relates to
+unmerged data is described below.  Note that due to implementation details,
+small numerical differences (up to a  few tenths of a percent) may occur
+between the originally reported statistics in the processing logfiles, and the
+numbers reported by Phenix.
+
+**Important**: this document does not attempt to explain the mathematics or
+logic behind the statistics calculated here.  We strongly recommend that you
+read the listed references; the publication(s) associated with the data
+processing software used may also be useful (see for example Evans (2011)).
+
+Xtriage and phenix.merging_statistics
+-------------------------------------
+
+``phenix.merging_statistics`` is a simple program to calculate the standard
+statistics output by most data processing software, such as mean(I/sigma),
+redundancy, R-merge, R-meas (Diederichs & Karplus 1997), R-pim (Weiss 2001),
+CC1/2, and others.  The input may be in any
+format, including unmerged XDS, unmerged Scalepack, multi-batch MTZ, or SHELX
+(the latter will only work on the command line, however).  The number of
+resolution bins is set to 10 by default, but is adjustable by the n_bins
+parameter.  All data will be used unless the high_resolution or low_resolution
+parameters are set; the program does not attempt to identify an appropriate
+high-resolution cutoff on its own.  Both a command-line tool and a GUI are
+available.  The output in either case is a table of statistics by resolution
+bin:
+
+.. image:: images/merging_statistics.png
+
+Xtriage (Zwart et al. 2005) will also calculate these statistics if provided
+with unmerged intensities; in the GUI, these will appear in an extra tab before
+the data quality analyses (as shown above).
+
+phenix.cc_star
+--------------
+
+This is an implementation of the method outlined in Karplus & Diederichs (2012)
+for determining the optimal resolution cutoff, as an alternative to the
+traditional criteria such as limits on R-merge or I/sigma.  It is essentially
+a combination of phenix.merging_statistics with the recalculation of R-factors
+for the model.  The statistics CC* is an estimate of the "true" CC of the data
+under examination to the (unknown) true intensities.  This places it on the
+same scale as CC(work) and CC(free) for the model and data, and the
+relationship between these statistics can be used as a guide for truncating
+the data.
+
+Required inputs are unmerged intensities, merged data (either amplitudes or
+intensities - if the latter, French&Wilson treatment will be performed),
+R-free flags, and either a pre-calculated F(model) array, which is output by
+programs like phenix.refine, or the current refined model.  The results should
+be essentially the same in either case, but supplying F(model) directly will
+run faster.  The statistics overlap with those reported by the merging
+program, but with the addition of R-factors and CCs for model/data agreement.
+
+.. image:: images/cc_star.png
+
+phenix.table_one
+----------------
+
+`This utility <table_one.htm>`_ generates the standard Table 1 of
+crystallographic statistics found in most structure publications.  If unmerged
+data are included along with the merged data and R-free flags, the intensity
+merging statistics will be calculated from these instead of parsing the
+data processing logfiles.  We recommend that you use the unmerged data if
+available, as they are more reliably parsed than logfiles.
+
+References
+----------
+
+  - Diederichs K, Karplus PA. *Improved R-factors for diffraction data analysis
+    in macromolecular crystallography.*
+    `Nature Struct. Biol. (1997) 4:269-275.
+    <http://www.ncbi.nlm.nih.gov/pubmed/9095194>`_
+
+  - Evans PR. *An introduction to data reduction: space-group determination,
+    scaling and intensity statistics.*
+    `Acta Cryst. (2011) D67:282-292.
+    <http://www.ncbi.nlm.nih.gov/pubmed/21460446>`_
+
+  - CITATION:cc_star
+
+  - Weiss MS. *Global indicators of data quality.*
+    `J Appl. Cryst. (2001) 34:130-135.
+    <http://journals.iucr.org/j/issues/2001/02/00/he0268/index.html>`_
+
+  - CITATION:xtriage

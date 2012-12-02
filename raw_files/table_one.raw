@@ -14,7 +14,8 @@ problems to bugs&#64;phenix-online.org.</strong></p>
 <p>The utility <tt class="docutils literal"><span class="pre">phenix.table_one</span></tt> is a tool for generating the standard table
 of crystallographic statistics required by most scientific journals.  It
 combines the validation features of <a class="reference" href="model_vs_data.htm">phenix.model_vs_data</a>
-with the ability to parse many data processing logfiles from programs such
+with the ability to calculate merging statistics and/or parse many data
+processing logfiles from programs such
 as SCALA or HKL2000.  Multiple structures may be input, and a separate column
 will be generated for each one.</p>
 <p>The program is available both in the GUI and the command line; however, because
@@ -30,11 +31,17 @@ residues, but this is frequently less accurate when only the model is
 available.  If you have multiple CIF files in a single directory you may
 specify the directory path instead of the individual files.</p>
 <div class="image"><img alt="images/table1_structure.png" src="images/table1_structure.png" /></div>
-<p>Any number of data processing logs may be supplied, but this will usually only
+<p>If you have the scaled-but-unmerged intensities (for instance, processed
+using the &quot;no merge original index&quot; macro in HKL2000/Scalepack), you can also
+enter these at the bottom of the panel.  This will allow the program to
+re-calculate merging statistics such as the multiplicity/redundancy, R-sym,
+and R-meas.  Alternately, any number of data processing logs may be supplied,
+but this will usually only
 be the logs for integration and scaling (the latter contains the most useful
 statistics).  Currently MOSFLM, SCALA, XDS/XSCALE, and DENZO/SCALEPACK/HKL2000
-log files should be parseable in most cases.  If you do not supply the
-processing logs the fields relevant to this step will be left blank in the
+log files should be parseable in most cases.  If you do not supply either
+unmerged data or the
+processing logs, the fields relevant to this step will be left blank in the
 final document.  Certain statistics which may not always be accurately
 represented in the log files, such as Mean(I/sigma), will always be calculated
 based on the input data.</p>
