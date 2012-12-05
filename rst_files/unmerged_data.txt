@@ -15,11 +15,11 @@ of individual observations.
 
 Several utilities are available in Phenix which use unmerged intensities to
 calculate various data quality-related metrics.  These include `Xtriage
-<xtriage_gui.htm>`_, which will display standard merging statistics, the
-standalone version of this routine, phenix.merging_statistics, a separate
-utility for calculating CC* (Karplus & Diederichs 2012), phenix.cc_star, and
-the `Table 1 generation program <table_one.htm>`_.  Their use as it relates to
-unmerged data is described below.  Note that due to implementation details,
+<xtriage_gui.htm>`_, which will display standard merging statistics; the
+standalone version of this routine, **phenix.merging_statistics**; a separate
+utility for calculating CC* (Karplus & Diederichs 2012), **phenix.cc_star**;
+and the `Table 1 <table_one.htm>`_ program.  Their use as it relates
+to unmerged data is described below.  Note that due to implementation details,
 small numerical differences (up to a  few tenths of a percent) may occur
 between the originally reported statistics in the processing logfiles, and the
 numbers reported by Phenix.
@@ -29,8 +29,20 @@ logic behind the statistics calculated here.  We strongly recommend that you
 read the listed references; the publication(s) associated with the data
 processing software used may also be useful (see for example Evans (2011)).
 
+If you want to experiment with these programs and do not have any data of your
+own to use, the Phenix installation includes an unmerged data file in the
+p9-sad example:
+
+  $PHENIX/examples/p9-sad/p9_se_w2.sca
+
+The format does not contain complete symmetry information (and the space
+group is specified incorrectly), but you can use the symmetry information in
+``p9.pdb`` in the same directory.
+
 Xtriage and phenix.merging_statistics
 -------------------------------------
+
+.. image:: images/merging_statistics_gui.png
 
 ``phenix.merging_statistics`` is a simple program to calculate the standard
 statistics output by most data processing software, such as mean(I/sigma),
@@ -41,15 +53,58 @@ format, including unmerged XDS, unmerged Scalepack, multi-batch MTZ, or SHELX
 resolution bins is set to 10 by default, but is adjustable by the n_bins
 parameter.  All data will be used unless the high_resolution or low_resolution
 parameters are set; the program does not attempt to identify an appropriate
-high-resolution cutoff on its own.  Both a command-line tool and a GUI are
-available.  The output in either case is a table of statistics by resolution
-bin:
+high-resolution cutoff on its own.  Both a command-line tool and a GUI
+(pictured above) are available.  The output in either case is a table of
+statistics by resolution bin::
 
-.. image:: images/merging_statistics.png
+
+  Resolution: 28.53 - 1.75
+  Observations: 145453
+  Unique reflections: 21557
+  Redundancy: 6.7
+  Completeness: 99.92%
+  Mean intensity: 18672.0
+  Mean I/sigma(I): 14.9
+  R-merge: 0.073
+  R-meas:  0.079
+  R-pim:   0.030
+
+  Redundancies (non-anomalous):
+    1 : 50
+    2 : 163
+    3 : 597
+    4 : 1766
+    5 : 1869
+    6 : 3731
+    7 : 5512
+    8 : 5723
+    9 : 1526
+    10 : 490
+    11 : 74
+    12 : 53
+    13 : 3
+
+    Statistics by resolution bin:
+   d_max  d_min   #obs  #uniq   mult.  %comp       <I>  <I/sI>  r_mrg r_meas  r_pim  cc1/2
+   28.53   3.77  15699   2254    6.96  99.87   78997.8    23.4  0.061  0.066  0.025  0.997
+    3.77   2.99  15703   2182    7.20  99.95   47400.1    23.1  0.061  0.066  0.024  0.997
+    2.99   2.61  15641   2172    7.20 100.00   17930.9    21.1  0.074  0.080  0.030  0.996
+    2.61   2.37  15309   2138    7.16 100.00   10520.1    18.6  0.090  0.097  0.036  0.995
+    2.37   2.21  15044   2146    7.01  99.95    9103.8    17.2  0.093  0.101  0.038  0.995
+    2.20   2.07  14571   2145    6.79 100.00    6560.2    13.5  0.108  0.117  0.045  0.993
+    2.07   1.97  13973   2135    6.54 100.00    5016.1    10.8  0.121  0.131  0.051  0.992
+    1.97   1.89  13540   2141    6.32 100.00    3620.6     8.6  0.145  0.158  0.062  0.984
+    1.88   1.81  13010   2104    6.18  99.95    2070.5     6.8  0.197  0.215  0.085  0.980
+    1.81   1.75  12963   2140    6.06  99.49    1477.4     5.6  0.247  0.270  0.108  0.970
+   28.53   1.75 145453  21557    6.75  99.92   18672.0    14.9  0.073  0.079  0.030  0.998
+
+In the GUI version, plots are also available:
+
+.. image:: images/merging_gui_r_factors.png
 
 Xtriage (Zwart et al. 2005) will also calculate these statistics if provided
 with unmerged intensities; in the GUI, these will appear in an extra tab before
-the data quality analyses (as shown above).
+the data quality analyses.
 
 phenix.cc_star
 --------------
@@ -64,6 +119,8 @@ same scale as CC(work) and CC(free) for the model and data, and the
 relationship between these statistics can be used as a guide for truncating
 the data.
 
+.. image:: images/cc_star_gui.png
+
 Required inputs are unmerged intensities, merged data (either amplitudes or
 intensities - if the latter, French&Wilson treatment will be performed),
 R-free flags, and either a pre-calculated F(model) array, which is output by
@@ -72,7 +129,7 @@ be essentially the same in either case, but supplying F(model) directly will
 run faster.  The statistics overlap with those reported by the merging
 program, but with the addition of R-factors and CCs for model/data agreement.
 
-.. image:: images/cc_star.png
+.. image:: images/cc_star_gui_table.png
 
 phenix.table_one
 ----------------
