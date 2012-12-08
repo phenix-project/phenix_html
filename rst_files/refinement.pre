@@ -952,6 +952,11 @@ Run without arguments for usage information::
 
   % phenix.form_factor_query
 
+Note that if you perform anomalous refinement, you may also want to include
+a log-likelihood gradient anomalous map (map_type=llg) in the output, as this
+will show any unmodeled anomalous scattering with greater sensitivity than the
+conventional anomalous difference map.
+
 Using NCS restraints in refinement
 ----------------------------------
 

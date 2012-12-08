@@ -260,6 +260,16 @@ context of molecular replacement, it essentially scores the model placement
 in comparison to a random model.  The LLG should be positive and relatively
 large if the MR solution is correct.
 
+**LLG map**: as the name indicates, this is a map calculated using the gradient
+of the log-likelihood as "structure factors".  In the context of SAD phasing,
+the LLG map shows the difference in anomalous scattering between the current
+substructure and the true contents of the crystal.  This has the effect of
+amplifying the map around weaker, unmodeled scatterers.  In Phaser the process
+of substructure completion is automated and iterative, but it is also possible
+to output an LLG map from `phenix.refine <refine_gui.htm>`_ and `phenix.maps
+<create_maps.htm>`_.  If no anomalous scattering has been modeled, the LLG
+map will look very similar the conventional anomalous difference map.
+
 **Map coefficients**: This is simply the Fourier coefficients for an
 electron density map, in MTZ format.  Graphics programs such as Coot (and
 PHENIX, internally) will perform the Fourier transform automatically to obtain
