@@ -212,6 +212,18 @@ For spacegroups with floating origin the minimum MLAD is found
 by doing a Golden Sectioning minimization along the polar axis for each copy
 of chains in moving_pdb.
 
+<H5>Also move HETATM (hetero atoms)</H5>
+Invoking this flag will move hetero atoms (ligands, waters, metals, etc.) in conjunction
+with their associated peptide chain. The program first invokes phenix.sort_hetatms
+as to associate hetero atoms sensibly with adjacent peptide chains. 
+<p>
+After having
+identified the transformation for a chain yielding the smallest MLAD score it then
+subjects the associated hetero atoms to the same transformation.
+</p>
+
+
+
 <H5>Debug mode</H5>
 Invoking the debug flag produces individual pdb files of the C-alpha atoms used for
 each SSM alignment of the moving scope for each permitted symmetry operation and alternative
