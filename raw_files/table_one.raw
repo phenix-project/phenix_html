@@ -53,7 +53,7 @@ header.  If the model was refined in phenix.refine and the full resolution
 range present in the data file was used, these should be nearly identical.
 For other programs such as REFMAC, there is typically a small margin of error
 (usually around one percent or less) due to implementation details.  In
-addition, for structures with small twin fractions which were did not use a
+addition, for structures with small twin fractions which did not use a
 twin target in refinement, phenix.model_vs_data may recalculate R-factors
 that are several percent lower.  In these cases it is better to use the values
 reported in the header, to avoid discrepancy between the article and the PDB
