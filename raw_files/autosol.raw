@@ -389,7 +389,11 @@ that their assignment is unknown.  The chainID for solvent molecules is
 normally S, and the chainID for heavy-atoms is normally Z.
 
 <P><LI>An mtz file for use in refinement
-(NOTE: not aniso corrected and not sharpened).
+NOTE 1 : not aniso corrected and not sharpened.
+NOTE 2:  Two sets of HL coefficients may be present.  Normally use HLA HLB etc .  However, if
+you supplied a model with input_partpdb_file=my_model.pdb then use instead HLanomA HLanomB.
+The reason is that HL coeffs contain phase information from my_model.pdb in this case and you
+do not want that information passed to your refinement program.
 <PRE style="face=courier"> overall_best_refine_data.mtz # F Sigma HL coeffs, freeR-flags for refinement
 </PRE>
 
@@ -402,7 +406,7 @@ normally S, and the chainID for heavy-atoms is normally Z.
 </PRE>
 
 <P><LI>Experimental phases and HL coefficients 
-(NOTE: These files be aniso-corrected and sharpened if remove_aniso=True)
+(NOTE: These files are aniso-corrected and sharpened if remove_aniso=True)
 <PRE style="face=courier">overall_best_hklout_phased.mtz # phases and HL coeffs for top solution
 </PRE>
 
