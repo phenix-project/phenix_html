@@ -32,11 +32,6 @@ can be specified externally (e.g. via the --symmetry option).
 Add H atoms to a model using phenix.reduce. All default parameters of
 phenix.reduce are used.
 
-**Perform model geometry regularization**
-
-Minimize geometry target to idealize bond lenghths, bond angles, planarities,
-chiralities, dihedrals, and non-bonded interactions.
-
 **Examples**
 
 **1)** Type ``phenix.pdbtools`` from the command line for instructions::
@@ -81,7 +76,3 @@ atoms::
 **6)** Add H atoms to a model::
 
   % phenix.pdbtools model.pdb --add_h output.file_name=model_h.pdb
-
-**7)** Model geometry regularization::
-
-  % phenix.pdbtools model.pdb --geometry_regularization
