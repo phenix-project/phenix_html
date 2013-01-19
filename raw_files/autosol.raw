@@ -391,11 +391,15 @@ normally S, and the chainID for heavy-atoms is normally Z.
 <P><LI>An mtz file for use in refinement
 NOTE 1 : not aniso corrected and not sharpened.
 NOTE 2:  Two sets of HL coefficients may be present.  Normally use HLA HLB etc .  However, if
-you supplied a model with input_partpdb_file=my_model.pdb then use instead HLanomA HLanomB.
+you supplied a model with input_partpdb_file=my_model.pdb then use instead HLanomA HLanomB etc.
 The reason is that HL coeffs contain phase information from my_model.pdb in this case and you
 do not want that information passed to your refinement program.
+
 <PRE style="face=courier"> overall_best_refine_data.mtz # F Sigma HL coeffs, freeR-flags for refinement
 </PRE>
+NOTE: if this is a SAD or MAD dataset then the overall_best_refine_data.mtz file will normally have
+your original anomalous data.For MAD data this will be from the wavelength of data with the 
+highest-resolution data present.
 
 <P><LI>Heavy atom sites in PDB format
 <PRE style="face=courier"> overall_best_ha_pdb.pdb # ha file for top solution
