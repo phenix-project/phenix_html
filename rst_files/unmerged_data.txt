@@ -24,7 +24,9 @@ small numerical differences (up to a  few tenths of a percent) may occur
 between the originally reported statistics in the processing logfiles, and the
 numbers reported by Phenix.
 
-**Important**: this document does not attempt to explain the mathematics or
+**Important**: we have provided a list of statistics with pointers to the
+relevant publications in the "Details" section, but this document does not
+attempt to explain the mathematics or
 logic behind the statistics calculated here.  We strongly recommend that you
 read the listed references; the publication(s) associated with the data
 processing software used may also be useful (see for example Evans (2011)).
@@ -140,6 +142,44 @@ data are included along with the merged data and R-free flags, the intensity
 merging statistics will be calculated from these instead of parsing the
 data processing logfiles.  We recommend that you use the unmerged data if
 available, as they are more reliably parsed than logfiles.
+
+Details for individual statistics
+---------------------------------
+
+Note that the programs listed above display slightly different subsets of
+these statistics.
+
+**Mean(I/sigmaI)**: the signal-to-noise ratio.  Traditionally the data are
+often cut off at the resolution where this statistic declines to 2, but this
+may exclude genuine measurements.
+
+**Redundancy** or **Multiplicity**: the average number of observations of
+each reflection.
+
+**R-merge** or **R-symm**: the simple merging R-factor for the multiple
+observations.  Ideally this should be as low as possible, but for reasons
+discussed in the listed references, using it as a resolution cutoff is
+problematic.  (Note that it will always increase significantly in the
+high-resolution shells.)
+
+**R-meas** or **R-rim**: an alternative to R-merge which is intended to be
+independent of redundancy.  See Diederichs & Karplus (1997) for explanation.
+
+**R-pim**: another alternative to R-merge, intended to show the precision of
+the measurements.  See Weiss (2001).
+
+**CC1/2**: the correlation of one half of the observations (chosen at random,
+but with approximately even distribution for each reflection) to the other
+half.  A similar statistic is used in electron microscopy; see Karplus &
+Diederichs (2012) for more information.
+
+**CC***: a modification of CC1/2, intended to show the true correlation of
+the observed data to the unknown "true" intensities.  Used in conjunction with
+CC(work) and CC(free).  See Karplus & Diederichs (2012).
+
+**CC(work)** and **CC(free)**: correlation of the observed intensities to the
+model-based intensities, for the work and test sets respectively.  Should be
+on the same scale as CC*.
 
 References
 ----------

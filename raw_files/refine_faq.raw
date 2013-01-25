@@ -55,7 +55,7 @@ benefit to model quality using one or the other with the default strategy.
 However, anomalous data may be used to refine anomalous scattering factors
 for heavy atoms, and anomalous difference map coefficients will automatically
 be created in the output MTZ file.  For these reasons, anomalous data are
-recommended.</p>
+recommended, but in general the R-factors will be similar.</p>
 <p><strong>Why does phenix.refine not use all data in refinement?</strong></p>
 <p>Reflections with abnormal values tend to reduce the performance of the
 refinement engine.  These are identified based on several criteria (see
@@ -65,6 +65,18 @@ You can prevent this by setting xray_data.remove_outliers=False.</p>
 <p>We recommend at least five to ensure convergence, but in some cases (especially
 poorly refined structures) considerably more may be required for optimal
 results.  (The default is three macro-cycles due to speed considerations.)</p>
+<p><strong>How should I decide what resolution limit to use for my data?</strong></p>
+<p>This is a contentious subject, and not settled, although it is widely agreed
+that throwing away usable data simply to reduce the R-factors is not an
+acceptable practice.  Traditional criteria for resolution limits include
+(among others) truncating the data at the resolution where the mean I/sigmaI
+falls below 2,
+but this may exclude valuable data.  See the documentation on <a class="reference" href="unmerged_data.htm">unmerged data</a> (especially the cited references) for more details.  In
+general it may be useful to include additional, weaker data in refinement in
+the final stages, since the weighting performed by maximum-likelihood
+refinement prevents these from degrading the model, and may improve it in
+some cases.  (Note that more data will also cause phenix.refine to take longer
+to run, which often imposes a practical limit on resolution.)</p>
 <P><H5><U><B>Restraints</B></U></H5><P>
 <p><strong>When should I optimize the geometry and/or B-factor restraint weights?</strong></p>
 <p>This may be beneficial if the automatic weighting does not pick a good scale
@@ -362,6 +374,13 @@ point for coordinates, two digits for B-factors and occupancy), the atomic
 properties recorded in the PDB file will not be exactly the same as their
 actual refined values.  In practice the difference in R-factors is
 statistically insignificant, however.</p>
+<p><strong>When should I perform anomalous group refinement?</strong></p>
+<p>This is most useful when you have a large number of strong anomalous
+scatterers, where map artifacts are common.  In such cases a more precise
+modeling of atomic scattering may improve the R-factors as well.  It is
+generally not necessary for routine cases, but it may be advantageous for
+identifying weak anomalous scatterers (such as ions from the crystallization
+condition) when used to calculate an LLG map at the end of refinement.</p>
 <P><H5><U><B>References</B></U></H5><P>
 <blockquote>
 <ul>
