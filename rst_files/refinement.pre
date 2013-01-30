@@ -1100,7 +1100,7 @@ The default parameters are a good starting point::
   % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
     reference_model.file=reference.pdb
 
-The default sigma value for these reference dihedral restraints is 1.0 Angstrom.
+The default sigma value for these reference dihedral restraints is 1.0 degrees.
 To increase the strength of these restraints, select a smaller sigma::
 
   % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
