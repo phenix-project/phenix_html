@@ -2086,6 +2086,19 @@ useful in everyday practice but handy for testing ideas.
  this document for definition of total structure factor, Fmodel). Expected
  refinement behavior: R-factors will drop from something big to zero.
 
+Automatic linking
+-----------------
+
+phenix.refine has an automatic option for generating links *within the same
+chain*. It will look for carbohydrate links, both within the sugar
+polymer and linking to the protein. Covalent bonded ligands can also be linked
+with this option.
+
+automatic_linking.intra_chain = True
+
+There are also options within the automatic_linking scope for various bond
+length cutoffs.
+
 CIF modifications and links
 ---------------------------
 
