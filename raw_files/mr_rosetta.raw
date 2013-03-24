@@ -471,7 +471,9 @@ this library and scons with:
 </PRE>
 </LI>
 <LI><P>In the scons command below the "-j2" means use 2 processors....adjust for 
-your system. Takes about 1 hour with 2 processors.
+your system. Takes about 1 hour with 2 processors.  Please note:  Do not move
+your Rosetta installation after compiling it.  The compilation builds in path
+names, and if you move the binaries to some other place it will not run.
 
 <PRE style="face=courier">
 cd rosetta_source

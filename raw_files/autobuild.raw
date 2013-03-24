@@ -888,9 +888,25 @@ The keyword &quot;find_ncs=False&quot; disables the finding of NCS from the
 models that are built and its use in density modification and model-building.
 The keyword &quot;refine_with_ncs=False&quot; disables finding NCS and its
 use in the refinement process. Together they prevent all use of NCS.
+
 <H5>Make a SA-omit map around atoms in target.pdb</H5><P>
 <PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb omit_box_pdb=target.pdb   composite_omit_type=sa_omit
 </PRE>
+Coefficients for the output omit map will be in the  file
+resolve_composite_map.mtz in the subdirectory OMIT/ .
+An additional map coefficients file omit_region.mtz will show you the
+region that has been omitted. 
+
+<H5>Make a SA-omit map around selected atoms in input model</H5><P>
+<PRE style="face=courier">phenix.autobuild data=data.mtz model=coords.pdb 
+composite_omit_type=sa_omit omit_region_specification=omit_selection omit_selection="chain J"
+</PRE>
+Note that the keyword omit_selection=xxx is required for this to work.  The selection can be any standard atom selection (chain J and resid 23).  The log file will have a line like:
+<PRE style="face=courier"> Identifying omit region from the PDB file  AutoBuild_run_14_/TEMP0/SELECTION.pdb
+</PRE>
+
+that lists a file containing atoms defining the omit region.
+
 Coefficients for the output omit map will be in the  file
 resolve_composite_map.mtz in the subdirectory OMIT/ .
 An additional map coefficients file omit_region.mtz will show you the
