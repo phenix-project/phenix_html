@@ -4,6 +4,7 @@ from libtbx.utils import Sorry, null_out
 from libtbx import easy_run
 import libtbx.load_env
 import shutil
+import time
 import os
 import re
 import sys
