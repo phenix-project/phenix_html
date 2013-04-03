@@ -99,7 +99,7 @@ highly parallel system.  However, we strongly recommend weight optimization in
 the final round of refinement, where it becomes essential to prevent
 overfitting.
 
-**How can I set the restraint weight manually?**
+**How can I set the target weights manually?**
 
 Our usual response is: don't do this manually, use the automatic optimization
 instead.  Although this takes significantly longer to run, in practice most
@@ -212,6 +212,44 @@ find the atom selections.  How do I remove the old custom restraints?**
 
 In the Utilities menu, select "Clear custom restraints."
 
+**I want my ligand geometry to be absolutely perfect with no deviation from
+the target value(s).  Can I just set the sigmas to zero or an extremely low
+value?**
+
+You cannot set the sigma to zero because the weight on the restraints is
+equal to 1/sigma^2.  A very low value will not crash, but it will almost
+certainly confuse the minimizer and result in a sub-optimal structure, because
+those restraints will dominate the target and gradients, forcing the minimizer
+to take inappropriately large steps.
+
+**One part of my structure is particularly poor; how can I make the
+geometry restraints tighter for only those atoms?**
+
+The parameter scope refinement.geometry_restraints.edits.scale_restraints
+allows you to upweight the restraints for the specified atom selection, for
+any combination of bond lengths, bond angles, dihedral angles, and chirality.
+For instance:
+
+  refinement.geometry_restraints.edits.scale_restraints {
+    atom_selection = "chain B"
+    scale = 2.5
+    apply_to = *bond *angle dihedral chirality
+  }
+
+You may specify multiple such parameter blocks.  The scale should be a
+relatively small number, typically less than 10 (you may also reduce the
+weight if you want).  Note that since this affects the path of the minimizer,
+the overall geometry RMSDs (and the deviations for restraints which were not
+scaled) will likely change as a result.
+
+**Can I make phenix.refine restrain the planarity of RNA/DNA base pairs?**
+
+At present this requires specifying each base pair individually as a custom
+planarity restraint (part of the parameter scope
+refinement.geometry_restraints.edits), which may be excessively time-consuming
+for large structures.  Automatic planarity restraints may be added in a future
+version.
+
 B-factors/ADPs/TLS
 ==================
 
@@ -288,6 +326,34 @@ individual ADPs at some point; ultimately the effect on R-factors (primarily
 R-free, but also the gap between R-work and R-free) is the most important
 guideline.
 
+Twinning
+========
+
+**I performed twin refinement and my R-free went down by 1%; does that mean
+my structure is twinned?**
+
+No, because R-factors calculated with and without twinning are not necessarily
+on the same scale.  In phenix.model_vs_data, the structure is only considered
+twinned if application of a twin law reduces R-work by at least 2%.  Note that
+if you specify twin_law=Auto, phenix.refine will use the same procedure to
+determine the twin law (if any).
+
+**My data has multiple twin laws; can I use these in Phenix?**
+
+Currently we only support a single twin law; programs capable of refining
+tetartohedrally twinned structures are REFMAC and SHELXL.
+
+**What are the disadvantages of twinned refinement?**
+
+In Phenix specifically, twinned refinement uses a least-squares (LS) target
+instead of the more powerful maximum likelihood target used for conventional
+refinement.  Additionally, twinned refinement makes no use of experimental
+phases (if available) as restraints.  Some refinement protocols may not work
+with twinning, although as of April 2013 most of these have been fixed.  More
+generally, the output map coefficients will have a significantly worse model
+bias problem than conventional maps; this effect increases as the twin fraction
+nears 0.5.
+
 Interpreting results
 ====================
 
@@ -301,6 +367,17 @@ As a general rule, R-factors alone should not be used to decide if a
 structure is "done", but should be examined in combination with the
 validation report.
 
+**I solved my structure by MR and refined, and the R-free is 45%.  The maps
+are messy and I see a lot of difference density, but none around my molecule.
+Why isn't refinement working?**
+
+This frequently indicates that too few copies of the structure were placed by
+MR, and an additional chain needs to be added.  Remember that the predictions
+of unit cell contents based on the Matthews coefficient (performed by 
+`Xtriage <xtriage_gui.htm>`_, for example) only provide an estimate, not an
+exact answer.  At high resolution a solvent content of 40% or less is quite
+common.
+
 **My resolution is X Angstroms, the structure is complete and
 well-validated, the maps look great, bu my R and R-free are still really
 high.  How can I make them lower?**
@@ -310,8 +387,8 @@ There are several possible explanations for this:
   - Twinning with a relatively small twin fraction (perhaps 10%) may not
     obviously affect map quality, but can still have a significant impact
     on R-factors.  Run `Xtriage <xtriage_gui.htm>`_ to look for evidence
-    of twinning, and possible twin laws for using in phenix.refine.  (Note
-    that we currently only support a single twin domain in refinement.)
+    of twinning, and possible twin laws for using in phenix.refine.  (As noted
+    above, however, only one twin law may be used at a time.)
   - Undiagnosed translational NCS (AKA translational pseudosymmetry) can
     have a similar effect.  In this case, the diffraction images may have
     been processed incorrectly, thus missing the fainter spots that result
@@ -394,9 +471,9 @@ since phenix.refine does not take electrostatics into account.
 **I can't see density for an arginine sidechain beyond the C-gamma atom.  How
 should I model it?**
 
-Opinion in the crystallography differs on the proper approach to disordered
-sidechains, with significant support for both of the following methods voiced
-on the PHENIX and CCP4 mailing lists:
+Opinion in the crystallography community differs on the proper approach to
+disordered sidechains, with significant support for both of the following
+methods voiced on the PHENIX and CCP4 mailing lists:
 
   - Delete all atoms not visible in density, but leave the residue name alone.
     This is arguably the most conservative approach, as it avoids modeling any
@@ -442,7 +519,19 @@ scatterers, where map artifacts are common.  In such cases a more precise
 modeling of atomic scattering may improve the R-factors as well.  It is
 generally not necessary for routine cases, but it may be advantageous for
 identifying weak anomalous scatterers (such as ions from the crystallization
-condition) when used to calculate an LLG map at the end of refinement.
+condition) when used to calculate an anomalous log-likelihood gradient (LLG) or
+residual map at the end of refinement.
+
+**Why does phenix.refine give me a different R-factor than program X?**
+
+There are many explanations for this.  Even without minimization, the bulk
+solvent and scaling methods alone may account for as much as a 1% difference
+or more in calculated R-factors.  For refinement results, the differences in
+target functions, restraints, and minimizers may be significant.  In some cases
+the explanation is as simple as running too few cycles of refinement for one
+or the other program.  In general, if you find a case where phenix.refine
+performs significantly worse than another program, we encourage you to contact
+us at bugs@phenix-online.org.
 
 References
 ==========
