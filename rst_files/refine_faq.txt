@@ -228,7 +228,7 @@ geometry restraints tighter for only those atoms?**
 The parameter scope refinement.geometry_restraints.edits.scale_restraints
 allows you to upweight the restraints for the specified atom selection, for
 any combination of bond lengths, bond angles, dihedral angles, and chirality.
-For instance:
+For instance::
 
   refinement.geometry_restraints.edits.scale_restraints {
     atom_selection = "chain B"
