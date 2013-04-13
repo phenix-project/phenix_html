@@ -329,7 +329,7 @@ solutions can be displayed with "display_solutions=True".  Existing
 solutions are stored as "mr_rosetta_solution" objects which keep track 
 of the model and its history, the map_coefficients and labels, etc.
 These can be read in to mr_rosetta with the 
-keyword &quot;rosetta_solutions=results.pkl&quot; and used as inputs for
+keyword &quot;mr_rosetta_solutions=results.pkl&quot; and used as inputs for
 subsequent runs, starting at any step that can use those solutions.
 
 <p>NOTE: 
