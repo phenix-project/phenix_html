@@ -250,7 +250,8 @@ structure.
 groups of inputs, one for each crystal.)
 </LI>
 <LI>If the NCS asymmetric unit of your crystal contains
-more than one chain, phenix.multi_crystal_average will consider it to have more than one
+more than one type of chain, 
+phenix.multi_crystal_average will consider it to have more than one
 domain. This limitation comes from phenix.simple_ncs_from_pdb, which assigns
 one NCS group to each unique chain in the NCS asymmetric unit.  If you would
 like phenix.multi_crystal_average to consider several chains as a single NCS group, then
@@ -263,7 +264,8 @@ to do this.
 
 <LI>
 If your NCS asymmetric unit has more than one domain (more than
-one chain, or else multiple domains within a chain that have different
+one type of chain chain, or else multiple domains within a 
+chain that have different
 arrangements in different NCS asymmetric units) then 
 phenix.multi_crystal_average requires
 that you provide map coefficients for all crystals. This is because 
@@ -274,7 +276,7 @@ in RESOLVE.)  Therefore if you don't provide map coefficients for one
 crystal then it does not have a way to individually identify the region
 occupied by each domain in the  NCS asymmetric unit for
 that crystal. This isn't a problem if there are not multiple domains or
-chains in the NCS asymmetric unit because the automatic method for
+types of chains in the NCS asymmetric unit because the automatic method for
 generation of the NCS asymmetric unit can be used.
 
 <LI>
