@@ -85,6 +85,24 @@ refinement prevents these from degrading the model, and may improve it in
 some cases.  (Note that more data will also cause phenix.refine to take longer
 to run, which often imposes a practical limit on resolution.)
 
+**Is it okay to refine against data that have been modified by anisotropic
+scaling or ellipsoidal truncation?**
+
+There is no technical reason why this is impossible.  However, modified data
+should be used with extreme caution for several reasons:
+
+  - phenix.refine already performs anisotropic scaling internally and will
+    correct the output map coefficients for anisotropy, so the pre-scaling
+    should be redundant.
+  - Because phenix.refine (like REFMAC) by default substitutes F-calc for
+    missing reflections when calculating 2mFo-DFc and similar map coefficients,
+    ellipsoidal truncation will result in eliminated high-resolution
+    reflections being replaced by F-calc in the maps.  This will always make
+    the maps look better, because they are more biased to the model!
+  - Even if you do choose to refine against anisotropically scaled data, you
+    should always deposit the original, unmodified data in the PDB upon
+    publication.
+
 Restraints
 ==========
 
@@ -413,6 +431,13 @@ rebuilding first.  *(Note that if the large R/R-free gap suddenly appears
 after refinement of a model that was previously not overfit, this usually
 indicates incorrect parameterization of the refinement, e.g. using
 anisotropic ADPs at an inappropriate resolution.)*
+
+**Why am I seeing negative blobs in the difference (mFo-DFc) map in hydrophobic
+voids?**
+
+This is due to the bulk solvent mask being extended to include these regions.
+The effect is mainly aesthetic; it should not hurt refinement in general.
+We hope to fix this in future versions of Phenix.
 
 Hydrogens
 =========
