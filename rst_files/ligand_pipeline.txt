@@ -83,14 +83,23 @@ copies will be determined automatically by Xtriage (``copies=Auto``), but
 since this will occasionally guess too few copies, you can explicitly set
 the search number instead (e.g. ``copies=2``).  If Phaser finds fewer copies
 than expected, the number of expected ligands will automatically be adjusted.
+Non-water heteroatoms will be preserved at their original occupancies, but
+alternate conformations will be removed.  The model will also be processed
+with `Sculptor <sculptor.htm>`_ to ensure that all residues match the target
+sequence.
+
+If you want to preserve a specific placement or orientation of the MR solution,
+you can specify a previously determined model by passing the
+reference_structure parameter.
 
 **Initial refinement**.  The MR solution (or starting model, if MR was not
 performed) will be refined using a relatively conservative resolution-dependent
-strategy, typically including rigid-body refinement, rotamer fitting,
+strategy, by default rotamer fitting,
 real-space and reciprocal-space coordinate minimization, individual B-factor
-refinement, and TLS groups.  Torsion NCS will be used if appropriate.  Water
-molecules will not be added at this stage because they interfere with the
-difference map required for ligand fitting.  Simulated annealing may be run
+refinement, and TLS groups.  Torsion NCS will be used if appropriate.
+Rigid-body refinement will be used if Phaser was not previously run.  Water
+molecules will be added if the resolution is sufficient, but these will be
+removed prior to ligand fitting.  Simulated annealing may be run
 if desired (``anneal=True``), but this will significantly increase the
 runtime.  Because rapid convergence is more important at this point than
 ideal geometry, weight optimization will not be used by default.
@@ -268,6 +277,13 @@ Limitations
   input model; in these cases, you should add keep_hetatms=True to instruct
   Phaser to leave the occupancies unmodified.  Any additional ligands will
   need to be placed after the final refinement.
+
+- Multiple stereoisomers will need to be screened independently; the program
+  does not currently have the ability to evaluate different chiral forms.
+
+- Covalently bound ligands may be placed correctly, but the covalent linkage
+  will not be handled, and nonbonded forces may distort binding.  Additionally,
+  the ligand parameterization may be based on the unbound molecule.
 
 - Structures such as HIV protease which exhibit symmetry binding of inhibitors
   will not be handled properly.
