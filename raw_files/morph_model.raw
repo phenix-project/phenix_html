@@ -79,6 +79,16 @@ calculating a new map.  If you specify update_map=True (default) then
 new maps will be calculated on each subsequent cycle. If you specify
 update_map=False then your map will be used throughout.
 
+<P><H5>Morphing just part of a model</H5><P>
+You can morph just one part of your model if you want.  
+You can specify it like this:
+<PRE style="face=courier">
+phenix.morph_model data=coords1.mtz \
+   model=coords1.pdb morph_selection="chain A"
+</PRE>
+The remainder of the model will be refined but not morphed.  
+</P>
+
 <P><H5>Getting a default parameters file for morph_model</H5><P>
 <p>Usually you will want to edit a parameters file so that you can specify more
 details of the run. You can get a default parameters file with:
