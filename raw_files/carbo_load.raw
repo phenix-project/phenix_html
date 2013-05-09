@@ -1,0 +1,59 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>CarboLoad</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<P><H5><U><B>Overview</B></U></H5><P>
+<p>CarboLoad will load carbohydrates into your model. It can be used in several
+modes. The first mode is designed to find all possible N-linking sites.</p>
+<p>phenix.carbo_load model.pdb</p>
+<p>will output a list of all ASN residues that are in the motif for N-linking to
+carbohydrates.</p>
+<a class="target" id="input-files" name="input-files"></a></div>
+<P><H5><U><B>Input files</B></U></H5><P>
+<p>CarboLoad requires a number of inputs and also has some options, all of which
+are provided using the <tt class="docutils literal"><span class="pre">phil</span></tt> formalism. The list of
+required inputs:</p>
+<blockquote>
+<ul>
+<li><strong>protein_pdb_file_name</strong>: this is a file containing the protein
+model of current interest into which the carbohydrates will be loaded. It is
+best to have a CRYST1 record in place.</li>
+<li><strong>map_coeffs_file_name</strong>: this is a maps coefficients file output from
+a <tt class="docutils literal"><span class="pre">phenix.refine</span></tt> run.</li>
+<li><strong>data_file_name</strong>: a data file. A maps coefficients file is saved for
+possible use in subsequent runs as it saves time.</li>
+</ul>
+</blockquote>
+<p>The input for the carbohydrates can be either a string on the command-line or
+a file name containing the allowable formats.</p>
+<blockquote>
+<ul>
+<li><strong>carbohydrate_file_name</strong>: this is a file containing chemical information
+about the carbohydrates.<ol class="arabic">
+<li>GlycoCT : ????</li>
+<li>Simplified residue names : The majority of carbohydrates linked to proteins
+a N-linked shorted polymers of high mannose. The add the first three units
+the parameters can be set to &quot;NAG-NAG-MAN&quot;. More details are available here.</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<p>Optional inputs include:</p>
+<blockquote>
+<ul>
+<li><strong>output.file_name</strong>: Name of the output files.</li>
+</ul>
+</blockquote>
+<P><H5><U><B>Output files</B></U></H5><P>
+<p>By default, CarboLoad will generate a PDB file with the loaded carbohydrates and
+the linking files. These are no longer required by <tt class="docutils literal"><span class="pre">phenix.refine</span></tt> but are
+instructive.</p>
+<P><H5><U><B>References</B></U></H5><P>
+<p>GlycoCT...</p>
+<!--REMARK PHENIX BODY END-->

@@ -1,0 +1,61 @@
+=========
+CarboLoad
+=========
+
+Overview
+--------
+
+CarboLoad will load carbohydrates into your model. It can be used in several
+modes. The first mode is designed to find all possible N-linking sites.
+
+phenix.carbo_load model.pdb
+
+will output a list of all ASN residues that are in the motif for N-linking to
+carbohydrates.
+
+.. _input-files:
+
+Input files
+-----------
+
+CarboLoad requires a number of inputs and also has some options, all of which
+are provided using the ``phil`` formalism. The list of
+required inputs:
+
+  - **protein_pdb_file_name**: this is a file containing the protein
+    model of current interest into which the carbohydrates will be loaded. It is
+    best to have a CRYST1 record in place.
+
+  - **map_coeffs_file_name**: this is a maps coefficients file output from
+    a ``phenix.refine`` run.
+
+  - **data_file_name**: a data file. A maps coefficients file is saved for
+    possible use in subsequent runs as it saves time.
+
+The input for the carbohydrates can be either a string on the command-line or
+a file name containing the allowable formats.
+
+  - **carbohydrate_file_name**: this is a file containing chemical information
+    about the carbohydrates.
+
+    1. GlycoCT : ????
+
+    2. Simplified residue names : The majority of carbohydrates linked to proteins
+       a N-linked shorted polymers of high mannose. The add the first three units
+       the parameters can be set to "NAG-NAG-MAN". More details are available here.
+
+Optional inputs include:
+
+  - **output.file_name**: Name of the output files.
+
+Output files
+------------
+
+By default, CarboLoad will generate a PDB file with the loaded carbohydrates and
+the linking files. These are no longer required by ``phenix.refine`` but are
+instructive.
+
+References
+----------
+
+GlycoCT...

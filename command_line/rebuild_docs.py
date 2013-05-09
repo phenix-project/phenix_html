@@ -43,7 +43,7 @@ def run (out=None, log=None) :
   print >> out, "  building HTML files from restructured text files"
   rst_files = os.listdir(rst_dir)
   html_files = []
-  for file_name in rst_files :
+  for file_name in sorted(rst_files):
     if (not file_name.endswith(".txt")) : continue
     disable = ("disable_rst2html" in open(file_name).read())
     if (not disable) :

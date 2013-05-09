@@ -42,6 +42,8 @@ about the ligand.</li>
 <li><strong>ligand_cif_file_name</strong>: this is the
 of a ligand restraints file for the RSR step. If not supplied, the 
 restraints are generated from <strong>ligand_input_file_name</strong>.</li>
+<li><strong>ligand_code</strong>: the ligand code from the PDB Chemical Components so that
+restraints and geometry can be generated.</li>
 </ul>
 </blockquote>
 <p>Optional inputs include:</p>

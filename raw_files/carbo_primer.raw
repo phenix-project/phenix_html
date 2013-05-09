@@ -1,0 +1,61 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>PHENIX Documentation Home</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<P><H5><U><B>Introduction</B></U></H5><P>
+<p>A carbohydrate is an organic compound with the empirical formula C<sub>m</sub>(H<sub>2</sub>O)<sub>n</sub>where m could be different from
+n. Synonym of saccharide. Sacharrides have several characters that
+differenciate them. These include</p>
+<blockquote>
+<ul>
+<li>placement of carbonyl group</li>
+<li>length of the carbon chain</li>
+<li>sequence of chiral centres</li>
+<li>handedness of the molecule</li>
+<li>linear or cyclic</li>
+</ul>
+</blockquote>
+<p>Cyclic saccharides are classified as alpha or beta isomers based on the
+position of the OH on the anomeric carbon relative to the large group on
+the ring.</p>
+<div class="image"><img alt="images/Alpha-D-glucopyranose-2D-skeletal.png" src="images/Alpha-D-glucopyranose-2D-skeletal.png" width="300" /></div>
+<div class="image"><img alt="images/Beta-D-glucopyranose-2D-skeletal.png" src="images/Beta-D-glucopyranose-2D-skeletal.png" width="300" /></div>
+<P><H5><U><B>Protein Chemistry</B></U></H5><P>
+<p>If your protein was produced in an insect or yeast cell
+line, you should only have NAG and MAN sugars, otherwise
+you should look at both types of PDB files to see which
+fits the density better (if you have any density past the
+main, five sugar core).</p>
+<P><H5><U><B>MAN</B></U></H5><P>
+<p>Mannose is a common saccharide in protein chemistry. There are two linear 
+isomers and two cyclic forms of each. The PDB code for each is different
+because of the different restraints require for each. A leading form of error
+in protein models with carbohydrates is the use of the three-letter code, MAN,
+which is for the alpha-D-mannose when that vast majority of the saccharides are
+beta-D-mannose or BMA.</p>
+<div class="image"><img alt="images/man.png" height="500" src="images/man.png" /></div>
+<P><H5><U><B>NAG</B></U></H5><P>
+<p>NAG represents the beta form (the most common) and NDG is the alpha form. NAG
+is interesting because it is a saccharide with a substituent attached to the 
+C2 carbon.</p>
+<div class="image"><img alt="images/nag.png" height="500" src="images/nag.png" /></div>
+<P><H5><U><B>Polysaccharides</B></U></H5><P>
+<p>Saccharides polymerise into tree like structures that covalently bind to
+proteins. The links between are generally between the anomeric carbon and 
+an oxygen on the &quot;preceeding&quot; units moving from the protein outwards on the
+chain. Consider the disacchride, lactose.</p>
+<div class="image"><img alt="images/lactose.png" height="500" src="images/lactose.png" /></div>
+<p>Note that the left saccharide is linked with its anomeric carbon via an oxygen
+to the C4 carbon. The left unit is β-D-galactose and the right is glucose.
+The link is known as β-(1-4) because the &quot;attaching&quot; unit is β and the
+it links C1 to C4.</p>
+<P><H5><U><B>Protein links</B></U></H5><P>
+<p>The most common link to proteins is the n-link which attachs to ASN in the
+ASN-X-SER/THR motif.</p>
+<!--REMARK PHENIX BODY END-->
