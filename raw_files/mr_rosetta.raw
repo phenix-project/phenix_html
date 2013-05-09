@@ -983,6 +983,17 @@ You can do a test of mr_rosetta to make sure everything is ok with:
 
 <P><H5><U>Possible Problems</U></H5><P>
 
+<P><H5>Environment problems when running mr_rosetta</H5><P>
+
+If you get an error message something like ...
+
+/opt/rosetta3.4/rosetta_source/bin/mr_protocols.default.linuxgccrelease: error while loading shared libraries: libprotocols.7.so: cannot open shared object file: No such file or directory"
+
+this can mean that the LD_LIBRARY_PATH is not correctly interpreted by mr_rosetta.  Try running this command just before running phenix, or put in your
+bash.bashrc file (if using sh/bash) or .cshrc file (if using csh):
+
+   PHENIX_TRUST_OTHER_ENV="yes"  
+
 <P><H5>Debugging problems with running mr_rosetta</H5><P>
 
 If mr_rosetta fails, the first thing (after just checking the commands you 
