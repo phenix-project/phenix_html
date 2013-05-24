@@ -38,11 +38,18 @@ a file name containing the allowable formats.
   - **carbohydrate_file_name**: this is a file containing chemical information
     about the carbohydrates.
 
-    1. GlycoCT : ????
+    1. GlycoCT : This can be generated using the `Carbohydrate Builder`_
+       in REEL.
 
-    2. Simplified residue names : The majority of carbohydrates linked to proteins
-       a N-linked shorted polymers of high mannose. The add the first three units
-       the parameters can be set to "NAG-NAG-MAN". More details are available here.
+    2. `Simplified Carbohydrate Line-Entry System (SCaLES)`_ : The
+       majority of carbohydrates linked to proteins a N-linked shorted
+       polymers of high mannose. The add the first three units the
+       parameters can be set to "NAG-NAG-MAN". More details are
+       available here_.
+
+.. _`Carbohydrate Builder` : carbo_builder.htm
+.. _`Simplified Carbohydrate Line-Entry System (SCaLES)`: scales.htm
+.. _here: scales.htm
 
 Optional inputs include:
 
