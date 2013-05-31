@@ -17,7 +17,7 @@ Keywords
 --------
 
 A list of keywords and concise help can be obtained by typing: ``iotbx.explore_metric_symmetry`` ::
- 
+
   options:
     -h, --help            show this help message and exit
     --unit_cell=10,10,20,90,90,120|FILENAME
@@ -76,12 +76,12 @@ matches for the large unit cell are sought.
 If desired, the larger unit cell can be expanded as well using the keyword
 ``max_order``.
 
-The tolerances in the unit cell comparison can be changed form their defaults 
-(10% on the lengths and 20 degrees on the angles)  
+The tolerances in the unit cell comparison can be changed form their defaults
+(10% on the lengths and 20 degrees on the angles)
 using the keywords ``relative_length_tolerance`` and ``absolute_angle_tolerance``.
 
 Construction of a point group graph can be skipped using the key
-``no_point_group_graph``. 
+``no_point_group_graph``.
 
 
 Examples
@@ -92,11 +92,11 @@ Constructing a point group graph given some basic information::
   iotbx.explore_metric_symmetry --unit_cell="20,30,40,90,90,90" --centring_type=P
 
 All point groups between ``P 1`` and ``P 2 2 2`` will be listed
- 
+
 Comparing two related unit cells can be done using::
 
   iotbx.explore_metric_symmetry --unit_cell="20,30,40,90,90,90" --centring_type=P --other_unit_cell="40,80,60,90,90,90" --other_centring_type=F
- 
+
 
 
 

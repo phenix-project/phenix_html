@@ -17,8 +17,8 @@ A common and compact molecule specification format is known as SMILES
 and the bonds (both implicit and explicit) of a molecule. Branches and
 rings can also be specified.
 
-\ 
-\ 
+\
+\
 
 Because protein crystallographers are conversant with the concept of
 residues and polysaccharides are polymers of various carbohydrate
@@ -30,8 +30,8 @@ there are more types of links compared to the basic three in molecules
 (single, double, triple).  Secondly, the type of the link relies on
 the attaching carbohydrate (|agr|, |bgr|).
 
-\ 
-\ 
+\
+\
 
 Conceptually, it is easiest to think of one sugar unit linking to the
 rest of the polysaccharide. For instance, this is the portion that
@@ -68,10 +68,10 @@ indicated thus:
 The hand of the linkage can be specified with "a" or "alpha" and the carbon
 atoms being linked can be specified using "(1-4)" or "(1,4)".
 
-\ 
-\ 
+\
+\
 
-Branching is specified using square brackets (compared to parenthesises in 
+Branching is specified using square brackets (compared to parenthesises in
 SMILES) thus:
 
   `NAG-[a-(1-6)-FUC]-NAG-BMA`_
@@ -79,13 +79,13 @@ SMILES) thus:
 .. _`NAG-[a-(1-6)-FUC]-NAG-BMA` : images/scales_carbo4.png
 
 The branching can contain more than one saccharide:
-    
+
   `NAG-NAG-BMA-[a-(1-3)-MAN-a-(1-2)-MAN-a-(1-2)-MAN]-a-(1-6)-MAN-[a-(1-3)-MAN-a-(1-2)-MAN]-a-(1-6)-MAN-a-(1-2)-MAN`_
 
 .. _`NAG-NAG-BMA-[a-(1-3)-MAN-a-(1-2)-MAN-a-(1-2)-MAN]-a-(1-6)-MAN-[a-(1-3)-MAN-a-(1-2)-MAN]-a-(1-6)-MAN-a-(1-2)-MAN` : images/scales_carbo5.png
 
 .. [#] This is not exactly true so read on for pedagogical purposes.
-.. [#] This links to an image of the polysaccharide generated in 
+.. [#] This links to an image of the polysaccharide generated in
        `Carbohydrate Builder`_ in REEL.  For more details on the builder
        and the image see here_\ .
 

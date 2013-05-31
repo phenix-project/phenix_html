@@ -17,11 +17,11 @@ For non-covalent ligands (excluding waters) it is recommended to use harmonic re
 % phenix.ensemble_refinement model.pdb data.mtz er_harmonic_restraints_selections=’resname PO4 and element P’
 
 **Parameter Optimisation**
-There are three main empirical parameters should be optimised. 
+There are three main empirical parameters should be optimised.
 
 **(1)** pTLS:
 
-% phenix.ensemble_refinement x.pdb x.mtz ptls=0.7 
+% phenix.ensemble_refinement x.pdb x.mtz ptls=0.7
 
 Defines the fraction of atoms included in the TLS fitting procedure (see Burnley et al. 2012).  The optimum value for this parameter cannot be determined a priori.  Setting up an array of simultaneous simulations with different values (e.g. 1.0, 0.9, 0.8, 0.6) is recommended.  By default the TLS groups are applied to each separate chain. TLS groups can be user defined using:
 
@@ -43,9 +43,8 @@ The non-conservative X-ray force generates heat (see Burnley et al 2012), thus a
 
 % phenix.ensemble_refinement x.pdb x.mtz tx=1.0
 
-The relaxation time (or memory time) in picoseconds of the time-averaged restraints used in the simulation.  As tx increases more structures contribute to the target function (see Burnley et al. 2012 for more details) and the optimum value is correlated with resolution (see Burnley et al. 2012). If tx is not defined (tx = None) a value will be automatically selected based on the dataset resolution.  Values of 2 x automated Tx and 0.5 x automated Tx may also be tested. N.B. the simulation time is based on tx, larger values of tx will produce longer simulations.  
+The relaxation time (or memory time) in picoseconds of the time-averaged restraints used in the simulation.  As tx increases more structures contribute to the target function (see Burnley et al. 2012 for more details) and the optimum value is correlated with resolution (see Burnley et al. 2012). If tx is not defined (tx = None) a value will be automatically selected based on the dataset resolution.  Values of 2 x automated Tx and 0.5 x automated Tx may also be tested. N.B. the simulation time is based on tx, larger values of tx will produce longer simulations.
 
 The default parameters have been set to give best as possible results.  However, it is strongly recommend that pTLS is optimised on a case by base basis and it may be necessary to optimise the temperature bath offset followed by tx.
 
 List of all ensemble_refinement keywords:
-
