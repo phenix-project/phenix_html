@@ -52,9 +52,11 @@ means that the link will be |bgr|\ (2-n).
 \ 
 \ 
 
-When displaying the polysaccharide on a canvas, however, this distinction is 
-difficult to visualise so we have taken the liberty of reversing the indices. 
-This means that the first index is related to the parent unit while the second
+When displaying the polysaccharide on a canvas, however, this
+distinction is difficult to visualise. The default display layout is
+Bottom/Up so the bottom-most unit is usually linked to the protein and
+considered the parent unit. 
+This means that the second index is related to the parent unit while the first
 index is related to the attaching or child unit. Clicking on the bond should
 clear up this distinction.
 
