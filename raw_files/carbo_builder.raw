@@ -1,0 +1,55 @@
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>Carbohydrate Builder</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+<p>To get to the Carbohydrate Builder, start REEL (cross ref) and use the pull-down
+menu to open the builder window.</p>
+<div class="image"><img alt="images/carbo_builder_main.png" src="images/carbo_builder_main.png" width="800" /></div>
+<p>The toolbar across the top of the window contains the following widgets:</p>
+<blockquote>
+<ul>
+<li>About button</li>
+<li>Buttons for adding common saccharide units including Mannose, Fucose and
+NAG.</li>
+<li>Open a GlycoCT format file onto the canvas</li>
+<li>Add a unit to the canvas using the PDB residue code</li>
+<li>Save the polysaccharide on the canvas as a GlycoCT file, PNG, .dot or .ps</li>
+<li>Select a grid position system</li>
+</ul>
+</blockquote>
+<p>The toolbar across the bottom contains the following widgets:</p>
+<blockquote>
+<ul>
+<li>Show/Hide a window displaying the GlyoCT format of the polysaccharide on the canvas.</li>
+<li>Enter a SCaLES string to load a new polysaccharide or select from the pop-up
+menu of preloaded strings.</li>
+<li>SCaLES help (more details <a class="reference" href="scales.htm">here</a>).</li>
+</ul>
+</blockquote>
+<p>Polysaccharides are displayed on the canvas using a simple design.</p>
+<div class="image"><img alt="images/carbo_builder_nag_nag_man.png" src="images/carbo_builder_nag_nag_man.png" width="800" /></div>
+<p>One aspect of the display that may cause confusion is the labeling of
+the linkage. This confusion is based on the confusing syntax
+adopted. The nomenclature β(1-4) or b(1-4) means that the
+attaching unit is linking its C1 carbon to the C4 carbon on the other unit via
+an oxygen on the β configuration on the attaching carbon. The C1 carbon
+is the anomeric carbon in most cases. In some cases, it is the C2 carbon which
+means that the link will be β(2-n).</p>
+<P><H5><U><B></B></U></H5><P>
+<p>When displaying the polysaccharide on a canvas, however, this
+distinction is difficult to visualise. The default display layout is
+Bottom/Up so the bottom-most unit is usually linked to the protein and
+considered the parent unit. 
+This means that the second index is related to the parent unit while the first
+index is related to the attaching or child unit. Clicking on the bond should
+clear up this distinction.</p>
+<p>As can be deduced from the widgets, sugar units can be added singly or en mass.
+Single units are linked to the highlighted unit on the canvas using the default
+linkage (beta(1-4))</p>
+<!--REMARK PHENIX BODY END-->

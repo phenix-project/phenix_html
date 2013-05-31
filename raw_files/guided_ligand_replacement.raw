@@ -15,7 +15,7 @@ knowledge from a previously fit ligand to expedite the fitting of a
 required between the pair of ligands can be as little as a few atoms.</p>
 <p>The proteins are overlayed using <tt class="docutils literal"><span class="pre">phenix.superpose_pdbs</span></tt>. The ligands
 are matched using the electronic Ligand Builder and Optimization
-Workbench (eLBOW) via another tool called <tt class="docutils literal"><span class="pre">phenix.superpose_ligands</span></tt>. 
+Workbench (eLBOW) via another tool called <tt class="docutils literal"><span class="pre">phenix.superpose_ligands</span></tt>.
 Once the ligand has been fit, a Real-Space Refinement (RSR) is
 performed and the final model written to disk.</p>
 <a class="target" id="input-files" name="input-files"></a></div>
@@ -40,7 +40,7 @@ Either or both of the following phil parameters can be used.</p>
 <li><strong>ligand_input_file_name</strong>: this is a file containing chemical information
 about the ligand.</li>
 <li><strong>ligand_cif_file_name</strong>: this is the
-of a ligand restraints file for the RSR step. If not supplied, the 
+of a ligand restraints file for the RSR step. If not supplied, the
 restraints are generated from <strong>ligand_input_file_name</strong>.</li>
 <li><strong>ligand_code</strong>: the ligand code from the PDB Chemical Components so that
 restraints and geometry can be generated.</li>
@@ -52,6 +52,9 @@ restraints and geometry can be generated.</li>
 <li><strong>ligand_selection_in_guide_model</strong>: this selects a ligand in the guiding
 model. While GLR tries to make a sensible selection based on ligand code
 or uniqueness, it may be necessary to make an explicit selection.</li>
+<li><strong>replace_ligand_in_guide_pdb_file_name</strong>: replace the ligand in the
+guiding protein model with the input ligand. Useful for 'repairing'
+ligands.</li>
 <li><strong>phenix.superpose_pdbs</strong>: this allows selection of the same parameters
 as in the standalone program.</li>
 </ul>
