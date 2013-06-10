@@ -1,0 +1,182 @@
+=================================================================
+Molecular replacement, refinement, and rebuilding (RanGDP mutant)
+=================================================================
+
+*We are grateful for Murray Stewart (MRC LMB, Cambridge) for this example.
+Original publication: `Kent et al. (1999)  J. Mol. Biol. 289:565-577.
+<http://www.ncbi.nlm.nih.gov/pubmed/10356329>`_ (PDB ID: `1qg2
+<http://www.rcsb.org/pdb/explore/explore.do?structureId=1QG2>`_)*
+
+Overview
+--------
+
+This tutorial is intended for users who are completely unfamiliar with
+macromolecular crystallography and/or Phenix.  It outlines the procedure for
+solving a structure by molecular replacement, performing initial refinement,
+and rebuilding the structure in Coot.  Because the structure involved
+(Ran-GDP R76E mutant) is relatively small and moderate resolution, it can be
+significantly improved in a reasonable amount of time without much difficulty.
+You should first read the documentation for the `Phenix GUI <phenix_gui.htm>`_
+before running this tutorial.
+
+As with other Phenix tutorial datasets, you can automatically set up a project
+with the necessary files from the GUI; the example will be listed in the
+"Molecular replacement" category of the example menu.
+
+  .. image:: images/rangdp_setup.png
+
+There will be three input files for this project: the experimental data and
+R-free flags (MTZ format), the wild-type RanGDP used as a search model for
+MR (PDB format), and the sequence (FASTA format).
+
+Step 0: Xtriage
+---------------
+
+This step is not strictly necessary to solve the structure, but is strongly
+recommended for any dataset that you are unfamiliar with, especially if you
+are unsure whether and/or how the structure can be solved.  Launch `Xtriage
+<xtriage_gui.htm>`_ by clicking the icon under "Reflection tools" in the main
+GUI.  Only the MTZ and FASTA files are used as input for this example (the
+"Reference PDB file" option only applies for models which have already been
+placed correctly and refined agains the data).
+
+  .. image:: images/rangdp_xtriage.png
+
+Once you have entered the files, click the Run button to start Xtriage.  The
+program should finish in a few seconds.  Take some time to look through the
+result tabs and familiarize yourself with the statistics reported here.  Since
+this is high-quality data, there is nothing that requires special handling.
+(We usually recommend using the original intensities - ideally unmerged - for
+Xtriage, but since only amplitudes are available for this dataset those can
+be used instead.)  Note that based on the sequence, Xtriage has (correctly)
+suggested that only one copy is present in the asymmetric unit (ASU) of the
+crystal.
+
+  .. image:: images/rangdp_xtriage_result.png
+
+Step 1: Phaser-MR
+-----------------
+
+To solve the structure we will use the simple `Phaser-MR <phaser_mr.htm>`_ GUI,
+which should be the first program in the "Molecular replacement" category.
+This interface is suitable for structures where we only need to use a single
+search model.  All three files (MTZ, PDB, and FASTA) should be used as input.
+(The sequence is optional; we could instead enter the expected molecular weight
+or let Phaser guess based on the ensemble, but it is safer and simpler to
+supply detailed information.)
+
+  .. image:: images/rangdp_phaser_config.png
+
+In the "Sequence identity" field, enter "99" (the search model differs in
+sequence by only a single residue, although some local conformational
+differences exist.)  All other settings can be left on default for this run.
+Again, click "Run" to start Phaser; this should take several minutes.  You
+can watch the status window to see how molecular replacement is proceeding;
+we recommend familiarizing yourself with the log output.
+
+  .. image:: images/rangdp_phaser_run.png
+
+Phaser will open a new tab displaying the results when the job is finished.
+There are several obvious clues that model placement and phasing was
+successful:
+
+  - The **LLG (log-likelihood gain)** is high and positive.  This is essentially
+    a measure of the probability of the solution.  (Negative scores almost
+    always mean that MR was not successful.)
+
+  - The **TFZ (translation function Z-score)** is well above 8 (the threshold
+    above which the large majority of solutions are correct).  This indicates
+    the signal-to-noise ratio of the solution.
+
+  - Although not displayed in this tab, the **R-factor** after refinement is
+    well below the threshold for a random agreement between F-obs and F-calc.
+    You can find this in the log output on the status tab if you scroll up
+    (look for "RVAL" in the section labeled "Refinement table").  Note that a
+    higher-than-random R-factor cannot be taken as an indicator that MR failed,
+    since correct solutions will very often have this property (but immediately
+    improve upon running full refinement).
+
+
+  .. image:: images/rangdp_phaser_result.png
+
+At this time you can click "Open in Coot" to view the model and maps calculated
+by Phaser.  However, the map quality will be poor at this stage, so it is not
+worth making any changes to the model until after refinement.
+
+Step 2: Refinement
+------------------
+
+You can launch `phenix.refine <refine_gui.htm>`_ directly from Phaser by
+clicking the button labeled "Run phenix.refine".  This will load the output
+model and the MTZ file;
+you should also input the sequence (this is not actually used in refinement,
+but the post-refinement validation will check for sequence errors in the model).
+
+  .. image:: images/rangdp_refine_config.png
+
+The appropriate column labels and symmetry information should be loaded for
+you automatically.  You should look at the options on the "Refinement settings"
+tab to get an idea of what is possible in phenix.refine; however, for this
+structure the default settings will be fine.
+
+Once refinement is started, a new tab will be added with two sub-tabs for
+log output and overall status.  You should familiarize yourself with the log
+output, especially as it provides some insight into how refinement is
+performed in Phenix, but for routine use the graphical view is sufficient.
+
+  .. image:: images/rangdp_refine_log.png
+
+If you are running Phenix with default settings and have Coot installed, the
+GUI will start Coot with the current model and maps continuously updated.  (You
+can disable this in the Refinement settings of the preferences.)
+The R-factors should start to improve immediately upon refinement; both R-work
+and R-free will drop significantly.  (Note that R-free is initially lower than
+R-work because the structure was not previously refined against this dataset;
+this is quite common for structures solved by MR.)  The geometry should also
+improve slightly.  By the third cycle there is less improvement being made and
+the R-free will converge near 0.29; the structure could probably benefit from
+a couple more cycles but it is clear that manual intervention will be needed,
+and the maps should be much better now.
+
+  .. image:: images/rangdp_refine_status.png
+
+After refinement several more tabs will appear displaying a summary of the
+results plus a number of validation metrics.  A list of output files is shown
+on the first of these tabs, along with buttons to start Coot or PyMOL.  You
+should now click the Coot button to view the final refined model and maps.
+
+  .. image:: rangdp_refine_results.png
+
+
+
+Step 3: Rebuilding
+------------------
+
+Step 4: More refinement
+-----------------------
+
+Variations
+----------
+
+There are several other ways you can use this dataset to learn about Phenix:
+
+  - **Advanced Phaser**: you can use the full Phaser-MR GUI instead of the
+    simple one; this is the GUI you would need if the structure contained
+    multiple different components and/or you needed more control over how the
+    search is performed. (Time: several minutes)
+
+  - **Ligand fitting**: instead of resetting the occupancy for GDP and MG, you
+    could instead delete these residues and run `LigandFit <ligandfit_gui.htm>`_
+    to place GDP in the difference map. (Time: approx. 10 minutes, less if
+    multiple processors are available.)
+
+  - **AutoBuild**: you can let Phenix rebuild the structure for you in
+    `AutoBuild <autobuild_gui.htm>`_.  Try setting the "rebuild in place"
+    both ways; True or Auto will move the existing atoms without adding or
+    removing any, False will build an entirely new model.  (Time: several
+    hours, depending on number of processors.)
+
+  - **Advanced refinement**: try experimenting with the settings in
+    `phenix.refine <refine_gui.htm>`_ to get a feel for how these affect
+    refinement.  Simulated annealing may be particularly interesting.  (Time:
+    several minutes to ~1 hour, depending on options and number of processors.)

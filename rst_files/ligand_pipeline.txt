@@ -20,7 +20,7 @@ The typical input for the pipeline consists of processed experimental data,
 a starting model for molecular replacement, a sequence file equivalent to the
 starting model (with the same number of chains), and a source of ligand
 information.  File types will be automatically detected if explicit parameter
-names are not used, for instance:
+names are not used, for instance::
 
   phenix.ligand_pipeline model.pdb data.mtz seq.fa lig.smi
 
@@ -49,9 +49,10 @@ from resetting the occupancies to zero.
 
 Finally, if all files are in the same directory and their uses can be
 unambiguously determined, you may supply the path name as a single argument
-when launching the program:
+when launching the program::
 
   phenix.ligand_pipeline /path/to/data [options]
+
 
 Program workflow
 ----------------
@@ -153,9 +154,9 @@ warning at the end of the run.
 **Final refinement and validation**.  If the ligand placement was at least
 partially successful, a final round of refinement will be performed on the
 combined model.  In this run, waters will be added automatically if the
-resolution is at least 2.9Å, and the geometry weight will be optimized (this
-is much slower but can run on multiple processors, and generally produces
-a superior model).
+resolution is at least 2.9Å, and the geometry weight will be optimized if the
+resolution is worse than 1.75Å (this is much slower but can run on multiple
+processors, and generally produces a superior model).
 
 Interactive mode
 ----------------
@@ -191,7 +192,6 @@ be named after the ligand code, by default LIG:
   - ``LIG_final.pdb``: final output model
   - ``LIG_final.mtz``: final map coefficients (as well as data and flags)
   - ``LIG_ligand.cif``: ligand geometry restraints
-  - ``LIG_ligand.pdb``: single ligand model used for fitting
   - ``pipeline.log``: log file for the entire run
   - ``visualize_coot.py``: script for loading results in Coot
 
