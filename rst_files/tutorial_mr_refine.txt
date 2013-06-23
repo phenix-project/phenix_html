@@ -20,7 +20,9 @@ and rebuilding the structure in Coot.  Because the structure involved
 is relatively small and moderate resolution, it can be
 significantly improved in a reasonable amount of time without much difficulty.
 You should first read the documentation for the `Phenix GUI <phenix_gui.htm>`_
-before running this tutorial.
+before running this tutorial.  We also recommend reading the `molecular
+replacement overview <mr_overview.htm>`_ and the documentation for the
+`Xtriage <xtriage_gui.htm>`_ and `phenix.refine <refine_gui.htm>`_ GUIs.
 
 As with other Phenix tutorial datasets, you can automatically set up a project
 with the necessary files from the GUI; the example will be listed in the
@@ -69,6 +71,22 @@ or let Phaser guess based on the ensemble, but it is safer and simpler to
 supply detailed information.)
 
   .. image:: images/rangdp_phaser_config.png
+
+Note that any time you have a field for a file name, there will be a magnifying
+glass icon on the same line (in GUIs like Xtriage this will be a separate
+button).  Click this icon to see basic information about the contents of the
+file (or for text files, open in an editor).  The panel for the PDB file will
+look like this:
+
+  .. image:: images/rangdp_pdb_info.png
+
+For a reflection file, each array of data will have a separate panel, and you can
+select which array to view using the drop-down menu:
+
+  .. image:: images/rangdp_hkl_info.png
+
+Right-clicking on the magnifying glass will open a menu with additional options;
+later in the tutorial you will edit a PDB file this way.
 
 In the "Sequence identity" field, enter "99" (the search model differs in
 sequence by only a single residue, although some local conformational
@@ -137,11 +155,15 @@ and R-free will drop significantly.  (Note that R-free is initially lower than
 R-work because the structure was not previously refined against this dataset;
 this is quite common for structures solved by MR.)  The geometry should also
 improve slightly.  By the third cycle there is less improvement being made and
-the R-free will converge near 0.29; the structure could probably benefit from
+the R-free will converge near 0.30; the structure could probably benefit from
 a couple more cycles but it is clear that manual intervention will be needed,
 and the maps should be much better now.
 
   .. image:: images/rangdp_refine_status.png
+
+*(Note that depending on the operating system and version of Phenix you are
+using, the statistics you obtain may not exactly match those shown here; this is
+normal and not cause for concern unless the differences are large.)*
 
 After refinement several more tabs will appear displaying a summary of the
 results plus a number of validation metrics.  A list of output files is shown
@@ -264,6 +286,24 @@ refinement will again drop them several more percent.
 It is worth trying to complete the structure and correct all of the remaining
 errors, but if you have followed all of these steps correctly the R-free may
 already be comparable to the originally published structure.
+
+Revisting completed jobs
+------------------------
+
+Phenix tracks a variety of information about each job run through the GUI, which
+can be accessed through the job history panel in the main window.  If you have
+completed step 4 it should look something like this:
+
+  .. image:: images/rangdp_history.png
+
+Select a job and click the button labeled "Show details" to view statistics and
+input and output files for the job.  You may also input additional notes if you
+wish.  The job history interface also allows you to flag a job as a failure or
+delete it entirely (including the output directory, if any).  Double-clicking
+a job (or clicking the restore button in either the list view or the job info
+panel) will reload the results and configuration.
+
+  .. image:: images/rangdp_job_info.png
 
 Variations
 ----------
