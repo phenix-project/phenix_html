@@ -1,5 +1,5 @@
 
-<!--REMARK PHENIX TITLE START  Put your title here>
+<!--REMARK PHENIX TITLE START  Put your title here-->
 
 
 <H4><U>Rebuilding an RNA structure with ERRASER </U></H4>
@@ -8,7 +8,7 @@
 <!--REMARK PHENIX TITLE END-->
 
 <!--REMARK PHENIX BODY START   Put your text here.
-Anything enclosed in header html H4 H5 etc will go in the table of contents>
+Anything enclosed in header html H4 H5 etc will go in the table of contents-->
 
 
 <P><H5><U>Author(s)</U></H5><P>
@@ -19,45 +19,119 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
 
 <P><H5><U>Purpose</U></H5><P>
 
-ERRASER is a tool to rebuild part or all of an RNA model.
+ERRASER (Enumerative Real-space Refinment ASsisted by Electron-density under
+Rosetta) is an application for improving RNA crystal structures based on 
+Rosetta and Phenix. 
 
 <P><H5><U>Usage</U></H5><P>
 
 <P><H5>How erraser works:</H5><P>
 
-ERRASER works by comprehensive testing of alternative conformations and comparison with an electron density map.
+By supplementing the Rosetta RNA scoring function with electron-density 
+restraint, ERRASER can confidently reduce the errors in RNA crystallographic 
+models while retaining a good fit to the diffraction data. Two ERRASER 
+applications are currently available. The standard ERRASER application 
+remodels all the potentially problematic nucleotides in a RNA model in an 
+automatic fashion, and output one final model. The ERRASER single residue 
+rebuilding application apply ERRASER algorithm to a residue specified by user, 
+and return up to 10 top-score models plus the minimized starting model. The 
+first application is useful for automatic improving the entire model globally, 
+and the second application is useful when the user wants to explore all 
+possible alternative conformations for a problematic nucleotide and examine 
+each one manually.
 
 <P><H5>Installation notes</H5><P>
 
 To run ERRASER you need to have Rosetta version 3.5 or later installed
-on your machine. For Rosetta installation notes and setting the
-environmental variable PHENIX_ROSETTA_PATH to tell Phenix where to find Rosetta
-see the <A href="mr_rosetta.htm">phenix.mr_rosetta</A> documentation.
+on your machine. Rosetta can be downloaded at 
+<A href="https://www.rosettacommons.org/software/>. For Rosetta installation 
+notes and setting the environmental variable PHENIX_ROSETTA_PATH to tell 
+Phenix where to find Rosetta, refer to the 
+<A href="mr_rosetta.htm">phenix.mr_rosetta</A> documentation.
 
-<P><H5><I>Output files from erraser</I></H5><P>
+<P><H5><I>Input files preparation</I></H5><P>
 
-<b>input_model_erraser.pdb</b>: A PDB file with your rebuilt RNA model.
+<B>input_model.pdb</B>: A PDB file with your starting RNA model. Please ensure 
+it is in the standard PDB format otherwise ERRASER might not run properly.
+
+<P>
+
+<B>mapfile.ccp4</B>: A 2mFo-DFc density map for your model in CCP4 format that 
+covers the entire unit cell. Rfree reflections should be removed in map creation 
+to avoid overfitting. We also suggest one to fill the missing data with 
+calculated data to avoid Fourier truncation error. The following options are 
+suggested if PHENIX map calculation utility (GUI) is used in map creation:
+"Kicked", "Fill missing f obs", and "Exclude free r reflections" set to True.
+Also in "Map region", select "Unit Cell".
 
 <P><H5><U>Examples</U></H5><P>
-
-<P><H5>Standard run of erraser:</H5><P>
 
   Running ERRASER is easy. From the command-line you can
 type:
 <PRE style="face=courier">phenix.erraser model.pdb mapfile.ccp4
 </PRE>
 This command will have erraser rebuild your entire model.
-<P> You can also say:
+Here are some commonly used options to include:
+"map_reso=2.2" gives tha map resolution (2.2 angstrom here), which highly
+recommended to include as this usually gives better performance.
+"n_iterate=2" allows ERRASER to iterate twice before output the model. This 
+takes much longer time but might gives better improvement.
+"fixed_res= A20 B15" gives residues to be fixed during remodeling. The format
+is chain ID followed by residue numbers. ERRASER currently did not model 
+ligands (anything starts with "HETATM" in PDB, including modifies bases), 
+proteins, and crystal contacts in a structure. Therefore we suggest to fix the 
+position of nucleotides that are in close contact with protein or ligand 
+component.
+
+<P>
+
+  You can also run ERRASER in single residue rebuilding mode:
 <PRE style="face=courier">phenix.erraser model.pdb mapfile.ccp4 single_res_mode=True rebuild_res_pdb=A30
 </PRE>
-This will rebuild just reside 30 in chain A.
+This will rebuild just residue 30 in chain A and output up to 10 models for 
+manual inspection.
 
+<P><H5><I>Output files from erraser</I></H5><P>
+
+For standard ERRASER:
+<P>
+<B>model_erraser.pdb</B>: A PDB file with your rebuilt RNA model.
+
+<P>
+
+For single residue rebuilding mode:
+<P>
+<B>model_0.pdb, model_1.pdb...</B>: Up to 10 different models with the
+specified residue rebuilt.
+
+<P>
+
+In both modes, after the models are generated, the application will analyze 
+the models and output a detailed comparison of the changes introduced by 
+ERRASER.
 
 <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems:</H5><P>
 
+ERRASER works only for RNA currently. Other parts in crystallographic model, 
+including proteins, modified bases and ligands, are not being modeled. 
+Remodeling of RNA residues that are in close contact with these components 
+may be problematic.
+
+<P>
+
+Currently crystal contacts are not being modeled, which is known to cause 
+problems in a few test cases when RNA is interacting strongly with its 
+crystal-packing partner (ex. base-pairing and base-stacking). Right now this 
+problem can be resolved by mannually adding the crystal-packing partner into 
+the starting pdb file or forcing these residues as "fixed_res" during the run.
+
 <P><H5><U>Literature</U></H5><P>
+
+Chou FC, Sripakdeevong P, Dibrov SM, Hermann T, Das R (2012) Correcting 
+pervasive errors in RNA crystallography through enumerative structure 
+prediction. Nature Methods Jan 2013. 
 
 <P><H5><U>Additional information</U></H5><P>
 
