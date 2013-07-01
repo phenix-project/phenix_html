@@ -125,10 +125,12 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     low-resolution (typically 3.0A or worse), additional restraints
     (NCS, reference model, etc.) are often necessary to prevent overfitting.
 
-  - **Real-space** is similar to the Individual Sites strategy, but refines
-    against the map instead of in reciprocal space.  This is generally not
-    useful as a global strategy, but real-space refinement is used in other
-    parts of phenix.refine for local optimization.
+  - **Real-space** also refines the atomic-positions, but uses the electron
+    density map as target instead of F(obs).  It will be run both locally
+    (to fit individual residues with poor density or rotamer outliers) and
+    globally.  This is generally most helpful early in refinement for moderate-
+    to high-resolution structures; at worse than 3Å the effectiveness falls off
+    rapidly.
 
   - **Rigid-body** refines the position of large, user-defined regions of the
     model without changing geometry.  It is typically used immediately after
@@ -137,15 +139,18 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     sites refinement are checked (recommended), the rigid-body step will be
     done first, in the first cycle of refinement.
 
-  - **Individual B-factors** is atomic B-factor refinement, and is always
-    appropriate except at very low resolution (around 5.0A or worse).  Whether
+  - **Individual B-factors** is restrained atomic B-factor refinement, and is
+    usually appropriate except at very low resolution (there is some debate
+    about what the cutoff should be, but we generally find the vast majority of
+    structures in the PDB refine well with this option).  Whether
     atoms are treated as isotropic or anisotropic is defined separately (see
     below).
 
   - **Group B-factors** refines B-factors for multiple atoms at a time, most
     often single residues either as a whole or divided into mainchain and
     sidechain.  (Larger user-defined groups are also allowed.)  This is usually
-    only necessary at very low resolution.
+    only necessary at very low resolution.  Note that there are no restraints
+    to keep the B-factors for adjacent groups similar!
 
   - **TLS parameters** refines anisotropic displacements for large groups of
     atoms, typically individual domains or chains.  Because this introduces
@@ -159,33 +164,55 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     high resolution (usually 1.7A or better) where alternate conformations
     are often present, and in situations where a ligand, ion, or solvent atom
     is not bound in every unit cell.  By default, it will only be performed
-    for atoms with partial occupancies.  Groupings are determined automatically
+    for atoms with partial occupancies, so it is safe to leave this on even if
+    you have no partial-ocupancy atoms.  Groupings are determined automatically
     if possible, but you may specify them manually.  (This is especially
     important if you have complex relationships betweeen alternate
     conformations in different parts of the model.)
 
   - **Anomalous groups** refines the anomalous coefficients f' and f'' for
     anomalously scattering atoms such as Se or heavy metals; it is only
-    appropriate if you have anomalous data (I+/I- or F+/F-).
+    appropriate if you have anomalous data (I+/I- or F+/F-).  This usually has
+    minimal impact on R-factors, but can sometimes remove difference map peaks,
+    and may be useful in conjunction with an anomalous residual or LLG map
+    (which shows the location of unmodeled anomalous scatterers).
 
-.. _restraints:
+.. _targets:
 
 The refinement protocol can be further modified by manipulating various
-restraints (structural and otherwise):
+refinement targets, including restraints (structural and otherwise):
 
-  - **NCS restraints** preserves non-crystallographic symmetry between
-    identical copies of a molecule.  These can be automatically detected or
-    defined manually.  If NCS is present in the crystal, these restraints are
-    usually appropriate at intermediate resolution (2.2-2.7A or worse) and
-    essential at lower resolutions.
+  - **Target function** describes the calculation of model-based X-ray
+    terms; "ML" means "Maximum likelihood" and is usually appropriate;
+    "MLHL" use used when experimental phase restraints are added; "ML-SAD"
+    is not suitable for general use.  The least-squares (LS) target is
+    only useful for twinned refinement or very small datasets (it will be
+    used automatically if necessary).
 
-  - **Find NCS restraints automatically** instructs phenix.refine to run
-    a built-in NCS identification protocol at the start of refinement; it
-    is ignored if NCS restraints are not activated.  Note that this should
-    be disabled if you have already defined NCS groups in the GUI!  This
-    setting only affects the global NCS restraints; for the torsion restraints,
-    phenix.refine will always use automatic annotation unless the user supplies
-    restraint groups (which will not be overwritten).
+  - **Weight optimization** uses a grid search to determine the best relative
+    weight for the X-ray target function and the geometry or B-factor
+    restraints.  At atomic resolution this is rarely necessary, but it will
+    be very helpful at low resolution, and we recommend always enabling these
+    options for at least the final round of refinement before the model is
+    deposited.  If you find that the structure is being overfit or the
+    geometry is especially poor, optimizing the X-ray/stereochemistry weight
+    will often fix the problem.
+
+  - **NCS restraints** preserve non-crystallographic symmetry between
+    identical copies of a molecule.   If NCS is present in the crystal, these
+    restraints are
+    usually appropriate at intermediate resolution (2.0-2.7A or worse) and
+    essential at lower resolutions.  NCS restraints are available in either
+    torsion-angle
+    or Cartesian parameterization: the former allows the molecules to be
+    flexible while preserving local conformation, while the latter essentially
+    treats NCS-related group as rigid relative to each other.  This may be
+    beneficial in some cases, but the torsion-angle restraints are the
+    safest and easiest to use.  Phenix will automatically identify
+    appropriate NCS groups for you, and if you are using the torsion-angle
+    version it is very rare that you will need to assign groups manually.
+    Both implementations also allow you to restrain the B-factors of NCS
+    groups to be similar, but this is not always useful or even valid.
 
   - **Reference model restraints** use the dihedral angles of an existing
     structure as restraints on the input model conformation, for instance,
@@ -201,7 +228,7 @@ restraints (structural and otherwise):
 
   - **Use experimental phases** uses the experimental phase distributions
     (Hendrickson-Lattman coefficients) from phasing programs such as AutoSol
-    as additional restraints during refinement.  This is usually helpful if
+    as part of the refinement target function.  This is usually helpful if
     these phases are available, but only if the same data were used for both
     phasing and refinement.
 
@@ -236,6 +263,11 @@ used; these typically apply globally, except as noted.
     necessary; this is usually appropriate at any resolution where water
     molecules are visible in density (usually 2.5A or better).
 
+  - **Automatically correct N/Q/H errors** uses the program Reduce to flip
+    backwards sidechains, which appear symmetric when explicit hydrogens are
+    not present.  This is almost always a good idea and adds very little to
+    overall run time.
+
   - **Simulated annealing** uses molecular dynamics with an extra X-ray
     term as an additional optimization method.  It is very helpful for
     removing phase bias and overcoming energy barriers, and often yields a
@@ -244,31 +276,15 @@ used; these typically apply globally, except as noted.
     available, **Cartesian** and **torsion angles**; the latter is more
     suitable for low resolution.
 
-  - **Fix bad sidechain rotamers** adjusts sidechain torsion angles to agree
-    with the distribution of conformations in the PDB and the electron density,
-    if possible, and performs local real-space refinement to optimize the
-    fit.  It is most useful at intermediate-to-high resolution (2.5A or
-    better), where sidechain density is clearly visible.
-
-  - **Automatically correct N/Q/H errors** uses the program Reduce to flip
-    backwards sidechains, which appear symmetric when explicit hydrogens are
-    not present.  This is almost always a good idea and adds very little to
-    overall run time.
-
-  - **Model interatomic scattering** adds the contribution of electrons
-    in atomic bonds to the model-derived X-ray amplitudes; it is only
-    appropriate at ultra-high resolution (at least 0.9A).
-
-  - **Target function** describes the calculation of model-based X-ray
-    terms; "ML" means "Maximum likelihood" and is usually appropriate;
-    "MLHL" use used when experimental phase restraints are added; "ML-SAD"
-    is not suitable for general use.  The least-squares (LS) target is
-    only useful for twinned refinement or very small datasets (it will be
-    used automatically if necessary).
-
   - **Scattering table** determines how atomic scattering is modeled; this
     is almost always either "n_gaussian" for standard X-ray refinement, or
     "neutron" (see below).
+
+  - **Twin law** enables twinned refinement.  Only a single twin domain is
+    supported at present, and the refinement target is least-squares (LS)
+    instead of maximum-likelihood.  We recommend caution when using this
+    option, as the R-factors are invariably lower whether or not the crystal
+    was actually twinned, and the detwinned maps will have more model bias.
 
 The output tab allows you to change the destination directory and modify the
 default map coefficients and/or map files written out.  By default, an MTZ
