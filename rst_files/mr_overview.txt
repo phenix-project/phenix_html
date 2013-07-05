@@ -23,7 +23,12 @@ and anyone who expects MR to work for their specific structure, start with the
 AutoMR GUI.  The Phaser-MR GUI is more complex, but enables finer control over
 parameters and multi-step searches, which may be necessary for difficult
 structures.  The `Sculptor <sculptor.htm>`_ and `Ensembler <ensembler.htm>`_
-utilities are available for preparing search models.
+utilities are available for preparing search models. The `MRage <MRage.htm>`_
+framework integrates model processing steps and molecular replacement into one
+application. It provides a highly customizable interface with parallelization
+options and the ability connect to the `NCBI Blast <http://blast.ncbi.nlm.nih.gov/Blast.cgi>`_
+and `wwPDB <http://www.wwpdb.org>`_ websites to perform homology searches and
+fetch potential models.
 
 (Phaser is also used for experimental phasing, but this functionality is
 exposed through the `AutoSol wizard <autosol.htm>`_ and `Phaser-EP GUI
