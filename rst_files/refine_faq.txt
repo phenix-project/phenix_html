@@ -435,9 +435,39 @@ anisotropic ADPs at an inappropriate resolution.)*
 **Why am I seeing negative blobs in the difference (mFo-DFc) map in hydrophobic
 voids?**
 
-This is due to the bulk solvent mask being extended to include these regions.
-The effect is mainly aesthetic; it should not hurt refinement in general.
-We hope to fix this in future versions of Phenix.
+In previous versions of Phenix, the bulk solvent mask was often being extended
+to include these regions.  This should no longer be a problem as of July 2013,
+but if you continue to see this effect, please contact us at
+bugs@phenix-online.org.
+
+**I ran a round of refinement, rebuilt in Coot, and refined again.  My
+previous R-free was 0.25, but the new refinement starts out at 0.35.  Why is
+it so high?**
+
+The initial R-factors reported by phenix.refine are without bulk-solvent
+correction, which usually has a significant impact on R-factors.  Once this
+step is performed (at the start of the first macrocycle), the R-free should
+drop immediately to approximately the expected value.
+
+**Why does phenix.refine give me a different R-factor than program X?**
+
+There are many explanations for this.  Even without minimization, the bulk
+solvent and scaling methods alone may account for as much as a 1% difference
+or more in calculated R-factors.  For refinement results, the differences in
+target functions, restraints, and minimizers may be significant.  In some cases
+the explanation is as simple as running too few cycles of refinement for one
+or the other program.  In general, if you find a case where phenix.refine
+performs significantly worse than another program, we encourage you to contact
+us at bugs@phenix-online.org.
+
+**After coordinate and B-factor refinement the heavy atoms in my structure have
+negative mFo-DFc peaks.  How do I get rid of these?**
+
+Refining the occupancies will often fix this problem.  Alternately, if a
+significant amount of anomalous scattering is expected at the wavelength used
+for data collection, anomalous group reifnement may also be helpful.  We do
+not recommend setting the B-factor manually and turning off refinement for
+the problematic atoms.
 
 Hydrogens
 =========
@@ -547,16 +577,31 @@ identifying weak anomalous scatterers (such as ions from the crystallization
 condition) when used to calculate an anomalous log-likelihood gradient (LLG) or
 residual map at the end of refinement.
 
-**Why does phenix.refine give me a different R-factor than program X?**
+**How does phenix.refine deal with atoms on special positions?**
 
-There are many explanations for this.  Even without minimization, the bulk
-solvent and scaling methods alone may account for as much as a 1% difference
-or more in calculated R-factors.  For refinement results, the differences in
-target functions, restraints, and minimizers may be significant.  In some cases
-the explanation is as simple as running too few cycles of refinement for one
-or the other program.  In general, if you find a case where phenix.refine
-performs significantly worse than another program, we encourage you to contact
-us at bugs@phenix-online.org.
+There are two ways to handle atoms on special positions (e.g. symmetry axes):
+
+  - If the occupancy is set to the value expected for the special position
+    (e.g. 0.5 for an atom on a two-fold axis) or less, the coordinate position
+    will be refined, and it will not interact with its symmetry mates.
+
+  - If the occupancy is set to 1, the atom will be constrained to stay at the
+    special position, and the occupancy will be corrected internally when
+    calculating structure factors.
+
+**How can I extract the isotropic B-factor equivalent from a structure refined
+with TLS or anisotropic atoms?**
+
+You don't need any extra steps; the B-factor column in ATOM records in the
+PDB (or mmCIF) file will already be the total B-factor.
+
+**Why does phenix.refine output ANISOU records for individual atoms even though
+I only performed isotropic and TLS refinement?**
+
+TLS refinement is essentially constrained anisotropic refinement, so the
+individual atoms are anisotropic (just not independent); the ANISOU records
+simply make this explicit, since they have a standard format and are recognized
+by a variety of programs, unlike TLS information in the PDB header.
 
 References
 ==========
