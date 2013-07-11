@@ -41,6 +41,29 @@ The format does not contain complete symmetry information (and the space
 group is specified incorrectly), but you can use the symmetry information in
 ``p9.pdb`` in the same directory.
 
+Obtaining unmerged data
+-----------------------
+
+The procedure differs between various data-processing software; these are the
+methods we are familiar with:
+
+  - **xia2**: the DataFiles directory will contain a file in Scalepack format,
+    ending in "_unmerged.sca".  No additional steps are required.
+
+  - **aimless (CCP4)**: the OUTPUT keyword has an UNMERGED option.
+
+  - **XDS**: the file named XDS_ASCII.HKL output by CORRECT will contain
+    unmerged data.  If you are using XSCALE to scale data from multiple
+    crystals, add the keyword MERGE=FALSE to the input script.
+
+  - **HKL2000**: in the Macros tab, in the Scaling section type "no merge
+    original index", then re-run scaling (with a different file name than you
+    used for merged data).
+
+Note that unmerged Scalepack format does not include the unit cell, so symmetry
+needs to be supplied from a different source (this is handled automatically in
+many of the programs below).  MTZ and XDS formats include complete symmetry.
+
 Xtriage and phenix.merging_statistics
 -------------------------------------
 
