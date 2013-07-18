@@ -36,6 +36,11 @@ with multiple sequences, and the result will be identical.  While it is
 technically possible to run Phaser with just a search model and extrapolate
 the molecular weight based on the desired number of copies, this is not
 recommended.</p>
+<P><H5><U><B>Full automation: phaser.MRage</B></U></H5><P>
+<p>The separate <a class="reference" href="mrage.htm">MRage</a> program (which uses Phaser as its core) can
+automatically discover and prepare search models, and search in parallel on a
+multi-core workstation or cluster.  A <a class="reference" href="http://www.phaser.cimr.cam.ac.uk/index.php/Molecular_replacement_with_MRage">separate tutorial</a>
+is available on the Phaser home page.</p>
 <P><H5><U><B>Single-component searches</B></U></H5><P>
 <p>For homogeneous structures where only one component needs to be placed, a
 streamlined interface is available.  The tutorial data for this example is

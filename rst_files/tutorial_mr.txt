@@ -36,6 +36,15 @@ technically possible to run Phaser with just a search model and extrapolate
 the molecular weight based on the desired number of copies, this is not
 recommended.
 
+Full automation: phaser.MRage
+-----------------------------
+
+The separate `MRage <mrage.htm>`_ program (which uses Phaser as its core) can
+automatically discover and prepare search models, and search in parallel on a
+multi-core workstation or cluster.  A `separate tutorial
+<http://www.phaser.cimr.cam.ac.uk/index.php/Molecular_replacement_with_MRage>`_
+is available on the Phaser home page.
+
 Single-component searches
 -------------------------
 

@@ -15,14 +15,12 @@ below for advice on search models.)
 In PHENIX, MR is performed by the program `Phaser <phaser.htm>`_, written by
 Randy Read's group at the University of Cambridge.  Although Phaser may be run
 on the command line with CCP4-style inputs, we recommend using either the
-`AutoMR <automr_gui.htm>`_ wizard (GUI or `command line <automr.htm>`_), or
-the `Phaser-MR GUI <phaser_mr.htm>`_.  AutoMR presents a user-friendly and
-automated frontend to Phaser, and interfaces directly with the `AutoBuild
-wizard <autobuild.htm>`_ for model-building.  We recommend that new users,
-and anyone who expects MR to work for their specific structure, start with the
-AutoMR GUI.  The Phaser-MR GUI is more complex, but enables finer control over
+the `Phaser-MR GUI <phaser_mr.htm>`_.  This GUI requires
+manual preparation of search models, but enables finer control over
 parameters and multi-step searches, which may be necessary for difficult
-structures.  The `Sculptor <sculptor.htm>`_ and `Ensembler <ensembler.htm>`_
+structures.
+
+The `Sculptor <sculptor.htm>`_ and `Ensembler <ensembler.htm>`_
 utilities are available for preparing search models. The `MRage <MRage.htm>`_
 framework integrates model processing steps and molecular replacement into one
 application. It provides a highly customizable interface with parallelization
@@ -36,7 +34,9 @@ exposed through the `AutoSol wizard <autosol.htm>`_ and `Phaser-EP GUI
 
 For new users, we recommend reading this document first, followed by the
 `Phaser-MR tutorial <tutorial_mr.htm>`_ for a step-by-step introduction to
-running MR in the Phenix GUI.
+running MR in the Phenix GUI.  A separate `MRage tutorial
+<http://www.phaser.cimr.cam.ac.uk/index.php/Molecular_replacement_with_MRage>`_
+is available on the Phaser home page.
 
 Input files and mandatory parameters
 ------------------------------------
