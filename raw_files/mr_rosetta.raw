@@ -398,6 +398,40 @@ process will stop as soon as
 any Phenix part of the process takes over (i.e., as soon as Rosetta jobs 
 finish).  
 </LI>
+<LI>
+<P><H5><U>Ignoring long-running place_model jobs and going on</U></H5><P>
+There are two ways to avoid the problem of having one or more long-running
+(and very likely eventually unsuccessful) place_model sub-processes that 
+prevent mr_rosetta from going on.  One way is to set the parameter
+sufficient_number_finished=nn, where you are satisfied if any nn place_model
+jobs finish successfully.  Then once nn jobs finish, all the rest are simply
+ignored and mr_rosetta goes on.  The jobs that are ignored will continue on
+until they finish (and will still be ignored.)
+<p>
+A second way is to edit the value of sufficient_number_finished after 
+mr_rosetta has started.  This is convenient if you see that all the jobs 
+except for one or two are done, and these seem to be going on forever.
+You can create a little file "GO_ON" in the directory
+where place_model is being run that contains the value you want for 
+sufficient_number_finished (if you want it to stop right away and
+at least one job is finished, just put in 1).  
+This directory is the directory where the log files
+for place_model are located.  For example your overall log file might say,
+<PRE style="face=courier">Splitting work into 2 jobs and running with 2 processors using sh 
+background=True in /Users/terwill/unix/misc/junk/test_place_model/MR_ROSETTA_7/GROUP_OF_PLACE_MODEL_1
+</PRE>
+in which case that directory is where you would put GO_ON, where the file 
+GO_ON just contains a number (the value for sufficient_number_finished).
+As in the use of sufficient_number_finished, the ignored jobs do not actually
+stop, so if you really want to stop them you will need to do that in another 
+way (mr_rosetta does not capture the job numbers for sub-processes so it 
+can't stop them, it can only monitor what they have done.)
+<P>NOTE: you can use this second method with the GO_ON file to tell
+mr_rosetta how many finished jobs to require for any set of sub-processes. Just
+put this file in the directory specified for that group of sub-processes. This
+also works for other phenix tools including autobuild, ligandfit and
+find_all_ligands that have the 'Splitting work into...' text in their log files.
+</LI>
 </OL>
 
 <P><H5><U>Installing Rosetta for use with mr_rosetta</U></H5><P>
@@ -816,8 +850,10 @@ bonds between residues 12 and 15 and between 22 and 39 you can say:
 In this command, each disulfide is colon-separated, and the numbering 
 corresponds to the input fasta file.
 If you have multiple commands you can just give multiple rosetta_command 
-statements. Note that any commands will be applied to all rosetta scripts. 
-That means that you can't have different command for different Rosetta runs. 
+statements. Note that any commands will be applied to all rosetta scripts
+in this mr_rosetta run. 
+That means that you can't have different commands for different steps that
+use Rosetta.
 It also means that you cannot specify chain names or use different commands
 for different chains. At the moment this feature is most useful if you
 are supplying a single chain (or multiple chains with identical sequences).
@@ -1003,12 +1039,17 @@ installations of phenix and rosetta are both ok:
 <PRE style="face=courier">phenix_regression.wizards.test_command_line_rosetta_quick
 </PRE>
 
-That should take 10-20 minutes to run and say "OK" for all the tests.
+That should take 10-20 minutes to run and say "OK" for all the tests. 
 
 If one or more of these say instead "FAILED" ...you can go into the failed run 
 (for example, test_autobuild/) and run the script there 
 (e.g., ./test_autobuild.com) which should fail..
 and you can track down what is not working.
+<P>NOTE: On some systems there may be some really minor (numerical) 
+differences between the standard results and those on your system. These
+can cause the "FAILED" to be printed out but can safely be ignored.  You can
+tell by looking at the file "diff.dat" that should be in the failed run
+directory and you'll see that the differences are very minor.
 </P>
 <P>If the tests all are OK, then there is something specific to 
 your data or script.
@@ -1127,6 +1168,12 @@ Debanu Das, Sergey M. Vorobiev, Hideo Iwai, P. Raj Pokkuluri & David Baker
 (2011) "Increasing the Radius of Convergence of Molecular Replacement by
 Density and Energy Guided Protein Structure Optimization" 
 Nature, 473, 540-543.
+</LI>
+<LI>
+Terwilliger TC, DiMaio F, Read RJ, Baker D, Bunkóci G, Adams PD,
+Grosse-Kunstleve RW, Afonine PV, Echols N. (2012) phenix.mr_rosetta: Molecular
+replacement and model rebuilding with Phenix and Rosetta. J. Struct. Funct.
+Genomics 13:81-90.
 </LI>
 <LI>
 DiMaio, F., Tyka, M.D., Baker, M.L., Chiu, W., 
