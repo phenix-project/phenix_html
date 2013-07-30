@@ -103,8 +103,8 @@ should be used with extreme caution for several reasons:
     should always deposit the original, unmodified data in the PDB upon
     publication.
 
-Restraints
-==========
+Targets and restraints
+======================
 
 **When should I optimize the geometry and/or B-factor restraint weights?**
 
@@ -171,7 +171,7 @@ geometry.  Optimizing the weight (optimize_xyz_weight=True, or equivalent
 GUI control in the "Refinement settings" tab) will usually fix this problem.
 
 **I have experimental phases for this structure, but the initial maps were
-poor.  Should I still use phase restraints?**
+poor.  Should I still use the MLHL target?**
 
 The experimental phases
 used to restraint refinement describe a bimodal probability distribution
@@ -469,6 +469,21 @@ for data collection, anomalous group reifnement may also be helpful.  We do
 not recommend setting the B-factor manually and turning off refinement for
 the problematic atoms.
 
+**Why does Phenix validation report a different number of Ramachandran outliers
+than Coot/Procheck/the PDB/other program?**
+
+The phi/psi distributions used in Phenix are the same as those in the
+`MolProbity server <http://molprobity.biochem.duke.edu>`_, and are based on
+a curated set of 8000 high-resolution crystal structures.  There are now six
+distributions for different residue classes (general, glycine, Ile/Val,
+pre-Pro, cis-Pro, and trans-Pro).  These distributions are stored in 2-degree
+increments.  Other programs generally use older and/or less precise
+distributions to score phi/psi angles, which frequently results in
+disagreements for residues which are on the border of allowed and outlier
+regions of the plot.  We suggest that you rely primarily on the results in
+Phenix (or MolProbity), as the distributions we use are very accurate and based
+on the latest structural data.
+
 Hydrogens
 =========
 
@@ -589,6 +604,12 @@ There are two ways to handle atoms on special positions (e.g. symmetry axes):
     special position, and the occupancy will be corrected internally when
     calculating structure factors.
 
+Note that the partial-occupancy atoms on special positions will have their
+occupancies defined if using default settings; you can disable this by
+instructing phenix.refine to remove a specific atom selection from occupancy
+refinement (the keyword refinement.refine.occupancies.remove_selection, or
+in the GUI, edit the atom selections for the Occupancy strategy).
+
 **How can I extract the isotropic B-factor equivalent from a structure refined
 with TLS or anisotropic atoms?**
 
@@ -602,6 +623,19 @@ TLS refinement is essentially constrained anisotropic refinement, so the
 individual atoms are anisotropic (just not independent); the ANISOU records
 simply make this explicit, since they have a standard format and are recognized
 by a variety of programs, unlike TLS information in the PDB header.
+
+**phenix.refine stops with an error message about the model being refined
+against a different set of R-free flags.  How can I fix this?**
+
+First, make sure that you have not actually generated a new set of R-free
+flags; once you have these flags for a given dataset, you should continue
+using them throughout the building and refinement process.  The error message
+is intended to guard against this happening accidentally.  If, however, you
+have collected new higher-resolution data and extended the old R-free flags,
+then the error message may be ignored.  The R-free flag comparison is based
+on information stored in the REMARK records in the input PDB file, so if you
+edit the PDB file and remove the line containing the word "hexdigest", the
+refinement will be able to continue.
 
 References
 ==========
