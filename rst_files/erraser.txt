@@ -1,31 +1,23 @@
-
-<!--REMARK PHENIX TITLE START  Put your title here-->
-
-
-<H4><U>Rebuilding an RNA structure with ERRASER </U></H4>
+========================================
+Rebuilding an RNA structure with ERRASER
+========================================
 
 
-<!--REMARK PHENIX TITLE END-->
+Authors
+=======
 
-<!--REMARK PHENIX BODY START   Put your text here.
-Anything enclosed in header html H4 H5 etc will go in the table of contents-->
+erraser: Fang-Chieh Chou and Rhiju Das, `Stanford University
+<http://www.stanford.edu/~rhiju/>`_
 
-
-<P><H5><U>Author(s)</U></H5><P>
-
-<UL>
-<LI>erraser: Fang-Chieh Chou and Rhiju Das
-</LI></UL>
-
-<P><H5><U>Purpose</U></H5><P>
+Purpose
+=======
 
 ERRASER (Enumerative Real-space Refinment ASsisted by Electron-density under
 Rosetta) is an application for improving RNA crystal structures based on 
 Rosetta and Phenix. 
 
-<P><H5><U>Usage</U></H5><P>
-
-<P><H5>How erraser works:</H5><P>
+How erraser works
+~~~~~~~~~~~~~~~~~
 
 By supplementing the Rosetta RNA scoring function with electron-density 
 restraint, ERRASER can confidently reduce the errors in RNA crystallographic 
@@ -40,37 +32,51 @@ and the second application is useful when the user wants to explore all
 possible alternative conformations for a problematic nucleotide and examine 
 each one manually.
 
-<P><H5>Installation notes</H5><P>
+Installation notes
+~~~~~~~~~~~~~~~~~~
 
 To run ERRASER you need to have Rosetta version 3.5 or later installed
 on your machine. Rosetta can be downloaded at 
-<A href="https://www.rosettacommons.org/software/">https://www.rosettacommons.org/software/</A>. For Rosetta installation 
+`https://www.rosettacommons.org/software/
+<https://www.rosettacommons.org/software/>`_. For Rosetta installation 
 notes and setting the environmental variable PHENIX_ROSETTA_PATH to tell 
 Phenix where to find Rosetta, refer to the 
-<A href="mr_rosetta.htm">phenix.mr_rosetta</A> documentation under "Installing Rosetta for use with mr_rosetta" (the same Rosetta installation will work for mr_rosetta and ERRASER).
+`phenix.mr_rosetta <mr_rosetta.htm>`_ documentation under "Installing Rosetta for use with mr_rosetta" (the same Rosetta installation will work for mr_rosetta and ERRASER).
 
-<P><H5><I>Input files preparation</I></H5><P>
+Input files preparation
+~~~~~~~~~~~~~~~~~~~~~~~
 
-<B>input_model.pdb</B>: A PDB file with your starting RNA model. Please ensure 
+**input_model.pdb**: A PDB file with your starting RNA model. Please ensure 
 it is in the standard PDB format otherwise ERRASER might not run properly.
 
-<P>
-
-<B>mapfile.ccp4</B>: A 2mFo-DFc density map for your model in CCP4 format that 
-covers the entire unit cell. Rfree reflections should be removed in map creation 
+**mapfile.ccp4**: A 2mFo-DFc density map for your model in CCP4 format that 
+covers the entire unit cell. Rfree reflections should be removed in map
+creation 
 to avoid overfitting. We also suggest one to fill the missing data with 
 calculated data to avoid Fourier truncation error. The following options are 
 suggested if PHENIX map calculation utility (GUI) is used in map creation:
 "Kicked", "Fill missing f obs", and "Exclude free r reflections" set to True.
 Also in "Map region", select "Unit Cell".
 
-<P><H5><U>Examples</U></H5><P>
+Examples
+========
 
-  Running ERRASER is easy. From the command-line you can
-type:
-<PRE style="face=courier">phenix.erraser model.pdb mapfile.ccp4
-</PRE>
+Running ERRASER is easy, and can be done both through the `Phenix GUI
+<phenix_gui.htm>`_ or the command line.  In the GUI, the program is listed
+under the **Refinement** category.  Most configuration options are shown in
+the main window:
+
+.. image:: images/erraser_input.png
+
+Toolbar buttons to launch `phenix.maps <create_maps.htm>`_ and the FFT utility
+are also displayed.
+
+From the command-line you can type::
+
+  phenix.erraser model.pdb mapfile.ccp4
+
 This command will have erraser rebuild your entire model.
+
 Here are some commonly used options to include:
 "map_reso=2.2" gives tha map resolution (2.2 angstrom here), which highly
 recommended to include as this usually gives better performance.
@@ -83,43 +89,51 @@ proteins, and crystal contacts in a structure. Therefore we suggest to fix the
 position of nucleotides that are in close contact with protein or ligand 
 component.
 
-<P>
+You can also run ERRASER in single residue rebuilding mode::
 
-  You can also run ERRASER in single residue rebuilding mode:
-<PRE style="face=courier">phenix.erraser model.pdb mapfile.ccp4 single_res_mode=True rebuild_res_pdb=A30
-</PRE>
+  phenix.erraser model.pdb mapfile.ccp4 single_res_mode=True rebuild_res_pdb=A30
+
 This will rebuild just residue 30 in chain A and output up to 10 models for 
-manual inspection.
+manual inspection.  (In the GUI, this is equivalent to checking the box labeled
+"Single residue rebuilding mode" and entering the residue ID in the field
+labeled "Residue to be rebuilt".)
 
-<P><H5><I>Output files from erraser</I></H5><P>
+Output files
+============
 
 For standard ERRASER:
-<P>
-<B>model_erraser.pdb</B>: A PDB file with your rebuilt RNA model.
 
-<P>
+**model_erraser.pdb**: A PDB file with your rebuilt RNA model.
 
 For single residue rebuilding mode:
-<P>
-<B>model_0.pdb, model_1.pdb...</B>: Up to 10 different models with the
+**model_0.pdb, model_1.pdb...**: Up to 10 different models with the
 specified residue rebuilt.
-
-<P>
 
 In both modes, after the models are generated, the application will analyze 
 the models and output a detailed comparison of the changes introduced by 
-ERRASER.
+ERRASER.  The GUI displays a list of output files and a summary of validation
+statistics:
 
-<P><H5><U>Possible Problems</U></H5><P>
+.. image:: images/erraser_result.png
 
-<P><H5>Specific limitations and problems:</H5><P>
+For the standard rebuilding mode, a subset of the MolProbity analyses will be
+displayed in additional tabs.  Lists of outliers are interactive with Coot (if
+installed); see the `validation documentation <validation.htm>`_ for more
+information.  In single-residue mode, a summary of the validation criteria for
+the specific residue being rebuilt is shown instead:
+
+.. image:: images/erraser_single_res.png
+
+Possible Problems
+=================
+
+Specific limitations:
+~~~~~~~~~~~~~~~~~~~~~
 
 ERRASER works only for RNA currently. Other parts in crystallographic model, 
 including proteins, modified bases and ligands, are not being modeled. 
 Remodeling of RNA residues that are in close contact with these components 
 may be problematic.
-
-<P>
 
 Currently crystal contacts are not being modeled, which is known to cause 
 problems in a few test cases when RNA is interacting strongly with its 
@@ -127,13 +141,6 @@ crystal-packing partner (ex. base-pairing and base-stacking). Right now this
 problem can be resolved by mannually adding the crystal-packing partner into 
 the starting pdb file or forcing these residues as "fixed_res" during the run.
 
-<P><H5><U>Literature</U></H5><P>
+Literature
 
-Chou FC, Sripakdeevong P, Dibrov SM, Hermann T, Das R (2012) Correcting 
-pervasive errors in RNA crystallography through enumerative structure 
-prediction. Nature Methods Jan 2013. 
-
-<P><H5><U>Additional information</U></H5><P>
-
-
-<!--REMARK PHENIX BODY END-->
+  - CITATION:erraser
