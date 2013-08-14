@@ -31,21 +31,6 @@ There are several limitations to these options:
   - 'nproc' is incompatible with Windows
   - these approaches are incompatible with each other
 
-**When should I use simulated annealing?**
-
-Simulated annealing (SA) is most useful early in refinement, when the model
-is far from convergence.  Manually built models, or MR solutions involving
-significant local conformational changes, are common inputs where SA can
-improve over simple gradient-driven refinement.  It is generally less helpful
-later in refinement, and/or at high resolution.
-
-**When should I use rigid-body refinement?**
-
-This typically only needs to be performed once after molecular replacement,
-unless you dock in additional domains later.  Continuing to use rigid-body
-refinement in later runs will not improve your structure, and only adds to the
-runtime.
-
 **What type of experimental data should I use for refinement?**
 
 Either amplitudes (F) or intensities (I) may be used in refinement (in any
@@ -102,6 +87,40 @@ should be used with extreme caution for several reasons:
   - Even if you do choose to refine against anisotropically scaled data, you
     should always deposit the original, unmodified data in the PDB upon
     publication.
+
+Optimization methods
+====================
+
+**When should I use simulated annealing?**
+
+Simulated annealing (SA) is most useful early in refinement, when the model
+is far from convergence.  Manually built models, or MR solutions involving
+significant local conformational changes, are common inputs where SA can
+improve over simple gradient-driven refinement.  It is generally less helpful
+later in refinement, and/or at high resolution.
+
+**When should I use rigid-body refinement?**
+
+This typically only needs to be performed once after molecular replacement,
+unless you dock in additional domains later.  Continuing to use rigid-body
+refinement in later runs will not improve your structure, and only adds to the
+runtime.
+
+**What happened to the old fix_rotamers option?**
+
+As of version 1.8.3, the real-space refinement strategy now incorporates both
+global minimization and local fitting; the latter is similar to fix_rotamers
+but much faster and incorporates backbone flexibility.  Note that it will not
+run at very high or low resolution, or when explicit hydrogen atoms are
+present.
+
+**When is the ordered solvent method useful?**
+
+This works out to approximately 2.8Å as the low-resolution limit, depending on
+data quality.  At atomic resolution (beyond approximately 1.2Å), it is useful
+early in refinement when no waters have been placed yet, but as the structure
+becomes more complete it may remove weaker, partial-occupancy waters, and it is
+unable to handle static disorder (alternate conformations).
 
 Targets and restraints
 ======================

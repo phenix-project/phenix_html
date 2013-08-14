@@ -10,7 +10,8 @@ version; default settings are unchanged.  All parameters should be
 configurable through the GUI, although some of these (such as NCS restraint
 groups) are handled in a non-standard way.  This document describes the
 behavior of the GUI only; see the `phenix.refine <refinement.htm>`_
-documentation for details on specific parameters and methods.
+documentation for details on specific parameters and methods.  There is also
+a `list of frequently asked questions <refine_faq.htm>`_ about phenix.refine.
 
 At present the GUI has the following capabilities:
 
@@ -21,7 +22,7 @@ At present the GUI has the following capabilities:
   - NCS restraint group detection and editing tool
   - TLS group detection and editing tool
   - real-time visualization of current model and maps during refinement
-  - model validation using programs from the Molprobity server
+  - model validation using programs from the MolProbity server
   - graphical comparison of structure quality measures
   - printable plots of final statistics
 
@@ -471,7 +472,7 @@ References
     Afonine, P.V., Grosse-Kunstleve, R.W. & Adams, P.D. (2005). CCP4 Newsl.
     42, contribution 8.
 
-  - *Molprobity* :
+  - *MolProbity* :
     Davis IW, Leaver-Fay A, Chen VB, Block JN, Kapral GJ, Wang X, Murray LW,
     Arendall WB 3rd, Snoeyink J, Richardson JS, Richardson DC.
     **MolProbity: all-atom contacts and structure validation for proteins
