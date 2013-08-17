@@ -6,26 +6,26 @@ phenix.development.fem: compute Feature Enhanced Map (FEM)
   This is a developmental version and it will be such until official publication
   in peer reviewed journal.
 
-  The program reads PDB model, reflection data (Fobs or Iobs) and R-free 
+  The program reads PDB model, reflection data (Fobs or Iobs) and R-free
   flags, if available. Then it computes {2mFobs-DFmodel, Phase_model} map, which
   is subject to FEM procedure.
-  
+
   Output is MTZ file with four sets of Fourier map coefficients:
-    - 2mFoDFc,PHI2mFoDFc: usual {2mFobs-DFmodel, Phase_model} sigma-a weighted 
+    - 2mFoDFc,PHI2mFoDFc: usual {2mFobs-DFmodel, Phase_model} sigma-a weighted
       synthesis. No anisotropy correction or filling missing data.
     - 2mFoDFc_FilSharp,PHI2mFoDFc_FilSharp: same as above but B-factor sharpened,
       anisotropy corrected and missing Fobs are modeled.
     - KICK,PHIKICK: "kick" map
     - FEM,PHIFEM: Feature Enhanced Map
-    
-  Of real interest are only 2mFoDFc,PHI2mFoDFc (which is output to compare with 
+
+  Of real interest are only 2mFoDFc,PHI2mFoDFc (which is output to compare with
   FEM map) and FEM,PHIFEM - the main result of running this tool. The other map
   coefficients are present for information or debugging.
-  
+
   Important:
-    FEM map is not expected to contain any more signal than the original 
-    starting map. The new map is expected to contain less noise and all the 
-    available signal equalized in strength, so both strong and very weak signal 
+    FEM map is not expected to contain any more signal than the original
+    starting map. The new map is expected to contain less noise and all the
+    available signal equalized in strength, so both strong and very weak signal
     are available for interpretation at the same threshold contouring level.
 
 **Command line usage examples**::
@@ -33,25 +33,23 @@ phenix.development.fem: compute Feature Enhanced Map (FEM)
   % phenix.fem model.pdb data.mtz
   % phenix.fem data.mtz model.pdb label=Fobs
   % phenix.fem model.pdb data.mtz scattering_label=neutron
-  
+
 **GUI**
 
-  Graphical user interface is available 
-  
+  Graphical user interface is available
+
 **Limitations**
 
   Currently only {2mFobs-DFmodel, Phase_model} map can be used in FEM protocol
-  and it has to be computed internally by the program (that is no user-specified 
+  and it has to be computed internally by the program (that is no user-specified
   map coefficients can be used).
 
 **Additional information**
-  
+
   Latest presentation of FEM methodology:
 
     http://www.phenix-online.org/presentations/fem.pdf
-    
+
   Publication in Computational Crystallography Newsletter (front page):
-  
+
     http://www.phenix-online.org/newsletter/CCN_2013_07.pdf
-  
-    
