@@ -1,0 +1,67 @@
+===================================================================================
+Building a biological assembly and crystallographic asymmetric unit from a PDB file
+===================================================================================
+
+Introduction
+------------
+
+In PDB files, not all the atoms locations of a biological assembly and the 
+crystallographic asymmetric unit are given. The transformations information,
+rotational and translational (for both crystallographic and non-crystallographic),
+needed to reconstruct the multimer, is given in REMARK 350 and MTRIX line of the 
+pdb file.
+
+Phenix provide a commands to create a pdb file of the reconstructed a multimer
+for both the biological assembly and the crystallographic asymmetric unit.
+
+The bioassembly_reconstruction command  function applies all the transformations
+in the the pdb file REMARK 350 BIOMT, to each of the chains, produces new chains
+with new coordinates and adds them to the current model.
+The crystall_asym_unit_reconstruction does the same, using the MTRIX data.
+
+
+Command-line use
+----------------
+
+Biological assembly
++++++++++++++++++++
+::
+
+  Usage: phenix.pdb.bioassembly_reconstruction [pdf_file] [pdf_file] [options]
+
+  Options:
+    --help, -h
+
+  Example:
+
+    >>> phenix.pdb.bioassembly_reconstruction 'input_file_name.pdb'
+    bio-assembly reconstructed pdb file was added to your current directory
+    /path/biological_assembly_input_input_file_name.pdb
+
+     >>> phenix.pdb.bioassembly_reconstruction 'input_file_name.pdb' 'output_file_name.pdb'
+    bio-assembly reconstructed pdb file was added to your current directory
+    /path/output_file_name.pdb
+
+crystallographic asymmetric unit
+++++++++++++++++++++++++++++++++
+::
+
+  Usage: phenix.pdb.bioassembly_reconstruction [pdf_file] [pdf_file] [options]
+
+  Options:
+    --help, -h
+
+  Example:
+
+    >>> phenix.pdb.crystall_asym_unit_reconstruction 'input_file_name.pdb'
+    bio-assembly reconstructed pdb file was added to your current directory
+    /path/crystall_asymmetric_unit_input_file_name.pdb
+
+     >>> phenix.pdb.crystall_asym_unit_reconstruction 'input_file_name.pdb' 'output_file_name.pdb'
+    bio-assembly reconstructed pdb file was added to your current directory
+    /path/output_file_name.pdb
+
+Output
+------
+
+  For both commands the output is a pdb file in the current working directory
