@@ -1,10 +1,15 @@
 
-Building the PHENIX documentation 
+Building the PHENIX documentation
 =================================
 
-FYI, the documentation may now be built with a single command:
+FYI, the documentation may now be built using the following process:
 
-  phenix_html.rebuild_docs
+1. Create a document, new_doc.txt, at ../phenix_sources/phenix_html/rst_files/
+2. Add the file to the SVN
+3. Add 'new_doc.htm None None True' to html.list
+   in ../phenix_sources/phenix_html/
+4. Add a referance to new_doc.htm in phenix_documentation.html
+5. execute: phenix_html.rebuild_docs
 
 This depends on the environment variables PHENIX, PHENIX_VERSION, and
 PHENIX_RELEASE_TAG being refined.  If you are working out of a Phenix
