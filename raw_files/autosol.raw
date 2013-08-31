@@ -845,6 +845,25 @@ Fourier's to locate sites for the other). Then phases will be combined
 by addition of Hendrickson-Lattman coefficients and the combined phases
 will be density modified.
 
+<P><H5>AutoSol with an extremely weak signal</H5><P>
+<P>You can use AutoSol in cases with a very weak anomalous signal. The big
+challenges in this kind of situation are finding the anomalously-scattering
+atoms and density modification. For finding the sites, you may need to
+try everything available, including running HySS with various resolution
+cutoffs for the data and trying other software for finding sites as well.
+You may then want to start with the sites found using one of these
+approaches and provide those to phenix.autosol with a command like,
+<PRE style="face=courier"> sites_file=my_sites.pdb
+</PRE>
+<P>For the density modification step, there is a keyword (extreme_dm)
+ that may be helpful in cases where the starting phases are very poor.
+This keyword works with the keyword fom_for_extreme_dm to determine 
+whether a set of defaults for density modification with weak phases is
+appropriate.  If so, a very large radius for identification of the 
+solvent boundary (20 A) is used, and the number of density modification
+cycles is reduced. This can make a big difference in getting started
+with density modification in such a case.
+
       <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>General limitations</H5><P>
