@@ -38,11 +38,17 @@ corresponding density-modified map is used to make the choice.
 
 <P><H5><U><B>Inputs for parallel autobuild</B></U></H5></P>
 <P>The inputs for parallel autobuild are the same as for autobuild, with
-the addition of a few control parameters.  The main parameters are
+the addition of a few control parameters. Also parallel autobuild requires
+you to specify what each input file is (it won't guess).  
+The main parameters are
 the number of processors to use, the number of overall cycles,
  and the number of parallel autobuild jobs to be run in each cycle.  
 The number of processors available for each autobuild job then
 determines how many models are built in each autobuild cycle.
+</P><P>You can also specify whether the model obtained on each cycle is to
+be used in the next cycle (by default, if you supply a starting model
+the model obtained each cycle is used, and if you do not, it is tossed and
+only the new map is used.)
 </P>
 <P>A run_command keyword allows you to specify how jobs are
 to be run. Parallel autobuild can be run on a queueing system 
