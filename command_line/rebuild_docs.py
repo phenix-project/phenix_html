@@ -69,6 +69,7 @@ def run (out=None, log=None) :
     f = open(os.path.join(html_dir, "raw_files", raw_file), "w")
     raw_from_rst_html.run(args=[file_name], out=f)
     f.close()
+    os.remove(file_name)
   print >> out, \
     "  converting raw HTML files, creating tables-of-contents, and indexing"
   os.chdir(html_dir)

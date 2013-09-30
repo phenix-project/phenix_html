@@ -11,8 +11,8 @@ FYI, the documentation may now be built using the following process:
 4. Add a referance to new_doc.htm in phenix_documentation.html
 5. execute: phenix_html.rebuild_docs
 
-This depends on the environment variables PHENIX, PHENIX_VERSION, and
-PHENIX_RELEASE_TAG being refined.  If you are working out of a Phenix
+Some steps expect that the environment variables PHENIX, PHENIX_VERSION, and
+PHENIX_RELEASE_TAG be defined.  If you are working out of a Phenix
 installation updated to use SVN, this should not be a problem.  Note that you
 may need to run 'libtbx.configure phenix_html' in the build directory for
 the command to appear on your path.
