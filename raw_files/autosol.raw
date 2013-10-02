@@ -652,6 +652,9 @@ your model. </p>
 <p>Note that you may wish to set <b>rebuild_in_place=True</b>, 
 depending on how good your MR model is.
 
+<P><H5>Using placed density from a Phaser MR density search to find sites and as a source of phase information (method #3 for MRSAD)</H5>
+You can carry out a procedure almost like using input_partpdb_file except that the MR model comes as a set of map coefficients for density that has been placed by Phaser.  In this case the keyword to use is input_part_map_coeffs_file instead of input_partpdb_file.  You can also identify the labels with input_part_map_coeffs_labels.
+
 
 <P><H5>SAD dataset, reading heavy-atom sites from a PDB file 
 written by <b>phenix.hyss</b></H5>
@@ -863,6 +866,11 @@ appropriate.  If so, a very large radius for identification of the
 solvent boundary (20 A) is used, and the number of density modification
 cycles is reduced. This can make a big difference in getting started
 with density modification in such a case.
+
+<P><H5>AutoSol with a cluster compound</H5><P>
+You can run SAD phasing in AutoSol with a cluster compound (not MIR or MAD
+yet).  Normally you should supply a PDB file with an example of the cluster with the keyword cluster_pdb_file=my_cluster_compound and a unique residue name XX (yes, XX).  Set the keyword atom_type=XX as well .  If your cluster is Ta6Br12 then you can simply put atom_type=TX and  skip the cluster_pdb_file. For MAD/MIR, cluster compounds are not currently supported. Instead just use a standard atom.
+
 
       <P><H5><U>Possible Problems</U></H5><P>
 
