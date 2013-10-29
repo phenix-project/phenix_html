@@ -23,22 +23,18 @@ Installation
 ------------
 
 **Because the build mechanism for hybrid Rosetta/Phenix refinement requires
-some specialized handling of both the Phenix and Rosetta packages, it may
-interfere with normal use of both suites (e.g. the Phenix graphical interface).
-We recommend creating a separate installation for the independent suites if
-you plan to use them for other purposes.**  This limitation will be resolved in
+some specialized handling of the Rosetta package, it may interfere with other
+uses of the suite (e.g. MR-Rosetta).
+We recommend creating a separate installation for Rosetta if
+you plan to use it for other purposes.**  This limitation will be resolved in
 future releases.
 
-First, you should install the appropriate version of Phenix.  If you are using
-a Mac, the binary installer is sufficient; users of the graphical package can
+First, you should install the appropriate version of Phenix.  The binary
+installers should be sufficient; users of the Mac graphical package can
 set up the command-line environment with this command (replacing the version
 number as needed)::
 
   source /Applications/PHENIX-1.8.4-1496/Contents/phenix-1.8.4-1496/phenix_env.sh
-
-Linux users will need to install from source, with the addition of the flag
-"--python-shared", which builds a Python library suitable for linking to
-Rosetta.
 
 You must obtain a `separate license for Rosetta
 <http://c4c.uwc4c.com/express_license_technologies/rosetta>`_, which is free

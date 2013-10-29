@@ -90,6 +90,20 @@ you what to look for in the output files. For example, the
 tutorial uses the ``p9-sad`` dataset as example. It tells you how to
 run this example data in AutoSol and how to interpret the results.
 
+Working with reflection files
+-----------------------------
+
+**I have requested that the test set fraction be 0.05 (i.e. 5%), but Phenix
+only flags 1% of reflections.  How do I make it use the number I specify?**
+
+By default there is a limit of 2000 on the number of reflections that will be
+picked for the test set; you don't really need more than this to ensure that
+R-free is statistically significant and that the maximum likelihood
+calculations work properly.  However, if you want to use a full 5%, you can
+tell Phenix not to put any upper absolute limit.  In the `reflection file
+editor <reflection_file_editor.htm>`_ in the GUI, click
+"More options" in the R-free flags section of the editor, and delete the
+field labeled "Maximum number of reflections in test set".
 
 Wizards (general)
 -----------------
@@ -374,7 +388,7 @@ model-phased anomalous difference Fourier.
 There two simple ways to do this; both are described in the `AutoSol
 documentation <autosol.htm>`_.
 
-** I am using phenix.automr with a dimer (copies=1). However, Phenix
+**I am using phenix.automr with a dimer (copies=1). However, Phenix
 gives me a warning that the unit cell is too full.**
 
 In this case, check to make sure that you have specified that the
