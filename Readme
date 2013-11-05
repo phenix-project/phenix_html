@@ -4,12 +4,17 @@ Building the PHENIX documentation
 
 FYI, the documentation may now be built using the following process:
 
-1. Create a document, new_doc.txt, at ../phenix_sources/phenix_html/rst_files/
-2. Add the file to the SVN
-3. Add 'new_doc.htm None None True' to html.list
+1. First make sure that $PHENIX/phenix and $PHENIX/phenix_html are up-to-date,
+   and that phenix_html is checked out of SVN.
+2. Create a document, new_doc.txt, at ../phenix_sources/phenix_html/rst_files/
+3. Add the file to the SVN
+4. Add 'new_doc.htm None None True' to html.list
    in ../phenix_sources/phenix_html/
-4. Add a referance to new_doc.htm in phenix_documentation.html
-5. execute: phenix_html.rebuild_docs
+5. Add a reference to new_doc.htm in phenix_documentation.html
+6. execute: phenix_html.rebuild_docs
+
+To update an existing document, just edit the corresponding file in 
+phenix_html/rst_files/, and then execute phenix_html.rebuild_docs.
 
 Some steps expect that the environment variables PHENIX, PHENIX_VERSION, and
 PHENIX_RELEASE_TAG be defined.  If you are working out of a Phenix
