@@ -441,8 +441,20 @@ is given below.  Once you have installed Rosetta you need to set the
 environmental variable $PHENIX_ROSETTA_PATH.  Then you have all the software
 you will need for running mr_rosetta.
 
-<P>Note: this set of instructions is for Rosetta version 3.2...presumably 
-future versions will look very similar except for the numbering.
+<P>Notes on Rosetta versions: 
+<UL>
+<LI>this set of instructions is for Rosetta version 3.2.. Downloads for other.
+versions look very similar except for the numbering.
+</LI>
+<LI>Rosetta versions starting with 3.6 (and weekly builds starting with
+2013 week 45) have a different location of Rosetta files from previous
+versions. Additionally Rosetta commands have changed.  There is no longer a
+need for fragment files (they are optional). Also there is a fast mode that
+you can choose to use.  The new location of Rosetta files is normally detected
+automatically by phenix.mr_rosetta.
+</LI>
+</UL>
+
 </P>
 <P>
 Downloading and installing Rosetta is pretty easy if your computer is 
@@ -484,6 +496,11 @@ manual			rosetta_database	rosetta_source
 </PRE>
 NOTE: if your directory contains .tgz files instead of the listing above
 you may need to also run the same tar command on the individual .tgz files.
+NOTE 2: Rosetta versions 3.6 and later have a different directory structure. It
+looks instead like:
+<PRE style="face=courier">
+demos	main	tools
+</PRE>
 </LI>
 <LI>
 Now you want to compile.  You must have python on your machine...if not 
@@ -561,6 +578,7 @@ Now you are completely ready to go with Rosetta and with mr_rosetta.
 
 
 <P><H5><U>Setting up for a run of mr_rosetta A. Fragment files from the Robetta server</U></H5><P>
+<P> NOTE: For versions 3.6 and later of Rosetta, fragments files are optional.
 <P>To run mr_rosetta on your structure, you will need to use the Robetta
 fragment server at the Univ. of Washington to generate 9-mer and 3-mer
 fragments from the PDB that are compatible with your sequence file. This takes
