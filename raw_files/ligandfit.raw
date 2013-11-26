@@ -250,6 +250,7 @@ atoms:
 <PRE style="face=courier">phenix.ligandfit w1.sca model=partial.pdb ligand=GTP \
    ligand_start=start.pdb  
 </PRE>
+NOTE: the file start.pdb must contain an entire rigid group of atoms (so that ligandfit can identify the position and orientation of at least one rigid part of the ligand.)
 
 <P><LI>Use NCS from the model and the first ligand fitted to guess
  the positions of NCS-related ligands:
