@@ -1678,10 +1678,10 @@ Parallelizing for multi-core systems
 
 The *nproc* parameter instructures phenix.refine to use multiple processors
 for several highly parallel routines.  Currently this applies to the following
-procedures:
+optional procedures:
 
   - Automatic TLS identification (tls.find_automatically=True)
-  - Bulk solvent mask optimization (optimize_mask=True, on by default)
+  - Bulk solvent mask optimization (optimize_mask=True)
   - XYZ restraints weight optimization (optimize_xyz_weight=True)
   - ADP restraints weight optimization (optimize_adp_weight=True)
 
