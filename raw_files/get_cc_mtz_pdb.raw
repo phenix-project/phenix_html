@@ -91,6 +91,9 @@ labin="FP=2FOFCWT PHIB=PH2FOFCWT"
 <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems:</H5><P>
+<P>
+The option to use atom selections in get_cc_mtz_pdb can cause some confusion, because the CC values obtained can depend on the atom selections.  The way this works is that the PDB file (after atom selections) is used to calculate model density.  This model density is compared to the map from your input map coefficients in the region surrounding the atoms selected.  This model density can depend on the presence of nearby atoms (where the density extends a ways away from those atoms).
+<P>
 In versions of PHENIX up to 1.3-final, defaults were set to maximize the
 correlation coefficient rather than to give the correlation using the existing
 thermal parameters and including only the reflections present in the
