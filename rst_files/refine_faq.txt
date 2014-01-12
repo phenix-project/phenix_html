@@ -488,6 +488,20 @@ for data collection, anomalous group reifnement may also be helpful.  We do
 not recommend setting the B-factor manually and turning off refinement for
 the problematic atoms.
 
+**After refinement the mFo-DFc map has positive density around correctly placed
+atoms that are already at full occupancy.  Is my model missing something?**
+
+Usually this means that the initial B-factors of the input model were too high
+for refinement to converge.  Typically the minimizer is very good at raising
+low B-factors to the correct value, but gets stuck in the opposite direction.
+The observed result could happen if you refine starting from a lower-resolution
+model, or if you build new residues in Coot and the default B-factors are well
+above what they should be (typically this only happens at atomic resolution).
+To fix the problem, you just need to reset the B-factors to a suitably low
+value.  This can be done at the start of refinement by setting the parameter
+refinement.modify_start_model.adp.set_b_iso; in the GUI, this can be found
+in the Settings menu under "Modify start model" --> "Modify ADPs...".
+
 **Why does Phenix validation report a different number of Ramachandran outliers
 than Coot/Procheck/the PDB/other program?**
 
@@ -538,6 +552,17 @@ COOT_REFMAC_LIB_DIR to point to the directory in which you unpack it.
 We strongly discourage removing any atoms used in refinement from the model,
 as it makes reproducing the published R-factors very difficult and eliminates
 essential information about how the structure was refined.
+
+**How come I have a bunch of clashes with water molecules in the validation
+results after running solvent update?**
+
+phenix.refine is relatively aggressive in placing solvent atoms in unmodeled
+density.  However, this may sometimes result in clashes if the density
+represents ions, unmodeled residues, or alternate conformations rather than
+solvent.  For this reason, we recommend that the final round of refinement
+not include solvent update (regardless of resolution), after any clashing
+water atoms have been removed.  (You should also attempt to model the observed
+density features if possible, although this is not always straightforward.)
 
 Miscellaneous
 =============

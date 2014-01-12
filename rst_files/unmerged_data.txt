@@ -13,6 +13,15 @@ own local scaling.  In other situations, some programs will automatically merge
 the data themselves if necessary, discarding any information about the variance
 of individual observations.
 
+**A note on terminology: "unmerged" in this context means that the original
+individual observations are kept separate after scaling**, including
+symmetry-related
+reflections as well as multiple observations of the same ``h,k,l``.  **This is
+distinct from "anomalous" data**, where the Friedel mates ``h,k,l`` and
+``-h,-k,-l`` are not merged, but each of these is (usually) still the average
+of multiple observations.  Although many programs in Phenix deal with
+anomalous data, they are not useful for calculating merging statistics.
+
 Several utilities are available in Phenix which use unmerged intensities to
 calculate various data quality-related metrics.  These include `Xtriage
 <xtriage_gui.htm>`_, which will display standard merging statistics; the
@@ -58,7 +67,8 @@ methods we are familiar with:
 
   - **HKL2000**: in the Macros tab, in the Scaling section type "no merge
     original index", then re-run scaling (with a different file name than you
-    used for merged data).
+    used for merged data).  This is currently incompatible with the
+    "automatic correction" option, which will always output a merged file.
 
 Note that unmerged Scalepack format does not include the unit cell, so symmetry
 needs to be supplied from a different source (this is handled automatically in
