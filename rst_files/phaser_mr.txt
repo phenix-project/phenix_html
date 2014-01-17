@@ -115,6 +115,25 @@ much longer list of questions and answers is available on the `MR overview
     in the GUI.  (You can, of course, combine these methods and search for
     "(a OR b) AND c".)
 
+  - **I want to run a new search in Phaser starting from the results of a
+    previous job.  How do I specify this?**  If the previous job was run in
+    the Phenix GUI, you can select it from the drop-down menu labeled "Use
+    partial solution from previous job" in the "Input and general options" tab.
+    This will automatically load the solution.  Note that unlike the CCP4i
+    interface, Phaser-MR in Phenix does not make use of .sol files, since the
+    information is passed internally.  You should then load the new ensembles
+    to search for; ensembles that were used in the previous run do not need to
+    be re-loaded unless you wish to find more copies.  However, you must
+    provide complete information about the composition, including previously
+    placed components.
+
+  - **How do I run a new search starting from an existing model in the correct
+    orientation and translation?**  This might apply if you have a refined
+    model, or a solution from another program.  In this case, you should
+    add the model as an ensemble, and check the box "Ensemble is fixed partial
+    solution".  This will instruct Phaser to accept the input coordinates
+    without modification, and skip to the next ensemble to search for.
+
 Reference
 ---------
 
