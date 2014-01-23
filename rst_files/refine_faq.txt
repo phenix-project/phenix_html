@@ -42,6 +42,14 @@ for heavy atoms, and anomalous difference map coefficients will automatically
 be created in the output MTZ file.  For these reasons, anomalous data are
 recommended, but in general the R-factors will be similar.
 
+**I ran AutoSol to get a partial model that I now want to refine.  Which data
+file should I give as input: the original .sca file from HKL2000, or the file
+overall_best_refine_data.mtz from AutoSol?**
+
+Always use the MTZ file output by AutoSol.  This contains a new set of R-free
+flags that have been used to refine the model; starting over with the .sca
+file will result in a new set of flags being generated, which biases R-free.
+
 **Why does phenix.refine not use all data in refinement?**
 
 Reflections with abnormal values tend to reduce the performance of the
@@ -163,6 +171,15 @@ related molecules, which are common even at lower resolution.  The torsion
 NCS restraints restraint dihedral angles instead, and allow them to be
 unrestrained if genuinely different.  This will eventually become the default,
 since it often results in significantly better refinement.
+
+**How do I specify the .ncs_spec file from AutoSol or phenix.find_ncs for use
+in refinement?**
+
+The .ncs_spec files containing rotation and translation matrices are only used
+in density modification and model building.  For refinement, the NCS
+relationships are always given as atom selections, and in the case of the
+default torsion NCS restraints, the automatically detected restraint groups
+should be very accurate.
 
 **Both NCS restraint types make my structure worse - what should I do?**
 
@@ -391,8 +408,34 @@ generally, the output map coefficients will have a significantly worse model
 bias problem than conventional maps; this effect increases as the twin fraction
 nears 0.5.
 
-Interpreting results
-====================
+Using R-free
+============
+
+**phenix.refine stops with an error message about the model being refined
+against a different set of R-free flags.  How can I fix this?**
+
+First, make sure that you have not actually generated a new set of R-free
+flags; once you have these flags for a given dataset, you should continue
+using them throughout the building and refinement process.  The error message
+is intended to guard against this happening accidentally.  If, however, you
+have collected new higher-resolution data and extended the old R-free flags,
+then the error message may be ignored.  The R-free flag comparison is based
+on information stored in the REMARK records in the input PDB file, so if you
+edit the PDB file and remove the line containing the word "hexdigest", the
+refinement will be able to continue.
+
+**I have a model that was previously refined against a previous set of R-free
+flags that I don't have access to.  How can I avoid biasing the R-free when
+I refine this model?**
+
+There are several methods for this, but the easiest is to reset the B-factors
+(using `PDBTools <pdbtools.htm>`_ or the "Modify start model" option in
+phenix.refine) and run simulated annealing on the coordinates.  If you are
+especially worried about bias you can alternately randomize the coordinates
+and perform energy minimization, or build an entirely new model starting from
+the phases calculated from the original model.  However, we usually find that
+the annealing is aggressive enough to remove any "memory" of the original
+R-free flags.
 
 **My resolution is X Angstroms, and my R/R-free are Y and Z.  Am I done
 refining?**
@@ -403,17 +446,6 @@ resolutions, and compares these to the statistics for your output model.
 As a general rule, R-factors alone should not be used to decide if a
 structure is "done", but should be examined in combination with the
 validation report.
-
-**I solved my structure by MR and refined, and the R-free is 45%.  The maps
-are messy and I see a lot of difference density, but none around my molecule.
-Why isn't refinement working?**
-
-This frequently indicates that too few copies of the structure were placed by
-MR, and an additional chain needs to be added.  Remember that the predictions
-of unit cell contents based on the Matthews coefficient (performed by
-`Xtriage <xtriage_gui.htm>`_, for example) only provide an estimate, not an
-exact answer.  At high resolution a solvent content of 40% or less is quite
-common.
 
 **My resolution is X Angstroms, the structure is complete and
 well-validated, the maps look great, bu my R and R-free are still really
@@ -451,14 +483,6 @@ after refinement of a model that was previously not overfit, this usually
 indicates incorrect parameterization of the refinement, e.g. using
 anisotropic ADPs at an inappropriate resolution.)*
 
-**Why am I seeing negative blobs in the difference (mFo-DFc) map in hydrophobic
-voids?**
-
-In previous versions of Phenix, the bulk solvent mask was often being extended
-to include these regions.  This should no longer be a problem as of July 2013,
-but if you continue to see this effect, please contact us at
-bugs@phenix-online.org.
-
 **I ran a round of refinement, rebuilt in Coot, and refined again.  My
 previous R-free was 0.25, but the new refinement starts out at 0.35.  Why is
 it so high?**
@@ -478,6 +502,28 @@ the explanation is as simple as running too few cycles of refinement for one
 or the other program.  In general, if you find a case where phenix.refine
 performs significantly worse than another program, we encourage you to contact
 us at bugs@phenix-online.org.
+
+Interpreting results
+====================
+
+**I solved my structure by MR and refined, and the R-free is 45%.  The maps
+are messy and I see a lot of difference density, but none around my molecule.
+Why isn't refinement working?**
+
+This frequently indicates that too few copies of the structure were placed by
+MR, and an additional chain needs to be added.  Remember that the predictions
+of unit cell contents based on the Matthews coefficient (performed by
+`Xtriage <xtriage_gui.htm>`_, for example) only provide an estimate, not an
+exact answer.  At high resolution a solvent content of 40% or less is quite
+common.
+
+**Why am I seeing negative blobs in the difference (mFo-DFc) map in hydrophobic
+voids?**
+
+In previous versions of Phenix, the bulk solvent mask was often being extended
+to include these regions.  This should no longer be a problem as of July 2013,
+but if you continue to see this effect, please contact us at
+bugs@phenix-online.org.
 
 **After coordinate and B-factor refinement the heavy atoms in my structure have
 negative mFo-DFc peaks.  How do I get rid of these?**
@@ -506,7 +552,8 @@ in the Settings menu under "Modify start model" --> "Modify ADPs...".
 than Coot/Procheck/the PDB/other program?**
 
 The phi/psi distributions used in Phenix are the same as those in the
-`MolProbity server <http://molprobity.biochem.duke.edu>`_, and are based on
+`MolProbity server <http://molprobity.biochem.duke.edu>`_ (Chen et al. 2010),
+and are based on
 a curated set of 8000 high-resolution crystal structures.  There are now six
 distributions for different residue classes (general, glycine, Ile/Val,
 pre-Pro, cis-Pro, and trans-Pro).  These distributions are stored in 2-degree
@@ -668,49 +715,64 @@ individual atoms are anisotropic (just not independent); the ANISOU records
 simply make this explicit, since they have a standard format and are recognized
 by a variety of programs, unlike TLS information in the PDB header.
 
-**phenix.refine stops with an error message about the model being refined
-against a different set of R-free flags.  How can I fix this?**
+**Why doesn't the PDB header report the bulk solvent parameters K_sol and
+B_sol?**
 
-First, make sure that you have not actually generated a new set of R-free
-flags; once you have these flags for a given dataset, you should continue
-using them throughout the building and refinement process.  The error message
-is intended to guard against this happening accidentally.  If, however, you
-have collected new higher-resolution data and extended the old R-free flags,
-then the error message may be ignored.  The R-free flag comparison is based
-on information stored in the REMARK records in the input PDB file, so if you
-edit the PDB file and remove the line containing the word "hexdigest", the
-refinement will be able to continue.
+Newer versions of Phenix use an improved bulk-solvent correction and scaling
+procedure which uses an entirely different parameterization that we find
+performs better (Afonine et al. 2013; see also Uson et al. (1999) Acta
+Cryst. D55, 1158–1167).
+
+Citations
+=========
+
+**How should I cite phenix.refine?**
+
+Either (Afonine et al. 2012) or (Adams et al. 2010) is suitable; we recommend
+the later if you used additional components of Phenix.  If you used the
+integrated MolProbity validation in the GUI, you should also cite (Chen et al.
+2010) and/or (Echols et al. 2012).
+
+**How should I specify the refinement program in my PDB deposition?**
+
+If the PDB or mmCIF file you are depositing was output by phenix.refine,
+the refinement program (including version number) is already specified in the
+header.  Otherwise, "PHENIX (version 1.8.4)" is suitable (replaced with the
+actual version number).  However, note that if you used multiple refinement
+programs (for example REFMAC and PHENIX) during the course of structure
+determination, only the last will
+usually be named in the header, so we suggest that you edit this information
+during deposition to complete the list.
+
+**What are some references for the underlying methods used in phenix.refine?**
+
+For technical background, the most thorough source is (Afonine et al. 2012),
+which
+contains all of the relevant citations.  We recommend  that everyone who uses
+phenix.refine read this paper at some point even if you are not concerned
+with theory, as it provides a more detailed explanation for the methods and
+motivations behind the program than this documentation.
+
+**Where can I read more about the principles of refinement in general?**
+
+`Bernhard Rupp's "BioMolecular Crystallography"
+<http://www.ruppweb.org/garland/default.htm>`_ is the most modern and complete
+reference, and includes a detailed explanation of the maximum likelihood
+methods used in phenix.refine and many other programs.
 
 References
 ==========
 
-  - *phenix.refine* :
-    Afonine, P.V., Grosse-Kunstleve, R.W., Echols, N., Headd, J.J.,
-    Moriarty, N.W., Mustyakimov, M., Terwilliger, T.C., Urzhumtsev, A.,
-    Zwart, P.H. & Adams, P.D. (2012) **Towards automated crystallographic
-    structure refinement with phenix.refine**
-    Acta Cryst. D68:352-367.
+  - CITATION:phenix
 
-    Afonine, P.V., Grosse-Kunstleve, R.W. & Adams, P.D. (2005). CCP4 Newsl.
-    42, contribution 8.
+  - CITATION:bss
 
-  - *Molprobity* :
-    Chen, V.B., Arendall III, W.B., Headd, J.J., Keedy, D.A.,
-    Immormino, R.M, Kapral, G.J., Murray, L.W., Richardson, J.S. &
-    Richardson, D.C. (2010) **MolProbity: all-atom structure validation for
-    macromolecular crystallography**
-    `Acta Cryst. D66:12-21.
-    <http://www.ncbi.nlm.nih.gov/pubmed/20057044>`_
+  - CITATION:phenix.refine
 
-    Davis IW, Leaver-Fay A, Chen VB, Block JN, Kapral GJ, Wang X, Murray LW,
-    Arendall WB 3rd, Snoeyink J, Richardson JS, Richardson DC.
-    **MolProbity: all-atom contacts and structure validation for proteins
-    and nucleic acids.**
-    `Nucleic Acids Res. 2007 35:W375-83.
-    <http://www.ncbi.nlm.nih.gov/pubmed/17452350>`_
+  - CITATION:bss2
 
-  - *POLYGON* :
-    Urzhumtseva L, Afonine PV, Adams PD, Urzhumtsev A.
-    **Crystallographic model quality at a glance.**
-    `Acta Cryst. 2009,  D65:297-300.
-    <http://www.ncbi.nlm.nih.gov/pubmed/19237753>`_
+  - CITATION:molprobity
+
+  - CITATION:phenix_gui
+
+  - CITATION:polygon

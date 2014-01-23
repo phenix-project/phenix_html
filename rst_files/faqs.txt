@@ -90,6 +90,39 @@ you what to look for in the output files. For example, the
 tutorial uses the ``p9-sad`` dataset as example. It tells you how to
 run this example data in AutoSol and how to interpret the results.
 
+**How is non-crystallographic symmetry handled in PHENIX?**
+
+The treatment of NCS depends on the specific program or task:
+
+  - In density modification (performed internally by RESOLVE, and used in
+    AutoSol, AutoBuild, phenix.multi_crystal_average, and related programs),
+    NCS relationships (in the form of rotation/translation matrices) are used
+    to average different parts of the map together, which usually improves
+    phase quality.  The NCS operators can be derived from heavy-atom positions,
+    the map itself, or a partial model, but this is normally done
+    automatically (although we recommend specifying the number of NCS-related
+    copies if you know what it should be).
+
+  - In model-building (AutoBuild), NCS is also used to copy pieces of the
+    partial model to complete related chains.
+
+  - In refinement (both in phenix.refine itself, and in the AutoSol/AutoBuild
+    pipelines), NCS-related chains will be restrained to have similar
+    conformations.  By default this will be done in torsion-angle space, which
+    allows for local conformational changes if present, and also incorporates
+    advanced sidechain-fitting features.  The NCS groups will be determined
+    automatically based on sequence comparison.  Alternately, you may restrain
+    the NCS groups to be globally similar, treating the relationships as rigid.
+    This may work better in a few cases but is generally not recommended,
+    especially since careful manual setup is usually required for optimal
+    results.
+
+Note that several programs may produce multiple forms of output specifying the
+NCS relationships.  Files ending in .ncs_spec contain rotation and translation
+matrices for use in RESOLVE.  Files ending in .phil contain atom selections
+for use in phenix.refine.  In most cases, however, you can ignore these files,
+as the NCS relationships will be detected automatically.
+
 Working with reflection files
 -----------------------------
 
@@ -373,6 +406,14 @@ Here R is &lt;Fderiv-Fnative&gt;/(2 &lt;Fderiv+Fnative&gt;),
 noise is &lt;sigma&gt;,
 signal is sqrt(&lt;(Fderiv-Fnative)**2&gt;-&lt;sigma**2&gt;),
 and S/N is the ratio of signal to noise.
+
+**I ran AutoSol to get a partial model that I now want to refine.  Which data
+file should I give as input: the original .sca file from HKL2000, or the file
+overall_best_refine_data.mtz from AutoSol?**
+
+Always use the MTZ file output by AutoSol.  This contains a new set of R-free
+flags that have been used to refine the model; starting over with the .sca
+file will result in a new set of flags being generated, which biases R-free.
 
 Molecular replacement
 ---------------------
