@@ -193,12 +193,16 @@ computed for each configuration. The <em>mean log absolute deviation</em> (MLAD)
 defined as:
 <P>
 MLAD(d<strong>R</strong>) = &#x3a3;( log(d<strong>r</strong>&#x0B7;d<strong>r</strong>/(|d<strong>r</strong>|
-    + 0.9) + max(0.9, min(d<strong>r</strong>&#x0B7;d<strong>r</strong>,1)))),
+    + 0.9) + max(0.9, min(d<strong>r</strong>&#x0B7;d<strong>r</strong>,1))) - log(0.9)),
 </P>
 <P>
 </P>
 where d<strong>r</strong> is the difference vector between a pair of aligned C-alpha atoms and the sum
-is taken over all atom pairs in the alignment. MLAD is used as the distance measure.
+is taken over all atom pairs in the alignment. The factor log(0.9) is subtracted to 
+ensure that MLAD(<strong>0</strong>) = 0.0. MLAD can loosely be interpreted as a 
+distance measure between structures. But it is not a metric in the mathematical 
+sense since the triangle inequality is not fulfilled.
+
 MLAD will downplay the contributions of spatially distant C-alpha atom pairs which
 may otherwise lead to incorrect matches when the space group has a floating origin
 and the chains tested against one another consists of large unaligned domains.
