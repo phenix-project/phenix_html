@@ -48,14 +48,20 @@ reflections, so R-free flags are not required.  (Unlike refinement, this does
 not severely bias the final R-free value, since the placement of molecules
 will be approximate and some conformational changes usually occur.)
 
-At least one search model is required.  In most cases this will be a PDB file
-containing a partial structure.  For more variable structures, an ensemble
+At least one search model is required; in the context of Phaser the search
+model is usually refered to as an "ensemble".  In most cases this will be a
+PDB file containing a partial structure.  For more variable structures, an
+actual ensemble
 model may be used instead - either a PDB file with multiple MODEL records, or
-multiple similar PDB files.  When using an ensemble, all models must be
+multiple similar PDB files.  When using a multi-model ensemble, all models
+must be
 superposed in the same orientation; the `Ensembler <ensembler.htm>`_ utility
-is used for this.    There are no limitations on the size or number of search
-models.  For large complexes, if the relative positions of individual subunits
-do not change, the entire assembly may be used as a search model instead of
+is used for this.    There are no limitations on the size, complexity, or
+number of search
+models.  For complexes or multimers, if the relative positions of individual
+subunits
+do not change, the entire assembly (for instance, a ribosomal subunit) may be
+used as a search model instead of
 placing each component separately.  All heteroatoms (ligands and waters)
 should be removed from the PDB file(s) before use.
 
@@ -82,7 +88,10 @@ simply enter the molecular weight.  The standalone versions of Phaser also
 accept the fractional composition of each search ensemble, if known.
 Note that the composition data does not necessarily have
 a 1:1 correspondence with the search ensembles (see FAQ list below for
-details).  Even if you are only searching for a single
+details); if you wish to simply specify the molecular weight of a complex
+while searching for multiple subunits, you may enter the mass for the complex
+as a single component.  (You may also use multi-record FASTA-format sequence
+files.)  Even if you are only searching for a single
 ensemble out of several (e.g. the protein in a protein-DNA complex), you
 must still supply the expected composition of the entire crystal.
 

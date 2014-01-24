@@ -16,7 +16,8 @@ search (rotation, translation, packing, phasing+refinement) separately.
 This document only covers configuration of the Phaser GUI; for a detailed
 explanation of the various terms and search procedures referenced here as well
 as interpretation of results, consult the `overview of molecular replacement
-in PHENIX <mr_overview.htm>`_, the `Phaser documentation <phaser.htm>`_, or the
+in PHENIX <mr_overview.htm>`_ (especially the discussion of "ensembles" and
+composition), the `Phaser documentation <phaser.htm>`_, or the
 `Phaser WIKI <http://www.phaser.cimr.cam.ac.uk/index.php/Phaser_Crystallographic_Software>`_.  Some common user questions are discussed at the end of this
 section, and in the MR overview page.  New users looking for a step-by-step
 introduction should read the `Phaser-MR tutorial <tutorial_mr.htm>`_.
@@ -25,7 +26,8 @@ Input files and mandatory parameters
 ------------------------------------
 
 The input section is similar to that of AutoMR, with separate sections for
-reflection data, search ensembles, and ASU components.  Unlike the command-line
+reflection data, search ensembles, and scattering information.  Unlike the
+command-line
 version of Phaser, the experimental data may be any file format, and both
 intensities and amplitudes (with or without anomalous data) are allowed.
 The default mode is "Automated molecular replacement" (MR_AUTO); some of the
@@ -41,7 +43,8 @@ instance, supply several alternate ensembles for a chain, and instruct Phaser
 to try each in turn (see below).
 
 You must also define the composition of the asymmetric unit (ASU); this is
-usually done by supplying information for each chain as a sequence, mass, or
+usually done by supplying information about the sequence (one chain at a time),
+mass, or
 type and number of residues.  Alternately, you may give the fractional
 composition of each search ensemble, if known.  It is also possible to
 additionally specify heavy atoms that contribute to scattering, but this is
@@ -98,22 +101,34 @@ These are specific to the Phaser-MR GUI, especially the MR_AUTO mode.  A
 much longer list of questions and answers is available on the `MR overview
 <mr_overview.htm#faq>`_ page.
 
+  - **Do I actually have to include multiple models in my ensembles?**  No,
+    we use "ensemble" in this context to refer to any search model; in many
+    cases a single model is adequate to solve the structure (and these may
+    be much easier to work with).
+
   - **What is the difference between "high resolution" and "high resolution for
     refinement"?**  The latter is applied during the "refinement and phasing"
     step only; for rotation and translation searches, the first parameter is
     used.
 
-  - **How do I search for multiple unique components?** or **How do I tell
-    Phaser to search for the best ensemble out of several?**  The "Search
-    procedure" tab allows you to set up either - or both - of these procedures.
-    To try multiple alternative ensembles at once ("a OR b OR c"), check the
-    box next to each ensemble you want Phaser to try for a single search; only
-    one of these will actually be placed in the output model.  To search for
-    multiple independent components ("a AND b AND c"), click the "Add search"
+  - **How do I search for multiple unique ensembles?**  The "Search
+    procedure" tab allows you to set up this procedure.  To search for
+    multiple independent ensembles representing different entities in a
+    complex ("a AND b AND c"), click the "Add search"
     button below the tab, and for each search, check the ensemble(s) to be
     used at that step.  The searches will be performed in the order they appear
-    in the GUI.  (You can, of course, combine these methods and search for
-    "(a OR b) AND c".)
+    in the GUI.  Note that this is **not** the same as checking multiple
+    ensembles for a single search, as described in the next question.
+
+  - **How do I tell Phaser to pick the best solution from among several similar
+    ensembles?**  To try multiple alternative ensembles (corresponding to the
+    same actual
+    entity in the crystal) at once ("a OR b OR c"), check the
+    box next to each ensemble you want Phaser to try for a single search; only
+    one of these will actually be placed in the output model. 
+    (You can, of course, specify any combination of searches and ensembles,
+    for instance "(a OR b) AND c", which would be two separate search
+    instructions.)
 
   - **I want to run a new search in Phaser starting from the results of a
     previous job.  How do I specify this?**  If the previous job was run in
@@ -132,7 +147,9 @@ much longer list of questions and answers is available on the `MR overview
     model, or a solution from another program.  In this case, you should
     add the model as an ensemble, and check the box "Ensemble is fixed partial
     solution".  This will instruct Phaser to accept the input coordinates
-    without modification, and skip to the next ensemble to search for.
+    without modification, and skip to the next ensemble to search for.  You
+    do not need to specify a separate search for this ensemble, as it will
+    be included automatically.
 
 Reference
 ---------
