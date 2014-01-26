@@ -260,6 +260,17 @@ NOTE: the file start.pdb must contain an entire rigid group of atoms (so that li
 
 
 </UL>
+
+<P><H5>R-free flags and test set</H5><P>
+ In Phenix the parameter test_flag_value sets the value of the test set that is to be
+free.  Normally Phenix sets up test sets with values of 0 and
+1 with 1 as the free set.  The CCP4 convention is values of
+0 through 19 with 0 as the free set.  Either of these is
+recognized by default in Phenix and you do not need to do anything
+special. If you have any other convention (for example values of
+0 to 19 and test set is 1)
+then you can specify this with test_flag_value.
+</P>
       <P><H5><U>Possible Problems</U></H5><P>
 
 <P><H5>Specific limitations and problems</H5><P>

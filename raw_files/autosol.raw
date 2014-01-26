@@ -873,6 +873,16 @@ with density modification in such a case.
 You can run SAD phasing in AutoSol with a cluster compound (not MIR or MAD
 yet).  Normally you should supply a PDB file with an example of the cluster with the keyword cluster_pdb_file=my_cluster_compound and a unique residue name XX (yes, XX).  Set the keyword atom_type=XX as well .  If your cluster is Ta6Br12 then you can simply put atom_type=TX and  skip the cluster_pdb_file. For MAD/MIR, cluster compounds are not currently supported. Instead just use a standard atom.
 
+<P><H5>R-free flags and test set</H5><P>
+ In Phenix the parameter test_flag_value sets the value of the test set that is to be
+free.  Normally Phenix sets up test sets with values of 0 and 1 with 1 as the free set.  
+The CCP4 convention is values of
+0 through 19 with 0 as the free set.  Either of these is
+recognized by default in Phenix and you do not need to do anything 
+special. If you have any other convention (for example values of 
+0 to 19 and test set is 1)
+then you can specify this with test_flag_value.
+</P>
 
       <P><H5><U>Possible Problems</U></H5><P>
 
