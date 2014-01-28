@@ -723,6 +723,18 @@ procedure which uses an entirely different parameterization that we find
 performs better (Afonine et al. 2013; see also Uson et al. (1999) Acta
 Cryst. D55, 1158–1167).
 
+**What is the difference between the various scattering tables?  When should
+I use something other than the default?**
+
+If you are refining a neutron structure, you should of course use the neutron
+scattering table.  The other tables are all X-ray-specific; the default,
+n_gaussian, is the best to use, as it uses dynamically defined number of
+Gaussians to approximate tabulated form-factors with required accuracy.
+it1992 is commonly used in other programs - this is four Gaussians plus
+constant, taken from International Tables 1992 edition.  wk1995 is from
+(Waasmaier & Kirfel 1995), which is five Gaussians and is more accurate (but
+slower) than it1992.
+
 Citations
 =========
 
