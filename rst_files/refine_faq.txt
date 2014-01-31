@@ -266,6 +266,18 @@ find the atom selections.  How do I remove the old custom restraints?**
 
 In the Utilities menu, select "Clear custom restraints."
 
+**What does "sigma" mean for geometry restraints, and what values are
+appropriate?**
+
+The sigma is the estimated standard deviation (e.s.d.) of the target value.
+For distance (bond) restraints, the sigma will be in Angstrom units; for
+bond angle and dihedral restraints it will be in degrees.  A typical covalent
+bond will have a sigma of 0.02 or 0.03, and weaker "bond" restraints such as
+hydrogen bonds or metal coordination restraints will be looser with sigma
+between 0.05 and 0.1.  For bond angle restraints, sigma is usually a few
+degrees; for dihedrals, up to 20-30 degrees is not uncommon.  (See also the
+next question below.)
+
 **I want my ligand geometry to be absolutely perfect with no deviation from
 the target value(s).  Can I just set the sigmas to zero or an extremely low
 value?**
@@ -303,6 +315,22 @@ planarity restraint (part of the parameter scope
 refinement.geometry_restraints.edits), which may be excessively time-consuming
 for large structures.  Automatic planarity restraints may be added in a future
 version.
+
+**Can I use a reference model to restrain ligand coordinates?**
+
+The reference model restraints are only intended to work with macromolecules.
+However, you may use separate harmonic restraints for any subset of atoms;
+these will tether the selected atoms to their initial coordinates.  This can
+be effective when you already have good geometry and map fit for the
+restrained atoms; however, it does not allow for genuine conformational
+differences.
+
+**How do I stop simulated annealing from pushing certain atoms too far out of
+density?**
+
+The harmonic restraints are suitable for this purpose.  This is especially
+useful when generating a simulated annealing omit map, where atoms may move
+to fill voids left by omitted scatterers.
 
 B-factors/ADPs/TLS
 ==================
