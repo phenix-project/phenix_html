@@ -14,12 +14,6 @@ Anything enclosed in header html H4 H5 etc will go in the table of contents>
       <P><H5><U>Author(s)</U></H5><P>
 <UL><LI>AutoSol Wizard: Tom Terwilliger
 <LI>PHENIX GUI: Nathaniel Echols
-<LI>HYSS: Ralf W. Grosse-Kunstleve and Paul D. Adams
-<LI>Phaser: Randy J. Read, Airlie J. McCoy and Laurent C. Storoni
-<LI>SOLVE:  Tom Terwilliger
-<LI>RESOLVE: Tom Terwilliger
-<LI>phenix.refine: Ralf W. Grosse-Kunstleve, Peter Zwart and Paul D. Adams
-<LI>phenix.xtriage: Peter Zwart
 </UL>
 
       <P><H5><U>Purpose</U></H5><P>
@@ -499,36 +493,19 @@ NOTE: the autosol parameters file my_autosol.eff will have just one
 blank native, derivative, and wavelength. You can cut and paste them to 
 put in as many as you want to have.
 
-<P>
+<P><H5>NEW: AutoSol is optimized for weak SAD data from version 1.8.5</H5><P>
 
-<P><H5><I>Model viewing during model-building with the Coot-PHENIX interface 
-</I></H5><P>
-<P>The AutoSol Wizard allows you to view the current best model that is
-produced by the automated model-building process.  This capability is 
-identical to the view/edit model procedure available in the 
-<A href="autobuild.htm"> AutoBuild </A>
-Wizard. Normally you would use it just to view the model in AutoSol, and
-to view and edit a model in 
-<A href="autobuild.htm"> AutoBuild </A> .
-<p>The PHENIX-Coot interface is accessible via the command-line.
-When a model has been produced by the AutoSol Wizard, 
-you can open a new window and
-type:
-<PRE style="face=courier">phenix.autobuild coot </PRE>
-which will start Coot with your current map and model.
-<p>When Coot has been loaded, your map and model will be displayed along with
-a <b>PHENIX-Coot Interface</b> window. If you want, 
-you can edit your model and then save 
-it, giving it back to PHENIX with the button labelled something like
-<b>Save model as COMM/overall_best_coot_7.pdb</b>. This button creates the
-indicated file and also tells PHENIX to look for this file and to try and
-include the contents of the model in the building process. In AutoSol, only
-the main-chain atoms of the model you save are considered, and
-the side-chains are ignored.  Ligands 
-and solvent in the model are ignored as well.
-<p>As the AutoSol Wizard continues to build new models and create new maps,
-you can update in the PHENIX-Coot Interface to the current best model and
-map with the button <b>Update with current files from PHENIX</b>.
+The new AutoSol is specifically engineered to be able to solve structures at low or high resolution with a very weak anomalous signal. 
+
+One feature you may notice right away is that the new AutoSol will try to optimize several choices on the fly. AutoSol will use the Bayesian estimates of map quality and the R-value in density modification to decide which choices lead to the best phasing.  AutoSol will try using sharpened data for substructure identification as well as unscaled data as input to AutoSol and pick the one leading to the best map.  AutoSol will also try several smoothing radii for identification of the solvent boundary and pick the one that gives the best density modification R-value. 
+
+You'll also notice that AutoSol uses the new parallel HySS and that it can find substructures with SAD data that are very weak or that only have signal to low resolution.  You can use any number of processors on your machine in the HySS step (so far the parallelization is only for HySS, not the other steps in AutoSol, but those are planned as well).
+
+The biggest change in AutoSol is that it now uses iterative Phaser LLG completion to improve the anomalously-scattering substructure for SAD phasing.  The key idea is to use the density-modified map (and later, the model built by AutoSol) to iterate the identification of the substructure. This feature is amazingly powerful in cases where only some of the sites can be identified at the start by HySS and by initial Phaser completion. Phaser LLG completion is more powerful if an estimate of part of the structure (from the map or from a model) is available.
+
+The new AutoSol may take a little longer than the old one due to the heavy-atom iteration, but you may find that it gives a much improved map and model.  
+
+
       <P><H5><U>Examples</U></H5><P>
 <P><H5>SAD dataset</H5><P>
 <PRE style="face=courier">phenix.autosol w1.sca seq.dat 2 Se lambda=0.9798

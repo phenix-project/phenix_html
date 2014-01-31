@@ -2,6 +2,11 @@
 Hybrid Substructure Search
 ==========================
 
+Authors
+=======
+
+Ralf Grosse-Kunstleve, Paul Adams, Randy Read, Gabor Bunkoczi, Tom Terwilliger
+
 HySS overview
 =============
 
@@ -26,6 +31,7 @@ file formats suitable for frequently used phasing and density
 modification packages.
 
 Links:
+======
 
   - `Examples <examples.html>`_
   - `Download page <http://www.phenix-online.org/download/cci_apps/>`_
@@ -57,8 +63,34 @@ References:
     `Electronic reprint
     <http://cci.lbl.gov/~rwgk/my_papers/iucr/ba5027_reprint.pdf>`__
 
-To contact us send email to help@phenix-online.org or
-bugs@phenix-online.org.
+A new powerful and parallel Hybrid Substructure Search (HySS)
+=============================================================
+
+HySS has many new features in 2014.  The first thing you might notice in 
+HySS is that it can use as many processors as you have on your computer.  
+This can make for a really quick direct methods search for your 
+anomalously-scattering substructure.  
+
+You might notice next that HySS now automatically tries Phaser completion 
+to find a solution if the direct methods approach does not give a clear 
+solution right away.  Phaser completion uses the likelihood function to 
+create an LLG map that is used to find additional sites.  This is really 
+great because Phaser completion in HySS can be much more powerful than 
+direct methods in HySS. Phaser completion takes a lot longer than direct 
+methods completion but it is now quite feasible, particularly if you have 
+several processors on your computer.
+
+The next thing you might notice in HySS is that it automatically tries 
+several resolution cutoffs for the searches if the first try does not 
+give a convincing solution.  Also HySS will start out with a few Patterson 
+seeds and then try more if that doesn't give a clear solution.  
+
+HySS now considers a solution convincing if it finds the same solution 
+several times, starting with different initial Patterson peaks as seeds.  
+The more sites in the solution, the fewer duplicates need to be found to 
+have a convincing solution.
+
+Putting all these together, the new HySS is much faster than the old HySS and it can solve substructures that the old HySS could not touch.
 
 HySS examples
 =============
