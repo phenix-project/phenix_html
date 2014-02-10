@@ -1,0 +1,14 @@
+phenix.f000: given PDB file and mean bulk-solvent density estimate F000 reflection
+----------------------------------------------------------------------------------
+
+**Description**
+
+  The program reads PDB model and optionally provided mean bulk-solvent density
+  value (default is 0.35).
+
+  Output: estimate of F000 value and solvent content
+
+**Command line usage examples**::
+
+  % phenix.f000 model.pdb
+  % phenix.f000 model.pdb mean_solvent_density=0.44
