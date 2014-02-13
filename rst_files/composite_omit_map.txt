@@ -22,10 +22,11 @@ the underlying map-calculation code.  It may be run in three different modes:
 
   - **with simulated annealing**, which aggressively removes residual bias
     in the partial models (but increases runtime).
-  - **with minimization only**, without annealing; this is the default
-    setting.
-  - **without refinement**, which leaves the partial models alone.
+  - **with minimization only**, without annealing
+  - **without refinement**, which leaves the partial models alone, but performs
+    an iterative procedure to quickly remove phase bias.
 
+The final option is the default, since it is very fast but still effective.
 For best results we recommend running with simulated annealing, although this
 may be more problematic for especially poor and/or low-resolution structures.
 
@@ -80,6 +81,15 @@ map type.  For 2mFo-DFc maps, the MTZ column labels will be interpretable
 using the auto-open function in Coot; all other map types require you to
 load them manually.
 
+Singe-omit mode
+---------------
+
+The program can also be used to generate a simple omit map for a single
+region; the iterative de-bias procedure is not available in this mode, but you
+can perform refinement and/or simulated annealing.  This is essentially
+equivalent to setting up a phenix.refine run manually, but with a simplified
+interface.
+
 Other options
 -------------
 
@@ -91,7 +101,8 @@ There are several other programs in Phenix with similar features:
     annealing.
   - `phenix.refine <refinement.htm>`_ can be used to manually generate omit
     maps for a smaller selection of the model by specifying the
-    ``omit_selection`` keyword.
+    ``omit_selection`` keyword.  The single-omit mode of the composite omit
+    map program is equivalent to this.
   - `phenix.maps <maps.htm>`_ can generate simple omit maps without refinement.
 
 References

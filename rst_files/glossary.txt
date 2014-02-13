@@ -15,6 +15,14 @@ term is often used specifically to refer to **mFo-DFc** maps and similar.
 Usually viewed at between 1.0 to 1.5 **sigma** (the latter is the default in
 Coot).
 
+**altloc**: an identifier in atom records in PDB/mmCIF files, which labels the
+alternative conformation to which an atom belongs.  In the PDB format, this
+occupies the column to the left of the residue name.  For single-conformer
+models the altloc ID will be blank; otherwise it is usually an uppercase
+letter starting from "A".  Atoms with non-blank altloc IDs will interact with
+unlabeled atoms and those with the same identifier, but not atoms with a
+different non-blank altloc.
+
 **Anisotropic**: not equal in all directions, or in practice, ellipsoidal in
 shape.  In crystallography this is used in two very different contexts:
 
