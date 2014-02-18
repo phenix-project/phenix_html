@@ -73,6 +73,8 @@ methods we are familiar with:
 Note that unmerged Scalepack format does not include the unit cell, so symmetry
 needs to be supplied from a different source (this is handled automatically in
 many of the programs below).  MTZ and XDS formats include complete symmetry.
+Not all files in these formats are necessarily suitable: in particular, note
+that MTZ files output by Mosflm have not had scaling performed yet.
 
 Xtriage and phenix.merging_statistics
 -------------------------------------
