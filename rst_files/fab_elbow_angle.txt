@@ -1,0 +1,33 @@
+======================================================
+Calculating Fragment Antigen-Binding (Fab) elbow angle
+======================================================
+
+Overview
+--------
+Each FAB is made of two chains, Heavy (H) and Light (L), and two domains,
+Variable (V) and Constant (C or C1, The heavy domain has three parts).
+The angle between the variable and constant domains is the FAB elbow angle.
+It is the angle between rotation axes, the pseudo-dyad axes,
+defined by aligning the light portion of each domain, on-to the heavy one.
+
+Command line options:
+_____________________
+**light**        chain ID of light domain, by default set to L
+**heavy**        chain ID of heavy domain, by default set to H
+**limit_l**      the number of the residue separating between variable
+              and constant domains in the light chain, by default 107
+**limit_H**      the number of the residue separating between variable
+              and constant domains in the heavy chain, by default 113
+**h**            help
+
+Usage:
+------
+>>>phenix.fab_elbow_angle fab_name.pdb [light=L] [heavy=H] [limit_l=107] [limit_h=113]
+
+Examples:
+---------
+>>>phenix.fab_elbow_angle 7fab.pdb light=L heavy=H limit_l=104 limit_h=117
+>>>123.00
+>>>phenix.fab_elbow_angle 1bbd.pdb
+>>>126.34
+
