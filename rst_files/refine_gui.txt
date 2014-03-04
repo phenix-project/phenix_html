@@ -215,6 +215,13 @@ refinement targets, including restraints (structural and otherwise):
     Both implementations also allow you to restrain the B-factors of NCS
     groups to be similar, but this is not always useful or even valid.
 
+  - **Automatic covalent bonds** supplement the standard covalent geometry
+    restraints for special cases such as modified amino acids, glycoproteins,
+    and metal ions.  This is usually a safe option as long as you do not have
+    excessive errors in the input geometry, which may lead to spurious links
+    being created.  Note that you can also define custom geometry restraints
+    yourself, and/or use ReadySet to generate them for you.
+
   - **Reference model restraints** use the dihedral angles of an existing
     structure as restraints on the input model conformation, for instance,
     refining a low-resolution structure of a molecule whose high-resolution
@@ -264,10 +271,11 @@ used; these typically apply globally, except as noted.
     necessary; this is usually appropriate at any resolution where water
     molecules are visible in density (usually 2.5A or better).
 
-  - **Automatically correct N/Q/H errors** uses the program Reduce to flip
-    backwards sidechains, which appear symmetric when explicit hydrogens are
-    not present.  This is almost always a good idea and adds very little to
-    overall run time.
+  - **Ion placement** extends solvent picking to build elemental ions such
+    as calcium and zinc.  To enable this option, simply enter a list of the
+    elements to search for; this will also enable solvent picking as a first
+    step.  This option is not recommended if you have data worse than 3.0A
+    resolution, and works best with anomalous data.
 
   - **Simulated annealing** uses molecular dynamics with an extra X-ray
     term as an additional optimization method.  It is very helpful for
@@ -281,11 +289,23 @@ used; these typically apply globally, except as noted.
     is almost always either "n_gaussian" for standard X-ray refinement, or
     "neutron" (see below).
 
+  - **Automatically correct N/Q/H errors** uses the program Reduce to flip
+    backwards sidechains, which appear symmetric when explicit hydrogens are
+    not present.  This is almost always a good idea and adds very little to
+    overall run time.
+
   - **Twin law** enables twinned refinement.  Only a single twin domain is
     supported at present, and the refinement target is least-squares (LS)
     instead of maximum-likelihood.  We recommend caution when using this
     option, as the R-factors are invariably lower whether or not the crystal
     was actually twinned, and the detwinned maps will have more model bias.
+
+  - **Number of processors** determines the parallelization for several
+    optional steps, most importantly the weight optimization where it can
+    reduce the runtime by up to 3x on large multi-core systems.  Note that
+    with default settings phenix.refine runs almost entirely in serial, and
+    due to operating system limitations the multiprocessing option is not
+    available on Windows.
 
 The output tab allows you to change the destination directory and modify the
 default map coefficients and/or map files written out.  By default, an MTZ
