@@ -68,6 +68,7 @@ nsf_gap.pdb model has a chain ending at residue 36 and another starting
 at residue 44.  As chain_id=None in this example, if there are
 multiple chains A,B,C in nsf_gap.pdb then all 3 will be filled in.
 
+<P><H5>Specifying column names</H5><P>
 <p>If you want (or need) to specify the column names from your mtz file, you
 will need to tell fit_loops what FP and PHIB (and optionally FOM)
 are, in this format:
@@ -78,6 +79,7 @@ phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
 labin="FP=2FOFCWT PHIB=PH2FOFCWT"
 </PRE>
 
+<P><H5>Fitting a loop with poor density</H5><P>
 <p>If you want to try and fit a loop with poor density, you 
 might want to lower the threshold for the correlation of density
 in the loop (default minimum correlation is 0.2):
@@ -86,6 +88,7 @@ phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
  seq_file=nsf.seq start=37 end=43 chain_id=None \
 loop_cc_min=0.1</PRE>
 
+<P><H5>Using a loop library</H5><P>
 <p>To use the loop library in PHENIX, use the keyword loop_lib:
 <PRE style="face=courier">
 phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
@@ -94,6 +97,7 @@ phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
 This will fit a loop starting with residue 37 and ending with residue 39.
 The maximum current length in the loop library is 3 residues.
 
+<P><H5>Using a loop library to connect all segments</H5><P>
 <p>To use the loop library in PHENIX and try to connect any pair of segments 
 that have an  geometrical relationship, use the keyword connect_all:
 <PRE style="face=courier">
@@ -104,6 +108,14 @@ This will go through all pairs of segments, trying to connect them with a loop
 from the PHENIX loop library. Note that this is a last-resort approach, normally
 instead use the default and let fit_loops connect segments that are close in
 sequence.
+
+<P><H5>Specifying a gap to fill in</H5><P>
+<p>To specify a particular gap for loop fittin, you can say
+<PRE style="face=courier">
+phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+ seq_file=nsf.seq start=37 end=39 chain_id=A
+</PRE>
+Note the residue number for start and end are the first and last in the gap, not the residues flanking the gap that are already present.
 
 <P><H5><U>Possible Problems</U></H5><P>
 

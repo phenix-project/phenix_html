@@ -1,0 +1,168 @@
+========================================================================
+Finding and analyzing NCS from heavy-atom sites or a model with find_ncs
+========================================================================
+
+Authors:
+--------
+
+- find_ncs: Tom Terwilliger
+- simple_ncs_from_pdb : Tom Terwilliger
+- Phil command interpreter: Ralf W. Grosse-Kunstleve
+- find_domain: Peter Zwart
+
+Purpose
+-------
+
+The find_ncs method identifies NCS in (a) the chains in a PDB file or (b) a set of heavy-atom sites, or (c) from the density in a map and writes out the NCS operators in forms suitable for phenix.refine, resolve, and the AutoSol and AutoBuild Wizards.
+
+
+How find_ncs works
+------------------
+
+The basic steps that the find_ncs carries out are:
+
+- Decide whether to use simple_ncs_from_pdb (used if the input file contains chains from a PDB file) or RESOLVE NCS identification (used if the input file contains heavy-atom sites) or find_ncs_from_density (used if a map is supplied and sites are not found from either of the above)
+
+- call either simple_ncs_from_pdb or RESOLVE or find_ncs_from_density to identify NCS
+
+- Evaluate the NCS by calculating the correlation of NCS-related electron density based on the input map coefficients mtz file.
+
+- Report the NCS operators and correlations
+
+Output files from find_ncs
+--------------------------
+
+The output files that are produced are:
+
+- NCS operators written in format for phenix.refine: find_ncs.ncs
+
+- NCS operators written in format for the PHENIX Wizards: find_ncs.ncs_spec
+
+What find_ncs needs
+-------------------
+
+- find_ncs needs a file with map coefficients and optionally a second file containing NCS information.
+
+The file with NCS information can be...
+
+- a PDB file with a model (find_ncs will call simple_ncs_from_pdb to extract NCS operators from the chains in your model)
+
+- a PDB file with heavy-atom sites (find_ncs will call RESOLVE to find NCS operators from your heavy-atom sites)
+
+- an NCS definitions file written by a PHENIX wizard (e.g., AutoSol_1.ncs_spec, produced by AutoSol)
+
+- a RESOLVE log file containing formatted NCS operators
+
+Map coefficients file
+---------------------
+
+The file with map coefficients can be any MTZ file with coefficients for a map. If find_ncs does not choose the correct columns automatically, then you can specify them with a command like:
+
+labin="labin FP=FP PHIB=PHIB FOM=FOM "
+
+If you have no map coefficients yet (you just have some sites and want to get operators, for example), you can tell find_ncs to ignore the map with:
+
+ncs_parameters.force_ncs=True 
+
+You still need to supply a map coefficients file (the map itself will be ignored though).
+
+Examples
+--------
+
+Standard run of find_ncs
+------------------------
+
+If you have just a map coefficients file you can say:
+
+phenix.find_ncs mlt.mtz
+
+and find_ncs will look for NCS-related density in mlt.mtz (see find_ncs_from_density for more details on how this works)
+
+If you have a model and a map file, from the command-line you can type:
+
+phenix.find_ncs anb.pdb mlt.mtz
+
+This will produce the following output::
+
+  Getting column labels from mlt.mtz for input map file
+  FILE TYPE:  ccp4_mtz
+  All labels:  ['FP', 'SIGFP', 'PHIC', 'FOM']
+  Labin line will be:  labin FP=FP PHIB=PHIC FOM=FOM
+  To change it modify this: params.ncs.labin="labin FP=FP PHIB=PHIC FOM=FOM "
+  This is the map that will be used to evaluate NCS
+  
+  Reading NCS information from:  anb.pdb
+  Copying  mlt.mtz  to  temp_dir/mlt.mtz
+  This PDB file contains 2  chains and  636  total residues
+  and  636  C-alpha or P atoms  and  4740  total atoms
+  NCS will be found using the chains in this PDB file
+  Chains in this PDB file:  ['M', 'Z']
+  Two chains were found in the file anb.pdb, chain M and chain Z
+  
+  GROUPS BASED ON QUICK COMPARISON: []
+  Looking for invariant domains for ...: ['M', 'Z'] [[[2, 138], [193, 373]], [[2, 138], [193, 373]]]
+  Residues 2-138, 193-373, matched between the two chains
+  
+  Copying  mlt.mtz  to  temp_dir/mlt.mtz
+  Copying  temp_dir/NCS_correlation.log  to  NCS_correlation.log
+  Log file for NCS correlation is in  NCS_correlation.log
+  List of refined NCS correlations:  [1.0, 0.80000000000000004]
+  There were two separate groups of residues that had different NCS relationships. Residues 193-373 of each chain were in one group, and residues 2-138 in each chain were in the other group.
+  
+  The electron density map had a correlation between the two NCS-related chains of 1.0 for the first group, and 0.8 for the second
+  
+  The NCS operators for each are listed.
+  
+  GROUP 1
+  Summary of NCS group with 2 operators:
+  ID of chain/residue where these apply: [['M', 'Z'], [[[193, 373]], [[193, 373]]]]
+  RMSD (A) from chain M:  0.0  0.0
+  Number of residues matching chain M:[181, 181]
+  Source of NCS info: anb.pdb
+  Correlation of NCS: 1.0
+  
+  OPERATOR 1
+  CENTER:   69.1058   -9.5443   59.4674
+  
+  ROTA 1:    1.0000    0.0000    0.0000
+  ROTA 2:    0.0000    1.0000    0.0000
+  ROTA 3:    0.0000    0.0000    1.0000
+  TRANS:     0.0000    0.0000    0.0000
+  
+  OPERATOR 2
+  CENTER:   37.5004  -37.0709  -62.5441
+  
+  ROTA 1:    0.7751   -0.6211   -0.1162
+  ROTA 2:   -0.3607   -0.5859    0.7256
+  ROTA 3:   -0.5188   -0.5205   -0.6782
+  TRANS:     9.7485   27.6460   17.2076
+  
+  GROUP 2
+  Summary of NCS group with 2 operators:
+  ID of chain/residue where these apply: [['M', 'Z'], [[[2, 138]], [[2, 138]]]]
+  RMSD (A) from chain M:  0.0  0.0
+  Number of residues matching chain M:[137, 137]
+  Source of NCS info: anb.pdb
+  Correlation of NCS: 0.8
+  
+  OPERATOR 1
+  CENTER:   66.6943  -13.3128   21.6769
+  
+  ROTA 1:    1.0000    0.0000    0.0000
+  ROTA 2:    0.0000    1.0000    0.0000
+  ROTA 3:    0.0000    0.0000    1.0000
+  TRANS:     0.0000    0.0000    0.0000
+  
+  OPERATOR 2
+  CENTER:   39.0126  -53.7392  -13.4457
+  
+  ROTA 1:    0.3702   -0.9275   -0.0516
+  ROTA 2:   -0.8933   -0.3402   -0.2938
+  ROTA 3:    0.2549    0.1548   -0.9545
+  TRANS:     1.7147   -0.6936    7.2172
+  
+ 
+References
+----------
+
+ 
