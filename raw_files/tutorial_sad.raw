@@ -273,7 +273,7 @@ of the anisotropy correction). In the <b>p9</b> case, the range of
 anisotropic B values is small and no correction is made:
 </p><PRE style="face=courier">Range of aniso B:  15.67 26.14
 Not using aniso-corrected data files as the range of aniso b  is only  
-10.47  and 'correct_aniso' is not set
+10.47  and 'remove_aniso' is not set
 </PRE>
 
 <p><H5>Choosing datafiles with high signal-to-noise</H5></p>
@@ -745,7 +745,7 @@ read your solution in to AutoSol with <b>sites_file=my_sites.pdb</b>.
 </LI>
 <LI>Was an anisotropy correction applied in AutoSol? If there is 
 some anisotropy but no correction was applied, you can force AutoSol to 
-apply the correction with <b>correct_aniso=True</b>.
+apply the correction with <b>remove_aniso=True</b>.
 </LI>
 </UL>
 
