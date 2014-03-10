@@ -2,7 +2,7 @@
 Building the PHENIX documentation
 =================================
 
-FYI, the documentation may now be built using the following process:
+To add a new page:
 
 1. First make sure that $PHENIX/phenix and $PHENIX/phenix_html are up-to-date,
    and that phenix_html is checked out of SVN.
@@ -10,6 +10,7 @@ FYI, the documentation may now be built using the following process:
 3. Add the file to the SVN
 4. Add 'new_doc.htm None None True' to html.list
    in ../phenix_sources/phenix_html/
+   (but see below for information about incorporating PHIL help)
 5. Add a reference to new_doc.htm in phenix_documentation.html
 6. execute: phenix_html.rebuild_docs
 
@@ -25,6 +26,21 @@ the command to appear on your path.
 After running the update, the new HTML files will be available in $PHENIX/doc,
 and may be viewed by running 'phenix.doc' (or clicking the help button in the
 PHENIX GUI).
+
+Including PHIL parameter listing
+================================
+
+If you want to have your documentation page show a full listing of program
+options with help text, the entry in html.list should look something like
+this:
+
+  new_doc.htm  phenix.command_line my_method  True 
+
+Here, "phenix.command_line" is the path to a module, and "my_method" is the
+module containing a master_params object.  In other words, my_method.py is
+located in phenix/phenix/command_line/my_method.py.  The keywords for
+the program will automatically be extacted and listed at the end of the
+converted HTML page.
 
 Including citations
 ===================
