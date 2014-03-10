@@ -1,0 +1,213 @@
+======================================================
+Frequently asked questions about molecular replacement
+======================================================
+
+General issues
+--------------
+
+**How do I know if Phaser has solved my structure?**
+
+This is answered in
+detail in the section "Has Phaser solved it?" in the `main Phaser manual
+<phaser.htm>`_, but it can be summarized as follows: the final translation
+function Z score (TFZ) should be above 8, and the log-likelihood gain
+(LLG) should be positive and as high as possible.  Of course, as with
+experimental phasing, the ability to `autobuild most of the model
+<autobuild.htm>`_ is the single best measure of a correct solution;
+alternately, running a single round of `refinement <refine_gui.htm>`_
+should result in an R-free below 0.50.
+
+**Why doesn't Phaser report an R-factor?**
+
+The R-factor is far less
+sensitive than the TFZ and LLG scores, especially when searching for
+remote homologs or a small part of the overall scattering mass.  Phaser
+does record R-factors for the rigid-body refinement step towards the
+end of a run, which can be found in the logfile.  However, unless these
+values are relatively low (< 40%), they are not reliable indicators of
+solution quality, which is why only the Z-scores and LLG are reported in
+the GUI.
+
+**What if I don't get a good solution?**
+
+This is also covered in detail
+in the `main Phaser manual <phaser.htm>`_, in the section "What to do in
+difficult cases".
+
+**What resolution cutoff should I use?**
+
+By default Phaser uses all
+data to 2.5 A.  We recommend leaving the resolution alone, but in some
+cases reducing it may improve results (it will also lead to a significant
+improvement in speed).  The effects of bulk solvent at low resolution are
+already taken into account internally, so you do not need to specify
+a low-resolution cutoff either.
+
+**Should I use the output MTZ file from Phaser for refinement?**
+
+No, the amplitudes (Fs) in this file have been corrected for anisotropy, which
+is helpful for the MR search but may significantly alter them from the
+experimental values.  The MTZ file is only useful for map coefficients,
+but in most cases you will find that much better maps can be obtained by
+immediately running a round of refinement or automated re-building.
+
+**How are the composition and search ensembles related?**
+
+Technically, they aren't connected.  The ensembles are used in the actual MR
+search;
+the composition only tells Phaser what to expect for the overall scattering
+mass of the asymmetric unit (an important factor in the maximum likelihood
+scoring).  Although you may only specify one sequence per component, you
+can instead provide a molecular weight for a collection of chains.  You
+may also split a model into smaller ensembles (for instance, different
+domains) while keeping the composition the same, or use a multi-chain
+search model while specifying a sequence file for each chain.
+
+**How can I make Phaser go faster?**
+
+The new MR_FAST mode will reduce the
+redundancy of multi-copy TF searches, and can significantly reduce overall
+runtime.  In many cases, adjusting the resolution limit will dramatically
+increase speed, at some cost to accuracy (depending largely on model
+similarity).
+
+**Can PHENIX do MRSAD?**
+
+Yes, PHENIX can run MRSAD (molecular replacement, combined with SAD
+phases) by determining the anomalous scatterer substructure from a
+model-phased anomalous difference Fourier.  However, this requires two
+separate steps.
+There two simple ways to do this; both are described in the `AutoSol
+documentation <autosol.htm>`_.
+
+**I am using a dimer as my search model.  Why am I getting a warning that the
+unit cell is too full?**
+
+Remember, the composition of the asymmetric unit is specified independently
+of the model.  If you have supplied a single sequence to define the
+composition, Check to make sure that you have specified that the contents
+of the unit cell include two copies.
+
+Phaser-MR GUI
+-------------
+
+**Do I actually have to include multiple models in my ensembles?**
+
+No, we use "ensemble" in this context to refer to any search model; in many
+cases a single model is adequate to solve the structure (and these may
+be much easier to work with).
+
+**What is the difference between "high resolution" and "high resolution for
+refinement"?**
+
+The latter is applied during the "refinement and phasing"
+step only; for rotation and translation searches, the first parameter is
+used.
+
+**How do I search for multiple unique ensembles?**
+
+The "Search procedure" tab allows you to set up this procedure.  To search for
+multiple independent ensembles representing different entities in a
+complex ("a AND b AND c"), click the "Add search"
+button below the tab, and for each search, check the ensemble(s) to be
+used at that step.  The searches will be performed in the order they appear
+in the GUI.  Note that this is **not** the same as checking multiple
+ensembles for a single search, as described in the next question.
+
+**How do I tell Phaser to pick the best solution from among several similar
+ensembles?**
+
+To try multiple alternative ensembles (corresponding to the same actual
+entity in the crystal) at once ("a OR b OR c"), check the
+box next to each ensemble you want Phaser to try for a single search; only
+one of these will actually be placed in the output model.
+(You can, of course, specify any combination of searches and ensembles,
+for instance "(a OR b) AND c", which would be two separate search
+instructions.)
+
+**I want to run a new search in Phaser starting from the results of a
+previous job.  How do I specify this?**
+
+If the previous job was run in
+the Phenix GUI, you can select it from the drop-down menu labeled "Use
+partial solution from previous job" in the "Input and general options" tab.
+This will automatically load the solution.  Note that unlike the CCP4i
+interface, Phaser-MR in Phenix does not make use of .sol files, since the
+information is passed internally.  You should then load the new ensembles
+to search for; ensembles that were used in the previous run do not need to
+be re-loaded unless you wish to find more copies.  However, you must
+provide complete information about the composition, including previously
+placed components.
+
+**How do I run a new search starting from an existing model in the correct
+orientation and translation?**
+
+This might apply if you have a refined
+model, or a solution from another program.  In this case, you should
+add the model as an ensemble, and check the box "Ensemble is fixed partial
+solution".  This will instruct Phaser to accept the input coordinates
+without modification, and skip to the next ensemble to search for.  You
+do not need to specify a separate search for this ensemble, as it will
+be included automatically.
+
+MR-Rosetta
+----------
+
+**Why does mr_rosetta bomb and say "error while loading shared libraries:
+libdevel.so: cannot open shared object file: No such file or directory"?**
+
+This may indicate that somewhere your system is defining the shared libraries
+that Rosetta needs, and these are for a place that is not where Rosetta
+expects them to be. You can try to ignore the previous definitions
+this way:
+
+If you are using the bash or sh shells::
+
+  export PHENIX_TRUST_OTHER_ENV=1
+
+or csh (C-shell)::
+
+  setenv PHENIX_TRUST_OTHER_ENV 1
+
+in the script where you run mr_rosetta, or before you run it from the command
+line.
+
+**Why does mr_rosetta or mr_model_preparation bomb and say
+"RuntimeError: Cannot contact EBI DbFetch service"?**
+
+This could mean just what it says...but also it could mean
+that you are behind a firewall and there is a proxy server you need
+to go through. You can use the following
+command to specify the proxy server (replacing it with YOUR proxy server).
+
+If you are using the bash or sh shells::
+
+  export HTTP_PROXY=proxyout.mydomain.edu:8080
+
+or csh (C-shell)::
+
+  setenv HTTP_PROXY proxyout.mydomain.edu:8080
+
+**Problems installing Rosetta? Here are some suggestions:**
+
+- Download rosetta_source and rosetta_database separately.  The bundle
+  doesn't contain all the files.
+
+- Compilation fails on RHEL 6.1 (gcc 4.5 issue) but sails on RHEL 5.5.
+
+- Make sure the environment is set correctly: ``$PHENIX_ROSETTA_PATH``
+  must point to the Rosetta installation directory
+  (where rosetta_source and rosetta_database sit). (Note there was a typo
+  in documentation with ROSETTTA instead of ROSETTA; fixed now.)
+
+- all directories in the Rosetta installation must be made accessible to
+  users::
+
+    find $PHENIX_ROSETTA_PATH -type d -exec chmod 755 '{}' \;
+
+Reference
+---------
+
+  - CITATION:phaser
+
+  - CITATION:mr_rosetta
