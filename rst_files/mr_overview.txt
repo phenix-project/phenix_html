@@ -1,32 +1,35 @@
 ===========================================
-Overview of molecular replacement in PHENIX
+Overview of molecular replacement in Phenix
 ===========================================
 
 Molecular replacement (MR) is a phasing method that uses prior information in
-the form of a related or homologous structure.  The procedure is roughly
-divided into two steps, a **rotation function** (RF) to determine the
-orientation of the search model(s), and a **translation function** (TF) to
-determine the absolute position(s) in the unit cell.  Because it requires no
-additional experimental procedures or data, and additionally simplifies
-model-building, MR is usually the method of choice for structure determination
-when a suitable search model is available.  (See the *Limitations* section
-below for advice on search models.)
+the form of known structures that are related or homologous to components in
+the crystal.  The procedure to place a search model is roughly divided into two
+steps, a **rotation function** (RF) to determine its orientation, and a
+**translation function** (TF) to determine its absolute position in the unit
+cell.  Multiple components can be placed sequentially to solve the structure of
+a complex or the structure of a crystal containing multiple copies in the
+asymmetric unit.
 
-In PHENIX, MR is performed by the program `Phaser <phaser.htm>`_, written by
+Because it requires no additional experimental procedures or data, and
+additionally simplifies model-building, MR is usually the method of choice for
+structure determination when a suitable search model is available.  (See the
+*Limitations* section below for advice on search models.)
+
+In Phenix, MR is performed by the program `Phaser <phaser.htm>`_, written by
 Randy Read's group at the University of Cambridge.  Although Phaser may be run
-on the command line with CCP4-style inputs, we recommend using either the
-the `Phaser-MR GUI <phaser_mr.htm>`_.  This GUI requires
-manual preparation of search models, but enables finer control over
-parameters and multi-step searches, which may be necessary for difficult
-structures.
+on the command line with CCP4-style inputs, we recommend using the `Phaser-MR
+GUI <phaser_mr.htm>`_.  This GUI requires manual preparation and specification
+of search models, but enables fine control over parameters and multi-step
+searches, which may be necessary for difficult structures.
 
-The `Sculptor <sculptor.htm>`_ and `Ensembler <ensembler.htm>`_
-utilities are available for preparing search models. The `MRage <MRage.htm>`_
-framework integrates model processing steps and molecular replacement into one
+The `Sculptor <sculptor.htm>`_ and `Ensembler <ensembler.htm>`_ utilities are
+available for preparing search models. The `MRage <MRage.htm>`_ framework
+integrates model processing steps and molecular replacement into one
 application. It provides a highly customizable interface with parallelization
-options and the ability connect to the `NCBI Blast <http://blast.ncbi.nlm.nih.gov/Blast.cgi>`_
-and `wwPDB <http://www.wwpdb.org>`_ websites to perform homology searches and
-fetch potential models.
+options and the ability to connect to the `NCBI Blast
+<http://blast.ncbi.nlm.nih.gov/Blast.cgi>`_ and `wwPDB <http://www.wwpdb.org>`_
+websites to perform homology searches and fetch potential models.
 
 (Phaser is also used for experimental phasing, but this functionality is
 exposed through the `AutoSol wizard <autosol.htm>`_ and `Phaser-EP GUI
@@ -41,59 +44,57 @@ is available on the Phaser home page.
 Input files and mandatory parameters
 ------------------------------------
 
-All of the MR programs in PHENIX require a single reflections file containing
-experimental data (with sigmas); AutoMR and the GUI will accept any file format
+All of the MR programs in Phenix require a single reflections file containing
+experimental data (with sigmas); the Phaser-MR and AutoMR GUIs will accept any file format
 or data type, including intensities.  The procedure traditionally uses all
 reflections, so R-free flags are not required.  (Unlike refinement, this does
 not severely bias the final R-free value, since the placement of molecules
 will be approximate and some conformational changes usually occur.)
 
 At least one search model is required; in the context of Phaser the search
-model is usually refered to as an "ensemble".  In most cases this will be a
-PDB file containing a partial structure.  For more variable structures, an
-actual ensemble
-model may be used instead - either a PDB file with multiple MODEL records, or
-multiple similar PDB files.  When using a multi-model ensemble, all models
-must be
-superposed in the same orientation; the `Ensembler <ensembler.htm>`_ utility
-is used for this.    There are no limitations on the size, complexity, or
-number of search
-models.  For complexes or multimers, if the relative positions of individual
-subunits
-do not change, the entire assembly (for instance, a ribosomal subunit) may be
-used as a search model instead of
-placing each component separately.  All heteroatoms (ligands and waters)
-should be removed from the PDB file(s) before use.
+model is usually referred to as an "ensemble".  In many cases this will be a
+single PDB file containing one structure.  For more distant models, an actual
+ensemble model may be used instead - either a PDB file with multiple MODEL
+records, or multiple similar PDB files.  When using a multi-model ensemble, all
+models must be superposed in the same orientation; the `Ensembler
+<ensembler.htm>`_ utility is used for this.    There are no limitations on the
+size, complexity, or number of search models.  For complexes or multimers, if
+the relative positions of individual subunits do not change, the entire
+assembly (for instance, a ribosomal subunit) may be used as a search model
+instead of placing each component separately.
 
-Another option, only available in Phaser itself (not
-AutoMR), is to search using a map (or rather, an MTZ file containing
-pre-weighted map coefficients), often solved at low resolution.  This
-requires additional information about the center and extent of the map section
-to search with.
+Another option, only available in Phaser itself (not AutoMR), is to search
+using electron density (or rather, an MTZ file containing pre-weighted map
+coefficients), often solved at low resolution.  This requires additional
+information about the center and extent of the map section to search with.  It
+is best to prepare this MTZ file using the `phenix.cut_out_density
+<cut_out_density.htm>`_ tool, making sure that the density is placed in a unit
+cell that is at least 2.5 times the x, y and z extents of the density.
 
 The maximum likelihood phasing methods used in Phaser require prior knowledge
 about the deviation (or variance) of the search model(s) from the real
 structure, and the expected composition or scattering mass of the crystal.  To
 specify the model variance, either an RMSD value or percent sequence identity
-may be used (these will be converted internally, and a sequence identity of
-100% is assumed to mean an approximate RMSD of 1.0A).  It is important to
-minimize the variance if possible (see *Limitations* below for guidelines),
-which often requires eliminating atoms or modifying B-factors.  The `Sculptor
+may be used (these will be converted internally, using relationships determined
+from a database of test calculations).  It is important to minimize the
+variance if possible (see *Limitations* below for guidelines), which often
+requires eliminating atoms or modifying B-factors.  The `Sculptor
 <sculptor.htm>`_ utility will perform this step, given a PDB file and a
 sequence alignment.  (This is usually unnecessary for search models with high
 sequence identity to the target molecule.)
 
 For composition, you may supply a sequence file (protein or nucleic acid), or
 simply enter the molecular weight.  The standalone versions of Phaser also
-accept the fractional composition of each search ensemble, if known.
-Note that the composition data does not necessarily have
-a 1:1 correspondence with the search ensembles (see FAQ list below for
-details); if you wish to simply specify the molecular weight of a complex
-while searching for multiple subunits, you may enter the mass for the complex
-as a single component.  (You may also use multi-record FASTA-format sequence
-files.)  Even if you are only searching for a single
-ensemble out of several (e.g. the protein in a protein-DNA complex), you
-must still supply the expected composition of the entire crystal.
+accept the fractional composition of each search ensemble, if known.  Note that
+the composition data does not necessarily have a 1:1 correspondence with the
+search ensembles (see FAQ list below for details); if you wish to simply
+specify the molecular weight of a complex while searching for multiple
+subunits, you may enter the mass for the complex as a single component.  (You
+may also use multi-record FASTA-format sequence files.)  Even if you are only
+searching for a single ensemble out of several (e.g. the protein in a
+protein-DNA complex), you must still supply the expected composition of the
+entire crystal because Phaser needs to know what fraction of the asymmetric
+unit each search model comprises.
 
 Outline of MR procedure
 -----------------------
@@ -104,15 +105,18 @@ steps:
   - **Anisotropy correction**: scales reflections as necessary to overcome
     anisotropy (weak data in a particular direction).
 
-  - **Rotation function**: identifies orientation of model(s).
+  - **Translational non-crystallographic symmetry (tNCS) correction**: checks 
+    for the presence of tNCS.  If present, parameters describing the 
+    translation and small orientation differences between copies are
+    determined and used to compute correction factors.
+
+  - **Rotation function**: identifies possible orientations of the model.
 
   - **Translation function**: given the orientation(s) from the RF, finds the
     absolute position(s) in the unit cell.
 
   - **Packing analysis**: filters TF results based on number of clashes
-    between atoms, given a certain cutoff.  (By default, this uses a very
-    conservative cutoff, which may not be ideal for searching with distant
-    homologues.)
+    between atoms, given a certain cutoff.
 
   - **Refinement and phasing**: performs simple rigid-body refinement of the
     placed molecules, and calculates phases from the final solution.
@@ -122,7 +126,9 @@ steps:
 
 If multiple search models are used, these steps will be performed sequentially
 for each model.  Although each step may be run individually in the Phaser-MR
-GUI, this is necessary only in exceptionally difficult cases.
+GUI, this is necessary only in exceptionally difficult cases.  In fact, it
+is usually better to allow Phaser to work out an optimal search order and,
+if necessary, test different choices of search order.
 
 Limitations
 -----------
@@ -142,32 +148,25 @@ follows:
   - **Less than 20%**: MR unlikely to work in most cases.
 
   - In terms of RMSD, above 2.5A is very unlikely to work, while 1.5A or less
-    is preferrable.
+    is preferable.
 
-Structures which undergo large conformational changes may need to be split
+Structures that undergo large conformational changes may need to be split
 into separate domains for searching, regardless of sequence identity.  Where
 multiple similar search models are available, combining these into an ensemble
 may improve the likelihood of success.  Processing models with the `Sculptor
 <sculptor.htm>`_ utility is highly recommended, especially at lower sequence
 identity.
 
-Additional problems include:
+You should watch out for otherwise valid solutions being thrown out because of
+packing clashes due to model deviations and/or extra residues.  Removing the
+offending residues or lowering the packing cutoff can circumvent the problem.
 
-  - Low resolution; although MR often works best with a reduced set of
-    reflections, the assumption is that these are measured very accurately,
-    which is not the case when the overall resolution limit is already 4A or
-    worse.
-
-  - Packing clashes due to model deviations and/or extra residues.  This can
-    result in an otherwise valid solution being thrown out.  Removing the
-    offending residues or lowering the packing cutoff can circumvent the
-    problem.
-
-For cases where anomalous data from a SAD experiment are available, a poor
-(but genuine) MR solution may be used to identify heavy-atom sites and
-combined with SAD phases, a technique known as MR-SAD.  This may provide a
-decent-quality map where neither technique is independently sufficient.  The
-AutoMR and AutoSol manuals have details on running this in Phenix.
+For cases where anomalous data from a SAD experiment are available, a poor (but
+genuine) MR solution may be used to identify heavy-atom sites and combined with
+SAD phases, a technique known as MR-SAD.  This may provide a decent-quality map
+where neither technique is independently sufficient.  At the end of MR in the
+Phaser-MR or AutoMR GUIs, if SAD data are available a button will be presented
+allowing MR-SAD in AutoSol to be launched easily.
 
 .. _faq:
 
