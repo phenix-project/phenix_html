@@ -249,16 +249,19 @@ high-occupancy heavy-atom sites), or lattice pathologies such as twinning or
 pseudo-translation.  The Xtriage output may be helpful in diagnosing faults in
 the data.
 
-If the data are of relatively good quality and anomalous signal is present
-but few or no heavy-atom sites were found, it may be helpful to supply
-additional input files.  Heavy-atom sites identified by another program are
-one possibility; another is a partial molecular replacement solution which
-can be used to bootstrap MR-SAD phasing.  MR-SAD uses rough initial phases from
-Phaser to identify heavy-atom sites, which are then used to calculate
-experimental phases which are combined with the MR phases.  This may be
-successful in situations where neither MR nor SAD is sufficient by itself.
-To run MR-SAD, first run the AutoMR GUI; when it is finished, a button will
-be available to launch AutoSol with the appropriate files pre-loaded.
+If the data are of relatively good quality and anomalous signal is present but
+few or no heavy-atom sites were found, it may be helpful to supply additional
+input files.  Heavy-atom sites identified by another program are one
+possibility; another is a partial molecular replacement solution, which can be
+used to bootstrap MR-SAD phasing.  In MR-SAD, Phaser uses the
+log-likelihood-gradient completion algorithm to add anomalous scatterers to the
+molecular replacement solution.  The resulting phases combine information from
+both sources, MR and SAD.  This procedure may be successful in situations where
+neither MR nor SAD is sufficient by itself.  To run MR-SAD, first carry out MR
+using either the Phaser-MR or AutoMR GUI; when it is finished, a button
+labelled "Run MR-SAD" will be available to launch AutoSol with the appropriate
+files pre-loaded.  All you need to do is provide the wavelength, the atom type
+for the anomalous scatterer and a rough guess of the RMSD for the MR model.
 
 References
 ==========
