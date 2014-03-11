@@ -1,0 +1,140 @@
+=======================================================================
+Rapid fitting of secondary structure to a map with find_helices_strands
+=======================================================================
+
+Author(s)
+---------
+
+  - find_helices_strands: Tom Terwilliger
+  - PULCHRA: Piotr Rotkiewicz
+
+Purpose
+-------
+
+find_helices_strands is a command line tool for finding helices and strands in
+a map and building an model of the parts of a structure that have regular
+secondary structure. It can be used for protein, RNA, and DNA. An option is to
+use a rapid chain-tracing algorithm to build CA of proteins, followed by
+reconstruction of a full model.
+
+Running the program
+-------------------
+
+The program is available in the Phenix GUI under "Model building".  The only
+required input is an electron density map, such as the output of density
+modification.  A sequence file is optional.
+
+  .. image:: images/find_helices_strands_config.png
+
+The default behavior is to search for protein helices and strands, but you
+may instead look for nucleic acid helices, or use the trace_chain method
+(describe below) to find C-alpha positions independently of secondary structure
+motifs.  Using the default options without a sequence, the model will be a
+poly-alanine backbone; with the trace_chain method it will be a C-alpha trace,
+but you may optionally have PULCHRA (Rotkiewicz & Skolnick 2008) complete
+the backbone.
+
+The program usually only requires a few minutes at most to run.  Output will
+be to a new directory, with a single PDB file containing a partial model.
+
+  .. image:: images/find_helices_strands_output.png
+
+  .. image:: images/find_helices_strands_coot.png
+
+Methods
+-------
+
+**How find_helices_strands finds helices and strands in maps:**
+
+find_helices_strands first identifies helical segments as rods of density at
+5-8 A. Then it identifies helices at higher resolution keeping the overall
+locations of the helices fixed. Then it identifies the directions and CA
+positions of helices by noting the helical pattern of high-density points
+offset slightly along the helix axis from the main helical density (as used
+in "O" to identify helix direction). Finally model helices are fit to the
+density using the positions and orientations identified in the earlier steps.
+A similar procedure is used to identify strands. Then the helices and strands
+are combined into a single model.
+
+**How find_helices_strands finds RNA and DNA helices in maps:**
+
+find_helices_strands finds RNA and DNA helices differently than it finds
+helices in proteins. It uses a convolution search to find places in the
+asymmetric unit where an A-form RNA or B-form DNA helix can be placed. These
+are assembled into contiguous helical segments if possible. The resolution of
+this search is 4.5 A if you have resolution beyond 4.5 A, and the resolution
+of your data otherwise.
+
+**How trace_chain finds CA positions in maps:**
+
+The RESOLVE trace_chain algorithm places dummy atoms down the middle of all the
+tubes of density in a map, then it attempts to find sets of these atoms that
+may be CA atoms, where the atoms are spaced by 3.8 A and where there is strong
+density between each pair. This yields segments represented by CA atoms. Next
+PULCHRA (Rotkiewicz & Skolnick 2008) can optionally be used to reconstruct a
+full main-chain model. Finally RESOLVE is used to assemble all the resulting
+fragments into a model.
+
+Using find_helices_strands to bootstrap phenix.autobuild
+---------------------------------------------------------
+
+If you run phenix.autobuild at low resolution (3.5 A or lower) then your model
+may have strands built instead of helices. You can use find_helices_strands to
+help bootstrap autobuild model-building by providing the helical model from
+find_helices_strands to phenix.autobuild. Just run phenix.find_helices_strands
+with your best map map_coeffs.mtz. Then take the helical model pass it to
+phenix.autobuild with the keyword (in addition to your usual keywords for
+autobuild)::
+
+  consider_main_chain_list=map_coeffs.mtz_helices.pdb
+
+
+Then the AutoBuild wizard will treat your helical model just like one of the models that it builds, and merge it into the model as it is being assembled.
+
+Command-line use
+----------------
+
+From the command-line you can type::
+
+  phenix.find_helices_strands map_coeffs.mtz quick=True
+
+
+If you want a more thorough run, then skip the "quick=True" flag. If you want
+(or need) to specify the column names from your mtz file, you will need to tell
+find_helices_strands what FP and PHIB are, in this format::
+
+  phenix.find_helices_strands map_coeffs.mtz \
+    labin="LABIN FP=2FOFCWT PHIB=PH2FOFCWT"
+
+
+If you want to specify a sequence file, then in the last step
+find_helices_strands will try to align your sequence with the map and model::
+
+  phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat
+
+
+If you want to use the trace_chain algorithm, then specify::
+
+  phenix.find_helices_strands map_coeffs.mtz seq_file=seq.dat trace_chain=True
+
+
+Here is an example using data from the PHENIX examples library::
+
+  phenix.find_helices_strands $PHENIX/phenix_examples/p9-build/p9-resolve.mtz \
+    labin="FP=FP PHIB=PHIM FOM=FOMM" trace_chain=True
+
+
+That should build a model using sample data in a few seconds.
+
+Specific limitations and problems
+---------------------------------
+
+
+
+References
+----------
+
+  - CITATION:pulchra
+  - CITATION:terwilliger_find_helices
+  - CITATION:terwilliger_find_sheets
+  - CITATION:terwilliger_trace_chain
