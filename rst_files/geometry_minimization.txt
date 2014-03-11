@@ -1,0 +1,24 @@
+phenix.geometry_minimization: regularize model geometry
+-------------------------------------------------------
+
+**Description**
+
+  The program idealizes model geometry according to standard geometry restraints.
+  
+  In addition it can use extra restraints such as: 
+    - Ramachandran plot, 
+    - secondary structure,
+    - reference to starting position,
+    - C-beta deviations restraints,
+    - amino-acid residue side-chain rotamer restraints,
+    - other user-defined (custom) restraints.
+
+
+**Command line usage examples**::
+
+  % phenix.geometry_minimization model.pdb
+
+**GUI**
+
+  Graphical user interface is available
+  
