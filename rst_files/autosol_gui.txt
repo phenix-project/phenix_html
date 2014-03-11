@@ -52,15 +52,16 @@ or nucleic acid structures, but not both at once.
 
 When you add a reflections file, additional controls will appear for specifying
 experiment details such as heavy atom type and number, and anomalous scattering
-parameters.  If you are trying to phase using selenomethionine (SeMet),
-the number of atoms can be automatically determined from the sequence.  The
-wavelength is optional; anomalous coefficients (f' and f'') are optional for
-SAD but highly recommended, and required for MAD.  If you did not record this
-information at the beamline using a fluorescence scan, they can be guessed
-based on the wavelength by clicking the button below the file list.  For MAD
-phasing, the experimentally determined values are more essential, and often
-make the difference between an uninterpretable map and an obviously correct
-solution.  A different example (gene-5-mad, also included in the PHENIX
+parameters.  If you are trying to phase using selenomethionine (SeMet), the
+number of atoms can be automatically determined from the sequence.  The
+wavelength is required for SAD but optional for other phasing methods;
+anomalous coefficients (f' and f'') are optional for SAD (but highly
+recommended if they were measured), and required for MAD.  If you did not
+measure these parameters at the beamline using a fluorescence scan, they can be
+guessed based on the wavelength by clicking the button below the file list.
+For MAD phasing, the experimentally determined values are more essential, and
+often make the difference between an uninterpretable map and an obviously
+correct solution.  A different example (gene-5-mad, also included in the PHENIX
 distribution) using multiple wavelengths is shown below; the inputs are only
 slightly more complicated than for SAD.  (In this case the wavelengths and
 anomalous coefficients are listed in the file README.txt in the example
@@ -71,7 +72,7 @@ directory.)
 Assuming that the space group and unit cell are automatically extracted from
 the reflection files, most of the other parameters can be left on the defaults,
 although in the first image above we have changed the resolution to 2.5A.  The
-p9-sad example contains only single protein chain in the asymmetric unit so the
+p9-sad example contains only a single protein chain in the asymmetric unit so the
 number of NCS copies can be left blank, but you should enter this if you are
 confident of the crystal contents.  We recommend leaving the model-building on,
 since it is the single most useful measure of whether the final map is
@@ -79,12 +80,13 @@ interpretable or not.  If you have an RNA or DNA crystal, you may explicitly
 set the chain type by clicking the "All parameters" button, select "Crystal
 info" from the menu, and change the drop-down menu for "Chain type".
 
-Two other types of input file are optional but may be useful in special cases:
-heavy-atom sites (in PDB format) from an external program such as SHELXD, or
-partial phases (in MTZ format) from another phasing program such as AutoMR.
-The use of pre-defined sites is not discussed here as it is essentially very
-simple, but combination of MR and SAD is described at the end of this
-document.
+Three other types of input file are optional but may be useful in special
+cases: heavy-atom sites (in PDB format) from an external program such as
+SHELXD, phases (in MTZ format) from an MR model or another phasing program, or
+a molecular replacement solution (in PDB format).  The use of pre-defined sites
+is not discussed here as it is essentially very simple.  External phases can be
+used to help SOLVE find heavy-atom sites in phasing methods other than SAD.
+The combination of MR and SAD is described at the end of this document.
 
 ---------------
 Running AutoSol
@@ -136,8 +138,8 @@ Phasing and density modification
 
 Phasing is done by Phaser for SAD experiments, SOLVE for everything else, but
 the reported statistics are the same, and provide the first indication whether
-the structure is solveable by AutoSol.  If Phaser is run, Additional
-heavy-atom sites will be added based on the log-likelihood gradient map, and
+the structure is solveable by AutoSol.  If Phaser is run, additional
+heavy-atom sites will be added based on the log-likelihood-gradient map, and
 phases recalculated using the new sites.  Phasing is followed by density
 modification in RESOLVE; these two steps combined take only a couple of
 minutes for an average-sized structure.  Once solutions are finished with
@@ -230,8 +232,8 @@ away.  We generally recommend running the AutoBuild wizard, which will
 usually drop R-free by several percent if not more.  This can be started by
 clicking the button next to the list of output files in the Summary tab;
 appropriate files will be pre-loaded, including heavy-atom sites.  AutoBuild
-may take several hours to run, but if you have a multi-core system it will
-run in parallel.
+may take several hours to run, but if you have a multi-core system it can be 
+set to run in parallel.
 
 With a very good solution, such as the p9-sad data with the full resolution
 range, the model from AutoSol may be good enough to jump directly to
