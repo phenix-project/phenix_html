@@ -36,57 +36,60 @@ difficult cases".
 
 **What resolution cutoff should I use?**
 
-By default Phaser uses all
-data to 2.5 A.  We recommend leaving the resolution alone, but in some
-cases reducing it may improve results (it will also lead to a significant
-improvement in speed).  The effects of bulk solvent at low resolution are
-already taken into account internally, so you do not need to specify
-a low-resolution cutoff either.
+In short, in most cases you should let Phaser choose the resolution cutoffs.
+Phaser uses the assumed accuracy of the model (expressed directly as RMSD or
+indirectly as sequence identity), the size of the model, and both the
+resolution and number of diffraction observations to determine the signal that
+will be obtained for each model as a function of resolution.  This is used both
+to determine a resolution cutoff that should be sufficient for a successful MR
+search, and an optimal search order for the models.  The effects of bulk
+solvent at low resolution are taken into account internally, so you do not need
+to specify a low-resolution cutoff either.
 
 **Should I use the output MTZ file from Phaser for refinement?**
 
-No, the amplitudes (Fs) in this file have been corrected for anisotropy, which
-is helpful for the MR search but may significantly alter them from the
-experimental values.  The MTZ file is only useful for map coefficients,
-but in most cases you will find that much better maps can be obtained by
-immediately running a round of refinement or automated re-building.
+No, it is always best to use the original data file for refinement.  The MTZ
+file from Phaser contains map coefficients, but in most cases you will find
+that better maps can be obtained by immediately running a round of refinement
+or automated re-building.
 
 **How are the composition and search ensembles related?**
 
 Technically, they aren't connected.  The ensembles are used in the actual MR
-search;
-the composition only tells Phaser what to expect for the overall scattering
-mass of the asymmetric unit (an important factor in the maximum likelihood
-scoring).  Although you may only specify one sequence per component, you
-can instead provide a molecular weight for a collection of chains.  You
-may also split a model into smaller ensembles (for instance, different
-domains) while keeping the composition the same, or use a multi-chain
-search model while specifying a sequence file for each chain.
+search; the composition only tells Phaser what to expect for the overall
+scattering mass of the asymmetric unit (an important factor in the maximum
+likelihood scoring).  Although you may only specify one sequence per component,
+you can instead provide a molecular weight for a collection of chains.  You may
+also split a model into smaller ensembles (for instance, different domains)
+while keeping the composition the same, or use a multi-chain search model while
+specifying a sequence file for each chain.
 
 **How can I make Phaser go faster?**
 
-The new MR_FAST mode will reduce the
-redundancy of multi-copy TF searches, and can significantly reduce overall
-runtime.  In many cases, adjusting the resolution limit will dramatically
-increase speed, at some cost to accuracy (depending largely on model
-similarity).
+Phaser is under continuous development, with a lot of emphasis being placed on
+speed, so anything we could advise here is probably already being done
+automatically!  Because Phaser now automatically chooses the lowest resolution
+expected to give a clear solution, changing the resolution limits is not
+advisable and may even lengthen the run times.  It's a good idea to set up a
+Phaser run to find all copies of all components in one job, because this allows
+Phaser to choose the optimal search order and to amalgamate solutions for
+multiple copies found in one search.
 
 **Can PHENIX do MRSAD?**
 
-Yes, PHENIX can run MRSAD (molecular replacement, combined with SAD
-phases) by determining the anomalous scatterer substructure from a
-model-phased anomalous difference Fourier.  However, this requires two
-separate steps.
-There two simple ways to do this; both are described in the `AutoSol
-documentation <autosol.htm>`_.
+Yes, PHENIX can run MRSAD (molecular replacement, combined with SAD phases) by
+using molecular replacement information in the process of determining the
+anomalous scatterer substructure.  However, this requires separate steps for
+carrying out the MR and finding the substructure.  There are two simple ways to
+do this; both are described in the `AutoSol documentation <autosol.htm>`_.
 
 **I am using a dimer as my search model.  Why am I getting a warning that the
 unit cell is too full?**
 
 Remember, the composition of the asymmetric unit is specified independently
 of the model.  If you have supplied a single sequence to define the
-composition, Check to make sure that you have specified that the contents
-of the unit cell include two copies.
+composition, check to make sure that you have specified that the contents
+of the asymmetric unit include two copies.
 
 Phaser-MR GUI
 -------------
@@ -135,20 +138,19 @@ This will automatically load the solution.  Note that unlike the CCP4i
 interface, Phaser-MR in Phenix does not make use of .sol files, since the
 information is passed internally.  You should then load the new ensembles
 to search for; ensembles that were used in the previous run do not need to
-be re-loaded unless you wish to find more copies.  However, you must
-provide complete information about the composition, including previously
-placed components.
+be re-loaded unless you wish to find more copies.  If you have already
+provided complete information about the composition correctly, this will
+not need to be changed.
 
 **How do I run a new search starting from an existing model in the correct
 orientation and translation?**
 
-This might apply if you have a refined
-model, or a solution from another program.  In this case, you should
-add the model as an ensemble, and check the box "Ensemble is fixed partial
-solution".  This will instruct Phaser to accept the input coordinates
-without modification, and skip to the next ensemble to search for.  You
-do not need to specify a separate search for this ensemble, as it will
-be included automatically.
+This might apply if you have a refined model, or a solution from another
+program.  In this case, you should add the model as an ensemble, and check the
+box "Ensemble is fixed partial solution".  This will instruct Phaser to accept
+the input coordinates without modification, and skip to the next ensemble to
+search for.  You do not need to specify a separate search for this ensemble, as
+it will be included automatically.
 
 MR-Rosetta
 ----------
