@@ -184,6 +184,12 @@ work related to direct methods in reciprocal space. However, direct
 methods are more intuitively understood in the direct-space formulation,
 based on the Sayre equation.
 
+**Direct summation**: a simple and accurate (but computationally inefficient)
+method for converting between reciprocal-space and real-space data, by
+summing over all reflections and all atoms (or grid points in the unit cell).
+It is still widely used in small molecule crystallography, but programs such
+as Phenix use the **FFT** method which is far more efficient.
+
 **Experimental phasing**: umbrella term for a variety of phasing methods based
 on exploiting the scattering of heavy atoms (the heavier the better, but even
 endogenous atoms such as sulfur may be used in favorable cases).  Includes
@@ -195,6 +201,17 @@ and has the added advantage of avoiding **model bias** in the resulting
 phases, especially at lower resolution.
 
 **f-prime (f') and f-double-prime (f'')**: see **anomalous scattering**.
+
+.. _fft:
+
+**Fast Fourier Transform (FFT)**: a computationally efficient method for
+converting between reciprocal space and real-space data (that is, for
+converting amplitudes and phases to electron density and vice-versa).
+It is typically orders of magnitude faster than direct summation.  In
+addition to being used whenever a map is displayed, the FFT is at the core of
+many algorithms in Phenix (and macromolecular crystallography in general),
+including the calculation of structure factor target and gradients in
+phenix.refine.
 
 **Figure of Merit (FOM)**: An approximate measure of phase quality, calculated
 for each reflection.  Range is from 0 to 1, higher being better.  The FOM is
@@ -655,7 +672,8 @@ early in refinement, and as a method to remove phase bias (e.g. for omit maps).
 In PHENIX, both Cartesian and torsion-angle dynamics are available; the latter
 is intended for low-resolution refinement as it uses fewer parameters.
 However, in practice Cartesian simulated annealing in phenix.refine
-often outperforms torsion-angle dynamics.
+often outperforms torsion-angle dynamics.  Originally described in
+Brunger (1997).
 
 **Single-wavelength anomalous diffraction (SAD)**: probably the most popular
 experimental phasing method currently in use, SAD requires only a single
@@ -787,3 +805,12 @@ from the expected plot may indicate data pathologies.
   .. image:: images/wilson_plot.png
 
 *A typical Wilson plot for a protein dataset (PDB ID 3dnd).*
+
+References
+----------
+
+  - CITATION:brunger_anneal
+  - CITATION:brunger_rfree
+  - CITATION:mccoy_likelihood
+  - CITATION:ramachandran
+  - CITATION:zwart_pseudosymm
