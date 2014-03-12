@@ -41,7 +41,7 @@ The AutoSol Wizard expects the following basic information:
 
 - what the anomalously-scattering atom is (Se or atom_type=Se)
 
--  It is helpful to add the wavelength and f_prime and f_double_prime for each wavelength or derivative that you have as well
+- The wavelength has to be given for SAD phasing; for other phasing methods it is helpful to provide the wavelength as well as f_prime and f_double_prime for each wavelength or derivative that you have
 
 You can also specify many other parameters, including resolution, number of sites, whether to search in a thorough or quick fashion, how thoroughly to build a model, etc. If you have a heavy-atom solution from a previous run or another approach, you can read it in directly as well.
 
@@ -69,13 +69,13 @@ For the best scaling results, you should supply all scalepack unmerged original 
 Sequence file format
 --------------------
 
-The sequence file for autosol (and autobuild) is the one-letter code sequence of each chain in the structure to be solved, where chains are separated by blank lines or lines starting with a > character. Here is a simple example with two different chains:
+The sequence file for autosol (and autobuild) is the one-letter code sequence of each chain in the structure to be solved, where chains are separated by blank lines or lines starting with a > character. Here is a simple example with two different chains: ::
 
-<< sequence of chain A follows. This line not required
-LVLKWVMSTKYVEAGELKEGSYVVIDGEPCRVVEIEKSKTGKHGSAKARIVAVGVFDGGKRTLSLPVDAQVEVPIIEKFT
+  > sequence of chain A follows. This line not required
+  LVLKWVMSTKYVEAGELKEGSYVVIDGEPCRVVEIEKSKTGKHGSAKARIVAVGVFDGGKRTLSLPVDAQVEVPIIEKFT
+  > sequence of chain B follows. This line could be blank to indicate new chain
+  AQILSVSGDVIQLMDMRDYKTIEVPMKYVEEEAKGRLAPGAEVEVWQILDRYKIIRVKG
 
-<< sequence of chain B follows. This line could be blank to indicate new chain
-AQILSVSGDVIQLMDMRDYKTIEVPMKYVEEEAKGRLAPGAEVEVWQILDRYKIIRVKG
 Usually the chain type (RNA, DNA, PROTEIN) is guessed from the sequence file. You can also specify it directly with a command such as chain_type=PROTEIN.
 
 If there are multiple copies of a chain (ncs) then you can put in a single copy and it will be used for all of them. If there are multiple copies of a set of chains (A,A,A, B,B,B would be 3 copies of chains A and B) then you can put in the unique set (A and B). If there are different numbers of copies of different chains, then put in the relative number of copies of each chain (for a structure with 2 copies of A and one of B, put in A,A,B; for a structure with 4 of A and 2 B put in either (A,A,A,A,B,B) or (A,A,B). The solvent content will be calculated from the value of ncs_copies and the sequences and stoichiometry defined by your sequence file. If you specify ncs_copies=nn then nn will be used for ncs_copies; otherwise ncs_copies will be guessed from the composition in your sequence file, with the contents of the asymmetric unit being calculated as ncs_copies copies of the contents of your sequence file.
@@ -119,7 +119,7 @@ The AutoSol Wizard uses HYSS to find heavy-atom sites. The result of this step i
 Running AutoSol separately in related space groups
 --------------------------------------------------
 
-AutoSol will check for the opposite hand of the heavy-atom solution, and at the same time it will check for the opposite hand of your space group (It will invert the heavy-atom solution from HYSS and invert the hand of the space group at the same time). Therefore you do not need to run AutoSol twice for space groups that are chiral (for example P41). The corresponding inverse space groups will be checked automatically (P43 ). If there are possibilities for your space group other than the inverse hand of the space group, then you should test them all, one at a time. For example if you were not able to measure 00l reflections in a hexagonal space group, your space group might be P6, P61, P62, P63, P64 or P65. In this case you would have to run it in P6, P61 P62 and P63 (and then P65 and P64 will be done automatically as the inverses of P61 and P62). Normally only one of these will give a plausible solution.
+AutoSol will check for the opposite hand of the heavy-atom solution, and at the same time it will check for the opposite hand of your space group (It will invert the heavy-atom solution from HYSS and invert the hand of the space group at the same time). Therefore you do not need to run AutoSol twice for space groups that are chiral (for example P41). The corresponding inverse space groups will be checked automatically (P43). If there are possibilities for your space group other than the inverse hand of the space group, then you should test them all, one at a time. For example if you were not able to measure 00l reflections in a hexagonal space group, your space group might be P6, P61, P62, P63, P64 or P65. In this case you would have to run it in P6, P61 P62 and P63 (and then P65 and P64 will be done automatically as the inverses of P61 and P62). Normally only one of these will give a plausible solution.
 
 
 Scoring of heavy-atom solutions
@@ -208,13 +208,13 @@ The key output files that are produced are:
 
 - A warnings file listing any warnings about the run: AutoSol_warnings.dat  # any warnings
 
-- Density-modified map coefficients (NOTE: These files be aniso-corrected and sharpened if remove_aniso=True): overall_best_denmod_map_coeffs.mtz # map coefficients (density modified phases)
+- Density-modified map coefficients (NOTE: These files will be aniso-corrected and sharpened if remove_aniso=True): overall_best_denmod_map_coeffs.mtz # map coefficients (density modified phases)
 
 - Current preliminary model: overall_best.pdb # model produced for top solution
 
 NOTE: If there are multiple chains or multiple ncs copies, each chain will be given its own chainID (A B C D...). Segments that are not assigned to a chain are given a separate chainID and are given a segid of "UNK" to indicate that their assignment is unknown. The chainID for solvent molecules is normally S, and the chainID for heavy-atoms is normally Z.
 
-- An mtz file for use in refinement NOTE 1 : not aniso corrected and not sharpened. NOTE 2: Two sets of HL coefficients may be present. Normally use HLA HLB etc . However, if you supplied a model with input_partpdb_file=my_model.pdb then use instead HLanomA HLanomB etc. The reason is that HL coeffs contain phase information from my_model.pdb in this case and you do not want that information passed to your refinement program.
+- An mtz file for use in refinement NOTE 1: not aniso corrected and not sharpened. NOTE 2: Two sets of HL coefficients may be present. Normally use HLA HLB etc . However, if you supplied a model with input_partpdb_file=my_model.pdb then use instead HLanomA HLanomB etc. The reason is that HL coeffs contain phase information from my_model.pdb in this case and you do not want that information passed to your refinement program.
 
 -  overall_best_refine_data.mtz # F Sigma HL coeffs, freeR-flags for refinement NOTE: if this is a SAD or MAD dataset then the overall_best_refine_data.mtz file will normally have your original anomalous data.For MAD data this will be from the wavelength of data with the highest-resolution data present.
 
@@ -529,11 +529,11 @@ A combination of SIR and SAD datasets (or of SAD+SAD or MIR+SAD+SAD or any other
     }
   }
 
-The SIR and SAD datasets will be solved separately (but whichever one is solved first will use difference Fourier or anomalous difference Fourier's to locate sites for the other). Then phases will be combined by addition of Hendrickson-Lattman coefficients and the combined phases will be density modified.
+The SIR and SAD datasets will be solved separately (but whichever one is solved first will use difference or anomalous difference Fouriers to locate sites for the other). Then phases will be combined by addition of Hendrickson-Lattman coefficients and the combined phases will be density modified.
 
 
 AutoSol with an extremely weak signal
-
+-------------------------------------
 
 You can use AutoSol in cases with a very weak anomalous signal. The big challenges in this kind of situation are finding the anomalously-scattering atoms and density modification. For finding the sites, you may need to try everything available, including running HySS with various resolution cutoffs for the data and trying other software for finding sites as well. You may then want to start with the sites found using one of these approaches and provide those to phenix.autosol with a command like,::
 
