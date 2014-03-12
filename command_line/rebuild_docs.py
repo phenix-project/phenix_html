@@ -25,6 +25,75 @@ create_rst_from_modules = [
   ("mmtbx.command_line.fmodel", "fmodel.txt"),
 ]
 
+def raw_from_rst_html (file_name, out=None):
+  raw_header_1 = """\
+<!--REMARK PHENIX TITLE START  Put your title here>
+
+
+<H4><U>"""
+
+  raw_header_2 = """</U></H4>
+
+
+<!--REMARK PHENIX TITLE END-->
+
+<!--REMARK PHENIX BODY START   Put your text here.
+Anything enclosed in header html H4 H5 etc will go in the table of contents>
+"""
+
+  raw_footer = """\
+<!--REMARK PHENIX BODY END-->
+"""
+  if (out is None) : out = sys.stdout
+  title = ""
+  lines_init = iter(open(file_name).read().splitlines())
+  for line in lines_init:
+    if (line.startswith('<h1 class="title">')):
+      line = line[18:]
+      line = line[:line.rfind("<")]
+      title = line
+
+  lines = iter(open(file_name).read().splitlines())
+  for line in lines:
+    if (line == "<body>"):
+      break
+  else:
+    raise RuntimeError("<body> line not found.")
+  out.write(raw_header_1)
+  out.write(title)
+  out.write(raw_header_2)
+  for line in lines:
+    if (   line == "</body>"
+        or line == '<hr class="docutils footer" />'):
+      break
+    if (line.startswith('<div class="image">')):
+      print >> out, line
+      continue
+    if (line.startswith('<h1 class="title">')):
+      continue
+    if (line.startswith("<div ")):
+      continue
+    if (line == "</div>"):
+      continue
+    modify_hi = False
+    if (line.startswith("<h1>")):
+      assert line.endswith("</a></h1>")
+      modify_hi = True
+    elif (line.startswith("<h2>")):
+      assert line.endswith("</a></h2>")
+      modify_hi = True
+    if (modify_hi):
+      line = line[:-9]
+      line = line[line.rfind(">")+1:]
+      line = "<P><H5><U><B>%s</B></U></H5><P>" % line
+    elif (   line.startswith("<ul ")
+          or line.startswith("<ol ")):
+      line = line[:3]+">"
+    print >> out, line
+  else:
+    raise RuntimeError("</body> line not found.")
+  out.write(raw_footer)
+
 def run (args=(), out=None, log=None) :
   cmdline = libtbx.phil.command_line.process(
     args=args,
@@ -40,7 +109,6 @@ def run (args=(), out=None, log=None) :
   rst_dir = op.join(html_dir, "rst_files")
   raw_dir = op.join(html_dir, "raw_files")
   sys.path.append(os.path.join(html_dir, "scripts")) # XXX gross!
-  import raw_from_rst_html
   # FIXME these need to go away
   import create_refinement_txt
   import create_phenix_maps
@@ -98,7 +166,7 @@ def run (args=(), out=None, log=None) :
     #print >> out, "    converting %s to %s" % (os.path.basename(file_name),
     #  raw_file)
     f = open(os.path.join(raw_dir, raw_file), "w")
-    raw_from_rst_html.run(args=[file_name], out=f)
+    raw_from_rst_html(file_name, out=f)
     f.close()
     os.remove(file_name)
   print >> out, \
