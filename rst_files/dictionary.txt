@@ -754,7 +754,10 @@ Because the standard geometry restraints and minimization methods often do a
 poor job moving sidechains into rotameric positions, a separate
 rotamer-fitting step is available in ``phenix.refine``.
 
-.. XXX An image would be useful here.
+  .. image:: images/lysine_rotamers.png
+
+*Above: the sidechain rotamers of lysine defined by MolProbity, based on
+conformations found in the Top500 database.*
 
 **Rotation function (RF)**: the first part of molecular replacement, which
 establishes the rotational orientation of the search model in the crystal.
