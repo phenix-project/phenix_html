@@ -17,6 +17,17 @@ term is often used specifically to refer to **mFo-DFc** maps and similar.
 Usually viewed at between 1.0 to 1.5 **sigma** (the latter is the default in
 Coot).
 
+.. _altconfs:
+
+**Alternate conformations**: at high resolution (usually significantly better
+than 2.0Å) the map may be sufficiently detailed to recognize two or more
+unique conformations for parts of a molecule.  The affected residues (here
+meaning any connected set of atoms, not necessarily amino acids) can be split
+into multiple conformers with partial occupancy summing to 1.  At present these
+need to be built manually in Coot.
+
+.. XXX An image would be useful here.
+
 .. _altloc:
 
 **altloc**: an identifier in atom records in `PDB and mmCIF files
@@ -122,6 +133,17 @@ macromolecular crystals, and the low-resolution reflections tend to dominate
 the R-factor calculations, the correction step significantly decreases the
 R-factors and is an essential step during refinement and map calculation.
 
+.. _cbetadev:
+
+**C-beta deviations**: a type of validation outlier specific to amino acid
+geometry.  If the backbone and/or sidechain are misfit, the C-beta atom may
+be moved far from the ideal position to compensate.  A deviation of more than
+0.25Å is considered to be a validation outlier.  This will not necessarily
+correspond to chirality or bond angle deviations, but it is considered a
+significant error and should never be present in the final model.
+
+.. XXX An image would be useful here.
+
 .. _clashscore:
 
 **Clashscore**: a validation statistic used in the `Molprobity web server
@@ -166,6 +188,11 @@ real-space manipulation of electron density, which dramatically improves
 experimentally phased maps.  For SAD phasing, density modification is essential
 to resolve phase ambiguity and obtain an interpretable map, but it is also
 very helpful for other methods.
+
+.. image:: images/density_modification.png
+
+*Above: an example of an experimentally phased SAD map (the p9-sad tutorial
+distributed with Phenix) before and after density modification.*
 
 **Difference map**: any map calculated from the difference in amplitudes
 between two sets of structure factors (with phases from one of these, or from
@@ -246,6 +273,19 @@ a center of inversion, (h,k,l) and (-h,-k,-l), have identical amplitudes
 symmetry, which can be taken advantage of to locate heavy-atom sites and
 phase the structure.
 
+**Gradient**: the first derivative of a function (such as the experimental
+data or geometry restraints targets), used for minimization.
+
+**Grid search**: an optimization method that samples a series of values for
+the refined parameters and picks the best result, as opposed to using
+**gradient** minimization or **simulated annealing**.  Grid searches tend to
+be much slower but the ability to try any arbitrary value gives them a much
+larger **radius of convergence** than other methods, and they are especially
+useful when a pre-defined set of trial values is known.  In Phenix, grid
+searches are used for sidechain **rotamer** fitting, selection of the
+relative refinement **target** weights, and optimization of bulk solvent
+parameters.
+
 **Hendrickson-Lattman coefficients**: Phase probability parameters, calculated
 either experimentally based on heavy-atom methods (SAD, MAD, etc.) or directly
 from the model, used in density modification and (if experimentally obtained)
@@ -274,6 +314,21 @@ French-Wilson treatment instead of simply taking the square root of positive
 intensities and discarding the rest.  Because this conversion is performed
 internally, many of the programs in Phenix accept either intensities or
 amplitudes as input, although internally the latter are nearly always used.
+
+.. _ias:
+
+**Interatomic scattering**: X-ray scattering caused by the electrons in
+the covalent bonds between atoms.  At very high resolution (d_min < 0.9Å),
+this is sufficiently distinct from the atomic scattering that it may appear
+as difference map peaks.  In `phenix.refine <refinement.htm>`__, this can be
+modeled by additional interatomic scatterers, essentially pseudo-atoms.  See
+Afonine et al. 2007 for more information.
+
+  .. image:: images/ias.png
+
+*Above: an example of unmodeled interatomic scattering (visible as green mesh
+representing positive peaks in the mFo-DFc map) in the 0.66Å structure of
+aldose reductase (`PDB ID 1us0 <http://www.rcsb.org/pdb/explore/explore.do?structureId=1us0>`__).*
 
 **Isomorphous**: geometrically similar, which in the context of crystallography
 means that the space group is the same and the unit cell parameters are nearly
@@ -310,7 +365,7 @@ B-factor is represented as a sphere.  See also **anisotropic** and **TLS**.
 shaken randomly by a small amount, and the map recalculated; this is done
 repeatedly and the maps averaged.  This can help remove bias and in some cases
 noise as well.  Available in both `phenix.refine <refine_gui.htm>`_ and
-`phenix.maps <create_maps.htm>`_.
+`phenix.maps <create_maps.htm>`_.  See Praznikar et al. 2009 for details.
 
 **Least squares**: an older refinement methodology, no longer in widespread
 use for macromolecular crystallography.  A least-squares target assumes that
@@ -342,6 +397,12 @@ programs such as Coot (and
 PHENIX, internally) will perform the Fourier transform automatically to obtain
 the real-space density.  Most programs in PHENIX output map coefficients
 rather than pre-calculated maps, but the terms are often used interchangeably.
+
+**Maximum entropy**: A statistical technique for noise removal; in the context
+of crystallography, it is used to reduce artifacts in electron density maps
+caused by truncation of Fourier series due to limited resolution or missing
+data.  Not widely used in macromolecular crystallography, but it is helpful in
+some cases.  An implementation is available in Phenix.
 
 **Maximum likelihood**: The statistical methodology used in target functions
 for refinement and phasing, in which the probability of the model given the
@@ -417,6 +478,24 @@ be used with additional processing (particularly trimming non-conserved loops
 and the ends of non-identical side chains in Sculptor) if their structures are
 similar enough.  In Phenix, MR is performed by `Phaser <phaser_mr.htm>`_ and
 various procedures that invoke Phaser.
+
+.. _mpscore:
+
+**Molprobity score**: an attempt to provide an overall measure of protein
+structure quality based on the distribution of validation statistics in 
+structures deposited in the `Protein Data Bank <http://www.rcsb.org>`_.  The
+score is defined in (Keedy et al. 2009) as::
+
+  MPscore=0.426∗ln(1+clashscore)+0.33∗ln(1+max(0,rota_out−1))+0.25∗ln(1+max(0,rama_iffy−2))+0.5
+
+
+with **clashscore** as defined above, ``rota_out`` is the percentage of
+sidechains with **rotamer** outliers,
+and ``rama_iffy`` is the percentage of amino acids not in the "favored" region
+of the **Ramachandran plot**.  The resulting score is on the same scale as
+resolution in Angstroms, so a structure with a MolProbity score of 2.4 is
+similar in quality to structures in the PDB at 2.4Å.  The score should usually
+be smaller than the actual resolution, the lower the better.
 
 .. _mtz:
 
@@ -531,7 +610,8 @@ steric constraints on the backbone conformation, originally identified by
 plot is an essential validation metric, phi and psi are typically left
 unrestrained during refinement.  In the `Molprobity server
 <http://molprobity.biochem.duke.edu>`_ and the Phenix validation tools, the
-plot is divided into "favored", "allowed", and "outlier" regions; a
+plot is divided into "favored", "allowed", and "outlier" regions, based on the
+distribution of angles in a set of 8000 high-quality structures; a
 well-refined structure should have 98% of residues favored, and less than 0.2%
 outliers, although at lower resolutions it may be difficult to obtain these
 statistics.  Note that the expected distribution varies depending on residue
@@ -579,18 +659,33 @@ preferred for display purposes.
 .. _restraints:
 
 **Restraints**: In refinement, restraints keep specific independent parameters
-from diverging too far.  At most resolutions, basic geometry restraints
+from diverging too far.  At most resolutions, because of the limited resolution
+of the data basic geometry restraints
 (bonds, bond angles, dihedral angles, chiral centers, planar groups, and
 VDW interactions) and ADP similarity restraints will be used, usually taking
 the form of a simple harmonic potential, mimicking a spring pulling
 parameters back to ideal values.  Depending on
-the specific structure and data, additional restraints may include experimental
-phase distributions (see **Hendrickson-Lattman coefficients**) or restraints
-between related molecules (**NCS** or a reference structure).  Restraints do
+the specific structure and data, additional restraints may be used, for
+instance between related molecules (**NCS** or a reference structure).
+Restraints do
 not reduce the number of refined parameters, but are essential to maintain
 proper geometry and prevent overfitting.  However, they become less necessary
 as resolution increases, and restraining a high-resolution model too tightly
 will actually make it worse.  See also **constraints**.
+
+.. image:: images/restraints_geo.png
+
+*Above: an example of refinement with and without geometry restraints at
+moderate resolution (1.8Å); the molecular geometry is severely distorted if
+dictated by the experimental data alone.*
+
+.. image:: images/restraints_adp.png
+
+*Above: the same example with and without ADP restraints (shown as spheres,
+and colored by isotropic B-factor), showing unphysical distribution of
+B-factors when restraints are not used.*
+
+.. _rfactor:
 
 **R-factor**: Crystallographic residual; for calculating model-data agreement,
 it is equal to sum(abs(abs(Fobs)-abs(Fcalc))) / sum(abs(Fobs)).
@@ -602,6 +697,8 @@ determining if a model is placed correctly.  (Note that in practice, molecular
 replacement solutions often have higher starting R-factors, but these will
 rapidly drop during refinement if the solution is correct.  Also note that
 in the presence of twinning, a lower threshold for randomness is expected.)
+
+  .. image:: images/rfactor.gif
 
 .. _rfree:
 
@@ -656,6 +753,8 @@ and flagging of rotamer outliers is an important part of `validation
 Because the standard geometry restraints and minimization methods often do a
 poor job moving sidechains into rotameric positions, a separate
 rotamer-fitting step is available in ``phenix.refine``.
+
+.. XXX An image would be useful here.
 
 **Rotation function (RF)**: the first part of molecular replacement, which
 establishes the rotational orientation of the search model in the crystal.
@@ -759,6 +858,14 @@ molecules are disordered around special positions; in this case the
 occupancy found in the PDB file is usually 1/N or smaller, where N is
 the order of the rotational symmetry.
 
+.. image:: images/special_positions.png
+
+*Above: an example of atoms on special positions in a potassium channel
+structure (`PDB ID 1p7b <http://www.rcsb.org/pdb/explore/explore.do?structureId=1P7B>`_).
+The potassium ions (grey spheres) lie on a two-fold crystallographic symmetry
+axis, with the asymmetric unit and symmetry mate shown as yellow and magenta
+lines respectively.*
+
 **Structure factors**: the individual reflections corresponding to the Fourier
 transform of the electron density of the crystal.  Both **F(obs)** and
 **F(model)** are examples of structure factors, based on the true and
@@ -775,7 +882,14 @@ used **least-squares** (LS) targets, but modern refinement programs usually use
 **maximum-likelihood** (ML) targets, which are more robust in the presence of
 model error and incompleteness.  In `phenix.refine <refine_gui.htm>`_, the
 available target functions are ML, MLHL (amplitudes plus experimental phases),
-and LS (for refinement of twinned structures).
+and LS (for refinement of twinned structures).  Technically, any restraints
+used also specify a target function for minimization, although the term is not
+usually used in this context.
+
+**Target weights**: since the experimental **target function** is normally
+combined with the geometry or B-factor **restraints**, a scale factor is
+applied.  This can be automatically determined by comparing the **gradients**
+of each function, or by a **grid search** of empirically estimated values.
 
 **Translation function (TF)**: the second step of molecular replacement, which
 starts from the output of the **rotation function** and determines the exact
@@ -865,8 +979,12 @@ from the expected plot may indicate data pathologies.
 References
 ----------
 
-  - CITATION:brunger_anneal
-  - CITATION:brunger_rfree
-  - CITATION:mccoy_likelihood
-  - CITATION:ramachandran
-  - CITATION:zwart_pseudosymm
+- CITATION:ias
+- CITATION:brunger_anneal
+- CITATION:brunger_rfree
+- CITATION:mpscore
+- CITATION:mccoy_likelihood
+- CITATION:kicked_maps
+- CITATION:ramachandran
+- CITATION:read_sigmaa
+- CITATION:zwart_pseudosymm
