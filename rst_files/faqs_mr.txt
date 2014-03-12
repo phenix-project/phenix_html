@@ -53,6 +53,8 @@ file from Phaser contains map coefficients, but in most cases you will find
 that better maps can be obtained by immediately running a round of refinement
 or automated re-building.
 
+.. _composition-search-ensemble-relation:
+
 **How are the composition and search ensembles related?**
 
 Technically, they aren't connected.  The ensembles are used in the actual MR
@@ -91,7 +93,7 @@ of the model.  If you have supplied a single sequence to define the
 composition, check to make sure that you have specified that the contents
 of the asymmetric unit include two copies.
 
-.. _sculptorensemblerorder:
+.. _sculptor-ensembler-order:
 
 **I want to create an ensemble of models. Should I run Sculptor first and then
 Ensembler, or the other way round?**

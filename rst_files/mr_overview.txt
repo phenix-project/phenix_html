@@ -30,7 +30,7 @@ between the model structure and the target sequence, and also to apply B-factor
 weights to the model to weight down unreliable parts. `Ensembler <ensembler.htm>`_
 can be used to superpose homologous models automatically. The recommended order
 is to run `Sculptor <sculptor.htm>`_ and then `Ensembler <ensembler.htm>`_,
-for reasons explained in the `MR FAQ <faqs_mr.htm#sculptorensemblerorder>`_.
+for reasons explained in the `MR FAQ <faqs_mr.htm#sculptor-ensembler-order>`__.
 
 The `MRage <MRage.htm>`_ framework integrates model processing steps and
 molecular replacement into one application. It provides a highly customizable
@@ -95,14 +95,14 @@ For composition, you may supply a sequence file (protein or nucleic acid), or
 simply enter the molecular weight.  The standalone versions of Phaser also
 accept the fractional composition of each search ensemble, if known.  Note that
 the composition data does not necessarily have a 1:1 correspondence with the
-search ensembles (see FAQ list below for details); if you wish to simply
-specify the molecular weight of a complex while searching for multiple
-subunits, you may enter the mass for the complex as a single component.  (You
-may also use multi-record FASTA-format sequence files.)  Even if you are only
-searching for a single ensemble out of several (e.g. the protein in a
-protein-DNA complex), you must still supply the expected composition of the
-entire crystal because Phaser needs to know what fraction of the asymmetric
-unit each search model comprises.
+search ensembles (see `MR FAQ <faqs_mr.htm#composition-search-ensemble-relation>`__
+for details); if you wish to simply specify the molecular weight of a complex
+while searching for multiple subunits, you may enter the mass for the complex
+as a single component.  (You may also use multi-record FASTA-format sequence
+files.)  Even if you are only searching for a single ensemble out of several
+(e.g. the protein in a protein-DNA complex), you must still supply the expected
+composition of the entire crystal because Phaser needs to know what fraction of
+the asymmetric unit each search model comprises.
 
 Outline of MR procedure
 -----------------------
