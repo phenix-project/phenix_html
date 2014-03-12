@@ -91,6 +91,25 @@ of the model.  If you have supplied a single sequence to define the
 composition, check to make sure that you have specified that the contents
 of the asymmetric unit include two copies.
 
+.. _sculptorensemblerorder:
+
+**I want to create an ensemble of models. Should I run Sculptor first and then
+Ensembler, or the other way round?**
+
+Unfortunately, neither way is optimal. When Sculptor is run first, it removes
+residues from the model, and this may impact on Ensembler's ability to do an
+optimal superposition. If the default *SSM* matching is used, the fragmentation
+of secondary structure elements (prominent when models are distant) may result
+in incorrect matching, although this is rare. When Ensembler is run first, and
+*trimming* is switched on, the resulting main-chain trace can contain many short
+fragments, which will be discarded by Sculptor since these cannot be reliably
+matched to the alignment sequence, and the completeness of the resulting model
+is further decreased. The best compromise is probably to run Sculptor first, so
+that the sequence-to-chain alignment could be performed optimally. In common
+cases, this does not impair superposition drastically, since there are still
+many sites to use. In case *SSM* alignment fails, other matching algorithms
+(e.g. residue sequence numbers) can be used.
+
 Phaser-MR GUI
 -------------
 

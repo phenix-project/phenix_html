@@ -24,12 +24,20 @@ of search models, but enables fine control over parameters and multi-step
 searches, which may be necessary for difficult structures.
 
 The `Sculptor <sculptor.htm>`_ and `Ensembler <ensembler.htm>`_ utilities are
-available for preparing search models. The `MRage <MRage.htm>`_ framework
-integrates model processing steps and molecular replacement into one
-application. It provides a highly customizable interface with parallelization
-options and the ability to connect to the `NCBI Blast
-<http://blast.ncbi.nlm.nih.gov/Blast.cgi>`_ and `wwPDB <http://www.wwpdb.org>`_
-websites to perform homology searches and fetch potential models.
+available for preparing search models. `Sculptor <sculptor.htm>`_ can be used to
+improve the model by pruning residues and side chains according to an alignment
+between the model structure and the target sequence, and also to apply B-factor
+weights to the model to weight down unreliable parts. `Ensembler <ensembler.htm>`_
+can be used to superpose homologous models automatically. The recommended order
+is to run `Sculptor <sculptor.htm>`_ and then `Ensembler <ensembler.htm>`_,
+for reasons explained in the `MR FAQ <faqs_mr.htm#sculptorensemblerorder>`_.
+
+The `MRage <MRage.htm>`_ framework integrates model processing steps and
+molecular replacement into one application. It provides a highly customizable
+interface with parallelization options and the ability to connect to the
+`NCBI Blast <http://blast.ncbi.nlm.nih.gov/Blast.cgi>`_ and
+`wwPDB <http://www.wwpdb.org>`_ websites to perform homology searches and fetch
+potential models.
 
 (Phaser is also used for experimental phasing, but this functionality is
 exposed through the `AutoSol wizard <autosol.htm>`_ and `Phaser-EP GUI
