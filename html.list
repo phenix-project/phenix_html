@@ -52,7 +52,7 @@ coot.htm			None			None True
 phenix_gui.htm    None    None True
 old_gui.htm                  None                    None
 hyss.htm			None			None
-refine_gui.htm    phenix.command_line    refine_gui True
+refine_gui.htm    None  None  True
 emma.htm			None			None
 reflection_statistics.htm	None			None
 reflection_file_tools.htm	None			None
@@ -61,15 +61,15 @@ explore_metric_symmetry.htm	None			None
 hydrogens.htm			None			None
 den_refine.htm                  None                    None
 pdbtools.htm			mmtbx			pdbtools
-fmodel.htm			None			None
+fmodel.htm			mmtbx.command_line fmodel
 fem.htm 		mmtbx.command_line 			development_fem
 geometry_minimization.htm  mmtbx.command_line geometry_minimization
 f000.htm 		None 			None True
 map_to_structure_factors.htm None None
 model_vs_data.htm 		None 			None
-map_value_at_point.htm		None			None
-reciprocal_space_arrays.htm	None			None
-phenix_maps.htm 		phenix 			maps
+map_value_at_point.htm   mmtbx.command_line map_value_at_point True
+reciprocal_space_arrays.htm mmtbx.command_line reciprocal_space_arrays True
+phenix_maps.htm 	  None      None
 construction.htm		None			None
 tutorial_mir.htm		None                    None
 tutorial_mr.htm			None                    None
@@ -87,7 +87,7 @@ create_maps.htm  None  None True
 phaser_mr.htm   None    None   True
 phaser_ep.htm   None    None
 sculptor.htm    phaser    sculptor
-ensembler.htm   phaser    make_ensemble
+ensembler.htm   phaser    ensembler
 autosol_gui.htm   None  None True
 mtz2map.htm  mmtbx.command_line mtz2map True
 ncs_average.htm  phenix.command_line ncs_average True

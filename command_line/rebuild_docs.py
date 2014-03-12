@@ -1,15 +1,35 @@
 
+from __future__ import division
 from phenix.utilities import toc_and_index
-from libtbx.utils import Sorry, null_out
+from libtbx.utils import Sorry, null_out, import_python_object
+import libtbx.phil.command_line
 from libtbx import easy_run
 import libtbx.load_env
+import os.path as op
 import shutil
 import time
 import os
 import re
 import sys
 
-def run (out=None, log=None) :
+master_phil_str = """
+force = False
+  .type = bool
+"""
+
+# FIXME this is an improvement over separate scripts to create these files,
+# but it makes it impossible to combine the command-line and GUI documentation
+create_rst_from_modules = [
+  ("mmtbx.command_line.reciprocal_space_arrays","reciprocal_space_arrays.txt"),
+  ("mmtbx.command_line.map_value_at_point", "map_value_at_point.txt"),
+  ("mmtbx.command_line.fmodel", "fmodel.txt"),
+]
+
+def run (args=(), out=None, log=None) :
+  cmdline = libtbx.phil.command_line.process(
+    args=args,
+    master_string=master_phil_str)
+  params = cmdline.work.extract()
   if (out is None) : out = sys.stdout
   if (log is None) : log = null_out()
   html_dir = libtbx.env.find_in_repositories(
@@ -17,13 +37,13 @@ def run (out=None, log=None) :
     test=os.path.isdir)
   if (html_dir is None) :
     raise Sorry("phenix_html repository not found.")
+  rst_dir = op.join(html_dir, "rst_files")
+  raw_dir = op.join(html_dir, "raw_files")
   sys.path.append(os.path.join(html_dir, "scripts")) # XXX gross!
   import raw_from_rst_html
+  # FIXME these need to go away
   import create_refinement_txt
-  import create_fmodel_txt
   import create_phenix_maps
-  import create_map_value_at_point_txt
-  import create_reciprocal_space_arrays_txt
   import create_model_vs_data_txt
   top_dir = os.path.dirname(html_dir)
   docs_dir = os.path.join(top_dir, "doc")
@@ -32,15 +52,22 @@ def run (out=None, log=None) :
   print >> out, "The complete documentation will be in:"
   print >> out, "  %s" % docs_dir
   print >> out, "  creating restructured text files"
-  rst_dir = os.path.join(html_dir, "rst_files")
   os.chdir(rst_dir)
   create_refinement_txt.run()
-  create_fmodel_txt.run()
   create_phenix_maps.run()
-  create_map_value_at_point_txt.run()
-  create_reciprocal_space_arrays_txt.run()
   create_model_vs_data_txt.run()
+  for module_name, rst_file in create_rst_from_modules :
+    print >> out, "    %s" % rst_file
+    legend = import_python_object(
+      import_path=module_name+".legend",
+      error_prefix="",
+      target_must_be="",
+      where_str="").object
+    open(op.join(rst_dir, rst_file), "w").write(legend)
   print >> out, "  building HTML files from restructured text files"
+  if (not params.force) :
+    print >> out, \
+      "      processing modified files only (override with --force)"
   rst_files = os.listdir(rst_dir)
   html_files = []
   def _cmp_make(f1, f2):
@@ -52,6 +79,10 @@ def run (out=None, log=None) :
     disable = ("disable_rst2html" in open(file_name).read())
     if (not disable) :
       html_name = os.path.splitext(file_name)[0] + ".html"
+      raw_file = op.join(raw_dir, op.splitext(file_name)[0] + ".raw")
+      if op.exists(raw_file) and not params.force :
+        if (op.getmtime(raw_file) > op.getmtime(file_name)) :
+          continue
       print >> out, "    converting %s to %s" % (os.path.basename(file_name),
         os.path.basename(html_name))
       stdout_lines = easy_run.fully_buffered(
@@ -66,7 +97,7 @@ def run (out=None, log=None) :
     raw_file = os.path.splitext(os.path.basename(file_name))[0] + ".raw"
     #print >> out, "    converting %s to %s" % (os.path.basename(file_name),
     #  raw_file)
-    f = open(os.path.join(html_dir, "raw_files", raw_file), "w")
+    f = open(os.path.join(raw_dir, raw_file), "w")
     raw_from_rst_html.run(args=[file_name], out=f)
     f.close()
     os.remove(file_name)
@@ -108,4 +139,4 @@ def run (out=None, log=None) :
     os.symlink("phenix_documentation.html", "index.html")
 
 if (__name__ == "__main__") :
-  run()
+  run(args=sys.argv[1:])
