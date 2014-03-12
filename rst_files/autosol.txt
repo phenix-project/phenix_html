@@ -7,6 +7,9 @@ Authors
 
 
 AutoSol Wizard: Tom Terwilliger
+Phaser: Gabor Bunkoczi, Airlie McCoy, Randy Read
+Hyss: Ralf Grosse-Kunstleve, Tom Terwilliger, Gabor Bunkoczi, Randy Read
+Xtriage: Peter Zwart
 PHENIX GUI: Nathaniel Echols
 
 Purpose
@@ -18,7 +21,7 @@ The AutoSol Wizard uses HYSS, SOLVE, Phaser, RESOLVE, xtriage and phenix.refine 
 Usage
 -----
 
-The AutoSol Wizard can be run from the PHENIX GUI, from the command-line, and from parameters files. All three versions are identical except in the way that they take commands from the user. See Using the PHENIX Wizards for details of how to run a Wizard. The command-line version will be described here, except for MIR and multiple datasets, which can only be run with the GUI or with a parameters file. The GUI is documented separately.
+The AutoSol Wizard can be run from the PHENIX GUI, from the command-line, and from parameters files. All three versions are identical except in the way that they take commands from the user. See Using the PHENIX Wizards for details of how to run a Wizard. The command-line version will be described here, except for MIR and multiple datasets, which can only be run with the GUI or with a parameters file. Nearly all the parameters described here as command-line keyword=value pairs are parameters that can be set in the GUI, so nearly everything described here can be done in the GUI. The GUI is documented separately.
 
 
 
@@ -63,7 +66,7 @@ AutoSol will accept the following formats of data:
 
 The data from any of these formats will be converted to amplitudes (F+ , sigF+, and F-, sigF-) internally.
 
-For the best scaling results, you should supply all scalepack unmerged original index files or all mtz unmerged files. If all the files are scalepack unmerged original index or all the files are mtz unmerged and no anisotropy correction is applied, then SOLVE local scaling will be applied to the data prior to merging and averaging equivalent reflections. In all other cases equivalent reflections will be averaged prior to scaling, so that the scaling may not be as effective at removing systematic errors due to absorption or other effects.
+If you supply all scalepack unmerged original index files or all mtz unmerged files then the information in these files can be used to improve scaling. In most cases this is not necessary however. If all the files are scalepack unmerged original index or all the files are mtz unmerged and no anisotropy correction is applied, then SOLVE local scaling will be applied to the data prior to merging and averaging equivalent reflections. In all other cases equivalent reflections will be averaged prior to scaling, so that the scaling may not be as effective at removing systematic errors due to absorption or other effects.
 
 
 Sequence file format
@@ -115,6 +118,9 @@ Finding heavy-atom (anomalously-scattering atom) sites
 
 The AutoSol Wizard uses HYSS to find heavy-atom sites. The result of this step is a list of possible heavy-atom solutions for a dataset. For SIR or SAD data, the isomorphous or anomalous differences, respectively are used as input to HYSS. For MAD data, the anomalous differences at each wavelength, and the FA estimates of complete heavy-atom structure factors from SOLVE are each used as separate inputs to HYSS. Each heavy-atom substructure obtained from HYSS corresponds to a potential solution. In space groups where the heavy-atom structure can be either hand, a pair of enantiomorphic solutions is saved for each run of HYSS.
 
+For SAD and MAD data (except for FA estimates) the Phaser LLG completion approach is used to find the heavy-atom sites.  This can be quite a bit more powerful than direct methods completion.
+
+
 
 Running AutoSol separately in related space groups
 --------------------------------------------------
@@ -130,7 +136,7 @@ Potential heavy-atom solutions are scored based on a set of criteria (SKEW, CORR
 
 Bayesian CC scores (BAYES-CC). Bayesian estimates of the quality of experimental electron density maps are obtained using data from a set of previously-solved datasets. The standard scoring criteria were evaluated for 1905 potential solutions in a set of 246 MAD, SAD, and MIR datasets. As each dataset had previously been solved, the correlation between the refined model and each experimental map (CC_PERFECT) could be calculated for each solution (after offsetting the maps to account for origin differences). 
 
-Histograms were tabulated of the number of instances that a scoring criterion (e.g., SKEW) had various possible values, as a function of the CC_PERFECT of the corresponding experimental map to the refined model. These histograms yield the relative probability of measuring a particular value of that scoring criterion (SKEW), given the value of CC_PERFECT. Using Bayes' rule, these probabilities can be used to estimate the relative probabilities of values of CC_PERFECT given the value of each scoring criterion for a particular electron density map. The mean estimate (BAYES-CC) is reported (multiplied x 100), with a +/-2SD estimate of the uncertainty in this estimate of CC_PERFECT. The BAYES-CC values are estimated independently for each scoring criterion used, and also from all those selected with the keyword score_type_list and not selected with the keyword skip_score_list.
+Histograms have been tabulated of the number of instances that a scoring criterion (e.g., SKEW) had various possible values, as a function of the CC_PERFECT of the corresponding experimental map to the refined model. These histograms yield the relative probability of measuring a particular value of that scoring criterion (SKEW), given the value of CC_PERFECT. Using Bayes' rule, these probabilities can be used to estimate the relative probabilities of values of CC_PERFECT given the value of each scoring criterion for a particular electron density map. The mean estimate (BAYES-CC) is reported (multiplied x 100), with a +/-2SD estimate of the uncertainty in this estimate of CC_PERFECT. The BAYES-CC values are estimated independently for each scoring criterion used, and also from all those selected with the keyword score_type_list and not selected with the keyword skip_score_list.
 
 Z-scores (Z-SCORE). The Z-score for one criterion for a particular solution is given by,
 
@@ -233,9 +239,12 @@ NOTE: If there are multiple chains or multiple ncs copies, each chain will be gi
 How to run the AutoSol Wizard
 -----------------------------
 
-Running the AutoSol Wizard is easy. From the command-line you can type:
+Running the AutoSol Wizard is easy. From the command-line you can type: ::
 
-phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
+  phenix.autosol w1.sca seq.dat 2 Se f_prime=-8 f_double_prime=4.5
+
+From the GUI you load in these files and specify the number of anomalously-scattering atome and the atom type and the scattering factors on the main GUI page.
+
 The AutoSol Wizard will assume that w1.sca is a datafile (because it ends in .sca and is a file) and that seq.dat is a sequence file, that there are 2 heavy-atom sites, and that the heavy-atom is Se. The f_prime and f_double_prime values are set explicitly
 
 You can also specify each of these things directly: ::
@@ -341,32 +350,16 @@ If you are carrying out SAD phasing with Phaser, you can carry out a combination
 
  input_partpdb_file=MR.pdb
 
-In this case the MR.pdb file will be used as a partial model in a maximum-likelihood SAD phasing calculation with Phaser to calculate phases and identify sites in Phaser, and the combined MR+SAD phases will be written out. NOTE: At the moment the AutoBuild Wizard is not equipped to use these combined phases optimally in iterative model-building, density modification and refinement, because they contain both experimental phase information and model information. It is therefore possible that the resulting phases are biased by your MR model, and that this bias will not go away during iterative model-building because it is continually fed back in.
+You can optionally also specify an estimate of the RMSD between your model and the true structure with a command like: ::
 
-Using an MR model to find sites and as a source of phase information (method #2 for MRSAD)
+  partpdb_rms=1.5
 
-You can also combine MR information with SAD phases (see J. P. Schuermann and J. J. Tanner Acta Cryst. (2003). D59, 1731-1736 ) in PHENIX by running the three wizards AutoMR, AutoSol, and AutoBuild one after the other. This method does not use the partial model and the anomalous information in the SAD dataset simultaneously as the above Phaser maximum-likelihood method does. On the other hand, the phases obtained in this method are independent of the model, so that combining them afterwards does not introduce model bias. (It is not yet clear which is the better approach, so you may wish to try both.) Additionally, this approach can be used with any method for phasing. Here is a set of three simple commands to do this: First run AutoMR to find the molecular replacement solution, but don't rebuild it yet: ::
+In this case the MR.pdb file will be used as a partial model in a maximum-likelihood SAD phasing calculation with Phaser to calculate phases and identify sites in Phaser, and the combined MR+SAD phases will be written out. 
 
- phenix.automr gene-5.pdb peak.sca copies=1 \
-  RMS=1.5 mass=9800 rebuild_after_mr=False
-
-Now your MR solution is in the directory AutoMR\_run\_1\_ with the file name MR.1.pdb and phases are in MR.1.mtz. Use these phases as input to AutoSol, along with some weak SAD data, still not building any new models: ::
-
- phenix.autosol data=peak.sca \
- input_phase_file=AutoMR_run_1_/MR.1.mtz input_phase_labels="F PHIC FOM"   \
- seq_file=sequence.dat build=False
-
-Note that we have specified the data columns for F PHI and FOM in the input_phase_file. For input_phase_file you must specify all three of these (if you leave out FOM it will set it to zero). AutoSol will write an MTZ file with experimental phases to phaser_xx.mtz where xx depends on how many solutions are considered during the run. The next command for running AutoBuild you will need to edit depending on the value of xx: ::
-
- phenix.autobuild data=AutoSol_run_1_/phaser_2.mtz \
-  model=AutoMR_run_1_/MR.1.pdb seq_file=sequence.dat rebuild_in_place=False
-
-AutoBuild will now take the phases from your AutoSol run and combine them with model-based information from your AutoMR MR solution, and will carry out iterative density modification, model-building and refinement to rebuild your model. Note that you may wish to set rebuild_in_place=True, depending on how good your MR model is.
-
-Using placed density from a Phaser MR density search to find sites and as a source of phase information (method #3 for MRSAD)
+Using placed density from a Phaser MR density search to find sites and as a source of phase information (method #2 for MRSAD)
 -----------------------------------------------------------------------------------------------------------------------------
 
-You can carry out a procedure almost like using input_partpdb_file except that the MR model comes as a set of map coefficients for density that has been placed by Phaser. In this case the keyword to use is input_part_map_coeffs_file instead of input_partpdb_file. You can also identify the labels with input_part_map_coeffs_labels.
+You can carry out a procedure almost like using input_partpdb_file except that the model information comes as a set of map coefficients for density. These map coefficients can be from Phaser or any other source of phase information. In this case the keyword to use is input_part_map_coeffs_file instead of input_partpdb_file. You can also identify the labels with input_part_map_coeffs_labels.
 
 
 SAD dataset, reading heavy-atom sites from a PDB file written by phenix.hyss
@@ -475,6 +468,8 @@ mad_ha_add_f_prime_list=" -7 -10"
 mad_ha_add_f_double_prime_list=" 4.2 12"
 but the values from table lookup should be fine. Note that there must be the same number of entries in each of these three keyword lists, if given. During phasing Phaser will try to add whichever atom types best fit the scattering from each new site. This option is available for SAD phasing only and only for a single dataset (not with SAD+MIR etc).
 
+A particularly useful way to use this feature is to add in S atoms in a protein structure that has SeMet (specifying S with mad_ha_add_list will then, with luck, find the Cys sulfurs), or to add in P atoms in a nucleic acid structure phased by some other atom such as I.  This works especially well at high resolution.
+
 MIR dataset
 -----------
 
@@ -539,19 +534,25 @@ You can use AutoSol in cases with a very weak anomalous signal. The big challeng
 
  sites_file=my_sites.pdb
 
-For the density modification step, there is a keyword (extreme_dm) that may be helpful in cases where the starting phases are very poor. This keyword works with the keyword fom_for_extreme_dm to determine whether a set of defaults for density modification with weak phases is appropriate. If so, a very large radius for identification of the solvent boundary (20 A) is used, and the number of density modification cycles is reduced. This can make a big difference in getting started with density modification in such a case.
+For the density modification step, there is a keyword (extreme_dm) that may be helpful in cases where the starting phases are very poor: ::
+
+  extreme_dm = True
+
+This keyword works with the keyword fom_for_extreme_dm to determine whether a set of defaults for density modification with weak phases is appropriate. If so, a very large radius for identification of the solvent boundary (20 A) is used, and the number of density modification cycles is reduced. This can make a big difference in getting started with density modification in such a case.
 
 
 AutoSol with a cluster compound
 -------------------------------
 
-You can run SAD phasing in AutoSol with a cluster compound (not MIR or MAD yet). Normally you should supply a PDB file with an example of the cluster with the keyword cluster_pdb_file=my_cluster_compound and a unique residue name XX (yes, XX). Set the keyword atom_type=XX as well . If your cluster is Ta6Br12 then you can simply put atom_type=TX and skip the cluster_pdb_file. For MAD/MIR, cluster compounds are not currently supported. Instead just use a standard atom.
+You can run SAD phasing in AutoSol with a cluster compound (not MIR or MAD yet). Normally you should supply a PDB file with an example of the cluster with the keyword cluster_pdb_file=my_cluster_compound and a unique residue name XX (yes, really the two letters XX, not XX replaced by some other name). Set the keyword atom_type=XX as well . If your cluster is Ta6Br12 then you can simply put atom_type=TX and skip the cluster_pdb_file. For MAD/MIR, cluster compounds are not currently supported. Instead just use a standard atom.
 
 
 R-free flags and test set
 -------------------------
 
-In Phenix the parameter test_flag_value sets the value of the test set that is to be free. Normally Phenix sets up test sets with values of 0 and 1 with 1 as the free set. The CCP4 convention is values of 0 through 19 with 0 as the free set. Either of these is recognized by default in Phenix and you do not need to do anything special. If you have any other convention (for example values of 0 to 19 and test set is 1) then you can specify this with test_flag_value.
+In Phenix the parameter test_flag_value sets the value of the test set that is to be free. Normally Phenix sets up test sets with values of 0 and 1 with 1 as the free set. The CCP4 convention is values of 0 through 19 with 0 as the free set. Either of these is recognized by default in Phenix and you do not need to do anything special. If you have any other convention (for example values of 0 to 19 and test set is 1) then you can specify this with: ::
+
+   test_flag_value=1
 
 
 Specific limitations and problems
