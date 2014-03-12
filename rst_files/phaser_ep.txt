@@ -28,17 +28,26 @@ documentation for `AutoSol <autosol.htm>`_ or `Phaser <phaser.htm>`_, or the
 Input files and mandatory parameters
 ------------------------------------
 
-Phaser requires a reflections file (any format) containing anomalous data,
-and a file containing heavy atom sites, in either PDB or SHELX format. Either
-the wavelength or the energy used is also required.  To
-run an MR-SAD experiment, change the mode to "MR-SAD phasing", and enter a
-partial model (PDB file) and the expected variance from the actual structure
-(RMSD or percent identity).  If you are using normal SAD mode, you may choose
-whether to use the given enantiomer ("hand") of the heavy-atom sites or the
-inverse or both; in MR-SAD, the chirality of the partial model restricts the
-sites to the given enantiomer.
+Phaser requires a reflections file (any format) containing anomalous data, and
+(for normal SAD mode) a file containing heavy atom sites, in either PDB or
+SHELX format. Either the wavelength or the energy used is also required.  If
+you are using normal SAD mode, you may choose whether to use the given
+enantiomer ("hand") of the heavy-atom sites or the inverse or both.
 
 .. image:: images/phaser_sad_main.png
+
+To run an MR-SAD experiment, change the mode to "MR-SAD phasing", and enter a
+partial model (PDB file) and the expected variance from the actual structure
+(RMSD or percent identity).  In MR-SAD, the chirality of the partial model
+restricts the sites to the given enantiomer.  You could optionally provide a
+file containing heavy atom sites, but these are normally found by 
+log-likelihood-gradient completion from the partial model; an advantage is 
+that these sites are guaranteed to correspond to the same hand and origin as
+the partial model.  Instead of a partial model specified with atoms, you can
+optionally provide an electron density map instead, by choosing "map" from
+the "Partial model type" pulldown.
+
+.. image:: images/phaser_sad_mrsad.png
 
 The input for composition is identical to the `Phaser-MR GUI <phaser_mr.htm>`_.
 Heavy atoms may be either standard elements from the periodic table, or
@@ -49,9 +58,9 @@ Output
 
 Depending on the choice of hand, Phaser will output one or two sets of files
 containing the heavy atom sites (PDB format) and phased reflections (MTZ),
-including map coefficients and Hendrickson-Lattman phase distributions
-(useful for refining with experimental phase restraints).  This map is
-usually very noisy and difficult to interpret, and typically requires
+including map coefficients and Hendrickson-Lattman phase probability
+distributions (useful for refining with experimental phase restraints).  This
+map is usually very noisy and difficult to interpret, and typically requires
 density modification to become useful.
 
 Frequently Asked Questions
@@ -61,22 +70,20 @@ Frequently Asked Questions
     Click on the "Composition and sites" tab.  A control at the bottom labeled
     "Enable substructure completion by log-likelihood gradient maps" turns on
     this feature (and is already on by default).  However, Phaser also needs to
-    be told what type of scatterers to look for.  Clicking the "Options..."
-    button opens a new window which will allow you to enter scatterer symbols
-    (typically element codes).  You may enter as many of these as you think are
+    be told what type of scatterers to look for.  These can be entered into
+    the "Scattering types" box either manually or by clicking the "Select
+    scatterer type" button.  You may enter as many of these as you think are
     present and ordered in your crystal - note however that at the wavelengths
     commonly used for macromolecular crystallography, some atom types may
     be difficult to distinguish (such as sulfur and chlorine).
 
   - **How do I phase a structure with tantalum bromide clusters in Phenix?**
     This is possible, but not really optimal at present.  Phaser has built-in
-    support for Ta6Br12 clusters, which have the scatterer type "TX".  However,
-    they are represented as point scatterers rather than the actual cluster.
-    Therefore, although Phaser can perform LLG substructure completion, it will
-    output sites as single TX pseudo-atoms, rather than the actual cluster.
-
-
-.. image:: images/phaser_ep_llg.png
+    support for Ta6Br12 clusters, which have the scatterer type "TX".  These
+    are represented as spherically-averaged scatterers, which are a better
+    representation than conventional atoms but not as good as an oriented
+    atomic model of the actual cluster.  The output sites are represented as
+    single TX pseudo-atoms.
 
 References
 ----------
