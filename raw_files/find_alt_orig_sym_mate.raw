@@ -26,7 +26,13 @@ finds for each chain in the moving solution the copy closest to chains in the fi
 respect to all symmetry operations and alternative origin shifts permitted by the spacegroup of the crystal.
 
 <H5><U>Usage</U></H5>
-phenix.find_alt_orig_sym_mate can be run from the command-line with PHIL input in either a text file or as keywords like
+phenix.find_alt_orig_sym_mate can be run from the GUI by clicking on the <B>Find alternate-origin symmetry
+mates</B> button under the Model tools category on the right hand side of the main Phenix window.
+<P>
+<div class="image"><img alt="images/find_alt_orig_sym_mate1.png" src="images/find_alt_orig_sym_mate1.png" /></div>
+
+<P>
+It can also be run from the command-line with PHIL input in either a text file or as keywords like
 <PRE style="face=courier">
 phenix.find_alt_orig_sym_mate moving_pdb=pdbfile1 fixed_pdb=pdbfile2
 </PRE>
