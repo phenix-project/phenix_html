@@ -19,7 +19,8 @@ Coot).
 
 .. _altloc:
 
-**altloc**: an identifier in atom records in PDB/mmCIF files, which labels the
+**altloc**: an identifier in atom records in `PDB and mmCIF files
+<file_formats.htm#pdb_format>`_, which labels the
 alternative conformation to which an atom belongs.  In the PDB format, this
 occupies the column to the left of the residue name.  For single-conformer
 models the altloc ID will be blank; otherwise it is usually an uppercase
@@ -87,6 +88,12 @@ the selenium K edge (approximately 0.9792A wavelength) on a
 selenomethionine-derivatized protein crystal.  The anomalous map is rendered
 in purple, contoured at 3.0 sigma, and clearly shows the positions of the
 Se atoms in the structure.*
+
+**ANISOU**: a type of record in `PDB format <file_formats.htm#pdb_format>`_,
+specifying an anisotropic displacement ellipsoid with six parameters.  They
+will immediately follow the associated ATOM or HETATM record.  ANISOU records
+will appear in files output `phenix.refine <refine_gui.htm>`_ any time you
+use individual anisotropic B-factor refinement or TLS.
 
 .. _bfactor:
 .. _adp:
@@ -190,6 +197,10 @@ summing over all reflections and all atoms (or grid points in the unit cell).
 It is still widely used in small molecule crystallography, but programs such
 as Phenix use the **FFT** method which is far more efficient.
 
+**d_min**: High-resolution limit.
+
+**d_max**: Low-resolution limit.
+
 **Experimental phasing**: umbrella term for a variety of phasing methods based
 on exploiting the scattering of heavy atoms (the heavier the better, but even
 endogenous atoms such as sulfur may be used in favorable cases).  Includes
@@ -226,6 +237,8 @@ solution should usually be greater than 0.3.
 **F(model)**: the structure factors calculated from the model, which in this
 context also includes the bulk-solvent contribution.  Sometimes also referred
 to as "F(calc)".
+
+**F(obs)**: experimentally observed amplitudes.
 
 **Friedel's law**: a phenomenon in which pairs of refections related by
 a center of inversion, (h,k,l) and (-h,-k,-l), have identical amplitudes
@@ -534,6 +547,15 @@ contours define the borders of the favored and allowed regions.*
 be somewhat arbitrary depending on the space group).  Examples of real-space
 data are model coordinates and electron density maps.
 
+**Real-space refinement**: coordinate refinement using an electron density
+map (usually the **2mFo-DFc map**) as the experimental target.  This may
+be done globally or locally, and with any optimization method, including
+gradient minimization or grid search (such as rotamer fitting).  It is much
+faster than reciprocal-space refinement, but has the disadvantage of
+depending on phases being accurately calculated.  To avoid biasing **R-free**,
+the reflections flagged as the test set should be left out of the map
+calculation.  (This is done automatically when run as part of phenix.refine.)
+
 **Reciprocal space**: a mathematical construction describing the
 positions of reflections in a "reciprocal lattice", whose parameters are
 directly related to the crystal lattice parameters; the reciprocal
@@ -546,6 +568,13 @@ along with the crystal lattice.
 
 **Reflection**: an individual data item in **reciprocal space**, usually used
 to describe a single amplitude or intensity.
+
+**Resolution factor**: this number controls the spacing of the grid used for
+map calculations, which is approximately defined by d_min/resolution_factor
+(although the final grid dimensions will be adjusted based on the requirements
+of the **FFT* algorithm).  The lower the resolution factor, the more finely
+spaced the map grid.  A spacing of 1/3 or 1/4 is most common, with the latter
+preferred for display purposes.
 
 .. _restraints:
 
@@ -599,6 +628,13 @@ an existing set of flags to higher resolution, or transfer to an
 **isomorphous** dataset, can be done by the `reflection file editor
 <reflection_file_editor.htm>`_.
 
+.. _riding_hydrogens:
+
+**Riding hydrogens**: hydrogens whose coordinates and B-factors are defined by
+the covalently bonded heavy atom, as opposed to individual refinement.  Except
+for sub-atomic resolution structures, the riding model is almost always the
+appropriate one, and leads to less overfitting.
+
 **Rigid-body refinement**: coordinate refinement using rigid blocks of atoms,
 typically an entire domain or chain (or possibly the entire contents of the
 asymmetric unit).  Used at the beginning of refinement after a molecular
@@ -606,7 +642,7 @@ replacement search, where the fit to data may be crude and a large radius of
 convergence is desired.  (Note that some rigid-body refinement is also
 performed directly by `Phaser <phaser_mr.htm>`_.)
 
-.. rotamer:
+.. _rotamer:
 
 **Rotamer**: A well-defined unique combination of dihedral angle values in
 a group of atoms; the term is almost always used in reference to amino acid
@@ -661,6 +697,8 @@ standard sigma levels (e.g. the Coot defaults of 1.5 sigma for **2mFo-DFc**
 and +/- 3.0 sigma for **mFo-DFc** maps), the sigma values are actually very
 subjective, depending greatly on solvent content and model quality.
 
+.. _anneal:
+
 **Simulated annealing**:
 An optimization method which simulates heating up a system and
 slowly cooling it down, as a way of escaping local energy minima trapping
@@ -675,6 +713,8 @@ However, in practice Cartesian simulated annealing in phenix.refine
 often outperforms torsion-angle dynamics.  Originally described in
 Brunger (1997).
 
+.. _SAD:
+
 **Single-wavelength anomalous diffraction (SAD)**: probably the most popular
 experimental phasing method currently in use, SAD requires only a single
 wavelength from one crystal.  The experimental phases themselves will be of
@@ -687,6 +727,8 @@ the `AutoSol wizard <autosol_gui.htm>`_ or `Phaser-EP <phaser_ep.htm>`_,
 although the latter only calculates initial phases and completes the heavy-atom
 substructure, whereas AutoSol will also perform initial heavy-atom location,
 density modification, and preliminary model-building.
+
+.. _skew:
 
 **Skew**: Statistic derived from the distribution of electron density values
 in an experimentally phased map.  The skew describes the deviation from a
@@ -703,6 +745,8 @@ coordinates, unlike PDB files they uniquely encode the connectivity of
 molecules, and can optionally even specify chirality.  They are therefore one
 of the prefered input formats for `eLBOW <elbow_gui.htm>`_.  As an example,
 the SMILES string for benzene is ``c1ccccc1``.
+
+.. _special_positions:
 
 **Special positions**: locations on crystallographic symmetry elements.
 For macro-molecular structures special positions are always on rotation
@@ -723,6 +767,16 @@ amplitudes and phases, although for the experimental structure factors, only
 the amplitudes can be measured directly.  The amplitude alone is usually
 represented by the "abs()" operator.
 
+.. _target:
+
+**Target function**: in the context of refinement, this is the function that
+assesses the fit to experimental data (usually amplitudes).  Older programs
+used **least-squares** (LS) targets, but modern refinement programs usually use
+**maximum-likelihood** (ML) targets, which are more robust in the presence of
+model error and incompleteness.  In `phenix.refine <refine_gui.htm>`_, the
+available target functions are ML, MLHL (amplitudes plus experimental phases),
+and LS (for refinement of twinned structures).
+
 **Translation function (TF)**: the second step of molecular replacement, which
 starts from the output of the **rotation function** and determines the exact
 position of the search model within the unit cell.  The TF may be significantly
@@ -731,6 +785,8 @@ run for each possible orientation indicated by the RF, but it can resolve
 space-group ambiguity, and the resulting Z-score (TFZ), in combination with the
 **LLG**, will usually be sufficient to determine whether the solution is
 correct or not.
+
+.. _TNCS:
 
 **Translational non-crystallographic symmetry (TNCS)**: a common crystal pathology in which
 the unit cell size is effectively doubled due to a near-symmetric translation

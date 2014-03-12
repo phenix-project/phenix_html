@@ -49,7 +49,8 @@ and information about program use.  The crystal symmetry is important for
 many applications, but the REMARK section is usually ignored (except for
 deposition with the PDB).
 
-If you need to edit a PDB file, we recommend that you use either
+If you need to edit a PDB file (other than rebuilding the model in Coot),
+we recommend that you use either
 `PDBTools <pdbtools.htm>`_, a non-interactive tool available both on the
 command line and the graphical interface, or phenix.pdb_editor, an interactive
 graphical editor.  Editing by hand is strongly discouraged and often leads to
@@ -137,7 +138,8 @@ lacking the unit cell parameters.
 
 **SHELX** format is an even simpler text format.  We do not recommend
 using this if possible, because it doesn ot explicitly specify either the
-crystal symmetry or the data type (amplitudes or intensities).
+crystal symmetry or the data type (amplitudes or intensities).  These files
+also tend to have the extension ``.hkl``.
 
 .. _xds:
 
