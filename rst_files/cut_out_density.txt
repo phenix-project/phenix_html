@@ -36,7 +36,9 @@ The main uses of phenix.cut\_out\_density are:
    have a very large structure, as working with a small piece may be
    much quicker. Note that you can only carry out real-space methods on
    the extracted map and model.
--  Cutting density out of a map to use in molecular replacement.
+-  Cutting density out of a map to use in molecular replacement. In this
+   case it is easiest to use the keyword "for_phaser=True" to make a file
+   suitable for use in Phaser.
 
 Please note: you should not use phenix.cut\_out\_density to select
 regions near your model for display purposes. You can create a highly
@@ -74,20 +76,33 @@ position in your original model as well.
 -------------------------------------
 
 **cutout.mtz**: An MTZ file with your cut out density in space group P1.
+
 **cutout.pdb**: A PDB file with your input molecule translated to match
 the offset used in creating cutout.mtz
 
 Examples
 --------
 
-Standard run of cut\_out\_density:
-----------------------------------
+**Standard run of cut\_out\_density:**
 
 Running cut\_out\_density is easy. From the command-line you can type:
 
 ::
 
     phenix.cut_out_density model.pdb map_coeffs.mtz
+
+**Preparing density for molecular replacement in Phaser:**
+
+The for_phaser=True keyword sets most of the defaults appropriately.
+You have to provide a PDB file with atoms defining the centers of spheres
+around which the density should be cut out.  Set the cutout_model_radius
+parameter to define the size of the spheres.  If you have a reasonably 
+detailed atomic model, a value of 3. may be appropriate, but you may
+have a PDB file specifying one big sphere as in this command:
+
+::
+
+    phenix.cut_out_density for_phaser=True cutout_model_radius=15 sphere.pdb map_coeffs.mtz
 
 Possible Problems
 -----------------
