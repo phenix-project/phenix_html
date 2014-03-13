@@ -19,6 +19,15 @@ Usage
 Ensembler can be run from the PHENIX GUI and the command line, the only
 difference being the way commands are taken from the user.
 
+The graphical user interface makes all settings accessible either as
+part of the main window (for frequently used options) or as a dialog box
+**Ensemble generation settings...**. Input files are specified either by
+the **+**/**-** button pair, or by drag-and-drop onto the window area.
+File types are automatically recognized, and added to the relevant input
+section.
+
+.. image:: images/ensembler_gui.png
+
 Input files
 -----------
 
@@ -32,48 +41,6 @@ Input files
    and supplying alignment files. Accepted extensions (with the
    corresponding format) are ``.aln`` (CLUSTAL format), ``.pir``
    (PIR-format) and ``.ali`` (relaxed PIR-like format).
-
-Command line
-------------
-
-::
-
-    phenix.ensembler \
-        [ command-line switches ] \
-        [ PHIL-format parameter files ] \
-        [ PHIL command-line assignments ] \
-        [ PDB-files ] \
-        [ alignment files ]
-
-Command-line switches:
-
-
-::
-
-
-      -h, --help            show this help message and exit
-      --show-defaults       print PHIL and exit
-      -i, --stdin           read PHIL from stdin as well
-      -v, --verbosity       set verbosity level (DEBUG,INFO,WARNING,VERBOSE)
-
-PHIL arguments:
-
-
-Everything not starting with a dash('-') is interpreted as a PHIL
-argument. This can be a PHIL-format file containing parameters,
-command-line assignment or a file whose type is automatically recognized
-(based on file extension; structure files and alignment files are
-recognized automatically).
-
-GUI
----
-
-The graphical user interface makes all settings accessible either as
-part of the main window (for frequently used options) or as a dialog box
-**Ensemble generation settings...**. Input files are specified either by
-the **+**/**-** button pair, or by drag-and-drop onto the window area.
-File types are automatically recognized, and added to the relevant input
-section.
 
 Output files
 ------------
@@ -91,14 +58,17 @@ Description
 -----------
 
 The workflow consists of several stages that can be independently
-configured. These are listed in order of execution. For a summary of all
-keywords with the corresponding defaults, see the **Additional
-information** section.
+configured. These are listed in order of execution, and control parameters
+are accessible from the ``Ensemble generation settings...`` dialog box.
+For a summary of all parameters with the corresponding defaults, see the
+`Additional information`__ section.
+
+__ additional_
 
 Residue mapping
 ---------------
 
-Establishes the equivalence of residues among the input chains. There
+Establishes the equivalence of residues among the input chains. There 
 are several options available:
 
 -  ``ssm`` - Do structure-based SSM alignment (default).
@@ -135,14 +105,21 @@ optimal solution. There are two superposition algorithms implemented,
 which primarily differ in how they handle gaps in equivalent positions.
 
 -  ``gapless``. This algorithm discards all positions where gaps are
-   present, For further details, see Diamond (1992).
+   present, For further details, see `Diamond (1992)`__.
+
+__ Diamond1992_
+
 -  ``gapped``. This algorithm can use all positions as long as there are
    two sites presents (i.e. not gaps), and may give better results for
    chains with distant sequence identity. For the exact algorithm, see
-   Wang & Snoeyink (2008).
+   `Wang & Snoeyink (2008)`__.
+
+__ WangSnoeyink2008_
 
 Both algorithms use Diamond's formulation to solve the pairwise
-rotational superposition problem (Diamond, 1988).
+rotational superposition problem (`Diamond, 1988`__).
+
+__ Diamond1988_
 
 An exception is raised if there are less than 3 sites present for
 superposition.
@@ -163,14 +140,15 @@ Implemented weighting schemes are as follows:
 -  ``unit`` - Unit weights (equivalent to no weighting).
 -  ``robust_resistant`` - Robust-resistant weighting scheme (default).
    This tends to converge fast and give reliable results. The exact
-   formula for weighting is as follows:
+   formula for weighting is as follows::
 
-``w = 1 - ( delta2 / tolerance2 )2 if delta < tolerance       w = 0 (otherwise)``
+      w = 1 - ( delta2 / tolerance2 )2 if delta < tolerance
+      w = 0 (otherwise)
 
-where ``delta`` is the deviation from the average. Tolerance is an
-empirical value, and its optimal value is close to ( unweighted r.m.s.d.
-) :sup:`2` and can be controlled by the ``critical`` parameter of the
-``robust_resistant`` scope.
+   where ``delta`` is the deviation from the average. Tolerance is an
+   empirical value, and its optimal value is close to (unweighted r.m.s.d.) :sup:`2`
+   and can be controlled by the ``critical`` parameter of the ``robust_resistant``
+   scope.
 
 Weighting is iterated with superposition until weights converge, which
 can be controlled by the ``convergence`` parameter of the ``weighting``
@@ -208,11 +186,43 @@ positions (``overlap``), weighted r.m.s.d. (``wrmsd``) or unweighted
 r.m.s.d. (``unwrmsd``). This is controlled by the ``sort`` parameter of
 the ``output`` scope. Default: input order (``input``).
 
+Command line
+------------
+
+::
+
+    phenix.ensembler \
+        [ command-line switches ] \
+        [ PHIL-format parameter files ] \
+        [ PHIL command-line assignments ] \
+        [ PDB-files ] \
+        [ alignment files ]
+
+Command-line switches:
+
+
+::
+
+
+      -h, --help            show this help message and exit
+      --show-defaults       print PHIL and exit
+      -i, --stdin           read PHIL from stdin as well
+      -v, --verbosity       set verbosity level (DEBUG,INFO,WARNING,VERBOSE)
+
+PHIL arguments:
+
+
+Everything not starting with a dash('-') is interpreted as a PHIL
+argument. This can be a PHIL-format file containing parameters,
+command-line assignment or a file whose type is automatically recognized
+(based on file extension; structure files and alignment files are
+recognized automatically).
+
 Specific limitations and possible problems
 ------------------------------------------
 
 Processing features
--------------------
++++++++++++++++++++
 
 -  Ensembler considers each chain individually and therefore it is not
    possible to superpose assemblies. The rationale is that its primary
@@ -225,7 +235,7 @@ Processing features
    discarded from the superposition.
 
 Warning and error messages
---------------------------
+++++++++++++++++++++++++++
 
 -  ``No alignments given``: no alignments were specified and a
    user-supplied alignment based mapping method was requested.
@@ -254,18 +264,23 @@ Warning and error messages
    This either indicates incorrect alignment of the chains or too tight
    expected error.
 
-Literature
+References
 ----------
 
--  **A note on the rotational superposition problem.** R. Diamond *Acta
-   Cryst.* **A44**, 211-216 (1988)
--  **On the multiple simultaneous superposition of molecular structures
-   by rigid body transformations.** R. Diamond *Protein Science* **1**,
-   1279-1287 (1992)
--  **Defining and computing optimum RMSD for gapped and weighted
-   multiple-structure alignment.** X. Wang and J. Snoeyink *EEE/ACM
-   Transactions on Computational Biology and Bioinformatics* **5**,
-   525-533 (2008)
+.. [Diamond1988]
+   **A note on the rotational superposition problem**
+   R. Diamond *Acta Cryst.* **A44**, 211-216 (1988)
+   
+.. [Diamond1992]
+   **On the multiple simultaneous superposition of molecular structures by rigid body transformations**
+   R. Diamond *Protein Science* **1**, 1279-1287 (1992)
 
-Additional information
+.. [WangSnoeyink2008]
+   **Defining and computing optimum RMSD for gapped and weighted multiple-structure alignment**
+   X. Wang and J. Snoeyink
+   *EEE/ACM Transactions on Computational Biology and Bioinformatics* **5**, 525-533 (2008)
+
+.. _additional:
+
+Additional_information
 ----------------------
