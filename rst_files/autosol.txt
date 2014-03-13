@@ -134,7 +134,7 @@ Scoring of heavy-atom solutions
 Potential heavy-atom solutions are scored based on a set of criteria (SKEW, CORR_RMS, CC_DENMOD, RFACTOR, NCS_OVERLAP,TRUNCATE, REGIONS, CONTRAST, FOM, FLATNESS, described below), using either a Bayesian estimate or a Z-score system to put all the scores on a common scale and to combine them into a single overall score. The overall scoring method chosen (BAYES-CC or Z-SCORE) is determined by the value of the keyword overall_score_method. The default is BAYES-CC. Note that for all scoring methods, the map that is being evaluated, and the estimates of map-perfect-model correlation, refer to the experimental electron density map, not the density-modified map.
 
 
-Bayesian CC scores (BAYES-CC). Bayesian estimates of the quality of experimental electron density maps are obtained using data from a set of previously-solved datasets. The standard scoring criteria were evaluated for 1905 potential solutions in a set of 246 MAD, SAD, and MIR datasets. As each dataset had previously been solved, the correlation between the refined model and each experimental map (CC_PERFECT) could be calculated for each solution (after offsetting the maps to account for origin differences). 
+Bayesian CC scores (BAYES-CC). Bayesian estimates of the quality of experimental electron density maps are obtained using data from a set of previously-solved datasets. The standard scoring criteria were evaluated for 1905 potential solutions in a set of 246 MAD, SAD, and MIR datasets. As each dataset had previously been solved, the correlation between the refined model and each experimental map (CC_PERFECT) could be calculated for each solution (after offsetting the maps to account for origin differences).
 
 Histograms have been tabulated of the number of instances that a scoring criterion (e.g., SKEW) had various possible values, as a function of the CC_PERFECT of the corresponding experimental map to the refined model. These histograms yield the relative probability of measuring a particular value of that scoring criterion (SKEW), given the value of CC_PERFECT. Using Bayes' rule, these probabilities can be used to estimate the relative probabilities of values of CC_PERFECT given the value of each scoring criterion for a particular electron density map. The mean estimate (BAYES-CC) is reported (multiplied x 100), with a +/-2SD estimate of the uncertainty in this estimate of CC_PERFECT. The BAYES-CC values are estimated independently for each scoring criterion used, and also from all those selected with the keyword score_type_list and not selected with the keyword skip_score_list.
 
@@ -261,7 +261,7 @@ You can specify many more parameters as well. See the list of keywords, defaults
   quick=True  # try to find sites quickly
   data=w1.sca  # input datafile
   lambda=0.9798  # wavelength for SAD
-  
+
 Running from a parameters file
 ------------------------------
 
@@ -280,9 +280,9 @@ NEW: AutoSol is optimized for weak SAD data from version 1.8.5
 
 If you want to use a very weak anomalous signal in AutoSol you will want to turn on enable_extreme_dm. This allows AutoSol to turn on the features below if the figure of merit of phasing is low.
 
-The new AutoSol is specifically engineered to be able to solve structures at low or high resolution with a very weak anomalous signal. One feature you may notice right away is that the new AutoSol will try to optimize several choices on the fly. AutoSol will use the Bayesian estimates of map quality and the R-value in density modification to decide which choices lead to the best phasing. AutoSol will try using sharpened data for substructure identification as well as unscaled data as input to AutoSol and pick the one leading to the best map. AutoSol will also try several smoothing radii for identification of the solvent boundary and pick the one that gives the best density modification R-value. 
+The new AutoSol is specifically engineered to be able to solve structures at low or high resolution with a very weak anomalous signal. One feature you may notice right away is that the new AutoSol will try to optimize several choices on the fly. AutoSol will use the Bayesian estimates of map quality and the R-value in density modification to decide which choices lead to the best phasing. AutoSol will try using sharpened data for substructure identification as well as unscaled data as input to AutoSol and pick the one leading to the best map. AutoSol will also try several smoothing radii for identification of the solvent boundary and pick the one that gives the best density modification R-value.
 
-You'll also notice that AutoSol uses the new parallel HySS and that it can find substructures with SAD data that are very weak or that only have signal to low resolution. You can use any number of processors on your machine in the HySS step (so far the parallelization is only for HySS, not the other steps in AutoSol, but those are planned as well). The biggest change in AutoSol is that it now uses iterative Phaser LLG completion to improve the anomalously-scattering substructure for SAD phasing. 
+You'll also notice that AutoSol uses the new parallel HySS and that it can find substructures with SAD data that are very weak or that only have signal to low resolution. You can use any number of processors on your machine in the HySS step (so far the parallelization is only for HySS, not the other steps in AutoSol, but those are planned as well). The biggest change in AutoSol is that it now uses iterative Phaser LLG completion to improve the anomalously-scattering substructure for SAD phasing.
 
 The key idea is to use the density-modified map (and later, the model built by AutoSol) to iterate the identification of the substructure. This feature is amazingly powerful in cases where only some of the sites can be identified at the start by HySS and by initial Phaser completion. Phaser LLG completion is more powerful if an estimate of part of the structure (from the map or from a model) is available. The new AutoSol may take a little longer than the old one due to the heavy-atom iteration, but you may find that it gives a much improved map and model.
 
@@ -354,7 +354,7 @@ You can optionally also specify an estimate of the RMSD between your model and t
 
   partpdb_rms=1.5
 
-In this case the MR.pdb file will be used as a partial model in a maximum-likelihood SAD phasing calculation with Phaser to calculate phases and identify sites in Phaser, and the combined MR+SAD phases will be written out. 
+In this case the MR.pdb file will be used as a partial model in a maximum-likelihood SAD phasing calculation with Phaser to calculate phases and identify sites in Phaser, and the combined MR+SAD phases will be written out.
 
 Using placed density from a Phaser MR density search to find sites and as a source of phase information (method #2 for MRSAD)
 -----------------------------------------------------------------------------------------------------------------------------
@@ -413,7 +413,7 @@ This is similar to the case for running a SAD analysis, selecting particular col
 
   }
   wavelength {
-    data = mad.mtz 
+    data = mad.mtz
     lambda = .9792
     f_prime = -9.0
     f_double_prime = 1.5
@@ -450,15 +450,15 @@ You can also specify many more parameters using a parameters file. This paramete
       atom_type = Pt
       f_prime = -3.0
       f_double_prime = 3.5
-      sites = 3 
+      sites = 3
     }
   }
 
 SAD with more than one anomalously-scattering atom
 --------------------------------------------------
 
-You can tell the AutoSol wizard to look for more than one anomalously-scattering atom. Specify one atom type (Se) in the usual way. Then specify any additional 
-ones in the GUI window or like this if you are running AutoSol from 
+You can tell the AutoSol wizard to look for more than one anomalously-scattering atom. Specify one atom type (Se) in the usual way. Then specify any additional
+ones in the GUI window or like this if you are running AutoSol from
 the command line: ::
 
   mad_ha_add_list="Br Pt"

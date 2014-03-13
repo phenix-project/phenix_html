@@ -25,7 +25,7 @@ create_rst_from_modules = [
   ("mmtbx.command_line.fmodel", "fmodel.txt"),
 ]
 
-def raw_from_rst_html (file_name, out=None):
+def raw_from_rst_html (file_name, dirname=None, out=None):
   raw_header_1 = """\
 <!--REMARK PHENIX TITLE START  Put your title here>
 
@@ -108,8 +108,11 @@ def run (args=(), out=None, log=None) :
     raise Sorry("phenix_html repository not found.")
   rst_dir = op.join(html_dir, "rst_files")
   raw_dir = op.join(html_dir, "raw_files")
+  tmp_dir = op.join(html_dir, "tmp_files")
   if (not op.isdir(raw_dir)) :
     os.makedirs(raw_dir)
+  if (not op.isdir(tmp_dir)) :
+    os.makedirs(tmp_dir)
   sys.path.append(os.path.join(html_dir, "scripts")) # XXX gross!
   # FIXME these need to go away
   import create_refinement_txt
@@ -138,14 +141,24 @@ def run (args=(), out=None, log=None) :
   if (not params.force) :
     print >> out, \
       "      processing modified files only (override with --force)"
-  rst_files = os.listdir(rst_dir)
+  rst_files = []
+  for dirname, dirnames, filenames in os.walk(rst_dir) :
+    base_dir = os.path.basename(dirname)
+    for file_name in filenames :
+      relative_path = file_name
+      if (base_dir != "rst_files") :
+        relative_path = op.join(base_dir, file_name)
+        if (not op.exists(op.join(raw_dir, base_dir))) :
+          os.makedirs(op.join(raw_dir, base_dir))
+      if file_name.endswith(".txt") :
+        rst_files.append(relative_path)
   html_files = []
   def _cmp_make(f1, f2):
     if os.stat(f1).st_mtime < os.stat(f2).st_mtime: return 1
     return -1
   rst_files.sort(_cmp_make)
   for file_name in rst_files:
-    if (not file_name.endswith(".txt")) : continue
+    assert file_name.endswith(".txt")
     disable = ("disable_rst2html" in open(file_name).read())
     if (not disable) :
       html_name = os.path.splitext(file_name)[0] + ".html"
@@ -161,20 +174,21 @@ def run (args=(), out=None, log=None) :
       for line in stdout_lines :
         print >> f, line
       f.close()
-      html_files.append(os.path.join(rst_dir, html_name))
+      html_files.append(html_name)
   print >> out, "  converting restructured text HTML files to raw HTML files"
   for file_name in html_files :
-    raw_file = os.path.splitext(os.path.basename(file_name))[0] + ".raw"
+    dirname = op.dirname(file_name)
+    raw_file = op.splitext(file_name)[0] + ".raw"
     #print >> out, "    converting %s to %s" % (os.path.basename(file_name),
     #  raw_file)
-    f = open(os.path.join(raw_dir, raw_file), "w")
-    raw_from_rst_html(file_name, out=f)
+    f = open(op.join(raw_dir, raw_file), "w")
+    raw_from_rst_html(file_name, dirname=dirname, out=f)
     f.close()
     os.remove(file_name)
   print >> out, \
     "  converting raw HTML files, creating tables-of-contents, and indexing"
-  os.chdir(html_dir)
-  toc_and_index.run(args=(), out=log)
+  os.chdir(tmp_dir)
+  toc_and_index.run(args=[html_dir], out=log)
   assert os.path.isfile("phenix_index.htm")
   print >> out, "  populating documentation directory %s" % docs_dir
   if (os.path.exists(docs_dir)) :
@@ -184,11 +198,20 @@ def run (args=(), out=None, log=None) :
                   os.path.join(docs_dir, "icons"))
   shutil.copytree(os.path.join(html_dir, "images"),
                   os.path.join(docs_dir, "images"))
-  for file_name in os.listdir(html_dir) :
-    if (file_name.endswith(".html")) :
-      shutil.copy(file_name, docs_dir)
-    elif (file_name.endswith(".htm")) :
-      shutil.move(file_name, docs_dir)
+  shutil.copy(op.join(html_dir, "phenix_documentation.html"), docs_dir)
+  for dirname, dirnames, filenames in os.walk(tmp_dir) :
+    base_dir = os.path.basename(dirname)
+    for file_name in filenames :
+      if file_name.endswith(".htm") or file_name.endswith(".html") :
+        file_path = file_name
+        dest_path = docs_dir
+        # enable one additional directory level
+        if (base_dir != "tmp_files") :
+          file_path = op.join(base_dir, file_name)
+          dest_path = op.join(docs_dir, base_dir)
+          if (not op.isdir(dest_path)) :
+            os.makedirs(dest_path)
+        shutil.copy(file_path, dest_path)
   os.chdir(docs_dir)
   phenix_version = os.environ.get("PHENIX_VERSION", None)
   release_tag = os.environ.get("PHENIX_RELEASE_TAG", None)

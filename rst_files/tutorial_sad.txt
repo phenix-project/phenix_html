@@ -55,20 +55,20 @@ directory and **cd** into that directory:
 ::
 
     mkdir tutorials
-    cd tutorials 
+    cd tutorials
 
 Now type the phenix command:
 
 ::
 
-    phenix.run_example --help 
+    phenix.run_example --help
 
 to list the available examples. Choosing **p9-sad** for this tutorial,
 you can now use the phenix command:
 
 ::
 
-    phenix.run_example p9-sad 
+    phenix.run_example p9-sad
 
 to solve the p9 structure with AutoSol. This command will copy the
 directory **$PHENIX/examples/p9-sad** to your current directory
@@ -243,8 +243,8 @@ the beginning, but uses the newly-converted file
     LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
     Unit cell: (113.949, 113.949, 32.474, 90, 90, 90)
     Space group: I 4 (No. 79)
-    CONTENTS: ['AutoSol_run_1_/p9_se_w2_PHX.sca', 'sca', 'premerged', 'I 4', 
-    [113.949, 113.949, 32.473999999999997, 90.0, 90.0, 90.0], 
+    CONTENTS: ['AutoSol_run_1_/p9_se_w2_PHX.sca', 'sca', 'premerged', 'I 4',
+    [113.949, 113.949, 32.473999999999997, 90.0, 90.0, 90.0],
     1.7443432606877809, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
     Total of 1 input data files
 
@@ -259,7 +259,7 @@ SeMet proteins):
 
 ::
 
-     
+
     AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Fri Mar  7 00:53:48 2008
 
     Solvent fraction and resolution and ha types/scatt fact
@@ -290,7 +290,7 @@ for this dataset looks like this:
 
 ::
 
-     
+
     The largest off-origin peak in the Patterson function is 6.49% of the
     height of the origin peak. No significant pseudotranslation is detected.
 
@@ -312,7 +312,7 @@ anisotropic B values is small and no correction is made:
 ::
 
     Range of aniso B:  15.67 26.14
-    Not using aniso-corrected data files as the range of aniso b  is only  
+    Not using aniso-corrected data files as the range of aniso b  is only
     10.47  and 'remove_aniso' is not set
 
 Choosing datafiles with high signal-to-noise
@@ -585,7 +585,7 @@ model-building and refinement are listed in the AutoSol log file:
 
 ::
 
-     
+
 
     FreeR_flag added to  phaser_2.mtz
     ...
@@ -644,7 +644,7 @@ correlation of 0.61:
 
 ::
 
-     
+
     Model completion cycle 1
     Models to combine and extend:  ['Build_2.pdb', 'refine_2.pdb']
     Model 3: Residues built=77  placed=22  Chains=10  Model-map CC=0.61
@@ -677,7 +677,7 @@ first. Here is part of the summary for this **p9** SAD dataset:
 
     Solution # 2  BAYES-CC: 60.0 +/- 13.6 Dataset #1   FOM: 0.54 ----------------
 
-    Solution  2 using HYSS on 
+    Solution  2 using HYSS on
     /net/firebird/scratch1/terwill/run_072908a/p9-sad/AutoSol_run_1_/
     p9_se_w2_PHX.sca_ano_1.sca and taking inverse. Dataset #1
     Dataset number: 1
@@ -687,7 +687,7 @@ first. Here is part of the summary for this **p9** SAD dataset:
     Sites: 4 (Already used for Phasing at resol of 2.4)      Refined Sites: 4
     NCS information  in: AutoSol_2.ncs_spec
     Experimental phases in: phaser_2.mtz
-    Experimental phases plus FreeR_flags for refinement in: 
+    Experimental phases plus FreeR_flags for refinement in:
     exptl_fobs_phases_freeR_flags_2.mtz
     Density-modified phases in: resolve_2.mtz
     HA sites (PDB format) in: ha_2.pdb_formatted.pdb

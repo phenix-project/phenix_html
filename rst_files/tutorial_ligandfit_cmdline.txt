@@ -59,20 +59,20 @@ To run LigandFit on the demo 1J4R-ligand data, make yourself a
 ::
 
     mkdir tutorials
-    cd tutorials 
+    cd tutorials
 
 Now type the phenix command:
 
 ::
 
-    phenix.run_example --help 
+    phenix.run_example --help
 
 to list the available examples. Choosing **1J4R-ligand** for this
 tutorial, you can now use the phenix command:
 
 ::
 
-    phenix.run_example 1J4R-ligand 
+    phenix.run_example 1J4R-ligand
 
 to build the 1J4R-ligand structure with LigandFit. This command will
 copy the directory **$PHENIX/examples/1J4R-ligand** to your current
@@ -183,7 +183,7 @@ Near the top of the log file you will find:
 
 ::
 
-     
+
 
     ------------------------------------------------------------
     Starting LigandFit with the command:
@@ -246,8 +246,8 @@ map:
                     ligand_file       = 1J4R_random.pdb
     Try:  5 extra_thorough_randomize
     Randomizing ligand conformation before starting fit
-    Randomized version of 
-    /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb 
+    Randomized version of
+    /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb
     placed in random.pdb
     Trying fit with n_indiv_tries_min = 300
                     n_indiv_tries_max = 300
@@ -323,15 +323,15 @@ this **1J4R-ligand** ligand-fitting run:
 
 ::
 
-     
+
      LIGAND SOLUTIONS FOR RUN 1  SORTED BY OVERALL CC
 
        ****    FILES ARE IN THE DIRECTORY: LigandFit_run_1_  ****
 
-      RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME       TEMPLATE         
+      RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME       TEMPLATE
           RMSD  CC_START    LIG_VOLUME
 
-       1     129.750      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb    
+       1     129.750      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb
           0.00      0.18    185.00
 
 How do I know if ligand fitting worked?
@@ -387,7 +387,7 @@ few things you should check:
 
 ::
 
-     
+
     phenix.ligandfit data=map_coeffs.mtz lig_map_type=fo-fc_difference_map   \
        model=partial.pdb ligand=side.pdb
 

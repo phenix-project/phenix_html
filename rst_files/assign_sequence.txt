@@ -52,7 +52,7 @@ map, the number of NCS copies, and with the geometries and distances
 between ends of the segments.
 
 Sequence probabilities:
-                       
+
 
 assign\_sequence uses the side-chain to map compatibility matrix
 calculated by resolve to assess the relative probabilities of each
@@ -65,7 +65,7 @@ alignment is the logarithm of this probability (essentially a
 log-likelihood LL score).
 
 Connection scores:
-                  
+
 
 Any pair of segments with some assignment of sequence to each segment
 has an additional score corresponding to the plausibility of a
@@ -77,7 +77,7 @@ of a loop from the fit\_loops loop library. This additional score is
 normally 10\*CC.
 
 Generating sequence alignments and connectivities
-                                                 
+
 
 assign\_sequence starts with the segments with the most convincing
 assignments of sequence. Often these are those with sequence positively
@@ -94,7 +94,7 @@ repeated until no additional segments can be added to the arrangement to
 yield an increase in log-likelihood score of (by default) 2 or greater.
 
 NCS copies:
-           
+
 
 assign\_sequence builds up a set of possible sequence assignments and
 connectivities that depends on the expected number of copies in the
@@ -106,7 +106,7 @@ each molecule must be self-consistent, with plausible distances and
 geometries relating each segment to the next.
 
 Connecting segments:
-                    
+
 
 Once a final arrangement is found, including NCS if applicable, all
 segments that are separated by short loops (typically 0-3 residues) are

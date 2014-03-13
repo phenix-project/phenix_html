@@ -52,7 +52,7 @@ specify this explicitly with:
 ::
 
     phenix.map_to_object fixed_pdb=my_target.pdb moving_pdb=my_ligand.pdb \
-    use_moving_center_of_mass=True use_fixed_center_of_mass=False 
+    use_moving_center_of_mass=True use_fixed_center_of_mass=False
 
 Run of phenix.map\_to\_object specifying center of mass of moving PDB is to have maximum number of contacts with atoms of fixed PDB:
 ------------------------------------------------------------------------------------------------------------------------------------

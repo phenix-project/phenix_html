@@ -70,7 +70,7 @@ Command line
         [ alignment files ]
 
 Command-line switches:
-                      
+
 
 ::
 
@@ -82,7 +82,7 @@ Command-line switches:
       --mode                set mode (flexible,predefined)
 
 PHIL arguments:
-               
+
 
 Everything not starting with a dash ('-') is interpreted as a PHIL
 argument. This can be a PHIL-format file containing parameters,
@@ -140,7 +140,7 @@ Protein chains
 --------------
 
 Deletion
-        
+
 
 Discards residues from a model chain that are unlikely to improve signal
 in molecular replacement. This information is calculated from the
@@ -170,7 +170,7 @@ case, a residue will be deleted if assigned for deletion by any active
 algorithms.
 
 Polishing
-         
+
 
 Makes small adjustments to the mainchain of a chain (taking results from
 deletion into account) to make it obey basic macromolecular features.
@@ -190,7 +190,7 @@ These algorithms can also be used together in combination. In this case,
 the chain will be processed sequentially by both algorithms.
 
 Pruning
-       
+
 
 This phase determines the level distance from the C\ :sub:`alpha` atom
 up to which a residue sidechain in the model is potentially similar to
@@ -221,7 +221,7 @@ These algorithms can also be used together in any combination, in which
 case the sidechain will be truncated to the shortest value suggested.
 
 B-factor prediction
-                   
+
 
 B-factor prediction tries to increase B-factors for atoms that are
 likely to be more flexible or more in error. The calculation takes
@@ -251,13 +251,13 @@ similarity or accessible surface area to residues/atoms for display
 purposes.
 
 Renumber
-        
+
 
 Renumbers residues according to the ``target`` or ``model`` sequence. It
 is also possible to turn renumbering off (option ``original``).
 
 Rename
-      
+
 
 Renames residues according their counterpart in the target sequence. It
 also "morphs" the sidechain, i.e. renames atoms and deletes atoms that

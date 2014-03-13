@@ -22,13 +22,13 @@ the program details described in this document should apply to the GUI as well.
 Citation reference and comprehensive methodology details
 ********************************************************
 
-Afonine PV, Grosse-Kunstleve RW & Adams PD. 
-The Phenix refinement framework. (2005). 
+Afonine PV, Grosse-Kunstleve RW & Adams PD.
+The Phenix refinement framework. (2005).
 CCP4 Newsletter on Protein Crystallograph. 42.
 
-Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW, Mustyakimov M, 
-Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012). 
-Towards automated crystallographic structure refinement with phenix.refine. 
+Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW, Mustyakimov M,
+Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012).
+Towards automated crystallographic structure refinement with phenix.refine.
 Acta Crystallogr D Biol Crystallogr. 68:352-67.
 PMID: `22505256 <http://www.ncbi.nlm.nih.gov/pubmed/22505256>`_
 
@@ -50,7 +50,7 @@ Available features at a glance
 - Atomic Displacement Parameters (ADP) refinement:
 
  1. Restrained individual isotropic, anisotropic, mixed
- 2. Group isotropic (one isotropic B per selected model part). Modes to refine 
+ 2. Group isotropic (one isotropic B per selected model part). Modes to refine
     one or two group B per residue (for side and main chains)
  3. TLS (Translation-Libration-Screw-rotation model)
  4. Comprehensive mode: combined TLS + individual or group ADP
@@ -59,10 +59,10 @@ Available features at a glance
   conformations
 - Anomalous f' and f'' refinement
 - Bulk solvent correction (flat model using a mask) and anisotropic scaling
-- Refinement target functions: least-squares (ls), maximum-likelihood (ml), 
+- Refinement target functions: least-squares (ls), maximum-likelihood (ml),
   phased maximum-likelihood (mlhl)
 - FFT and direct summation
-- Maps: any pFobs-qFmodel (unweighted: p=q=1 or sigmaA-weighted), anomalous 
+- Maps: any pFobs-qFmodel (unweighted: p=q=1 or sigmaA-weighted), anomalous
   difference. Can be output as Fourier map coefficients (MTZ file) or actual map
   in CCP4 or X-plor format
 - Simple structure factor and map calculation
@@ -92,30 +92,30 @@ Remark on using amplitudes (Fobs) vs intensities (Iobs)
 *******************************************************
 
  Although phenix.refine will read both data types, intensities or amplitudes,
- internally it uses amplitudes in nearly all calculations. Intensities are 
+ internally it uses amplitudes in nearly all calculations. Intensities are
  converted into amplitudes using French&Wilson method. Both ways of doing
  refinement, with Iobs or Fobs, have their own slight advantages and
- disadvantages that are not well explored or documented. To our knowledge there 
+ disadvantages that are not well explored or documented. To our knowledge there
  is no *strong* points to argue using one data type over another.
 
 phenix.refine organization
 **************************
 
-A phenix.refine refinement run always consists of three steps: 
-  1. Reading and processing inputs (model in PDB format, reflections in most 
-     known formats, parameters and cif files with stereochemistry definitions 
+A phenix.refine refinement run always consists of three steps:
+  1. Reading and processing inputs (model in PDB format, reflections in most
+     known formats, parameters and cif files with stereochemistry definitions
      for non-standard ligands)
-  2. Main refinement loop (macro-cycle; see Refinement flowchart below) 
-     iteratively performs requested refinement protocols (bulk solvent and 
+  2. Main refinement loop (macro-cycle; see Refinement flowchart below)
+     iteratively performs requested refinement protocols (bulk solvent and
      scaling, refinement of coordinates and B-factors, solvent update, etc...)
   3. Output of PDB file with refined model and ready to PDB deposition REMARK 3
      records, MTZ file with Fourier map coefficients and other arrays, refinement
-     log file containing comprehensive summary of refinement steps, model, data 
+     log file containing comprehensive summary of refinement steps, model, data
      and model to data fit statistics.
-  
+
 .. image:: images/phenix_refine_flowchart.png
 
-Multiple refinement strategies can be combined and applied to any selected part 
+Multiple refinement strategies can be combined and applied to any selected part
 of a model as illustrated below:
 
 .. image:: images/phenix_refine_flexibility.png
@@ -125,7 +125,7 @@ Running phenix.refine
 
 phenix.refine can be run from the command line::
 
-  % phenix.refine <pdb-file(s)> <reflection-file(s)> <monomer-library-file(s)> 
+  % phenix.refine <pdb-file(s)> <reflection-file(s)> <monomer-library-file(s)>
     <parameter-keyword(s)> <parameter-file(s)>
 
 or from PHENIX GUI.
@@ -148,34 +148,34 @@ When you do this a number of things happen:
   arrays spread across multiple files).
 - At the end of refinement the program generates:
 
- 1. PDB file with the refined model called for example lysozyme_refine_001.pdb. 
-    This file contains REMARK records summarizing details bout refinemetn run, 
-    as well as model, data and model-to-data fit statistics. Also, it contains 
+ 1. PDB file with the refined model called for example lysozyme_refine_001.pdb.
+    This file contains REMARK records summarizing details bout refinemetn run,
+    as well as model, data and model-to-data fit statistics. Also, it contains
     REMARK 3 records that can be used for PDB deposition.
  2. MTZ file (e.g. lysozyme_refine_001.mtz) that contains:
- 
+
     - Copy if input data (for example, Iobs, R-free flags)
-    - Data actually used in refinement and calculation of reported statistics. 
-      These can be different from input data for a number of reasons: a) 
-      convertion Iobs to Fobs (if Iobs were input), b) truncation by resolution 
-      and/or sigma (if requested by the user), c) automated rejection of 
+    - Data actually used in refinement and calculation of reported statistics.
+      These can be different from input data for a number of reasons: a)
+      convertion Iobs to Fobs (if Iobs were input), b) truncation by resolution
+      and/or sigma (if requested by the user), c) automated rejection of
       reflection-outliers.
-    - Total model structure factors (Fmodel). Fmodel includes all scales and 
-      bulk-solvent contribution and is defined as 
+    - Total model structure factors (Fmodel). Fmodel includes all scales and
+      bulk-solvent contribution and is defined as
       Fmodel = k_total * (Fcalc_atoms + k_mask * Fmask)
     - Fourier map coefficients that can be used for example in Coot or XtalView
-      to visualize the maps. They correspond to  2mFobs-DFmodel map calculated 
-      using original set of Fobs, 2mFobs-DFmodel "filled" map, where missing 
-      Fobs are substituted with some expected values, residual mFobs-DFmodel map, 
-      and anomalous difference map (if input data was anomalous: contained 
+      to visualize the maps. They correspond to  2mFobs-DFmodel map calculated
+      using original set of Fobs, 2mFobs-DFmodel "filled" map, where missing
+      Fobs are substituted with some expected values, residual mFobs-DFmodel map,
+      and anomalous difference map (if input data was anomalous: contained
       Fobs(+) and Fobs(-) separately).
-      
+
  3. log file that contains detailed information about refinement run.
- 4. geo file is a foot print of all geometry restraints used in refinement, such 
-    as bonds, angles, planarity, chirality, dihedral, non-bonded. For each type 
+ 4. geo file is a foot print of all geometry restraints used in refinement, such
+    as bonds, angles, planarity, chirality, dihedral, non-bonded. For each type
     of restraints current model and ideal (library) values are listed. This file
     allows to pinpoint all the restraints that an atom in question is invlolved.
- 5. Optionally, actual maps can be output in CCP4 binary formar or X-plor plain 
+ 5. Optionally, actual maps can be output in CCP4 binary formar or X-plor plain
     text format.
  6. def file: a new defaults file to run the next cycle of refinement, e.g.
     lysozyme_refine_002.def. This means you can run the next cycle of
@@ -201,7 +201,7 @@ the command line::
 
 Note that you don't have to specify the full parameter name. What you
 specify on the command line is matched against all known parameters names
-and the best substring match is used if it is unique. Otherwise a list of 
+and the best substring match is used if it is unique. Otherwise a list of
 possible options is provided.
 
 To rerun a job that was previously run::
@@ -216,9 +216,9 @@ finish.
 To see all default parameters::
 
   % phenix.refine --show-defaults=all
-  
+
 To see difference between default settings and a parameter file::
-  
+
   % phenix.refine --diff-params lysozyme_refine_001.def
 
 Giving parameters on the command line or in files
@@ -298,11 +298,11 @@ Refinement with all default parameters
 
   % phenix.refine data.hkl model.pdb
 
-This will perform coordinate refinement, restrained ADP refinement and occupancy 
+This will perform coordinate refinement, restrained ADP refinement and occupancy
 refinement (if applicable, see Occupancy refinement section for details). Three
 macrocycles will be executed, each consisting of bulk solvent correction,
 anisotropic scaling of the data, coordinate refinement (25 iterations of the
-LBFGS minimizer) and ADP refinement (25 iterations of the LBFGS minimizer). 
+LBFGS minimizer) and ADP refinement (25 iterations of the LBFGS minimizer).
 
 Refinement of coordinates
 -------------------------
@@ -310,31 +310,31 @@ Refinement of coordinates
 Coordinates can be refined using:
 
  - individual coordinate refinement using gradient-driven (LBFGS) minimization;
- - individual coordinate refinement in real-space using a combination of 
+ - individual coordinate refinement in real-space using a combination of
    gradient-driven (LBFGS) minimization and local torsion-angle grid searches;
  - individual coordinate refinement using simulated annealing (SA refinement);
  - grouped coordinate refinement (rigid body refinement);
- - group-constrained refinement in torsion angle space using SA (often called 
+ - group-constrained refinement in torsion angle space using SA (often called
    *torsion angle simulated annealing refinement*).
 
-The default restrained refinement includes a standard set of stereo-chemical 
-restraints (covalent bonds, angles, dihedrals, planarities, chiralities, 
-non-bonded). The NCS restrains can be added as well. Completely unrestrained 
+The default restrained refinement includes a standard set of stereo-chemical
+restraints (covalent bonds, angles, dihedrals, planarities, chiralities,
+non-bonded). The NCS restrains can be added as well. Completely unrestrained
 refinement is possible.
 
 The total refinement target is defined as::
 
   Etotal = wxc_scale * wxc * Exray + wc * Egeom
 
-where: Exray is crystallographic refinement target (least-squares, 
-maximum-likelihood, or any other), Egeom is the sum of restraints (including NCS 
-if requested), wc is 1.0 by default and used to turn the restraints off, 
-wxc ~ ratio of gradient norms for geometry and X-ray targets as defined in 
-(Adams et al, 1997, PNAS, Vol. 94, p. 5018), wxc_scale is an empirical scale 
-that is typically between 0 and 10. Egeom can optionally include reference model, 
+where: Exray is crystallographic refinement target (least-squares,
+maximum-likelihood, or any other), Egeom is the sum of restraints (including NCS
+if requested), wc is 1.0 by default and used to turn the restraints off,
+wxc ~ ratio of gradient norms for geometry and X-ray targets as defined in
+(Adams et al, 1997, PNAS, Vol. 94, p. 5018), wxc_scale is an empirical scale
+that is typically between 0 and 10. Egeom can optionally include reference model,
 secondary structure and Ramachandran plot restraints.
 
-By default coordinates of all atoms are refined. It is possible to refine 
+By default coordinates of all atoms are refined. It is possible to refine
 coordinates of only selected atoms.
 
 Using ``strategy=rigid_body`` or ``strategy=individual_sites`` will ask
@@ -342,13 +342,13 @@ phenix.refine to refine only coordinates while other parameters (ADP,
 occupancies) will be fixed (not refined).
 
 phenix.refine will stop if an atom on special position is included into group of
-atoms that are subject to rigid body refinement. The solution is to make a new 
+atoms that are subject to rigid body refinement. The solution is to make a new
 rigid body group selection containing no atoms on special positions.
 
 - *Rigid body refinement*
 
   phenix.refine implementation of rigid body refinement is highly and
-  efficient (large convergence radius, no need to cut high-resolution data). 
+  efficient (large convergence radius, no need to cut high-resolution data).
   We call this MZ protocol (multiple zones). The essence of MZ protocol is
   that the refinement starts with a few reflections selected in the lowest
   resolution zone and proceeds with gradually adding higher resolution
@@ -357,10 +357,10 @@ rigid body group selection containing no atoms on special positions.
   resolution reflections - exactly those the most important for success of rigid
   body refinement. The default set of the rigid body parameters is good for most
   of the cases and is normally not supposed to be changed.
-  
-  Rigid body refinement does not use any restraints. This means that rigid-body 
-  groups may bump into each other (overlap) or if covalently bonded atoms belong 
-  to different rigid groups then the bond linking these atoms may (and likely 
+
+  Rigid body refinement does not use any restraints. This means that rigid-body
+  groups may bump into each other (overlap) or if covalently bonded atoms belong
+  to different rigid groups then the bond linking these atoms may (and likely
   will) break as result of rigid body refinement.
 
   1. One rigid body group per chain (default behavior)::
@@ -376,8 +376,8 @@ rigid body group selection containing no atoms on special positions.
      This will refine the chain A and chain B as two rigid bodies. The rest of
      the model will be kept fixed.
 
-  3. If there are many rigid groups to define, typing them in the command line 
-     may be a tedious exercise. In this case a better alternative is to create a 
+  3. If there are many rigid groups to define, typing them in the command line
+     may be a tedious exercise. In this case a better alternative is to create a
      parameter file ``rigid_body_selections`` containing the following lines::
 
        #include_params rigid_body_selections.params
@@ -415,7 +415,7 @@ rigid body group selection containing no atoms on special positions.
          rigid_body.min_number_of_reflections=250
 
      Decreasing this number may increase the convergence radius of rigid body
-     refinement but small numbers may lead to refinement instability and 
+     refinement but small numbers may lead to refinement instability and
      nonsensical model shifts.
 
   7. To change the number of zones for MZ protocol::
@@ -426,7 +426,7 @@ rigid body group selection containing no atoms on special positions.
      Increasing this number may increase the convergence radius of rigid body
      refinement at the cost of much longer run time.
 
-  8. Rigid body refinement can be combined with individual refinement of 
+  8. Rigid body refinement can be combined with individual refinement of
      coordinates::
 
        % phenix.refine data.hkl model.pdb strategy=rigid_body+individual_sites
@@ -438,7 +438,7 @@ rigid body group selection containing no atoms on special positions.
        % phenix.refine data.hkl model.pdb strategy=rigid_body+individual_sites \
          simulated_annealing=true
 
-     this will do the same refinement as above combined with the Simulated 
+     this will do the same refinement as above combined with the Simulated
      Annealing refinement at the second macro-cycle.
 
 - *Refinement of individual coordinates*
@@ -457,7 +457,7 @@ rigid body group selection containing no atoms on special positions.
        % phenix.refine data.hkl model.pdb simulated_annealing=true \
          strategy=individual_sites simulated_annealing.start_temperature=10000
 
-     There are several options defining of how many times the SA will be 
+     There are several options defining of how many times the SA will be
      performed per refinement run. Run it only the first macro_cycle::
 
        % phenix.refine data.hkl model.pdb simulated_annealing=true \
@@ -472,7 +472,7 @@ rigid body group selection containing no atoms on special positions.
 
        % phenix.refine data.hkl model.pdb simulated_annealing=true \
        strategy=individual_sites simulated_annealing.mode=second_and_before_last
-       
+
      Other options may exist: check all parameters for details.
 
   2. Refinement with minimization (whole model)::
@@ -507,7 +507,7 @@ rigid body group selection containing no atoms on special positions.
      the following restraints will be removed: angle for all atoms in chain B,
      dihedral for all involving CA atoms, all chirality. All planarity
      restraints will be preserved.
-     
+
 - *Real-space refinement of coordinates*
 
   XXX SOME TEXT GOES HERE.
@@ -529,7 +529,7 @@ Options for ADP refinement:
   - grouped with one isotropic ADP per selected group;
   - TLS;
 
-Any combination of the above options (exception: an atom participating in TLS 
+Any combination of the above options (exception: an atom participating in TLS
 group cannot be a subject of individual anisotropic ADP refinement) can be
 applied to any selected part of a model. For example, if a model contains six
 chains A, B, C, D, E and F than it would require only one single refinement run
@@ -555,20 +555,20 @@ and used to turn the restraints off, wxu and wxu_scale are defined similarly to
 coordinates refinement (see *Refinement of Coordinates* paragraph).
 
 Atoms that participate in TLS refinement have ANISOU records in output PDB file.
-The anisotropic B-factor in ANISOU records is the total B-factor (Utls + Ulocal). 
+The anisotropic B-factor in ANISOU records is the total B-factor (Utls + Ulocal).
 The isotropic equivalent B-factor in ATOM records is the mean of the trace of the
-ANISOU matrix divided by 10000 and multiplied by 8*pi^2. It represents the 
-isotropic equivalent of the total B-factor. To obtain the individual B-factors 
-(Ulocal), one needs to compute the TLS component (Utls) using the TLS records 
-in PDB file header and then subtract it from the total B-factors. This can be 
+ANISOU matrix divided by 10000 and multiplied by 8*pi^2. It represents the
+isotropic equivalent of the total B-factor. To obtain the individual B-factors
+(Ulocal), one needs to compute the TLS component (Utls) using the TLS records
+in PDB file header and then subtract it from the total B-factors. This can be
 done using phenix.tls tool.
 
-When performing TLS refinement along with individual isotropic refinement the 
+When performing TLS refinement along with individual isotropic refinement the
 restraints are applied to Ulocal only and not to the total ADP.
 
 Group isotorpic ADP or TLS refinement do not use any restraints.
 
-When ADP refinement is run without using selections then ADP of all atoms are 
+When ADP refinement is run without using selections then ADP of all atoms are
 refined. If selections are used, only ADP of selected atoms are refined.
 
 phenix.refine will stop if an atom on special position is included in TLS group.
@@ -585,9 +585,9 @@ special positions.
 
        % phenix.refine data.hkl model.pdb strategy=group_adp \
          group_adp_refinement_mode=two_adp_groups_per_residue
-     
+
      This only applies to amino acid residues.
-         
+
   2. One isotropic B per selected group of atoms::
 
        % phenix.refine data.hkl model.pdb strategy=group_adp \
@@ -597,24 +597,24 @@ special positions.
      This will refine one isotropic B for chain A and one B for chain B.
 
   Refinement of group isotropic B-factors in phenix.refine does not change
-  the original distribution of B-factors within the group: the differences 
-  between B-factors for atoms within the group remain constant. Example: if 
-  10,15,25 are B-factors of atoms subject to group B-factor refinement, then 
+  the original distribution of B-factors within the group: the differences
+  between B-factors for atoms within the group remain constant. Example: if
+  10,15,25 are B-factors of atoms subject to group B-factor refinement, then
   after refinement they may have B-factors such as 5,10,20 or 13,18,28.
-  
-  Atoms with anisotropic ADP are allowed to be within the group; anisotropy 
+
+  Atoms with anisotropic ADP are allowed to be within the group; anisotropy
   of such atoms will not be changes during group B-factor refinement.
 
 - *Refinement of individual ADP (isotropic, anisotropic)*
 
   By default atoms in a PDB file with ANISOU records are refined as anisotropic
   and atoms without ANISOU records are refined as isotropic. This behavior can
-  be changed with appropriate keywords, and also a subject to automatic 
+  be changed with appropriate keywords, and also a subject to automatic
   adjustments.
-  
-  If atoms have ANISOU records and are not a part of TLS group, and also the 
+
+  If atoms have ANISOU records and are not a part of TLS group, and also the
   data resolution is lower than ``switch_to_isotropic_high_res_limit``
-  parameter, then ADPs of such atoms are reset to isotropic and will be refined 
+  parameter, then ADPs of such atoms are reset to isotropic and will be refined
   as such.
 
   1. Default refinement of individual ADP::
@@ -667,7 +667,7 @@ special positions.
        % phenix.refine data.hkl model.pdb strategy=individual_adp \
          adp.individual.anisotropic="not (water or element H)" \
          adp.individual.isotropic="water or element H"
-         
+
      Shortcuts can be used: ``adp.individual.aniso`` or ``adp.individual.iso``.
 
   5. To perform unrestrained individual ADP refinement (usually at ultra-high
@@ -677,10 +677,10 @@ special positions.
 
      This assigns the contribution of the ADP restraints target to zero.
      However, it is still calculated for statistics output.
-     
+
   6. When selections ``adp.individual.aniso`` or ``adp.individual.iso`` are used,
      B-factors of selected atoms are refined, while B-factors of other atoms are
-     not refined. 
+     not refined.
 
 - *TLS refinement*
 
@@ -716,22 +716,22 @@ special positions.
      This will allow to model global (TLS) and local (individual) components of
      the total ADP and also compensate for the model parts where TLS
      parametrization doesn't suite well.
-     
-  4. Partitioning model into TLS groups can be done automatically as part of 
+
+  4. Partitioning model into TLS groups can be done automatically as part of
      refinement::
-    
+
        % phenix.refine data.hkl model.pdb strategy=tls tls.find_automatically=True
-       
+
      or using a dedicated tool::
-       
+
        % phenix.find_tls_groups model.pdb
-       
+
      Multiple CUPs (if available) can be used to speed-up the task::
-       
+
        % phenix.find_tls_groups model.pdb nproc=48
-       
-     Very important: automatic TLS group identicication strongly relies on 
-     correctly refined B-factors and relatively good model geometry. Poor 
+
+     Very important: automatic TLS group identicication strongly relies on
+     correctly refined B-factors and relatively good model geometry. Poor
      B-factors or model geometry may result in nonsensical TLS groups.
 
 Occupancy refinement
@@ -789,15 +789,15 @@ List of facts about occupancy refinement in phenix.refine:
       ATOM   5093  C  BALA   270      20.673  -4.426  41.454  0.25  4.77
       ATOM   5094  O  BALA   270      20.381  -3.268  41.761  0.25  5.70
 
-    Starting occupancy values can be any. Setting them to some reasonable 
-    values, like 0.75 and 0.25 above, may help refinement to converge faster. 
-    Refined occupancy values will be looking like in the above example: 
-    identical for all atoms within each conformer (in this example: 0.75 for 
-    conformer A and 0.25 for conformer B), and the sum of unique occupancies 
+    Starting occupancy values can be any. Setting them to some reasonable
+    values, like 0.75 and 0.25 above, may help refinement to converge faster.
+    Refined occupancy values will be looking like in the above example:
+    identical for all atoms within each conformer (in this example: 0.75 for
+    conformer A and 0.25 for conformer B), and the sum of unique occupancies
     across all conformers will be exactly 1 (=0.25+0.75).
 
-    If there are two or more consecutive residues in the same chain that have 
-    alternative conformations, then their occupancies will be automatically 
+    If there are two or more consecutive residues in the same chain that have
+    alternative conformations, then their occupancies will be automatically
     grouped and refined. For example::
 
       ATOM      0  N  AGLY A   1       2.650   4.221   1.463  0.70 18.35
@@ -823,7 +823,7 @@ List of facts about occupancy refinement in phenix.refine:
     equal to each other (0.7), the occupancies of conformer B are all equal to
     each other as well (0.3), and their sum is 1 (0.7+0.3).
 
-    It is possible to have multiple different (having different residue name) 
+    It is possible to have multiple different (having different residue name)
     alternative conformers within the same residue number of the same chain::
 
       ATOM      0  N  APRO A  22       4.915  12.683  -3.102  0.25 11.83
@@ -853,8 +853,8 @@ List of facts about occupancy refinement in phenix.refine:
       ATOM      9  O3  SO4     1       2.481   2.037   2.159  0.70 14.00
       ATOM     10  O4  SO4     1       0.131   2.251   1.823  0.70 12.00
 
-    one occupancy per whole ligand will be refined automatically and it will be 
-    constrained between 0 and 1. If at least one occupancy is different from the 
+    one occupancy per whole ligand will be refined automatically and it will be
+    constrained between 0 and 1. If at least one occupancy is different from the
     rest::
 
       ATOM      6  S   SO4     1       1.302   1.419   1.560  0.70 13.00
@@ -875,7 +875,7 @@ List of facts about occupancy refinement in phenix.refine:
     will stay zero.
 
 - A special case is refinement of a partially deuterated structure against
-  neutron data. phenix.refine will treat exchangeable H/D sites as alternative 
+  neutron data. phenix.refine will treat exchangeable H/D sites as alternative
   conformations, for example::
 
     ATOM     54  N   GLY L   2       2.908 -22.755  25.168  1.00 12.24           N
@@ -891,17 +891,17 @@ List of facts about occupancy refinement in phenix.refine:
   are refined in such a way so their sum is one. In addition, B-factors and
   coordinates of such atoms are set to be identical.
 
-- Disabling occupancy refinement can be done by removing the star (``*``) from 
-  the corresponding keyword in ``strategy = ... *occupancies ...`` (in case 
+- Disabling occupancy refinement can be done by removing the star (``*``) from
+  the corresponding keyword in ``strategy = ... *occupancies ...`` (in case
   parameter file is used).
 
-- If selections are provided by the user then the occupancy refinement for 
+- If selections are provided by the user then the occupancy refinement for
   selected atoms will be performed as well as for those selected automatically.
 
 - User defined selections will override those defined by phenix.refine
   automatically.
 
-- User can withhold occupancy refinement for atoms that were automatically 
+- User can withhold occupancy refinement for atoms that were automatically
   selected by phenix.refine for occupancy refinement.
 
 - The presence of user defined selections for occupancies to be refined is not
@@ -1264,10 +1264,10 @@ with the same chainID.
 Automatic Asn/Gln/His corrections
 ---------------------------------
 
-Asn, Gln, and His residues can often be fit favorably to the data in two 
-orientations, related by a 180 degree rotation. In many cases, however, only one 
-of these orientations is sterically and electrostatically favorable. 
-phenix.refine uses Reduce to identify Asn, Gln, and His residues that should be 
+Asn, Gln, and His residues can often be fit favorably to the data in two
+orientations, related by a 180 degree rotation. In many cases, however, only one
+of these orientations is sterically and electrostatically favorable.
+phenix.refine uses Reduce to identify Asn, Gln, and His residues that should be
 flipped, and then flips them automatically. This feature is enabled by default.
 
 To disable this feature::
@@ -1277,15 +1277,15 @@ To disable this feature::
 Water picking
 -------------
 
-phenix.refine can add, remove and refine waters as part of a refinement run. 
+phenix.refine can add, remove and refine waters as part of a refinement run.
 This is the recommended procedure for adding water structure.
 
 Normally, the default parameter settings are good for most cases::
 
   % phenix.refine data.hkl model.pdb ordered_solvent=true
 
-This will add new water, analyse existing waters (and delete bad ones if 
-necessary) and refine individual coordinates and B-factors of both, 
+This will add new water, analyse existing waters (and delete bad ones if
+necessary) and refine individual coordinates and B-factors of both,
 macromolecule and water.
 
 Water picking can be combined with all others protocols, like simulated
@@ -1355,11 +1355,11 @@ is used in refinement then the constrained occupancies of exchangeable H/D sites
 are refined so they add up to 1.
 
 phenix.refine does not add H atoms (except a few cases mentioned below). To use
-hydrogen atoms in refinement thet need to be added to the model first. This can 
-be done by using phenix.ready_set program, which can add H, D or H/D atoms. 
-Internally phenix.ready_set uses Reduce to add H to macromolecule (protein, 
-DNA/RNA) and it uses its own resources to add hydrogens to ligands or water. 
-Hydrogens are added to their ideal geometrical positions. Different dictionary 
+hydrogen atoms in refinement thet need to be added to the model first. This can
+be done by using phenix.ready_set program, which can add H, D or H/D atoms.
+Internally phenix.ready_set uses Reduce to add H to macromolecule (protein,
+DNA/RNA) and it uses its own resources to add hydrogens to ligands or water.
+Hydrogens are added to their ideal geometrical positions. Different dictionary
 X-H lengths can be used for X-ray and neutron data.
 
 If a structure contains a ligand unknown to phenix.refine, ReadySet! will
@@ -1373,7 +1373,7 @@ resolution::
 
   % phenix.refine model.pdb data.hkl main.find_and_add_hydrogens=true
 
-H atoms are automatically excluded from TLS groups and NCS restraints. However, 
+H atoms are automatically excluded from TLS groups and NCS restraints. However,
 if NCS selections are created manually and the structure contains
 H atoms, it might be a good idea to add ``and not (element H or element D)`` to
 all selection strings.
@@ -1381,51 +1381,51 @@ all selection strings.
 Below are some useful commands:
 
   1. Add hydrogens::
-  
+
      % phenix.ready_set model.pdb
-  
+
   2. Add deuteriums::
-  
+
      % phenix.ready_set model.pdb perdeuterate=true
-  
+
   3. Add H and exchangeable H/D::
-  
+
      % phenix.ready_set model.pdb neutron_exchange_hydrogens=true
-  
+
   4. Add H to water::
-  
+
      % phenix.ready_set model.pdb add_h_to_water=true
-  
+
   5. Once hydrogens added to a model, by default they will be refined as riding
      model::
-  
+
      % phenix.refine model.pdb data.hkl
-  
+
      It is possible to refine individual parameters for H atoms (if neutron data
      is used or at ultra-high resolution)::
-  
+
        % phenix.refine model.pdb data.hkl hydrogens.refine=individual
-  
+
   6. To refine individual coordinates and ADP of H atoms::
-  
+
      % phenix.refine model.pdb data.hkl hydrogens.refine=individual
-  
+
   7. To remove hydrogens from a model::
-  
+
        % phenix.pdbtools model.pdb remove="element H or element D"
-  
+
      or Reduce programs can be used for this::
-  
+
        % phenix.reduce model_h.pdb -trim > model_noH.pdb
-  
+
      We strongly recommend to not remove hydrogen atoms after refinement since it
      will make the refinement statistics (R-factors, etc...) unreproducible
      without repeating exactly the same refinement protocol.
-  
+
   8. Yet another option to add hydrogens (rarely used in practice)::
-  
+
      % phenix.elbow --final-geometry=model.pdb --residue=MAN --output=model_h
-  
+
      Output PDB file called model_h.pdb will contain the original ligand MAN
      with all hydrogen atoms added.
 
@@ -2282,21 +2282,21 @@ also be ``None``, which is equivalent to zero in this case).
 Making sure atom charge is used in refinement
 ---------------------------------------------
 
-To use atom charge in refinement it must be present in input PDB file as in this 
+To use atom charge in refinement it must be present in input PDB file as in this
 example::
-  
-  HETATM 3241  SN   SN C   3       5.000   5.000   5.000  0.25 41.55          SN4+ 
-  
-To verify it was actually recognized and used by phenix.refine find lines like 
+
+  HETATM 3241  SN   SN C   3       5.000   5.000   5.000  0.25 41.55          SN4+
+
+To verify it was actually recognized and used by phenix.refine find lines like
 these in the log file::
-  
-  (...)  
+
+  (...)
   Number of scattering types: 4
     Type  Number    sf(0)   Gaussians
      Sn4+     1     45.79       1
   (...)
-  
-  
+
+
 Atom selection examples
 ***********************
 **All atoms**
@@ -2386,9 +2386,9 @@ manually.
 Relevant reading
 ****************
 
-Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW, Mustyakimov M, 
-Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012). 
-Towards automated crystallographic structure refinement with phenix.refine. 
+Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW, Mustyakimov M,
+Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012).
+Towards automated crystallographic structure refinement with phenix.refine.
 Acta Crystallogr D Biol Crystallogr. 68:352-67.
 
 Feedback, more information

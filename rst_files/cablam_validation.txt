@@ -49,8 +49,8 @@ Oneline
 -------
 *output=oneline* prints a single line summary of CaBLAM statistics for each of the submitted proteins.  Sample output follows::
 
-	pdbid:residues:peptide_outlier_percent:peptide_bad_outlier_percent:ca_outlier_percent
-	3dnd:340:4.4:0.6:0.00
+        pdbid:residues:peptide_outlier_percent:peptide_bad_outlier_percent:ca_outlier_percent
+        3dnd:340:4.4:0.6:0.00
 
 - **pdbid** identifies the input file
 - **residues** gives the number of measurable residues assessed by CaBLAM (residues near termini and chain breaks are not assessable by CaBLAM)
@@ -62,12 +62,12 @@ Text
 ----
 *output=text* is the default.  This provides columnated, comma-separated records for each outlier residue. Sample output follows::
 
-	residue,contour_level,loose_alpha,regular_alpha,loose_beta,regular_beta,threeten
-	THR A  37 ,0.01437,0.00000,0.00000,0.02612,0.00000,0.00000
-	PHE A  54 ,0.01350,0.00027,0.00000,0.00109,0.00000,0.00000
-	ASN A  99 ,0.04785,0.00000,0.00000,0.12777,0.04921,0.00000
-	ASN A 115 ,0.04685,0.04231,0.00000,0.00011,0.00000,0.00000
-	GLY A 136 ,0.03689,0.00013,0.00000,0.00595,0.00000,0.00000
+        residue,contour_level,loose_alpha,regular_alpha,loose_beta,regular_beta,threeten
+        THR A  37 ,0.01437,0.00000,0.00000,0.02612,0.00000,0.00000
+        PHE A  54 ,0.01350,0.00027,0.00000,0.00109,0.00000,0.00000
+        ASN A  99 ,0.04785,0.00000,0.00000,0.12777,0.04921,0.00000
+        ASN A 115 ,0.04685,0.04231,0.00000,0.00011,0.00000,0.00000
+        GLY A 136 ,0.03689,0.00013,0.00000,0.00595,0.00000,0.00000
 
 - **residue**: A full residue identifier for the outlier
 - **contour_level**: The contour level for protein behavior at which the residue falls, in fraction form (max of 1.0).  Lower values indicate a more severe outlier.  0.05 is the default cutoff for outliers

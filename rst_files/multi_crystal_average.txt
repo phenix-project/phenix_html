@@ -149,9 +149,9 @@ contain your commands like this:
     # use:   "phenix.multi_crystal_average run_multi.eff"
     multi {
       crystal {
-         pdb_file= "gene-5.pdb" 
-         map_coeffs = "resolve_1_offset.mtz" 
-         datafile = "phaser_1_offset.mtz" 
+         pdb_file= "gene-5.pdb"
+         map_coeffs = "resolve_1_offset.mtz"
+         datafile = "phaser_1_offset.mtz"
          datafile_labin = "FP=F SIGFP=SIGF PHIB=PHI FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD"
          solvent_content = 0.43
       }
@@ -168,7 +168,7 @@ Then you can run this with the command:
 
 ::
 
-    phenix.multi_crystal_average run_multi.eff 
+    phenix.multi_crystal_average run_multi.eff
 
 In this example we have 2 crystals. Crystal 1 has starting map
 coefficients in crystal\_1\_map\_coeffs.mtz and data for FP in

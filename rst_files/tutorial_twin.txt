@@ -200,7 +200,7 @@ Within phenix, various refinement protocols can be followed. A few
 typical examples will be shown below.
 
 Restrained refinement of positional and atomic displacement parameters
-                                                                      
+
 
 Standard restrained refinement of positional and atomic displacement
 parameters is invoked via
@@ -214,7 +214,7 @@ atomic displacement parameters or twin and bulk solvent parameters are
 refined.
 
 Rigid body refinement
-                     
+
 
 The command
 
@@ -225,7 +225,7 @@ The command
 will perform rigid body refinement using the twin target function.
 
 TLS
-   
+
 
 For tls refinement, it is advisable to construct a small parameter file
 that contains TLS definitions:
@@ -250,7 +250,7 @@ Saving these parameters as *tls.def* one can run
     phenix.refine porin.cv porin.pdb tls.def unit_cell=104.4,104.4,124.25,90,90,120 space_group=R3
 
 Water picking
-             
+
 
 Ordered solvent can be picked as a part of the refined procedure, more
 details are available from the phenix.refine manual. Note that the

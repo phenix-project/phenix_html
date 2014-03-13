@@ -216,7 +216,7 @@ common parameters are:
     data=w1.sca       # data file
     model=coords.pdb  # starting model
     rebuild_in_place=true # rebuild input model in place
-    rebuild_in_place=false # build a new model; add or subtract residues 
+    rebuild_in_place=false # build a new model; add or subtract residues
                            #   from input model as necessary
     seq_file=seq.dat  # sequence file
     map_file=map_coeffs.mtz # coefficients for a starting map for building
@@ -268,7 +268,7 @@ file):
       ordered_solvent {
         low_resolution = 2.8
       }
-    } 
+    }
 
 Keeping waters from your input file in AutoBuild
 ------------------------------------------------
@@ -716,19 +716,19 @@ you might use
 
 ::
 
-     run_command="qsub -someflags"  background=False nproc=20 
+     run_command="qsub -someflags"  background=False nproc=20
 
 or
 
 ::
 
-     run_command="qsub"  background=False nproc=20 
+     run_command="qsub"  background=False nproc=20
 
 or If you have a 20-processor machine instead, then you might say
 
 ::
 
-     run_command=sh  background=True nproc=20 
+     run_command=sh  background=True nproc=20
 
 so that it would run your jobs with sh on your machine, and run them all
 in the background (i.e., all at one time).
@@ -751,7 +751,7 @@ and type:
 
 ::
 
-    phenix.autobuild coot 
+    phenix.autobuild coot
 
 which will start Coot with your current map and model.
 
@@ -1157,8 +1157,8 @@ have to be there just to make it run).
 
     echo "Copying files to AutoBuild_run_1_/MULTIPLE_MODELS"
     mkdir AutoBuild_run_1_/MULTIPLE_MODELS
-    cp coords1.pdb AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_1 
-    cp coords2.pdb AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_2 
+    cp coords1.pdb AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_1
+    cp coords2.pdb AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_2
     cp map_coeffs_1.mtz AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.mtz_1_1
     cp map_coeffs_2.mtz AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.mtz_1_2
 
@@ -1251,14 +1251,14 @@ Just use a command like this:
 ::
 
     phenix.autobuild data=data.mtz model=coords.pdb \
-       maps_only=True seq_file=seq.dat 
+       maps_only=True seq_file=seq.dat
 
 or
 
 ::
 
     phenix.autobuild data=data.mtz  \
-       maps_only=True seq_file=seq.dat 
+       maps_only=True seq_file=seq.dat
 
 The Wizard will calculate the same map that it would normally calculate
 given these data, and then it will write the map out and stop.
@@ -1286,7 +1286,7 @@ Calculate a prime-and-switch map
 ::
 
     phenix.autobuild data=data.mtz solvent_fraction=.6 \
-       ps_in_rebuild=True model=coords.pdb maps_only=True 
+       ps_in_rebuild=True model=coords.pdb maps_only=True
 
 The output prime-and-switch map will be in the file
 prime\_and\_switch.mtz.

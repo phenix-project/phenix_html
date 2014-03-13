@@ -74,7 +74,7 @@ keyword needed
 
 ::
 
-    --ligand_list="ATP CTP TTP GTP"  
+    --ligand_list="ATP CTP TTP GTP"
 
 \*to use all small molecules with a .pdb extension in the 'ligand\_dir'
 as the search library:
@@ -109,11 +109,11 @@ terms in the PDB:
 
 ::
 
-    --scop='DNA/RNA-binding 3-helical bundle' 
+    --scop='DNA/RNA-binding 3-helical bundle'
 
 ::
 
-    --cath='Trypsin-like serine proteases'  
+    --cath='Trypsin-like serine proteases'
 
 \*to use all ligands found in proteins with a specific Gene Ontology
 (GO) accession number in the PDB:
@@ -184,7 +184,7 @@ processing capability. Use keyword
 
 ::
 
-    --nproc=[number of threads] 
+    --nproc=[number of threads]
 
 to run the command in multi-threaded mode. In general, the processing
 speed is proportional to the the number of threads used, up to the
@@ -222,7 +222,7 @@ Sample command\_line inputs
 ::
 
     phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
-     input_labels=F nproc=8\   
+     input_labels=F nproc=8\
 
 -  Search ligand from a difference map or pre-calculated map
    coefficients from phenix.refine

@@ -62,7 +62,7 @@ labin="labin FP=FP PHIB=PHIB FOM=FOM "
 
 If you have no map coefficients yet (you just have some sites and want to get operators, for example), you can tell find_ncs to ignore the map with:
 
-ncs_parameters.force_ncs=True 
+ncs_parameters.force_ncs=True
 
 You still need to supply a map coefficients file (the map itself will be ignored though).
 
@@ -90,7 +90,7 @@ This will produce the following output::
   Labin line will be:  labin FP=FP PHIB=PHIC FOM=FOM
   To change it modify this: params.ncs.labin="labin FP=FP PHIB=PHIC FOM=FOM "
   This is the map that will be used to evaluate NCS
-  
+
   Reading NCS information from:  anb.pdb
   Copying  mlt.mtz  to  temp_dir/mlt.mtz
   This PDB file contains 2  chains and  636  total residues
@@ -98,21 +98,21 @@ This will produce the following output::
   NCS will be found using the chains in this PDB file
   Chains in this PDB file:  ['M', 'Z']
   Two chains were found in the file anb.pdb, chain M and chain Z
-  
+
   GROUPS BASED ON QUICK COMPARISON: []
   Looking for invariant domains for ...: ['M', 'Z'] [[[2, 138], [193, 373]], [[2, 138], [193, 373]]]
   Residues 2-138, 193-373, matched between the two chains
-  
+
   Copying  mlt.mtz  to  temp_dir/mlt.mtz
   Copying  temp_dir/NCS_correlation.log  to  NCS_correlation.log
   Log file for NCS correlation is in  NCS_correlation.log
   List of refined NCS correlations:  [1.0, 0.80000000000000004]
   There were two separate groups of residues that had different NCS relationships. Residues 193-373 of each chain were in one group, and residues 2-138 in each chain were in the other group.
-  
+
   The electron density map had a correlation between the two NCS-related chains of 1.0 for the first group, and 0.8 for the second
-  
+
   The NCS operators for each are listed.
-  
+
   GROUP 1
   Summary of NCS group with 2 operators:
   ID of chain/residue where these apply: [['M', 'Z'], [[[193, 373]], [[193, 373]]]]
@@ -120,23 +120,23 @@ This will produce the following output::
   Number of residues matching chain M:[181, 181]
   Source of NCS info: anb.pdb
   Correlation of NCS: 1.0
-  
+
   OPERATOR 1
   CENTER:   69.1058   -9.5443   59.4674
-  
+
   ROTA 1:    1.0000    0.0000    0.0000
   ROTA 2:    0.0000    1.0000    0.0000
   ROTA 3:    0.0000    0.0000    1.0000
   TRANS:     0.0000    0.0000    0.0000
-  
+
   OPERATOR 2
   CENTER:   37.5004  -37.0709  -62.5441
-  
+
   ROTA 1:    0.7751   -0.6211   -0.1162
   ROTA 2:   -0.3607   -0.5859    0.7256
   ROTA 3:   -0.5188   -0.5205   -0.6782
   TRANS:     9.7485   27.6460   17.2076
-  
+
   GROUP 2
   Summary of NCS group with 2 operators:
   ID of chain/residue where these apply: [['M', 'Z'], [[[2, 138]], [[2, 138]]]]
@@ -144,25 +144,23 @@ This will produce the following output::
   Number of residues matching chain M:[137, 137]
   Source of NCS info: anb.pdb
   Correlation of NCS: 0.8
-  
+
   OPERATOR 1
   CENTER:   66.6943  -13.3128   21.6769
-  
+
   ROTA 1:    1.0000    0.0000    0.0000
   ROTA 2:    0.0000    1.0000    0.0000
   ROTA 3:    0.0000    0.0000    1.0000
   TRANS:     0.0000    0.0000    0.0000
-  
+
   OPERATOR 2
   CENTER:   39.0126  -53.7392  -13.4457
-  
+
   ROTA 1:    0.3702   -0.9275   -0.0516
   ROTA 2:   -0.8933   -0.3402   -0.2938
   ROTA 3:    0.2549    0.1548   -0.9545
   TRANS:     1.7147   -0.6936    7.2172
-  
- 
+
+
 References
 ----------
-
- 

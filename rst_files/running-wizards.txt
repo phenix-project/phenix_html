@@ -16,7 +16,7 @@ Overview of Structure Determination with the PHENIX Wizards
 -----------------------------------------------------------
 
 You can use the AutoSol Wizard to solve structures by SAD, MAD,
-SIR/SIRAS, and MIR/MIRAS. 
+SIR/SIRAS, and MIR/MIRAS.
 The AutoSol Wizards together can carry out MRSAD. The AutoSol
 Wizard can also combine SAD, MAD, SIR, and MIR datasets and solve the
 structure using all available data.
@@ -419,7 +419,7 @@ is to be grouped together.
 
 ::
 
-    phenix.autosol show_summary 
+    phenix.autosol show_summary
 
 -  When you use a keyword like **data=** you need to give enough
    information to specify this keyword uniquely. You can see all the
@@ -437,13 +437,13 @@ which describes the keyword **sites** in the **scope** defined by
 
 ::
 
-    autosol.sites=3 
+    autosol.sites=3
 
 which in this case is entirely the same as
 
 ::
 
-    sites=3 
+    sites=3
 
 -  NOTE that you can set any SOLVE, RESOLVE or RESOLVE\_PATTERN keyword
    in PHENIX using the "resolve\_command", "solve\_command" or
@@ -517,7 +517,7 @@ command line. In the above example you could also just say:
         data = high.sca \
         lambda = 0.9600 \
         f_prime = -1.5 \
-        f_double_prime = 3 
+        f_double_prime = 3
 
 (note that the cell parameters are in quotes on the command line and not
 in the parameters file) and you would get the same results. For simple

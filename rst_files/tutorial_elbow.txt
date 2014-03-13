@@ -81,7 +81,7 @@ which prints out a list of the HETATM molecules in the PDB file.
         256    'TRS'       8  HETATM
 
           Use --residue to specify residue
-          
+
 
       Use --do-all to process all residues not in internal library
 
@@ -137,11 +137,11 @@ converted to "edits" for input into phenix.refine. The LINK records:
 
 ::
 
-    LINK        CA    CA A6000                 OE1 GLU A  70     1555   1555        
-    LINK        CA    CA A6000                 O   ASN A  72     1555   1555        
-    LINK        CA    CA A6000                 O   VAL A  75     1555   1555        
-    LINK        CA    CA A6000                 O   HOH Z  89     1555   1555        
-    LINK        CA    CA A6000                 O   HOH Z 104     1555   1555        
+    LINK        CA    CA A6000                 OE1 GLU A  70     1555   1555
+    LINK        CA    CA A6000                 O   ASN A  72     1555   1555
+    LINK        CA    CA A6000                 O   VAL A  75     1555   1555
+    LINK        CA    CA A6000                 O   HOH Z  89     1555   1555
+    LINK        CA    CA A6000                 O   HOH Z 104     1555   1555
     LINK        CA    CA A6000                 OE2 GLU A  80     1555   1555
 
 Running:

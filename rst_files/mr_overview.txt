@@ -22,7 +22,7 @@ Model selection
    Structures of suitable models are normally found via homology searches
    (using e.g. `NCBI Blast`_), and can be characterized by the sequence identity
    with the target sequence.
-   
+
    The main restriction on the use of molecular replacement is the requirement
    for a suitably similar search model.  Although there is no exact rule for this,
    the relationship between sequence identity and MR success is roughly as
@@ -30,13 +30,13 @@ Model selection
 
     - **Better than 40% identity**: usually easy, unless large conformational
       changes are involved.
-  
+
     - **30-40%**: MR possible, but sometimes more difficult.
-  
+
     - **20-30%**: MR difficult, careful model preparation required.
-  
+
     - **Less than 20%**: MR unlikely to work in most cases.
-  
+
     - In terms of RMSD, above 2.5A is very unlikely to work, while 1.5A or less
       is preferable.
 
@@ -51,7 +51,7 @@ Model selection
    target sequence, and also to apply B-factor weights to the model to weight
    down unreliable parts. Ensembler_ can be used to superpose homologous models
    automatically. The recommended order is to run Sculptor_ and then Ensembler_,
-   for reasons explained in the `MR FAQ <faqs_mr.htm#sculptor-ensembler-order>`__.
+   for reasons explained in the `MR FAQ <faqs/mr.htm#sculptor-ensembler-order>`__.
 
 Molecular replacement
 ========================
@@ -120,7 +120,7 @@ For composition, you may supply a sequence file (protein or nucleic acid), or
 simply enter the molecular weight.  The standalone versions of Phaser_ also
 accept the fractional composition of each search ensemble, if known.  Note that
 the composition data does not necessarily have a 1:1 correspondence with the
-search ensembles (see `MR FAQ <faqs_mr.htm#composition-search-ensemble-relation>`__
+search ensembles (see `MR FAQ <faqs/mr.htm#composition-search-ensemble-relation>`__
 for details); if you wish to simply specify the molecular weight of a complex
 while searching for multiple subunits, you may enter the mass for the complex
 as a single component.  (You may also use multi-record FASTA-format sequence
@@ -138,8 +138,8 @@ steps:
   - **Anisotropy correction**: scales reflections as necessary to overcome
     anisotropy (weak data in a particular direction).
 
-  - **Translational non-crystallographic symmetry (tNCS) correction**: checks 
-    for the presence of tNCS.  If present, parameters describing the 
+  - **Translational non-crystallographic symmetry (tNCS) correction**: checks
+    for the presence of tNCS.  If present, parameters describing the
     translation and small orientation differences between copies are
     determined and used to compute correction factors.
 
@@ -193,7 +193,7 @@ is available on the `Phaser home page`_.
 Frequently Asked Questions
 --------------------------
 
-These are now covered on a `separate section <faqs_mr.htm>`_.
+These are now covered on a `separate section <faqs/mr.htm>`_.
 
 ---------
 Reference
@@ -203,7 +203,7 @@ Reference
     *Phaser crystallographic software.*
     `J. Appl. Cryst. (2007) 40:658-674.
     <http://www.ncbi.nlm.nih.gov/pubmed/19461840>`_
-    
+
 
 .. _Phaser: phaser.htm
 .. _Sculptor: sculptor.htm

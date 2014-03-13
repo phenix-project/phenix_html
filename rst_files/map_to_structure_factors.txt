@@ -6,21 +6,20 @@ phenix.map_to_structure_factors: convert map into structure factors
   The program reads CCP4 formatted map and converts it into structure factors.
 
   Output: mtz file containing
-  
-  - Fourier transform of input map: complex array (F, PHIF) of given (d_min) 
+
+  - Fourier transform of input map: complex array (F, PHIF) of given (d_min)
     resolution
   - Aray of amplitudes F (F_ampl) and phases as HL coefficients
 
 **Command line usage examples**::
 
   % phenix.map_to_structure_factors map.ccp4 d_min=3
-  
+
 **Current limitations**:
 
   X-plor formatted map files are not supported.
-  
+
 **Questions, feedback**:
 
   phenixbb@phenix-online.org
   help@phenix-online.org
-  

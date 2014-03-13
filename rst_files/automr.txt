@@ -316,7 +316,7 @@ Run AutoMR as above, but specify the data columns explicitly:
 
     phenix.automr coords.pdb RMS=0.85 seq.dat copies=1  \
         data=data.mtz input_label_string="F SIGF"  \
-        n_cycle_rebuild_max=2 n_cycle_build_max=2 
+        n_cycle_rebuild_max=2 n_cycle_build_max=2
 
 Note that the data columns are specified by a string that includes both
 F and SIGF : "F SIGF". The string must match some set of data labels
@@ -339,7 +339,7 @@ from the file used for the MR search:
         data=data.mtz input_label_string="F SIGF"  \
         input_refinement_file=refinement.mtz \
         input_refinement_labels="FP SIGFP FreeR_flag"  \
-        n_cycle_rebuild_max=2 n_cycle_build_max=2 
+        n_cycle_rebuild_max=2 n_cycle_build_max=2
 
 Note that the commands input\_refinement\_file and
 input\_refinement\_labels are in the scope "autobuild\_variables" .
@@ -475,7 +475,7 @@ in it. Put all of this in a file like "my\_mr.eff" and run it with
         n_cycle_rebuild_max = 1
       }
      fixed_ensembles {
-     fixed_ensembleID_list="mol2" 
+     fixed_ensembleID_list="mol2"
      fixed_euler_list = 199.84 41.535 184.15
      fixed_frac_list = -0.49736 -0.15895 -0.28067
      }
@@ -498,7 +498,7 @@ and the type of chain to build with chain\_type:
 
 ::
 
-     
+
     input_lig_file_list=ProteinPartofMRmodel.pdb
     chain_type=DNA
 

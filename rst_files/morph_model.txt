@@ -55,7 +55,7 @@ data file fobs.mtz with FP SIGFP and FreeR\_flag, you can type:
 
 ::
 
-    phenix.morph_model data=coords1.mtz model=coords1.pdb 
+    phenix.morph_model data=coords1.mtz model=coords1.pdb
 
 and morph\_model will run automatically.
 
@@ -95,7 +95,7 @@ more details of the run. You can get a default parameters file with:
 
 ::
 
-    phenix.morph_model 
+    phenix.morph_model
 
 and then just edit the file morph\_model\_params.dat.
 

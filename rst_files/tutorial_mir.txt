@@ -56,20 +56,20 @@ To run AutoSol on the demo rh-dehalogenase data, make yourself a
 ::
 
     mkdir tutorials
-    cd tutorials 
+    cd tutorials
 
 Now type the phenix command:
 
 ::
 
-    phenix.run_example --help 
+    phenix.run_example --help
 
 to list the available examples. Choosing **rh-dehalogenase-mir** for
 this tutorial, you can now use the phenix command:
 
 ::
 
-    phenix.run_example rh-dehalogenase-mir 
+    phenix.run_example rh-dehalogenase-mir
 
 to solve the rh-dehalogenase structure with AutoSol. This command will
 copy the directory **$PHENIX/examples/rh-dehalogenase-mir** to your
@@ -353,8 +353,8 @@ and **auki\_rd\_1\_PHX.sca**:
     LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
     Unit cell: (93.796, 79.849, 43.108, 90, 90, 90)
     Space group: P 21 21 2 (No. 18)
-    CONTENTS: ['AutoSol_run_1_/rt_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', 
-    [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0], 
+    CONTENTS: ['AutoSol_run_1_/rt_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2',
+    [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0],
     2.4307589843043771, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
     Inverse hand of space group:  P 21 21 2
     Resolution  from  AutoSol_run_1_/rt_rd_1_PHX.sca  is  2.43
@@ -364,8 +364,8 @@ and **auki\_rd\_1\_PHX.sca**:
     LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
     Unit cell: (93.796, 79.849, 43.108, 90, 90, 90)
     Space group: P 21 21 2 (No. 18)
-    CONTENTS: ['AutoSol_run_1_/auki_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2', 
-    [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0], 
+    CONTENTS: ['AutoSol_run_1_/auki_rd_1_PHX.sca', 'sca', 'premerged', 'P 21 21 2',
+    [93.796000000000006, 79.849000000000004, 43.107999999999997, 90.0, 90.0, 90.0],
     2.430806639777233, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
     Inverse hand of space group:  P 21 21 2
     Total of 2 input data files
@@ -382,7 +382,7 @@ value of lambda=1.5418 (Cu K alpha) will be used.
 
 ::
 
-     
+
     AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Thu Dec 18 13:34:29 2008
 
     Setting default value of  0.5  for  solvent_fraction
@@ -420,7 +420,7 @@ for this dataset looks like this:
 
 ::
 
-     
+
     No (pseudo)merohedral twin laws were found.
 
     Patterson analyses
@@ -582,23 +582,23 @@ scores were (skipping extra text below):
 ::
 
 
-    SCORING SOLUTION 1: Solution 1 using HYSS on 
-    AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca. 
+    SCORING SOLUTION 1: Solution 1 using HYSS on
+    AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca.
     Dataset #1 SG="P 21 21 2", with 5 sites
     ESTIMATED MAP CC x 100:  46.8 +/- 20.9
 
-    SCORING SOLUTION 2: Solution  2 using HYSS on 
-    AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse. 
+    SCORING SOLUTION 2: Solution  2 using HYSS on
+    AutoSol_run_1_/auki_rd_1_PHX.sca_iso_1.sca and taking inverse.
     Dataset #1 SG="P 21 21 2", with 5 sites
     ESTIMATED MAP CC x 100:  32.0 +/- 32.1
 
-    SCORING SOLUTION 3: Solution 3 using HYSS on 
-    AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca. 
+    SCORING SOLUTION 3: Solution 3 using HYSS on
+    AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca.
     Dataset #2 SG="P 21 21 2", with 5 sites
     ESTIMATED MAP CC x 100:  33.5 +/- 37.0
 
-    SCORING SOLUTION 4: Solution  4 using HYSS on 
-    AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse. 
+    SCORING SOLUTION 4: Solution  4 using HYSS on
+    AutoSol_run_1_/hgki_rd_1_PHX.sca_iso_2.sca and taking inverse.
     Dataset #2 SG="P 21 21 2", with 5 sites
     ESTIMATED MAP CC x 100:  58.1 +/- 14.0
 
@@ -652,7 +652,7 @@ density modification:
 
     Merging a set of solutions and phasing the group with SOLVE
     ...
-     PHASED SOLUTION: Solution 9 based on MIR phasing starting from solutions 4 
+     PHASED SOLUTION: Solution 9 based on MIR phasing starting from solutions 4
     (dataset #2)  and 1 (dataset #1)
     ...
     AutoSol_run_1_/TEMP0/resolve.scores SKEW 0.1159246
@@ -882,7 +882,7 @@ created:
 
 ::
 
-     
+
     Adding FreeR_flag to  AutoSol_run_1_/TEMP0/solve_96.mtz
 
     Label for column with FP is 'FP' for
@@ -906,7 +906,7 @@ file:
 
 ::
 
-     
+
     THE FILE AutoSol_run_1_/resolve_96.mtz will be used for model-building
     THE FILE exptl_fobs_phases_freeR_flags_96.mtz will be used for refinement
 
@@ -983,7 +983,7 @@ dataset:
 
 ::
 
-     
+
 
     -----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
 

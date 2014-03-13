@@ -56,20 +56,20 @@ To run AutoBuild on the demo a2u-globulin-rebuild data, make yourself a
 ::
 
     mkdir tutorials
-    cd tutorials 
+    cd tutorials
 
 Now type the phenix command:
 
 ::
 
-    phenix.run_example --help 
+    phenix.run_example --help
 
 to list the available examples. Choosing **a2u-globulin-rebuild** for
 this tutorial, you can now use the phenix command:
 
 ::
 
-    phenix.run_example a2u-globulin-rebuild 
+    phenix.run_example a2u-globulin-rebuild
 
 to build the a2u-globulin-rebuild structure with AutoBuild. This command
 will copy the directory **$PHENIX/examples/a2u-globulin-rebuild** to
@@ -193,7 +193,7 @@ Near the top of the log file you will find:
 
 ::
 
-     
+
     Starting AutoBuild with the command:
 
     phenix.autobuild input_pdb_file=mup_mr_solution.pdb data=a2u-sigmaa.mtz   \
@@ -305,7 +305,7 @@ number of NCS copies and the solvent fraction:
 
 ::
 
-     
+
     Number of residues in unique chains in seq file: 181
     Unit cell: (106.82, 62.34, 114.19, 90, 90, 90)
     Space group: P 21 21 21 (No. 19)
@@ -328,7 +328,7 @@ for this dataset looks like this:
 
 ::
 
-     
+
     The largest off-origin peak in the Patterson function is 5.10% of the
     height of the origin peak. No significant pseudotranslation is detected.
 
@@ -366,7 +366,7 @@ Here is where this is done:
 
 ::
 
-     
+
     Setting up to build 5 models to be combined into final model #1
 
     Setting background=False as nproc=1
@@ -383,12 +383,12 @@ Here is where this is done:
     Solution for try :  1 cycle_best_3.pdb
     Solution 2 from rebuild cycle 3 R= 0.2
     Saving  /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
-    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.pdb  as  
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.pdb  as
     /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
     AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_1
 
     Saving  /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
-    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.mtz  as  
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.mtz  as
     /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
     AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.mtz_1_1
     ...
@@ -404,7 +404,7 @@ density-modified map) kept:
 
 ::
 
-     
+
     AutoBuild_combine  AutoBuild  Run 2 Mon May 19 12:06:11 2008
 
     Current combine number:  1
@@ -437,7 +437,7 @@ density-modified map) kept:
     New overall best saved:
 
     Current overall_best model and map  Mon Jun 30 01:08:22 2008
-    Working directory: 
+    Working directory:
     /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/AutoBuild_run_1_
     Model (overall_best.pdb) from: overall_best.pdb
     Cycle: 1
@@ -463,14 +463,14 @@ that was listed above:
 
 ::
 
-     
+
     AutoBuild_run_1_/TEMP0
 
 In this TEMP0 directory you will find subdirectories like:
 
 ::
 
-     
+
     AutoBuild_run_1_/
     AutoBuild_run_2_/
 
@@ -479,7 +479,7 @@ rebuild\_in\_place rebuilding steps. Here is a summary of the run in
 
 ::
 
-     
+
     AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/AutoBuild_run_1_1.log
 
 After reading in the data in this sub-process, the starting model is
@@ -487,7 +487,7 @@ refined:
 
 ::
 
-     
+
     Refining model:  unrefined.pdb_1
     Model: refine.pdb_1  R/Rfree=0.31/0.32
 
@@ -497,10 +497,10 @@ model is analyzed automatically:
 
 ::
 
-     
+
     GROUP 1
     Summary of NCS group with 4 operators:
-    ID of chain/residue where these apply: [['A', 'B', 'C', 'D'], 
+    ID of chain/residue where these apply: [['A', 'B', 'C', 'D'],
     [[[1, 157]], [[1, 157]], [[1, 157]], [[1, 157]]]]
     RMSD (A) from chain A:  0.0  0.0  0.0  0.0
     Number of residues matching chain A:[157, 157, 157, 157]
@@ -517,7 +517,7 @@ The rebuild-in place procedure is then carried out:
 
 ::
 
-     
+
     Running standard build
     Starting with current best model of  refine.pdb_1 ...setting it to  refine.pdb_1
     Including parts of this model if best...
@@ -547,7 +547,7 @@ current models are recombined to yield a new model with a similar R of
 
 ::
 
-     
+
     Rebuilding side chains from  Build_composite_refined_3.pdb
     Refining model:  edit_model.pdb
     Model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_3.pdb  R/Rfree=0.24/0.26
@@ -562,7 +562,7 @@ model-building a few residues are still not rebuilt:
 
 ::
 
-     
+
     Warning: some residues not rebuilt successfully on cycle 3:
     Chain 'A':  156- 157,
     Chain 'C':    1-  10,   61-  65,  156- 157,
@@ -596,15 +596,15 @@ model-building run:
 
 ::
 
-     
+
     Summary of model-building for run 1  Mon Jun 30 01:08:54 2008
-    Files are in the directory:  
+    Files are in the directory:
     /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/AutoBuild_run_1_/
 
 
-    Starting mtz file: 
+    Starting mtz file:
     /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/a2u-sigmaa.mtz
-    Sequence file: 
+    Sequence file:
     /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/a2u-globulin.seq
     One composite model generated with 'multiple_models'
 

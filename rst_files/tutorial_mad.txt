@@ -55,20 +55,20 @@ directory and **cd** into that directory:
 ::
 
     mkdir tutorials
-    cd tutorials 
+    cd tutorials
 
 Now type the phenix command:
 
 ::
 
-    phenix.run_example --help 
+    phenix.run_example --help
 
 to list the available examples. Choosing **gene-5-mad** for this
 tutorial, you can now use the phenix command:
 
 ::
 
-    phenix.run_example gene-5-mad 
+    phenix.run_example gene-5-mad
 
 to solve the gene-5 structure with AutoSol. This command will copy the
 directory **$PHENIX/examples/gene-5-mad** to your current directory
@@ -98,13 +98,13 @@ The file gene-5-mad.eff is a typical PHENIX parameters file:
 ::
 
     # parameters for autosol run with gene-5 3-wavelength MAD data
-    # 
+    #
     autosol {
       atom_type = Se
       sites = 2
       seq_file = sequence.dat
       crystal_info {
-        space_group = C2 
+        space_group = C2
         unit_cell = 76.08 27.97 42.36 90 103.2 90
         resolution = 2.6
       }
@@ -302,7 +302,7 @@ printing out a summary for each one:
     LABELS['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']
     Unit cell: (76.08, 27.97, 42.36, 90, 103.2, 90)
     Space group: C 1 2 1 (No. 5)
-    CONTENTS: ['high.sca', 'sca', 'premerged', 'C 1 2 1', 
+    CONTENTS: ['high.sca', 'sca', 'premerged', 'C 1 2 1',
     [76.079999999999998, 27.969999999999999, 42.359999999999999, 90.0, 103.2, 90.0],
     2.5940784397029653, ['IPLUS', 'SIGIPLUS', 'IMINU', 'SIGIMINU']]
     Total of 3 input data files
@@ -319,7 +319,7 @@ SeMet proteins):
 
 ::
 
-     
+
     AutoSol_guess_setup_for_scaling  AutoSol  Run 1 Thu Mar  6 21:43:20 2008
     Solvent fraction and resolution and ha types/scatt fact
     This is the last dataset to scale
@@ -349,7 +349,7 @@ for this dataset looks like this:
 
 ::
 
-     
+
     The largest off-origin peak in the Patterson function is 12.60% of the
     height of the origin peak. No significant pseudotranslation is detected.
 
@@ -371,7 +371,7 @@ anisotropic B values is small and no correction is made:
 ::
 
     Range of aniso B:  24.58 27.92
-    Not using aniso-corrected data files as the range of aniso b  is 
+    Not using aniso-corrected data files as the range of aniso b  is
     only  3.43  and 'correct_aniso' is not set
 
 Note that if any one of the datafiles in a MAD dataset has a high
@@ -572,19 +572,19 @@ inverse were scored. The scores were (skipping extra text below):
 
 ::
 
-    SCORING SOLUTION 1: Solution 1 using HYSS on FA.sca. 
+    SCORING SOLUTION 1: Solution 1 using HYSS on FA.sca.
     Dataset #1 SG="C 1 2 1", with 2 sites
     ESTIMATED MAP CC x 100:  57.9 +/- 14.1
 
-    SCORING SOLUTION 2: Solution  2 using HYSS on FA.sca and taking inverse. 
+    SCORING SOLUTION 2: Solution  2 using HYSS on FA.sca and taking inverse.
     Dataset #1 SG="C 1 2 1", with 2 sites
     ESTIMATED MAP CC x 100:  42.0 +/- 24.3
 
-    SCORING SOLUTION 3: Solution 3 using HYSS on peak.sca_ano_1.sca. 
+    SCORING SOLUTION 3: Solution 3 using HYSS on peak.sca_ano_1.sca.
     Dataset #1 SG="C 1 2 1", with 2 sites
     ESTIMATED MAP CC x 100:  53.2 +/- 16.7
 
-    SCORING SOLUTION 4: Solution  4 using HYSS on peak.sca_ano_1.sca and taking inverse. 
+    SCORING SOLUTION 4: Solution  4 using HYSS on peak.sca_ano_1.sca and taking inverse.
     Dataset #1 SG="C 1 2 1", with 2 sites
     ESTIMATED MAP CC x 100:  53.1 +/- 16.7
 
@@ -727,7 +727,7 @@ model-building and refinement are listed in the AutoSol log file:
 
 ::
 
-     
+
     Copying  AutoSol_run_1_/solve_1.mtz  and adding free R flags for refinement
     input_data_file_use:  AutoSol_run_1_/solve_1.mtz
     labin_use:  labin FP=FP SIGFP=SIGFP PHIB=PHIB FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD
@@ -799,7 +799,7 @@ first. Here is part of the summary for this **gene-5** MAD dataset:
 
 ::
 
-     
+
     ----------CURRENT SOLUTIONS FOR RUN 1 : -------------------
      *** FILES ARE IN THE DIRECTORY: AutoSol_run_1_ ****
 
@@ -812,7 +812,7 @@ first. Here is part of the summary for this **gene-5** MAD dataset:
     Sites: 2 (Already used for Phasing at resol of 2.6)
     NCS information  in: AutoSol_1.ncs_spec
     Experimental phases in: solve_1.mtz
-    Experimental phases plus FreeR_flags for refinement in: 
+    Experimental phases plus FreeR_flags for refinement in:
        exptl_fobs_phases_freeR_flags_1.mtz
     Density-modified phases in: resolve_1.mtz
     HA sites (PDB format) in: ha_1.pdb_formatted.pdb

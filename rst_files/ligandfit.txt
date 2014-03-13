@@ -226,7 +226,7 @@ Sample command\_line inputs
 ::
 
     phenix.ligandfit w1.sca model=partial.pdb ligand=ATP \
-     lig_map_type=fo-fc_difference_map  
+     lig_map_type=fo-fc_difference_map
 
 -  Build into a map from pre-determined coefficients
 
@@ -320,7 +320,7 @@ with an actual file name. You use it just as listed above.
 ::
 
     phenix.ligandfit w1.sca model=partial.pdb ligand=GTP \
-       ligand_start=start.pdb  
+       ligand_start=start.pdb
 
 NOTE: the file start.pdb must contain an entire rigid group of atoms (so
 that ligandfit can identify the position and orientation of at least one

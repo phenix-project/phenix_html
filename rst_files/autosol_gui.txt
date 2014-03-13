@@ -232,7 +232,7 @@ away.  We generally recommend running the AutoBuild wizard, which will
 usually drop R-free by several percent if not more.  This can be started by
 clicking the button next to the list of output files in the Summary tab;
 appropriate files will be pre-loaded, including heavy-atom sites.  AutoBuild
-may take several hours to run, but if you have a multi-core system it can be 
+may take several hours to run, but if you have a multi-core system it can be
 set to run in parallel.
 
 With a very good solution, such as the p9-sad data with the full resolution
@@ -260,7 +260,7 @@ log-likelihood-gradient completion algorithm to add anomalous scatterers to the
 molecular replacement solution.  The resulting phases combine information from
 both sources, MR and SAD.  This procedure may be successful in situations where
 neither MR nor SAD is sufficient by itself.  To run MR-SAD, first carry out MR
-using either the Phaser-MR or `MRage <mrage.htm>`_ GUI; 
+using either the Phaser-MR or `MRage <mrage.htm>`_ GUI;
 when it is finished, use the molecular replacement solution as a partial
 model file in the AutoSol GUI.
 

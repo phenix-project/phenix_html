@@ -40,8 +40,8 @@ To run an MR-SAD experiment, change the mode to "MR-SAD phasing", and enter a
 partial model (PDB file) and the expected variance from the actual structure
 (RMSD or percent identity).  In MR-SAD, the chirality of the partial model
 restricts the sites to the given enantiomer.  You could optionally provide a
-file containing heavy atom sites, but these are normally found by 
-log-likelihood-gradient completion from the partial model; an advantage is 
+file containing heavy atom sites, but these are normally found by
+log-likelihood-gradient completion from the partial model; an advantage is
 that these sites are guaranteed to correspond to the same hand and origin as
 the partial model.  Instead of a partial model specified with atoms, you can
 optionally provide an electron density map instead, by choosing "map" from

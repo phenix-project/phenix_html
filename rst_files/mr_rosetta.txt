@@ -152,7 +152,7 @@ can supply the aligned, placed structure to mr\_rosetta for rebuilding.
 
 ::
 
-    #!/bin/sh 
+    #!/bin/sh
     cd MR_ROSETTA_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
      /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
     -database /net/terwill/rosetta/rosetta_database \
@@ -173,7 +173,7 @@ can supply the aligned, placed structure to mr\_rosetta for rebuilding.
     -MR:max_gaplength_to_model 0 \
     -nstruct 1 \
     -ignore_unrecognized_res  \
-    -overwrite 
+    -overwrite
 
 -  Take the top (max\_solutions\_to\_rebuild=5) models from step 5 and
    rebuild them with Rosetta, this time filling in missing sections and
@@ -192,7 +192,7 @@ can supply the aligned, placed structure to mr\_rosetta for rebuilding.
 
 ::
 
-    #!/bin/sh 
+    #!/bin/sh
     cd MR_ROSETTA_1/WORK_1/REBUILD_IN_SETS_1/RUN_1/WORK_1
      /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
     -database /net/terwill/rosetta/rosetta_database \
@@ -241,7 +241,7 @@ can supply the aligned, placed structure to mr\_rosetta for rebuilding.
 
 ::
 
-    #!/bin/sh 
+    #!/bin/sh
     cd MR_ROSETTA_1/GROUP_OF_RESCORE_MR_ROSETTA_2/RUN_1/RESCORE_MR_1/RELAX_AND_SCORE_IN_SETS_1/RUN_1/WORK_1
      /net/terwill/rosetta/rosetta_source/bin/mr_protocols.default.linuxgccrelease \
     -database /net/terwill/rosetta/rosetta_database \
@@ -257,7 +257,7 @@ can supply the aligned, placed structure to mr\_rosetta for rebuilding.
     -edensity:sliding_window_wt 1.0 \
     -edensity:sliding_window 5 \
     -nstruct 1 \
-    -overwrite 
+    -overwrite
 
 -  Take the top (number\_to\_autobuild=5) relaxed refined rebuilt
    Rosetta models from the previous step (scored by LLG) and rebuild
@@ -379,7 +379,7 @@ your overall log file might say,
 
 ::
 
-    Splitting work into 2 jobs and running with 2 processors using sh 
+    Splitting work into 2 jobs and running with 2 processors using sh
     background=True in /Users/terwill/unix/misc/junk/test_place_model/MR_ROSETTA_7/GROUP_OF_PLACE_MODEL_1
 
 in which case that directory is where you would put GO\_ON, where the
@@ -957,7 +957,7 @@ The keyword to use is: hhr\_files=my\_hhr\_file.hhr.
       rosetta_models=20 \
       ncs_copies=1 \
       nproc=200 \
-      group_run_command=qsub 
+      group_run_command=qsub
 
 NOTE: it is generally a good idea to run several separate mr\_rosetta
 jobs, one for each homology model you want to extract from the PDB, and
@@ -977,7 +977,7 @@ more details of the run. You can get a default parameters file with:
 
 ::
 
-    phenix.mr_rosetta 
+    phenix.mr_rosetta
 
 and then just edit that file.
 

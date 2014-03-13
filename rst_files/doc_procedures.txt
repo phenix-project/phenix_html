@@ -14,7 +14,7 @@ To add a new page:
   5. Add a reference to new_doc.htm in phenix_documentation.html
   6. execute: phenix_html.rebuild_docs
 
-To update an existing document, just edit the corresponding file in 
+To update an existing document, just edit the corresponding file in
 phenix_html/rst_files/, and then execute phenix_html.rebuild_docs.
 
 Some steps expect that the environment variables PHENIX, PHENIX_VERSION, and
@@ -34,7 +34,7 @@ If you want to have your documentation page show a full listing of program
 options with help text, the entry in html.list should look something like
 this::
 
-  new_doc.htm  phenix.command_line my_method  True 
+  new_doc.htm  phenix.command_line my_method  True
 
 Here, "phenix.command_line" is the path to a module, and "my_method" is the
 module containing a master_params object.  In other words, my_method.py is
@@ -70,23 +70,23 @@ below::
   ===============
   This is a title
   ===============
-  
+
   Section title
   -------------
-  
+
   This is unformatted text; paragraphs are separated by blank lines.  Use
   **double-asterisk blocks** for bold text, and *single-asterisk blocks* for
   italic text.  Hyperlinks use the convention `link name <url>`_ (all special
   characters are literal here).
-  
+
     - This is a bullet point!
     - This is another bullet point
-  
+
   Another section title
   ---------------------
-  
+
   References section
   ------------------
-  
+
     - CITATION:phenix_refine
     - CITATION:molprobity
