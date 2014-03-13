@@ -19,11 +19,11 @@ import tidylib
 def convert(filename):
   """Convert raw html fragment in filename to rst. 
   
-  This will create a number of intermediate files:
-      filename.debug        Pre-cleaned HTML
+  This will create a number of files:
+      filename.debug            Pre-cleaned HTML
       filename.clean.html       HTML Tidy cleaned HTML
-      filename.txt        Pandoc-converted RST
-      filename.txt.html   docutils RST -> HTML
+      filename.txt              Pandoc-converted RST (main output)
+      filename.txt.html         docutils RST -> HTML
       
   Pandoc (command) and tidylib (module) are required dependencies.
   """
