@@ -38,9 +38,11 @@ conformation).
 
 The wizard checks the data files for consistency and then calls RESOLVE
 to carry out the fitting of the ligand into the electron-density map.
-The map used is normally a difference map, with F=FP-FC. It can also be
+The best map to use is usually a 2Fo-Fc map from phenix.refine.
+You can also have LigandFit  calculate a difference map, 
+with F=FP-FC. It can also be
 an Fobs map (calulated from FP with phases PHIC from the input partial
-model), or an arbitrary map, calculated with FP PHI and FOM. If you
+model), or an arbitrary map, calculated with FP PHI and optional FOM. If you
 supply an input partial model, then the region occupied by the partial
 model is flattened in the map used to fit the ligand, so that the ligand
 will normally not get placed in this region.
@@ -82,13 +84,11 @@ What the LigandFit wizard needs to run
 
 The ligandfit wizard needs:
 
--  (1) a datafile (w1.sca or data=w1.sca); this can be any format
+-   a datafile (w1.sca or data=w1.sca); this can be any format
 
--  (2) a PDB file with your model without ligand (model=partial.pdb;
-   optional if your datafile contains map coefficients)
+-   a PDB file with your model without ligand (model=partial.pdb; optional if your datafile contains map coefficients)
 
--  (3) a file with information about your ligand (ligand=side.pdb), or a
-   3-letter code for your ligand (ligand=ATP)
+-   a file with information about your ligand (ligand=side.pdb), or a 3-letter code for your ligand (ligand=ATP)
 
 The ligand file can be a PDB file with 1 stereochemically acceptable
 conformation of your ligand. It can alternatively be a file containing a
@@ -350,10 +350,6 @@ Possible Problems
 
 Specific limitations and problems
 ---------------------------------
-
--  The keywords "cell" and "sg" have been replaced with "unit\_cell" and
-   "space\_group" to make the keywords the same as in other phenix
-   applications.
 
 -  The ligand to be searched for must have at least 3 atoms.
 
