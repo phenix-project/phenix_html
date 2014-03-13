@@ -36,11 +36,11 @@ resolution data. You can do it like this:
 or in the GUI, use the `reflection file editor <reflection_file_editor.htm>`_.
 
 A second solution is to tell the Wizard to ignore the high-res data
-explicitly with::
+explicitly with one of these commands (or to set the resolution in the GUI)::
 
-  resolution=4.0 \
-  resolve_command="'resolution 200 4.0'" \
-  solve_command="'resolution 200 4.0'" \
+  resolution=4.0 
+  resolve_command="'resolution 200 4.0'" 
+  solve_command="'resolution 200 4.0'" 
   resolve_pattern_command="'resolution 200 4.0'"
 
 Note the two sets of quotes; both are required for this command-line input.
@@ -61,7 +61,16 @@ FAVG SIGFAVG columns that are part of the FAVG/DANO group).
 
 **How can I specify a mask for density modification in AutoSol/AutoBuild?**
 
-If you want to specify a mask, add this command::
+In autobuild you can simply use the command::
+
+   mask_from_pdb = my_mask_file.pdb
+   rad_mask_from_pdb = 2
+
+where my_mask_file.pdb has atoms in it marking the region to be masked. All
+points within rad_mask_from_pdb of an atom in my_mask_file.pdb will be 
+considered inside the mask.
+
+If you want to specify a mask in autosol, add this command::
 
   resolve_command_list="'model ../../coords.pdb'  'use_model_mask'"
 
@@ -178,29 +187,6 @@ use in the PHENIX Wizards. For example the labels for w1.mtz yields::
   input_refinement_labels='w1(+) SIGw1(+) None'
   input_map_labels='w1(+) None None'
 
-**Why is there no no exptl_fobs_phases_freeR_flags_*.mtz file in my
-AutoSol_run_xx_ directory?**
-
-In AutoSol the file exptl_fobs_phases_freeR_flags_*.mtz normally contains
-the experimental Fobs and free R flags for refinement, along with
-phases and HL coefficients from the experimental phasing. (The * here
-is the solution number)
-
-However if an anisotropy correction is applied to the data, then by
-default no refinement is done in AutoSol and no
-exptl_fobs_phases_freeR_flags_*.mtz file is created.  This is to
-ensure that refinement is not carried out against anisotropy-corrected
-data (you want to refine against the original data, and have
-phenix.refine apply an anisotropy correction as part of refinement).
-
-If you supply
-
-  input_refinement_file=my_data.sca
-
-then my_data.sca will be used for refinement and an
-exptl_fobs_phases_freeR_flags_*.mtz will be created.  Note
-that my_data.sca can be identical to your input data file if you want.
-
 **Why do I get "None of the solve versions worked" in AutoSol?**
 
 If you get this or a similar message for resolve, first have a look at LAST.LOG
@@ -269,9 +255,9 @@ which will say near the end::
 
   Total:          7970     256.096     0.245   1.000  75.29  31.41   2.48
 
-Here R is &lt;Fderiv-Fnative&gt;/(2 &lt;Fderiv+Fnative&gt;),
-noise is &lt;sigma&gt;,
-signal is sqrt(&lt;(Fderiv-Fnative)**2&gt;-&lt;sigma**2&gt;),
+Here R is <Fderiv-Fnative>/(2 <Fderiv+Fnative>),
+noise is <sigma>,
+signal is sqrt(<(Fderiv-Fnative)**2>-<sigma**2>),
 and S/N is the ratio of signal to noise.
 
 **I ran AutoSol to get a partial model that I now want to refine.  Which data
