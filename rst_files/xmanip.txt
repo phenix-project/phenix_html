@@ -133,9 +133,11 @@ reads in::
           xray_data {
             file_name = None      # File from which data will be read
             labels = None         # Labels to read in.
-            label_appendix = None # Label appendix: when writing out the new mtz file, this appendix will be added to the current label.
+            label_appendix = None # Label appendix: when writing out the new mtz file, this
+                                    appendix will be added to the current label.
             name = None           # A data set name. Useful for manipulation
-            write_out = None      # Determines if this data set will be written to the final mtz file
+            write_out = None      # Determines if this data set will be written to the final
+                                    mtz file
           }
           model {
             file_name = None      # An input pdb file

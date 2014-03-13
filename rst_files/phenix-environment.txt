@@ -1,12 +1,18 @@
 The PHENIX environment
 ======================
 
+If you intend to use the graphical interface and installed Phenix using the
+Mac or Windows graphical installers, no further configuration is necessary -
+just double-click the icon for the main Phenix GUI.  Instructions below are
+for users of the command-line installer and/or programs.
+
 Setting up your environment
 ---------------------------
 
 Once you have successfully installed PHENIX, to set up your environment
 please source the phenix\_env file in the phenix installation directory
-(for example):
+(for example - replace "<version>" with the actual installed version,
+such as "1.8.4-1496"):
 
 ::
 
@@ -21,17 +27,23 @@ or
 To run jobs remotely, you need to source the phenix\_env in your .cshrc
 (or equivalent) file.
 
-The following environmental variables should now be defined (here with
-example values):
+If you used the graphical Mac installer, you can find the files here:
 
--  PHENIX=/usr/local/phenix
--  PHENIX\_INSTALLER\_DATE=080920070957
--  PHENIX\_VERSION=1.3
--  PHENIX\_RELEASE\_TAG=final
--  PHENIX\_ENVIRONMENT=1
--  PHENIX\_MTYPE=intel-linux-2.6-x86\_64
--  PHENIX\_MVERSION=linux
--  PHENIX\_USE\_MTYPE=intel-linux-2.6-x86\_64
+::
+
+  /Applications/PHENIX-<version>/Contents/phenix-<version>/phenix_env*
+
+The following environmental variables should now be defined (here with
+example values)::
+
+   PHENIX=/usr/local/phenix
+   PHENIX\_INSTALLER\_DATE=080920070957
+   PHENIX\_VERSION=1.3
+   PHENIX\_RELEASE\_TAG=final
+   PHENIX\_ENVIRONMENT=1
+   PHENIX\_MTYPE=intel-linux-2.6-x86\_64
+   PHENIX\_MVERSION=linux
+   PHENIX\_USE\_MTYPE=intel-linux-2.6-x86\_64
 
 It is not necessary (or useful) to define environmental variables for
 SOLVE/RESOLVE for PHENIX. If you have them set in your environment they
