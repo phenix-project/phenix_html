@@ -101,10 +101,14 @@ in purple, contoured at 3.0 sigma, and clearly shows the positions of the
 Se atoms in the structure.*
 
 **ANISOU**: a type of record in `PDB format <file_formats.htm#pdb_format>`_,
-specifying an anisotropic displacement ellipsoid with six parameters.  They
-will immediately follow the associated ATOM or HETATM record.  ANISOU records
-will appear in files output `phenix.refine <refine_gui.htm>`_ any time you
-use individual anisotropic B-factor refinement or TLS.
+specifying an anisotropic displacement ellipsoid with six parameters. They
+will immediately follow the associated ATOM or HETATM record. ANSIOU records 
+represent the upper right corner of the symmetric matrix of atomic displacement.
+ANISOU records will appear in files output `phenix.refine <refine_gui.htm>`_ any 
+time you use individual anisotropic B-factor refinement or TLS. Anisotropic 
+B-factor is related to isotropic B-factor reported in ATOM record: isotropic B 
+is the mean of the trace of ANISOU matrix divided by 10000 and multiplied by 
+8*pi^2 and represents the isotropic equivalent of the total B-factor.
 
 .. _bfactor:
 .. _adp:
@@ -122,16 +126,25 @@ contribution from larger displacements such as those modeled by TLS
 refinement and an overall anisotropic ADP for the entire crystal.  (Note that
 in other contexts, "ADP" may instead mean "anisotropic displacement parameter".)
 
+**Asymmetric unit**: smallest fraction of the unit cell such that applying all 
+crystallographic symmetry operations to it will generate the entire unit cell.
+
 **Bijvoet mates**: F+ and F-, which are related by **Friedel's law**, except to
 the extent that **anomalous scattering** is present.  Also sometimes called
 "Friedel pairs".
 
-**Bulk-solvent correction**: Scaling of low-resolution model-based amplitudes,
-F(calc), to account for the effects of unmodelled disordered solvent in the
-crystal.  Because the bulk solvent comprises such a large scattering mass in
-macromolecular crystals, and the low-resolution reflections tend to dominate
-the R-factor calculations, the correction step significantly decreases the
-R-factors and is an essential step during refinement and map calculation.
+**Bulk-solvent correction**: Modeling scattering contribution arising from 
+disordered (bulk) solvent. Best available model for bulk-solvent is so-called
+Flat model, which assumes bulk-solvent electron density to be constant (flat)
+outside of macro-molecular region. Because the bulk solvent comprises such a 
+large scattering mass in macromolecular crystals (between approx. 20 and 80%), 
+it is essential to account for it. Bulk-solvent mostly contributes to low 
+resolution reflections (approx. lower than 4A) and its contribution to higher
+resolution reflections is almost zero. Bulk-solvent is accounted for 
+by adding extra contribution (Fbulk) to atomic model structure factors (Fcalc)
+to form the total model structure factor Fmodel = scale * (Fcalc + Fbulk). Not
+accounting for bulk-solvent may significantly impact R-factors, refinement and 
+maps. 
 
 .. _cbetadev:
 
@@ -164,6 +177,11 @@ Phenix as part of validation.
 (many caused by overlapping hydrogen atoms, not shown) are displayed as pink
 lines; these count towards the total clashscore.*
 
+**Completeness (of data)**: number of measured reflections expressed as a 
+fraction of the total number of reflections theoretically possible in the 
+resolution range of measured data (d_min, d_max). Sometimes resolution range
+to count theoretically possible reflections may be (d_min, infinity).
+
 **Constraints**: In refinement, constraints force specific parameters to be
 refined together.  Examples of this include rigid-body refinement (atomic
 coordinates constrained), "riding" hydrogen atoms, or grouped ADPs.  Since
@@ -183,11 +201,14 @@ directly as input in many cases, and phenix.refine can also output both
 data and model in CIF format.  See the `overview of file formats
 <file_formats.htm>`_ for more information.
 
-**Density modification**: A statistically-based method of phase improvement by
-real-space manipulation of electron density, which dramatically improves
-experimentally phased maps.  For SAD phasing, density modification is essential
-to resolve phase ambiguity and obtain an interpretable map, but it is also
-very helpful for other methods.
+**Density modification (DM)**: An iterative procedure of applying a priory knowledge 
+about fundamental properties of crystal model (atomic model and bulk-solvent) and 
+density map in order to improve structure factor phases and in some cases amplitudes. 
+Such a priori knowledge includes: atomicity, positivity, noncrystallographic symmetry, 
+bulk-solvent solvent ﬂatness, map connectivety, expected map histogram, etc.
+Two approaches to DM exist: classical and statistical. DM may dramatically improve
+maps. For SAD phasing, density modification is essential to resolve phase ambiguity 
+and obtain an interpretable map, but it is also very helpful for other methods.
 
 .. image:: images/density_modification.png
 
@@ -649,8 +670,10 @@ along with the crystal lattice.
 **Reflection**: an individual data item in **reciprocal space**, usually used
 to describe a single amplitude or intensity.
 
+**Residual map**: see Difference map.
+
 **Resolution factor**: this number controls the spacing of the grid used for
-map calculations, which is approximately defined by d_min/resolution_factor
+map calculations, which is approximately defined by d_min*resolution_factor
 (although the final grid dimensions will be adjusted based on the requirements
 of the **FFT** algorithm).  The lower the resolution factor, the more finely
 spaced the map grid.  A spacing of 1/3 or 1/4 is most common, with the latter
