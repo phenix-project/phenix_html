@@ -1,129 +1,129 @@
-#.html file (can be a path)             	path for python file    	       python file w/o .py  "Keep paragraphs?"
-what-is-phenix.htm		None                    None False
-install.htm			None			None True 
-phenix-environment.htm		None			None False
-running-phenix.htm		None			None False
-phenix-modules.htm		None			None False
-refinement.htm			phenix			refinement True 
-assign_sequence.htm		phenix.command_line	assign_sequence False
-erraser.htm			phenix.erraser		erraser True 
-apply_ncs.htm			phenix.command_line	apply_ncs False
-parallel_autobuild.htm 		phenix.command_line	parallel_autobuild False
-density_outside_model.htm 	phenix.command_line	density_outside_model False
-cut_out_density.htm		phenix.command_line	cut_out_density False
-combine_models.htm		phenix.command_line	combine_models False
-guess_molecular_centers.htm	phenix.command_line	guess_molecular_centers False
-build_one_model.htm		phenix.command_line	build_one_model False
-replace_side_chains.htm		phenix.command_line	replace_side_chains False
-remove_free_from_map.htm	phenix.command_line	remove_free_from_map False
-phase_and_build.htm		phenix.command_line	phase_and_build False
-find_ncs_from_density.htm	phenix.command_line	find_ncs_from_density False
-autosol.htm 			phenix.command_line	autosol True 
-autobuild.htm 			phenix.command_line	autobuild False
-ligandfit.htm 			phenix.command_line	ligandfit False
-simple_ncs_from_pdb.htm		phenix.command_line	simple_ncs_from_pdb False
-multi_crystal_average.htm 	phenix.command_line	multi_crystal_average False
-find_all_ligands.htm 		phenix.command_line	find_all_ligands False
-map_to_object.htm 		phenix.command_line	map_to_object False
-running-wizards.htm		None			None False
-running-solve-resolve.htm	None			None False
-superpose_pdbs.htm 		phenix.command_line     superpose_pdbs False
-find_helices_strands.htm        phenix.command_line     find_helices_strands True 
-get_cc_mtz_pdb.htm 		phenix.command_line     get_cc_mtz_pdb False
-get_cc_mtz_mtz.htm 		phenix.command_line     get_cc_mtz_mtz False
-fit_loops.htm	 		phenix.command_line     fit_loops False
-mr_rosetta.htm	 		phenix.rosetta		mr_rosetta False
-morph_model.htm	 		phenix.command_line     morph_model False
-xtriage.htm			mmtbx.scaling		xtriage False
-xtriage_gui.htm None  None True 
-xmanip.htm			mmtbx			xmanip False
-doc_procedures.htm		None                    None False
-examples.htm			None                    None False
-ligand_identification.htm       phenix.command_line     ligand_identification False
-molprobity_tool.htm		None			None False
-pymol.htm 			None			None True 
-elbow.htm                       None                    None False
-reel.htm                        None                    None False
-ready_set.htm                   elbow.command_line      ready_set False
-phaser.htm			None			None False
-coot.htm			None			None True 
-phenix_gui.htm    None    None True 
-old_gui.htm                  None                    None False
-hyss.htm			None			None False
-refine_gui.htm    None  None  True 
-emma.htm			None			None False
-reflection_statistics.htm	None			None False
-reflection_file_tools.htm	None			None False
-reflection_file_editor.htm  None  None False
-explore_metric_symmetry.htm	None			None False
-hydrogens.htm			None			None False
-den_refine.htm                  None                    None False
-pdbtools.htm			mmtbx			pdbtools False
-fmodel.htm			mmtbx.command_line fmodel False
-fem.htm 		mmtbx.command_line 			development_fem False
-geometry_minimization.htm  mmtbx.command_line geometry_minimization False
-f000.htm 		None 			None True 
-map_to_structure_factors.htm None None False
-model_vs_data.htm 		None 			None False
-map_value_at_point.htm   mmtbx.command_line map_value_at_point True 
-reciprocal_space_arrays.htm mmtbx.command_line reciprocal_space_arrays True 
-phenix_maps.htm 	  None      None False
-construction.htm		None			None False
-tutorial_mir.htm		None                    None False
-tutorial_mr.htm			None                    None False
-tutorial_ligandfit.htm		None                    None False
-tutorial_rebuild.htm		None                    None False
-tutorial_build.htm		None                    None False
-tutorial_mad.htm		None                    None False
-tutorial_sad.htm		None                    None False
-tutorial_molprobity.htm 	None			None True
-tutorial_elbow.htm              None                    None False
-tutorial_twin.htm		None                    None False
-refinement_examples.htm		None			None False
-validation.htm  None  None False
-create_maps.htm  None  None True 
-phaser_mr.htm   None    None   True 
-phaser_ep.htm   None    None False
-sculptor.htm    phaser    sculptor False
-ensembler.htm   phaser    ensembler False
-autosol_gui.htm   None  None True 
-mtz2map.htm  mmtbx.command_line mtz2map True 
-ncs_average.htm  phenix.command_line ncs_average True 
-superpose_maps.htm  phenix.command_line superpose_maps  True 
-cif_as_mtz.htm None None True 
-structure_comparison.htm None None True 
-ligandfit_gui.htm   None  None  True 
-elbow_gui.htm None  None  True 
-autobuild_gui.htm None  None  True 
-mr_overview.htm None None True 
-guided_ligand_replacement.htm phenix.command_line guided_ligand_replacement True 
-table_one.htm phenix.automation table_one True 
-MRage.htm phaser.command_line MRage True 
-dictionary.htm None None True 
-examples.htm None None True 
-tutorial_refine.htm None None True 
-data_viewer.htm None None True 
-find_alt_orig_sym_mate.htm	phaser.command_line	find_alt_orig_sym_mate False
-find_peaks_holes.htm mmtbx.command_line find_peaks_holes True 
-tutorial_mr.htm None None True 
-ligand_pipeline.htm phenix.automation ligand_pipeline True 
-tutorial_ligandfit_cmdline.htm None None False
-unmerged_data.htm None None True 
-ensemble_refinement.htm mmtbx.refinement ensemble_refinement True 
-carbo_load.htm None None False
-carbo_primer.htm None None False
-scales.htm None None False
-carbo_builder.htm None None False
-tutorial_mr_refine.htm None None True 
-faqs.htm None None True 
-faqs/general.htm None None True
-faqs_mr.htm None None True 
-faqs_wizards.htm None None True 
-faqs_refine.htm None None True 
-multimer_reconstruction.htm None None True 
-rosetta_refine.htm phenix.command_line rosetta_refine True 
-composite_omit_map.htm phenix.command_line composite_omit_map True 
-fab_elbow_angle.htm None None True 
-find_ncs.htm phenix.command_line find_ncs True 
-file_formats.htm None None True 
-cablam_validation.htm None None True 
+#.html file (can be a path)             	path for python file    	       python file w/o .py  "Keep paragraphs? [default=True]"
+what-is-phenix.htm		None                    None
+install.htm			None			None 
+phenix-environment.htm		None			None
+running-phenix.htm		None			None
+phenix-modules.htm		None			None
+refinement.htm			phenix			refinement 
+assign_sequence.htm		phenix.command_line	assign_sequence
+erraser.htm			phenix.erraser		erraser 
+apply_ncs.htm			phenix.command_line	apply_ncs
+parallel_autobuild.htm 		phenix.command_line	parallel_autobuild
+density_outside_model.htm 	phenix.command_line	density_outside_model
+cut_out_density.htm		phenix.command_line	cut_out_density
+combine_models.htm		phenix.command_line	combine_models
+guess_molecular_centers.htm	phenix.command_line	guess_molecular_centers
+build_one_model.htm		phenix.command_line	build_one_model
+replace_side_chains.htm		phenix.command_line	replace_side_chains
+remove_free_from_map.htm	phenix.command_line	remove_free_from_map
+phase_and_build.htm		phenix.command_line	phase_and_build
+find_ncs_from_density.htm	phenix.command_line	find_ncs_from_density
+autosol.htm 			phenix.command_line	autosol 
+autobuild.htm 			phenix.command_line	autobuild
+ligandfit.htm 			phenix.command_line	ligandfit
+simple_ncs_from_pdb.htm		phenix.command_line	simple_ncs_from_pdb
+multi_crystal_average.htm 	phenix.command_line	multi_crystal_average
+find_all_ligands.htm 		phenix.command_line	find_all_ligands
+map_to_object.htm 		phenix.command_line	map_to_object
+running-wizards.htm		None			None
+running-solve-resolve.htm	None			None
+superpose_pdbs.htm 		phenix.command_line     superpose_pdbs
+find_helices_strands.htm        phenix.command_line     find_helices_strands 
+get_cc_mtz_pdb.htm 		phenix.command_line     get_cc_mtz_pdb
+get_cc_mtz_mtz.htm 		phenix.command_line     get_cc_mtz_mtz
+fit_loops.htm	 		phenix.command_line     fit_loops
+mr_rosetta.htm	 		phenix.rosetta		mr_rosetta
+morph_model.htm	 		phenix.command_line     morph_model
+xtriage.htm			mmtbx.scaling		xtriage
+xtriage_gui.htm None  None 
+xmanip.htm			mmtbx			xmanip
+doc_procedures.htm		None                    None
+examples.htm			None                    None
+ligand_identification.htm       phenix.command_line     ligand_identification
+molprobity_tool.htm		None			None
+pymol.htm 			None			None 
+elbow.htm                       None                    None
+reel.htm                        None                    None
+ready_set.htm                   elbow.command_line      ready_set
+phaser.htm			None			None
+coot.htm			None			None 
+phenix_gui.htm    None    None 
+old_gui.htm                  None                    None
+hyss.htm			None			None
+refine_gui.htm    None  None 
+emma.htm			None			None
+reflection_statistics.htm	None			None
+reflection_file_tools.htm	None			None
+reflection_file_editor.htm  None  None
+explore_metric_symmetry.htm	None			None
+hydrogens.htm			None			None
+den_refine.htm                  None                    None
+pdbtools.htm			mmtbx			pdbtools
+fmodel.htm			mmtbx.command_line fmodel
+fem.htm 		mmtbx.command_line 			development_fem
+geometry_minimization.htm  mmtbx.command_line geometry_minimization
+f000.htm 		None 			None 
+map_to_structure_factors.htm None None
+model_vs_data.htm 		None 			None
+map_value_at_point.htm   mmtbx.command_line map_value_at_point 
+reciprocal_space_arrays.htm mmtbx.command_line reciprocal_space_arrays 
+phenix_maps.htm 	  None      None
+construction.htm		None			None
+tutorial_mir.htm		None                    None
+tutorial_mr.htm			None                    None
+tutorial_ligandfit.htm		None                    None
+tutorial_rebuild.htm		None                    None
+tutorial_build.htm		None                    None
+tutorial_mad.htm		None                    None
+tutorial_sad.htm		None                    None
+tutorial_molprobity.htm 	None			None
+tutorial_elbow.htm              None                    None
+tutorial_twin.htm		None                    None
+refinement_examples.htm		None			None
+validation.htm  None  None
+create_maps.htm  None  None 
+phaser_mr.htm   None    None 
+phaser_ep.htm   None    None
+sculptor.htm    phaser    sculptor
+ensembler.htm   phaser    ensembler
+autosol_gui.htm   None  None 
+mtz2map.htm  mmtbx.command_line mtz2map 
+ncs_average.htm  phenix.command_line ncs_average 
+superpose_maps.htm  phenix.command_line superpose_maps 
+cif_as_mtz.htm None None 
+structure_comparison.htm None None 
+ligandfit_gui.htm   None  None 
+elbow_gui.htm None  None 
+autobuild_gui.htm None  None 
+mr_overview.htm None None 
+guided_ligand_replacement.htm phenix.command_line guided_ligand_replacement 
+table_one.htm phenix.automation table_one 
+MRage.htm phaser.command_line MRage 
+dictionary.htm None None 
+examples.htm None None 
+tutorial_refine.htm None None 
+data_viewer.htm None None 
+find_alt_orig_sym_mate.htm	phaser.command_line	find_alt_orig_sym_mate
+find_peaks_holes.htm mmtbx.command_line find_peaks_holes 
+tutorial_mr.htm None None 
+ligand_pipeline.htm phenix.automation ligand_pipeline 
+tutorial_ligandfit_cmdline.htm None None
+unmerged_data.htm None None 
+ensemble_refinement.htm mmtbx.refinement ensemble_refinement 
+carbo_load.htm None None
+carbo_primer.htm None None
+scales.htm None None
+carbo_builder.htm None None
+tutorial_mr_refine.htm None None 
+faqs.htm None None 
+faqs/general.htm None None
+faqs_mr.htm None None 
+faqs_wizards.htm None None 
+faqs_refine.htm None None 
+multimer_reconstruction.htm None None 
+rosetta_refine.htm phenix.command_line rosetta_refine 
+composite_omit_map.htm phenix.command_line composite_omit_map 
+fab_elbow_angle.htm None None 
+find_ncs.htm phenix.command_line find_ncs 
+file_formats.htm None None 
+cablam_validation.htm None None 
