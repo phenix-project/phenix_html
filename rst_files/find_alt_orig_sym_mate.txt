@@ -23,7 +23,37 @@ phenix.find\_alt\_orig\_sym\_mate can be run from the GUI by clicking on
 the **Find alternate-origin symmetry mates** button under the Model
 tools category on the right hand side of the main Phenix window.
 
+
 .. image:: images/find_alt_orig_sym_mate1.png
+
+
+Once the run button has been pressed the program will execute for a minute or two
+depending on the size of the molecules and space group. Afterwards the run status
+page will have a table of the best matches between pairs of chains in the two
+files. The MLAD values, chain IDs symmetry transformations and alternate origins for
+the two structures are listed in
+a table. If the same origin shift is not applied to all pairs of chains a
+warning will be printed. A floating origin in the space group typically results in a
+origin offset between chains that is not a rational number.
+
+
+.. image:: images/find_alt_orig_sym_mate2.png
+   :width: 750
+
+
+From the results tab the superposed structure can be visually inspected in Coot or Pymol.
+Matches with low MLAD scores will have correspondingly good superpositions.
+
+
+.. image:: images/find_alt_orig_sym_mate3.png
+   :width: 750
+
+
+
+
+Using from the command-line
+---------------------------
+
 
 It can also be run from the command-line with PHIL input in either a
 text file or as keywords like::
