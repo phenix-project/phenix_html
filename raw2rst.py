@@ -16,12 +16,8 @@ import docutils.core
 # HTML Tidy
 import tidylib
 
-TITLE = """<H4><U>(.*?)</U></H4>"""
-FIX_HEADER = """(<!--(\s+)?REMARK PHENIX TITLE START(.*?>)?)"""
-FIX_BODY = """(<!--(\s+)?REMARK PHENIX BODY START(.*?>)?)"""
-
 def convert(filename):
-  """Convert raw htm filename to rst. 
+  """Convert raw html fragment in filename to rst. 
   
   This will create a number of intermediate files:
       filename.debug        Pre-cleaned HTML
@@ -44,8 +40,8 @@ def convert(filename):
   
   # Replace PHENIX comments; these are malformed (missing "-->")
   data = """<html><body>%s</html></body>"""%data
-  data = re.sub(FIX_HEADER, "", data, flags=re.DOTALL)
-  data = re.sub(FIX_BODY, "", data, flags=re.DOTALL)
+  data = re.sub("""(<!--(\s+)?REMARK PHENIX TITLE START(.*?>)?)""", "", data, flags=re.DOTALL)
+  data = re.sub("""(<!--(\s+)?REMARK PHENIX BODY START(.*?>)?)""", "", data, flags=re.DOTALL)
 
   # Kill all styles.
   data = re.sub("""style=".+?"(\s+)?""", "", data, flags=re.I)
