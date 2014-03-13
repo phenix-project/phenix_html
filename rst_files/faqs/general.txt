@@ -2,9 +2,12 @@
 Frequently asked questions (FAQs)
 =================================
 
-Separate FAQ lists are available for the `wizards (AutoSol, AutoBuild, and
-LigandFit) <faqs/wizards.htm>`_, `molecular replacement <faqs/mr.htm>`_, and
-`refinement <faqs/refine.htm>`_.
+Separate FAQ lists are available for 
+experimental phasing `<experimental_phasing.htm>`_, 
+`molecular replacement <mr.htm>`_, 
+`model building <model_building.htm>`_, 
+`ligand fitting <ligand_fitting.htm>`_, 
+`refinement <refine.htm>`_.
 
 General
 -------
@@ -20,9 +23,10 @@ Individual programs may have additional citations.
 
 **How can I use multiple processors to run a job?**
 
-Only `AutoBuild <autobuild_gui.htm>`_, `LigandFit <ligandfit_gui.htm>`_,
-`phaser.MRage <MRage.htm>`_, `phenix.refine <refine_gui.htm>`_, the
-`structure comparison GUI <structure_comparison.htm>`_, and
+Only `Autosol <../autosol.htm>`_, 
+`Autobuild <../autobuild_gui.htm>`_, `Ligandfit <../ligandfit_gui.htm>`_,
+`phaser.MRage <../MRage.htm>`_, `phenix.refine <../refine_gui.htm>`_, the
+`structure comparison GUI <../structure_comparison.htm>`_, and
 phenix.find_tls_groups support runtime configuration of parallel processing.
 In most cases this is done by adding the "nproc" keyword, for instance::
 
@@ -40,13 +44,13 @@ conflicts, OpenMP is not compatible with the Phenix GUI.
 You can find sample data in the directories located in ``$PHENIX/examples``.
 Additionally there is sample MR data in ``$PHENIX/phaser/tutorial``.
 
-In the `Phenix GUI <phenix_gui.htm>`_, tutorials may automatically be set up
+In the `Phenix GUI <../phenix_gui.htm>`_, tutorials may automatically be set up
 as projects.  (You must run the specific programs manually, however.)
 
-**Can I easily run a Wizard with some sample data?**
+**Can I easily run autosol, autobuild or ligandfit with some sample data?**
 
-You can run sample data with a Wizard with a simple command. To run
-``p9-sad`` sample data with the AutoSol wizard, you type::
+You can run sample data with with a simple command. To run
+``p9-sad`` sample data with autosol, you type::
 
   phenix.run_example  p9-sad
 
@@ -80,18 +84,18 @@ have a command file ``run.sh`` ready to use. For example::
 **Are any of the sample datasets annotated?**
 
 The PHENIX tutorials listed on the `documentation index
-<phenix_documentation.html>`_ will walk you through sample datasets, telling
+<../phenix_documentation.html>`_ will walk you through sample datasets, telling
 you what to look for in the output files. For example, the
-`Tutorial 1: Solving a structure using SAD data <tutorial_sad.htm>`_
+`Tutorial 1: Solving a structure using SAD data <../tutorial_sad.htm>`_
 tutorial uses the ``p9-sad`` dataset as example. It tells you how to
-run this example data in AutoSol and how to interpret the results.
+run this example data in autosol and how to interpret the results.
 
 **How is non-crystallographic symmetry handled in PHENIX?**
 
 The treatment of NCS depends on the specific program or task:
 
   - In density modification (performed internally by RESOLVE, and used in
-    AutoSol, AutoBuild, phenix.multi_crystal_average, and related programs),
+    Autosol, autobuild, phenix.multi_crystal_average, and related programs),
     NCS relationships (in the form of rotation/translation matrices) are used
     to average different parts of the map together, which usually improves
     phase quality.  The NCS operators can be derived from heavy-atom positions,
@@ -99,10 +103,10 @@ The treatment of NCS depends on the specific program or task:
     automatically (although we recommend specifying the number of NCS-related
     copies if you know what it should be).
 
-  - In model-building (AutoBuild), NCS is also used to copy pieces of the
+  - In model-building (Autobuild), NCS is also used to copy pieces of the
     partial model to complete related chains.
 
-  - In refinement (both in phenix.refine itself, and in the AutoSol/AutoBuild
+  - In refinement (both in phenix.refine itself, and in the Autosol/Autobuild
     pipelines), NCS-related chains will be restrained to have similar
     conformations.  By default this will be done in torsion-angle space, which
     allows for local conformational changes if present, and also incorporates
@@ -138,7 +142,7 @@ picked for the test set; you don't really need more than this to ensure that
 R-free is statistically significant and that the maximum likelihood
 calculations work properly.  However, if you want to use a full 5%, you can
 tell Phenix not to put any upper absolute limit.  In the `reflection file
-editor <reflection_file_editor.htm>`_ in the GUI, click
+editor <../reflection_file_editor.htm>`_ in the GUI, click
 "More options" in the R-free flags section of the editor, and delete the
 field labeled "Maximum number of reflections in test set".
 
@@ -150,8 +154,8 @@ Maps
 **How do I obtain an anomalous difference map in Phenix?**
 
 If you have anomalous data (separate F+ and F- or I+ and I-) and use this
-as input, both `phenix.maps <create_maps.htm>`_ and
-`phenix.refine <refinement.htm>`__ will automatically output the anomalous
+as input, both `phenix.maps <../create_maps.htm>`_ and
+`phenix.refine <../refinement.htm>`__ will automatically output the anomalous
 difference map in the map coefficients MTZ file.  Note that depending on the
 application, you may need to manually open the MTZ file in Coot to get the
 anomalous map to appear.
