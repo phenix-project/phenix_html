@@ -30,12 +30,13 @@ difference being the way commands are taken from the user.
 The graphical user interface makes all settings accessible either as
 part of the main window (for frequently used options) or through a
 series of dialog boxes under **Settings for:**:
-  - *Main-chain removal*
-  - *Main-chain polishing*
-  - *Sidechain pruning*
-  - *B-factors*
-  - *Renumbering*
-  - *Renaming*
+
+- *Main-chain removal*
+- *Main-chain polishing*
+- *Sidechain pruning*
+- *B-factors*
+- *Renumbering*
+- *Renaming*
 
 The input PDB file is specified in the **PDB file:** input line, while
 alignments and target sequences can be added through the
@@ -132,7 +133,7 @@ There are multiple algorithms available:
    much larger sequence similarity range than those in
    ``threshold_based_similarity``. All sequences in a multiple alignment
    contribute to the score. Details of the sequence similarity
-   calculation are given in the section **Sequence similarity**.
+   calculation are given in the section `Sequence similarity calculation`_.
 
 These algorithms can also be used together in any combination. In this
 case, a residue will be deleted if assigned for deletion by any active
@@ -361,15 +362,17 @@ References
 ----------
 
 .. [Schwarzenbacher2004]
-**The importance of alignment accuracy for molecular replacement.**
-R. Schwarzenbacher, A. Godzik, S. K. Grzechnik and L. Jaroszewski
-*Acta Cryst.* **D60**, 1229-1236 (2004)
+   **The importance of alignment accuracy for molecular replacement.**
+   R. Schwarzenbacher, A. Godzik, S. K. Grzechnik and L. Jaroszewski
+   *Acta Cryst.* **D60**, 1229-1236 (2004)
 
 Citation
 --------
 
 **Improvement of molecular-replacement models with Sculptor.** G.
 Bunkoczi and R. J. Read *Acta Cryst.* **D67**, 303-312 (2011)
+
+.. _additional:
 
 Additional information
 ----------------------
