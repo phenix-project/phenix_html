@@ -11,6 +11,9 @@ several extra graphical utilities for validation, map generation, and file
 manipulations.  The original GUI is still available but deprecated, and all
 functionality has been more or less superseded.  This page covers the main
 interface and common behavior; individual program GUIs are covered separately.
+The GUI runs on all supported operating systems but with some limitations on
+specific platforms, in particular `Microsoft Windows
+<http://phenix-online.org/platforms/windows.html>`_.
 
 The main GUI is started simply by typing the command ``phenix``; by default,
 it will also open automatically when you launch any of the individual
@@ -24,21 +27,27 @@ Running programs from the GUI
 -----------------------------
 
 When starting a job, Phenix writes out a configuration file and calls the
-command-line version of the program.  By default, this is started directly in
+command-line version of the program.  The method of execution varies
+depending on operating system.  On Linux and Windows, By default the job
+is started directly in
 the main process, i.e. "locally", which allows communication between the
 program and the GUI in memory rather than via temporary files.  The drawback
 to this is that if the GUI is closed or crashes, the job will be ended too.
-An alternate "detached" mode is available, which starts the job as an entirely
+An alternate "detached" mode is available (and used as default on Mac),
+which starts the job as an entirely
 separate process.  This limits the speed at which the GUI can be updated,
 but allows quitting the GUI without stopping the job.
 
-A third mode is to run jobs on a queueing system; while this could be done
+A third mode, available only to Linux users,
+is to run jobs on a queueing system; while this could be done
 entirely on a multi-core workstation, it will usually be spread across a
-cluster of similar computers.  Currently only Sun Grid Engine is supported.
+cluster of similar computers.  Currently Sun Grid Engine, PBS, LSF, and
+Condor are supported to varying degrees.
 To enable queued jobs, open the Preferences, switch to the "Processes"
 tab, and check the box to enable queueing.  The queue submission option will
-now appear when starting a job.  For this to work, the SGE binaries ('qsub',
-'qstat', and 'qdel') must be in the current environment $PATH, Phenix
+now appear when starting a job.  For this to work, the queue job
+management binaries (for instance, 'qsub',
+'qstat', and 'qdel' in SGE) must be in the current environment $PATH, Phenix
 must be installed in the same location on all nodes, and the filesystem on
 which the job is being run must be mounted on all nodes.  The GUI will display
 a "waiting" status until the job is actually started.  The main interface
@@ -471,7 +480,8 @@ Acknowledgments
 The PHENIX GUI is written in Python 2.7, using the wxPython toolkit for
 most features, plus matplotlib for plotting.
 Some of the icons used in the GUI came from the `Crystal Icons project
-<http://www.everaldo.com/crystal>`_ which is licensed under the LGPL.  Many
+<http://www.iconarchive.com/show/crystal-clear-icons-by-everaldo.html>`_
+by `Everaldo Coelho <http://www.everaldo.com>`_ which is licensed under the LGPL.  Many
 additional icons (anything with a molecular representation) were generated
 using PyMOL.
 
