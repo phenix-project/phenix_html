@@ -100,30 +100,31 @@ Core modules in the AutoBuild Wizard
 
 The five core modules in the AutoBuild Wizard are
 
--  (1) building a new model into an electron density map
--  (2) rebuilding an existing model
--  (3) refinement
--  (4) iterative model- building beginning from experimental phase
-   information, and
--  (5) iterative model-building beginning from a model.
+-   building a new model into an electron density map
+-   rebuilding an existing model
+-   refinement
+-   iterative model-building beginning from experimental phase information, and
+-   iterative model-building beginning from a model.
 
 The standard procedures available in the AutoBuild Wizard that are based
 on these modules include:
 
--  (a) model-building and completion starting from experimental phases,
--  (b) rebuilding a model from scratch, with or without experimental
-   phase information, and
--  (c) rebuilding a model in place, maintaining connectivity and
-   sequence register.
+-   model-building and completion starting from experimental phases,
+-   rebuilding a model from scratch, with or without experimental phase information, and
+-   rebuilding a model in place, maintaining connectivity and sequence register.
 
 Starting from a set of experimental phases and structure factor
-amplitudes, normally procedure (a) is carried out, and then the
-resulting model is rebuilt with procedure (b).
+amplitudes, 
+normally model-building and completion starting from experimental phases
+is carried out, and then the
+resulting model is rebuilt from scratch.
 
 Starting from a model (e.g., from molecular replacement) and
-experimental structure factor amplitudes, procedure (c) is by default
+experimental structure factor amplitudes, rebuilding a model in place
+is by default
 carried out if the starting model differs less than about 50% in
-sequence from the desired model, and otherwise procedure (b) is used. It
+sequence from the desired model, and otherwise the resulting model 
+is rebuilt from scratch. It
 is generally a good idea to specify which you want to happen using the
 keyword "rebuild\_in\_place=True" (to keep the basic input model) or
 "rebuild\_in\_place=False" (to build a new model).
@@ -131,18 +132,18 @@ keyword "rebuild\_in\_place=True" (to keep the basic input model) or
 What the AutoBuild wizard needs to run
 --------------------------------------
 
--  (1) a data file, optionally with phases and HL coeffs and freeR flag
+-  a data file, optionally with phases and HL coeffs and freeR flag
    (w1.sca or data=w1.sca)
--  (2) a sequence file (seq.dat or seq\_file=seq.dat) or a model
+-  a sequence file (seq.dat or seq\_file=seq.dat) or a model
    (coords.pdb or model=coords.pdb)
 
 ...and optional files
 ---------------------
 
--  (3) coefficients for a starting map (map\_file=resolve.mtz)
--  (4) a file for refinement
+-  coefficients for a starting map (map\_file=resolve.mtz)
+-  a file for refinement
    (refinement\_file=exptl\_fobs\_freeR\_flags.mtz)
--  (5) a high-resolution datafile (hires\_file=high\_res.sca)
+-   a high-resolution datafile (hires\_file=high\_res.sca)
 
 Anisotropy correction and B-factor sharpening
 ---------------------------------------------
@@ -312,6 +313,12 @@ and 1 with 1 as the free set. The CCP4 convention is values of 0 through
 Phenix and you do not need to do anything special. If you have any other
 convention (for example values of 0 to 19 and test set is 1) then you
 can specify this with test\_flag\_value.
+
+Note that phenix.refine and AutoBuild write out PDB files that contain 
+the test_flag_value.  AutoBuild can read this test_flag_value and use it
+automatically. However if there is a conflict between this test_flag_value
+and the default value based on your data file, you may have to specify which
+to use.
 
 Specifying phenix.refine parameters
 -----------------------------------
