@@ -108,6 +108,8 @@ def run (args=(), out=None, log=None) :
     raise Sorry("phenix_html repository not found.")
   rst_dir = op.join(html_dir, "rst_files")
   raw_dir = op.join(html_dir, "raw_files")
+  if (not op.isdir(raw_dir)) :
+    os.makedirs(raw_dir)
   sys.path.append(os.path.join(html_dir, "scripts")) # XXX gross!
   # FIXME these need to go away
   import create_refinement_txt
