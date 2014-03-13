@@ -756,13 +756,14 @@ in the "Wizards" section for defining the path to the Rosetta
 installation. If the GUI does not detect that you have the environment
 set up correctly, it will issue a warning when started.
 
-| The configuration tab in the GUI includes a list into which any
+The configuration tab in the GUI includes a list into which any
 combination of input files may be added; the file types should be
 recognized (and any relevant data they contain extracted, such as space
 group and MTZ label information) automatically. For more complex inputs
 involving fragment files, click the button labeled "Other inputs" below
 the list of files.
-|  |image0|
+
+  .. image:: images/mr_rosetta_config.png
 
 The number of processors to use will be set to one fewer than the total
 the number of CPU cores PHENIX thinks are available, but if you are
@@ -770,30 +771,30 @@ using a queueing system this number can be increased. You can change how
 MR-Rosetta runs child processes by clicking the "Job control" button in
 the lower left-hand corner of the configuration tab.
 
-| Because it usually takes hours to run, MR-Rosetta will always be
+Because it usually takes hours to run, MR-Rosetta will always be
 launched by the GUI as a "detached" job, meaning that you can close the
 GUI without killing the process, and resume it later. While MR-Rosetta
 is running, the current set of solutions will be continuously updated in
 a tab labeled "Current results", with the relevant score (LLG from
 Phaser, Rosetta score, or R-factor). You may view any of these solutions
 by clicking the buttons next to them.
-|  |image1|
 
-| Once the job is complete, a simply summary tab will be displayed,
+  .. image:: images/mr_rosetta_solutions.png
+
+Once the job is complete, a simply summary tab will be displayed,
 listing the output files and basic statistics such as R-factors. If the
 program was successful, the R-free will usually be below 50%, although
 this may vary depending on resolution and data quality. Buttons are
 provided to start additional programs or view the model and maps.
-|  |image2|
+
+  .. image:: images/mr_rosetta_result.png
 
 Adding a specific Rosetta command (disulfides to fix) to mr\_rosetta
 --------------------------------------------------------------------
 
 When you run mr\_rosetta you can specify a command or commands to be
 added to the Rosetta scripts. For example, if your model has disulfide
-bonds between residues 12 and 15 and between 22 and 39 you can say:
-
-::
+bonds between residues 12 and 15 and between 22 and 39 you can say::
 
     rosetta_command="-MR::disulf 12:15 22:39"
 
@@ -1139,23 +1140,6 @@ characters before the .pdb. So test.pdb is fine, but my.pdb is not.
 Literature
 ----------
 
--  Frank DiMaio, Thomas C. Terwilliger, Randy J. Read, Alexander
-   Wlodawer, Gustav Oberdorfer, Eugene Valkov, Assaf Alon, Deborah Fass,
-   Herbert L. Axelrod, Debanu Das, Sergey M. Vorobiev, Hideo Iwai, P.
-   Raj Pokkuluri & David Baker (2011) "Increasing the Radius of
-   Convergence of Molecular Replacement by Density and Energy Guided
-   Protein Structure Optimization" Nature, 473, 540-543.
--  Terwilliger TC, DiMaio F, Read RJ, Baker D, BunkÃ³ci G, Adams PD,
-   Grosse-Kunstleve RW, Afonine PV, Echols N. (2012) phenix.mr\_rosetta:
-   Molecular replacement and model rebuilding with Phenix and Rosetta.
-   J. Struct. Funct. Genomics 13:81-90.
--  DiMaio, F., Tyka, M.D., Baker, M.L., Chiu, W., Baker, D. (2009).
-   "Refinement of Protein Structures into Low-Resolution Density Maps
-   Using Rosetta" J. Mol. Biol. 392, 181-190.
-
-Additional information
-----------------------
-
-.. |image0| image:: images/mr_rosetta_config.png
-.. |image1| image:: images/mr_rosetta_solutions.png
-.. |image2| image:: images/mr_rosetta_result.png
+- CITATION:mr_rosetta
+- CITATION:mr_rosetta_icsg
+- CITATION:rosetta_density

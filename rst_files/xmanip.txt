@@ -19,21 +19,15 @@ Command line interface
 ----------------------
 
 xmanip can be invoked via the command line interface with instructions
-given in a specific definition file:
-
-::
+given in a specific definition file::
 
       phenix.xmanip params.def
 
-The full set of definitions can be obtained by typing:
-
-::
+The full set of definitions can be obtained by typing::
 
       phenix.xmanip
 
 which results in::
-
-::
 
       xmanip {
         input {
@@ -124,6 +118,7 @@ which results in::
         }
       }
 
+
 Detailed explanation of the scopes follow below.
 
 Parameters and definitions
@@ -131,8 +126,6 @@ Parameters and definitions
 
 The **xmanip.input** scope defines which files and which data xmanip
 reads in::
-
-::
 
         input {
           unit_cell = None        # unit cell. Specify when not in reflection or pdb files

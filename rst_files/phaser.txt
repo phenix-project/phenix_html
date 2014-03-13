@@ -21,8 +21,9 @@ Paul Adams for the Insulin test case diffraction data. Reference: Adams
 **Bug Reports**
 ---------------
 
-| We apologize for the bugs. Please send bug reports to
-`cimr-phaser@lists.cam.ac.uk <mailto:cimr-phaser@lists.cam.ac.uk>`__
+We apologize for any bugs. Please send bug reports to
+`cimr-phaser@lists.cam.ac.uk <mailto:cimr-phaser@lists.cam.ac.uk>`__.
+
 
 **General Strategy for Automated Molecular Replacement**
 --------------------------------------------------------
@@ -59,7 +60,7 @@ placed in the molecular replacement solution. An ensemble should only be
 defined once, even if there are several copies of the molecule in the
 asymmetric unit.
 
-| Fundamental to the way in which Phaser uses MR models (either from
+Fundamental to the way in which Phaser uses MR models (either from
 coordinates or maps) is to estimate how the accuracy of the model falls
 off as a function of resolution, represented by the Sigma(A) curve. To
 generate the Sigma(A) curve, Phaser needs to know the RMS coordinate
@@ -208,14 +209,11 @@ translation function Z-score) is high at least for the final components
 of the solution, and that the LLG (log-likelihood gain) increases as
 each component of the solution is added. For example, in the case of
 beta-blip the annotation for the single solution output in the .sol file
-shows these features
+shows these features::
 
-| SOLU SET RFZ=11.0 TFZ=22.6 PAK=0 LLG=434 RFZ=6.2 TFZ=28.9 PAK=0
-LLG=986 LLG=986
-|  SOLU 6DIM ENSE beta EULER 200.920 41.240 183.776 FRAC -0.49641
--0.15752 -0.28125
-|  SOLU 6DIM ENSE blip EULER 43.873 80.949 117.141 FRAC -0.12290 0.29306
--0.09193
+  SOLU SET RFZ=11.0 TFZ=22.6 PAK=0 LLG=434 RFZ=6.2 TFZ=28.9 PAK=0 LLG=986 LLG=986
+  SOLU 6DIM ENSE beta EULER 200.920 41.240 183.776 FRAC -0.49641 -0.15752 -0.28125
+  SOLU 6DIM ENSE blip EULER 43.873 80.949 117.141 FRAC -0.12290 0.29306 -0.09193
 
 +--------------------+---------------------------+
 | ** TF Z-score **   | ** Have I solved it? **   |

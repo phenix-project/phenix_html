@@ -41,21 +41,19 @@ The integrated MolProbity web application is at
 `http://molprobity.biochem.duke.edu/ <http://molprobity.biochem.duke.edu/>`__.
 The user is guided through a work-flow that typically consists of:
 
-#. Fetch or upload model(s)
-#. Add & optimize H atoms, with correction of Asn/Gln/His flips
-#. Calculate per-residue & global quality analyses:
-#. 
+- Fetch or upload model(s)
+- Add & optimize H atoms, with correction of Asn/Gln/His flips
+- Calculate per-residue & global quality analyses:
+   - all-atom steric clashes
+   - geometry (e.g., Cbeta or ribose pucker ideality)
+   - Ramachandran, sidechain rotamer, or RNA backbone outliers
+   - global MolProbity score
 
-   #. all-atom steric clashes
-   #. geometry (e.g., Cbeta or ribose pucker ideality)
-   #. Ramachandran, sidechain rotamer, or RNA backbone outliers
-   #. global MolProbity score
-
-#. View multi-criterion chart and/or on-line 3D KiNG graphics summaries
-#. [Optional features, e.g. interface analysis; load maps for on-line
-   viewing; Coot to-do list]
-#. Download coordinate & graphics files for further work on local
-   corrections
+- View multi-criterion chart and/or on-line 3D KiNG graphics summaries
+- [Optional features, e.g. interface analysis; load maps for on-line
+  viewing; Coot to-do list]
+- Download coordinate & graphics files for further work on local
+  corrections
 
 An increasingly broad subset of MolProbity functionalities are
 integrated directly into PHENIX for use in refinement, Resolve, and

@@ -281,14 +281,12 @@ Specific limitations and problems:
    conformations within each NCS copy. This is not absolutely required,
    however. If your PDB file contains chains that are not identical then
    NCS will be estimated from the chains you provide. It may be
-   necessary to set the parameter
+   necessary to set the parameter::
 
-::
+     simple_ncs_from_pdb.maximize_size_of_groups=True
 
-    simple_ncs_from_pdb.maximize_size_of_groups=True
-
-to get this to work if the chains have insertions, deletions, or
-sequence differences.
+   to get this to work if the chains have insertions, deletions, or
+   sequence differences.
 
 -  The size of the asymmetric unit in the SOLVE/RESOLVE portion of
    phenix.multi\_crystal\_average is limited by the memory in your
@@ -300,45 +298,10 @@ sequence differences.
 Literature
 ----------
 
-+--------------------------------------------------------------------------+
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| -------------------------------------+---------------------------------- |
-| -----------------------------------------------------+                   |
-| | **Rapid automatic NCS identification using heavy-atom substructures**  |
-| T.C. Terwilliger. `*Acta Cryst.* **D58**, 2213-2215 (2002) <http://www.i |
-| ucr.org/cgi-bin/paper?gr2270>`__     | `[pdf] <http://www.phenix-online. |
-| org/papers/gr2270_reprint.pdf>`__                    |                   |
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| -------------------------------------+---------------------------------- |
-| -----------------------------------------------------+                   |
-| | **Statistical density modification with non-crystallographic symmetry* |
-| * T.C. Terwilliger. `*Acta Cryst.* **D58**, 2082-2086 (2002) <http://www |
-| .iucr.org/cgi-bin/paper?gr2269>`__   | `[pdf] <http://www.phenix-online. |
-| org/papers/gr2269_reprint.pdf>`__                    |                   |
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| -------------------------------------+---------------------------------- |
-| -----------------------------------------------------+                   |
-| | **Maximum likelihood density modification** T. C. Terwilliger `*Acta C |
-| ryst.* **D56** , 965-972 (2000) <http://www.iucr.org/cgi-bin/paper?gr200 |
-| 6>`__                                | `[pdf] <http://www.phenix-online. |
-| org/papers/related/resolve_reprint.pdf>`__           |                   |
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| -------------------------------------+---------------------------------- |
-| -----------------------------------------------------+                   |
-| | **Map-likelihood phasing** T. C. Terwilliger `*Acta Cryst.* **D57** ,  |
-| 1763-1775 (2001) <http://www.iucr.org/cgi-bin/paper?gr2165>`__           |
-|                                      | `[pdf] <http://www.phenix-online. |
-| org/papers/related/gr2165_map_likelihood01.pdf>`__   |                   |
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| -------------------------------------+---------------------------------- |
-| -----------------------------------------------------+                   |
-                                                                          
-+--------------------------------------------------------------------------+
+  - CITATION:find_ncs
+  - CITATION:dm_ncs
+  - CITATION:dm_ml
+  - CITATION:map_ml_phase
 
 Additional information
 ----------------------

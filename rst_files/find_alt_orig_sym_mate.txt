@@ -23,18 +23,14 @@ phenix.find\_alt\_orig\_sym\_mate can be run from the GUI by clicking on
 the **Find alternate-origin symmetry mates** button under the Model
 tools category on the right hand side of the main Phenix window.
 
-|image0|
+.. image:: images/find_alt_orig_sym_mate1.png
 
 It can also be run from the command-line with PHIL input in either a
-text file or as keywords like
-
-::
+text file or as keywords like::
 
     phenix.find_alt_orig_sym_mate moving_pdb=pdbfile1 fixed_pdb=pdbfile2
 
-or
-
-::
+or::
 
     phenix.find_alt_orig_sym_mate my_phil_input.txt.
 
@@ -268,39 +264,15 @@ Newsletter 2012 January has been replaced by PHIL syntax.
 Literature
 ----------
 
-+--------------------------------------------------------------------------+
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| ------------------------------------------------------------------------ |
-| -----------------+                                                       |
-| | **Algorithms for deriving crystallographic space-group information** R |
-| . W. Große-Kunstleve `*Acta Cryst.* **A55**, 383-395 (1999) <http://dx.d |
-| oi.org/10.1107/S0108767398010186>`__                                     |
-|                  |                                                       |
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| ------------------------------------------------------------------------ |
-| -----------------+                                                       |
-| | **phenix.find\_alt\_orig\_sym\_mate** Robert D. Oeffner, Gábor Bunkócz |
-| i and Randy J. Read `*Computational Crystallography Newsletter 2012 Janu |
-| ary*, 5-10 (2012) <http://www.phenix-online.org/newsletter/CCN_2012_01.p |
-| df>`__           |                                                       |
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| ------------------------------------------------------------------------ |
-| -----------------+                                                       |
-| | **Secondary-structure matching (SSM), a new tool for fast protein stru |
-| cture alignment in three dimensions.** E. Krissinel\* and K. Henrick `*A |
-| cta Cryst.* **D60**, 2256-2268 (2004) <http://dx.doi.org/10.1107/S090744 |
-| 4904026460>`__   |                                                       |
-| +----------------------------------------------------------------------- |
-| ------------------------------------------------------------------------ |
-| ------------------------------------------------------------------------ |
-| -----------------+                                                       |
-                                                                          
-+--------------------------------------------------------------------------+
+**Algorithms for deriving crystallographic space-group information** R.W.
+Große-Kunstleve `*Acta Cryst.* **A55**, 383-395 (1999)
+<http://dx.doi.org/10.1107/S0108767398010186>`__
 
-Additional information
-----------------------
+**phenix.find_alt_orig_sym_mate** Robert D. Oeffner, Gábor Bunkóczi
+and Randy J. Read `*Computational Crystallography Newsletter 2012 January*,
+5-10 (2012) <http://www.phenix-online.org/newsletter/CCN_2012_01.pdf>`__
 
-.. |image0| image:: images/find_alt_orig_sym_mate1.png
+**Secondary-structure matching (SSM), a new tool for fast protein structure
+alignment in three dimensions.** E. Krissinel and K. Henrick
+`*Acta Cryst.* **D60**, 2256-2268 (2004)
+<http://dx.doi.org/10.1107/S0907444904026460>`__
