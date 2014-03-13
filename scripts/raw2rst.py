@@ -4,12 +4,11 @@ Ian Rees, 2014
 
 """
 
-import sys
-import os
-import glob
-import re
+from __future__ import division
 import subprocess
 import argparse
+import os
+import re
 
 # Docutils
 import docutils.core
@@ -17,27 +16,27 @@ import docutils.core
 import tidylib
 
 def convert(filename):
-  """Convert raw html fragment in filename to rst. 
-  
+  """Convert raw html fragment in filename to rst.
+
   This will create a number of files:
       filename.debug            Pre-cleaned HTML
       filename.clean.html       HTML Tidy cleaned HTML
       filename.txt              Pandoc-converted RST (main output)
       filename.txt.html         docutils RST -> HTML
-      
+
   Pandoc (command) and tidylib (module) are required dependencies.
   """
   with open(filename) as f:
     data = f.read()
-    
-  print "\n=====", filename  
+
+  print "\n=====", filename
   filename = os.path.basename(filename)
   filename = filename.rpartition(".")[0]
   prefile = '%s.debug'%filename
   outfile = '%s.clean.html'%filename
   rstfile = '%s.txt'%filename
   rsthtmlfile = '%s.txt.html'%filename
-  
+
   # Replace PHENIX comments; these are malformed (missing "-->")
   data = """<html><body>%s</html></body>"""%data
   data = re.sub("""(<!--(\s+)?REMARK PHENIX TITLE START(.*?>)?)""", "", data, flags=re.DOTALL)
@@ -58,7 +57,7 @@ def convert(filename):
   data = re.sub("""</h4>""", "</h1>", data, flags=re.I)
   data = re.sub("""<h5>""", "<h2>", data, flags=re.I)
   data = re.sub("""</h5>""", "</h2>", data, flags=re.I)
-  
+
   # The many unclosed <ul> tags are not handled well by tidy...
   # it actually works better if we just remove them all, and let tidy
   # create them from scratch around <li>'s.
@@ -66,7 +65,7 @@ def convert(filename):
   data = re.sub("""<ul>""", "", data, flags=re.I)
   # ... leave the </ul> because it clears some unclosed li's.
   # data = re.sub("""</UL>""", "", data, flags=re.I)
-  
+
   # Write debugging output.
   with open(prefile, 'w') as f:
     f.write(data)
@@ -76,7 +75,7 @@ def convert(filename):
   cleaned = str(doc)
   with open(outfile, 'w') as f:
     f.write(cleaned.encode('utf-8'))
-  
+
   # Convert to RST using Pandoc
   subprocess.check_call(['pandoc', '-s', outfile, '-t', 'rst', '-o', rstfile])
   subprocess.check_call(['pandoc', '-s', rstfile, '-t', 'html', '-o', rsthtmlfile])
@@ -89,11 +88,10 @@ def convert(filename):
   doc = docutils.core.publish_string(doc, writer_name='html')
   with open(rsthtmlfile, 'w') as f:
     f.write(doc)
-          
+
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("filenames", help="Filenames", nargs='+')
   args = parser.parse_args()
   for filename in args.filenames:
     convert(filename)
-  
