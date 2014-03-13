@@ -260,10 +260,9 @@ log-likelihood-gradient completion algorithm to add anomalous scatterers to the
 molecular replacement solution.  The resulting phases combine information from
 both sources, MR and SAD.  This procedure may be successful in situations where
 neither MR nor SAD is sufficient by itself.  To run MR-SAD, first carry out MR
-using either the Phaser-MR or AutoMR GUI; when it is finished, a button
-labelled "Run MR-SAD" will be available to launch AutoSol with the appropriate
-files pre-loaded.  All you need to do is provide the wavelength, the atom type
-for the anomalous scatterer and a rough guess of the RMSD for the MR model.
+using either the Phaser-MR or `MRage <mrage.htm>`_ GUI; 
+when it is finished, use the molecular replacement solution as a partial
+model file in the AutoSol GUI.
 
 References
 ==========
