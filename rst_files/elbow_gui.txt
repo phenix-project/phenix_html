@@ -13,7 +13,38 @@ the `LigandFit wizard <ligandfit_gui.htm>`_ and `phenix.ready_set
 to eLBOW, a separate standalone `graphical restraint editor <reel.htm>`_ is
 available for advanced customization of restraints and structures.
 
+There are actually two eLBOW GUI available in the Ligands menu. The first is
+a wizard-like interface that asks questions about the available inputs and the
+desired outcomes. The first screen asks for the basic inputs. These are 
+explained in the Input section.
+
+.. image:: images/elbow_wizard_1_2.png
+   :width: 700
+
+*Above: The first screen of the wizard-like eLBOW GUI with the Chemical
+component parameter selected.*
+
+Once the basic inputs are provided the possible geometry optimisations are
+presented for selection.
+
+.. image:: images/elbow_wizard_2_2.png
+   :width: 700
+
+*Above: The second screen of the wizard-like eLBOW GUI with the AM1 optimisation parameter selected.*
+
+The final screen is customised to show you the parameters that apply to your
+choices. You can make some more changes and "Run".
+
+.. image:: images/elbow_wizard_3.png
+   :width: 700
+
+*Above: Final screen of the wizard-like eLBOW GUI.*
+
+An advance GUI for expert or those who wish to use some of the more complicated
+parameters is available.
+
 .. image:: images/elbow_gui.png
+   :width: 800
 
 *Above: data entry window for eLBOW in the Phenix GUI.  Input parameters are
 grouped separately at top.*
@@ -44,7 +75,7 @@ sources of information may be used:
   - **Chemical Components code**: this is a three-letter residue code taken
     from the `PDB Chemical Component Dictionary
     <http://deposit.pdb.org/cc_dict_tut.html>`_.  We distribute this database
-    (in CIF format) with PHENIX; for all but a handful of molecules, the
+    (in CIF format) with Phenix; for all but a handful of molecules, the
     available data include a SMILES string, and often the geometry as well.
     If you are using a ligand already present in the PDB and know the code,
     this is probably the fastest way to run eLBOW.
@@ -68,18 +99,21 @@ the ligand in your structure and now need to refine it.
 
 A final source of information is a PDB file containing the template atom
 names; the geometry and topology information will be discarded.  If this is
-not provided, PHENIX will generate atom names for the output model and CIF
+not provided, Phenix will generate atom names for the output model and CIF
 file automatically.
 
 Output files
 ------------
 
 By default, eLBOW will generate a PDB file and a CIF file, suitable for use
-in any other PHENIX app (or third-party software).  Additional output formats
+in any other Phenix app (or third-party software).  Additional output formats
 are available and may be selected by clicking the "Output. . ." button.
-You may also manipulate other details such as chirality, ring pucker, and
-PDB file attributes (including ligand code if you are starting from a SMILES
-string).
+You may also manipulate other details such as 
+`chirality <elbow.htm#ChiralOptions>`__, 
+`Cis/Trans <elbow.htm#CisTransOptions>`__, 
+`ring pucker <elbow.htm#PuckerOptions>`__ 
+and PDB file attributes
+(including ligand code if you are starting from a SMILES string).
 
 .. image:: images/elbow_output.png
 

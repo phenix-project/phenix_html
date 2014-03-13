@@ -1,18 +1,16 @@
-eLBOW - *electronic* Ligand Builder and Optimisation Workbench
 ==============================================================
-
 *electronic* Ligand Builder and Optimisation Workbench (eLBOW)
 ==============================================================
 
 `More detailed website <../elbow/docs/index_image.html>`__
 
 Author
-------
+======
 
 Nigel W. Moriarty
 
 Purpose
--------
+=======
 
 Automate the generation of geometry restraint information for refinement
 of novel ligands and improved geometry restraint information for
@@ -62,16 +60,7 @@ the ligand to the protein. A final file contains the serialised data of
 the molecule in the Python pickle format.
 
 Examples
---------
-
-Using SMILES string from internal database
-------------------------------------------
-
-To run eLBOW on an internal SMILES string
-
-::
-
-    phenix.elbow --key=ATP [options]
+========
 
 PDB input
 ---------
@@ -173,7 +162,7 @@ geometry and position relative to a protein. To do so use
     phenix.elbow --final-geometry=input_file.pdb
 
 Output
-------
+======
 
 To choice the base name of the output files
 
@@ -216,8 +205,74 @@ To output PDB Ligand output
 
     phenix.elbow input_file.pdb --pdb-ligand
 
+Advanced options
+================
+
+.. _ChiralOptions:
+
+Chiral
+------
+
+The options for chirality are "retain" (default), "both" and "enumerate". The
+default uses the chiral centres specified in the molecule input file or
+string as the guide for specifying the chirality in the restraints. The "both"
+will set all chiral centres in the input to "both". This means that each
+chiral centre can be either one or the other.
+
+The "enumerate" option will write a restraints (CIF) and geometry (PDB) file
+for each permutation of the chiral centres. The number of permutation is 2**n
+(n = number of chiral centres). The files are labeled using the 
+`R/S notation <http://en.wikibooks.org/wiki/Organic_Chemistry/Chirality/R-S_notational_system>`__. Each file has a string listing the configuration of the
+chiral centres based on the input order, e.g. _RSR, _RSS. The unappended file
+is the input configuration.
+
+.. _CisTransOptions:
+
+Cis/Trans
+---------
+
+Cis/Trans moieties can occur centre on double bonds. SMILES can specify the 
+exact configuration. Otherwise, eLBOW choices the lowest energy configuration.
+The "retain" choice does exactly that.
+
+The "enumerate" option will write a restraints (CIF) and geometry (PDB) file
+for each permutation of the cis/trans moeity. The number of permutation is 2**n
+(n = number of cis/trans moieties). The files are labeled using the 
+`E/Z notation <http://en.wikibooks.org/wiki/Organic_Chemistry/Alkenes#EZ_Notation>`__. Each file has a string listing the configuration of the
+cis/trans moiety based on the input order, e.g. _EEZ, _ZEE. The unappended file
+is the input configuration.
+
+.. _PuckerOptions:
+
+Pucker
+------
+
+The pucker options are similar to the Chiral and Cis/Trans options. However,
+because it is a more complicated situation, the inputs are also complicated.
+Simiarly, the default is to use input and if not specified, the position of
+the groups on the ring are placed relative to the other groups on the ring
+atom randomly and in the axial (A) or equatorial (Q) position
+based on the simple force field optimisation.
+
+The "enumerate" option will write a restraints (CIF) and geometry (PDB) file
+for each permutation of the pucker group moeity. 
+The number of permutation is 2**n
+(n = number of pucker group moieties). The files are labeled using the 
+A/Q notation invented by the author. 
+Each file has a string listing the configuration of the
+pucker group moiety based on the input order, e.g. _AAA, _QAA. 
+The unappended file is the input configuration.
+
+The definition of the A and Q needs more clarification. Consider a ring in the
+chair configuration. At any atom in the ring, a group can be attached in the 
+axial or equatorial position. Whether it is an "up equatorial" or 
+"down equatorial" depends on the ring pucker and orietation.
+
+To force a ring into a specific pucker, use `REEL <reel.htm>`_. The define
+what configuration of the pucker group use the "user_defined" option.
+
 Additional programs
--------------------
+===================
 
 -  phenix.get\_smiles
 -  phenix.get\_pdb

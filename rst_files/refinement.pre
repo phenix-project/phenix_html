@@ -2168,7 +2168,21 @@ chain*. It will look for carbohydrate links, both within the sugar
 polymer and linking to the protein. Covalent bonded ligands can also be linked
 with this option.
 
-automatic_linking.intra_chain = True
+automatic_linking.link_all = True
+
+There are a number of parameters that allow the tailoring of the various
+bond class cutoffs.
+
+::
+
+  automatic_linking {
+    metal_coordination_cutoff = 3.5
+    amino_acid_bond_cutoff = 1.9
+    rna_dna_bond_cutoff = 3.5
+    inter_residue_bond_cutoff = 2.5
+    carbohydrate_bond_cutoff = 1.99
+  }
+
 
 There are also options within the automatic_linking scope for various bond
 length cutoffs.
