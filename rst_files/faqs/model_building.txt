@@ -1,16 +1,14 @@
-===================================================
-Frequently asked questions about the Phenix wizards
-===================================================
-
-**Note**: these FAQs are focused on the "wizards" (AutoSol, AutoBuild,
-and LigandFit).
+===============================================
+Frequently asked questions about model-building
+===============================================
 
 General
 -------
 
-**What can I do if a Wizard says "this version does not seem big enough"?**
 
-The Wizards try to automatically determine the size of solve or resolve,
+**What can I do if autobuild says "this version does not seem big enough"?**
+
+Autobuild tries to automatically determine the size of solve or resolve,
 but if your data is very high resolution or a very large unit cell, you
 can get the message::
 
@@ -25,28 +23,29 @@ can get the message::
   ***************************************************
 
 You cannot get rid of this problem by specifying the resolution with
-``resolution=4.0`` because the Wizards use the resolution cutoff you specify
+``resolution=4.0`` because autobuild
+use the resolution cutoff you specify
 in all calculations, but the high-res data is still carried along.
 
 The easiest solution to this problem is to edit your data file to have lower-
-resolution data. You can do it like this:
+resolution data. You can do it like this: ::
 
   phenix.reflection_file_converter huge.sca --sca=big.sca --resolution=4.0
 
 or in the GUI, use the `reflection file editor <reflection_file_editor.htm>`_.
 
-A second solution is to tell the Wizard to ignore the high-res data
-explicitly with one of these commands (or to set the resolution in the GUI)::
+A second solution is to tell autobuild to
+ignore the high-res data
+explicitly with one of these commands (on the command line or in the GUI)::
 
-  resolution=4.0 
   resolve_command="'resolution 200 4.0'" 
   solve_command="'resolution 200 4.0'" 
   resolve_pattern_command="'resolution 200 4.0'"
 
-Note the two sets of quotes; both are required for this command-line input.
+Note the two sets of quotes; both are required for this command-line input. Just one set of quotes is required in the GUI.
 These commands are applied after all other inputs in resolve/solve/resolve_pattern and therefore all data outside these limits will be ignored.
 
-**Why am I not allowed to use a file with FAVG SIGFAVG DANO SIGDANO in autosol or autobuild?**
+**Why am I not allowed to use a file with FAVG SIGFAVG DANO SIGDANO in autobuild?**
 
 The group of MTZ columns FAVG SIGFAVG DANO SIGDANO is a special one that
 should normally not be used in Phenix. The reason is that Phenix stores this
@@ -54,12 +53,12 @@ data as F+ SIGF+ F- SIGF-, but in the conversion process between F+/F- and
 FAVG/DANO, information is lost.  Therefore you should normally supply data
 files with  F+ SIGF+ F- SIGF- (or intensities), or fully merged data (F,SIG)
 to Phenix routines.  As a special case, if you have anomalous data saved as
-FAVG SIGFAVG DANO SIGDANO you can supply this to AutoSol, however this requires
+FAVG SIGFAVG DANO SIGDANO you can supply this to autosol, however this requires
 either that (1) you supply a refinement file with F SIG, or that (2) your
 data file has a separate F SIG pair of columns (other than the
 FAVG SIGFAVG columns that are part of the FAVG/DANO group).
 
-**How can I specify a mask for density modification in AutoSol/AutoBuild?**
+**How can I specify a mask for density modification in autosol/autobuild/?**
 
 In autobuild you can simply use the command::
 
@@ -121,17 +120,17 @@ by typing::
 and if it loads up (just type QUIT or END or control-C to end it) then it
 runs, and if it doesn't, there is a system mismatch.
 
-Experimental phasing (AutoSol)
+Experimental phasing (autosol)
 ------------------------------
 
-**How can I tell the AutoSol Wizard which columns to use
+**How can I tell autosol which columns to use
 from my mtz file?**
 
 In the GUI this is handled automatically, and available columns will be
 loaded into drop-down menus.  On the command line,
-the AutoSol Wizard will normally try to guess the appropriate columns
+autosol will normally try to guess the appropriate columns
 of data from an input data file.  If there are several choices, then you
-can tell the Wizard which one to use with the
+can tell autosol which one to use with the
 command_line keywords labels, peak.labels, infl.labels etc.  For
 example if you have two input datafiles w1 and w2 for a
 2-wavelength MAD dataset and you want to select the w1(+) and w1(-) data from
@@ -167,7 +166,7 @@ You can find out what your choices of labels are by running the command::
   phenix.autosol show_labels=w1.mtz
 
 This will provide a listing of the labels in w1.mtz and suggestions for their
-use in the PHENIX Wizards. For example the labels for w1.mtz yields::
+use in autosol/autobuild/ligandfit. For example the labels for w1.mtz yields::
 
   List of all anomalous datasets in  w1.mtz
   'w1(+) SIGw1(+) w1(-) SIGw1(-)'
@@ -187,7 +186,7 @@ use in the PHENIX Wizards. For example the labels for w1.mtz yields::
   input_refinement_labels='w1(+) SIGw1(+) None'
   input_map_labels='w1(+) None None'
 
-**Why do I get "None of the solve versions worked" in AutoSol?**
+**Why do I get "None of the solve versions worked" in autosol?**
 
 If you get this or a similar message for resolve, first have a look at LAST.LOG
 if it exists in your ``AutoSol_run_xx_`` or ``AutoBuild_run_xx_`` directory. The end
@@ -298,16 +297,16 @@ If you have a 20-processor machine instead, then you might say::
 so that it would run your jobs with sh on your machine, and run them all
 in the background (i.e., all at one time).
 
-**Why does the AutoBuild Wizard say it is doing 2 rebuild cycles but I specified one?**
+**Why does autobuild say it is doing 2 rebuild cycles but I specified one?**
 
 The AutoBuild wizard adds a cycle just before the rebuild cycles in which
 nothing happens except refinement and grouping of models from any previous
 build cycles.
 
 **What is the difference between overall_best.pdb and cycle_best_1.pdb
-in the AutoBuild Wizard?**
+in autobuild?**
 
-The AutoBuild Wizard saves the best model (and map coefficient file, etc)
+Autobuild saves the best model (and map coefficient file, etc)
 for each build cycle nn as cycle_best_nn.pdb.  Also the Wizard copies the
 current overall best model to overall_best.pdb.  In this way you can always
 pull the overall_best.pdb file and you will have the current best model.
@@ -315,12 +314,12 @@ If you wait until the end of the run you will get a summary that lists
 the files corresponding to the best model. These will have the same contents
 as the overall_best files.
 
-**How do I tell AutoBuild to use phenix.refine maps instead of density-modified maps for model-building?**
+**How do I tell autobuild to use phenix.refine maps instead of density-modified maps for model-building?**
 
 To use the phenix.refine maps instead of density-modified maps, use the keyword
 ``two_fofc_in_rebuild=True``.
 
-**How do I include a twin law for refinement in AutoBuild?**
+**How do I include a twin law for refinement in autobuild?**
 
 You can include the twin law in autobuild for refinement with the keyword
 ``refine_eff_file=refinement_params.eff``, where refinement_params.eff says
@@ -336,16 +335,16 @@ something like::
 
 **AutoBuild seems to be taking a long time. What is the usual time for a run?**
 
-For typical structures, AutoBuild runs can take from 30 minutes to several days
+For typical structures, autobuild runs can take from 30 minutes to several days
 using a single processor.  You can speed up your jobs by using several
-processors with a command such as "nproc=4". for AutoBuild you
+processors with a command such as "nproc=4". for autobuild you
 can speed up by up to a factor of 5 in this way.  You can also speed up
-rebuild_in_place AutoBuild jobs (where your model is being adjusted, not
+rebuild_in_place autobuild jobs (where your model is being adjusted, not
 built from scratch) by specifying fewer cycles:
 "n_cycle_rebuild_max=1" will use 1 cycle of rebuilding instead
 of the usual 5. Often that is plenty.
 
-**Why does AutoBuild bomb and say "Corrupt gradient calculations"?**
+**Why does autoauild bomb and say "Corrupt gradient calculations"?**
 
 If an atom is placed very near a special position then sometimes refinement
 will fail and an error message starting with
@@ -359,9 +358,9 @@ can also try setting correct_special_position_tolerance=0 (to turn off
 the check) or correct_special_position_tolerance=5 (to check over a wider
 range of distances from the special position; default=1).
 
-**Why does AutoBuild bomb and say it cannot find a TEMP file?**
+**Why does autobuild bomb and say it cannot find a TEMP file?**
 
-By default the AutoBuild Wizard splits jobs into one or more parts
+By default autobuild splits jobs into one or more parts
 (determined by the parameter "nbatch") and runs
 them as sub-processes.  These may run sequentially or in parallel,
 depending on the value of the parameter "nproc" . In some cases the
@@ -396,22 +395,22 @@ Autobuild treats ligands as a fixed structure during model building and in
 omit maps, only adjusted during refinement, which is what you want in this
 case.
 
-**Why does the AutoBuild Wizard just stop after a few seconds?**
+**Why does autobuild just stop after a few seconds?**
 
-When you run AutoBuild from the command line it writes the output to a file
+When you run autobuild from the command line it writes the output to a file
 and says something like::
 
   Sending output to  AutoBuild_run_3_/AutoBuild_run_3_1.log
 
 Usually if something goes wrong with the inputs then it will give you
 an error message right on the screen. However a few types of errors are only
-written to the log file, so if AutoBuild just stops after a few seconds,
+written to the log file, so if autobuild just stops after a few seconds,
 have a look at this log file and it should have an error message at the
 end of the file.
 
 **What is an R-free flags mismatch?**
 
-When you run AutoBuild or phenix.refine you may get this error message or
+When you run autoBuild or phenix.refine you may get this error message or
 a similar one::
 
   ************************************************************
@@ -444,7 +443,7 @@ even though they are for all practical purposes equivalent. In this case
 you would want to ignore the hex-digest warning.
 
 If you get an  R-free flags mismatch error,
-you can tell the AutoBuild Wizard to ignore the warning with::
+you can tell autobuild to ignore the warning with::
 
   skip_hexdigest=True
 
@@ -455,7 +454,7 @@ and you can tell phenix.refine to ignore it with::
 You can also simply delete the REMARK record from your PDB file if you wish
 to ignore the hex-digest warnings.
 
-**Can I use the AutoBuild wizard at low resolution?**
+**Can I use the autobuild wizard at low resolution?**
 
 The standard building with AutoBuild does not work very well at
 resolutions below about 3-3.2 A.  In particular, the wizard tends to build
@@ -465,7 +464,7 @@ the wizard will just build regions that are helical or beta-sheet, using
 a completely different algorithm. This is much
 quicker than standard building but much less complete as well.
 
-**My AutoBuild composite OMIT job crashed because my computer crashed. Can I
+**My autobuild composite OMIT job crashed because my computer crashed. Can I
 go on without redoing all the work that has been done?**
 
 Yes, but it involves several steps:
@@ -556,12 +555,12 @@ The RESOLVE database doesn't have RNA+protein in it, nor does it have low-resolu
 
 which should match what you pasted in to the rho.list file...so you know it took your histograms.
 
-**If I run AutoBuild with after_autosol=True, how do I know which run of
-AutoSol it will use?**
+**If I run autobuild with after_autosol=True, how do I know which run of
+autosol it will use?**
 
-AutoBuild will look through all the autosol runs and choose the solution
+Autobuild will look through all the autosol runs and choose the solution
 with the highest final score, and use that one.  You can see this near the
-beginning of the AutoBuild run::
+beginning of the autobuild run::
 
   Appending solution 4060.75360229 1 75.3602294036
   exptl_fobs_phases_freeR_flags_1.mtz solve_1.mtz
@@ -572,8 +571,8 @@ beginning of the AutoBuild run::
 In this case it took run 2 with the solution solve_1.mtz with score of
 4060.7 over the solution solve_2.mtz with score of 59.
 
-If you want to choose a different AutoSol solution, then you will need to
-explicitly tell AutoBuild all the files that you want to use::
+If you want to choose a different autosol solution, then you will need to
+explicitly tell autobuild all the files that you want to use::
 
   phenix.autobuild data=AutoSol_run_5_/exptl_fobs_freer_flags_3.mtz \
   map_file=AutoSol_run_5_/resolve_3.mtz \
@@ -595,7 +594,7 @@ Notes:
   ``AutoBuild_run_5_/AutoBuild_summary.dat`` which lists the solutions for run
   5, and all the files that go with each solution.
 
-**Is there a way to use AutoBuild to combine a set of models created by
+**Is there a way to use autobuild to combine a set of models created by
 multi-start simulated annealing?**
 
 You can do this in two ways. Both involve the keyword::
@@ -626,7 +625,7 @@ Maps
 
 **How can I include high-resolution data and phase extend my map?**
 
-You can do this in AutoBuild with::
+You can do this in autobuild with::
 
   phenix.autobuild data=data.mtz hires_file=high_res_data.mtz maps_only=True
 
