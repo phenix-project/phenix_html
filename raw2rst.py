@@ -31,7 +31,6 @@ def convert(filename):
       
   Pandoc (command) and tidylib (module) are required dependencies.
   """
-def convert(filename):
   with open(filename) as f:
     data = f.read()
     
