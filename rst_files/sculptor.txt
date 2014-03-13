@@ -27,8 +27,23 @@ Usage
 Sculptor can be run from the PHENIX GUI and the command line, the only
 difference being the way commands are taken from the user.
 
+The graphical user interface makes all settings accessible either as
+part of the main window (for frequently used options) or through a
+series of dialog boxes under **Settings for:**:
+  - *Main-chain removal*
+  - *Main-chain polishing*
+  - *Sidechain pruning*
+  - *B-factors*
+  - *Renumbering*
+  - *Renaming*
+
+The input PDB file is specified in the **PDB file:** input line, while
+alignments and target sequences can be added through the
+*Sequence alignment files...* and the *Sequence files...* dialog boxes,
+respectively.
+
 Input files
------------
++++++++++++
 
 -  **Structures** *(compulsory)*. The structure to be modified. Specific
    parts can be selected using CNS-style atom selection syntax. Chains
@@ -57,54 +72,8 @@ Input files
    format, ``.pir`` for PIR-format and ``.seq`` or ``.dat`` for a
    relaxed PIR/FASTA-like format.
 
-Command line
-------------
-
-::
-
-    phenix.sculptor \
-        [ command-line switches ] \
-        [ PHIL-format parameter files ] \
-        [ PHIL command-line assignments ] \
-        [ PDB-files ] \
-        [ alignment files ]
-
-Command-line switches:
-
-
-::
-
-
-      -h, --help            show this help message and exit
-      --show-defaults       print PHIL and exit
-      -i, --stdin           read PHIL from stdin as well
-      -v, --verbosity       set verbosity level (DEBUG,INFO,WARNING,VERBOSE)
-      --mode                set mode (flexible,predefined)
-
-PHIL arguments:
-
-
-Everything not starting with a dash ('-') is interpreted as a PHIL
-argument. This can be a PHIL-format file containing parameters,
-command-line assignment or a file whose type is automatically recognized
-(based on file extension). Note that sequence files are not accepted on
-the command line, since associated chains could not easily be guessed
-and require a fully specified parameter scope.
-
-GUI
----
-
-The graphical user interface makes all settings accessible either as
-part of the main window (for frequently used options) or through a
-series of dialog boxes under **Settings for:**: *Main-chain removal*,
-*Main-chain polishing*, *Sidechain pruning*, *B-factors*, *Renumbering*
-and *Renaming*. The input PDB file is specified in the **PDB file:**
-input line, while alignments and target sequences can be added through
-the *Sequence alignment files...* and the *Sequence files...* dialog
-boxes, respectively.
-
 Output files
-------------
+++++++++++++
 
 In ``flexible`` mode, the fully processed structure is output. The file
 is named according to the following convention: ``root_pdb.pdb``, where
@@ -114,8 +83,8 @@ scope), and ``pdb`` is the basename of the input PDB file. In
 protocol, and named according to ``root_pdb_N.pdb``, where N is the
 number of the corresponding protocol.
 
-Description
------------
+Outline of the procedure
+------------------------
 
 The workflow consists of several stages that can be independently
 configured. These are listed in order of execution.For a summary of all
@@ -123,7 +92,7 @@ keywords with the corresponding defaults, see the **Additional
 information** section.
 
 Preprocessing
--------------
++++++++++++++
 
 -  ``selection``: selects a subset of the input PDB file, using
    CNS-style atom selection syntax. Default: ``all``.
@@ -137,10 +106,10 @@ separated from protein chains if they are not separated by ``TER``
 cards.
 
 Protein chains
---------------
+++++++++++++++
 
 Deletion
-
+########
 
 Discards residues from a model chain that are unlikely to improve signal
 in molecular replacement. This information is calculated from the
@@ -170,7 +139,7 @@ case, a residue will be deleted if assigned for deletion by any active
 algorithms.
 
 Polishing
-
+#########
 
 Makes small adjustments to the mainchain of a chain (taking results from
 deletion into account) to make it obey basic macromolecular features.
@@ -190,7 +159,7 @@ These algorithms can also be used together in combination. In this case,
 the chain will be processed sequentially by both algorithms.
 
 Pruning
-
+#######
 
 This phase determines the level distance from the C\ :sub:`alpha` atom
 up to which a residue sidechain in the model is potentially similar to
@@ -221,7 +190,7 @@ These algorithms can also be used together in any combination, in which
 case the sidechain will be truncated to the shortest value suggested.
 
 B-factor prediction
-
+###################
 
 B-factor prediction tries to increase B-factors for atoms that are
 likely to be more flexible or more in error. The calculation takes
@@ -251,13 +220,13 @@ similarity or accessible surface area to residues/atoms for display
 purposes.
 
 Renumber
-
+########
 
 Renumbers residues according to the ``target`` or ``model`` sequence. It
 is also possible to turn renumbering off (option ``original``).
 
 Rename
-
+######
 
 Renames residues according their counterpart in the target sequence. It
 also "morphs" the sidechain, i.e. renames atoms and deletes atoms that
@@ -275,6 +244,8 @@ Residues in these chains are normally deleted, unless an exception is
 made by specifying the residue codes that are to be retained. This is
 primarily intended to keep a known ligands of protein classes (e.g.
 HEM).
+
+.. _ssim:
 
 Sequence similarity calculation
 -------------------------------
@@ -294,11 +265,44 @@ for the scoring matrix.
 Sequence similarity calculation is configured individually for the steps
 that are using it.
 
+Command line
+------------
+
+::
+
+    phenix.sculptor \
+        [ command-line switches ] \
+        [ PHIL-format parameter files ] \
+        [ PHIL command-line assignments ] \
+        [ PDB-files ] \
+        [ alignment files ]
+
+Command-line switches:
+
+
+::
+
+
+      -h, --help            show this help message and exit
+      --show-defaults       print PHIL and exit
+      -i, --stdin           read PHIL from stdin as well
+      -v, --verbosity       set verbosity level (DEBUG,INFO,WARNING,VERBOSE)
+      --mode                set mode (flexible,predefined)
+
+PHIL arguments:
+
+Everything not starting with a dash ('-') is interpreted as a PHIL
+argument. This can be a PHIL-format file containing parameters,
+command-line assignment or a file whose type is automatically recognized
+(based on file extension). Note that sequence files are not accepted on
+the command line, since associated chains could not easily be guessed
+and require a fully specified parameter scope.
+
 Specific limitations and possible problems
 ------------------------------------------
 
 Processing features
--------------------
++++++++++++++++++++
 
 -  Very short residue segments (shorter than 3 consecutive residues)
    cannot be reliably aligned to the sequence, and these will be
@@ -315,7 +319,7 @@ Processing features
    residue).
 
 Error messages
---------------
+++++++++++++++
 
 -  ``No pdb files specified``: there are no PDB files to process.
 -  ``No atoms left after atom selection``: the atom selection provided
@@ -332,7 +336,7 @@ Error messages
    40%), and it is likely that the alignment is incorrect.
 
 Warning messages
-----------------
+++++++++++++++++
 
 -  ``There are N sequences with longest overlap``: N sequences give
    identical matching statistics with the current chain. Lacking other
@@ -353,12 +357,13 @@ Warning messages
    chains contains multiple sequences. The first sequence will be
    accepted as correct.
 
-Literature
+References
 ----------
 
--  **The importance of alignment accuracy for molecular replacement.**
-   R. Schwarzenbacher, A. Godzik, S. K. Grzechnik and L. Jaroszewski
-   *Acta Cryst.* **D60**, 1229-1236 (2004)
+.. [Schwarzenbacher2004]
+**The importance of alignment accuracy for molecular replacement.**
+R. Schwarzenbacher, A. Godzik, S. K. Grzechnik and L. Jaroszewski
+*Acta Cryst.* **D60**, 1229-1236 (2004)
 
 Citation
 --------
