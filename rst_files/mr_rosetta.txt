@@ -24,12 +24,12 @@ unlikely to be successful. The reason is that Rosetta homology modeling
 makes strong use of the sequence, so if your alignment is incorrect you
 are essentially trying to build the wrong molecule.
 
-The basic process is to find MR solutions with automr, rebuild them with
+The basic process is to find MR solutions with Phaser, rebuild them with
 Rosetta, then rebuild those models with phenix.autobuild. The
 combination of Rosetta rebuilding and phenix rebuilding is the key part
 of this method. In slightly more detail, this process is to select
 possible MR solutions (one of which must later be shown to be correct
-for the procedure to succeed)with automr (Phaser), score with LLG
+for the procedure to succeed)with Phaser, score with LLG
 following Rosetta relaxation, pick the best solutions, rebuild each of
 these with Rosetta including map information (density term), score the
 resulting models with Rosetta, select the highest and score with LLG,
@@ -47,7 +47,7 @@ in any models assembled by mr\_rosetta.
 NOTE: if your molecule has multiple chain types, then you cannot use the
 simple hhr file input (see below) and you cannot automatically run
 pre-refinement with rosetta on your molecule. Instead you need to use
-mr\_model\_preparation and phenix.automr to place your model. Then you
+mr\_model\_preparation and Phaser to place your model. Then you
 can supply the aligned, placed structure to mr\_rosetta for rebuilding.
 Additionally in this case you will need to supply a different set of
 fragments files for each chain type.
@@ -113,7 +113,7 @@ supply the aligned model to mr\_rosetta.
 
 NOTE 2: If your structure contains more than one chain or requires more
 than one homology model to represent the structure, then you need to use
-mr\_model\_preparation and phenix.automr to place your model. Then you
+mr\_model\_preparation and Phaser to place your model. Then you
 can supply the aligned, placed structure to mr\_rosetta for rebuilding.
 
 -  NOTE: The steps below are carried out for each model/alignment file
@@ -130,7 +130,7 @@ can supply the aligned, placed structure to mr\_rosetta for rebuilding.
    Rosetta using the standard Rosetta energy functions and a fragments
    library specific to the target sequence to fill in gaps. (If no gaps
    are present, no fragments files are necessary).
--  Run automr to find molecular replacement solutions (default
+-  Run Phaser to find molecular replacement solutions (default
    number\_of\_output\_models=5).
 -  Refine (if refine\_after\_mr=True) each MR solution with refine. Use
    resulting 2mFo-DFc map as starting point for density modification,

@@ -3,8 +3,7 @@ Frequently asked questions about the Phenix wizards
 ===================================================
 
 **Note**: these FAQs are focused on the "wizards" (AutoSol, AutoBuild,
-and LigandFit), except for AutoMR, whose functionality is covered in the
-separate `molecular replacement FAQs <faqs_mr.htm>`_.
+and LigandFit).
 
 General
 -------
@@ -410,21 +409,6 @@ conformation)::
 Autobuild treats ligands as a fixed structure during model building and in
 omit maps, only adjusted during refinement, which is what you want in this
 case.
-
-**Why does the AutoBuild Wizard say ``Sorry, you need to
-define FP in labin`` but AutoMR was able to read my data file just fine?**
-
-When you run AutoMR and let it continue on to the AutoBuild Wizard
-automatically, the AutoBuild wizard guesses the input file contents
-separately from AutoMR.  Usually it can guess correctly, but if it
-cannot then you can tell it what the labels for FP SIGFP FreeR_flag are
-like this::
-
-  autobuild_input_labels="myFP mySIGFP myFreeR_flag"
-
-where you can say ``None`` for anything that you do not want to define.
-This has an effect that is identical to specifying ``input_labels``
-directly when you run AutoBuild.
 
 **Why does the AutoBuild Wizard just stop after a few seconds?**
 

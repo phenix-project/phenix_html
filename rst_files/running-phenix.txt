@@ -51,16 +51,19 @@ flag --help :
     phenix.refine --help
 
 There are also many other command line tools (described in detail
-elsewhere in this documentation). If you use a shell with command
-completion, you can type the first part of a command, hit the command
-list key (<ctrl>-D in tcsh) and see a list of the available commands.
-For example, this is the start of the list of commands that begin with
-phenix.auto:
+elsewhere in this documentation). You can list them all with
 
 ::
 
-    phenix.autobuild      phenix.automr         phenix.autosol
-    phenix.autobuild_1.3  phenix.automr_1.3     phenix.autosol_1.3
+   phenix.list
+
+or alternatively:
+
+::
+   phenix.list ave
+
+to list all methods that contain the characters ave in their names or
+descriptions.
 
 Note: all commands have their regular name and name qualified with the
 version. You can always use the version-qualified name to ensure which
@@ -94,7 +97,6 @@ GUI. Details on wizards can be found in:
 
 -  `Using the PHENIX Wizards <running-wizards.htm>`__
 -  `Automated Structure Solution using AutoSol <autosol.htm>`__
--  `Automated Molecular Replacement using AutoMR <automr.htm>`__
 -  `Automated Model Building and Rebuilding using
    AutoBuild <autobuild.htm>`__
 -  `Automated Ligand Fitting using LigandFit <ligandfit.htm>`__

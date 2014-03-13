@@ -33,11 +33,11 @@ correction, likelihood enhanced fast rotation function, likelihood
 enhanced fast translation function, packing and refinement modes for
 multiple search models and a set of possible spacegroups.
 
-The PHENIX AutoMR wizard runs Phaser in default mode and allows some key
+`MRage <MRage.htm>`_ runs Phaser in default mode and allows some key
 changes to the default mode which may give structure solution in more
 difficult cases. Experience has shown that most structures that can be
 solved by Phaser can be solved by relatively simple strategies. However,
-if the AutoMR wizard doesn't give a solution even with non-default input
+if MRage doesn't give a solution even with non-default input
 you need to run Phaser outside the wizard to access the full range of
 Phaser control options. This can be done in the `PHENIX graphical
 interface <phenix_gui.htm>`__ by running the `Phaser-MR
@@ -151,7 +151,7 @@ protein and the base sequence of the nucleic acid in fasta format.
 **How to Select Peaks**
 -----------------------
 
-If the AutoMR wizard fails to find a solution with default input, a
+If the MRage fails to find a solution with default input, a
 solution may be found by changing the default selection criteria for
 peaks from the rotation function that are carried through to the
 translation funciton. The selection criterion can be changed by choosing

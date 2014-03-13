@@ -126,15 +126,11 @@ Phasing
 Molecular replacement
 ---------------------
 
-  - `AutoMR <automr_gui.htm>`_: automated molecular replacement using Phaser;
-    feeds directly into AutoBuild.  (This is also the starting point for
-    running MR-SAD.)  There are two interfaces, one for simple structures
-    with one or more copies of a single chain, and a more complex interface
-    for heterogeneous structures.
+  - `MRage <mrage.htm>`_: automated molecular replacement using Phaser;
 
   - `Phaser-MR <phaser_mr.htm>`_: Interface for molecular replacement using
     standalone `Phaser <phaser.htm>`_, with all parameters available as well
-    as different modes of operation.  We recommend starting with AutoMR
+    as different modes of operation.  We recommend starting with MRage 
     first, but this GUI is useful for tough cases.
 
   - `MR-Rosetta <mr_rosetta.htm>`_: automation pipeline for exceptionally
