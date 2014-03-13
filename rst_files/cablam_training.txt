@@ -1,0 +1,76 @@
+==========================================
+Structure Exploration with CaBLAM Training
+==========================================
+
+Authors
+=======
+
+cablam_training: Christopher Williams (Richardson Lab, Duke University)
+
+Purpose
+=======
+
+cablam_training is primarily a set of developer tools for exploring protein structure conformation.  It provides tools for assessing protein geometry, with both traditional measures and with the idiosyncratic CaBLAM measures.  It contains tools for identifying known and novel motifs based on hydrogen bonding, amino acid sequence, and other properties.  And it contains tools for extracting motif and structure information into forms usable by CaBLAM validation for assessing low-resolution protein structures.
+
+For information on cablam_validate, the main user-end interface for CaBLAM, please refer to the `documentation for CaBLAM Validation <cablam_validation.htm>`_.
+
+The Short Version
+=================
+Running "*phenix.cablam_training help=True*" on the commandline will provide fairly complete documentation.  This document is intended to expand on and supplement that documentation, not replace it.
+
+How CaBLAM Training Works
+=========================
+For each residue in a submitted structure file, cablam_training calculates several geometry measures selected by the user.  It will print these measures for various user-defined selections.  These selections may be residues of a certain type or may be residues that are members of a structural motif of interest.
+
+Available Measures
+==================
+Many standard measures are available through cablam_training.  These include:
+- *rama=True* for Ramachandran dihedrals
+- *exrama=True* for expanded Ramachandran dihedrals, that is psi-1 and phi+1 in addition to phi and psi
+- *tau=True* for the N-CA-C backbone angle
+- *omega=True* for the peptide bond dihedral (used to define if a residue is *cis* or *trans*)
+
+CaBLAM measures
+---------------
+The CaBLAM system uses some idiosyncratic measures of protein geometry.
+- Two CA-defined pseudo dihedrals.  For residue i, CA_d_in (aka mu in) is defined by the CA positions of i-2,i-1,i,i+1 and CA_d_out (aka mu out) is defined by the CA positions of i-1,i,i+1,i+2.
+- One dihedral that relates peptide plane orientation across the residue.  For residue i, CO_d_in (aka nu) is defined by O(i-1), a virtual atom in i-1, a virtual atom in i, and O(i).  The virtual atoms are defined at the perpendicular intersection of O and the CA-CA line through the residue.
+-The CA virtual angle.  For residue 1, CA_a is defined by the CA positions o i-1,i,i+1.
+*cablam=True* will return these measures and is the recommended output selection for cablam_training.
+
+Some other measures are available as artifacts of the initial training and measure selection process.  CO_d_out is equivalent to CO_d_in, but is calculated using the current and succeeding residues.  CA_a_in and CA_a_out are the virtual angles for the preceding and succeeding residues.  None of these measures are recommended as more than curiosities.
+
+Quality Control
+===============
+Quality filtering your data is extremely important.  cablam_training provided a few tools for this at the residue level. Not that because the CaBLAM measures for each residue are dependent on many of that residue's neighbors, pruning one residue with these controls will remove reporting for other residues in its proximity.  This is judged worthwhile in the interests of quality, but users should be aware.
+
+- *b_max=#.#* Sets a B-factor cutoff.  Residues with any mainchain atom (N, CA, C, O) with a B higher than this number will be excluded from all calculations.  Using *b_max=30.0* or stricter is strongly recommended unless you have good reason not to.
+- *prune_alts=True/False* Residues with alternate conformations for any mainchain atom are excluded from all calculations.  Useful if alternates are modeled inconsistently.  Default behavior uses the first alt (and only the first alt) for each residue.
+- *prune=restype1,restype2* Residues of the listed (3-letter) residue types are excluded form all calculations.  *prune=GLY,PRO* will totally remove the effects of the "weird" residues from the reporting, for better or worse.
+
+Other Output Options
+====================
+The default printing is comma-separated text, with a column for the residue id and columns for each of the user-requested measures.  A few modifications to this are possible:
+- *give_kin=True* instead of .csv format, prints a multidimensional point cloud in .kin format for use with the KiNG viewer.
+- *cis_or_trans=cis/trans/both* selects whether cis-peptides, trans-peptides, or both will be printed.  The default is "both". *omega=True* **must** be used with this option.
+- *skip_types=restype1,restype2* Similar to *prune* in quality control, but less severe.  Ignores these types for output, but not for calculation, so their neighbors can still be evaluated.
+- *include_types=restype1,restype2* Works with *skip_types*  If only include_types is used, only the listed restypes will be printed. If include_types and skip_types are both used, then the types given to include_types will override those skipped by skip_types.  Sequence relationships may be represented with underscores.
+
+Motif Searching
+===============
+Motif searching is another groups of output modes dedicated to looking at entire motifs, rather than individual residues.  Motifs are primarily defined by hydrogen bonding pattern, but may also require specific residue types and cis/trans peptides.
+
+Motif searching is activated by giving *probe_motifs=* one or more motifs to look for.  Available motif names may be found with *list_motif=True*, or ambitious users may define their own.  See mmtbx/cablam/fingerprints/how_to.py for details (how_to.py is not an actual script, it's a .py so that fancy editors will color the example code correctly.)
+
+Because motifs are defined by hydrogen bonds, hydrogens and phenix.probe information, motif search will run phenix.reduce and phenix.probe for each file unless a precomputed .probe file is provided via *probe_path=path/to/probefiles*.  If you expect to run motif searching many times, it may be worth precomputing these files.  Run the following command on a phenix.reduce'd .pdb file to generate an appropriate file:
+- *phenix.probe -u -condense -self -mc -NOVDWOUT -NOCLASHOUT ALL filename.pdb > filename.probe* if you need sidechain H-bonding information
+- *phenix.probe -u -condense -self -mc -NOVDWOUT -NOCLASHOUT MC filename.pdb > filename.probe* if you only need mainchain H-bonding
+
+Motif Search Outputs
+--------------------
+These outputs generate automatically-named files in the working directory.  These files may overwrite each other if the program is called multiple times.
+
+- *probe_mode=kin* returns an automatically-named .kin file for each member residue in each motif.  The kins are high-dimensional dotlists containing the measures specified in the commandline (see above for options) for each residue that falls in the specified place in the motif.  Recommended for finding motifs of interest within large filesets.
+- *probe_mode=instance* returns an automatically-named vectorlist kinemage file for each motif of interest.  Each kin is a high-dimensional vectorlist that shows the path of a multi-residue motif through the measures specified in the commandline.  An alternative way to view the information available through *probe_mode=kin*
+- *probe_mode=annote* returns an automatically-named kinemage file for each pdb file. These kins are balllists that highlight the selected motifs of interest if appended to existing kinemages of the structures.  Recommended to aid close inspection of motifs in single files of interest.
+
