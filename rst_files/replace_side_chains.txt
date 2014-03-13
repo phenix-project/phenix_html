@@ -1,0 +1,59 @@
+Replace side chains in a model to match the sequence with replace\_side\_chains
+===============================================================================
+
+Author(s)
+---------
+
+-  replace\_side\_chains: Tom Terwilliger
+
+Purpose
+-------
+
+replace\_side\_chains is a tool to take a main-chain model and to add
+side-chains from a rotamer library based on an electron density map.
+
+NOTE: Normally this method is called from phenix.phase\_and\_build but
+you can use it interactively if you want.
+
+Usage
+-----
+
+How replace\_side\_chains works:
+--------------------------------
+
+replace\_side\_chains uses resolve to replace the side chains in a
+model. You can choose to use the default resolve rotamer library or the
+Lovell et al penultimate rotamer library.
+
+*Output files from replace\_side\_chains*
+-----------------------------------------
+
+**replace\_side\_chains.pdb**: A PDB file with side chains replaced.
+
+Examples
+--------
+
+Standard run of replace\_side\_chains:
+--------------------------------------
+
+Running replace\_side\_chains is easy. From the command-line you can
+type:
+
+::
+
+    phenix.replace_side_chains  model.pdb map_coeffs.mtz sequence.dat
+
+You should supply a sequence file that matches the sequence of the
+model.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

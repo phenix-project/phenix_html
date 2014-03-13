@@ -1,0 +1,77 @@
+Building starting with a very poor map with parallel\_autobuild
+===============================================================
+
+**Authors**
+-----------
+
+parallel\_autobuild: Tom Terwilliger
+
+**Purpose**
+-----------
+
+The goal of parallel\_autobuild is to build models starting from very
+poor maps. In this situation most of the models created by autobuild are
+not very good, but some will be a little better than others. The
+strategy is to find these slightly-better models and iterate
+model-building based on them.
+
+The working hypothesis for parallel\_autobuild is that the quality of
+the starting map is a key determinant of how good the final model will
+be. The strategy is then to take a starting map and data, get the best
+model from this starting point, and use it to calculate a new starting
+map that is hopefully a little better than the first one. Iterating this
+process may finally lead to a starting map that is good enough to yield
+a complete model.
+
+**How parallel autobuild works**
+--------------------------------
+
+parallel\_autobuild is a tool to carry out the process of picking good
+models from many autobuild runs automatically. It will run parallel jobs
+of phenix.autobuild, identify the best model and the corresponding map,
+then take the best map as the starting point for another cycle of
+building.
+
+The choice of what is the best model is not always obvious.
+Parallel\_autobuild uses the R-values of the models to make this choice
+if the R is less than 0.50 (by default), and if all R-values are higher,
+the map correlation of each model to its corresponding density-modified
+map is used to make the choice.
+
+**Inputs for parallel autobuild**
+---------------------------------
+
+The inputs for parallel autobuild are the same as for autobuild, with
+the addition of a few control parameters. Also parallel autobuild
+requires you to specify what each input file is (it won't guess). The
+main parameters are the number of processors to use, the number of
+overall cycles, and the number of parallel autobuild jobs to be run in
+each cycle. The number of processors available for each autobuild job
+then determines how many models are built in each autobuild cycle.
+
+You can also specify whether the model obtained on each cycle is to be
+used in the next cycle (by default, if you supply a starting model the
+model obtained each cycle is used, and if you do not, it is tossed and
+only the new map is used.)
+
+A run\_command keyword allows you to specify how jobs are to be run.
+Parallel autobuild can be run on a queueing system (with a command such
+as qsub) or on a multiprocessor machine (e.g., with sh).
+
+**Possible Problems**
+---------------------
+
+**Specific limitations:**
+-------------------------
+
+Parallel\_autobuild does not recombine models from different parallel
+runs. It is possible that the use of phenix.combine\_models with
+parallel\_autobuild could further improve its performance.
+
+**References:**
+---------------
+
+    -  CITATION:autobuild
+
+**Keywords:**
+-------------

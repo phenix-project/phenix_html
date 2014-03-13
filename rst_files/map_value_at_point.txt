@@ -1,0 +1,26 @@
+
+phenix.map_value_at_point: tool to compute map value at a given point using
+eight-point interpolation.
+
+Inputs:
+  - MTZ file containing Fourier map coefficients;
+  - label selecting which map coefficients should be used (in case there are
+    multiple choices in input file, there is no need to provide label otherwise);
+  - the coordinates of points at which the map value will be computed can be
+    defined in two ways: either providing a triplet of xyz coordinates using
+    'point' keyword, or giving a PDB file in the command line in which case the
+    atomic coordinates will serve as points;
+  - optionally the 'resolution_factor' can be specified. It defines the map
+    calculation grid step as grid_step=resolution_factor*d_min
+  - optionally, type of map scaling can be defined: sigma or volume scaled
+    (sigma is the default).
+
+Usage examples:
+  1. phenix.map_value_at_point map_coeffs.mtz point="0.5 1.2 3" point="0.53 3.3 2.5" label="2mFo-DFc"
+  2. phenix.map_value_at_point map_coeffs.mtz model.pdb
+  3. phenix.map_value_at_point map_coeffs.mtz model.pdb point="1 2 3" resolution_factor=0.3
+
+  IMPORTANT: point must be a triplet of Cartesian coordinates (not fractional)!
+
+Output:
+  list of map values at specified points.

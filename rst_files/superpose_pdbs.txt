@@ -1,0 +1,72 @@
+Superimposing two PDB files with superpose\_pdbs
+================================================
+
+Author(s)
+---------
+
+-  superpose\_pdbs: Peter Zwart, Pavel Afonine, Ralf W. Grosse-Kunstleve
+
+Purpose
+-------
+
+superpose\_pdbs is a command line tool for superimposing one PDB model
+on another and writing out the superimposed model.
+
+Usage
+-----
+
+How superpose\_pdbs works:
+--------------------------
+
+superpose\_pdbs performes a least-squares superposition of two selected
+parts from two pdb files. If no selections is provided for fixed and
+moving models the whole content of both input PDB files is used for
+superposition. If the number of atoms in fixed and moving models is
+different and the models contain amino-acid residues then the sequence
+alignment is performed and the matching residues (CA atoms by default,
+can be changed by the user) are used for superposition. Note that
+selected (and/or matching) atoms are the atoms used to find the
+superposition operators while these operators are applied to the whole
+moving structure.
+
+*Output files from superpose\_pdbs*
+-----------------------------------
+
+A PDB file with fitted model.
+
+Examples
+--------
+
+Standard run of superpose\_pdbs:
+--------------------------------
+
+Running the superpose\_pdbs is easy. From the command-line you can type:
+
+::
+
+    phenix.superpose_pdbs fixed.pdb moving.pdb
+
+Parameters can be changed from the command line:
+
+::
+
+    phenix.superpose_pdbs fixed.pdb moving.pdb selection_fixed="chain A and name CA" selection_moving="chain B and name CA"
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+-  Different number of atoms in selection\_fixed and selection\_moving
+   in case when no sequence alignment can be performed (the molecules
+   contain no amino-acid residues) or sequence alignment failed to find
+   matching residues.
+
+-  More than one model in one PDB file (separated with MODEL-ENDMDL)
+
+Literature
+----------
+
+Additional information
+----------------------

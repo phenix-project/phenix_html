@@ -1,0 +1,401 @@
+Finding NCS in chains from a PDB file with simple\_ncs\_from\_pdb
+=================================================================
+
+Author(s)
+---------
+
+-  simple\_ncs\_from\_pdb : Tom Terwilliger
+-  Phil command interpreter: Ralf W. Grosse-Kunstleve
+-  find\_domain: Peter Zwart
+
+Purpose
+-------
+
+The simple\_ncs\_from\_pdb method identifies NCS in the chains in a PDB
+file and writes out the NCS operators in forms suitable for
+phenix.refine, resolve, and the AutoSol and AutoBuild Wizards.
+
+Usage
+-----
+
+How simple\_ncs\_from\_pdb works:
+---------------------------------
+
+The basic steps that the simple\_ncs\_from\_pdb carries out are:
+
+-  (1) Identify sets of chains in the PDB file that have the same
+   sequences. These are potential NCS-related chains.
+
+-  (2) Determine which chains in a group actually are related by NCS
+   within a given tolerance (max\_rmsd, typically 2 A)
+
+-  (3) Determine which residues in each chain are related by NCS, and
+   break the chains into domains that do follow NCS if necessary.
+
+-  (4) Determine the NCS operators for all chains in each NCS group or
+   domain
+
+Additional notes on how simple\_ncs\_from\_pdb works:
+-----------------------------------------------------
+
+The matching of chains is done in a first quick pass by calling
+simple\_ncs\_from\_pdb recursively and only using every 10th residue in
+the analysis. This allows a check of whether chains that have the same
+sequence really have the same structure or whether some such chains
+should be in separate NCS groups. The use of only every 10th residue
+allows time for an all-against all matching of chains.
+
+If residue numbers are not the same for corresponding chains, but they
+are simply offset by a constant for each chain, this will be recognized
+and the chains will be aligned.
+
+An assumption in simple\_ncs\_from\_pdb is that residue numbers are
+consistent among chains. They do not have to be the same: chain A can be
+residues 1-100 and chain B 211-300. However chain A cannot be residues
+1-10 and 20-50, matching to chain B residues 1-10 and 21-51.
+
+Residue numbers are used to align pairs of chains, maximizing identities
+of matching pairs of residues. Pairs of chains that can match are
+identified.
+
+Groupings of chains are chosen that maximize the number of matching
+residues between each member of a group and the first (reference) member
+of the group.
+
+For a pair of chains, some segments may match and others not. Each pair
+of segments must have a length at least as long as min\_length and a
+percent identity at least as high as min\_percent. A pair of segments
+may not end in a mismatch. An overall pair of chains must have an rmsd
+of CA atoms of less than or equal to rmsd\_max.
+
+If find\_invariant\_domain is specified then once all chains that can be
+matched with the above algorithm are identified, all remaining chains
+are matched, allowing the break-up of chains into invariant domains. The
+invariant domains each get a separate NCS group.
+
+*Output files from simple\_ncs\_from\_pdb*
+------------------------------------------
+
+The output files that are produced are:
+
+-  NCS operators written in format for phenix.refine
+
+::
+
+    simple_ncs_from_pdb.ncs
+
+-  NCS operators written in format for the PHENIX Wizards
+
+::
+
+    simple_ncs_from_pdb.ncs_spec
+
+Examples
+--------
+
+Standard run of simple\_ncs\_from\_pdb:
+---------------------------------------
+
+Running simple\_ncs\_from pdb is easy. For example, you can type:
+
+::
+
+    phenix.simple_ncs_from_pdb anb.pdb
+
+Simple\_ncs\_from\_pdb will analyze the chains in anb.pdb and identify
+any NCS that exists. For this sample run the following output is
+produced:
+
+::
+
+    Chains in this PDB file:  ['A', 'N', 'B']
+    GROUPS BASED ON QUICK COMPARISON: [['A', 'B']]
+    Looking for invariant domains for ...: ['A', 'N', 'B'] [[[2, 525]], 
+    [[2, 259], [290, 525]], [[20, 525]]]
+
+There were 3 chains in the PDB file A, N and B. Chains A and B were very
+similar and clearly related by NCS. This relationship was found in a
+quick comparison. Chain N had the same sequence as A and B, but was not
+in the identical comparison. Searching for domains that did have NCS
+among all three chains produced three domains, represented below by 4
+NCS groups:
+
+::
+
+    GROUP 1
+    Summary of NCS group with 3 operators:
+    ID of chain/residue where these apply: [['A', 'N', 'B'], [[[2, 5], [20, 35], 
+    [60, 76], [78, 107], [110, 137], [401, 431], [433, 483], [485, 516], 
+    [520, 525]], [[2, 5], [20, 35], [60, 76], [78, 107], [110, 137], 
+    [401, 431], [433, 483], [485, 516], [520, 525]], [[2, 5], [20, 35], 
+    [60, 76], [78, 107], [110, 137], [401, 431], [433, 483], [485, 516], 
+    [520, 525]]]]
+    RMSD (A) from chain A:  0.0  1.09  0.07
+    Number of residues matching chain A:[215, 215, 194]
+    Source of NCS info: anb.pdb
+
+The residues in chains A, B, and N in this group are 2-5, 20-35, 60-76,
+78-107, 110-137, 401-431, 433-483, 485-516 and 520-525. Note that these
+are not all contiguous. These are all the residues that all have the
+same relationships among the 3 chains. The RMSD of CA atoms between
+chains A and N is 1.09 A and between A and B is 0.07 A.
+
+The NCS information is written in three formats:
+
+::
+
+    NCS operators written in format for resolve to: simple_ncs_from_pdb.resolve
+    NCS operators written in format for phenix.refine to: simple_ncs_from_pdb.ncs
+    NCS written as ncs object information to: simple_ncs_from_pdb.ncs_spec
+
+The contents of the simple\_ncs\_from\_pdb.ncs\_spec file, which you can
+edit if you want and which you can use in the AutoBuild Wizard, are
+shown below. NOTE: The ncs operators describe how to map the N'th
+ncs-related copy on to the first copy.
+
+::
+
+
+    Summary of NCS information
+    Thu Apr  9 08:39:48 2009
+    /Users/Shared/unix/transfer/test
+
+
+
+
+
+    new_ncs_group
+    new_operator
+
+    rota_matrix    1.0000    0.0000    0.0000
+    rota_matrix    0.0000    1.0000    0.0000
+    rota_matrix    0.0000    0.0000    1.0000
+    tran_orth     0.0000    0.0000    0.0000
+
+    center_orth   29.9208  -53.3304  -13.4779
+    CHAIN A
+    RMSD 0.0
+    MATCHING 215
+      RESSEQ 2:5
+      RESSEQ 20:35
+      RESSEQ 60:76
+      RESSEQ 78:107
+      RESSEQ 110:137
+      RESSEQ 401:431
+      RESSEQ 433:483
+      RESSEQ 485:516
+      RESSEQ 520:525
+
+    new_operator
+
+    rota_matrix    0.9370   -0.2825    0.2053
+    rota_matrix   -0.3285   -0.9125    0.2439
+    rota_matrix    0.1184   -0.2960   -0.9478
+    tran_orth   -14.7410  -79.9073   -8.5967
+
+    center_orth   32.5410  -35.4227   20.2768
+    CHAIN N
+    RMSD 1.09447914951
+    MATCHING 215
+      RESSEQ 2:5
+      RESSEQ 20:35
+      RESSEQ 60:76
+      RESSEQ 78:107
+      RESSEQ 110:137
+      RESSEQ 401:431
+      RESSEQ 433:483
+      RESSEQ 485:516
+      RESSEQ 520:525
+
+    new_operator
+
+    rota_matrix    0.6257    0.7800   -0.0037
+    rota_matrix   -0.7800    0.6257   -0.0010
+    rota_matrix    0.0015    0.0035    1.0000
+    tran_orth    70.3889   42.4760    0.3937
+
+    center_orth   50.0256  -91.8920  -13.6461
+    CHAIN B
+    RMSD 0.0715099139994
+    MATCHING 194
+      RESSEQ 2:5
+      RESSEQ 20:35
+      RESSEQ 60:76
+      RESSEQ 78:107
+      RESSEQ 110:137
+      RESSEQ 401:431
+      RESSEQ 433:483
+      RESSEQ 485:516
+      RESSEQ 520:525
+
+
+
+
+
+    new_ncs_group
+    new_operator
+
+    rota_matrix    1.0000    0.0000    0.0000
+    rota_matrix    0.0000    1.0000    0.0000
+    rota_matrix    0.0000    0.0000    1.0000
+    tran_orth     0.0000    0.0000    0.0000
+
+    center_orth   47.5037  -61.5641  -11.2751
+    CHAIN A
+    RMSD 0.0
+    MATCHING 11
+      RESSEQ 6:9
+      RESSEQ 56:59
+      RESSEQ 517:519
+
+    new_operator
+
+    rota_matrix    0.9367   -0.2981    0.1836
+    rota_matrix   -0.3113   -0.9492    0.0469
+    rota_matrix    0.1603   -0.1011   -0.9819
+    tran_orth   -14.9810  -78.2888   -2.3823
+
+    center_orth   51.8984  -33.6038   20.9877
+    CHAIN N
+    RMSD 0.479682710546
+    MATCHING 11
+      RESSEQ 6:9
+      RESSEQ 56:59
+      RESSEQ 517:519
+
+    new_operator
+
+    rota_matrix    0.6255    0.7802   -0.0016
+    rota_matrix   -0.7802    0.6255   -0.0025
+    rota_matrix   -0.0009    0.0028    1.0000
+    tran_orth    70.3999   42.4366    0.4815
+
+    center_orth   66.8308  -82.9508  -11.4633
+    CHAIN B
+    RMSD 0.034689065899
+    MATCHING 11
+      RESSEQ 6:9
+      RESSEQ 56:59
+      RESSEQ 517:519
+
+
+
+
+
+    new_ncs_group
+    new_operator
+
+    rota_matrix    1.0000    0.0000    0.0000
+    rota_matrix    0.0000    1.0000    0.0000
+    rota_matrix    0.0000    0.0000    1.0000
+    tran_orth     0.0000    0.0000    0.0000
+
+    center_orth   36.1219  -37.6124  -62.1437
+    CHAIN A
+    RMSD 0.0
+    MATCHING 150
+      RESSEQ 193:255
+      RESSEQ 257:259
+      RESSEQ 290:355
+      RESSEQ 357:374
+
+    new_operator
+
+    rota_matrix    0.7650    0.3808   -0.5194
+    rota_matrix    0.0664   -0.8488   -0.5245
+    rota_matrix   -0.6406    0.3668   -0.6746
+    tran_orth    50.3180  -36.4383   16.0299
+
+    center_orth   39.1403  -33.0801   60.7270
+    CHAIN N
+    RMSD 0.610762530957
+    MATCHING 150
+      RESSEQ 193:255
+      RESSEQ 257:259
+      RESSEQ 290:355
+      RESSEQ 357:374
+
+    new_operator
+
+    rota_matrix    0.5942    0.8043   -0.0007
+    rota_matrix   -0.8043    0.5942   -0.0064
+    rota_matrix   -0.0047    0.0043    1.0000
+    tran_orth    73.5084   40.5311    0.5807
+
+    center_orth   40.9347  -76.7723  -62.2004
+    CHAIN B
+    RMSD 0.0137641203481
+    MATCHING 150
+      RESSEQ 193:255
+      RESSEQ 257:259
+      RESSEQ 290:355
+      RESSEQ 357:374
+
+
+
+
+
+    new_ncs_group
+    new_operator
+
+    rota_matrix    1.0000    0.0000    0.0000
+    rota_matrix    0.0000    1.0000    0.0000
+    rota_matrix    0.0000    0.0000    1.0000
+    tran_orth     0.0000    0.0000    0.0000
+
+    center_orth   45.4522  -37.4720  -14.4660
+    CHAIN A
+    RMSD 0.0
+    MATCHING 6
+      RESSEQ 36:41
+
+    new_operator
+
+    rota_matrix    0.9444   -0.3074    0.1171
+    rota_matrix   -0.2975   -0.9501   -0.0940
+    rota_matrix    0.1402    0.0540   -0.9887
+    tran_orth   -14.2728  -75.5420    6.4099
+
+    center_orth   42.1483  -55.6520   24.0535
+    CHAIN N
+    RMSD 0.215718434967
+    MATCHING 6
+      RESSEQ 36:41
+
+    new_operator
+
+    rota_matrix    0.6247    0.7809   -0.0013
+    rota_matrix   -0.7809    0.6247    0.0028
+    rota_matrix    0.0030   -0.0008    1.0000
+    tran_orth    70.4964   42.5349    0.0067
+
+    center_orth   46.7900  -69.5227  -14.6653
+    CHAIN B
+    RMSD 0.0340725565251
+    MATCHING 6
+      RESSEQ 36:41
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+-  If user specifies chains to be in a suggested NCS group, but they are
+   too dissimilar as a whole (rmsd > max\_rmsd\_use) then the group is
+   rejected even if some fragment of the chains could be similar.
+
+-  Chain specification from suggested\_ncs\_groups could in principle
+   have than one chain in one group...and simple\_ncs\_from\_pdb can
+   only use suggested groups that consist of N copies of single chains.
+
+-  If the NCS asymmetric unit of your crystal contains more than one
+   chain, simple\_ncs\_from\_pdb will consider it to have more than one
+   domain, and it will assign one NCS group to each chain.
+
+Literature
+----------
+
+Additional information
+----------------------

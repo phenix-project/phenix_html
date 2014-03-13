@@ -1,0 +1,236 @@
+Main PHENIX Modules
+===================
+
+Data Analysis
+-------------
+
+Detection of twinning and other pathologies is facilitated via the
+program `phenix.xtriage <xtriage.htm>`__. This command line driven
+program analyses an experimental data set and provides diagnostics that
+aid in the detection of common idiosyncrasies such as the presence of
+pseudo translational symmetry, certain data processing problems and
+twinning. Other sanity checks, such as a Wilson plot sanity check and an
+algorithm that tries to detect the presence of ice rings from the merged
+data are performed as well. If twin laws are present for the given unit
+cell and space group, a Britton plot is computed, an H-test is performed
+and a likelihood based method is used to provide an estimate of the twin
+fraction. Twin laws are deduced from first principles for each data set,
+avoiding the danger of over-looking twin laws by incomplete lookup
+tables. If a model is available, more efficient twin detection tools are
+available. The RvsR statistic is particularly useful in the detection of
+twinning in combination with pseudo rotational symmetry. This statistic
+is computed by phenix.xtriage if calculated data is supplied together
+with the observed data. A more direct test for the presence of twinning
+is by refinement of the twin fraction given an atomic model (which can
+be performed in phenix.refine). The command line utility
+phenix.twin\_map\_utils provides a quick way to refine a twin fraction
+given an atomic model and an X-ray data set and also produces
+
+Automated Structure Solution Using Experimental Phasing Techniques
+------------------------------------------------------------------
+
+Structure solution via SAD, MAD or SIR(AS) can be carried out with the
+`AutoSol <autosol.htm>`__ wizard. The `AutoSol <autosol.htm>`__ wizard
+performs heavy atom location, phasing, density modification and initial
+model building in an automated manner. The heavy atoms are located with
+substructure solution engine also used in phenix.hyss, a dual space
+method similar to SHELXD and Shake and Bake. Phasing is carried out with
+PHASER for SAD cases and with SOLVE for MAD and SIR(AS) cases.
+Subsequent density modification is carried out with RESOLVE. The hand of
+the substructure is determined automatically on the basis of the quality
+of the resulting electron density map. It is noteworthy that the whole
+process is not necessarily linear but that the wizard can decide to step
+back and (for instance) try another set of heavy atoms if appropriate.
+In the resulting electron density map, a model is built (currently
+limited to proteins). Further model completion can be carried out via
+the `AutoBuild <autobuild.htm>`__ wizard. The
+`AutoBuild <autobuild.htm>`__ wizard iterates model building and density
+modification with refinement of the model in a scheme similar to other
+iterative model building methods, for example ARP/wARP.
+
+Automated Structure Solution Via Molecular Replacement
+------------------------------------------------------
+
+Structure solution via molecular replacement is facilitated via the
+`AutoMR <automr.htm>`__ wizard. The `AutoMR <automr.htm>`__ wizard
+guides the user through setting up all necessary parameters to run a
+molecular replacement job with PHASER. The molecular replacement carried
+out by PHASER uses likelihood based scoring function, improving the
+sensitivity of the procedure and the ability to obtain reasonable
+solutions with search models that have a relatively low sequence
+similarity to the crystal structure being determined. Besides the use of
+likelihood based scoring functions, structure solution is enhanced by
+detailed bookkeeping of all search possibilities when searching for more
+then a single copy in the asymmetric unit or when there the choice of
+space group is ambiguous. When a suitable molecular replacement solution
+is found, the `AutoBuild <autobuild.htm>`__ wizard is invoked and
+rebuilds the molecular replacement model given the sequence of the model
+under investigation.
+
+Automated Model Building
+------------------------
+
+Automated model building given a starting model or a set of reasonable
+phases can be carried out by the `AutoBuild <autobuild.htm>`__ wizard. A
+typical AutoBuild job combines density modification, model building,
+macromolecular refinement and solvent model updates ('water picking') in
+an iterative manner. Various modes of building a model are available.
+Depending on the availability of a molecular model, model building can
+be carried by locally rebuilding an existing model (rebuild in place) or
+by building in the density without any information of an available
+model. The rebuilding in place model building is a powerful building
+scheme that is used by default for molecular replacement models that
+have a high sequence similarity to the sequence of the structure that is
+to be built. A fundamental feature of the `AutoBuild <autobuild.htm>`__
+wizard is that it builds various models, all from slightly different
+starting points. The dependency of the outcome of the model building
+algorithm on initial starting conditions provides a straightforward
+mechanism to obtain a variety of plausible molecular models. It is not
+uncommon that certain sections of a map are built in one model, while
+not in another. Combining these models allows the
+`AutoBuild <autobuild.htm>`__ wizard to converge faster to a more
+complete model than when using a single model building pass for a given
+set of phases. Dedicated loop fitting algorithms are used to close gaps
+between chain segments. This feature, together with the water picking
+and side chain placement, typically results in highly complete models of
+high quality that need minimal manual intervention before they are ready
+for deposition.
+
+Structure Refinement
+--------------------
+
+The refinement engine used in the `AutoBuild <autobuild.htm>`__ and
+`AutoSol <autosol.htm>`__ wizards can also be run from the command line
+with the `phenix.refine <refinement.htm>`__ command. The phenix.refine
+program carries out likelihood based refinement and has the possibility
+to refine positional parameters, individual or grouped atomic
+displacement parameters, individual or grouped occupancies. The
+refinement of anisotropic displacement parameters (individual or via a
+TLS parameterization) is also available. Positional parameters can be
+optimized using either traditional gradient-only based optimization
+methods, or via simulated annealing protocols. The command line
+interface allows the user to specify which part of the model should be
+refined in what manner. It is in principle possible to refine half of
+the molecule as a rigid group with grouped B values, whereas the other
+half of the molecule has a TLS parameterization. The flexibility of
+specifying the level of parameterization of the model is especially
+important for the refinement of low resolution data or when starting
+with severely incomplete atomic models. Another advantage of this
+flexibility in refinement strategy is that a user can perform a complex
+refinement protocol that carries out simulated annealing, isotropic B
+refinement and water picking in 'one go'. Another main feature of
+`phenix.refine <refinement.htm>`__ is the way in which the relative
+weights for the geometric and ADP restraints with respect to the X-ray
+target are determined. Considerable effort has been put into devising a
+good set of defaults and weight determination schemes that results in a
+good choice of parameters for the data set under investigation. Defaults
+can of course be overwritten if the user chooses to. Besides being able
+to handle refinement against X-ray data,
+`phenix.refine <refinement.htm>`__ can refine against neutron data or
+against X-ray and neutron data simultaneously.
+
+Automated ligand density analysis
+---------------------------------
+
+Automated fitting of ligands into the electron density is facilitated
+via the `LigandFit <ligandfit.htm>`__ wizard. The ligand building is
+performed by finding an initial fit for the largest rigid domain of the
+ligand and extending the remaining part of the ligand from this initial
+'seed'. Besides being able to fit a known ligand into a difference map,
+the `LigandFit <ligandfit.htm>`__ wizard is capable of identifying
+ligands on the basis of the difference density only. In the latter
+scheme, density characteristics for ligands occurring frequently in the
+PDB are used to provide the user with a range of plausible ligands.
+
+Calculating ligand geometries and defining chemical restraints
+--------------------------------------------------------------
+
+Stereo chemical dictionaries of ligands whose chemical description is
+not available in the supplied monomer library for the use in restrained
+macromolecular refinement can be generated with the electronic ligand
+builder and optimization workbench (eLBOW). eLBOW generates a 3D
+geometry from a number of chemical input formats including MOL2 or PDB
+files and SMILES strings. SMILES is a compact, chemically dense
+description of a molecule that contains all element and bonding
+information and optionally other stereo information such as chirality.
+To generate a 3D geometry from an input format that contains no 3D
+geometry information, `eLBOW <elbow.htm>`__ uses a Z-Matrix formalism in
+conjunction with a table of bond lengths calculated using the
+Hartree-Fock method with a 6-31G(d,p) basis set to obtain a Cartesian
+coordinate set. The geometry is then optionally optimized using the
+semi-empirical quantum chemistry method AM1. The AM1 optimization
+provides chemically meaningful and accurate geometries for the class of
+molecule typically complexed with proteins. `eLBOW <elbow.htm>`__
+outputs the optimized geometry and a standard CIF restraint file that
+can be read in by `phenix.refine <refinement.htm>`__ and can also be
+used for real space refinement during manual model building sessions in
+the program COOT. An interface is also available to use
+`eLBOW <elbow.htm>`__ within COOT.
+
+Literature
+----------
+
+-  Adams PD, Grosse-Kunstleve, R.W., and Brunger, A.T.: Computational
+   aspects of high-throughput crystallographic macromolecular structure
+   determination. Methods Biochem Anal 2003, 44:75-87.
+-  Terwilliger TC, Berendzen J: Automated MAD and MIR structure
+   solution. Acta Crystallogr D Biol Crystallogr 1999, 55(Pt 4):849-861.
+-  Schneider TR, Sheldrick GM: Substructure solution with SHELXD. Acta
+   Crystallogr D Biol Crystallogr 2002, 58(Pt 10 Pt 2):1772-1779.
+-  McCoy AJ, Grosse-Kunstleve RW, Storoni LC, Read RJ:
+   Likelihood-enhanced fast translation functions. Acta
+   Crystallographica Section D 2005, 61(4):458-464.
+-  Terwilliger TC: Automated main-chain model building by template
+   matching and iterative fragment extension. Acta Crystallogr D Biol
+   Crystallogr 2003, 59(Pt 1):38-44.
+-  Terwilliger TC: Automated side-chain model building and sequence
+   assignment by template matching. Acta Crystallogr D Biol Crystallogr
+   2003, 59(Pt 1):45-49.
+-  Emsley P, Cowtan K: Coot: model-building tools for molecular
+   graphics. Acta Crystallogr D Biol Crystallogr 2004, 60(Pt 12 Pt
+   1):2126-2132.
+-  Adams PD, Grosse-Kunstleve RW, Hung L-W, Ioerger TR, McCoy AJ,
+   Moriarty NW, Read RJ, Sacchettini JC, Sauter NK, Terwilliger TC:
+   PHENIX: building new software for automated crystallographic
+   structure determination. Acta Crystallographica Section D 2002,
+   58(11):1948-1954.
+-  Grosse-Kunstleve RW, Sauter NK, Moriarty NW, Adams PD: The
+   Computational Crystallography Toolbox: crystallographic algorithms in
+   a reusable software framework. Journal of Applied Crystallography
+   2002, 35:126-136.
+-  Grosse-Kunstleve RW, Adams PD: Substructure search procedures for
+   macromolecular structures. Acta Crystallogr D Biol Crystallogr 2003,
+   59(Pt 11):1966-1973.
+-  Weeks CM, Miller R: Optimizing Shake-and-Bake for proteins. Acta
+   Crystallogr D Biol Crystallogr 1999, 55(Pt 2):492-500.
+-  Read R: Pushing the boundaries of molecular replacement with maximum
+   likelihood. Acta Crystallographica Section D 2001, 57(10):1373-1382.
+-  Schomaker V, Trueblood K: On Rigid-Body Motion of Molecules in
+   Crystals. Acta Crystall B-Stru 1968, B 24:63-&.
+-  Winn MD, Isupov MN, Murshudov GN: Use of TLS parameters to model
+   anisotropic displacements in macromolecular refinement. Acta
+   Crystallogr D Biol Crystallogr 2001, 57(Pt 1):122-133.
+-  Brunger AT, Adams PD, Rice LM: Annealing in crystallography: a
+   powerful optimization tool. Prog Biophys Mol Biol 1999,
+   72(2):135-155.
+-  Vagin AA, Steiner RA, Lebedev AA, Potterton L, McNicholas S, Long F,
+   Murshudov GN: REFMAC5 dictionary: organization of prior chemical
+   knowledge and guidelines for its use. Acta Crystallogr D Biol
+   Crystallogr 2004, 60(Pt 12 Pt 1):2184-2195.
+-  Weininger D: SMILES 1. Introduction and Endoding Rules. J Chem Inf
+   Comput Sci 1988, 28:31.
+-  Fisher RG, Sweet RM: Treatment of diffraction data from crystals
+   twinned by merohedry. Acta Crystallographica Section A 1980,
+   36(5):755-760.
+-  Yeates TO: Simple statistics for intensity data from twinned
+   specimens. Acta Crystallogr A 1988, 44 ( Pt 2):142-144.
+-  Yeates TO: Detecting and overcoming crystal twinning. Methods Enzymol
+   1997, 276:344-358.
+-  Lebedev AA, Vagin AA, Murshudov GN: Intensity statistics in twinned
+   crystals with examples from the PDB. Acta Crystallogr D Biol
+   Crystallogr 2006, 62(Pt 1):83-95.
+-  Zwart P: Anomalous signal indicators in protein crystallography. Acta
+   Crystallographica Section D 2005, 61(11):1437-1448.
+
+Additional information
+----------------------

@@ -1,0 +1,65 @@
+Running SOLVE/RESOLVE in PHENIX
+===============================
+
+Author(s)
+---------
+
+-  SOLVE/RESOLVE: Tom Terwilliger
+
+Purpose
+-------
+
+SOLVE and RESOLVE can be run directly in the PHENIX environment. This
+feature is normally only for advanced SOLVE/RESOLVE users who want to
+access the keywords in SOLVE/RESOLVE directly.
+
+Usage
+-----
+
+Running SOLVE/RESOLVE from the command-line or in a script.
+-----------------------------------------------------------
+
+-  You can run solve with the command:
+
+::
+
+    phenix.solve
+
+This command will set the environmental variables CCP4\_OPEN, SYMOP,
+SYMLIB, and SOLVEDIR and will run solve. If you want to run a different
+size of solve, then you can specify:
+
+::
+
+    phenix.solve --giant
+
+For a bigger version still, choose --huge, for biggest, --extra\_huge.
+
+-  Running resolve or resolve\_pattern is similar:
+
+::
+
+    phenix.resolve
+    phenix.resolve_pattern
+
+-  Running solve/resolve from a command file is simple. Here is a
+   command file to run resolve:
+
+::
+
+    phenix.resolve<<EOD
+    hklin solve.mtz
+    labin FP=FP SIGFP=SIGFP PHIB=PHIB FOM=FOM HLA=HLA HLB=HLB HLC=HLC HLD=HLD
+    solvent_content 0.43
+    database 5
+    EOD
+
+Literature
+----------
+
+Additional information
+----------------------
+
+All the solve/resolve keywords are available in the PHENIX versions of
+solve and resolve. See the full documentation for solve/resolve at
+`http://solve.lanl.gov/ <http://solve.lanl.gov/>`__ .

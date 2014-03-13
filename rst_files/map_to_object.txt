@@ -1,0 +1,94 @@
+Mapping one PDB file onto another using space-group symmetry with phenix.map\_to\_object
+========================================================================================
+
+Author(s)
+---------
+
+-  phenix.map\_to\_object: Tom Terwilliger
+
+Purpose
+-------
+
+phenix.map\_to\_object is a command line tool for applying a rotation
+and translation consistent with space-group symmetry to a PDB file in
+order to bring its atoms close to those in a second PDB file.
+
+Usage
+-----
+
+How phenix.map\_to\_object works:
+---------------------------------
+
+phenix.map\_to\_object searches over each equivalent position in the
+unit cell and neighboring unit cells to find the one that places the
+moving\_pdb atoms closest to those in fixed\_pdb.
+
+You can choose to minimize the distance between the center of mass of
+the PDB files, or you can minimize the distance between the closest
+atoms, or you can maximize the number of close contacts.
+
+Examples
+--------
+
+Standard run of phenix.map\_to\_object:
+---------------------------------------
+
+Running phenix.map\_to\_object is easy. You can just type:
+
+::
+
+    phenix.map_to_object fixed_pdb=my_target.pdb moving_pdb=my_ligand.pdb
+
+and phenix.map\_to\_object will move my\_ligand.pdb as close as it can
+to my\_target.pdb.
+
+Run of phenix.map\_to\_object specifying center of mass of moving PDB is to be close to any atom of fixed PDB:
+--------------------------------------------------------------------------------------------------------------
+
+By default phenix.map\_to\_object will move the center of mass of
+moving\_pdb as close as possible to any atom in fixed\_pdb. You could
+specify this explicitly with:
+
+::
+
+    phenix.map_to_object fixed_pdb=my_target.pdb moving_pdb=my_ligand.pdb \
+    use_moving_center_of_mass=True use_fixed_center_of_mass=False 
+
+Run of phenix.map\_to\_object specifying center of mass of moving PDB is to have maximum number of contacts with atoms of fixed PDB:
+------------------------------------------------------------------------------------------------------------------------------------
+
+If you wanted instead to maximize the number of close contacts under 5 A
+between the center of mass of my\_ligand.pdb and any atom in
+my\_target.pdb, you could type:
+
+::
+
+    phenix.map_to_object fixed_pdb=my_target.pdb moving_pdb=my_ligand.pdb \
+    use_moving_center_of_mass=True use_fixed_center_of_mass=False  \
+    use_contact_order=True contact_dist=5.
+
+Run of phenix.map\_to\_object searching over additional unit cells
+------------------------------------------------------------------
+
+If you wanted additionally to search over more than just the adjacent
+unit cells to find the best contacts, you could add
+extra\_cells\_to\_search with a value bigger than 1:
+
+::
+
+    phenix.map_to_object fixed_pdb=my_target.pdb moving_pdb=my_ligand.pdb \
+    use_moving_center_of_mass=True use_fixed_center_of_mass=False  \
+    use_contact_order=True contact_dist=5. \
+    extra_cells_to_search=2
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

@@ -1,0 +1,66 @@
+What is PHENIX
+==============
+
+The PHENIX software suite is a highly automated system for
+macromolecular structure determination that can rapidly arrive at an
+initial partial model of a structure without significant human
+intervention, given moderate resolution and good quality data. This
+achievement has been made possible by the development of new algorithms
+for structure determination, maximum-likelihood molecular replacement
+(PHASER), heavy-atom search (HySS), template and pattern-based automated
+model-building (RESOLVE), automated macromolecular refinement
+(phenix.refine), and iterative model-building, density modification and
+refinement that can operate at moderate resolution (RESOLVE, AutoBuild).
+These algorithms are based on a highly integrated and comprehensive set
+of crystallographic libraries that have been built and made available to
+the community. The algorithms are tightly linked and made easily
+accessible to users through the PHENIX Wizards and the command line.
+
+There are also a number of tools in PHENIX for handling ligands.
+Automated fitting of ligands into the electron density is facilitated
+via the LigandFit wizard. Besides being able to fit a known ligand into
+a difference map, the LigandFit wizard is capable to identify ligands on
+the basis of the difference density only. Stereo chemical dictionaries
+of ligands whose chemical description is not available in the supplied
+monomer library for the use in restrained macromolecular refinement can
+be generated with the electronic ligand builder and optimization
+workbench (eLBOW).
+
+PHENIX builds upon Python, the Boost.Python Library, and C++ to provide
+an environment for automation and scientific computing. Many of the
+fundamental crystallographic building blocks, such as data objects and
+tools for their manipulation are provided by the Computational
+Crystallography Toolbox (cctbx). The computational tasks which perform
+complex crystallographic calculations are then built on top of this.
+Finally, there are a number of different user interfaces available in
+PHENIX. In order to facilitate automated operation there is the Project
+Data Storage (PDS) that is used to store and track the results of
+calculations.
+
+The PHENIX development team consists of members from Lawrence Berkeley
+Laboratory (Paul Adams's group), Los Alamos National Laboratory (Tom
+Terwilliger's group), Cambridge University (Randy Read's group) and Duke
+University (the Richardsons' group). Researchers from Texas A&M
+University (Tom Ioerger's and Jim Sacchettini's groups) participated in
+the first five years of PHENIX development.
+
+The development of PHENIX is funded by the National Institutes of Health
+(General Medicine) under grant P01GM063210, and the PHENIX Industrial
+Consortium.
+
+Citing PHENIX
+
+If you use PHENIX to solve a structure please cite this publication:
+
+PHENIX: a comprehensive Python-based system for macromolecular structure
+solution. P. D. Adams, P. V. Afonine, G. BunkÃ³czi, V. B. Chen, I. W.
+Davis, N. Echols, J. J. Headd, L.-W. Hung, G. J. Kapral, R. W.
+Grosse-Kunstleve, A. J. McCoy, N. W. Moriarty, R. Oeffner, R. J. Read,
+D. C. Richardson, J. S. Richardson, T. C. Terwilliger and P. H. Zwart.
+Acta Cryst. D66, 213-221 (2010).
+
+Publications
+
+A number of publications describing PHENIX can be found at:
+
+`http://www.phenix-online.org/papers/ <http://www.phenix-online.org/papers/>`__

@@ -1,0 +1,102 @@
+MolProbity - An Active Validation Tool
+======================================
+
+| 
+
+Authors
+-------
+
+MolProbity is a web application that integrates validation programs from
+the Richardson lab at Duke University.
+
+-  Ian Davis, principal author: PHP/Java web service; KiNG; Ramachandran
+   & Rotamer; Dangle
+-  Vincent Chen: extensions to KiNG & MolProbity
+-  Mike Word: Reduce; Probe; Clashlist
+-  Dave Richardson: kinemages; Mage; Prekin; Suitename
+-  Xueyi Wang: RNABC
+-  Jack Snoeyink & Andrew Leaver-Fay: Reduce update
+-  Bryan Arendall: webmaster; databases
+
+Purpose
+-------
+
+MolProbity provides the user with an expert-system consultation about
+the accuracy of a macromolecular structure model, diagnosing local
+problems and enabling their correction. It combines all atom contact
+analysis with updated versions of more traditional tools for validating
+geometry and dihedral-angle combinations. MolProbity is most complete
+for crystal structures of proteins and RNA, but also handles DNA,
+ligands, and NMR ensembles. It works best as an **active** validation
+tool - used as soon as a model is available and during each
+rebuild/refine loop, not just at the end to provide global statistics
+before deposition. It produces coordinates, graphics, and numerical
+evaluations that integrate with either manual or automated use in
+systems such as PHENIX, KiNG, or Coot.
+
+Usage
+-----
+
+The integrated MolProbity web application is at
+`http://molprobity.biochem.duke.edu/ <http://molprobity.biochem.duke.edu/>`__.
+The user is guided through a work-flow that typically consists of:
+
+#. Fetch or upload model(s)
+#. Add & optimize H atoms, with correction of Asn/Gln/His flips
+#. Calculate per-residue & global quality analyses:
+#. 
+
+   #. all-atom steric clashes
+   #. geometry (e.g., Cbeta or ribose pucker ideality)
+   #. Ramachandran, sidechain rotamer, or RNA backbone outliers
+   #. global MolProbity score
+
+#. View multi-criterion chart and/or on-line 3D KiNG graphics summaries
+#. [Optional features, e.g. interface analysis; load maps for on-line
+   viewing; Coot to-do list]
+#. Download coordinate & graphics files for further work on local
+   corrections
+
+An increasingly broad subset of MolProbity functionalities are
+integrated directly into PHENIX for use in refinement, Resolve, and
+wizard decisions. These are all available in the PHENIX GUI as part of
+the \`comprehensive validation interface \`\_, which runs all available
+analyses and provides convenient links to molecular graphics software.
+Phenix.reduce provides optimized hydrogen addition, phenix.probe and
+quick\_clashlist.py provide all-atom clash analysis, and python versions
+of the Ramachandran and rotamer scores are available in the mmtbx.
+Interactive all-atom contact dots are also available in Coot.
+
+Possible Problems
+-----------------
+
+Web usage requires Java, Javascript, and a modern web browser.
+
+MolProbity provides reasonable session protection, but if security or
+large-scale usage are at issue, you can install MP to run on your own
+Linux or Mac computer provided that the computer has a web server
+(Apache), the PHP scripting language, JAVA, and a few common Unix
+utility programs. For more information, follow the "Download MolProbity"
+link on the MP main page.
+
+Literature
+----------
+
+-  **MolProbity: all-atom contacts and structure validation for proteins
+   and nucleic acids** I. W. Davis, A. Leaver-Fay, V. B. Chen, J. N.
+   Block, G. J. Kapral, X. Wang, L. W. Murray, W. B. Arendall, III, J.
+   Snoeyink, J. S. Richardson, and D. C. Richardson. *Nucl. Acids Res.*
+   **35**: W375-W383 (2007)
+-  **Visualizing and Quantifying Molecular Goodness-of-Fit: Small-probe
+   Contact Dots with Explicit Hydrogen Atoms.** J. M. Word, S. C.
+   Lovell, T. H. LaBean, H. C. Taylor, M. E. Zalis, B. K. Presley, J. S.
+   Richardson, and D. C. Richardson. *JMB* **285**, 1711-33 (1999)
+-  **Structure Validation by Cα Geometry: φ,ψ and Cβ Deviation.** S.C.
+   Lovell, I.W. Davis, W.B. Arendall III, P.I.W. de Bakker, J.M. Word,
+   M.G. Prisant, J.S. Richardson, and D.C. Richardson. *Proteins:
+   Structure, Function and Genetics* **50**, 437-450 (2003)
+-  **A test of enhancing model accuracy in high-throughput
+   crystallography.** W.B. Arendall III, W. Tempel, J.S. Richardson, W.
+   Zhou, S. Wang, I.W. Davis, Z.-J. Liu, J.P. Rose, W.M. Carson, M. Luo,
+   D.C. Richardson, and B-C. Wang. *Journal of Structural and Functional
+   Genomics* **6**, 1-11 (2005)

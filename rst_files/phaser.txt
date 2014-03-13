@@ -1,0 +1,363 @@
+Phaser-2.1
+==========
+
+**Reference**
+-------------
+
+-  *J. Appl. Cryst.* (2007). **40**, 658-674. `*Phaser* crystallographic
+   software. <http://www-structmed.cimr.cam.ac.uk/Personal/randy/pubs/pubs.html#Phaser-2.1>`__
+   A. J. McCoy, R. W. Grosse-Kunstleve, P. D. Adams, M. D. Winn, L.C.
+   Storoni and R.J. Read.
+
+**Tutorials and Example Files**
+-------------------------------
+
+We thank Mike James and Natalie Strynadka for the BETA-BLIP test case
+diffraction data. Reference: Strynadka, N.C.J., Jensen, S.E., Alzari,
+P.M. & James. M.N.G. (1996) *Nat. Struct. Biol.* **3** 290-297. We thank
+Paul Adams for the Insulin test case diffraction data. Reference: Adams
+(2001) *Acta Cryst* D\ **57**. 990-995.
+
+**Bug Reports**
+---------------
+
+| We apologize for the bugs. Please send bug reports to
+`cimr-phaser@lists.cam.ac.uk <mailto:cimr-phaser@lists.cam.ac.uk>`__
+
+**General Strategy for Automated Molecular Replacement**
+--------------------------------------------------------
+
+Automated Molecular Replacement in Phaser combines the anisotropy
+correction, likelihood enhanced fast rotation function, likelihood
+enhanced fast translation function, packing and refinement modes for
+multiple search models and a set of possible spacegroups.
+
+The PHENIX AutoMR wizard runs Phaser in default mode and allows some key
+changes to the default mode which may give structure solution in more
+difficult cases. Experience has shown that most structures that can be
+solved by Phaser can be solved by relatively simple strategies. However,
+if the AutoMR wizard doesn't give a solution even with non-default input
+you need to run Phaser outside the wizard to access the full range of
+Phaser control options. This can be done in the `PHENIX graphical
+interface <phenix_gui.htm>`__ by running the `Phaser-MR
+GUI <phaser_mr.htm>`__ , or on the command line. Details of how to run
+Phaser using keyword input or from python scripts are found at `the
+Phaser home page <http://www-structmed.cimr.cam.ac.uk/phaser>`__.
+
+**How to Define Models**
+------------------------
+
+Phaser must be given the models that it will use for molecular
+replacement. A model in Phaser is referred to as an "ensemble", even
+when it is described by a single file. This is because it is possible to
+provide a set of aligned homologous structures as an ensemble, from
+which a statistically-weighted averaged model is calculated. A molecular
+replacement model is provided either as one or more aligned pdb files,
+or as an electron density map, entered as structure factors in an mtz
+file. Each ensemble is treated as a separate type of rigid body to be
+placed in the molecular replacement solution. An ensemble should only be
+defined once, even if there are several copies of the molecule in the
+asymmetric unit.
+
+| Fundamental to the way in which Phaser uses MR models (either from
+coordinates or maps) is to estimate how the accuracy of the model falls
+off as a function of resolution, represented by the Sigma(A) curve. To
+generate the Sigma(A) curve, Phaser needs to know the RMS coordinate
+error expected for the model and the fraction of the scattering power in
+the asymmetric unit that this model contributes. If fp is the fraction
+scattering and RMS is the rms coordinate error, then
+|  Sigma(A) =
+SQRT{fp\*[1-fsol\*exp(-Bsol\*(sin(theta)/lambda)\ :sup:`2`)]} \* exp{-(8
+Pi\ :sup:`2`/3)\*RMS:sup:`2`\ \*(sin(theta)/lambda)\ :sup:`2`}
+|  where fsol(default=0.95) and Bsol(default=300Å\ :sup:`2`) account for
+the effects of disordered solvent on the completeness of the model at
+low resolution.
+
+Building an Ensemble from Coordinates
+-------------------------------------
+
+If you have an NMR Ensemble as a model, there is no need to split the
+coordinates in the pdb file provided that the models are separated by
+MODEL and ENDMDL cards. In this case the homology is not a good
+indication of the similarity of the structural coordinates to the target
+structure. You should use the RMS option; several test cases have
+succeeded where the ID was close to 100% with an RMS value of about 1.5Å
+(see table below).
+
+The RMS deviation is entered directly or indirectly via the sequence
+identity (ID) using the formula RMS = max(0.8,0.4\*exp(1.87\*(1.0-ID)))
+where ID is the fraction identity. The RMS deviation estimated from ID
+may be an underestimate of the true value if there is a slight
+conformational change between the model and target structures. To find a
+solution in these cases it may be necessary to increase the RMS from the
+default value generated from the ID, by say 0.5 Ångstroms. On the other
+hand, when Phaser succeeds in solving a structure from a model with
+sequence identity much below 30%, it is often found that the fold is
+preserved better than the average for that level of sequence identity.
+So it may be worth submitting a run in which the RMS error is set at,
+say, 1.5, even if the sequence identity is low. The table below can be
+used as a guide as to the default RMS value corresponding to ID.
+
++-----------------------+-------------------------+
+| **  Sequence ID  **   | **  RMS deviation  **   |
++-----------------------+-------------------------+
+| 100%                  | 0.80Å                   |
++-----------------------+-------------------------+
+| 64%                   | 0.80Å                   |
++-----------------------+-------------------------+
+| 63%                   | 0.799Å                  |
++-----------------------+-------------------------+
+| 50%                   | 1.02Å                   |
++-----------------------+-------------------------+
+| 40%                   | 1.23Å                   |
++-----------------------+-------------------------+
+| 30%                   | 1.48Å                   |
++-----------------------+-------------------------+
+| 20%                   | 1.78Å                   |
++-----------------------+-------------------------+
+| --> limit 0%          | 2.60Å                   |
++-----------------------+-------------------------+
+
+If you construct a model by homology modelling, remember that the RMS
+error you expect is essentially the error you expect from the template
+structure (if not worse!). So specify the sequence identity of the
+template, not of the homology model.
+
+**How to Define Composition**
+-----------------------------
+
+The composition defines the total amount of protein and nucleic acid
+that you have in the asymmetric unit not the fraction of the asymmetric
+unit that you are searching for. You can mix compositions entered by
+molecular weight with those entered by sequence.
+
+Composition by Molecular Weight
+-------------------------------
+
+The composition is calculated from the molecular weight of the protein
+and nucleic acid assuming the protein and nucleic acid have the average
+distribution of amino acids and bases. If your protein or nucleic acid
+has an unusual amino acid or base distribution the composition should be
+entered by sequence. You can mix compositions entered by molecular
+weight with those entered by sequence.
+
+Composition by Sequence
+-----------------------
+
+The composition is calculated from the amino acid sequence of the
+protein and the base sequence of the nucleic acid in fasta format.
+
+**How to Select Peaks**
+-----------------------
+
+If the AutoMR wizard fails to find a solution with default input, a
+solution may be found by changing the default selection criteria for
+peaks from the rotation function that are carried through to the
+translation funciton. The selection criterion can be changed by choosing
+the "edit rarely used inputs" option in the wizard. Selection can be
+done in four different ways.
+
+Select by Percent
+-----------------
+
+Percentage of the top peak, where the value of the top peak is defined
+as 100% and the value of the mean is defined as 0%. Default cutoff is
+75%. This criteria has the advantange that at least one peak (the top
+peak) always survives the selection. If the top solution is clear, then
+only the one solution will be output, but if the distribution of peaks
+is rather flat, then many peaks will be output for testing in the next
+part of the MR procedure (e.g. many peaks selected from the rotation
+function for testing with a translation function).
+
+Select by Z-Score
+-----------------
+
+Number of standard deviations (sigmas) over the mean (the Z-score). This
+is an absolute significance test. Not all searches will produce output
+if the cutoff value is too high (e.g. 5 sigma).
+
+Select by Number
+----------------
+
+Number of top peaks to select. If the distribution is very flat then it
+might be better to select a fixed large number (e.g. 1000) of top
+rotation peaks for testing in the translation function.
+
+Select All
+----------
+
+All peaks are selected. Enables full 6 dimensional searches, where all
+the solutions from the rotation function are output for testing in the
+translation function. This should never be necessary; it would be much
+faster and probably just as likely to work if the top 1000 peaks were
+used in this way.
+
+**Has Phaser Solved It?**
+-------------------------
+
+Ideally, only the number of solutions you are expecting should be found.
+However if the signal-to-noise of your search is low, there will be
+noise peaks in the final selection also.
+
+A highly compact summary of the history of a solution is given in the
+annotation of a solution in the .sol file. This is a good place to start
+your analysis of the output. The annotation gives the Z-score of the
+solution at each rotation and translation function, the number of
+clashes in the packing, and the refined LLG. You should see the TFZ (the
+translation function Z-score) is high at least for the final components
+of the solution, and that the LLG (log-likelihood gain) increases as
+each component of the solution is added. For example, in the case of
+beta-blip the annotation for the single solution output in the .sol file
+shows these features
+
+| SOLU SET RFZ=11.0 TFZ=22.6 PAK=0 LLG=434 RFZ=6.2 TFZ=28.9 PAK=0
+LLG=986 LLG=986
+|  SOLU 6DIM ENSE beta EULER 200.920 41.240 183.776 FRAC -0.49641
+-0.15752 -0.28125
+|  SOLU 6DIM ENSE blip EULER 43.873 80.949 117.141 FRAC -0.12290 0.29306
+-0.09193
+
++--------------------+---------------------------+
+| ** TF Z-score **   | ** Have I solved it? **   |
++--------------------+---------------------------+
+|  less than 5       |  no                       |
++--------------------+---------------------------+
+|  5 - 6             |  unlikely                 |
++--------------------+---------------------------+
+|  6 - 7             |  possibly                 |
++--------------------+---------------------------+
+|  7 - 8             |  probably                 |
++--------------------+---------------------------+
+|  more than 8       |  definitely\*             |
++--------------------+---------------------------+
+
+For a rotation function, the correct solution may be in the list with a
+Z-score under 4, and will not be found until a translation function is
+performed and picks out the correct solution.
+
+For a translation function the correct solution will generally have a
+Z-score (number of standard deviations above the mean value) over 5 and
+be well separated from the rest of the solutions. Of course, there will
+always be exceptions! \*Note, in particular, that in the presence of
+translational NCS, pairs of similarly-oriented molecules separated by
+the correct translation vector will give large Z-scores, even if they
+are incorrect, because they explain the systematic variation in
+intensities caused by the translational NCS.
+
+You should always at least glance through the summary of the logfile.
+One thing to look for, in particular, is whether any translation
+solutions with a high Z-score have been rejected by the packing step. By
+default up to 10 clashes are allowed. Such a solution may be correct,
+and the clashes may arise only because of differences in small surface
+loops. If this happens, repeat the run allowing a suitable number of
+clashes. Note that, unless there is specific evidence in the logfile
+that a high TF-function Z-score solution is being rejected with a few
+clashes, it is much better to edit the model to remove the loops than to
+increase the number of allowed clashes. Packing criteria are a very
+powerful constraint on the translation function, and increasing the
+number of allowed clashes beyond the default will increase the search
+time enormously without the possibility of generating any correct
+solutions that would not have otherwise been found.
+
+**What to do in difficult cases**
+---------------------------------
+
+Not every structure can be solved by molecular replacement, but the
+right strategy can push the limits. What to do when the default jobs
+fail depends on why your structure is difficult.
+
+Flexible Structure
+------------------
+
+The relative orientations of the domains may be different in your
+crystal than in the model. If that may be the case, break the model into
+separate PDB files containing rigid-body units, enter these as separate
+ensembles, and search for them separately.
+
+Alternatively, you could try generating a series of models perturbed by
+normal modes. One of these may duplicate the hinge motion and provide a
+good single model.
+
+Poor or Incomplete Model
+------------------------
+
+Signal-to-noise is reduced by coordinate errors or incompleteness of the
+model. Since the rotation search has lower signal to begin with than the
+translation search, it is usually more severely affected. For this
+reason, it can be very useful to use the subsequent translation search
+as a way to choose among many (say 1000) orientations. Try increasing
+the number of clustered orientations. If that fails, try turning off the
+clustering feature in the save step, because the correct orientation may
+sit on the shoulder of a peak in the rotation function.
+
+As shown convincingly by Schwarzenbacher *et al.* (Schwarzenbacher,
+Godzik, Grzechnik & Jaroszewski, *Acta Cryst.* D\ **60**, 1229-1236,
+2004), judicious editing can make a significant difference in the
+quality of a distant model. In a number of tests with their data on
+models below 30% sequence identity, we have found that Phaser works best
+with a "mixed model" (non-identical sidechains longer than Ser replaced
+by Ser). In agreement with their results, the best models are generally
+derived using more sophisticated alignment protocols, such as their FFAS
+protocol.
+
+High Degree of Non-crystallographic Symmetry
+--------------------------------------------
+
+If there are clear peaks in the self-rotation function, you can expect
+orientations to be related by this known NCS. Alternatively, you may
+have an oligomeric model and expect similar NCS in the crystal. First
+search with the oligomeric model; if this fails, search with a monomer.
+
+Pseudo-translational Non-crystallographic Symmetry
+--------------------------------------------------
+
+It is frequently the case that crystallographic and non-crystallographic
+rotational symmetry axes are parallel. The combination generates
+translational NCS, in which more than one unique copy of the molecule is
+found in the same orientation in the crystal. This can be recognized by
+the presence of large non-origin peaks in the native Patterson map. If
+one copy of the search model can be found, then the translational NCS
+tells you where to place another copy. Unfortunately, the presence of
+translational NCS can make it difficult to solve a structure using
+Phaser, because the current likelihood targets do not account for the
+statistical effects of NCS. If there is a small difference in the
+orientation of the two molecules (which will show up as a reduction in
+the height of the non-origin Patterson peak as the resolution is
+increased), it may help to use data to higher resolution than the
+default, because the translational NCS is partially broken.
+
+What not to do
+--------------
+
+The automated mode of Phaser is fast when Phaser finds a high Z-score
+solution to your problem. When Phaser cannot find a solution with a
+significant Z-score, it "thrashes", meaning it maintains a list of
+100-1000's of low Z-score potential solutions and tries to improve them.
+This can lead to exceptionally long Phaser runs (over a week of CPU
+time). Such runs are possible because the highly automated script allows
+many consecutive MR jobs to be run without you having to manually set
+100-1000's of jobs running and keep track of the results. "Thrashing"
+generally does not produce a solution: solutions generally appear
+relatively quickly or not at all. It is more useful to go back and
+analyse your models and your data to see where improvements can be made.
+Your system manager will appreciate you terminating these jobs.
+
+It is also not a good idea to effectively remove the packing test.
+Unless there is specific evidence in the logfile that a high TF-function
+Z-score solution is being rejected with a few clashes, it is much better
+to edit the model to remove the loops than to increase the number of
+allowed clashes. Packing criteria are a very powerful constraint on the
+translation function, and increasing the number of allowed clashes
+beyond the default (10) will increase the search time enormously without
+the possibility of generating any correct solutions that would not have
+otherwise been found.
+
+Other suggestions
+-----------------
+
+Phaser has powerful input, output and scripting facilities that allow a
+large number of possibilities for altering default behaviour and forcing
+Phaser to do what you think it should. However, you will need to read
+the information at `the Phaser home
+page <http://www-structmed.cimr.cam.ac.uk/phaser>`__ to take advantage
+of these facilities!

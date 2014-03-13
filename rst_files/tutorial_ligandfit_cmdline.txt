@@ -1,0 +1,399 @@
+Tutorial 7: Fitting a flexible ligand into a difference electron density map
+----------------------------------------------------------------------------
+
+Introduction
+------------
+
+This is a tutorial for running LigandFit on the command line; for GUI
+usage, see the `separate tutorial. <tutorial_ligandfit.htm>`__ This
+tutorial will start with experimental data and a model (1J4R.pdb) with
+ligand removed (1J4R\_no\_ligand.pdb) and a randomized ligand
+conformation (1J4R\_random.pdb), and will fit the ligand into difference
+density calculated from the experimental data and partial model. The
+tutorial is designed to be read all the way through, giving pointers for
+you along the way. Once you have read it all and run the example data
+and looked at the output files, you will be in a good position to run
+your own data through LigandFit.
+
+Setting up to run PHENIX
+------------------------
+
+If PHENIX is already installed and your environment is all set, then if
+you type:
+
+::
+
+    echo $PHENIX
+
+then you should get back something like this:
+
+::
+
+    /xtal//phenix-1.3
+
+If instead you get:
+
+::
+
+    PHENIX: undefined variable
+
+then you need to set up your PHENIX environment. See the `PHENIX
+installation <install.htm>`__ page for details of how to do this. If you
+are using the C-shell environment (**csh**) then all you will need to do
+is add one line to your **.cshrc** (or equivalent) file that looks like
+this:
+
+::
+
+    source /xtal/phenix-1.3/phenix_env
+
+(except that the path in this statement will be where **your** PHENIX is
+installed). Then the next time you log in **$PHENIX** will be defined.
+
+Running the demo 1J4R-ligand data with LigandFit
+------------------------------------------------
+
+To run LigandFit on the demo 1J4R-ligand data, make yourself a
+**tutorials** directory and **cd** into that directory:
+
+::
+
+    mkdir tutorials
+    cd tutorials 
+
+Now type the phenix command:
+
+::
+
+    phenix.run_example --help 
+
+to list the available examples. Choosing **1J4R-ligand** for this
+tutorial, you can now use the phenix command:
+
+::
+
+    phenix.run_example 1J4R-ligand 
+
+to build the 1J4R-ligand structure with LigandFit. This command will
+copy the directory **$PHENIX/examples/1J4R-ligand** to your current
+directory (**tutorials**) and call it **tutorials/1J4R-ligand/** . Then
+it will run LigandFit using the command file **run.sh** that is present
+in this **tutorials/1J4R-ligand/** directory.
+
+This command file **run.sh** is simple. It says:
+
+::
+
+     #!/bin/sh
+    echo "Running LigandFit on 1J4R data..."
+    phenix.ligandfit data=1J4R.mtz model=1J4R_no_ligand.pdb ligand=1J4R_random.pdb
+
+The first line (**#!/bin/sh**) tells the system to interpret the
+remainder of the text in the file using the sh (or bash) -shell
+(**sh**).
+
+The command **phenix.ligandfit** runs the command-line version of
+LigandFit (see `Automated Structure Solution using
+LigandFit <ligandfit.htm>`__ for all the details about LigandFit
+including a full list of keywords).
+
+The arguments on the command line tell LigandFit about the data file
+(**data=1J4R.mtz**), the model without ligand
+(**model=1J4R\_no\_ligand.pdb**), and the ligand
+(**ligand=1J4R\_random.pdb**). (Note that each of these is specified
+with an **=** sign, and that there are no spaces around the **=** sign.)
+
+The structure factor amplitudes are in the datafile **1J4R.mtz**. This
+is an **mtz** file which is a binary file that contains summary
+information about the dataset as well as the reflection data.
+
+Although the **phenix.run\_example 1J4R-ligand** command has just run
+LigandFit from a script (**run.sh**), you can run LigandFit yourself
+from the command line with the same **phenix.ligandfit data= ...**
+command. You can also run LigandFit from a GUI, or by putting commands
+in another type of script file. All these possibilities are described in
+`Using the PHENIX Wizards <running-wizards.htm>`__.
+
+Where are my files?
+-------------------
+
+Once you have started LigandFit or another Wizard, an **output
+directory** will be created in your current (working) directory. The
+first time you run LigandFit in this directory, this **output
+directory** will be called **LigandFit\_run\_1\_** (or
+**LigandFit\_run\_1\_/**, where the slash at the end just indicates that
+this is a directory). All of the output from run **1** of LigandFit will
+be in this directory. If you run LigandFit again, a new subdirectory
+called **LigandFit\_run\_2\_** will be created.
+
+Inside the directory **LigandFit\_run\_1\_** there will be one or more
+temporary directories such as **TEMP0** created while the Wizard is
+running. The files in this temporary directory may be useful sometimes
+in figuring out what the Wizard is doing (or not doing!). By default
+these directories are emptied when the Wizard finishes (but you can keep
+their contents with the command **clean\_up=False** if you want.)
+
+What parameters did I use?
+--------------------------
+
+Once the LigandFit wizard has started (when run from the command line),
+a **parameters file** called **ligandfit.eff** will be created in your
+**output directory** (e.g., **LigandFit\_run\_1\_/ligandfit.eff**). This
+**parameters file** has a header that says what command you used to run
+LigandFit, and it contains all the starting values of all parameters for
+this run (including the defaults for all the parameters that you did not
+set).
+
+The **ligandfit.eff** file is good for more than just looking at the
+values of parameters, though. If you copy this file to a new one (for
+example **ligandfit\_lores.eff**) and edit it to change the values of
+some of the parameters (**resolution=3.0**) then you can re-run
+LigandFit with the new values of your parameters like this:
+
+::
+
+    phenix.ligandfit ligandfit_lores.eff
+
+This command will do everything just the same as in your first run but
+use only the data to 3.0 A.
+
+*Reading the log files for your LigandFit run file*
+---------------------------------------------------
+
+While the LigandFit wizard is running, there are several places you can
+look to see what is going on. The most important one is the overall log
+file for the LigandFit run. This log file is located in:
+
+::
+
+    LigandFit_run_1_/LigandFit_run_1_1.log
+
+for run **1** of LigandFit. (The second **1** in this log file name will
+be incremented if you stop this run in the middle and restart it with a
+command like **phenix.ligandfit run=1**).
+
+The **LigandFit\_run\_1\_1.log** file is a running summary of what the
+LigandFit Wizard is doing. Here are a few of the key sections of the log
+files produced for the **1J4R-ligand** SAD dataset.
+
+Summary of the command-line arguments
+-------------------------------------
+
+Near the top of the log file you will find:
+
+::
+
+     
+
+    ------------------------------------------------------------
+    Starting LigandFit with the command:
+
+    phenix.ligandfit data=1J4R.mtz model=1J4R_no_ligand.pdb   \
+    ligand=1J4R_random.pdb
+
+This is just a repeat of how you ran LigandFit; you can copy it and
+paste it into the command line to repeat this run.
+
+Fitting the ligand into difference density with RESOLVE ligand fitting
+----------------------------------------------------------------------
+
+The LigandFit Wizard will use the partial model **1J4R\_no\_ligand.pdb**
+to calculate FC and PHIC (model amplitudes and phases ) for the
+structure factors in **1J4R.mtz**. Then these are used to calculate a
+simple (FO-FC) exp(iPHIC) difference map which is written to
+**resolve\_map.mtz**.
+
+Then the RESOLVE algorithm for ligand fitting is used to fit your ligand
+**1J4R\_random.pdb** into this map. To make the fitting process suitable
+for parallelization, the fitting is done in a series of tries, each
+considering more possible rotations of the ligand and each carrying out
+a more exhaustive search than the previous one. Then depending on how
+many processors are available, they are run one at a time or in
+parallel.
+
+Here is the summary of the five attempts at fitting the 1J4R difference
+map:
+
+::
+
+    Fitting ligand #1 from /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb
+    Ligand file has 45 atomsSearching for ligand number 1
+    Estimated ligand volume: 185.0  A**3
+    Starting CC of ligand as input to map: 0.31
+    Starting local CC of ligand as input to map: 0.18USING LOCAL CC: 0.18
+    Setting background=False as nproc=1
+    Try:  1 quickTrying fit with n_indiv_tries_min = 5
+                    n_indiv_tries_max = 10
+                    n_group_search    = 3
+                    ligand_file       = 1J4R_random.pdb
+    Try:  2 thorough
+    Trying fit with n_indiv_tries_min = 100
+                    n_indiv_tries_max = 100
+                    n_group_search    = 4
+                    ligand_file       = 1J4R_random.pdb
+    Try:  3 randomize
+    Randomizing ligand conformation before starting fit
+    Randomized version of /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-liga
+    nd/1J4R_random.pdb placed in random.pdb
+    Trying fit with n_indiv_tries_min = 100
+                    n_indiv_tries_max = 100
+                    n_group_search    = 4
+                    ligand_file       = random.pdb
+    Try:  4 extra_thorough
+    Trying fit with n_indiv_tries_min = 300
+                    n_indiv_tries_max = 300
+                    n_group_search    = 6
+                    ligand_file       = 1J4R_random.pdb
+    Try:  5 extra_thorough_randomize
+    Randomizing ligand conformation before starting fit
+    Randomized version of 
+    /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/1J4R_random.pdb 
+    placed in random.pdb
+    Trying fit with n_indiv_tries_min = 300
+                    n_indiv_tries_max = 300
+                    n_group_search    = 6
+                    ligand_file       = random.pdb
+    Running 5 jobs on 1 processors
+    Splitting work into 5 jobs and running 1 at a time with sh in
+    /net/cci-filer1/vol1/tmp/terwill/phenix_examples/1J4R-ligand/LigandFit_run_1_/TEMP0
+
+    Starting job 1...
+    Starting job 2...
+    Starting job 3...
+    Starting job 4...
+    Starting job 5...
+
+    Solution for try :  1
+     SCORE=   123.868 CC=     0.650 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=1J4R_random.pdb
+
+    Solution for try :  2
+     SCORE=   128.528 CC=     0.700 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=1J4R_random.pdb
+
+    Solution for try :  3
+     SCORE=   128.170 CC=     0.710 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=random.pdb
+
+    Solution for try :  4
+     SCORE=   129.750 CC=     0.720 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=1J4R_random.pdb
+
+    Solution for try :  5
+     SCORE=   129.574 CC=     0.720 LIGANDS=       1  LIG=  ligand_fit_1_1.pdb  TEMPLATE=random.pdb
+
+In this case the best fits were found on tries 4 and 5 (the ones with
+the most thorough fitting attempts).
+
+The log file for the best fit is in **ligand\_fit\_1\_1.pdb** (the first
+1 refers to the solution number, and the second 1 refers to the ligand
+number, as you have the option of finding more than one ligand in the
+map with **number\_of\_ligands=n**). This log file will describe the
+analysis of the ligand and the rigid parts of the ligand, the search for
+locations of rigid parts of the ligand, and the extension of those rigid
+parts into density to complete the ligand.
+
+In these runs the parameters **n\_indiv\_tries\_min=5** and
+**n\_indiv\_tries\_max=10** are the minimum and maximum number of
+placements of each rigid part of the ligand to test for completing the
+ligand. The parameter **n\_group\_search=3** is the number of different
+rigid parts of the ligand to try. On subsequent tries at fitting these
+will all be increased to search more thoroughly.
+
+This fitting of the ligand was able to place all 45 atoms in the ligand,
+with a correlation to the map in the region of the ligand of 0.72. The
+"LOCAL CC" is the correlation of the model density with map density in
+the region occupied by the ligand itself, plus any contiguous points
+with high difference electron density that are connected to the region
+occupied by the ligand. This local CC is more useful at discriminating
+between correct and incorrect models than the standard correlation
+(which only includes the region occupied by the model.)
+
+Note that the fit to the map has improved only slightly in this case
+over the initial fit found on the first try. Sometimes this is the case
+and sometimes a considerably better fit may be found by searching more
+thoroughly.
+
+The LigandFit\_summary.dat summary file
+---------------------------------------
+
+A quick summary of the results of your LigandFit run is in the
+**LigandFit\_summary.dat** file in your output directory. This file
+lists the key files that were produced in your run of LigandFit (all
+these are in the output directory) and some of the key statistics for
+the run, including the overall correlation between the model and the map
+and the number of copies of the ligand placed. Here is the summary for
+this **1J4R-ligand** ligand-fitting run:
+
+::
+
+     
+     LIGAND SOLUTIONS FOR RUN 1  SORTED BY OVERALL CC
+
+       ****    FILES ARE IN THE DIRECTORY: LigandFit_run_1_  ****
+
+      RANK    SCORE        CC      COPIES  FITTED/TOTAL     NAME       TEMPLATE         
+          RMSD  CC_START    LIG_VOLUME
+
+       1     129.750      0.720        1    45 /   45    ligand_fit_1_1.pdb  1J4R_random.pdb    
+          0.00      0.18    185.00
+
+How do I know if ligand fitting worked?
+---------------------------------------
+
+Here are some of the things to look for to tell if you have obtained a
+good ligand model:
+
+-  What is the overall correlation between the ligand and the difference
+   density map? For a well-fitted ligand this is normally 0.70 or
+   higher. Correlations below 0.5 are poor.
+-  How well does the ligand fit the difference density? Have a look at
+   the ligand and the difference density map in a graphics program. Does
+   the ligand conformation match the density? Add the model of the
+   macromolecule now. Does the ligand make plausible interactions with
+   the macromolecule?
+
+What to do next
+---------------
+
+Once you have run LigandFit and have obtained a good ligand model, you
+will want to refine the model. Add the model to your PDB file containing
+the remainder of the structure and refine the whole structure. You may
+need to define the geometry of your ligand. In that case the tool
+`phenix.elbow <elbow.htm>`__ in the PHENIX package well by most useful
+(it is quite automatic and generates all the files you need).
+
+Once you have fitted your ligand(s), the next thing you might want to do
+is to re-run the AutoBuild Wizard, including your ligands with
+**input\_lig\_file\_list=myligand.pdb**.
+
+If you do not obtain a good fit of your ligand to the map, there are a
+few things you should check:
+
+-  Does your starting model have solvent molecules where the ligand
+   needs to be placed? If so, then you will need to remove these before
+   LigandFit can fit the ligand there. The LigandFit Wizard excludes all
+   locations that are occupied by atoms in the starting model.
+-  Have a careful look at all the output files. Work your way through
+   the main log file (e.g., **LigandFit\_run\_1\_1.log**). Is there
+   anything strange or unusual in any of them that may give you a clue
+   as to what to try next?
+-  Have a look at the difference electron density map. Does it have
+   clear density for the ligand? If not, you may want to try other types
+   of maps. You can apply **phenix.refine** to your data file and your
+   model without ligand and it will create a map\_coeffs.mtz output file
+   that has sigmaA-weighted map coefficients that should optimally show
+   the placement of your ligand. If this map looks better than the
+   **resolve\_map.mtz**, then you can read in the coefficients like
+   this, where the command **lig\_map\_type=fo-fc\_difference\_map**
+   tells the wizard to read in the map coefficients directly from the
+   data file:
+
+::
+
+     
+    phenix.ligandfit data=map_coeffs.mtz lig_map_type=fo-fc_difference_map   \
+       model=partial.pdb ligand=side.pdb
+
+Additional information
+----------------------
+
+For details about the LigandFit Wizard, see `Automated Ligand Fitting
+using LigandFit <ligandfit.htm>`__. For help on running Wizards, see
+`Using the PHENIX Wizards <running-wizards.htm>`__.

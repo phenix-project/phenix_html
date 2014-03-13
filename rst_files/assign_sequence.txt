@@ -1,0 +1,158 @@
+Sequence assignment and linkage of neighboring segments with assign\_sequence
+=============================================================================
+
+Author(s)
+---------
+
+-  assign\_sequence: Tom Terwilliger
+
+Purpose
+-------
+
+You can now carry out an improved sequence assignment of a model that
+you have already built with phenix.assign\_sequence. Further, once the
+sequence has been assigned, this method will use the sequence and
+proximity to identify chains that should be connected, and it will
+connect those that have the appropriate relationships using the new loop
+libraries available in phenix.fit\_loops. The result is that you may be
+able to obtain a more complete model with more chains assigned to
+sequence than previously.
+
+assign\_sequence is a command line tool for reanalyzing resolve sequence
+assignment for a model and a map including the non-crystallographic
+symmetry, exclusion of sequence by previously-assigned regions, and
+requirement for plausible distances and geometries between ends of
+fragments with assigned sequences. Additionally assign\_sequence will
+use the fit\_loops loop library to connect segments that are separated
+by a short loop.
+
+Note: assign\_sequence is designed to be used after resolve
+model-building in which residues that are not assigned to sequence are
+given residue numbers higher than any residue in the input sequence
+file. If you input a model not built by resolve or in phenix, or if you
+would like to completely redo the sequence assignment for your model, be
+sure to set "allow\_fixed\_segments=False".
+
+NOTE: assign\_sequence is normally called from phenix.phase\_and\_build
+but you can run it interactively if you want.
+
+Usage
+-----
+
+How assign\_sequence works:
+---------------------------
+
+The starting point for assign\_sequence is a set of segments of
+structure read in from the input model. assign\_sequence then uses
+resolve to calculate the compatibility of each possible side chain with
+each residue in each segment. Then assign\_sequence tests out possible
+combinations of alignments of all the segments in the input model and
+chooses the set of alignments that is most compatible with the density
+map, the number of NCS copies, and with the geometries and distances
+between ends of the segments.
+
+Sequence probabilities:
+                       
+
+assign\_sequence uses the side-chain to map compatibility matrix
+calculated by resolve to assess the relative probabilities of each
+possible side chain at each position in the input model. Segments that
+are positively assigned to a sequence by resolve are (by default)
+maintained and used as anchors for further sequence assignment. All
+other segments have a relative probability associated with each possible
+alignment of the segment to the input sequence. The score for each
+alignment is the logarithm of this probability (essentially a
+log-likelihood LL score).
+
+Connection scores:
+                  
+
+Any pair of segments with some assignment of sequence to each segment
+has an additional score corresponding to the plausibility of a
+connection of the expected length existing between the segments. If the
+distance between ends is greater than can be bridged by the number of
+residues separating them, then the connection is not possible. If the
+connection is possible, it is scored based on the best density fit (CC)
+of a loop from the fit\_loops loop library. This additional score is
+normally 10\*CC.
+
+Generating sequence alignments and connectivities
+                                                 
+
+assign\_sequence starts with the segments with the most convincing
+assignments of sequence. Often these are those with sequence positively
+assigned by resolve; otherwise they are those with the
+highest-probability assignments. This yields a starting arrangement
+(sequence assignment for a set of segments). Then each possible sequence
+assignment of each unassigned segment is tested for compatibility with
+the existing arrangement and the one that is most compatible (based on
+the connections that would result, duplication of sequence, and
+sequence-map matching) is added to the arrangement. Optionally many
+arrangements can be built up in parallel, but often a very good one can
+be found simply by taking the top one at each step. This process is
+repeated until no additional segments can be added to the arrangement to
+yield an increase in log-likelihood score of (by default) 2 or greater.
+
+NCS copies:
+           
+
+assign\_sequence builds up a set of possible sequence assignments and
+connectivities that depends on the expected number of copies in the
+asymmetric unit of the crystal. If there is only one copy of the
+molecule in the crystal, then no residues in the sequence can be used
+more than once in sequence assignment. If there are N copies, then a
+residue can be used up to N times. If there are multiple copies, then
+each molecule must be self-consistent, with plausible distances and
+geometries relating each segment to the next.
+
+Connecting segments:
+                    
+
+Once a final arrangement is found, including NCS if applicable, all
+segments that are separated by short loops (typically 0-3 residues) are
+connected using loops from the fit\_loops loop library. This yields
+longer segments of structure with sequences fully assigned. The
+resulting model then has side chains added to match the newly-assigned
+sequence and is written out.
+
+*Output files from assign\_sequence*
+------------------------------------
+
+**assign\_sequence.pdb**: A PDB file with your input model assigned to
+sequence (to the extent possible). Residues not assigned to sequence
+will be given a chain ID higher than those assigned, and they will be
+given residue numbers higher than any residue number in the sequence
+file.
+
+Examples
+--------
+
+Standard run of assign\_sequence:
+---------------------------------
+
+Running assign\_sequence is easy. From the command-line you can type:
+
+::
+
+    phenix.assign_sequence map_coeffs.mtz coords.pdb sequence.dat
+
+If you want (or need) to specify the column names from your mtz file,
+you will need to tell assign\_sequence what FP and PHIB (and optionally
+FOM) are, in this format:
+
+::
+
+    phenix.assign_sequence map_coeffs.mtz coords.pdb \
+    labin="FP=2FOFCWT PHIB=PH2FOFCWT" sequence.dat
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

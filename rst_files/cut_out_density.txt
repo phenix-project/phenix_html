@@ -1,0 +1,102 @@
+Cutting density out of a map with cut\_out\_density
+===================================================
+
+Author(s)
+---------
+
+-  cut\_out\_density: Tom Terwilliger
+
+Purpose
+-------
+
+This routine cuts density out of a map and writes an MTZ file in space
+group P1 with map coefficients for the cutout density. The density map
+is calculated from map coefficients supplied as an input MTZ file. The
+region to be cut out is specified through the center of the region and
+dimensions in X Y and Z of a box to be cut out (cutout\_center=X,Y,Z and
+cutout\_dimensions=a,b,c). Alternatively the region can be specified
+with a PDB file and optional atom selections, with all points within a
+specified radius of an atom included, or the region can be specified
+with a center and the radius of a sphere to include. The density in the
+region cut out can optionally be offset to have a mean density of zero.
+The region outside the cut out region always will have a density of
+zero. The cut out region can be optionally padded with flat density an
+additional distance beyond the box that is cut out (padding=xx). The
+resolution of the cutout map can also be specified (the input map will
+be truncated at the high-resolution limit specified, and the output map
+will extend to the high-resolution limit.)
+
+Usage
+-----
+
+The main uses of phenix.cut\_out\_density are:
+
+-  Cutting out a small part of a map and molecule to work on
+   independently of the rest of the structure. This can be useful if you
+   have a very large structure, as working with a small piece may be
+   much quicker. Note that you can only carry out real-space methods on
+   the extracted map and model.
+-  Cutting density out of a map to use in molecular replacement.
+
+Please note: you should not use phenix.cut\_out\_density to select
+regions near your model for display purposes. You can create a highly
+misleading map by displaying only density that is within a small radius
+of atoms in your model.
+
+How cut\_out\_density works:
+----------------------------
+
+cut\_out\_density assumes that you are supplying map coefficients and
+calculates a map. Then it creates a new unit cell in space group P1 with
+orthogonal axes and dimensions big enough for your cut out region and
+padding of zero density around it. The density in your map at the center
+you specify is then centered at the origin in the new map. Then new map
+coefficients are created and written out.
+
+You can optionally specify the region to be cut out as a box, a sphere,
+or a region defined by all points within a specified distance of atoms
+in a PDB file.
+
+You can specify the center of the region to be cut out with its
+coordinates, or as the centroid of a PDB file that is input.
+
+If you specify an input PDB file, you can use a selection string to
+select any part of that model (i.e., one domain or one chain) as the
+region to be cut out or as the center of the cut out region.
+
+If you specify an input PDB file, then the selected atoms from that file
+will be offset to match the new map and written out.
+
+As a convenience, you can re-transform a PDB file back to the original
+position in your original model as well.
+
+*Output files from cut\_out\_density*
+-------------------------------------
+
+**cutout.mtz**: An MTZ file with your cut out density in space group P1.
+**cutout.pdb**: A PDB file with your input molecule translated to match
+the offset used in creating cutout.mtz
+
+Examples
+--------
+
+Standard run of cut\_out\_density:
+----------------------------------
+
+Running cut\_out\_density is easy. From the command-line you can type:
+
+::
+
+    phenix.cut_out_density model.pdb map_coeffs.mtz
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

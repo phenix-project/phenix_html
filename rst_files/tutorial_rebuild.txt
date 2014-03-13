@@ -1,0 +1,704 @@
+Tutorial 6: Automatically rebuilding a model solved by molecular replacement
+----------------------------------------------------------------------------
+
+Introduction
+------------
+
+This tutorial will start with a molecular replacement model for
+a2u-globulin, and carry out the process of rebuilding this model using
+the rebuild-in-place option of the AutoBuild Wizard. The tutorial is
+designed to be read all the way through, giving pointers for you along
+the way. Once you have read it all and run the example data and looked
+at the output files, you will be in a good position to run your own data
+through AutoBuild.
+
+Setting up to run PHENIX
+------------------------
+
+If PHENIX is already installed and your environment is all set, then if
+you type:
+
+::
+
+    echo $PHENIX
+
+then you should get back something like this:
+
+::
+
+    /xtal//phenix-1.3
+
+If instead you get:
+
+::
+
+    PHENIX: undefined variable
+
+then you need to set up your PHENIX environment. See the `PHENIX
+installation <install.htm>`__ page for details of how to do this. If you
+are using the C-shell environment (**csh**) then all you will need to do
+is add one line to your **.cshrc** (or equivalent) file that looks like
+this:
+
+::
+
+    source /xtal/phenix-1.3/phenix_env
+
+(except that the path in this statement will be where **your** PHENIX is
+installed). Then the next time you log in **$PHENIX** will be defined.
+
+Running the demo a2u-globulin-rebuild data with AutoBuild
+---------------------------------------------------------
+
+To run AutoBuild on the demo a2u-globulin-rebuild data, make yourself a
+**tutorials** directory and **cd** into that directory:
+
+::
+
+    mkdir tutorials
+    cd tutorials 
+
+Now type the phenix command:
+
+::
+
+    phenix.run_example --help 
+
+to list the available examples. Choosing **a2u-globulin-rebuild** for
+this tutorial, you can now use the phenix command:
+
+::
+
+    phenix.run_example a2u-globulin-rebuild 
+
+to build the a2u-globulin-rebuild structure with AutoBuild. This command
+will copy the directory **$PHENIX/examples/a2u-globulin-rebuild** to
+your current directory (**tutorials**) and call it
+**tutorials/a2u-globulin-rebuild/** . Then it will run AutoBuild using
+the command file **run.sh** that is present in this
+**tutorials/a2u-globulin-rebuild/** directory.
+
+This command file **run.sh** is simple. It says:
+
+::
+
+    #!/bin/sh
+    echo "Running AutoBuild on a2u-globulin MR data "
+    phenix.autobuild mup_mr_solution.pdb a2u-sigmaa.mtz a2u-globulin.seq  \
+    input_map_file=a2u-sigmaa.mtz input_map_labels="FWT PHIC"
+
+The first line (**#!/bin/sh**) tells the system to interpret the
+remainder of the text in the file using the sh (or bash) -shell
+(**sh**).
+
+The command **phenix.autobuild** runs the command-line version of
+AutoBuild (see `Automated Structure Solution using
+AutoBuild <autobuild.htm>`__ for all the details about AutoBuild
+including a full list of keywords).
+
+The arguments on the command line tell AutoBuild about the molecular
+replacement model (**mup\_mr\_solution.pdb** the data file
+(**data=a2u-sigmaa.mtz**), sequence file
+(**seq\_file=a2u-globulin.seq**), the input map file with
+sigmaA-weighted phases (same as the input data file, but using different
+data columns: **input\_map\_file=a2u-sigmaa.mtz**), and the data columns
+for the map calculation: **input\_map\_labels="FWT PHIC"**). (Note that
+each of these is specified with an **=** sign, and that there are no
+spaces around the **=** sign.)
+
+Note the backslash "\\" at the end of some of the lines in the
+**phenix.autobuild** command. This tells the C-shell (which interprets
+everything in this file) that the next line is a continuation of the
+current line. There must be no characters (not even a space) after the
+backslash for this to work.
+
+The structure factor amplitudes and experimental phase information are
+in the datafile **a2u-sigmaa.mtz**. This is an **mtz** file which is a
+binary file that contains summary information about the dataset as well
+as the reflection data.
+
+Although the **phenix.run\_example a2u-globulin-rebuild** command has
+just run AutoBuild from a script (**run.sh**), you can run AutoBuild
+yourself from the command line with the same **phenix.autobuild ...**
+command. You can also run AutoBuild from a GUI, or by putting commands
+in another type of script file. All these possibilities are described in
+`Using the PHENIX Wizards <running-wizards.htm>`__.
+
+Where are my files?
+-------------------
+
+Once you have started AutoBuild or another Wizard, an **output
+directory** will be created in your current (working) directory. The
+first time you run AutoBuild in this directory, this **output
+directory** will be called **AutoBuild\_run\_1\_** (or
+**AutoBuild\_run\_1\_/**, where the slash at the end just indicates that
+this is a directory). All of the output from run **1** of AutoBuild will
+be in this directory. If you run AutoBuild again, a new subdirectory
+called **AutoBuild\_run\_2\_** will be created.
+
+Inside the directory **AutoBuild\_run\_1\_** there will be one or more
+temporary directories such as **TEMP0** created while the Wizard is
+running. The files in this temporary directory may be useful sometimes
+in figuring out what the Wizard is doing (or not doing!). By default
+these directories are emptied when the Wizard finishes (but you can keep
+their contents with the command **clean\_up=False** if you want.)
+
+What parameters did I use?
+--------------------------
+
+Once the AutoBuild wizard has started (when run from the command line),
+a **parameters file** called **autobuild.eff** will be created in your
+**output directory** (e.g., **AutoBuild\_run\_1\_/autobuild.eff**). This
+**parameters file** has a header that says what command you used to run
+AutoBuild, and it contains all the starting values of all parameters for
+this run (including the defaults for all the parameters that you did not
+set).
+
+The **autobuild.eff** file is good for more than just looking at the
+values of parameters, though. If you copy this file to a new one (for
+example **autobuild\_lores.eff**) and edit it to change the values of
+some of the parameters (**resolution=3.0**) then you can re-run
+AutoBuild with the new values of your parameters like this:
+
+::
+
+    phenix.autobuild autobuild_lores.eff
+
+This command will do everything just the same as in your first run but
+use only the data to 3.0 A.
+
+*Reading the log files for your AutoBuild run file*
+---------------------------------------------------
+
+While the AutoBuild wizard is running, there are several places you can
+look to see what is going on. The most important one is the overall log
+file for the AutoBuild run. This log file is located in:
+
+::
+
+    AutoBuild_run_1_/AutoBuild_run_1_1.log
+
+for run **1** of AutoBuild. (The second **1** in this log file name will
+be incremented if you stop this run in the middle and restart it with a
+command like **phenix.autobuild run=1**).
+
+The **AutoBuild\_run\_1\_1.log** file is a running summary of what the
+AutoBuild Wizard is doing. Here are a few of the key sections of the log
+files produced for the **a2u-globulin-rebuild** SAD dataset.
+
+Summary of the command-line arguments
+-------------------------------------
+
+Near the top of the log file you will find:
+
+::
+
+     
+    Starting AutoBuild with the command:
+
+    phenix.autobuild input_pdb_file=mup_mr_solution.pdb data=a2u-sigmaa.mtz   \
+    seq_file=a2u-globulin.seq input_map_file=a2u-sigmaa.mtz   \
+    input_map_labels='FWT PHIC'
+
+    Guessing mup_mr_solution.pdb is a starting model.
+    Guessing a2u-sigmaa.mtz is a datafile.
+    Guessing a2u-globulin.seq is sequence file.
+
+The first couple lines are just a repeat of how you ran AutoBuild; you
+can copy it and paste them into the command line to repeat this run.
+
+The last 3 lines point out that you didn't specify exacly what these
+three files are...and is confirming what the Wizard is going to use them
+for.
+
+Guessing the chain type
+-----------------------
+
+The AutoBuild Wizard will read in your sequence file and guess whether
+this is PROTEIN, DNA, or RNA from the sequence:
+
+::
+
+    Guessing chain type from  a2u-globulin.seq
+    Setting chain type to  PROTEIN
+
+If you want to tell the Wizard what the chain type is, you can say,
+**chain\_type=PROTEIN**.
+
+Deciding on rebuild-in-place and editing input PDB file
+-------------------------------------------------------
+
+The AutoBuild Wizard has two main options for rebuilding a model:
+rebuild-in-place and not rebuilding in place. Rebuilding in place is a
+method for rebuilding a model without changing the overall positioning
+of residues or the alignment of the sequence in the model. It is carried
+out by sequentially removing a short segment and rebuilding just that
+segment, and keeping the sequence of the segment the same. The
+alternative method for model rebuilding is to start from scratch and
+build a model directly into the electron density map. (Optionally you
+can also re-use fragments of your original model.).
+
+The AutoBuild Wizard by default will decide whether to use
+rebuild-in-place based on whether an alignment of the sequence you input
+with the model you input can be made. If the sequence alignment yields
+at least 50% identical residues, then rebuild-in-place will be
+recommended. (You can choose not to use rebuild in place with the
+keyword **rebuild\_in\_place=No**).
+
+Rebuilding in place is generally a good idea if you just want to fix up
+a model that is almost correct; it is not a good way to make a lot of
+big changes in a model. It will not fill in loops or otherwise correct
+connectivity.
+
+In this example the sequence identity is high and rebuilding in place is
+recommended. The Wizard then edits your PDB file to give it the sequence
+you have provided (if you provide no sequence then the sequence int the
+PDB file will be kept), deleting any segments that do not match your
+sequence file at all, and inserting gaps where there are missing
+residues:
+
+::
+
+    Deciding if we want to use rebuild-in-place...
+
+    Rebuild in place recommended as identity * fraction_aligned is 63.06%
+
+    --------------------------------------------------------------------------------
+    Percent identity of  mup_mr_solution.pdb to sequence in  a2u-globulin.seq  is  63.06
+    Finished with creating edited pdb file: AutoBuild_run_1_/edited_pdb.pdb
+
+Guessing column labels
+----------------------
+
+The AutoBuild Wizard will need to know which columns in your input data
+file and your input map file to use. It guesses which column labels to
+use and lists them out:
+
+::
+
+    Getting column labels from a2u-sigmaa.mtz for input data file
+    Resolution from datafile: 2.38339035134
+    SG: P 21 21 21
+    Cell: [106.81999969482422, 62.340000152587891, 114.19000244140625, 90.0, 90.0, 90.0]
+    Input labels: ['FP', 'SIGFP', 'None', 'FOM', 'None', 'None', 'None', 'None', 'None']
+
+    Getting column labels from a2u-sigmaa.mtz for input map file
+    SG: P 21 21 21
+    Cell: [106.81999969482422, 62.340000152587891, 114.19000244140625, 90.0, 90.0, 90.0]
+    Map input labels: ['FWT', 'PHIC']
+
+These are indeed the appropriate columns to use for experimental phases
+and for map coefficients, respectively. Note the "None" in the input
+labels for **a2u-sigmaa.mtz**. The input labels in this list correspond
+to **FP SIGFP PHIB FOM HLA HLB HLC HLC FreeR\_flag** and there is no
+Free R data in the input data file. All the data that is expected for
+each input file in AutoBuild can be seen in the
+`AutoBuild <autobuild.htm#stdanch1>`__ web page under "Specifying which
+columns of data to use from input data files".
+
+Guessing cell contents
+----------------------
+
+The AutoBuild Wizard uses the sequence information in your sequence file
+(**sequence.dat**) and the cell parameters and space group to guess the
+number of NCS copies and the solvent fraction:
+
+::
+
+     
+    Number of residues in unique chains in seq file: 181
+    Unit cell: (106.82, 62.34, 114.19, 90, 90, 90)
+    Space group: P 21 21 21 (No. 19)
+    CELL VOLUME :760409.359319
+    N_EQUIV:4
+    GUESS OF NCS COPIES: 4
+    SOLVENT FRACTION ESTIMATE: 0.48
+    Data file (for everything including refinement): a2u-sigmaa.mtz
+
+Running phenix.xtriage
+----------------------
+
+The AutoBuild Wizard automatically runs phenix.xtriage on your input
+datafile to analyze it for twinning, outliers, translational symmetry,
+and other special conditions that you should be aware of. You can read
+more about xtriage in `Data quality assessment with
+phenix.xtriage <xtriage.htm>`__. The xtriage output is in the file
+**a2u-sigmaa.mtz\_xtriage.log**. Part of the summary output from xtriage
+for this dataset looks like this:
+
+::
+
+     
+    The largest off-origin peak in the Patterson function is 5.10% of the
+    height of the origin peak. No significant pseudotranslation is detected.
+
+    The results of the L-test indicate that the intensity statistics
+    behave as expected. No twinning is suspected.
+
+Generation of FreeR flags
+-------------------------
+
+The AutoBuild Wizard will create a set of free R flags indicating which
+reflections are not to be used in refinement. By default 5% of
+reflections (up to a maximum of 2000) are reserved for this test set. If
+you supply a reflection file with free R flags already set, then they
+will be used. If you want to supply a file **ref.mtz** specifically for
+refinement, you can do that with **input\_refinement\_file=ref.mtz**.
+Also if you want to supply a high-resolution datafile **hires.mtz** that
+has then you can do this with the keywords
+**input\_hires\_file=hires.mtz**. After generation of free R flags if
+necessary, and any merging of data files, the file to be used for
+refinement is called **exptl\_fobs\_phases\_freeR\_flags.mtz**.
+
+Rebuild-in-place model-building with RESOLVE by building multiple models and combining the best parts
+-----------------------------------------------------------------------------------------------------
+
+The AutoBuild Wizard by default uses RESOLVE to build an atomic model of
+your structure. In this example the rebuild-in-place option is used. To
+rebuild a model in place means to rebuild the model without adding or
+removing any residues or changing the connectivity of the chain. The
+AutoBuild Wizard uses the multiple-models algorithm to rebuild your
+model several times and then to recombine them together to form a single
+very good model. (The multiple-models algorithm can also be used to form
+several very good models if you want).
+
+Here is where this is done:
+
+::
+
+     
+    Setting up to build 5 models to be combined into final model #1
+
+    Setting background=False as nproc=1
+    Building  5  models ...Splitting work into 5 jobs and running 1 at a time with sh in
+    /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/AutoBuild_run_1_/TEMP0
+
+    Starting job 1...
+    Starting job 2...
+    Starting job 3...
+    Starting job 4...
+    Starting job 5...
+    Collecting multiple_model runs to form a single final model
+
+    Solution for try :  1 cycle_best_3.pdb
+    Solution 2 from rebuild cycle 3 R= 0.2
+    Saving  /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.pdb  as  
+    /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
+    AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.pdb_1_1
+
+    Saving  /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/cycle_best_3.mtz  as  
+    /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/
+    AutoBuild_run_1_/MULTIPLE_MODELS/initial_model.mtz_1_1
+    ...
+    Solution 4 from rebuild cycle 5 R= 0.21
+    Solution 2 from rebuild cycle 3 R= 0.21
+    Solution 3 from rebuild cycle 4 R= 0.21
+    Solution 3 from rebuild cycle 4 R= 0.21
+
+In this case each of the individually rebuilt models is pretty good,
+with an R from 0.20 to 0.21. These models are then combined together,
+with the best parts of each model (based on correlation to the
+density-modified map) kept:
+
+::
+
+     
+    AutoBuild_combine  AutoBuild  Run 2 Mon May 19 12:06:11 2008
+
+    Current combine number:  1
+    Combining initial models # 1
+    ...
+    NOTE: only keeping merged models if they improve R
+
+    Merging model  1
+    Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/current_model.pdb
+    R/Rfree for model  composite_model_refined_1.pdb 0.21 0.23
+
+    ...
+
+    Merging model  5
+    combining  current_model.pdb initial_model.pdb_1_5
+    Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/current_model.pdb
+    Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/initial_model.pdb_1_5
+    R/Rfree for model  composite_model_refined_5.pdb 0.2 0.23
+
+    ...
+    Merging model  2
+    combining  current_model.pdb initial_model.pdb_1_2
+    Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/current_model.pdb
+    Removing waters and ligands (if any): AutoBuild_run_1_/TEMP0/initial_model.pdb_1_2
+    R/Rfree for model  composite_model_refined_2.pdb 0.21 0.23
+    Not keeping this merged model as it is no better than current best
+
+     ...
+
+    New overall best saved:
+
+    Current overall_best model and map  Mon Jun 30 01:08:22 2008
+    Working directory: 
+    /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/AutoBuild_run_1_
+    Model (overall_best.pdb) from: overall_best.pdb
+    Cycle: 1
+    R and R-free: 0.20 0.23
+    Map coeffs used for build (overall_best_denmod_map_coeffs.mtz)
+    from: overall_best_denmod_map_coeffs.mtz
+
+    Final composite model # 1 :  AutoBuild_run_1_/MULTIPLE_MODELS/model.pdb_1
+    Final composite mtz # 1 :  AutoBuild_run_1_/MULTIPLE_MODELS/resolve_composite_map.mtz_1
+
+Here there were four models built, with R values from 0.2 to 0.22. The
+one with the lowest R (model 4) was used as the starting model, and each
+of the others was merged with this model, taking the best-fitting parts.
+An improved model was obtained by merging model 3 with model 4, yielding
+an R just under 0.20.
+
+Individual rebuild-in-place log files
+-------------------------------------
+
+If you want to see the details of the individual runs of
+rebuild\_in\_place on this model, you will want to look in the directory
+that was listed above:
+
+::
+
+     
+    AutoBuild_run_1_/TEMP0
+
+In this TEMP0 directory you will find subdirectories like:
+
+::
+
+     
+    AutoBuild_run_1_/
+    AutoBuild_run_2_/
+
+which in turn contain the log files for the runs of these individual
+rebuild\_in\_place rebuilding steps. Here is a summary of the run in
+
+::
+
+     
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/AutoBuild_run_1_1.log
+
+After reading in the data in this sub-process, the starting model is
+refined:
+
+::
+
+     
+    Refining model:  unrefined.pdb_1
+    Model: refine.pdb_1  R/Rfree=0.31/0.32
+
+This starting model is rather good, with an R of 0.32. This is about the
+quality of model that works best with rebuild-in-place. The NCS in this
+model is analyzed automatically:
+
+::
+
+     
+    GROUP 1
+    Summary of NCS group with 4 operators:
+    ID of chain/residue where these apply: [['A', 'B', 'C', 'D'], 
+    [[[1, 157]], [[1, 157]], [[1, 157]], [[1, 157]]]]
+    RMSD (A) from chain A:  0.0  0.0  0.0  0.0
+    Number of residues matching chain A:[157, 157, 157, 157]
+    Source of NCS info: AutoBuild_run_1_/TEMP0/overall_best.pdb
+    Correlation of NCS: 0.76
+
+There is good correlation of NCS-related density (as expected as all the
+density is model-based so far) and the 4 chains have a 0.0 RMSD after
+application of NCS (also expected as we have simply placed the same
+molecule in 4 different orientations and locations in the asymmetric
+unit).
+
+The rebuild-in place procedure is then carried out:
+
+::
+
+     
+    Running standard build
+    Starting with current best model of  refine.pdb_1 ...setting it to  refine.pdb_1
+    Including parts of this model if best...
+    Starting best model from  starting_model.pdb
+    Rebuilding in place: starting_model.pdb
+    New total residues built:  562
+
+    Warning: some residues not rebuilt successfully on cycle 2:
+    Chain 'A':    1-  10,  156- 157,
+    Chain 'C':    1-  10,   61-  65,  151- 157,
+    Chain 'B':    1-   5,   61-  65,
+    Chain 'D':    1-  10,   61-  65,  151- 157
+    Refining model:  Build_rebuild_in_place_1.pdb
+    Model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.26
+
+Notice the warning about some of the residues that were not rebuilt. For
+any residues that the rebuilding process simply could not fit, the
+original coordinates are kept. In favorable cases, by the end of
+iterative model-building all the coordinates can be fit. In cases where
+they cannot, you should be cautious about using those parts of the model
+that do not get rebuilt. In this case the R has decreased substantially
+by rebuilding to 0.23.
+
+The side chains are then rebuilt, and the best-fitting parts of the
+current models are recombined to yield a new model with a similar R of
+0.24:
+
+::
+
+     
+    Rebuilding side chains from  Build_composite_refined_3.pdb
+    Refining model:  edit_model.pdb
+    Model: AutoBuild_run_1_/TEMP0/Build_composite_refined_side_3.pdb  R/Rfree=0.24/0.26
+
+This is the end of the first cycle of rebuilding. Next the rebuilt model
+is used to calculate phases and the resulting map is used in statistical
+density modification, including not just solvent flattening and
+histograms of density, but also the 4-fold NCS in this structure. This
+whole process is repeated 2 more times, yielding the best model on the
+second cycle, with a final R/Rfree of 0.20/0.23. On the final cycle of
+model-building a few residues are still not rebuilt:
+
+::
+
+     
+    Warning: some residues not rebuilt successfully on cycle 3:
+    Chain 'A':  156- 157,
+    Chain 'C':    1-  10,   61-  65,  156- 157,
+    Chain 'B':    1-  10,
+    Chain 'D':    1-  10,   61-  65,  156- 157
+
+and these residues (the N-terminal 10 residues of chains B, C, and D)
+and residues 61-65 and the C-terminal 2 residues of chain C) should
+probably not be used in the model.
+
+The final refined model is written out to
+**AutoBuild\_run\_1\_/TEMP0/AutoBuild\_run\_1\_/cycle\_best\_3.pdb**.
+Note that this run is carried out entirely within the TEMP0/
+subdirectory because this is a sub-process. This model is then combined
+with the models from the other sub-processes in this multiple-model run
+to form a final model.
+
+Note that the quality of the model improves a lot in the first cycle and
+not very much after that. This is common in the rebuild-in-place
+procedure.
+
+The AutoBuild\_summary.dat summary file
+---------------------------------------
+
+A quick summary of the results of your AutoBuild run is in the
+**AutoBuild\_summary.dat** file in your output directory. This file
+lists the key files that were produced in your run of AutoBuild (all
+these are in the output directory) and some of the key statistics for
+the run. Here is the summary for this **a2u-globulin-rebuild**
+model-building run:
+
+::
+
+     
+    Summary of model-building for run 1  Mon Jun 30 01:08:54 2008
+    Files are in the directory:  
+    /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/AutoBuild_run_1_/
+
+
+    Starting mtz file: 
+    /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/a2u-sigmaa.mtz
+    Sequence file: 
+    /net/idle/scratch1/terwill/run_072908a/a2u-globulin-rebuild/a2u-globulin.seq
+    One composite model generated with 'multiple_models'
+
+
+    Best solution on cycle: 1    R/Rfree=0.2/0.23
+
+    Summary of output files for Solution 1 from multiple_models cycle 1
+
+    ---  Model (PDB file)  ---
+    pdb_file: AutoBuild_run_1_/cycle_best_1.pdb
+
+    ---  Model-map correlation log file ---
+    log_eval: AutoBuild_run_1_/cycle_best_1.log_eval
+
+    ---  Data for refinement FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag ---
+    hklout_ref: AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz
+
+    ---  Density-modified map coefficients FP PHIM FOM ---
+    hklout_denmod: AutoBuild_run_1_/cycle_best_1.mtz
+
+
+    SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
+     1         1      0.20        0.23      0       0
+
+Your best model is in AutoBuild\_run\_3\_/cycle\_best\_1.pdb, and it has
+an R/Rfree of 0.20/0.23, which is quite reasonable. The best
+density-modified map coefficients are in
+AutoBuild\_run\_3\_/cycle\_best\_1.mtz. The values of "BUILT" and
+"PLACED" are zero because no new model is being built in this process
+(just rebuilding in place). There is a residue-by-residue analysis of
+the correlation between density calculated from this model and this map
+in AutoBuild\_run\_3\_/cycle\_best\_1.log\_eval. If you want to refine
+your model further, you should use the data in
+AutoBuild\_run\_3\_/exptl\_fobs\_phases\_freeR\_flags.mtz, which
+includes a set of freeR flags.
+
+How do I know if iterative model-building, density modification and refinement with rebuild-in-place worked?
+------------------------------------------------------------------------------------------------------------
+
+Here are some of the things to look for to tell if you have obtained a
+good model:
+
+-  How much of the model failed to be rebuilt with the rebuild-in-place
+   procedure? This should be a very small part of the model at most. If
+   25% of your model cannot be rebuilt, then the density is probably
+   very weak (or the resolution may be too low).
+-  What is the R-factor and the free R-factor of the model? For a
+   solution at moderate to high resolution (2.5 A or better) the
+   R-factor should be in the low 20's and the free R-factor about 0.05
+   higher to be very good. For lower-resolution data, an R-factor in the
+   low 30's is probably largely correct but the model is not very good.
+-  Does the model show NCS if there are more than one copies in the
+   asymmetric unit? You can look at your log file which will tell you
+   about any NCS in your model.
+
+What to do next
+---------------
+
+Once you have run AutoBuild and have obtained a good model, you will
+want to inspect and touch up the model carefully, rebuilding any parts
+of the model that do not agree well with the final map. You should also
+have a close look at all the solvent molecules in your model, making
+sure that they all have reasonable relationships to the macromolecule
+and to each other, and that they are not simply filling up density where
+a ligand or the macromolecule really goes.
+
+The next thing to do is to add in any ligands (metals, cofactors) if
+there is density for them. You can use the LigandFit Wizard (see
+`Automated Ligand Fitting using LigandFit <ligandfit.htm>`__ ) to help
+you fit ligands into your map automatically.
+
+If you do not obtain a good model, then it's not quite time to give up
+yet. There are a number of standard things to try that may improve the
+model building. Here are a few that you should try:
+
+-  Have a careful look at all the output files. Work your way through
+   the main log file (e.g., **AutoBuild\_run\_1\_1.log**). Is there
+   anything strange or unusual in any of them that may give you a clue
+   as to what to try next? What does the xtriage output say? Is there
+   twinning or strong translational symmetry? Are there problems with
+   reflections near ice rings? Are there many outlier reflections?
+-  Have a look at the electron density maps at different stages in model
+   building. How does the starting map look? How about the maps produced
+   during the iterative building process (**cycle\_best\_xx.mtz**)? If
+   the maps look poor, then the rebuilding process will not work well.
+   However if the maps look good and the rebuilding is not working well
+   then it is worth trying to identify where the problem is.
+-  Try a different resolution cutoff. You may be able to use
+   higher-resolution data in AutoBuild than you used in structure
+   solution.
+
+Additional information
+----------------------
+
+For details about the AutoBuild Wizard, see `Automated Model building
+and Rebuilding using AutoBuild <autobuild.htm>`__. For help on running
+Wizards, see `Using the PHENIX Wizards <running-wizards.htm>`__.

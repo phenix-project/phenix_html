@@ -1,0 +1,147 @@
+Fitting loops to fill in gaps in models with fit\_loops
+=======================================================
+
+Author(s)
+---------
+
+-  fit\_loops: Tom Terwilliger
+
+Purpose
+-------
+
+fit\_loops is a tool for building a loop into density to connect
+existing chain ends. You supply a model with a gap and a sequence file
+and coefficients for an electron density map, and you specify the first
+and last residues to be built. Then fit\_loops will attempt to build the
+loop that you specify. One loop can be done at a time with fit\_loops
+(but if you have multiple identical chains, you can fit them all at
+once).
+
+You can use either of two methods to fit the loops. By default
+fit\_loops uses resolve chain extension to try to trace residues from
+the ends of segments in your input PDB file. If it can connect the
+segments, it writes out the connecting loops. Alternatively you can use
+a loop library supplied with PHENIX to connect ends of segments from
+your input PDB file.
+
+If you want a more complete model-building process, then you will want
+to use `phenix.autobuild <autobuild.htm>`__ .
+
+fit\_loops can be run from the command line or from the PHENIX GUI.
+
+Usage
+-----
+
+How fit\_loops works:
+---------------------
+
+fit\_loops calculates a map based on the supplied map coefficients, then
+tries to extend the ends of the supplied model into the gap region,
+following the electron density in the map.
+
+*Output files from fit\_loops*
+------------------------------
+
+**model\_with\_loops.pdb**: The output from fit\_loops is a new PDB file
+containing your input model with the newly-built loop inserted into it
+(if a loop could be found).
+
+Examples
+--------
+
+Standard run of fit\_loops:
+---------------------------
+
+A typical command-line input would be:
+
+::
+
+    phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+     seq_file=nsf.seq start=37 end=43 chain_id=None
+
+This will fit a loop starting with residue 37 and ending with residue 43
+in nsf\_gap.pdb. phenix.fit\_loops will expect that your existing
+nsf\_gap.pdb model has a chain ending at residue 36 and another starting
+at residue 44. As chain\_id=None in this example, if there are multiple
+chains A,B,C in nsf\_gap.pdb then all 3 will be filled in.
+
+Specifying column names
+-----------------------
+
+If you want (or need) to specify the column names from your mtz file,
+you will need to tell fit\_loops what FP and PHIB (and optionally FOM)
+are, in this format:
+
+::
+
+    phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+     seq_file=nsf.seq start=37 end=43 chain_id=None \
+    labin="FP=2FOFCWT PHIB=PH2FOFCWT"
+
+Fitting a loop with poor density
+--------------------------------
+
+If you want to try and fit a loop with poor density, you might want to
+lower the threshold for the correlation of density in the loop (default
+minimum correlation is 0.2):
+
+::
+
+    phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+     seq_file=nsf.seq start=37 end=43 chain_id=None \
+    loop_cc_min=0.1
+
+Using a loop library
+--------------------
+
+To use the loop library in PHENIX, use the keyword loop\_lib:
+
+::
+
+    phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+     seq_file=nsf.seq start=37 end=39 chain_id=None loop_lib=True
+
+This will fit a loop starting with residue 37 and ending with residue
+39. The maximum current length in the loop library is 3 residues.
+
+Using a loop library to connect all segments
+--------------------------------------------
+
+To use the loop library in PHENIX and try to connect any pair of
+segments that have an geometrical relationship, use the keyword
+connect\_all:
+
+::
+
+    phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+     seq_file=nsf.seq connect_all=True
+
+This will go through all pairs of segments, trying to connect them with
+a loop from the PHENIX loop library. Note that this is a last-resort
+approach, normally instead use the default and let fit\_loops connect
+segments that are close in sequence.
+
+Specifying a gap to fill in
+---------------------------
+
+To specify a particular gap for loop fittin, you can say
+
+::
+
+    phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+     seq_file=nsf.seq start=37 end=39 chain_id=A
+
+Note the residue number for start and end are the first and last in the
+gap, not the residues flanking the gap that are already present.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

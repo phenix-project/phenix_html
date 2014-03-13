@@ -1,0 +1,552 @@
+Automated ligand identification
+===============================
+
+**Author(s)**
+-------------
+
+-  phenix.ligand\_identification: Li-Wei Hung
+-  PHENIX GUI and PDS Server: Nigel W. Moriarty,Nathaniel Echols
+-  RESOLVE: Tom Terwilliger
+
+Purpose
+-------
+
+Purpose of the phenix.ligand\_identification command
+----------------------------------------------------
+
+The phenix.ligand\_identification command carries out fitting of a
+library of `180 most frequently observed
+ligands <ligand_identification.htm#anch70>`__ in the PDB to a given
+electron density map. The program also conducts the analysis and ranking
+of the ligand fitting results.
+
+The phenix.ligand\_identification command works with the ligand library
+provided with the Phenix program by default. It can also take a `custom
+ligand library <ligand_identification.htm#anch25>`__ provided by the
+users.
+
+Usage
+-----
+
+The phenix.ligand\_identification task can be run from `command
+line <ligand_identification.htm#anch45>`__, or from the PHENIX GUI.
+
+How the phenix.ligand\_identification works:
+--------------------------------------------
+
+The phenix.ligand\_identification command uses RESOLVE ligand fitting
+methods as described in the `LigandFit documentation. <ligandfit.htm>`__
+The phenix.ligand\_identification carries out this fitting process for a
+library of `180 most frequently observed
+ligands <ligand_identification.htm#anch70>`__ in the Protein Data Bank,
+or a custom library as described above, scores and ranks the overall
+fitting results. A real-space refinement is carried out on the ligand by
+default between RESOLVE fitting and Phenix scoring. The scoring
+algorithm takes into consideration of density correlation between ligand
+and density as well as non-bonded interactions between fitted ligand and
+the input model. The output consists of a list of the best fitted
+ligands from the library. The command provides options to view the top
+ranked ligand in coot with or without the electron density (use keyword
+"--open\_in\_coot=True").
+
+How to run the phenix.ligand\_identification
+--------------------------------------------
+
+Example commands are provided below. The nsf-d2 files are in
+$PHENIX/phenix\_examples/nsf-d2-ligand
+
+What the phenix.ligand\_identification command needs to run:
+------------------------------------------------------------
+
+The phenix.ligand\_identification command needs:
+
+(1) a mtz file containing structure factors
+
+(2) (optional), a PDB file with your protein model without ligand
+
+*Choice of ligand library* (keywords+examples)
+----------------------------------------------
+
+\*\ `default ligand library <ligand_identification.htm#anch70>`__: no
+keyword needed
+
+\*to specify a list of ligands in 3-letter codes:
+
+::
+
+    --ligand_list="ATP CTP TTP GTP"  
+
+\*to use all small molecules with a .pdb extension in the 'ligand\_dir'
+as the search library:
+
+::
+
+    --ligand_dir=/my/compound/library/A1217321
+
+\*to use all ligands associated with proteins of specific function found
+in the PDB as the search library:
+
+::
+
+    --function="tyrosine kinase"
+
+\*to use all ligands found in proteins with a specific Enzyme
+Classification number in the PDB:
+
+::
+
+    --EC=1.1.1.3
+
+\*to use all ligands found in proteins with a specific Pfam accession
+number in the PDB:
+
+::
+
+    --pfam=PF00042
+
+\*to use all ligands found in proteins with specific SCOP and/or CATH
+terms in the PDB:
+
+::
+
+    --scop='DNA/RNA-binding 3-helical bundle' 
+
+::
+
+    --cath='Trypsin-like serine proteases'  
+
+\*to use all ligands found in proteins with a specific Gene Ontology
+(GO) accession number in the PDB:
+
+::
+
+    --GO=0009253
+
+\*to use all ligands found in proteins with a specific InterPro ID in
+the PDB:
+
+::
+
+    --ipro=014838
+
+*Output files from phenix.ligand\_identification command*
+---------------------------------------------------------
+
+When you run phenix.ligand\_identification command, the output files
+will be in the directory you started Phenix:
+
+-  A summary file of the fitting results of all ligands:
+
+::
+
+    overall_ligand_scores.log
+
+-  A summary table listing the results of the top ranked ligands:
+
+::
+
+    topligand.txt
+
+The last column "Sequence in library' contains numbers '###' indicating
+the sequence number of the corresponding ligands. The final fitted
+ligand coordinates and all the log files are in the corresponding'###'
+files described below.
+
+-  PDB files with the fitted ligands:
+
+::
+
+    ligand_fit_pdbs/RSR_FITTED_[3-letter code]_###.pdb
+
+-  Resolve fitting Score files:
+
+::
+
+    ligand_fit_scores/[3-letter code].scores
+
+-  Map coefficients for the map used for fitting:
+
+::
+
+    resolve_map.mtz
+
+-  Command file to display results in coot:
+
+::
+
+    display.com (uses ligid.scm, also in the same directory)
+
+Multi-thread computing
+----------------------
+
+The phenix.ligand\_identification program has build-in multi-thread
+processing capability. Use keyword
+
+::
+
+    --nproc=[number of threads] 
+
+to run the command in multi-threaded mode. In general, the processing
+speed is proportional to the the number of threads used, up to the
+maximum free cores the system can allocate at run time. For example, it
+takes about 25 minutes for the nsf-d2 example to run in 8 threaded mode,
+while single-process uses about 180 minutes for the same job on a
+dual-Xeon W5580 machine.
+
+Running from a parameters file
+------------------------------
+
+You can run phenix.ligand\_identification from a parameters file. This
+is often convenient because you can generate a default one with:
+
+::
+
+    phenix.ligand_identification --show_defaults > my_ligand.eff
+
+and then you can just edit this file to match your needs and run it
+with:
+
+::
+
+    phenix.ligand_identification  my_ligand.eff
+
+Examples
+--------
+
+Sample command\_line inputs
+---------------------------
+
+-  Standard run of ligand\_identification (input protein model and data
+   file, default ligand library, 8 CPUs)
+
+::
+
+    phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+     input_labels=F nproc=8\   
+
+-  Search ligand from a difference map or pre-calculated map
+   coefficients from phenix.refine
+
+If your refine a model with a command such as,
+
+::
+
+    phenix.refine data.mtz partial.pdb
+
+then you will end up with the refined model,
+
+::
+
+    partial_refine_001.pdb
+
+and a map coefficients file:
+
+::
+
+    partial_refine_001_map_coeffs.mtz
+
+You can then run ligand\_identification using the 2Fo-Fc map calculated
+from these map coefficients:
+
+::
+
+    phenix.ligand_identification mtz_type=diffmap \ mtz_in=partial_refine_001_map_coeffs.mtz  input_labels="2FOFCWT PH2FOFCWT" \
+    model=partial_refine_001.pdb nproc=8
+
+For Fo-Fc map from the same file you can say:
+
+::
+
+    phenix.ligand_identification mtz_type=diffmap \ mtz_in=partial_refine_001_map_coeffs.mtz  input_labels="FOFCWT PHFOFCWT" \
+    model=partial_refine_001.pdb nproc=8
+
+In the above two cases, "model" keyword is optional. If provided,
+non-bonded terms will be used in scoring.
+
+The examples below show various ways of specifying custom ligand
+libraries based on the 'standard run' example above.
+
+-  Identify ligand from a series of ligands in 3-letter codes
+
+::
+
+    phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+     input_labels=F ligand_list="ATP GTP CTP TTP ADP GDP CDP TDP A3P GSP NAP AMP GMP CMP TMP"
+
+-  Identify ligand from a given set of pdb files (could be your compound
+   library) in a specific directory
+
+::
+
+    phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+     input_labels=F ligand_dir=/my/compound/library/A1217321
+
+This command will take all .pdb files in the ligand\_dir and a make a
+custom library to carry out the search
+
+-  Identify ligand from a library composed of all ligands found in
+   Tyrosine kinases in the PDB
+
+::
+
+    phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+     input_labels=F function="Tyrosine kinase"
+
+This command could be useful when you want to use a function-specific
+ligand library. The 'function' should be in one of the EC terms. Note in
+the above example, if only "kinase" is specified, ligand found in all
+types of kinases will be searched.
+
+-  Identify ligand from a library composed of all ligands found in
+   proteins belong to a specific Enzyme Classification
+
+::
+
+    phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb \
+     input_labels=F EC=1.1.3
+
+This command could be useful when you want to use a function-specific
+ligand library, and your protein belongs to a EC. Note the EC can be any
+parent set of the actual EC. (e.g. you can use 1.1.3 instead of 1.1.3.1
+although you'll get a boarder library with EC=1.1.3).
+
+The nsf-d2 files in the above examples can be found in
+$PHENIX/phenix\_examples/nsf-d2-ligand
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+-  The current Resolve\_ligand\_identification task work with the ligand
+   library provided with the Phenix program by default. It is also
+   capable of fitting and ranking ligands in a custom PDB library
+   provided by the users. The ligand atoms in the user-provided PDBs
+   should be under 'HETATM' records.
+
+-  Other Resolve related limitations please refer to the document of the
+   `LigandFit wizard. <ligandfit.htm>`__
+
+Literature
+----------
+
++--------------------------------------------------------------------------+
+| +----------------------------------------------------------------------- |
+| ------------------------------------------------------------------------ |
+| ------------------------------------------------------------------------ |
+| --------------------------+--------------------------------------------- |
+| -------------------------+                                               |
+| | **Ligand identification using electron-density map correlations.** T.  |
+| C. Terwilliger, P. D. Adams, N. W. Moriarty and J. D. Cohn `*Acta Cryst. |
+| * **D63**, 101-107 (2007) <http://www.iucr.org/cgi-bin/paper?ba5092>`__  |
+|                           | `[pdf] <http://www.phenix-online.org/papers/ |
+| ba5092_reprint.pdf>`__   |                                               |
+| +----------------------------------------------------------------------- |
+| ------------------------------------------------------------------------ |
+| ------------------------------------------------------------------------ |
+| --------------------------+--------------------------------------------- |
+| -------------------------+                                               |
+| | **Automated ligand fitting by core-fragment fitting and extension into |
+|  density.** T. C. Terwilliger, H. Klei, P. D. Adams, N. W. Moriarty and  |
+| J. D. Cohn `*Acta Cryst.* **D62**, 915-922 (2006) <http://www.iucr.org/c |
+| gi-bin/paper?dz5066>`__   | `[pdf] <http://www.phenix-online.org/papers/ |
+| dz5066_reprint.pdf>`__   |                                               |
+| +----------------------------------------------------------------------- |
+| ------------------------------------------------------------------------ |
+| ------------------------------------------------------------------------ |
+| --------------------------+--------------------------------------------- |
+| -------------------------+                                               |
+                                                                          
++--------------------------------------------------------------------------+
+
+Additional information
+----------------------
+
+List of ligands in the PHENIX ligand\_identification default library
+--------------------------------------------------------------------
+
+---------------------------------------------------------------
+
+::
+
+     PG4
+     CRY
+     CYS
+     DIO
+     DOX
+     GOL
+     MO5
+     NBN
+     OXL
+     OXM
+     PUT
+     PYR
+     F3S
+     MO6
+     PEG
+     COA
+     DTT
+     FS4
+     HED
+     HEZ
+     LI1
+     MPD
+     SF4
+     SIN
+     TMN
+     TRS
+     URA
+     BEN
+     BEZ
+     MET
+     NIO
+     PGA
+     POP
+     ASP
+     DAO
+     FSO
+     FUC
+     GLU
+     LYS
+     PEP
+     PGE
+     PHB
+     PHQ
+     PLM
+     TAR
+     XYS
+     ADE
+     AKG
+     7HP
+     BGC
+     CAM
+     HC4
+     ORO
+     DKA
+     GAL
+     GLC
+     MAN
+     MES
+     ARG
+     PHE
+     CIT
+     FLC
+     MMA
+     MPO
+     MYR
+     NHE
+     OLA
+     PG4
+     AMG
+     FER
+     NAA
+     NAG
+     NDG
+     SPM
+     EPE
+     NGA
+     PLP
+     TRP
+     BTN
+     F6P
+     FTT
+     G6P
+     LDA
+     UPL
+     1PE
+     BH4
+     H4B
+     THM
+     1PG
+     P6G
+     U10
+     ADN
+     BOG
+     EST
+     FBP
+     GSH
+     GTT
+     NVP
+     RET
+     UMP
+     C5P
+     C8E
+     DHT
+     TMP
+     UFP
+     CMP
+     NCN
+     PRP
+     BGC
+     MAN
+     GTS
+     IMP
+     LAT
+     MAL
+     SUC
+     GLC
+     AMP
+     FPP
+     PQQ
+     T44
+     2GP
+     3GP
+     5GP
+     TYD
+     UDP
+     GTX
+     SAH
+     TDP
+     TPP
+     IMO
+     SAM
+     A3P
+     ADP
+     DCP
+     GDP
+     NAG
+     XYS
+     2PE
+     CTP
+     DAD
+     FOK
+     TTP
+     DTP
+     DGA
+     FMN
+     SAP
+     ACP
+     ANP
+     APC
+     ATP
+     FOL
+     GNP
+     GSP
+     GTP
+     MTX
+     MAN
+     CB3
+     MA4
+     UPG
+     UD1
+     SPO
+     HEC
+     HEM
+     NAG
+     NAD
+     NAI
+     ACR
+     GLC
+     NAP
+     NDP
+     DHE
+     BPH
+     ACO
+     BCL
+     FAD
+     CAA
+     GLC
+     AP5
+     BPB
+     B12

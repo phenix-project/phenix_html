@@ -1,0 +1,112 @@
+Morphing a model with morph\_model
+==================================
+
+Author(s)
+---------
+
+-  morph\_model: Tom Terwilliger
+
+Purpose
+-------
+
+morph\_model is a procedure for distorting a model to match an electron
+density map. It is suited for a case where a poor but unbiased map is
+available and a model that is generally locally similar to the target
+structure but where longer-range distances are not conserved. This is
+often the case in homologous structures.
+
+Summary of the procedure used in morph\_model
+---------------------------------------------
+
+The basic idea in morph\_model is to apply a smoothly-varying offset to
+the template structure so as to make it match the map as closely as
+possible. In this way information about the local structure of the
+template is retained while allowing longer-range changes in structure.
+
+Morphing is carried out in 3 steps:
+
+-  For each residue in the structure an offset is identified that
+   optimizes the match of the map to a sphere of atoms within rad\_morph
+   (typically 6 A) of the CA atom of that residue.
+-  The offsets are smoothed in a window of 10 residues
+-  The smoothed offset for each residue is applied to all the atoms in
+   that residue
+
+After morphing, the morphed model is refined. This process is then
+repeated morph\_cycles (typically 6) times.
+
+Maps for morph\_model
+---------------------
+
+Normally you should specify that morph-model use a prime-and-switch map
+(map\_type=prime\_and\_switch), as that is usually the most effective
+map for morphing. You can however choose instead to use a 2mFo-DFc map,
+a density-modified map, or an omit map. The prime-and-switch map is a
+map calculated in the same way as a density-modified map, except that
+once the initial model-based map is calculated (priming), the model
+information is no longer used (switching). This map is typically quite
+unbiased by the model.
+
+Standard run of morph\_model
+----------------------------
+
+Running morph\_model is easy. If you have a template (coords1.pdb) and a
+data file fobs.mtz with FP SIGFP and FreeR\_flag, you can type:
+
+::
+
+    phenix.morph_model data=coords1.mtz model=coords1.pdb 
+
+and morph\_model will run automatically.
+
+Supplying a map for morph\_model
+--------------------------------
+
+If you have your own map you want to use in morph\_model, you can type:
+
+::
+
+    phenix.morph_model data=coords1.mtz \
+       model=coords1.pdb map_coeffs=my_map_coeffs.mtz
+
+and morph\_model will start off with your map coefficients instead of
+calculating a new map. If you specify update\_map=True (default) then
+new maps will be calculated on each subsequent cycle. If you specify
+update\_map=False then your map will be used throughout.
+
+Morphing just part of a model
+-----------------------------
+
+You can morph just one part of your model if you want. You can specify
+it like this:
+
+::
+
+    phenix.morph_model data=coords1.mtz \
+       model=coords1.pdb morph_selection="chain A"
+
+The remainder of the model will be refined but not morphed.
+
+Getting a default parameters file for morph\_model
+--------------------------------------------------
+
+Usually you will want to edit a parameters file so that you can specify
+more details of the run. You can get a default parameters file with:
+
+::
+
+    phenix.morph_model 
+
+and then just edit the file morph\_model\_params.dat.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems
+---------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

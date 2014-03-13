@@ -1,0 +1,709 @@
+Tutorial 4: Iterative model-building, density modification and refinement starting from experimental phases
+-----------------------------------------------------------------------------------------------------------
+
+Introduction
+------------
+
+This tutorial will start with experimental SAD data and density-modified
+phases, and carry out the process of iterative model-building, density
+modification and refinement with AutoBuild. It is designed to be read
+all the way through, giving pointers for you along the way. Once you
+have read it all and run the example data and looked at the output
+files, you will be in a good position to run your own data through
+AutoBuild.
+
+Setting up to run PHENIX
+------------------------
+
+If PHENIX is already installed and your environment is all set, then if
+you type:
+
+::
+
+    echo $PHENIX
+
+then you should get back something like this:
+
+::
+
+    /xtal//phenix-1.3
+
+If instead you get:
+
+::
+
+    PHENIX: undefined variable
+
+then you need to set up your PHENIX environment. See the `PHENIX
+installation <install.htm>`__ page for details of how to do this. If you
+are using the C-shell environment (**csh**) then all you will need to do
+is add one line to your **.cshrc** (or equivalent) file that looks like
+this:
+
+::
+
+    source /xtal/phenix-1.3/phenix_env
+
+(except that the path in this statement will be where **your** PHENIX is
+installed). Then the next time you log in **$PHENIX** will be defined.
+
+Running the demo p9-build data with AutoBuild
+---------------------------------------------
+
+To run AutoBuild on the demo p9-build data, make yourself a
+**tutorials** directory and **cd** into that directory:
+
+::
+
+    mkdir tutorials
+    cd tutorials 
+
+Now type the phenix command:
+
+::
+
+    phenix.run_example --help 
+
+to list the available examples. Choosing **p9-build** for this tutorial,
+you can now use the phenix command:
+
+::
+
+    phenix.run_example p9-build 
+
+to build the p9-build structure with AutoBuild. This command will copy
+the directory **$PHENIX/examples/p9-build** to your current directory
+(**tutorials**) and call it **tutorials/p9-build/** . Then it will run
+AutoBuild using the command file **run.sh** that is present in this
+**tutorials/p9-build/** directory.
+
+This command file **run.sh** is simple. It says:
+
+::
+
+    #!/bin/sh
+    echo "Running AutoBuild on P9 data..."
+    phenix.autobuild seq_file=p9.seq data=p9-solve.mtz \
+      input_map_file=p9-resolve.mtz resolution=2.4  \
+      ncs_copies=1
+
+The first line (**#!/bin/sh**) tells the system to interpret the
+remainder of the text in the file using the sh (or bash) -shell
+(**sh**).
+
+The command **phenix.autobuild** runs the command-line version of
+AutoBuild (see `Automated Structure Solution using
+AutoBuild <autobuild.htm>`__ for all the details about AutoBuild
+including a full list of keywords).
+
+The arguments on the command line tell AutoBuild about the sequence file
+(**seq\_file=p9.seq**), the data file (**data=p9-solve.mtz**), the map
+file with density-modified phases (**input\_map\_file=p9-resolve.mtz**),
+and the resolution **resolution=2.4**) and number of ncs copies to look
+for (**ncs\_copies=1**). (Note that each of these is specified with an
+**=** sign, and that there are no spaces around the **=** sign.)
+
+Note the backslash "\\" at the end of some of the lines in the
+**phenix.autobuild** command. This tells the C-shell (which interprets
+everything in this file) that the next line is a continuation of the
+current line. There must be no characters (not even a space) after the
+backslash for this to work.
+
+The structure factor amplitudes and experimental phase information are
+in the datafile **p9-solve.mtz**. This is an **mtz** file which is a
+binary file that contains summary information about the dataset as well
+as the reflection data.
+
+Although the **phenix.run\_example p9-build** command has just run
+AutoBuild from a script (**run.sh**), you can run AutoBuild yourself
+from the command line with the same **phenix.autobuild seq\_file= ...**
+command. You can also run AutoBuild from a GUI, or by putting commands
+in another type of script file. All these possibilities are described in
+`Using the PHENIX Wizards <running-wizards.htm>`__.
+
+Where are my files?
+-------------------
+
+Once you have started AutoBuild or another Wizard, an **output
+directory** will be created in your current (working) directory. The
+first time you run AutoBuild in this directory, this **output
+directory** will be called **AutoBuild\_run\_1\_** (or
+**AutoBuild\_run\_1\_/**, where the slash at the end just indicates that
+this is a directory). All of the output from run **1** of AutoBuild will
+be in this directory. If you run AutoBuild again, a new subdirectory
+called **AutoBuild\_run\_2\_** will be created.
+
+Inside the directory **AutoBuild\_run\_1\_** there will be one or more
+temporary directories such as **TEMP0** created while the Wizard is
+running. The files in this temporary directory may be useful sometimes
+in figuring out what the Wizard is doing (or not doing!). By default
+these directories are emptied when the Wizard finishes (but you can keep
+their contents with the command **clean\_up=False** if you want.)
+
+What parameters did I use?
+--------------------------
+
+Once the AutoBuild wizard has started (when run from the command line),
+a **parameters file** called **autobuild.eff** will be created in your
+**output directory** (e.g., **AutoBuild\_run\_1\_/autobuild.eff**). This
+**parameters file** has a header that says what command you used to run
+AutoBuild, and it contains all the starting values of all parameters for
+this run (including the defaults for all the parameters that you did not
+set).
+
+The **autobuild.eff** file is good for more than just looking at the
+values of parameters, though. If you copy this file to a new one (for
+example **autobuild\_lores.eff**) and edit it to change the values of
+some of the parameters (**resolution=3.0**) then you can re-run
+AutoBuild with the new values of your parameters like this:
+
+::
+
+    phenix.autobuild autobuild_lores.eff
+
+This command will do everything just the same as in your first run but
+use only the data to 3.0 A.
+
+*Reading the log files for your AutoBuild run file*
+---------------------------------------------------
+
+While the AutoBuild wizard is running, there are several places you can
+look to see what is going on. The most important one is the overall log
+file for the AutoBuild run. This log file is located in:
+
+::
+
+    AutoBuild_run_1_/AutoBuild_run_1_1.log
+
+for run **1** of AutoBuild. (The second **1** in this log file name will
+be incremented if you stop this run in the middle and restart it with a
+command like **phenix.autobuild run=1**).
+
+The **AutoBuild\_run\_1\_1.log** file is a running summary of what the
+AutoBuild Wizard is doing. Here are a few of the key sections of the log
+files produced for the **p9-build** SAD dataset.
+
+Summary of the command-line arguments
+-------------------------------------
+
+Near the top of the log file you will find:
+
+::
+
+     
+    ------------------------------------------------------------
+    Starting AutoBuild with the command:
+
+    phenix.autobuild seq_file=p9.seq data=p9-solve.mtz   \
+    input_map_file=p9-resolve.mtz resolution=2.4 ncs_copies=1
+
+This is just a repeat of how you ran AutoBuild; you can copy it and
+paste it into the command line to repeat this run.
+
+Guessing the chain type
+-----------------------
+
+The AutoBuild Wizard will read in your sequence file and guess whether
+this is PROTEIN, DNA, or RNA from the sequence:
+
+::
+
+    Guessing chain type from  p9.seq
+    Setting chain type to  PROTEIN
+
+If you want to tell the Wizard what the chain type is, you can say,
+**chain\_type=PROTEIN**.
+
+Guessing column labels
+----------------------
+
+The AutoBuild Wizard will need to know which columns in your input data
+file and your input map file to use. It guesses which column labels to
+use and lists them out:
+
+::
+
+    Getting column labels from p9-solve.mtz for input data file
+    SG: I 4
+    Cell: [113.94899749755859, 113.94899749755859, 32.4739990234375, 90.0, 90.0, 90.0]
+    Input labels: ['FP', 'SIGFP', 'PHIB', 'FOM', 'HLA', 'HLB', 'HLC', 'HLD', 'None']
+
+    Getting column labels from p9-resolve.mtz for input map file
+    SG: I 4
+    Cell: [113.94899749755859, 113.94899749755859, 32.4739990234375, 90.0, 90.0, 90.0]
+    Map input labels: ['FP', 'PHIM', 'FOMM']
+
+These are indeed the appropriate columns to use for experimental phases
+and for map coefficients, respectively. Note the "None" in the input
+labels for **p9-solve.mtz**. The last input label in this list
+corresponds to **FreeR\_flag** and there is no Free R data in the input
+data file. All the data that is expected for each input file in
+AutoBuild can be seen in the `AutoBuild <autobuild.htm#stdanch1>`__ web
+page under "Specifying which columns of data to use from input data
+files".
+
+Guessing cell contents
+----------------------
+
+The AutoBuild Wizard uses the sequence information in your sequence file
+(**sequence.dat**) and the cell parameters and space group to guess the
+number of NCS copies and the solvent fraction:
+
+::
+
+     Number of residues in unique chains in seq file: 136
+    Unit cell: (113.949, 113.949, 32.474, 90, 90, 90)
+    Space group: I 4 (No. 79)
+    CELL VOLUME :421654.549593
+    N_EQUIV:8
+    GUESS OF NCS COPIES: 1
+    SOLVENT FRACTION ESTIMATE: 0.65
+    Data file (for everything including refinement): p9-solve.mtz
+
+Running phenix.xtriage
+----------------------
+
+The AutoBuild Wizard automatically runs phenix.xtriage on your input
+datafile to analyze it for twinning, outliers, translational symmetry,
+and other special conditions that you should be aware of. You can read
+more about xtriage in `Data quality assessment with
+phenix.xtriage <xtriage.htm>`__. The xtriage output is in the file
+**p9-solve.mtz\_xtriage.log**. Part of the summary output from xtriage
+for this dataset looks like this:
+
+::
+
+     
+    The largest off-origin peak in the Patterson function is 6.40% of the
+    height of the origin peak. No significant pseudotranslation is detected.
+
+    The results of the L-test indicate that the intensity statistics
+    behave as expected. No twinning is suspected.
+
+Generation of FreeR flags
+-------------------------
+
+The AutoBuild Wizard will create a set of free R flags indicating which
+reflections are not to be used in refinement. By default 5% of
+reflections (up to a maximum of 2000) are reserved for this test set. If
+you supply a reflection file with free R flags already set, then they
+will be used. If you want to supply a file **ref.mtz**\ specifically for
+refinement, you can do that with **input\_refinement\_file=ref.mtz**.
+Also if you want to supply a high-resolution datafile **hires.mtz** that
+has then you can do this with the keywords
+**input\_hires\_file=hires.mtz**. After generation of free R flags if
+necessary, and any merging of data files, the file to be used for
+refinement is called **exptl\_fobs\_phases\_freeR\_flags.mtz**.
+
+Model-building with RESOLVE
+---------------------------
+
+The AutoBuild Wizard by default uses RESOLVE to build an atomic model of
+your structure.
+
+In each cycle of model-building, the AutoBuild Wizard breaks up the
+building process into separate steps that can be run in parallel and
+then combines the results.
+
+In the first model-building cycle, the AutoBuild Wizard builds 4
+separate models by running 4 subprocesses, each of which runs the
+AutoBuild Wizard to just build a single model and refine it and return:
+
+::
+
+     
+    Build cycle 1 of 17   method:build
+
+    Build cycle 1 of 17   method:build
+
+    Running  3 parallel build jobs
+
+    Standard build in parallel
+    This is the first try at building this model
+    Setting background=False as nproc=1
+    Try:  1 building 1 model
+    Try:  2 building 1 model
+    Try:  3 building 1 model
+    Running up to  1  jobs in parallel... with total of  3  jobs
+    Splitting work into 3 jobs and running 1 at a time with sh in
+    /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0
+
+    Starting job 1...
+    Starting job 2...Starting job 3...
+    Collecting models....
+
+    Solution for try :  1 cycle_best_1.pdb
+    Solution 1 from build cycle 1 R= 0.24
+    Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0/
+    AutoBuild_run_1_/cycle_best_1.pdb  as  MODEL_1.pdb  in  AutoBuild_run_1_/TEMP0
+
+    Solution for try :  2 cycle_best_1.pdb
+    Solution 1 from build cycle 1 R= 0.24
+    Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0/
+    AutoBuild_run_2_/cycle_best_1.pdb  as  MODEL_2.pdb  in  AutoBuild_run_1_/TEMP0
+
+    Solution for try :  3 cycle_best_1.pdb
+    Solution 1 from build cycle 1 R= 0.24
+    Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/TEMP0/
+    AutoBuild_run_3_/cycle_best_1.pdb  as  MODEL_3.pdb  in  AutoBuild_run_1_/TEMP0
+    Done with  3 parallel build jobs...
+    Running standard build to merge and extend these models now.
+
+If you want to look at the log files for these individual model-building
+steps, you can look in the directory listed above:
+
+::
+
+     
+    /net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/AutoBuild_run_1_/TEMP0
+
+This will contain subdirectories with the model-building runs:
+
+::
+
+     
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_1_/AutoBuild_run_1_1.log
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_2_/AutoBuild_run_2_1.log
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_3_/AutoBuild_run_3_1.log
+
+In this case model 1 is the best. It is then used to start a merging
+process in which the best parts of each model are kept to create a
+composite model. This model is then refined, extended (by building off
+all the ends of chains) and saved:
+
+::
+
+     
+
+    Model completion cycle 1
+    Models to combine and extend:  ['MODEL_1.pdb', 'MODEL_2.pdb', 'MODEL_3.pdb']
+    Model 1: Residues built=126  placed=118  Chains=2  Model-map CC=0.82
+    This is new best model with score =  240
+    Refining model:  Build_combine_extend_1.pdb
+    Model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.28
+
+    ...
+
+
+    New best overall: AutoBuild_run_1_/overall_best.pdb
+
+    Model obtained on cycle 1
+    R (work): 0.229221223063
+    R (free): 0.278562331997
+    Residues built: 126
+    Residues placed: 118
+    Model-map CC: 0.82
+    Chains: 2
+
+In the second overall cycle of model building, the AutoBuild Wizard
+carries out several density modification steps to obtain an improved
+map:
+
+::
+
+    Using coordinates of model from previous cycle in building
+
+This is the key aspect of iterative model-building, density modification
+and refinement. The model from each cycle is used to improve the density
+(even in places where the model was not built) in the map for the next
+cycle. This is done by using density calculated from the model as part
+of a real-space target for statistical density modification.
+
+The first stage of density modification uses the identification of local
+patterns of density unique to macromolecules (such as characteristic
+distances between atoms), and the presence of helices and strands in the
+map to improve map quality. The pattern and fragment information comes
+from an analysis of the map from the previous cycle and is combined into
+a pseudo-map **combine.map**. This real-space information is then merged
+with the experimental phase information in
+exptl\_fobs\_phases\_freeR\_flags.mtz:
+
+::
+
+     Density modifying with patterns/fragments and model
+    Adding pattern/fragment phase information from combine.map to exptl_fobs_phases_freeR_flags.mtz 
+    to create image.mtz
+
+The composite phase information is then used in density modification. In
+this step the model density is used as part of the real-space target for
+statistical density modification. An omit map is also created that does
+not include the model-based information.
+
+::
+
+     Density modifying image.mtz including model information from refine.pdb_1
+    to make resolve_work.mtz. Then building model
+    Creating omit map from image.mtz and previous models
+
+A new model is then built, using the best model available so far (in
+this case from cycle 1), combined with pieces of a model built in four
+ways. The first is to "fit\_loops", in which case all gaps in the model
+(places where the sequence file says there are residues but for which
+there is no model yet, and for which the residues on either side of the
+gap are present in the model) are systematically rebuilt. The method
+used is to try to build from either end of the gap and if the two chains
+connect with the correct number of residues then the gap is considered
+filled. The second method is to "connect" ends of chains. This is the
+same as the gap-filling procedure except that it is used in cases where
+the model has not been assigned to sequence so that the ends to be
+connected are not known in advance and the number of residues in the gap
+is also not known. The third method is to "build\_outside", in which
+case the current model is used to mask out the density in the region of
+the model, and a model is built into the remaining density. The fourth
+method is simply to build a new model from scratch.
+
+::
+
+     
+    Standard build in parallel  starting with  refine.pdb_1  and  ['overall_best.pdb']
+
+    Setting background=False as nproc=1
+    Try:  1  fit_loops=True
+    Try:  2  connect=True
+    Try:  3  build_outside=True
+
+Then the current best model and the models built from each of these
+tries are combined together to make a composite model. As in cycle 1 it
+is then refined, extended, and saved (if it is an improvement):
+
+::
+
+     
+    Solution for try :  1 cycle_best_1.pdb
+    Solution 1 from build cycle 1 R= 999.9
+    Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_4_/cycle_best_1.pdb  as  
+    MODEL_1.pdb  in  AutoBuild_run_1_/TEMP0
+
+    Solution for try :  2 cycle_best_1.pdb
+    Solution 1 from build cycle 1 R= 999.9
+    Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_5_/cycle_best_1.pdb  as  
+    MODEL_2.pdb  in  AutoBuild_run_1_/TEMP0
+
+    Solution for try :  3 cycle_best_1.pdb
+    Solution 1 from build cycle 1 R= 0.23
+    Saving  /net/idle/scratch1/terwill/run_072908a/p9-build/
+    AutoBuild_run_1_/TEMP0/AutoBuild_run_6_/cycle_best_1.pdb  as  
+    MODEL_3.pdb  in  AutoBuild_run_1_/TEMP0
+    Done with  3 parallel build jobs...
+    Running standard build to merge and extend these models now.
+
+In this case the building outside-model gave a good model but the
+gap-filling and connecting did not fill any gaps or loops. (they gave an
+R of 999. meaning nothing was refined).
+
+Model completion with these models and the current best model from cycle
+1 gave:
+
+::
+
+     
+    Model completion cycle 1
+    Models to combine and extend:  ['overall_best.pdb', 'starting_model.pdb', 
+    'MODEL_1.pdb', 'MODEL_2.pdb', 'MODEL_3.pdb']
+    Model 1: Residues built=123  placed=107  Chains=2  Model-map CC=0.80
+    This is new best model with score =  226
+    Refining model:  Build_combine_extend_1.pdb
+    Model: AutoBuild_run_1_/TEMP0/refine_1.pdb  R/Rfree=0.23/0.27
+
+This process of model-building iterated with generation of real-space
+targets for density modification based on local patterns, fragments of
+structure, and the model is repeated until the R-factor does not
+decrease for several cycles. In this example, the best model using this
+procedure is obtained on cycle 2 with an R/Rfree of 0.22/0.27:
+
+::
+
+     
+    New best overall: AutoBuild_run_1_/overall_best.pdb
+    Model obtained on cycle 2
+    R (work): 0.224655082668
+    R (free): 0.266763231999
+    Residues built: 120
+    Residues placed: 112
+    Model-map CC: 0.79
+    Chains: 1
+
+Model-rebuilding with RESOLVE
+-----------------------------
+
+Once the model-building procedure has converged, the AutoBuild Wizard
+carries out cycles of rebuilding using a slightly different protocol.
+The main differences in this set of cycles are that the local patterns
+and fragments approaches are no longer used (the maps by this time look
+so much like a macromolecule that these procedures do not add anything),
+and that the starting point for density modification is a model-based
+map, not the experimental map.
+
+In this example, the rebuilding steps improve the model just a little,
+and the process ends after 2 cycles of rebuilding:
+
+::
+
+     
+    New best overall: AutoBuild_run_1_/overall_best.pdb
+    Model obtained on cycle 2
+    R (work): 0.224655082668
+    R (free): 0.266763231999
+    Residues built: 120
+    Residues placed: 112
+    Model-map CC: 0.79
+    Chains: 1
+
+The AutoBuild\_summary.dat summary file
+---------------------------------------
+
+A quick summary of the results of your AutoBuild run is in the
+**AutoBuild\_summary.dat** file in your output directory. This file
+lists the key files that were produced in your run of AutoBuild (all
+these are in the output directory) and some of the key statistics for
+the run. Here is the summary for this **p9-build** model-building run:
+
+::
+
+     
+    Summary of model-building for run 1  Sun Jun 29 12:02:56 2008
+    Files are in the directory:  /net/idle/scratch1/terwill/run_072908a/p9-build/AutoBuild_run_1_/
+
+
+    Starting mtz file: /net/idle/scratch1/terwill/run_072908a/p9-build/p9-solve.mtz
+    Sequence file: /net/idle/scratch1/terwill/run_072908a/p9-build/p9.seq
+
+    Best solution on cycle: 4    R/Rfree=0.22/0.27
+
+    Summary of output files for Solution 3 from rebuild cycle 4
+
+    ---  Model (PDB file)  ---
+    pdb_file: AutoBuild_run_1_/cycle_best_4.pdb
+
+    ---  Refinement log file ---
+    log_refine: AutoBuild_run_1_/cycle_best_4.log_refine
+
+    ---  Model-building log file ---
+    log: AutoBuild_run_1_/cycle_best_4.log
+
+    ---  Model-map correlation log file ---
+    log_eval: AutoBuild_run_1_/cycle_best_4.log_eval
+
+    ---  2FoFc and FoFc map coefficients from refinement 2FOFCWT PH2FOFCWT FOFCWT PHFOFCWT ---
+    refine_map_coeffs: AutoBuild_run_1_/cycle_best_refine_map_coeffs_4.mtz
+
+
+    ---  Data for refinement FP SIGFP PHIM FOMM HLAM HLBM HLCM HLDM FreeR_flag ---
+    hklout_ref: AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz
+
+    ---  Density-modification log file ---
+    log_denmod: AutoBuild_run_1_/cycle_best_4.log_denmod
+
+    ---  Density-modified map coefficients FP PHIM FOM ---
+    hklout_denmod: AutoBuild_run_1_/cycle_best_4.mtz
+
+
+    You might consider making one very good model now with:
+
+    phenix.autobuild \
+     data=AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz \
+     model=AutoBuild_run_1_/cycle_best_4.pdb \
+     rebuild_in_place=True \
+     seq_file=/net/idle/scratch1/terwill/run_072908a/p9-build/p9.seq
+
+
+    SOLUTION  CYCLE     R        RFREE     BUILT   PLACED
+     1         1      0.23        0.28      126       118
+     2         2      0.22        0.27      120       112
+     3         4      0.22        0.27      123       111
+     4         5      0.22        0.26      121       113
+
+Note that the file **AutoBuild\_run\_1\_/cycle\_best\_4.log\_eval** in
+this example has a complete analysis of the the fit of the model in
+**AutoBuild\_run\_1\_/cycle\_best\_4.pdb** to the best map in
+**AutoBuild\_run\_1\_/cycle\_best\_4.log\_denmod**. This is useful in
+identifying places where additional rebuilding needs to be done.
+
+Creating an improved model after AutoBuild
+------------------------------------------
+
+In our example, the summary file had this phrase in it:
+
+::
+
+     
+    You might consider making one very good model now with:
+
+    phenix.autobuild \
+     data=AutoBuild_run_1_/exptl_fobs_phases_freeR_flags.mtz \
+     model=AutoBuild_run_1_/cycle_best_4.pdb \
+     rebuild_in_place=True \
+     seq_file=/net/cci-filer1/vol1/tmp/terwill/phenix_examples/p9-build/p9.seq
+
+This is a command-line command to take the final model from this
+AutoBuild run, rebuild it 4 times using the "rebuild\_in\_place"
+algorithm, combine the resulting models to make a composite model,
+refine it, and write out the final model. This method is very effective
+at improving models from AutoBuild (or from any other source). You can
+see more details of this in `Tutorial 6: Automatically rebuilding a
+structure solved by Molecular Replacement <tutorial_rebuild.htm>`__
+
+How do I know if iterative model-building, density modification and refinement worked?
+--------------------------------------------------------------------------------------
+
+Here are some of the things to look for to tell if you have obtained a
+good model:
+
+-  How much of the model was built? For the AutoBuild Wizard, you should
+   expect more than 90% of your model to be built in favorable cases
+   when the resolution of the data is 3 A or better. Have a look at the
+   model. It should have all the appropriate features of a protein or
+   nucleic acid.
+-  What is the R-factor and the free R-factor of the model? For a
+   solution at moderate to high resolution (2.5 A or better) the
+   R-factor should be in the low 20's and the free R-factor about 0.05
+   higher to be very good. For lower-resolution data, an R-factor in the
+   low 30's is probably largely correct but the model is not very good.
+-  Does the model show NCS if there are more than one copies in the
+   asymmetric unit? You can look at your log file which will tell you
+   about any NCS in your model.
+
+What to do next
+---------------
+
+Once you have run AutoBuild and have obtained a good model, you will
+want to inspect and touch up the model carefully, rebuilding any parts
+of the model that do not agree well with the final map. You should also
+have a close look at all the solvent molecules in your model, making
+sure that they all have reasonable relationships to the macromolecule
+and to each other, and that they are not simply filling up density where
+a ligand or the macromolecule really goes.
+
+The next thing to do is to add in any ligands (metals, cofactors) if
+there is density for them. You can use the LigandFit Wizard (see
+`Automated Ligand Fitting using LigandFit <ligandfit.htm>`__ ) to help
+you fit ligands into your map automatically.
+
+If you do not obtain a good model, then it's not quite time to give up
+yet. There are a number of standard things to try that may improve the
+model building. Here are a few that you should try:
+
+-  Have a careful look at all the output files. Work your way through
+   the main log file (e.g., **AutoBuild\_run\_1\_1.log**). Is there
+   anything strange or unusual in any of them that may give you a clue
+   as to what to try next? What does the xtriage output say? Is there
+   twinning or strong translational symmetry? Are there problems with
+   reflections near ice rings? Are there many outlier reflections?
+-  Have a look at the electron density maps at different stages in model
+   building. How does the starting map look? How about the maps produced
+   during the iterative building process (**cycle\_best\_xx.mtz**)? If
+   the maps look poor, then the rebuilding process will not work well.
+   However if the maps look good and the rebuilding is not working well
+   then it is worth trying to identify where the problem is.
+-  Try a different resolution cutoff. You may be able to use
+   higher-resolution data in AutoBuild than you used in structure
+   solution.
+
+Additional information
+----------------------
+
+For details about the AutoBuild Wizard, see `Automated Model building
+and Rebuilding using AutoBuild <autobuild.htm>`__. For help on running
+Wizards, see `Using the PHENIX Wizards <running-wizards.htm>`__.

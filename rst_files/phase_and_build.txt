@@ -1,0 +1,133 @@
+Rapid phase improvement and model-building using phase\_and\_build
+==================================================================
+
+Author(s)
+---------
+
+-  phase\_and\_build: Tom Terwilliger
+
+Purpose
+-------
+
+phase\_and\_build is a new and rapid method for improving the quality of
+your map and building a model. The approach is to carry out an iterative
+process of building a model as rapidly as possible and using this model
+in density modification to improve the map. This approach is related to
+the older phenix.autobuild approach. The difference is that in
+phenix.autobuild much effort was spent on building the best possible
+model at each stage before carrying out density modification, while in
+phenix.phase\_and\_build speed of model-building is optimized. The
+result is that phenix.phase\_and\_build is 10 times faster than
+phenix.autobuild, yet it produces nearly as good a model in the end. The
+phenix.phase\_and\_build approach will also find NCS from your starting
+map and apply it during density modification.
+
+Usage
+-----
+
+How phase\_and\_build works:
+----------------------------
+
+phase\_and\_build first identifies a free set of reflections if they are
+not supplied. A map without the test set reflections is created for
+real-space refinement. A set of data for density modification is created
+which contains anisotropy-corrected data (if supplied).
+
+-  Next phase\_and\_build estimates the solvent fraction (if not
+   supplied) from the sequence file and cell parameters and the maximum
+   and most likely number of NCS copies.
+-  A starting map is obtained by density modification of the input data
+   (unless a map coefficients file is supplied).
+-  NCS is identified from the starting map (if the maximum number of NCS
+   copies is greater than 1). If a heavy-atom file is supplied, NCS will
+   first be identified from the heavy-atom sites, and the map will be
+   used if the expected number of sites is not obtained.
+-  Next one or more cycles of phase improvement are carried out. In each
+   cycle a model is built using phenix.build\_one\_model, the model is
+   refined in real-space and/or in reciprocal space, and then the model
+   is included in density modification to create a new map.
+-  Finally, a full model-building cycle is carried out using the most
+   recent map. One or more models are built with
+   phenix.build\_one\_model and are refined, then are combined, again
+   with phenix.build\_one\_model. The resulting model is refined and
+   sequence assignment and fitting of short loops is carried out with
+   phenix.assign\_sequence. Then longer loops are fit with
+   phenix.fit\_loops and the final model is refined and written out.
+
+*Output files from phase\_and\_build*
+-------------------------------------
+
+**phase\_and\_build.pdb**: A PDB file with the resulting model
+**phase\_and\_build\_map\_coeffs.mtz**: An MTZ file with optimized
+phases
+
+*Parameters files in phase\_and\_build*
+---------------------------------------
+
+When you run phenix.phase\_and\_build it will write out a
+phase\_and\_build\_params.eff parameter file that can be used to re-run
+phenix.phase\_and\_build (just as for essentially all PHENIX methods).
+In addition, phenix.phase\_and\_build will write out the parameters
+files for the intermediate methods used as part of
+phenix.phase\_and\_build to the temporary directory used in building.
+You can run these with:
+
+::
+
+    phenix.find_ncs temp_dir/find_ncs_params.eff # runs NCS identification
+    phenix.autobuild temp_dir/AutoBuild_run_1_/autobuild.eff   # runs first cycle of density modification
+    phenix.build_one_model temp_dir/build_one_model_params.eff # runs most recent model-building
+    phenix.assign_sequence temp_dir/assign_sequence_params.eff # runs sequence assignment and filling short gaps
+    phenix.fit_loops temp_dir/fit_loops_params.eff # runs loop fitting
+
+This gives you control of all the steps in map improvement and
+model-building in addition to letting you run them all together with
+phenix.phase\_and\_build
+
+Examples
+--------
+
+Standard run of phase\_and\_build:
+----------------------------------
+
+Running phase\_and\_build is easy. From the command-line you can type:
+
+::
+
+    phenix.phase_and_build exptl_fobs_phases_freeR_flags.mtz sequence.dat
+
+If you want to supply a file with anisotropy-corrected data to use in
+density modification you can do so:
+
+::
+
+    phenix.phase_and_build data=exptl_fobs_phases_freeR_flags.mtz \
+    seq_file=sequence.dat \
+    aniso_corrected_data=solve_1.mtz
+
+where solve\_1.mtz is anisotropy-corrected (the amplitudes are not
+measured amplitudes, but rather are corrected with an anisotropic
+B-factor), and exptl\_fobs\_phases\_freeR\_flags.mtz contains
+experimental amplitudes. These two files normally will contain the same
+phase information. (Usually these files will come from phenix.autosol.)
+
+You can also add a starting model or a starting map to
+phenix.phase\_and\_build. This means that you can run it once, get a new
+model and map, then run it again to further improve your model and map.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+phenix.phase\_and\_build does not have the full flexibility of
+phenix.autobuild, so you may want to get a nearly-complete model with
+phenix.phase\_and\_build and then use phenix.autobuild to increase the
+completeness and quality.
+
+Literature
+----------
+
+Additional information
+----------------------

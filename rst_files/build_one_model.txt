@@ -1,0 +1,64 @@
+Quick model-building of a single model with resolve using build\_one\_model
+===========================================================================
+
+Author(s)
+---------
+
+-  build\_one\_model: Tom Terwilliger
+
+Purpose
+-------
+
+If you have an mtz map coefficients file and a sequence file, you can
+use build\_one\_model to just build a single model with resolve. You can
+also extend an existing model.
+
+Usage
+-----
+
+How build\_one\_model works:
+----------------------------
+
+build\_one\_model runs resolve model-building, by default in
+superquick\_build mode. If you supply a model, then resolve will try to
+extend the ends of each chain in your model.
+
+*Output files from build\_one\_model*
+-------------------------------------
+
+**build\_one\_model.pdb**: A PDB file with the resulting model
+
+Examples
+--------
+
+Standard run of build\_one\_model:
+----------------------------------
+
+Running build\_one\_model is easy. From the command-line you can type:
+
+::
+
+    phenix.build_one_model  map_coeffs.mtz \
+       sequence.dat free_in=exptl_fobs_phases_freeR_flags.mtz
+
+where exptl\_fobs\_phases\_freeR\_flags.mtz has your free R flags for
+refinement. If you want to supply a PDB file to extend instead you can
+do that:
+
+::
+
+    phenix.build_one_model map_coeffs.mtz \
+      sequence.dat free_in=exptl_fobs_phases_freeR_flags.mtz \
+      model.pdb
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

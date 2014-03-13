@@ -1,0 +1,62 @@
+Merging two models with density\_outside\_model
+===============================================
+
+Author(s)
+---------
+
+-  density\_outside\_model: Tom Terwilliger
+
+Purpose
+-------
+
+This routine takes a model and map coefficients and returns new map
+coefficients with density set to zero near the atoms in the model
+
+Usage
+-----
+
+The main uses of phenix.density\_outside\_model are:
+
+-  Creating a map where all the parts of the map that have been
+   explained by a model are removed.
+
+How density\_outside\_model works:
+----------------------------------
+
+Density\_outside\_model calculates a map from the map coefficients. Then
+all map values at points near an atom in the model are set to zero. Then
+a new set of map coefficients is calulated and written out.
+
+Optionally the model can be trimmed so that that the last n\_trim
+residues in each segment of the model are not included.
+
+*Output files from density\_outside\_model*
+-------------------------------------------
+
+**density\_removed.mtz**: An MTZ file with your new map coefficients.
+
+Examples
+--------
+
+Standard run of density\_outside\_model:
+----------------------------------------
+
+Running density\_outside\_model is easy. From the command-line you can
+type:
+
+::
+
+    phenix.density_outside_model pdb_in=mask_pdb.pdb \
+       map_coeffs.mtz
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------

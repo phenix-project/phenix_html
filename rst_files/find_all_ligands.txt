@@ -1,0 +1,112 @@
+Finding all ligands in a map with phenix.find\_all\_ligands
+===========================================================
+
+Author(s)
+---------
+
+-  phenix.find\_all\_ligands: Tom Terwilliger
+
+Purpose
+-------
+
+phenix.find\_all\_ligands is a command line tool for finding all the
+ligands in a map by repetitively running
+`phenix.ligandfit <ligandfit.htm>`__ with a series of ligands and
+choosing the best-fitting one at each cycle.
+
+Usage
+-----
+
+How phenix.find\_all\_ligands works:
+------------------------------------
+
+The basic procedure for phenix.find\_all\_ligands has three steps. The
+first is to identify the largest contiguous region of density in your
+map that is not already occupied by your model or previously-fitted
+ligands. The second is to fit each ligand (you identify the candidate
+ligands in advance) into this density. The third is to choose the one
+that fits the density the best. Then the best-fitting ligand is added to
+the structure and the process is repeated until the number of ligands
+you request is found or the correlation of ligand to the map drops below
+the value you specify (default=0.5).
+
+*Output files from phenix.find\_all\_ligands*
+---------------------------------------------
+
+The output ligand files from phenix.find\_all\_ligands are normally in
+the temporary directory (default='temp\_dir'). They will be files with
+names such as "SITE\_1\_ATP.pdb" for the placement of ATP in the first
+site fitted.
+
+Examples
+--------
+
+Standard run of phenix.find\_all\_ligands:
+------------------------------------------
+
+Running phenix.find\_all\_ligands is easy. Usually you will want to edit
+a small parameter file (find\_all\_ligands.eff) to contain your commands
+like this, where the ligandfit commands are sent to
+`phenix.ligandfit <ligandfit.htm>`__: for the actual fitting and the
+find\_all\_ligands commands determine what searches are done: type:
+
+::
+
+    #  commands for running phenix.find_all_ligands
+    find_all_ligands {
+      number_of_ligands = 5
+      cc_min = 0.5
+      ligand_list =  ATP.pdb NAD.pdb
+      nproc = 2
+    }
+    ligandfit {
+      data = "nsf-d2.mtz"
+      model = "nsf-d2_noligand.pdb"
+      lig_map_type = fo-fc_difference_map
+    }
+
+You might also want to add to this some additional commands for
+`phenix.ligandfit <ligandfit.htm>`__. Any commands for ligandfit are
+allowed, except that the commands "ligand" and "input\_lig\_file" are
+ignored as the input ligand comes from the find\_all\_ligands command
+"ligand\_list":
+
+::
+
+    # find_all_ligands.eff  more commands for ligandfit
+    ligandfit {
+    data = "nsf-d2.mtz"
+    model = "nsf-d2_noligand.pdb"
+    lig_map_type = fo-fc_difference_map
+    ligand_cc_min = 0.75
+    verbose = Yes
+    }
+
+where you can put any phenix.ligandfit commands in the braces.
+
+Then you can run this with the command:
+
+::
+
+    phenix.find_all_ligands find_all_ligands.eff
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+-  This method uses `phenix.ligandfit <ligandfit.htm>`__ to do the
+   ligand fitting, so all the commands, features, and limitations of
+   phenix.ligandfit apply to phenix.find\_all\_ligands.
+
+Literature
+----------
+
+Additional information
+----------------------
+
+NOTE: in addition to the find\_all\_ligands keywords shown here, all
+`phenix.ligandfit <ligandfit.htm>`__ commands are also allowed, except
+that the commands "ligand" and "input\_lig\_file" are ignored as the
+input ligand comes from the find\_all\_ligands.
