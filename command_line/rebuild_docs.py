@@ -212,6 +212,19 @@ def run (args=(), out=None, log=None) :
           if (not op.isdir(dest_path)) :
             os.makedirs(dest_path)
         shutil.copy(file_path, dest_path)
+  print >> out, "  making symlinks in subdirectories"
+  for dirname, dirnames, filenames in os.walk(rst_dir) :
+    for dir_name in dirnames :
+      dest_path = op.join(docs_dir, dir_name)
+      if op.isdir(dest_path) :
+        if (sys.platform == "win32") :
+          shutil.copytree(op.join(docs_dir, "icons"),
+                          op.join(dest_path, "icons"))
+          shutil.copytree(op.join(docs_dir, "images"),
+                          op.join(dest_path, "images"))
+        else :
+          os.symlink(op.join(docs_dir, "icons"), op.join(dest_path, "icons"))
+          os.symlink(op.join(docs_dir, "images"), op.join(dest_path, "images"))
   os.chdir(docs_dir)
   phenix_version = os.environ.get("PHENIX_VERSION", None)
   release_tag = os.environ.get("PHENIX_RELEASE_TAG", None)
