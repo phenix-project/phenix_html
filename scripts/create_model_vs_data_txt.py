@@ -1,9 +1,14 @@
-import libtbx.load_env
-import sys, os
-from cStringIO import StringIO
 import mmtbx.model_vs_data
+import libtbx.load_env
+from cStringIO import StringIO
+import os.path as op
+import os
+import sys
 
 def run():
+  html_dir = libtbx.env.find_in_repositories(relative_path="phenix_html")
+  dest_dir = op.join(html_dir, "rst_files", "reference")
+  os.chdir(dest_dir)
   log = StringIO()
   mmtbx.model_vs_data.run(args=[], log = log)
   ofn = open("model_vs_data.txt","w")

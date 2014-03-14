@@ -1,0 +1,308 @@
+phenix.find\_alt\_orig\_sym\_mate: Identify equivalent MR solutions of the same dataset irrespective of origin and symmetry operation
+=====================================================================================================================================
+
+**Author(s)**
+-------------
+
+-  phenix.find\_alt\_orig\_sym\_mate: Robert D. Oeffner
+-  PHENIX GUI: Nat Echols
+
+Purpose
+-------
+
+For different molecular replacement (MR) solutions from the same dataset
+phenix.find\_alt\_orig\_sym\_mate.py finds for each chain in the moving
+solution the copy closest to chains in the fixed solution with respect
+to all symmetry operations and alternative origin shifts permitted by
+the spacegroup of the crystal.
+
+Usage
+-----
+
+phenix.find\_alt\_orig\_sym\_mate can be run from the GUI by clicking on
+the **Find alternate-origin symmetry mates** button under the Model
+tools category on the right hand side of the main Phenix window.
+
+
+.. image:: ../images/find_alt_orig_sym_mate1.png
+
+
+Once the run button has been pressed the program will execute for a minute or two
+depending on the size of the molecules and space group. Afterwards the run status
+page will have a table of the best matches between pairs of chains in the two
+files. The MLAD values, chain IDs symmetry transformations and alternate origins for
+the two structures are listed in
+a table. If the same origin shift is not applied to all pairs of chains a
+warning will be printed. A floating origin in the space group typically results in a
+origin offset between chains that is not a rational number.
+
+
+.. image:: ../images/find_alt_orig_sym_mate2.png
+   :width: 750
+
+
+From the results tab the superposed structure can be visually inspected in Coot or Pymol.
+Matches with low MLAD scores will have correspondingly good superpositions.
+
+
+.. image:: ../images/find_alt_orig_sym_mate3.png
+   :width: 750
+
+
+
+
+Using from the command-line
+---------------------------
+
+
+It can also be run from the command-line with PHIL input in either a
+text file or as keywords like::
+
+    phenix.find_alt_orig_sym_mate moving_pdb=pdbfile1 fixed_pdb=pdbfile2
+
+or::
+
+    phenix.find_alt_orig_sym_mate my_phil_input.txt.
+
+The PHIL input specifies the MR solution files either as "moving\_pdb"
+and "fixed\_pdb" or as the scopes, "moving" and "fixed". Both these
+scopes must hold valid content. The two scopes hold the parameter
+"xyzfname" and the sub-scopes "mrsolution" and "pickle\_solution". For a
+scope to be valid one and only of the methods (1), (2) and (3) must be
+followed:
+
+-  Assign the "moving\_pdb" or "fixed\_pdb" parameter to the pdb file
+   from one of the MR solutions in question. This is useful for simple
+   cases such as when the solution comes from the PHENIX MRage GUI is
+   or when it is from a different MR program other than Phaser.
+-  Specify a Phaser MR solution by assigning the file name of the
+   solution file to the "moving.mrsolution.solfname" or
+   "fixed.mrsolution.solfname" parameter as well as assigning the IDs of
+   the ensembles and the corresponding MR models to the parameters
+   "moving.mrsolution.ensembles.name" or 
+   "fixed.mrsolution.ensembles.name" and
+   "moving.mrsolution.ensembles.xyzfname" or
+   "fixed.mrsolution.ensembles.xyzfname" respectively. Multiple
+   components are specified as multiple ensembles. This way of
+   specifying solutions is useful for solution files produced when
+   Phaser is run from the command line.
+-  Use a solution from the PhaserMR GUI in PHENIX. In that case the
+   parameter "moving.pickle\_solution.pklfname" or
+   "fixed.pickle\_solution.pklfname" is assigned to the solution file
+   that is produced by PHENIX after an MR calculation. The
+   "moving.pickle\_solution.philfname" or
+   "fixed.pickle\_solution.philfname" is then assigned to the input file
+   for the MR calculation. This way of specifying solutions is useful
+   when MR solutions are available from having run Phaser through the
+   PHENIX interface.
+-  There is no restriction on what method to use for the fixed scope
+   depending on the method used on the moving scope, and vice versa. If
+   space group and the unit cell dimensions is not available when for
+   instance (2) is used for both the moving and the fixed scopes then
+   these need to be specified by assigning the parameter,
+   "spacegroupfname", to a PDB file with a CRYST1 record or to an MTZ
+   file with that information. Typically this would be the data file
+   used for the molecular replacement calculation.
+
+Examples of PHIL input
+----------------------
+
+Unless the input just constitutes of two PDB files a PHIL file is the
+easiest way to enter input. A few examples of PHIL for
+phenix.find\_alt\_orig\_sym\_mate are given below.
+
+Testing a command-line Phaser MR solution file against a solution
+specified as a PDB file:
+
+::
+
+        AltOrigSymMates.fixed.mrsolution
+        {
+          solfname = "testdata/MR_3ECI_A0_2P82_A0.sol"
+          ensembles
+          {
+            name = "MR_2P82_A0"
+            xyzfname = "testdata/sculpt_2P82_A0.pdb"
+          }
+          ensembles
+          {
+            name = "MR_3ECI_A0"
+            xyzfname = "testdata/sculpt_3ECI_A0.pdb"
+          }
+        }
+        AltOrigSymMates.moving_pdb="testdata/2z0d.pdb"
+
+Testing two set of solution files from the PHENIX Phaser-MR GUI against
+one another:
+
+::
+
+        AltOrigSymMates.fixed.pickle_solution
+        {
+          philfname = "testdata/phaser_mr_13.eff"
+          pklfname = "testdata/phaser_mr_13.pkl"
+        }
+
+        AltOrigSymMates.moving.pickle_solution
+        {
+          philfname = "testdata/phaser_mr_11.eff"
+          pklfname = "testdata/phaser_mr_11.pkl"
+        }
+
+Testing two solution files from the command-line version of Phaser
+against one another:
+
+::
+
+        AltOrigSymMates.fixed.mrsolution
+        {
+          solfname = "testdata/MR_3ECI_A0_2P82_A0.sol"
+          ensembles
+          {
+            name = "MR_2P82_A0"
+            xyzfname = "testdata/sculpt_2P82_A0.pdb"
+          }
+          ensembles
+          {
+            name = "MR_3ECI_A0"
+            xyzfname = "testdata/sculpt_3ECI_A0.pdb"
+          }
+        }
+
+        AltOrigSymMates.moving.mrsolution
+        {
+          solfname = "testdata/MR_2ZPN_A0_2P82_A0.sol"
+          ensembles
+          {
+            name = "MR_2P82_A0"
+            xyzfname = "testdata/sculpt_2P82_A0.pdb"
+          }
+          ensembles
+          {
+            name = "MR_2ZPN_A0"
+            xyzfname = "testdata/sculpt_2ZPN_A0.pdb"
+          }
+        }
+        AltOrigSymMates.spacegroupfname = "testdata/2Z0D.mtz"
+
+For more information on the PHIL input see the bottom of this page.
+
+Output
+------
+
+The closest match between chains in the moving section to chains in the
+fixed section is saved with the name of the pdb file in the fixed scope,
+concatenated with the name of the pdb file in the moving scope but
+prepended with "MinMLAD\_". A log file with the name of the pdb file in
+the fixed scope, concatenated with the name of the pdb file in the
+moving scope but prepended with "AltOrigSymMLAD\_" is written containing
+standard output. All files are saved in the current working directory.
+If MR solutions specified in the PHIL contains multiple solutions then
+phenix.find\_alt\_orig\_sym\_mate will output mulitple log files
+corresponding to each MR solution.
+
+Do the MR solutions match?
+--------------------------
+
+A good match between two chains usually have a MLAD value below 1.5
+whereas a bad match usually have a value above 2.0. This is a rule of
+thumb and exceptions do occur. It is advisable to visually inspect that
+the structures superpose one another in a molecular graphics viewing
+program. If the structures contain more chains and
+phenix.find\_alt\_orig\_sym\_mate did not place them all on the same
+origin a warning will be printed.
+
+Algorithm
+---------
+
+phenix.find\_alt\_orig\_sym\_mate computes configurations by looping
+over all symmetry operations and alternative origin shifts. An alignment
+between C-alpha atoms from moving\_pdb and fixed\_pdb is computed using
+secondary structure matching (SSM). If that fails or if the MLAD score
+achieved with SSM is larger than 2.0 an alignment is computed using
+MMTBX alignment functions which is part of the CCTBX. To estimate the
+best match a distance measure between the aligned C-alpha atoms is
+computed for each configuration. The *mean log absolute deviation*
+(MLAD) is defined as:
+
+MLAD(d\ **R**) = Σ( log(d\ **r**\ ·d\ **r**/(\|d**r**\ \| + 0.9) +
+max(0.9, min(d\ **r**\ ·d\ **r**,1))) - log(0.9)),
+
+where d\ **r** is the difference vector between a pair of aligned
+C-alpha atoms and the sum is taken over all atom pairs in the alignment.
+The factor log(0.9) is subtracted to ensure that MLAD(\ **0**) = 0.0.
+MLAD can loosely be interpreted as a distance measure between
+structures. But it is not a metric in the mathematical sense since the
+triangle inequality is not fulfilled. MLAD will downplay the
+contributions of spatially distant C-alpha atom pairs which may
+otherwise lead to incorrect matches when the space group has a floating
+origin and the chains tested against one another consists of large
+unaligned domains. phenix.find\_alt\_orig\_sym\_mate.py will for each
+chain in the fixed scope find the smallest MLAD with a copy of each
+chain in the moving scope for a given symmetry operation and alternative
+origin. When all chains in the fixed scope have been tested these copies
+will be saved to a file. For spacegroups with floating origin the
+minimum MLAD is found by doing a Golden Sectioning minimization along
+the polar axis for each copy of chains in moving\_pdb.
+
+Also move HETATM (hetero atoms)
+-------------------------------
+
+Invoking this flag will move hetero atoms (ligands, waters, metals,
+etc.) in conjunction with their associated peptide chain. The program
+first invokes phenix.sort\_hetatms as to associate hetero atoms sensibly
+with adjacent peptide chains.
+
+After having identified the transformation for a chain yielding the
+smallest MLAD score it then subjects the associated hetero atoms to the
+same transformation.
+
+Debug mode
+----------
+
+Invoking the debug flag produces individual pdb files of the C-alpha
+atoms used for each SSM alignment of the moving scope for each permitted
+symmetry operation and alternative origin. A gold atom is placed at the
+centroid of the C-alpha atoms. Similar files are produced for the fixed
+scope. These files are stored in a subfolder named
+"AltOrigSymMatesFiles".
+
+If a floating origin is present in the space group a table of MLAD
+values is produced by sliding a copy of the chains in the moving scope
+along the polar axis in the fractional interval [-0.5, 0.5] for each
+permitted symmetry operation and alternative origin.
+
+Caveats
+-------
+
+The program tests all solutions present in solution files entered as
+fixed scope against all solutions present in solution files entered as
+moving scope. Consequently the execution time is proportional to the
+number of solutions in fixed scope times the number of solutions in
+moving scope.
+
+The execution time is proportional to the number of SSM alignments being
+tested; if SSM identifies 12 alignments the program will take 12 times
+as long.
+
+Changes
+-------
+
+The command-line syntax mentioned in the Computational Crystallography
+Newsletter 2012 January has been replaced by PHIL syntax.
+
+Literature
+----------
+
+**Algorithms for deriving crystallographic space-group information** R.W.
+Große-Kunstleve `*Acta Cryst.* **A55**, 383-395 (1999)
+<http://dx.doi.org/10.1107/S0108767398010186>`__
+
+**phenix.find_alt_orig_sym_mate** Robert D. Oeffner, Gábor Bunkóczi
+and Randy J. Read `*Computational Crystallography Newsletter 2012 January*,
+5-10 (2012) <http://www.phenix-online.org/newsletter/CCN_2012_01.pdf>`__
+
+**Secondary-structure matching (SSM), a new tool for fast protein structure
+alignment in three dimensions.** E. Krissinel and K. Henrick
+`*Acta Cryst.* **D60**, 2256-2268 (2004)
+<http://dx.doi.org/10.1107/S0907444904026460>`__

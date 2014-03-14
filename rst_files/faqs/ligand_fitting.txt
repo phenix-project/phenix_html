@@ -35,10 +35,9 @@ A second solution is to tell ligandfit to
 ignore the high-res data
 explicitly with one of these commands (on the command line or in the GUI)::
 
-  resolve_command="'resolution 200 4.0'" 
-  solve_command="'resolution 200 4.0'" 
+  resolve_command="'resolution 200 4.0'"
+  solve_command="'resolution 200 4.0'"
   resolve_pattern_command="'resolution 200 4.0'"
 
 Note the two sets of quotes; both are required for this command-line input. Just one set of quotes is required in the GUI.
 These commands are applied after all other inputs in resolve/solve/resolve_pattern and therefore all data outside these limits will be ignored.
-

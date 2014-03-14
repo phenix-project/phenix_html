@@ -1,0 +1,48 @@
+Structure Refinement
+====================
+
+**Why**
+
+Once an atomic model has been built into an electron density map, or
+obtained by molecular replacement, it needs to be optimized to best fit
+the experimental data while also preserving good agreement with prior
+chemical knowledge. This process is typically iterated with manual model
+rebuilding, making use of improved electron density maps, created by
+including phase information from the current atomic model.
+
+**How**
+
+The primary program for refinement of atomic models in Phenix is
+phenix.refine. This applies optimization algorithms (minimization or
+simulated annealing) to change the parameters of the model, typically
+coordinates and atomic displacement parameters, to improve the fit of
+the model to the data. At the same time restraints to prior chemical
+information, e.g. bond lengths, angles, torsions, are also applied in
+order to maintain good stereochemistry.
+
+**How to use the phenix.refine GUI:** `Click
+here <../reference/refine_gui.htm>`__
+
+**Common issues**
+
+-  `Frequently asked questions for structure
+   refinement <../faqs/refine.htm>`__
+
+**Related programs**
+
+-  `phenix.rosetta\_refine <../reference/rosetta_refine.htm>`__:This
+   program combines crystallographic structure refinement algorithms
+   from Phenix with physically realistic potentials for model
+   optimization from Rosetta. This is intended for use in difficult
+   cases, especially at low resolution where it combines a wide radius
+   of convergence to the correct structure with excellent geometry.
+-  `phenix.ensemble\_refinement <../reference/ensemble_refinement.htm>`__:This
+   program uses molecular dynamics as a mechanism to generate
+   conformations of molecules in the crystal. A time averaging method is
+   used to generate ensemble models fitted to diffraction data. These
+   ensemble models can contain ~50-500 individual structures and
+   simultaneously account for anisotopic and anharmonic atomic
+   distributions.
+
+`Phenix reference manual for
+phenix.refine <../reference/refinement.htm>`__

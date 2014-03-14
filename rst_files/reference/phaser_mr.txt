@@ -1,0 +1,108 @@
+=========================================
+Molecular replacement with the Phaser GUI
+=========================================
+
+Overview
+--------
+
+`MRage <MRage.htm>`_ presents a user-friendly and
+automated frontend to Phaser, especially difficult cases may require finer
+control over parameters.  The Phaser-MR GUI exposes all options available in
+the standalone command-line Phaser software, and allows use of additional
+modes besides MR_AUTO.  It can, for instance, be used to search for individual
+components one at a time with modified parameters, or run each stage of the
+search (rotation, translation, packing, phasing+refinement) separately.
+
+This document only covers configuration of the Phaser GUI; for a detailed
+explanation of the various terms and search procedures referenced here as well
+as interpretation of results, consult the `overview of molecular replacement
+in PHENIX <mr_overview.htm>`_ (especially the discussion of "ensembles" and
+composition), the `Phaser documentation <phaser.htm>`_, or the
+`Phaser WIKI <http://www.phaser.cimr.cam.ac.uk/index.php/Phaser_Crystallographic_Software>`_.  Some common user questions are discussed at the end of this
+section, and in the MR overview page.  New users looking for a step-by-step
+introduction should read the `Phaser-MR tutorial <tutorial_mr.htm>`_.
+
+Input files and mandatory parameters
+------------------------------------
+
+The input section is similar to that of MRage, with separate sections for
+reflection data, search ensembles, and scattering information.  Unlike the
+command-line
+version of Phaser, the experimental data may be any file format, and both
+intensities and amplitudes (with or without anomalous data) are allowed.
+The default mode is "Automated molecular replacement" (MR_AUTO); some of the
+other modes require only a subset of the parameters displayed.
+
+.. image:: ../images/phaser_mr_main.png
+
+All modes require a description of the search ensembles, either
+as PDB files (singly, or superimposed as an ensemble), or map coefficients in
+MTZ format (e.g. for phasing using a low-resolution EM map).  Adding an
+ensemble does not automatically include it in the search; you may, for
+instance, supply several alternate ensembles for a chain, and instruct Phaser
+to try each in turn (see below).
+
+You must also define the composition of the asymmetric unit (ASU); this is
+usually done by supplying information about the sequence (one chain at a time),
+mass, or
+type and number of residues.  Alternately, you may give the fractional
+composition of each search ensemble, if known.  It is also possible to
+additionally specify heavy atoms that contribute to scattering, but this is
+rarely necessary.  Note that the composition data does not necessarily have
+a 1:1 correspondence with the search ensembles (see FAQ list below for
+details).  Even if you are only searching for a single
+ensemble out of several (e.g. the protein in a protein-DNA complex), you
+must still supply the expected composition of the entire crystal.
+
+Finally, the "Search procedure" tab defines the steps in the MR search,
+selected from each input ensemble.  Enabling more than one ensemble per
+search will result in the single best solution being used.  You do not need
+to search for all ensembles at once, as described below.
+
+.. image:: ../images/phaser_mr_search.png
+
+Additional parameters
+---------------------
+
+The "Output" button at the top of the window controls basic behavior such as
+the resulting file names and verbosity.  All other parameters are set by
+clicking the "Other settings" button, which will open a large dialog window
+with assorted controls.  (Like most such windows in the Phenix GUI, only
+a subset of basic controls may be displayed at first, but this can be changed
+by selecting options in the "User level" menu at the bottom of the window.)
+The available parameters will be slightly different depending on which mode
+you have selected.
+
+.. image:: ../images/phaser_keywords.png
+
+.. _use-solution:
+
+Re-using previous results
+-------------------------
+
+Phaser can be instructed to start from a previous partial solution; this does
+not use a partial PDB file, but rather the saved results of a previous run.
+For example, a two-part MR solution may be obtained by running in MR_AUTO
+mode to place one ensemble, then modifying the parameters, selecting the
+previous run as the partial solution, and searching for the second ensemble.
+To do this, select the result which you want to use as input from the menu
+labeled "Use partial solution from previous job" (all previous Phaser jobs for
+the current project will be listed in the menu).
+
+You may also run each mode separately, e.g. the fast rotation function
+followed by the fast translation function using the previous result, and so
+on.  There are some restrictions on which modes may use which results, thus
+you may not follow a fast rotation function with packing analysis.
+
+Frequently Asked Questions
+--------------------------
+
+These are now covered on a `separate section <faqs/mr.htm>`_.
+
+Reference
+---------
+
+  - McCoy AJ, Grosse-Kunstleve RW, Adams PD, Winn Md, Storoni LC, Read RJ.
+    *Phaser crystallographic software.*
+    `J. Appl. Cryst. (2007) 40:658-674.
+    <http://www.ncbi.nlm.nih.gov/pubmed/19461840>`_

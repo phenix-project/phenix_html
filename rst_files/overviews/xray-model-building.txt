@@ -1,0 +1,64 @@
+Model Building
+==============
+
+**Why**
+
+The main goal of a crystallographic experiment is to arrive at an
+atomic interpretation of the electron density in the crystal. This
+typically requires building an atomic model by fitting to maps obtained
+from `experimental phasing <xray-experimental-phasing.htm>`__ or
+`molecular replacement <xray-molecular-replacement.htm>`__. For many
+cases it is possible to use automated methods for building models, for
+both proteins and nucleic acids. The accuracy and completeness of model
+building is a function of the quality of the starting electron density
+map, and less critically the resolution of the data. At low resolution
+(3.0Å or worse) partial models are usually build, requiring manual
+completion.
+
+**How**
+
+There are a number of programs in Phenix to aid in automated model
+building, the main one being phenix.autobuild. The process of model
+building interates phase improvement using density modification methods
+with automated map interpretation to build models, and model refinement.
+This minimally requires an experimental density map, experimental
+diffraction data, and the sequence of the molecule(s) in the crystal.
+The output will be a PDB file with the automatically built model and map
+coefficients for the best electron density map created during the
+process of model building.
+
+**How to use the phenix.autobuild GUI:** `Click
+here <../reference/autobuild_gui.htm>`__
+
+**Common issues**
+
+-  `Frequently asked questions about model
+   building <../faqs/model_building.htm>`__
+
+**Related programs**
+
+-  `phenix.find\_helices\_strands <../reference/find_helices_strands.htm>`__:This
+   program can be used to very rapidly locate protein secondary
+   structure elements in an electron density map. This can be used even
+   at low resolution (4Å or worse). This is extremely useful for quickly
+   confirming that a map contains macromolecular features, or for
+   interpreting low resolution maps. Optionally, the amino acid sequence
+   can be provided and residues will be fitted where density permits.
+-  `phenix.fit\_loops <../reference/fit_loops.htm>`__:This program can
+   fit loops into protein structures given the current model, the
+   sequence and an electron density map. Model building procedures are
+   sometimes unable to fit models to poor density in loop regions,
+   especially in the initial stages of map interpretation. As the model
+   becomes more complete and maps improve the weaker density in loops
+   regions may become clearer, and thus can be fit using
+   phenix.fit\_loops.
+-  `phenix.erraser <../reference/erraser.htm>`__:This program uses
+   ERRASER (Enumerative Real-space Refinment ASsisted by
+   Electron-density under Rosetta) to rebuild RNA structures by
+   combining Rosetta and Phenix. By supplementing the Rosetta RNA
+   scoring function with electron-density restraint, ERRASER can
+   confidently reduce the errors in RNA crystallographic models while
+   retaining a good fit to the diffraction data.
+
+`Phenix reference manual for
+phenix.autobuild <../reference/autobuild.htm>`__

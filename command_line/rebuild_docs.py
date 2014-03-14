@@ -118,9 +118,9 @@ def run (args=(), out=None, log=None) :
   import create_refinement_txt
   import create_phenix_maps
   import create_model_vs_data_txt
+  os.chdir(html_dir)
   top_dir = os.path.dirname(html_dir)
   docs_dir = os.path.join(top_dir, "doc")
-  os.chdir(html_dir)
   print >> out, "Building PHENIX documentation in %s" % html_dir
   print >> out, "The complete documentation will be in:"
   print >> out, "  %s" % docs_dir
@@ -129,6 +129,7 @@ def run (args=(), out=None, log=None) :
   create_refinement_txt.run()
   create_phenix_maps.run()
   create_model_vs_data_txt.run()
+  os.chdir(rst_dir)
   for module_name, rst_file in create_rst_from_modules :
     print >> out, "    %s" % rst_file
     legend = import_python_object(
@@ -136,7 +137,7 @@ def run (args=(), out=None, log=None) :
       error_prefix="",
       target_must_be="",
       where_str="").object
-    open(op.join(rst_dir, rst_file), "w").write(legend)
+    open(op.join(rst_dir, "reference", rst_file), "w").write(legend)
   print >> out, "  building HTML files from restructured text files"
   if (not params.force) :
     print >> out, \
@@ -198,7 +199,6 @@ def run (args=(), out=None, log=None) :
                   os.path.join(docs_dir, "icons"))
   shutil.copytree(os.path.join(html_dir, "images"),
                   os.path.join(docs_dir, "images"))
-  shutil.copy(op.join(html_dir, "phenix_documentation.html"), docs_dir)
   for dirname, dirnames, filenames in os.walk(tmp_dir) :
     base_dir = os.path.basename(dirname)
     for file_name in filenames :
@@ -212,6 +212,7 @@ def run (args=(), out=None, log=None) :
           if (not op.isdir(dest_path)) :
             os.makedirs(dest_path)
         shutil.copy(file_path, dest_path)
+  shutil.copy(op.join(html_dir, "phenix_documentation.html"), docs_dir)
   print >> out, "  making symlinks in subdirectories"
   for dirname, dirnames, filenames in os.walk(rst_dir) :
     for dir_name in dirnames :
@@ -232,13 +233,16 @@ def run (args=(), out=None, log=None) :
     version = "unknown (built %s)" % time.strftime("%b %d %Y", time.localtime())
   else :
     version = "%s-%s" % (phenix_version, release_tag)
-  index_in = open("phenix_documentation.html").readlines()
-  index_out = open("phenix_documentation.html", "w")
-  for line in index_in :
-    if ("INSTALLED_VERSION" in line) :
-      print >> index_out, re.sub("INSTALLED_VERSION", version, line)
-    else :
-      print >> index_out, line
+  def set_installed_version (file_name) :
+    html_in = open(file_name).readlines()
+    html_out = open(file_name, "w")
+    for line in html_in :
+      if ("INSTALLED_VERSION" in line) :
+        print >> html_out, re.sub("INSTALLED_VERSION", version, line)
+      else :
+        print >> html_out, line
+  set_installed_version("phenix_documentation.html")
+  set_installed_version(op.join("reference", "index.htm"))
   if (sys.platform == "win32") :
     shutil.copy("phenix_documentation.html", "index.html")
   else :

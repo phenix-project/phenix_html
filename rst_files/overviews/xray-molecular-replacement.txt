@@ -1,0 +1,78 @@
+Molecular Replacement
+=====================
+
+**Why**
+
+One of the biggest problems in crystallography is the phase problem,
+hence the use of experimental phasing. An alternative approach, which is
+increasingly more popular, is the use of known structures to solve the
+phase problem. This approach is called molecular replacement - a model,
+very similar in structure to the one crystallized, is computationally
+placed in the crystallographic unit cell. From this model, phases can be
+calculated and used to start the process of interpreting the electron
+density map.
+
+**How**
+
+In Phenix the primary program for performing molecular replacement is
+Phaser. This requires experimental diffraction data, an atomic model(s),
+the sequence of the molecule in the crystal and typically some estimate
+of the number of molecules in the crystal. Phaser uses maximum
+likelihood algorithms to determine the rotation of the model(s) with
+respect to the unit cell, and then the translation of the rotated
+model(s) within the unit cell. The output of this process, if
+successful, is a PDB file containing the placed model(s) and an MTZ file
+containing coefficients for the electron density made using the places
+model(s) and the observed experimental amplitudes. For an introduction
+to molecular replacement in Phenix, `click
+here <../reference/mr_overview.htm>`__.
+
+**How to use the Phaser GUI in Phenix:** `Click
+here <../reference/phaser_mr.htm>`__
+
+**Common issues**
+
+-  No solutions were found even with a good search model: There are
+   multiple causes, but one not uncommon reason is that a multiple
+   domain protein has undergone a conformational change. In this case
+   the molecular should be divided into the individual domains and the
+   molecular replacement performed with each domain as a separate search
+   molecule. An alternative cause, thankfully less common, is that the
+   crystallized molecule is not the intended one. For this reason it is
+   always prudent to use the "Search PDB Symmetry" tool in the Phenix
+   GUI to check cell dimensions and space group against the PDB.
+-  `Frequently asked questions about molecular
+   replacement <../faqs/faqs_mr.htm>`__
+
+**Related programs**
+
+-  `phenix.MRage <../reference/MRage.htm>`__:This program uses Phaser to
+   perform highly automated molecular replacement. In its simplest form
+   it can take experimental diffraction data and a sequence to solve a
+   molecular replacement problem.
+-  `phenix.sculptor <../reference/sculptor.htm>`__:This program can be
+   used to prepare models for molecular replacement, by trimming loops
+   where there are expected to be insertions of deletions based on
+   sequence alignment. It can also trim side chains and modify other
+   properties of the model such as atomic displacement parameters.
+-  `phenix.ensembler <../reference/ensembler.htm>`__:This program can be
+   used to prepare ensembles for molecular replacement. An ensemble is a
+   set of structurally related models that have been superimposed with
+   respect to each other, typically using a conserved structural core.
+   Phenix.ensembler automates the process of superimposing models.
+-  `phenix.morph\_model <../reference/morph_model.htm>`__:This program
+   can be used to improve an initial model after molecular replacement
+   by locally moving the structure to better fit the electron density
+   map. This is especially powerful in those cases where the molecular
+   replacement solution is structurally too different to provide phases
+   for map interpretation or automated model building.
+-  `phenix.mr\_rosetta <../reference/mr_rosetta.htm>`__:This program can
+   be used to improve an initial model after molecular replacement by
+   using the Rosetta program to modify the model such that it moves
+   closer to the true structure, while also improving the fit to
+   electron density map. This is especially powerful in those cases
+   where the molecular replacement solution is structurally too
+   different to provide phases for map interpretation or automated model
+   building.
+
+`Phenix reference manual for Phaser. <../reference/phaser.htm>`__

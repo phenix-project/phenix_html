@@ -1,11 +1,14 @@
 import libtbx.load_env
+import os.path as op
 import sys, os
 
-structure_refinement_raw = libtbx.env.find_in_repositories(
-  relative_path="phenix_html/rst_files/refinement.pre",
-  test=os.path.isfile)
-
-phenix_refine_files = "phenix_html/phenix_refine_files/"
+html_dir = libtbx.env.find_in_repositories(relative_path="phenix_html")
+structure_refinement_raw = op.join(html_dir, "rst_files", "reference",
+  "refinement.pre")
+dest_path = op.join(html_dir, "rst_files", "reference",
+  "refinement.txt")
+assert op.isfile(structure_refinement_raw)
+phenix_refine_files = op.join(html_dir, "phenix_refine_files/")
 
 def get_params_file(file_name):
   result = libtbx.env.find_in_repositories(
@@ -30,7 +33,7 @@ def find_indentation(line):
 def run():
   if(structure_refinement_raw is None):
     print "No refinement.pre file found."
-  ofn = open("refinement.txt","w")
+  ofn = open(dest_path, "w")
   for line in open(structure_refinement_raw).read().splitlines():
     if(line.count("#include_params")):
       start_position = find_indentation(line)

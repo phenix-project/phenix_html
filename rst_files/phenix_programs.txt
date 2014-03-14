@@ -1,0 +1,177 @@
+===========================
+Overview of Phenix Programs
+===========================
+
+General
+-------
+- phenix: Run Phenix graphical user interface
+- phenix.about: Summarize contributors, packages, and info for phenix
+- phenix.acknowledgments: Summarize third-party components of Phenix
+- phenix.commands: List command line Phenix methods
+- phenix.doc: Phenix documentation
+- phenix.help: Load Phenix documentation (same as phenix.doc)
+- phenix.version: Print version of Phenix
+
+Assessing data quality
+----------------------
+- phenix.cc_star: Calculate cc_star values for correlation of data vs resolution
+- phenix.compare_datasets: Similar to phenix.data_viewer, as side-by-side view
+- phenix.data_viewer: View pseudo-precession planes through a dataset
+- phenix.emma: Compare heavy-atom solutions
+- phenix.explore_metric_symmetry: Compare unit cells
+- phenix.merging_statistics: Calculate statistics on unmerged data
+- phenix.xtriage: Analyze data files for quality and unusual conditions
+
+Experimental Phasing
+--------------------
+- phenix.autosol: Automated structure solution by MR/MAD/SAD
+- phenix.find_ncs: Find NCS in a model, map or heavy-atom sites
+- phenix.hyss: Identify heavy-atom sites from anomalous dataset
+- phenix.multi_crystal_average: Multi-crystal averaging
+- phenix.ncs_and_number_of_ha: Guess solvent content and number of heavy-atom sites
+- phenix.ncs_average: NCS average (no density modification) and write map file
+- phenix.phase_and_build: Rapid density modification and model-building
+
+Molecular Replacement
+---------------------
+- phenix.adjust_robetta_resid: Apply sequence offset to a fragments file
+- phenix.automr: Automated MR and model-building
+- phenix.cut_out_density: Create MTZ coeffs with density cut out from a map
+- phenix.ensembler: Superpose PDB files to create ensemble for MR
+- phenix.find_alt_orig_sym_mate: Superimpose structures allowing origin shifts (see also map_to_object)
+- phenix.morph_model: Morph a model to match a map
+- phenix.mr_model_preparation: Download and edit PDB files for MR
+- phenix.mr_rescoring: Model scoring for mr_rosetta
+- phenix.mr_rosetta: MR and model improvement with phaser/autobuild/Rosetta
+- phenix.mr_rosetta_rebuild: Rebuild model with Rosetta
+- phenix.phaser: Run PHASER
+- phenix.sculptor: Improve molecular replacment models using sequence alignment and structural infomation
+
+Model Building
+--------------
+- phenix.assign_sequence: Assign sequence to a chain using a map and seq file
+- phenix.autobuild: Iterative model-building density modification and refinement
+- phenix.build_one_model: Build one model using a map and data file
+- phenix.build_rna_helices: Build RNA helices into a map
+- phenix.combine_models: Take best parts of two models
+- phenix.erraser: Run ERRASER
+- phenix.find_helices_strands: Build helices and strands into a map
+- phenix.fit_loops: Fit missing loops in a model
+
+Structure Refinement
+--------------------
+- phenix.den_refine: Carry out DEN refinement of a model
+- phenix.ensemble_refinement: run ensemble refinement
+- phenix.find_tls_groups: Automatic identification of appropriate TLS groups in model
+- phenix.ready_set: Set up files for refinement, including addition of hydrogens, generation of ligand restraints, and metal coordination restraints
+- phenix.real_space_refine: Extensive real-space refinement
+- phenix.refine: Carry out refinement of a model
+- phenix.secondary_structure_restraints: generate pseudo H-bond restraints for alpha helices, beta sheets, and nucleic acid base pairs
+
+Validation
+----------
+- phenix.b_factor_statistics: Display summary of atomic displacement parameters for a model (or atom selection)
+- phenix.cablam_training: C-alpha-based protein secondary structure exploration
+- phenix.cablam_validate: C-alpha-based protein secondary structure exploration
+- phenix.cbetadev: Validate protein sidechain C-beta geometry
+- phenix.clashscore: Evaluate model based on all-atom contacts
+- phenix.kinemage: Generates a multi-criterion validation kinemage file, for viewing in KiNG
+- phenix.king: Run KiNG molecular graphics
+- phenix.model_vs_data: Evaluate model using experimental data
+- phenix.model_vs_sequence: Detect residue mismatches in a PDB file
+- phenix.molprobity: Run molprobity
+- phenix.probe: Run PROBE, for analysis of all-atom contacts
+- phenix.r_factor_statistics: Distribution of Rfree, Rwork and Rfree-Rwork for PDB models at similar resolution
+- phenix.ramalyze: Validate protein backbone Ramachandran dihedral angles
+- phenix.reduce: Run REDUCE, software for addition or trimming of hydrogens
+- phenix.rna_validate: Validate RNA sugar puckers, backbone bond and angle geometry, and backbone suite conformations
+- phenix.rotalyze: Validate protein sidechain rotamers
+
+Ligands
+-------
+- phenix.elbow: Ligand builder (CIF from PDB, SMILES etc)
+- phenix.find_all_ligands: Find ligands from a list in a map
+- phenix.ligand_identification: Identify ligands from a map
+- phenix.ligand_pipeline: Automated molecular replacement, refinement, and ligand fitting for high-throughput crystallography
+- phenix.ligandfit: Fit ligands into a map
+- phenix.metal_coordination: Generate metal coordination bond and angle restraints
+- phenix.reel: Graphical ligand restraints editor
+
+Deposition
+----------
+- mmtbx.prepare_pdb_deposit: produce mmCIF files for deposition
+
+Reflection data tools
+---------------------
+- phenix.cif_as_mtz: Convert CIF to MTZ
+- phenix.cif_as_pdb: Convert CIF to PDB format
+- phenix.cns_as_mtz: Convert CNS to MTZ
+- phenix.csv_as_mtz: Convert csv reflection files to MTZ
+- phenix.fest: Experimental Delta F and FA estimation
+- phenix.fmodel: Calculate structure factors from model
+- phenix.import_and_add_free: Import a data file and add Free R set
+- phenix.mtz.dump: Dump MTZ file contents
+- phenix.mtz_as_cif: Convert mtz to CIF format
+- phenix.reciprocal_space_arrays: Create MTZ file with Fmodel,Fcalc,Fbulk,Fmask,FOM,HL, resolution and more
+- phenix.reflection_file_converter: Basic conversion between reflection file formats (command-line)
+- phenix.reflection_statistics: Evaluation and comparison of reflection data (e.g. anomalous difference correlations)
+- phenix.reindex: Reindex an MTZ file
+- phenix.remove_aniso: Remove anisotropy from columns of an MTZ dataset
+- phenix.xmanip: Experimental tool for manipulation of reflection data
+
+Map tools
+---------
+- phenix.average_map_coeffs: Average a set of map coefficients from several files
+- phenix.composite_omit_map: Generate composite omit map, with our without refinement and simulated annealing
+- phenix.density_outside_model: Remove density near a model from a map
+- phenix.get_cc_mtz_mtz: Offset maps using allowed origin shifts and get correlation
+- phenix.guess_molecular_centers: Guess molecular centers from local RMS density
+- phenix.map_box: Simple cut out map around a PDB file
+- phenix.map_to_model_histogram: Compute averaged radial density distribution
+- phenix.map_to_object: Superimpose using SG symmetry only (see also find_alt_orig_sym_mate)
+- phenix.map_to_structure_factors: Calculate structure factors and HL coefficients from ccp4 map file and save in MTZ
+- phenix.map_value_at_point: Get map value at given coordinates
+- phenix.maps: Create maps from PDB and MTZ files
+- phenix.maximum_entropy_map: Compute maximum entropy map from map coefficients
+- phenix.remove_free_from_map: Set all map coeffs of free reflections to zero
+- phenix.superpose_maps: Superimpose PDB files and transform map to match
+
+Model tools
+-----------
+- phenix.apply_ncs: Apply NCS (.ncs_spec file) to a chain to create molecule
+- phenix.dynamics: Shake up structure with simple molecular dynamics
+- phenix.form_factor_query: f' and f'' table lookup given element and wavelength
+- phenix.get_cc_mtz_pdb: Offset PDB to match map using allowed origin shifts and get residue correlation
+- phenix.get_ligand_pdb: Create PDB file for a 3-letter ligand in the PDB
+- phenix.ksdssp: Identify secondary structure in a model
+- phenix.model_model_distances: Distance between two PDB files: per atom, residue, chain, model and overall
+- phenix.muscle: sequence alignment tool
+- phenix.pdb.hierarchy: Quick summary of PDB file content
+- phenix.pdb_as_cif: Convert PDB format to CIF
+- phenix.pdb_atom_selection: Extract selected atoms from PDB file (useful for experimenting with atom selections)
+- phenix.pdb_editor: Edit PDB files graphically
+- phenix.pdb_interpretation: Read PDB file and build restraints for refinement (useful for trouble-shooting)
+- phenix.pdbtools: Manipulate PDB files
+- phenix.perigee: Interaction finder
+- phenix.print_sequence: Print sequence from PDB file
+- phenix.pulchra: PULCHRA conversion from CA to full chain
+- phenix.simple_ncs_from_pdb: NCS from a PDB file (use instead phenix.find_ncs)
+- phenix.superpose_ligands: Superimpose two ligands
+- phenix.superpose_pdbs: Superimpose PDB files using aligned sequences
+- phenix.trim_pdb: Remove hydrogen atoms from a PDB file
+
+Miscellaneous
+-------------
+- phenix.default_gui_settings: Print out base PHENIX GUI configuration (mostly useful for site admins)
+- phenix.get_latest_version: Download most recent installer replacing current installation
+- phenix.grow_density: Density modification to enhance chain ends
+- phenix.pymol: Pymol
+- phenix.python: Run phenix-cognizant version of python
+- phenix.resolve: Run resolve
+- phenix.resolve_pattern: run resolve_pattern
+- phenix.run_example: Run an example from the phenix_examples directory
+- phenix.show_build_path: Show path to Phenix build directory
+- phenix.show_dist_paths: Show paths to all components of Phenix
+- phenix.solve: Run SOLVE
+- phenix.start_coot: Coot molecular graphics
+- phenix.where_mon_lib_list_cif: Show location of monomer library used by Phenix

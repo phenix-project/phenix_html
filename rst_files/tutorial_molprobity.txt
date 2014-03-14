@@ -15,7 +15,7 @@ Setup
 
 
 The example used for this tutorial is called Protein Kinase A (3dnd). To get the requisite files open the GUI and set up the tutorial, as
-`described here <examples.htm>`_, called **Protein Kinase A (validation)**. This should setup the main/GUI window. On the right-hand side click **Validation** and then select **Comprehensive Validation**. 
+`described here <examples.htm>`_, called **Protein Kinase A (validation)**. This should setup the main/GUI window. On the right-hand side click **Validation** and then select **Comprehensive Validation**.
 
   .. image:: images/tutorial_molprobity_setup.png
 
@@ -44,7 +44,7 @@ Find the list of rotamer outliers, and click on Leu 27 from the A chain, which w
 
   .. image:: images/tutorial_MP_coot.png
 
-Return to the Validation GUI window, and navigate to the list of C-beta position outliers. Select "Ile 163" from the A chain. Do you recall this sidechain from the bond-length outlier list? Misfit sidechains will often have multiple diagnostic indicators of a problem, which is useful in easily identifying the worst offenders. Notice that the CD1 atom is so far away from the CG1 atom that Coot does not draw the bond vector. Also notice the blob of positive density near to the sidechain, indicating that it may not be in an optimal position. Correcting misfit sidechains such as these can be tricky, as many rounds of refinement have caused distortions in the model to accommodate the misfit. 
+Return to the Validation GUI window, and navigate to the list of C-beta position outliers. Select "Ile 163" from the A chain. Do you recall this sidechain from the bond-length outlier list? Misfit sidechains will often have multiple diagnostic indicators of a problem, which is useful in easily identifying the worst offenders. Notice that the CD1 atom is so far away from the CG1 atom that Coot does not draw the bond vector. Also notice the blob of positive density near to the sidechain, indicating that it may not be in an optimal position. Correcting misfit sidechains such as these can be tricky, as many rounds of refinement have caused distortions in the model to accommodate the misfit.
 
 One approach that works well to fix this type of problem is to first mutate the offending residue to an alanine, and then run real-space refinement. These steps allow the C-beta position to be properly refined, without being trapped by the other misfit sidechain atoms (similar to the backrub in KiNG). To do this, select "Simple Mutate", click on an atom in Ile A 163, and then select Ala from the pop-up window. Next, select "Real Space Refine Zone", and click on 2 atoms to specify a range that runs at least 2 residues on either side of the Ile A 163 (or pick Ile 163 and hit the "a" key for autozone). Notice the subtle, but distinct movement of the C-beta position. Accept the change. Next, we'll mutate the residue back to Ile. To do this, select "Mutate and Auto Fit", click on an atom in Ile A 163, and select Ile from the pop-up menu. Notice that the newly fit sidechain is now rotated ~180 degrees, has a much better density fit for the CD1 atom, and has now placed the CG2 atom in the positive density peak. Upon further refinement, the position of this Ile will further improve, as the neighboring atoms are able to recover from the strain caused by the initial outlier.
 

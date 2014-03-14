@@ -1,0 +1,389 @@
+Automated ligand fitting with LigandFit
+=======================================
+
+**Author(s)**
+-------------
+
+-  LigandFit Wizard: Tom Terwilliger
+-  PHENIX GUI and PDS Server: Nigel W. Moriarty
+-  RESOLVE: Tom Terwilliger
+
+Purpose
+-------
+
+Purpose of the LigandFit Wizard
+-------------------------------
+
+The LigandFit Wizard carries out fitting of flexible ligands to electron
+density maps.
+
+Usage
+-----
+
+The LigandFit Wizard can be run from the PHENIX GUI, from the
+command-line, and from parameters files. All three versions are
+identical except in the way that they take commands from the user. See
+`Using the PHENIX Wizards <running-wizards.htm>`__ for details of how to
+run a Wizard. The command-line version will be described here.
+
+How the LigandFit Wizard works
+------------------------------
+
+The LigandFit wizard provides a command-line and graphical user
+interface allowing the user to identify a datafile containing
+crystallographic structure factor information, an optional PDB file with
+a partial model of the structure without the ligand, and a PDB file
+containing the ligand to be fit (in an allowed but arbitrary
+conformation).
+
+The wizard checks the data files for consistency and then calls RESOLVE
+to carry out the fitting of the ligand into the electron-density map.
+The best map to use is usually a 2Fo-Fc map from phenix.refine.
+You can also have LigandFit  calculate a difference map,
+with F=FP-FC. It can also be
+an Fobs map (calulated from FP with phases PHIC from the input partial
+model), or an arbitrary map, calculated with FP PHI and optional FOM. If you
+supply an input partial model, then the region occupied by the partial
+model is flattened in the map used to fit the ligand, so that the ligand
+will normally not get placed in this region.
+
+The ligand fitting is done by RESOLVE in a three-stage process. First,
+the largest contiguous region of density in the map not already occupied
+by the model is identified. The ligand will be placed in this density.
+(If desired, the location of the ligand can instead be defined by the
+user as near a certain residue or near specified coordinates. ) Next,
+many possible placements of the largest rigid sub-fragments of the
+ligand are found within this region of high density. Third, each of
+these placements is taken as a starting point for fitting the remainder
+of the ligand. All these ligand fits are scored based on the fit to the
+density, and the best-fitting placement is written out.
+
+The output of the wizard consists of a fitted ligand in PDB format and a
+summary of the quality of the fit. Multiple copies of a ligand can be
+fit to a single map in an automated fashion using the LigandFit wizard
+as well.
+
+How to run the LigandFit Wizard
+-------------------------------
+
+Running the LigandFit Wizard is easy. For example, from the command-line
+you can type:
+
+::
+
+    phenix.ligandfit data=datafile.mtz model=partial_model.pdb ligand=ligand.pdb
+
+The LigandFit Wizard will carry out ligand fitting of the ligand in
+ligand.pdb based on the structure factor amplitudes in datafile.mtz,
+calculating phases based on partial-model.pdb. All rotatable bonds will
+be identified and allowed to take stereochemically reasonable
+orientations.
+
+What the LigandFit wizard needs to run
+--------------------------------------
+
+The ligandfit wizard needs:
+
+-   a datafile (w1.sca or data=w1.sca); this can be any format
+
+-   a PDB file with your model without ligand (model=partial.pdb; optional if your datafile contains map coefficients)
+
+-   a file with information about your ligand (ligand=side.pdb), or a 3-letter code for your ligand (ligand=ATP)
+
+The ligand file can be a PDB file with 1 stereochemically acceptable
+conformation of your ligand. It can alternatively be a file containing a
+SMILES string, in which case the starting ligand conformation will be
+generated with the PHENIX elbow routine. It can also be a 3-letter code
+that specifies a ligand in the Chemical Components Dictionary of the
+PDB, in which case the ligand is taken from that dictionary with
+idealized geometry.
+
+The command\_line ligandfit interpreter will guess which file is your
+data file but you have to tell it which file is the model and which is
+the ligand.
+
+Specifying which columns of data to use from input data files
+-------------------------------------------------------------
+
+If one or more of your data files has column names that the Wizard
+cannot identify automatically, you can specify them yourself. You will
+need to provide one column "name" for each expected column of data, with
+"None" for anything that is missing.
+
+For example, if your data file data.mtz has columns FP SIGFP then you
+might specify
+
+::
+
+    data=data.mtz
+    input_labels="FP SIGFP"
+
+You can find out all the possible label strings in a data file that you
+might use by typing:
+
+::
+
+    phenix.autosol display_labels=data.mtz  # display all labels for data.mtz
+
+You can specify many more parameters as well. See the list of keywords,
+defaults and descriptions at the end of this page and also general
+information about running Wizards at `Using the PHENIX
+Wizards <running-wizards.htm>`__ for how to do this. Some of the most
+common parameters are:
+
+::
+
+    data=w1.sca       # data file
+    partial_model=coords.pdb  # starting model without ligand
+    ligand=ligand.pdb # any stereochemically allowed conformation of your ligand
+    resolution=3     # dmin of 3 A
+    quick=False      # specify if you want to look hard for a good conformation
+    ligand_cc_min=0.75   # quit if the CC of ligand to map is 0.75 or better
+    number_of_ligands=3  # find 3 copies of the ligand
+    n_group_search=3     # try 3 different fragments of the ligand in initial search
+    ligand_start=side.pdb # build ligand superimposing on side.pdb
+
+*Output files from LigandFit*
+-----------------------------
+
+When you run LigandFit the output files will be in a subdirectory with
+your run number:
+
+::
+
+    LigandFit_run_1_/   # subdirectory with results
+
+-  A summary file listing the results of the run and the other files
+   produced:
+
+::
+
+    LigandFit_summary.dat  # overall summary
+
+-  A file that lists all parameters and knowledge accumulated by the
+   Wizard during the run (some parts are binary and are not printed)
+
+::
+
+    LigandFit_Facts.dat   # all Facts about the run
+
+-  A warnings file listing any warnings about the run
+
+::
+
+    LigandFit_warnings.dat  # any warnings
+
+-  A PDB file with the fitted ligand (in this case the first copy of
+   ligand number 1):
+
+::
+
+    ligand_fit_1_1.pdb
+
+-  A log file with the fitting of the ligand:
+
+::
+
+    ligand_1_1.log
+
+-  A log file with the fit of the ligand to the map:
+
+::
+
+    ligand_cc_1_1.log
+
+-  Map coefficients for the map used for fitting:
+
+::
+
+    resolve_map.mtz
+
+Running from a parameters file
+------------------------------
+
+You can run phenix.ligandfit from a parameters file. This is often
+convenient because you can generate a default one with:
+
+::
+
+    phenix.ligandfit --show_defaults > my_ligandfit.eff
+
+and then you can just edit this file to match your needs and run it
+with:
+
+::
+
+    phenix.ligandfit  my_ligandfit.eff
+
+Examples
+--------
+
+Sample command\_line inputs
+---------------------------
+
+-  Standard run of ligandfit (generate map from model and data file)
+
+::
+
+    phenix.ligandfit w1.sca model=partial.pdb ligand=ATP \
+     lig_map_type=fo-fc_difference_map
+
+-  Build into a map from pre-determined coefficients
+
+::
+
+    phenix.ligandfit data=perfect.mtz \
+     lig_map_type=pre_calculated_map_coeffs \
+       model=partial.pdb ligand=NAD
+
+-  Quick run of ligandfit
+
+::
+
+    phenix.ligandfit w1.sca model=partial.pdb ligand=ATP quick=True
+
+-  Run ligandfit using pre-calculated map coefficients from
+   phenix.refine
+
+If your refine a model with a command such as,
+
+::
+
+    phenix.refine data.mtz partial.pdb
+
+then you will end up with the refined model,
+
+::
+
+    partial_refine_001.pdb
+
+and a map coefficients file:
+
+::
+
+    partial_refine_001_map_coeffs.mtz
+
+You can then run ligandfit using the 2Fo-Fc map calculated from these
+map coefficients:
+
+::
+
+    phenix.ligandfit data=partial_refine_001_map_coeffs.mtz \
+     model=partial_refine_001.pdb ligand=NAD quick=True
+
+or if you want to specify the coefficients explicitly you can add the
+column labels:
+
+::
+
+    phenix.ligandfit data=partial_refine_001_map_coeffs.mtz  \
+    model=partial_refine_001.pdb ligand=GOL quick=True \
+    input_labels="2FOFCWT PH2FOFCWT"
+
+For a difference map from the same file you can say:
+
+::
+
+    phenix.ligandfit data=partial_refine_001_map_coeffs.mtz  \
+     model=partial_refine_001.pdb ligand=AMP quick=True \
+     input_labels="FOFCWT PHFOFCWT"
+
+-  Run ligandfit on a series of ligands specified in ligand\_list.dat
+
+::
+
+    phenix.ligandfit w1.sca model=partial.pdb \
+      ligand=ligand_list.dat file_or_file_list=file_with_list_of_files
+
+Note that you have to specify
+
+::
+
+    file_or_file_list=file_with_list_of_files
+
+or else the Wizard will try to interpret the contents of
+ligand\_list.dat as a SMILES string. Here the
+"file\_with\_list\_of\_files" is a flag, not something you substitute
+with an actual file name. You use it just as listed above.
+
+-  Place ligand near residue 94 of chain "A" from partial.pdb
+
+::
+
+    phenix.ligandfit w1.sca model=partial.pdb ligand=ADP \
+       ligand_near_chain="A" ligand_near_res=92
+
+-  Use start.pdb as a template for some of the atoms in the ligand;
+   build the remainder of the ligand, fixing the coordinates of the
+   corresponding atoms:
+
+::
+
+    phenix.ligandfit w1.sca model=partial.pdb ligand=GTP \
+       ligand_start=start.pdb
+
+NOTE: the file start.pdb must contain an entire rigid group of atoms (so
+that ligandfit can identify the position and orientation of at least one
+rigid part of the ligand.)
+
+-  Use NCS from the model and the first ligand fitted to guess the
+   positions of NCS-related ligands:
+
+::
+
+    phenix.ligandfit w1.sca model=partial.pdb ligand=GTP \
+       ligands_from_ncs=True
+
+R-free flags and test set
+-------------------------
+
+In Phenix the parameter test\_flag\_value sets the value of the test set
+that is to be free. Normally Phenix sets up test sets with values of 0
+and 1 with 1 as the free set. The CCP4 convention is values of 0 through
+19 with 0 as the free set. Either of these is recognized by default in
+Phenix and you do not need to do anything special. If you have any other
+convention (for example values of 0 to 19 and test set is 1) then you
+can specify this with test\_flag\_value.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems
+---------------------------------
+
+-  The ligand to be searched for must have at least 3 atoms.
+
+-  The partial-model file must not have any atoms (other than waters,
+   which are automatically removed) in the position where the ligand is
+   to be built. If this file contains atoms other than waters in the
+   position where the ligand is to be built, then you may wish to remove
+   them before building the ligand.
+
+-  If a ring in the ligand can have more than one conformation (e.g.,
+   chair or boat conformation) then you need to do separate runs for
+   each conformation of the ring (rings are taken as fixed units in
+   LigandFit).
+
+-  LigandFit ignores insertion codes, so if you specify a residue with
+   ligand\_near\_res, only the residue number is used.
+
+-  The size of the asymmetric unit in the SOLVE/RESOLVE portion of the
+   LigandFit wizard is limited by the memory in your computer and the
+   binaries used. The Wizard is supplied with regular-size ("", size=6),
+   giant ("\_giant", size=12), huge ("\_huge", size=18) and extra\_huge
+   ("\_extra\_huge", size=36). Larger-size versions can be obtained on
+   request.
+
+-  The LigandFit Wizard can take most settings of most space groups,
+   however it can only use the hexagonal setting of rhombohedral space
+   groups (eg., #146 R3:H or #155 R32:H), and it cannot use space groups
+   114-119 (not found in macromolecular crystallography) even in the
+   standard setting due to difficulties with the use of asuset in the
+   version of ccp4 libraries used in PHENIX for these settings and space
+   groups.
+
+Literature
+----------
+
+  - CITATION:ligand_id
+  - CITATION:ligand_fit

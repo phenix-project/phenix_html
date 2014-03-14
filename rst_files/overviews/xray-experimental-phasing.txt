@@ -1,0 +1,66 @@
+Experimental Phasing
+====================
+
+**Why**
+
+One of the biggest problems in crystallography is the phase problem.
+We measure amplitudes for structure factors, but cannot directly measure
+the phases. Unfortunately, these phases are necessary to generate the
+electron density of the molecules in the crystal. Experimental phasing
+solves the phase problem by using the differences in amplitudes from
+different diffraction experiments to determine the structure factor
+phases. In modern crystallography it is most common to use single or
+multiple anomalous diffraction experiments (SAD/MAD).
+
+**How**
+
+In Phenix the primary program for performing experimental phasing is
+phenix.autosol. This is a powerful tool that goes through the steps of
+anomalous substructure location, phasing, phase improvement, and initial
+model building. To run phenix.autosol you will need to provide
+diffraction data, typically one or more anomalous data sets, or a native
+data set plus one or more derivative data sets (if you are performing
+SIR/MIR phasing). You will also need to provide the sequence of your
+macromolecule, and information about the anomalous scatterers and/or
+heavy atoms. The results from phenix.autosol will include a PDB
+containing the anomalous scatterers, an MTZ file containing the
+experimentally determined phases, and the optimized phases from density
+modification, and, if the maps are of sufficient quality a PDB file with
+an atomic model.
+
+**How to use the phenix.autosol GUI:** `Click
+here <../reference/autosol_gui.htm>`__
+
+**Common issues**
+
+-  Anomalous substructure not determined: there can be several reasons
+   for this. Likely candidates are a lack of anomalous signal, or
+   incorrect space group assignment. Use phenix.xtriage to estimate the
+   resolution of the data for anomalous substructure determination. If
+   this is very low resolution it might not be possible to locate the
+   substructure (note that the experimental sigmas are used in this
+   calculation so it is important that these are well estimated). If
+   there is uncertainty about the space group it might be necessary to
+   try the alternatives.
+-  An interpretable model isn't built: the most likely reason is that
+   the electron density map is of insufficient quality to be
+   automatically interpreted.
+-  `Frequently asked questions about experimental
+   phasing <../faqs/experimental_phasing.htm>`__
+
+**Related programs**
+
+-  `phenix.hyss <../reference/hyss.htm>`__:This program is used by
+   phenix.autosol to locate the anomalous substructure or heavy atoms.
+   It is possible to run this program separately (for anomalous data
+   only) if you want to only find the substructure. In general it is
+   recommended to use phenix.autosol for this as it makes optimal use of
+   phenix.hyss to locate sites.
+-  `phenix.emma <../reference/emma.htm>`__:This program can be used to
+   compare different substructure solution, by superimposing sites
+   taking into account crystallographic symmetry, possible origin
+   shifts, and polar axes. This can be useful if comparing solutions
+   from different programs.
+
+`Phenix reference manual for
+phenix.autosol <../reference/autosol.htm>`__

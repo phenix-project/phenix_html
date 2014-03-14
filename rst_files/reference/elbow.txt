@@ -1,0 +1,551 @@
+==============================================================
+*electronic* Ligand Builder and Optimisation Workbench (eLBOW)
+==============================================================
+
+`More detailed website <../elbow/docs/index_image.html>`__
+
+Author
+======
+
+Nigel W. Moriarty
+
+Purpose
+=======
+
+Automate the generation of geometry restraint information for refinement
+of novel ligands and improved geometry restraint information for
+standard ligands. A protein crystal can contain more than just protein
+and other simple molecules that most refinement programs can interpret.
+An unusual molecule can be included in the refinement via eLBOW from a
+number of chemical inputs. The geometry can be optimised using various
+levels of chemical knowledge including a semi-empirical quantum
+mechanical method known as AM1.
+
+Input formats include
+
+-  SMILES string
+-  PDB (Protein Data Bank)
+-  MolFiles (V2000, V3000 and SDFiles)
+-  TRIPOS MOL2
+-  XYZ
+-  certain CIF files
+-  GAMESS input and output files
+
+Output formats include
+
+-  PDB (Protein Data Bank)
+-  CIF restraint file
+-  eLBOW contains a number of programs. All programs have been written
+   to allow command-line control and script access to the objects and
+   algorithm. The main program is run thus:
+
+::
+
+    phenix.elbow [options] input_file.ext
+
+or in a Python script
+
+::
+
+    from elbow.command_line import builder
+
+    molecule = builder.run("input_file.ext", **kwds)
+
+where the options are passed as a dictionary. The return object can be
+interrogated for information via the class methods. Output files from
+both techniques include a PDB file of the final geometry and a CIF file
+that contains the geometry restraint information for refinement. Other
+files are output as appropriate, such as edits and CIF files for linking
+the ligand to the protein. A final file contains the serialised data of
+the molecule in the Python pickle format.
+
+Examples
+========
+
+PDB input
+---------
+
+To run eLBOW on a PDB file (containing one molecule)
+
+::
+
+    phenix.elbow input_file.pdb
+
+To run eLBOW on a PDB file containing protein and ligands. This will
+only process the ligands that are unknown to phenix.refine.
+
+::
+
+    phenix.elbow input_file.pdb --do-all
+
+To run eLBOW on a PDB file specifying a residue
+
+::
+
+    phenix.elbow input_file.pdb --residue LIG
+
+To use the atom names from a PDB file
+
+::
+
+    phenix.elbow --smiles O --template input_file.pdb
+
+SMILES input
+------------
+
+To run eLBOW on a SMILES string
+
+::
+
+    phenix.elbow --smiles="CCO"
+
+or
+
+::
+
+    phenix.elbow --smiles=input_file.smi
+
+Other input
+-----------
+
+To run eLBOW on other supported input formats
+
+::
+
+    phenix.elbow input_file.ext
+
+Geometry optimisation
+---------------------
+
+eLBOW performs a simple force-field geometry optimisation by default,
+however an AM1 geometry optimisation can be performed as follows.
+
+::
+
+    phenix.elbow input_file.pdb --opt
+
+To start from a specific geometry for the optimisation
+
+::
+
+    phenix.elbow --initial_geometry input_file.pdb --opt
+
+To use a separately installed GAMESS and do a HF/3-21G geometry
+optimisation
+
+::
+
+    phenix.elbow input_file.pdb --gamess --basis="3-21G"
+
+To not optimise, but use the input geometry as the final geometry
+
+::
+
+    phenix.elbow --final_geometry input_file.pdb
+
+Hydrogen addition
+-----------------
+
+eLBOW automatically adds hydrogens to the input molecules if there are
+less than a quarter of the possible hydrogens. This can be controlled
+using
+
+::
+
+    phenix.elbow input_file.pdb --add-hydrogens=True
+
+A common requirement is to add hydrogens to a ligand but retain the
+geometry and position relative to a protein. To do so use
+
+::
+
+    phenix.elbow --final-geometry=input_file.pdb
+
+Output
+======
+
+To choice the base name of the output files
+
+::
+
+    phenix.elbow input_file.pdb --output="output"
+
+To change the three letter ID
+
+::
+
+    phenix.elbow input_file.pdb --id=NEW
+
+To change other attributes
+
+::
+
+    phenix.elbow input_file.pdb --pdb-assign "resSeq=3 b=100"
+
+Some of the attributes.
+
+-  Residue name : resname
+-  Chain ID : chain, chainid
+-  Residue sequence ID : resseq, resid
+-  Alternative location ID : altid, altloc
+-  Insert code : icode
+-  Occupancy : occ, occupancy
+-  Temperature factor : b, tempfactor
+-  Segment ID : segid, segID
+
+To output MOL2 format
+
+::
+
+    phenix.elbow input_file.pdb --tripos
+
+To output PDB Ligand output
+
+::
+
+    phenix.elbow input_file.pdb --pdb-ligand
+
+Advanced options
+================
+
+.. _ChiralOptions:
+
+Chiral
+------
+
+The options for chirality are "retain" (default), "both" and "enumerate". The
+default uses the chiral centres specified in the molecule input file or
+string as the guide for specifying the chirality in the restraints. The "both"
+will set all chiral centres in the input to "both". This means that each
+chiral centre can be either one or the other.
+
+The "enumerate" option will write a restraints (CIF) and geometry (PDB) file
+for each permutation of the chiral centres. The number of permutation is 2**n
+(n = number of chiral centres). The files are labeled using the
+`R/S notation <http://en.wikibooks.org/wiki/Organic_Chemistry/Chirality/R-S_notational_system>`__. Each file has a string listing the configuration of the
+chiral centres based on the input order, e.g. _RSR, _RSS. The unappended file
+is the input configuration.
+
+.. _CisTransOptions:
+
+Cis/Trans
+---------
+
+Cis/Trans moieties can occur centre on double bonds. SMILES can specify the
+exact configuration. Otherwise, eLBOW choices the lowest energy configuration.
+The "retain" choice does exactly that.
+
+The "enumerate" option will write a restraints (CIF) and geometry (PDB) file
+for each permutation of the cis/trans moeity. The number of permutation is 2**n
+(n = number of cis/trans moieties). The files are labeled using the
+`E/Z notation <http://en.wikibooks.org/wiki/Organic_Chemistry/Alkenes#EZ_Notation>`__. Each file has a string listing the configuration of the
+cis/trans moiety based on the input order, e.g. _EEZ, _ZEE. The unappended file
+is the input configuration.
+
+.. _PuckerOptions:
+
+Pucker
+------
+
+The pucker options are similar to the Chiral and Cis/Trans options. However,
+because it is a more complicated situation, the inputs are also complicated.
+Simiarly, the default is to use input and if not specified, the position of
+the groups on the ring are placed relative to the other groups on the ring
+atom randomly and in the axial (A) or equatorial (Q) position
+based on the simple force field optimisation.
+
+The "enumerate" option will write a restraints (CIF) and geometry (PDB) file
+for each permutation of the pucker group moeity.
+The number of permutation is 2**n
+(n = number of pucker group moieties). The files are labeled using the
+A/Q notation invented by the author.
+Each file has a string listing the configuration of the
+pucker group moiety based on the input order, e.g. _AAA, _QAA.
+The unappended file is the input configuration.
+
+The definition of the A and Q needs more clarification. Consider a ring in the
+chair configuration. At any atom in the ring, a group can be attached in the
+axial or equatorial position. Whether it is an "up equatorial" or
+"down equatorial" depends on the ring pucker and orietation.
+
+To force a ring into a specific pucker, use `REEL <reel.htm>`_. The define
+what configuration of the pucker group use the "user_defined" option.
+
+Additional programs
+===================
+
+-  phenix.get\_smiles
+-  phenix.get\_pdb
+-  phenix.metal\_coordination : Generate edits for metal coordination
+-  phenix.link\_edits : Generate edits from PDB LINK records
+-  phenix.print\_sequence
+-  elbow.become\_expert
+-  elbow.become\_novice
+-  elbow.compare\_two\_molecules
+-  elbow.join\_cif\_files
+-  elbow.join\_pdb\_files
+-  elbow.join\_mol2\_files
+-  elbow.check\_residues\_against\_monomer\_lib
+-  elbow.defaults : Generate a eLBOW defaults file
+
+Literature
+----------
+
+Moriarty NW, Grosse-Kunstleve RW, Adams PD: **electronic Ligand Builder
+and Optimization Workbench (eLBOW): a tool for ligand coordinate and
+restraint generation.** `*Acta Cryst.* 2009,
+**D65**:1074-1080. <http://www.iucr.org/cgi-bin/paper?ea5105>`__
+
+Additional information
+----------------------
+
+Novice options
+--------------
+
++-------------------------+-------------------------+-------------------------+
+| Option                  | Default & choices       | Description of inputs   |
+|                         |                         | and uses                |
++-------------------------+-------------------------+-------------------------+
+| --version               | None                    | show program's version  |
+|                         |                         | number and exit         |
++-------------------------+-------------------------+-------------------------+
+| --help                  | None                    | show this help message  |
+|                         |                         | and exit                |
++-------------------------+-------------------------+-------------------------+
+| --long-help             | None                    | show even more help and |
+|                         |                         | exit                    |
++-------------------------+-------------------------+-------------------------+
+| --smiles                | ""                      | use the passed SMILES   |
++-------------------------+-------------------------+-------------------------+
+| --file                  | ""                      | use file for chemical   |
+|                         |                         | input                   |
++-------------------------+-------------------------+-------------------------+
+| --msd                   | False                   | get SMILES using        |
+|                         |                         | MSDChem code            |
++-------------------------+-------------------------+-------------------------+
+| --key                   | ""                      | use SMILES from         |
+|                         |                         | smilesDB for chemical   |
+|                         |                         | input                   |
++-------------------------+-------------------------+-------------------------+
+| --keys                  | False                   | display smiles DB       |
++-------------------------+-------------------------+-------------------------+
+| --chemical-component    | None                    | build ligand from       |
+|                         |                         | chemical components     |
+|                         |                         | (PDB)                   |
++-------------------------+-------------------------+-------------------------+
+| --pipe                  | False                   | read input from         |
+|                         |                         | standard in             |
++-------------------------+-------------------------+-------------------------+
+| --residue               | ""                      | use only this residue   |
+|                         |                         | from the PDB file       |
++-------------------------+-------------------------+-------------------------+
+| --chain                 | ""                      | use only this chain     |
+|                         |                         | from the PDB file       |
++-------------------------+-------------------------+-------------------------+
+| --all-residues          | None                    | retain all residues in  |
+|                         |                         | a PDB file              |
++-------------------------+-------------------------+-------------------------+
+| --name                  | ""                      | name of ligand to be    |
+|                         |                         | used in various output  |
+|                         |                         | files                   |
++-------------------------+-------------------------+-------------------------+
+| --sequence              | ""                      | use sequence (limited   |
+|                         |                         | to 20 residues and no   |
+|                         |                         | semi-empirical          |
+|                         |                         | optimisation)           |
++-------------------------+-------------------------+-------------------------+
+| --read-only             | None                    | read the input but      |
+|                         |                         | don't do any processing |
++-------------------------+-------------------------+-------------------------+
+| --opt                   | False                   | use the best            |
+|                         |                         | optimisation method     |
+|                         |                         | available (currently    |
+|                         |                         | AM1)                    |
++-------------------------+-------------------------+-------------------------+
+| --template              | ""                      | use file for naming of  |
+|                         |                         | atoms e.g. PDB file     |
++-------------------------+-------------------------+-------------------------+
+| --mopac                 | False                   | use MOPAC for quantum   |
+|                         |                         | chemistry calculations  |
+|                         |                         | (requires MOPAC be      |
+|                         |                         | installed)              |
++-------------------------+-------------------------+-------------------------+
+| --gamess                | False                   | use GAMESS for quantum  |
+|                         |                         | chemistry calculations  |
+|                         |                         | (requires GAMESS be     |
+|                         |                         | installed)              |
++-------------------------+-------------------------+-------------------------+
+| --qchem                 | False                   | use QChem for quantum   |
+|                         |                         | chemistry calculations  |
+|                         |                         | (requires QChem be      |
+|                         |                         | installed)              |
++-------------------------+-------------------------+-------------------------+
+| --gaussian              | False                   | use Gaussian for        |
+|                         |                         | quantum chemistry       |
+|                         |                         | calculations (requires  |
+|                         |                         | Gaussian be installed)  |
++-------------------------+-------------------------+-------------------------+
+| --final-geometry        | None                    | use this file to obtain |
+|                         |                         | final geometry          |
++-------------------------+-------------------------+-------------------------+
+| --initial-geometry      | None                    | use this file to obtain |
+|                         |                         | the intital geometry    |
+|                         |                         | for QM                  |
++-------------------------+-------------------------+-------------------------+
+| --energy-validation     | None                    | calculate the           |
+|                         |                         | difference between      |
+|                         |                         | starting and final      |
+|                         |                         | energies                |
++-------------------------+-------------------------+-------------------------+
+| --restart               | False                   | restart the             |
+|                         |                         | optimisation with       |
+|                         |                         | lowest previous         |
+|                         |                         | geometry                |
++-------------------------+-------------------------+-------------------------+
+| --opt-steps             | 60, "positive integer"  | optimisation steps      |
+|                         |                         | (currently for ELBOW    |
+|                         |                         | opt only)               |
++-------------------------+-------------------------+-------------------------+
+| --opt-tol               | default, loose, tight   | optimisation tolerance  |
+|                         |                         | = loose, default or     |
+|                         |                         | tight                   |
++-------------------------+-------------------------+-------------------------+
+| --chiral                | retain                  | treatment of chiral     |
+|                         |                         | centres = retain        |
+|                         |                         | (default), both,        |
+|                         |                         | enumerate               |
++-------------------------+-------------------------+-------------------------+
+| --ignore-chiral         | None                    | ignore the chirality in |
+|                         |                         | the SMILES string       |
++-------------------------+-------------------------+-------------------------+
+| --skip-cif-molecule     | None                    | ignore ligands in       |
+|                         |                         | supplied CIF file(s)    |
++-------------------------+-------------------------+-------------------------+
+| --memory                | 1Gb, "positive          | maximum memory mostly   |
+|                         | integer", "n Gb", "n    | for quantum method      |
+|                         | Mb"                     |                         |
++-------------------------+-------------------------+-------------------------+
+| --method                | "AM1"                   | run QM optimisation     |
+|                         |                         | with this method, if    |
+|                         |                         | possible                |
++-------------------------+-------------------------+-------------------------+
+| --basis                 | "AM1"                   | run QM with this basis, |
+|                         |                         | if possible             |
++-------------------------+-------------------------+-------------------------+
+| --aux-basis             | None                    | run QM with this        |
+|                         |                         | auxiliary basis, if     |
+|                         |                         | possible                |
++-------------------------+-------------------------+-------------------------+
+| --random-seed           | None                    | random number seed      |
++-------------------------+-------------------------+-------------------------+
+| --quiet                 | False                   | less print out          |
++-------------------------+-------------------------+-------------------------+
+| --silent                | False                   | almost complete silence |
++-------------------------+-------------------------+-------------------------+
+| --view                  | False                   | viewing software        |
+|                         |                         | command                 |
++-------------------------+-------------------------+-------------------------+
+| --reel                  | False                   | fire up restraints      |
+|                         |                         | editor                  |
++-------------------------+-------------------------+-------------------------+
+| --pymol                 | False                   | use PyMOL from the      |
+|                         |                         | PHENIX install to view  |
+|                         |                         | geometries              |
++-------------------------+-------------------------+-------------------------+
+| --overwrite             | False                   | clobber any existing    |
+|                         |                         | output files            |
++-------------------------+-------------------------+-------------------------+
+| --bonding               | False                   | file that specifies the |
+|                         |                         | bond of the input       |
+|                         |                         | molecule                |
++-------------------------+-------------------------+-------------------------+
+| --id                    | "LIG"                   | three letter code used  |
+|                         |                         | in the CIF output       |
++-------------------------+-------------------------+-------------------------+
+| --xyz                   | False                   | output is also written  |
+|                         |                         | in XYZ format           |
++-------------------------+-------------------------+-------------------------+
+| --tripos                | False                   | output is also written  |
+|                         |                         | in TRIPOS format        |
++-------------------------+-------------------------+-------------------------+
+| --sdf                   | False                   | output is also written  |
+|                         |                         | in SDF format           |
++-------------------------+-------------------------+-------------------------+
+| --pdb-ligand            | None                    | output is also written  |
+|                         |                         | in PDB ligand format    |
++-------------------------+-------------------------+-------------------------+
+| --output                | "algorithm              | name for output files   |
+|                         | determination"          |                         |
++-------------------------+-------------------------+-------------------------+
+| --pickle                | False                   | use a pickle file to    |
+|                         |                         | reload the topological  |
+|                         |                         | information             |
++-------------------------+-------------------------+-------------------------+
+| --do-all                | None                    | process all molecules   |
+|                         |                         | in a PDB, TRIPOS or SDF |
+|                         |                         | file                    |
++-------------------------+-------------------------+-------------------------+
+| --clean                 | False                   | DELETES "unnecessary"   |
+|                         |                         | output files            |
+|                         |                         | (dangerous)             |
++-------------------------+-------------------------+-------------------------+
+| --pdb-assign            | ""                      | set the atom attributes |
+|                         |                         | in the PDB file         |
++-------------------------+-------------------------+-------------------------+
+| --heme                  | None                    | attempt to match HEME   |
+|                         |                         | groups (experimental)   |
++-------------------------+-------------------------+-------------------------+
+| --add-hydrogens         | "algorithm              | override the automatic  |
+|                         | determination", True,   | hydrogen addition       |
+|                         | False                   |                         |
++-------------------------+-------------------------+-------------------------+
+
+Expert options
+--------------
+
++-------------------------+-------------------------+-------------------------+
+| Option                  | Default & choices       | Description of inputs   |
+|                         |                         | and uses                |
++-------------------------+-------------------------+-------------------------+
+| --newton-raphson        | None                    | use Newton-Raphson      |
+|                         |                         | optimisation            |
++-------------------------+-------------------------+-------------------------+
+| --gdiis                 | False                   | use GDIIS optimisation  |
++-------------------------+-------------------------+-------------------------+
+| --quicca                | False                   | use QUICCA optimisation |
++-------------------------+-------------------------+-------------------------+
+| --user-opt              | None                    | use user defined for    |
+|                         |                         | quantum chemistry       |
+|                         |                         | calculations            |
++-------------------------+-------------------------+-------------------------+
+| --user-opt-input-filena | ""                      | input filename          |
+| me                      |                         |                         |
++-------------------------+-------------------------+-------------------------+
+| --user-opt-xyz2input    | ""                      | converts xyz file to QM |
+|                         |                         | program input           |
++-------------------------+-------------------------+-------------------------+
+| --user-opt-xyz-filename | ""                      | xyz filename            |
++-------------------------+-------------------------+-------------------------+
+| --user-opt-script-filen | ""                      | run script filename     |
+| ame                     |                         |                         |
++-------------------------+-------------------------+-------------------------+
+| --user-opt-program      | ""                      | QM optimisation program |
+|                         |                         | run script or program   |
+|                         |                         | invocation command      |
++-------------------------+-------------------------+-------------------------+
+| --user-opt-output-filen | ""                      | output filename         |
+| ame                     |                         |                         |
++-------------------------+-------------------------+-------------------------+
+| --user-opt-output2xyz   | ""                      | converts QM program     |
+|                         |                         | output to xyz file      |
++-------------------------+-------------------------+-------------------------+
+| --write-hydrogens       | True, False             | override the automatic  |
+|                         |                         | writing of hydrogens to |
+|                         |                         | PDB and CIF files       |
++-------------------------+-------------------------+-------------------------+
+| --auto-bond-cutoff      | 2.0, "float between 0.5 | set the max bondlength  |
+|                         | and 3"                  | for auto bond detection |
++-------------------------+-------------------------+-------------------------+
+| --write-redundant-dihed | None                    | control the writing of  |
+| rals                    |                         | redundant dihedrals     |
++-------------------------+-------------------------+-------------------------+

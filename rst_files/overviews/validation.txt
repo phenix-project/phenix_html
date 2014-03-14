@@ -1,0 +1,43 @@
+Model Validation
+================
+
+**Why**
+
+The atomic models generated from crystallographic experiments should
+conform to prior knowledge about stereochemistry. This covers a wide
+range of information, ranging from covalent geometry, through non-bonded
+interactions, up to known distributions of side chain and main chain
+conformations in both proteins and nucleic acids. Validation is required
+to check the consistency of an atomic model with this prior knowledge to
+identify possible errors in the model. Validation also extends beyond
+purely geometric measures to include local fit to electron density.
+
+**How**
+
+The main tool for geometric validation in Phenix is MolProbity. This
+is tightly integrated with structure refinement such that after running
+phenix.refine in the GUI a complete set of validation statistics are
+produced. In combination with the Coot program for visualization of
+models and electron density it is possible to rapidly check vaidation
+outliers and make corrections. Validation metrics for local fit to
+density are also provided in the form of a multi-criterion plot.
+
+**How to use the validation tools in the Phenix GUI:** `Click here <../reference/validation.htm>`__
+
+**Common issues**
+
+-  Outliers versus errors: in most structures there will be a non-zero
+   number of Ramachandran and side chain rotamer outliers. If the
+   electron density, and surrounding chemistry, supports the outlier
+   conformation then it is most probable that this is correct (i.e. an
+   outlier from prior expectations, rather than an error). However, in
+   the absence of supporting density, and/or conflicting local
+   chemistry, it is most probably an error that needs correction.
+
+**Related programs**
+
+-  `phenix.model\_vs\_data <../reference/model_vs_data.htm>`__:This
+   program assesses the overall quality of an atomic model with respect
+   to the experimental data.
+
+`More information about MolProbity <../reference/molprobity_tool.htm>`__
