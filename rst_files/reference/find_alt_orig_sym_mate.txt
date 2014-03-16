@@ -10,11 +10,17 @@ phenix.find\_alt\_orig\_sym\_mate: Identify equivalent MR solutions of the same 
 Purpose
 -------
 
-For different molecular replacement (MR) solutions from the same dataset
-phenix.find\_alt\_orig\_sym\_mate.py finds for each chain in the moving
-solution the copy closest to chains in the fixed solution with respect
-to all symmetry operations and alternative origin shifts permitted by
-the spacegroup of the crystal.
+phenix.find\_alt\_orig\_sym\_mate attempts to find the best superposition
+of two different molecular replacement solutions of the same dataset termed
+moving\_pdb and fixed\_pdb with respect
+to all symmetry operations and alternate origin shifts permitted by
+the spacegroup of the crystal. If either of the pdb files contain more chains
+each chain will be tested for their best match against chains in the other pdb file.
+It does so by calculating a score value, MLAD, for all possible symmetry operations 
+and alternate origin shifts of each chain in moving\_pdb compared with chains in 
+fixed\_pdb. The transformation with the smallest MLAD is retained for that particular 
+pair of chains.
+
 
 Usage
 -----
@@ -225,8 +231,10 @@ best match a distance measure between the aligned C-alpha atoms is
 computed for each configuration. The *mean log absolute deviation*
 (MLAD) is defined as:
 
+
 MLAD(d\ **R**) = Σ( log(d\ **r**\ ·d\ **r**/(\|d**r**\ \| + 0.9) +
 max(0.9, min(d\ **r**\ ·d\ **r**,1))) - log(0.9)),
+
 
 where d\ **r** is the difference vector between a pair of aligned
 C-alpha atoms and the sum is taken over all atom pairs in the alignment.
