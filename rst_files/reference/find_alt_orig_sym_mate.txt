@@ -16,7 +16,7 @@ moving\_pdb and fixed\_pdb with respect
 to all symmetry operations and alternate origin shifts permitted by
 the spacegroup of the crystal. If either of the pdb files contain more chains
 each chain will be tested for their best match against chains in the other pdb file.
-It does so by calculating a score value, MLAD, for all possible symmetry operations 
+It does so by calculating a score value, MLAD (see Algorithm_), for all possible symmetry operations 
 and alternate origin shifts of each chain in moving\_pdb compared with chains in 
 fixed\_pdb. The transformation with the smallest MLAD is retained for that particular 
 pair of chains.
@@ -35,12 +35,12 @@ tools category on the right hand side of the main Phenix window.
 
 Once the run button has been pressed the program will execute for a minute or two
 depending on the size of the molecules and space group. Afterwards the run status
-page will have a table of the best matches between pairs of chains in the two
-files. The MLAD values, chain IDs symmetry transformations and alternate origins for
-the two structures are listed in
-a table. If the same origin shift is not applied to all pairs of chains a
-warning will be printed. A floating origin in the space group typically results in a
-origin offset between chains that is not a rational number.
+page features a table of the best matches between pairs of chains in the two
+files. This includes the MLAD values, chain IDs, symmetry transformations and 
+alternate origins for the two structures. 
+If the same origin shift is not applied to all pairs of chains a
+warning will be printed. If the spacegroup of the crystal has a floating origin
+this generally results in an origin offset between chains that is not a rational number.
 
 
 .. image:: ../images/find_alt_orig_sym_mate2.png
@@ -214,9 +214,10 @@ A good match between two chains usually have a MLAD value below 1.5
 whereas a bad match usually have a value above 2.0. This is a rule of
 thumb and exceptions do occur. It is advisable to visually inspect that
 the structures superpose one another in a molecular graphics viewing
-program. If the structures contain more chains and
-phenix.find\_alt\_orig\_sym\_mate did not place them all on the same
-origin a warning will be printed.
+program. 
+
+
+.. _Algorithm:
 
 Algorithm
 ---------
@@ -232,7 +233,7 @@ computed for each configuration. The *mean log absolute deviation*
 (MLAD) is defined as:
 
 
-MLAD(d\ **R**) = Σ( log(d\ **r**\ ·d\ **r**/(\|d**r**\ \| + 0.9) +
+MLAD(d\ **R**) = Σ( log(d\ **r**\ ·d\ **r**/(\|dr\ \| + 0.9) +
 max(0.9, min(d\ **r**\ ·d\ **r**,1))) - log(0.9)),
 
 
@@ -240,10 +241,11 @@ where d\ **r** is the difference vector between a pair of aligned
 C-alpha atoms and the sum is taken over all atom pairs in the alignment.
 The factor log(0.9) is subtracted to ensure that MLAD(\ **0**) = 0.0.
 MLAD can loosely be interpreted as a distance measure between
-structures. But it is not a metric in the mathematical sense since the
-triangle inequality is not fulfilled. MLAD will downplay the
+structures. But it is not a metric in a strict mathematical sense since the
+triangle inequality is not fulfilled. Unlike a plain root mean square deviation 
+MLAD will downplay the
 contributions of spatially distant C-alpha atom pairs which may
-otherwise lead to incorrect matches when the space group has a floating
+otherwise lead to poor superpositions when the space group has a floating
 origin and the chains tested against one another consists of large
 unaligned domains. phenix.find\_alt\_orig\_sym\_mate.py will for each
 chain in the fixed scope find the smallest MLAD with a copy of each
