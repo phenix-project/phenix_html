@@ -1,0 +1,49 @@
+================
+structure_search
+================
+
+Overview
+--------
+
+Structure_search is a tool to quickly identify structural homologues of the input PDB file from the Protein Data Bank. It uses the SARST_ algorithm, and it's very fast. A typical search time against the whole PDB is usually less than one second.
+Structure_search requires Blast executable to run.  Currently, Blast is not distributed with PHENIX.  You can use keyword 'blastpath' to tell PHENIX where it can find your local Blast application.  If you do not have Blast installed on your computer, Blast can be downloaded from
+ftp://ftp.ncbi.nlm.nih.gov/blast/executables/release/2.2.26/
+
+
+Usage
+-----
+  - obtain a list of PDB is and chains sorted by similarities to mypdb.pdb
+     phenix.structure_search pdb_file=mypdb.pdb
+  - same as above, but specify location of blast executable
+     phenix.structure_search pdb_file=mypdb.pdb blastpath=/my/blast/blastall
+  - obtain a list of homologs of mypdb.pdb and all ligands found in structures of those homologs
+     phenix.structure_search pdb_file=mypdb.pdb get_ligand=True
+
+More information can be found in input/Output files sections below:
+
+Input files
+-----------
+
+required input:
+
+  - **pdb_file**: the file containing the protein model of interest.
+
+Optional inputs :
+
+  - **blastpath**: path to local blastall or blastall.exe (Windows) file.
+  - **get_ligand**:"=True" if want a list of ligands found in homologous PDBs,  Default = False.
+  - **job_title**: Current job title
+  - **output_prefix**: prefix for output files if needed.
+
+Output files
+------------
+
+In addition to screen output, these files contains results of structure_search:
+  - **output.txt**: file containing homologs of 'pdb_file' sorted by scores.
+  - **pdb_ligand.txt** (if get_ligand=True): file containing all ligands found in all homologs from this search.
+
+References
+----------
+.. _SARST:
+
+Lo WC, Huang PJ, Chang CH, Lyu PC. BMC Bioinformatics. 2007, 8:307
