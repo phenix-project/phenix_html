@@ -43,17 +43,19 @@ def exercise(args):
   dry_run = "--dry_run" in args
   quick = "--quick" in args
   assert create_structure_refinement_txt is not None
-  if (os.path.isfile("refinement.txt")):
-    os.remove("refinement.txt")
+  html_dir = libtbx.env.find_in_repositories("phenix_html")
+  rst_file = os.path.join(html_dir, "rst_files", "reference", "refinement.txt")
+  if (os.path.isfile(rst_file)):
+    os.remove(rst_file)
   easy_run.call(command="phenix.python %s" % create_structure_refinement_txt)
-  assert os.path.isfile("refinement.txt")
+  assert os.path.isfile(rst_file)
   if 1:
      line_start = False
      slash = "\\"
      pick_next = False
      amp_counter = 0
      cmd_counter = 0
-     for st in open("refinement.txt", "r").read().splitlines():
+     for st in open(rst_file, "r").read().splitlines():
        if(quick):
          if(cmd_counter == 1):
            break
