@@ -10,7 +10,7 @@ pdb = libtbx.env.find_in_repositories(
   test=os.path.isfile)
 
 txt = libtbx.env.find_in_repositories(
-  relative_path="phenix_html/rst_files/pdbtools.txt",
+  relative_path="phenix_html/rst_files/reference/pdbtools.txt",
   test=os.path.isfile)
 
 def exercise():
