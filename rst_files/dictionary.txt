@@ -31,7 +31,7 @@ need to be built manually in Coot.
 .. _altloc:
 
 **altloc**: an identifier in atom records in `PDB and mmCIF files
-<file_formats.htm#pdb_format>`_, which labels the
+<file_formats.html#pdb_format>`_, which labels the
 alternative conformation to which an atom belongs.  In the PDB format, this
 occupies the column to the left of the residue name.  For single-conformer
 models the altloc ID will be blank; otherwise it is usually an uppercase
@@ -100,11 +100,11 @@ selenomethionine-derivatized protein crystal.  The anomalous map is rendered
 in purple, contoured at 3.0 sigma, and clearly shows the positions of the
 Se atoms in the structure.*
 
-**ANISOU**: a type of record in `PDB format <file_formats.htm#pdb_format>`_,
+**ANISOU**: a type of record in `PDB format <file_formats.html#pdb_format>`_,
 specifying an anisotropic displacement ellipsoid with six parameters. They
 will immediately follow the associated ATOM or HETATM record. ANSIOU records
 represent the upper right corner of the symmetric matrix of atomic displacement.
-ANISOU records will appear in files output `phenix.refine <refine_gui.htm>`_ any
+ANISOU records will appear in files output `phenix.refine <refine_gui.html>`_ any
 time you use individual anisotropic B-factor refinement or TLS. Anisotropic
 B-factor is related to isotropic B-factor reported in ATOM record: isotropic B
 is the mean of the trace of ANISOU matrix divided by 10000 and multiplied by
@@ -161,7 +161,7 @@ significant error and should never be present in the final model.
 
 **Clashscore**: a validation statistic used in the `Molprobity web server
 <http://molprobity.biochem.duke.edu>`_ and the related `validation tools
-<validation.htm>`_ in Phenix (on the command line, the program
+<validation.html>`_ in Phenix (on the command line, the program
 ``phenix.clashscore`` can also be used).  It is equal to the number of severe
 atomic clashes (overlaps greater than 0.4A) per 1000 atoms.  A well-refined
 structure should have a clashscore below 20; clashscores of zero are
@@ -194,12 +194,12 @@ useful at low resolution. See also **restraints**.
 format developed specifically for crystallography.  Although CIF files may be
 used to represent any type of data, they are most commonly used in Phenix to
 define **geometry restraints**, which are generated primarily by `eLBOW
-<elbow_gui.htm>`_.  They are also used by the PDB to store reflection or
+<elbow_gui.html>`_.  They are also used by the PDB to store reflection or
 coordinate data, the latter as a substitute for the (archaic) PDB format.
 Phenix can either convert these files to a more familiar format or use them
 directly as input in many cases, and phenix.refine can also output both
 data and model in CIF format.  See the `overview of file formats
-<file_formats.htm>`_ for more information.
+<file_formats.html>`_ for more information.
 
 **Density modification (DM)**: An iterative procedure of applying a priory knowledge
 about fundamental properties of crystal model (atomic model and bulk-solvent) and
@@ -341,7 +341,7 @@ amplitudes as input, although internally the latter are nearly always used.
 **Interatomic scattering**: X-ray scattering caused by the electrons in
 the covalent bonds between atoms.  At very high resolution (d_min < 0.9Å),
 this is sufficiently distinct from the atomic scattering that it may appear
-as difference map peaks.  In `phenix.refine <refinement.htm>`__, this can be
+as difference map peaks.  In `phenix.refine <refinement.html>`__, this can be
 modeled by additional interatomic scatterers, essentially pseudo-atoms.  See
 Afonine et al. 2007 for more information.
 
@@ -373,7 +373,7 @@ isomorphous replacement), which like **SAD** requires density modification to
 resolve the phase ambiguity; MIR (multiple isomorphous replacement); and
 SIRAS or MIRAS, in which the anomalous signal of the heavy atoms is also
 employed.  In Phenix, isomorphous replacement is performed by the `AutoSol
-<autosol_gui.htm>`_ wizard.
+<autosol_gui.html>`_ wizard.
 
 **Isotropic**: moving equally in all directions.  In crystallography, this
 is usually used to describe the simplest (and most common) parameterization of
@@ -385,8 +385,8 @@ B-factor is represented as a sphere.  See also **anisotropic** and **TLS**.
 **Kicked map**: A faster alternative to omit maps.  All coordinates are
 shaken randomly by a small amount, and the map recalculated; this is done
 repeatedly and the maps averaged.  This can help remove bias and in some cases
-noise as well.  Available in both `phenix.refine <refine_gui.htm>`_ and
-`phenix.maps <create_maps.htm>`_.  See Praznikar et al. 2009 for details.
+noise as well.  Available in both `phenix.refine <refine_gui.html>`_ and
+`phenix.maps <create_maps.html>`_.  See Praznikar et al. 2009 for details.
 
 **Least squares**: an older refinement methodology, no longer in widespread
 use for macromolecular crystallography.  A least-squares target assumes that
@@ -408,12 +408,12 @@ the LLG map shows the difference in anomalous scattering between the current
 substructure and the true contents of the crystal.  This has the effect of
 amplifying the map around weaker, unmodeled scatterers.  In Phaser the process
 of substructure completion is automated and iterative, but it is also possible
-to output an LLG map from `phenix.refine <refine_gui.htm>`_ and `phenix.maps
-<create_maps.htm>`_.  If no anomalous scattering has been modeled, the LLG
+to output an LLG map from `phenix.refine <refine_gui.html>`_ and `phenix.maps
+<create_maps.html>`_.  If no anomalous scattering has been modeled, the LLG
 map will look very similar the conventional anomalous difference map.
 
 **Map coefficients**: This is simply the Fourier coefficients for an
-electron density map, in `MTZ format <file_formats.htm#mtz>`_.  Graphics
+electron density map, in `MTZ format <file_formats.html#mtz>`_.  Graphics
 programs such as Coot (and
 PHENIX, internally) will perform the Fourier transform automatically to obtain
 the real-space density.  Most programs in PHENIX output map coefficients
@@ -497,7 +497,7 @@ mutant), but search models with sequence identities as low as 30-40% are
 usually still easily solved, and significantly lower-identity models may still
 be used with additional processing (particularly trimming non-conserved loops
 and the ends of non-identical side chains in Sculptor) if their structures are
-similar enough.  In Phenix, MR is performed by `Phaser <phaser_mr.htm>`_ and
+similar enough.  In Phenix, MR is performed by `Phaser <phaser_mr.html>`_ and
 various procedures that invoke Phaser.
 
 .. _mpscore:
@@ -531,7 +531,7 @@ grouping "F" and "SIGF" together if they appear sequentially in the file.
 MTZ files are usually the prefered format for reflections files, as they are
 very versatile, reasonably compact, and supported by a wide range of modern
 software, including Phenix, CCP4, and Coot.  See the `overview of file formats
-<file_formats.htm>`_ for more information.
+<file_formats.html>`_ for more information.
 
 **Multi-wavelength Anomalous Difraction (MAD)**: a popular method for
 experimental phasing using heavy atoms.  MAD takes advantage of the tunability
@@ -551,7 +551,7 @@ declined somewhat in popularity relative to SAD because of the more limited
 choice of heavy atoms, the difficulty of avoiding radiation damage, and the
 requirement for a synchrotron beamline, but it is still a much easier method
 than **isomorphous replacement**.  In Phenix, MAD is performed by the
-`AutoSol wizard <autosol_gui.htm>`_, using the underlying program SOLVE.
+`AutoSol wizard <autosol_gui.html>`_, using the underlying program SOLVE.
 
 .. _ncs:
 
@@ -565,8 +565,8 @@ constraints, which force related molecules to be identical.)  NCS is most
 easily identified by comparing chains in a model, but can also be detected by
 analysis of heavy-atom sites or even electron density; several tools exist in
 Phenix for this purpose, and it can be performed automatically by the
-`AutoSol wizard <autosol_gui.htm>`_ and `phenix.refine <refine_gui.htm>`_.
-See the `refinement FAQs <faqs/refine.htm>`_ for additional information about
+`AutoSol wizard <autosol_gui.html>`_ and `phenix.refine <refine_gui.html>`_.
+See the `refinement FAQs <faqs/refine.html>`_ for additional information about
 the use of NCS restraints.
 
 .. _occupancy:
@@ -587,7 +587,7 @@ involves simple refinement of the modified structure to remove phase bias, and
 simulated annealing is recommended for best results.  A variant, the
 **composite omit map**, stitches together the contribution of many individual
 omit maps, which collectively omit all atoms.  In PHENIX, these may be
-calculated using the `AutoBuild <autobuild_gui.htm>`_ wizard.  See also the
+calculated using the `AutoBuild <autobuild_gui.html>`_ wizard.  See also the
 entry for "kicked map".
 
 **Overfitting**: Optimization of R-work at the expense of other quality
@@ -618,7 +618,7 @@ has a smaller radius of convergence than simulated annealing and grid search
 methods (such as rotamer fitting), but it is usually significantly faster to
 run.  When a structure is described as being "beyond the radius of
 convergence" of a program, this means that it cannot be improved by
-automatic methods.  Programs such as `MR-Rosetta <mr_rosetta.htm>`_ are
+automatic methods.  Programs such as `MR-Rosetta <mr_rosetta.html>`_ are
 designed to have a very wide radius of convergence, although at the cost of
 long run times.
 
@@ -741,12 +741,12 @@ symptom of overfitting.  See `Brunger AT (1992) Nature 355:472-475
 either refinement or the calculation of **R-free**.  Usually a set of R-free
 flags is generated at the beginning of the model-building and refinement
 process, and used throughout (usually as part of a single MTZ file including
-experimental data); programs such as `AutoSol <autosol_gui.htm>`_,
-`AutoBuild <autobuild_gui.htm>`_, and `phenix.refine <refine_gui.htm>`_ will
+experimental data); programs such as `AutoSol <autosol_gui.html>`_,
+`AutoBuild <autobuild_gui.html>`_, and `phenix.refine <refine_gui.html>`_ will
 do this automatically if no flags have previously been generated.  Extension of
 an existing set of flags to higher resolution, or transfer to an
 **isomorphous** dataset, can be done by the `reflection file editor
-<reflection_file_editor.htm>`_.
+<reflection_file_editor.html>`_.
 
 .. _riding_hydrogens:
 
@@ -760,7 +760,7 @@ typically an entire domain or chain (or possibly the entire contents of the
 asymmetric unit).  Used at the beginning of refinement after a molecular
 replacement search, where the fit to data may be crude and a large radius of
 convergence is desired.  (Note that some rigid-body refinement is also
-performed directly by `Phaser <phaser_mr.htm>`_.)
+performed directly by `Phaser <phaser_mr.html>`_.)
 
 .. _rotamer:
 
@@ -772,7 +772,7 @@ high-quality, high-resolution structures (the Top500 database).  The vast
 majority of sidechains in a finished structure should be recognizably
 rotameric unless the density very clearly supports an outlier conformation,
 and flagging of rotamer outliers is an important part of `validation
-<validation.htm>`_.
+<validation.html>`_.
 Because the standard geometry restraints and minimization methods often do a
 poor job moving sidechains into rotameric positions, a separate
 rotamer-fitting step is available in ``phenix.refine``.
@@ -848,7 +848,7 @@ but density modification will lead to a significantly improved map in most
 cases.  SAD is often performed with selenomethionine-incorporated protein,
 but any anomalously scattering atom (including sulfur, if the data are of
 very high quality) may be used.  In Phenix, SAD may be performed by either
-the `AutoSol wizard <autosol_gui.htm>`_ or `Phaser-EP <phaser_ep.htm>`_,
+the `AutoSol wizard <autosol_gui.html>`_ or `Phaser-EP <phaser_ep.html>`_,
 although the latter only calculates initial phases and completes the heavy-atom
 substructure, whereas AutoSol will also perform initial heavy-atom location,
 density modification, and preliminary model-building.
@@ -868,7 +868,7 @@ originally developed by `Daylight Chemical Information Systems
 use by the chemistry community.  Although SMILES strings do not encode
 coordinates, unlike PDB files they uniquely encode the connectivity of
 molecules, and can optionally even specify chirality.  They are therefore one
-of the prefered input formats for `eLBOW <elbow_gui.htm>`_.  As an example,
+of the prefered input formats for `eLBOW <elbow_gui.html>`_.  As an example,
 the SMILES string for benzene is ``c1ccccc1``.
 
 .. _special_positions:
@@ -906,7 +906,7 @@ represented by the "abs()" operator.
 assesses the fit to experimental data (usually amplitudes).  Older programs
 used **least-squares** (LS) targets, but modern refinement programs usually use
 **maximum-likelihood** (ML) targets, which are more robust in the presence of
-model error and incompleteness.  In `phenix.refine <refine_gui.htm>`_, the
+model error and incompleteness.  In `phenix.refine <refine_gui.html>`_, the
 available target functions are ML, MLHL (amplitudes plus experimental phases),
 and LS (for refinement of twinned structures).  Technically, any restraints
 used also specify a target function for minimization, although the term is not
@@ -933,7 +933,7 @@ the unit cell size is effectively doubled due to a near-symmetric translation
 operator which breaks higher symmetry.  The effect of this on data is to double
 the number of reflections, with the additional reflections systematically
 weaker.  TNCS can be detected by this signature, and by the presence of a large
-off-origin peak in the Patterson map; `Xtriage <xtriage_gui.htm>`_ is used in
+off-origin peak in the Patterson map; `Xtriage <xtriage_gui.html>`_ is used in
 Phenix for this purpose.  Although not as severe as twinning, TNCS
 can cause problems during phasing and (to a lesser extent) refinement, because
 it breaks some of the assumptions used in the maximum-likelihood equations used
@@ -957,7 +957,7 @@ the same parameters.)
 
 **Twin law**: an operator describing the relationship between distinct
 reflections due to **twinning**.  Each lattice has a limited set of
-permitted twin laws, which can be identified by `Xtriage <xtriage_gui.htm>`_.
+permitted twin laws, which can be identified by `Xtriage <xtriage_gui.html>`_.
 These are typically represented in terms of **Miller indices**, for example,
 the R3 space group has the allowed merohedral twinning operator ``-h-k,k,-l``,
 which signifies that the ``h,k,l`` reflection will be actually be overlapped
@@ -983,7 +983,7 @@ phasing very difficult, and result in abnormally high R-factors and poor map
 quality during refinement.  This can be handled by refining with a twin law,
 although this needs to be performed with caution.  Twinning is usually
 easily detected by the systematic deviation from expected intensity statistics;
-in Phenix, `Xtriage <xtriage_gui.htm>`_ is the program used to diagnose and
+in Phenix, `Xtriage <xtriage_gui.html>`_ is the program used to diagnose and
 analyze possible twinning.  See `Zwart et al. (2008) Acta Cryst D. 64:99-107
 <http://www.ncbi.nlm.nih.gov/pubmed/18094473>`_ for more information.
 

@@ -11,7 +11,7 @@ Purpose
 
 phenix.find\_all\_ligands is a command line tool for finding all the
 ligands in a map by repetitively running
-`phenix.ligandfit <ligandfit.htm>`__ with a series of ligands and
+`phenix.ligandfit <ligandfit.html>`__ with a series of ligands and
 choosing the best-fitting one at each cycle.
 
 Usage
@@ -47,7 +47,7 @@ Standard run of phenix.find\_all\_ligands:
 Running phenix.find\_all\_ligands is easy. Usually you will want to edit
 a small parameter file (find\_all\_ligands.eff) to contain your commands
 like this, where the ligandfit commands are sent to
-`phenix.ligandfit <ligandfit.htm>`__: for the actual fitting and the
+`phenix.ligandfit <ligandfit.html>`__: for the actual fitting and the
 find\_all\_ligands commands determine what searches are done: type:
 
 ::
@@ -66,7 +66,7 @@ find\_all\_ligands commands determine what searches are done: type:
     }
 
 You might also want to add to this some additional commands for
-`phenix.ligandfit <ligandfit.htm>`__. Any commands for ligandfit are
+`phenix.ligandfit <ligandfit.html>`__. Any commands for ligandfit are
 allowed, except that the commands "ligand" and "input\_lig\_file" are
 ignored as the input ligand comes from the find\_all\_ligands command
 "ligand\_list":
@@ -96,7 +96,7 @@ Possible Problems
 Specific limitations and problems:
 ----------------------------------
 
--  This method uses `phenix.ligandfit <ligandfit.htm>`__ to do the
+-  This method uses `phenix.ligandfit <ligandfit.html>`__ to do the
    ligand fitting, so all the commands, features, and limitations of
    phenix.ligandfit apply to phenix.find\_all\_ligands.
 
@@ -107,6 +107,6 @@ Additional information
 ----------------------
 
 NOTE: in addition to the find\_all\_ligands keywords shown here, all
-`phenix.ligandfit <ligandfit.htm>`__ commands are also allowed, except
+`phenix.ligandfit <ligandfit.html>`__ commands are also allowed, except
 that the commands "ligand" and "input\_lig\_file" are ignored as the
 input ligand comes from the find\_all\_ligands.

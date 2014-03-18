@@ -24,10 +24,10 @@ anomalous data, they are not useful for calculating merging statistics.
 
 Several utilities are available in Phenix which use unmerged intensities to
 calculate various data quality-related metrics.  These include `Xtriage
-<xtriage_gui.htm>`_, which will display standard merging statistics; the
+<xtriage_gui.html>`_, which will display standard merging statistics; the
 standalone version of this routine, **phenix.merging_statistics**; a separate
 utility for calculating CC* (Karplus & Diederichs 2012), **phenix.cc_star**;
-and the `Table 1 <table_one.htm>`_ program.  Their use as it relates
+and the `Table 1 <table_one.html>`_ program.  Their use as it relates
 to unmerged data is described below.  Note that due to implementation details,
 small numerical differences (up to a  few tenths of a percent) may occur
 between the originally reported statistics in the processing logfiles, and the
@@ -173,7 +173,7 @@ program, but with the addition of R-factors and CCs for model/data agreement.
 phenix.table_one
 ----------------
 
-`This utility <table_one.htm>`_ generates the standard Table 1 of
+`This utility <table_one.html>`_ generates the standard Table 1 of
 crystallographic statistics found in most structure publications.  If unmerged
 data are included along with the merged data and R-free flags, the intensity
 merging statistics will be calculated from these instead of parsing the

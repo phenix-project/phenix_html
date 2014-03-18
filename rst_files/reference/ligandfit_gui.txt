@@ -11,7 +11,7 @@ determination.  It performs flexible ligand fitting into difference maps
 using RESOLVE, followed by optional real-space refinement.  As elsewhere, this
 documentation covers the use of the GUI specifically, and is not a
 general-purpose reference for program function.  See the `command-line
-documentation <ligandfit.htm>`_ for a complete list of parameters and details
+documentation <ligandfit.html>`_ for a complete list of parameters and details
 on usage.  If you want to see an example of how LigandFit works, we recommend
 reading the `tutorial <tutorial_ligandfit.txt>`_ first.
 
@@ -157,7 +157,7 @@ If you do not obtain a good fit of your ligand to the map, there are a few thing
     unusual in any of them that may give you a clue as to what to try next?
   - Have a look at the difference electron density map. Does it have clear
     density for the ligand? If not, you may want to try other types of maps.
-    You can run `phenix.maps <create_maps.htm>`_ to obtain a sigmaA-weighted
+    You can run `phenix.maps <create_maps.html>`_ to obtain a sigmaA-weighted
     mFo-DFc map that should optimally show the placement of your ligand.
   - If you have atomic-resolution data, try setting the high-resolution limit
     slightly lower; data beyond approximately 1.8A rarely improve the fit, and

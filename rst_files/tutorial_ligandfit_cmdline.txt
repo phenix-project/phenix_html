@@ -5,7 +5,7 @@ Introduction
 ------------
 
 This is a tutorial for running LigandFit on the command line; for GUI
-usage, see the `separate tutorial. <tutorial_ligandfit.htm>`__ This
+usage, see the `separate tutorial. <tutorial_ligandfit.html>`__ This
 tutorial will start with experimental data and a model (1J4R.pdb) with
 ligand removed (1J4R\_no\_ligand.pdb) and a randomized ligand
 conformation (1J4R\_random.pdb), and will fit the ligand into difference
@@ -38,7 +38,7 @@ If instead you get:
     PHENIX: undefined variable
 
 then you need to set up your PHENIX environment. See the `PHENIX
-installation <install.htm>`__ page for details of how to do this. If you
+installation <install.html>`__ page for details of how to do this. If you
 are using the C-shell environment (**csh**) then all you will need to do
 is add one line to your **.cshrc** (or equivalent) file that looks like
 this:
@@ -94,7 +94,7 @@ remainder of the text in the file using the sh (or bash) -shell
 
 The command **phenix.ligandfit** runs the command-line version of
 LigandFit (see `Automated Structure Solution using
-LigandFit <ligandfit.htm>`__ for all the details about LigandFit
+LigandFit <ligandfit.html>`__ for all the details about LigandFit
 including a full list of keywords).
 
 The arguments on the command line tell LigandFit about the data file
@@ -112,7 +112,7 @@ LigandFit from a script (**run.sh**), you can run LigandFit yourself
 from the command line with the same **phenix.ligandfit data= ...**
 command. You can also run LigandFit from a GUI, or by putting commands
 in another type of script file. All these possibilities are described in
-`Using the PHENIX Wizards <running-wizards.htm>`__.
+`Using the PHENIX Wizards <running-wizards.html>`__.
 
 Where are my files?
 -------------------
@@ -356,7 +356,7 @@ Once you have run LigandFit and have obtained a good ligand model, you
 will want to refine the model. Add the model to your PDB file containing
 the remainder of the structure and refine the whole structure. You may
 need to define the geometry of your ligand. In that case the tool
-`phenix.elbow <elbow.htm>`__ in the PHENIX package well by most useful
+`phenix.elbow <elbow.html>`__ in the PHENIX package well by most useful
 (it is quite automatic and generates all the files you need).
 
 Once you have fitted your ligand(s), the next thing you might want to do
@@ -395,5 +395,5 @@ Additional information
 ----------------------
 
 For details about the LigandFit Wizard, see `Automated Ligand Fitting
-using LigandFit <ligandfit.htm>`__. For help on running Wizards, see
-`Using the PHENIX Wizards <running-wizards.htm>`__.
+using LigandFit <ligandfit.html>`__. For help on running Wizards, see
+`Using the PHENIX Wizards <running-wizards.html>`__.

@@ -3,12 +3,12 @@ Frequently asked questions (FAQs)
 =================================
 
 Separate FAQ lists are available for
-experimental phasing `<experimental_phasing.htm>`_,
-`molecular replacement <mr.htm>`_,
-`model building <model_building.htm>`_,
-`ligand fitting <ligand_fitting.htm>`_,
-`refinement <refine.htm>`_.
-There is also an `overview of file formats <../file_formats.htm>`_
+experimental phasing `<experimental_phasing.html>`_,
+`molecular replacement <mr.html>`_,
+`model building <model_building.html>`_,
+`ligand fitting <ligand_fitting.html>`_,
+`refinement <refine.html>`_.
+There is also an `overview of file formats <../file_formats.html>`_
 used by Phenix.
 
 General
@@ -25,10 +25,10 @@ Individual programs may have additional citations.
 
 **How can I use multiple processors to run a job?**
 
-Only `Autosol <../autosol.htm>`_,
-`Autobuild <../autobuild_gui.htm>`_, `Ligandfit <../ligandfit_gui.htm>`_,
-`phaser.MRage <../MRage.htm>`_, `phenix.refine <../refine_gui.htm>`_, the
-`structure comparison GUI <../structure_comparison.htm>`_, and
+Only `Autosol <../autosol.html>`_,
+`Autobuild <../autobuild_gui.html>`_, `Ligandfit <../ligandfit_gui.html>`_,
+`phaser.MRage <../MRage.html>`_, `phenix.refine <../refine_gui.html>`_, the
+`structure comparison GUI <../structure_comparison.html>`_, and
 phenix.find_tls_groups support runtime configuration of parallel processing.
 In most cases this is done by adding the "nproc" keyword, for instance::
 
@@ -46,7 +46,7 @@ conflicts, OpenMP is not compatible with the Phenix GUI.
 You can find sample data in the directories located in ``$PHENIX/examples``.
 Additionally there is sample MR data in ``$PHENIX/phaser/tutorial``.
 
-In the `Phenix GUI <../phenix_gui.htm>`_, tutorials may automatically be set up
+In the `Phenix GUI <../phenix_gui.html>`_, tutorials may automatically be set up
 as projects.  (You must run the specific programs manually, however.)
 
 **Can I easily run autosol, autobuild or ligandfit with some sample data?**
@@ -88,7 +88,7 @@ have a command file ``run.sh`` ready to use. For example::
 The PHENIX tutorials listed on the `documentation index
 <../phenix_documentation.html>`_ will walk you through sample datasets, telling
 you what to look for in the output files. For example, the
-`Tutorial 1: Solving a structure using SAD data <../tutorial_sad.htm>`_
+`Tutorial 1: Solving a structure using SAD data <../tutorial_sad.html>`_
 tutorial uses the ``p9-sad`` dataset as example. It tells you how to
 run this example data in autosol and how to interpret the results.
 
@@ -144,7 +144,7 @@ picked for the test set; you don't really need more than this to ensure that
 R-free is statistically significant and that the maximum likelihood
 calculations work properly.  However, if you want to use a full 5%, you can
 tell Phenix not to put any upper absolute limit.  In the `reflection file
-editor <../reflection_file_editor.htm>`_ in the GUI, click
+editor <../reflection_file_editor.html>`_ in the GUI, click
 "More options" in the R-free flags section of the editor, and delete the
 field labeled "Maximum number of reflections in test set".
 
@@ -156,8 +156,8 @@ Maps
 **How do I obtain an anomalous difference map in Phenix?**
 
 If you have anomalous data (separate F+ and F- or I+ and I-) and use this
-as input, both `phenix.maps <../create_maps.htm>`_ and
-`phenix.refine <../refinement.htm>`__ will automatically output the anomalous
+as input, both `phenix.maps <../create_maps.html>`_ and
+`phenix.refine <../refinement.html>`__ will automatically output the anomalous
 difference map in the map coefficients MTZ file.  Note that depending on the
 application, you may need to manually open the MTZ file in Coot to get the
 anomalous map to appear.

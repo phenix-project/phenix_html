@@ -51,14 +51,14 @@ deposition with the PDB).
 
 If you need to edit a PDB file (other than rebuilding the model in Coot),
 we recommend that you use either
-`PDBTools <pdbtools.htm>`_, a non-interactive tool available both on the
+`PDBTools <pdbtools.html>`_, a non-interactive tool available both on the
 command line and the graphical interface, or phenix.pdb_editor, an interactive
 graphical editor.  Editing by hand is strongly discouraged and often leads to
 program errors.
 
 .. _mmcif_format:
 
-In some programs in Phenix (in particular `phenix.refine <refine_gui.htm>`_),
+In some programs in Phenix (in particular `phenix.refine <refine_gui.html>`_),
 support is also provided for reading and writing mmCIF files.  This is a
 variation on CIF format (described in detail below) specific to macromolecular
 models and data.  mmCIF is considerably more complicated than PDB format, and
@@ -106,7 +106,7 @@ intensities that have not yet been scaled.
 Several other formats are supported in various contexts.  Some of these
 differ in whether individual observations of each unique reflection have
 been merged or not (see the separate
-documentation on `using unmerged data in Phenix <unmerged_data.htm>`_ for
+documentation on `using unmerged data in Phenix <unmerged_data.html>`_ for
 more details), but all of these should contain **scaled** data.  Only CNS
 format can include R-free flags; the rest are usually the output of data
 processing programs and require additional processing to be useful, and
@@ -150,9 +150,9 @@ named "XDS_ASCII.HKL".  These files contain crystal symmetry information and
 may include either merged or unmerged data.
 
 If you need to edit or combine reflection files, Phenix includes a
-`graphical editor <reflection_file_editor.htm>`_ which supports all of these
+`graphical editor <reflection_file_editor.html>`_ which supports all of these
 formats.  However, output is limited to MTZ.  Visualization of reflection
-data is provided by `phenix.data_viewer <data_viewer.htm>`_.
+data is provided by `phenix.data_viewer <data_viewer.html>`_.
 
 .. _cif:
 
@@ -185,15 +185,15 @@ for geometry restraints used in refinement and related tasks.  The Phenix
 installer includes a large number of CIF
 files including some from the PDB and the CCP4 monomer library, but for novel
 and/or uncommon ligands you may have to generate your own restraints using
-`eLBOW <elbow_gui.htm>`_.  You can also edit an existing restraints CIF file
-using `REEL <reel.htm>`_.
+`eLBOW <elbow_gui.html>`_.  You can also edit an existing restraints CIF file
+using `REEL <reel.html>`_.
 
 In addition to geometry restraints, both models and reflection data may be
 stored in CIF format using the mmCIF subset of tags.  These are the preferred
 working format for the PDB, which only distributes structure factors in
 mmCIF format.  A variety of tools are able to convert to PDB or MTZ formats;
 the most commonly used program for this purpose is `phenix.cif_as_mtz
-<cif_as_mtz.htm>`_.  Some programs such as phenix.refine can also read and
+<cif_as_mtz.html>`_.  Some programs such as phenix.refine can also read and
 write mmCIF files.
 
 .. _seq_file:
@@ -228,7 +228,7 @@ X-plor format.  These are then suitable for viewing in PyMOL, Chimera, or
 other molecular viewers (as well as Coot).  We recommend that you use CCP4
 format, which is binary and therefore much faster and smaller than the
 text X-PLOR format files.  If you have map coefficients for which you would
-like to obtain a map file, `phenix.mtz2map <mtz2map.htm>`_ will convert them
+like to obtain a map file, `phenix.mtz2map <mtz2map.html>`_ will convert them
 for you by running an FFT.  In the Phenix GUI, most programs that output map
 coefficients will automatically perform the FFT if you click a button to
 open the results in PyMOL.
@@ -274,10 +274,10 @@ widely used but are very helpful for debugging issues with geometry restraints.
 Other chemical data (various)
 -----------------------------
 
-`eLBOW <elbow_gui.htm>`_ supports a variety of other formats (in addition to
+`eLBOW <elbow_gui.html>`_ supports a variety of other formats (in addition to
 CIF) for specifying
 chemical information to be used to generate molecular structures and
-restraints.  The most popular is `SMILES <dictionary.htm#smiles>`_, but
+restraints.  The most popular is `SMILES <dictionary.html#smiles>`_, but
 the output of various chemoinformatics programs is also recognized.
 
 Log files (.log)

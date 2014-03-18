@@ -6,8 +6,8 @@ Model Building
 The main goal of a crystallographic experiment is to arrive at an
 atomic interpretation of the electron density in the crystal. This
 typically requires building an atomic model by fitting to maps obtained
-from `experimental phasing <xray-experimental-phasing.htm>`__ or
-`molecular replacement <xray-molecular-replacement.htm>`__. For many
+from `experimental phasing <xray-experimental-phasing.html>`__ or
+`molecular replacement <xray-molecular-replacement.html>`__. For many
 cases it is possible to use automated methods for building models, for
 both proteins and nucleic acids. The accuracy and completeness of model
 building is a function of the quality of the starting electron density
@@ -28,23 +28,23 @@ coefficients for the best electron density map created during the
 process of model building.
 
 **How to use the phenix.autobuild GUI:** `Click
-here <../reference/autobuild_gui.htm>`__
+here <../reference/autobuild_gui.html>`__
 
 **Common issues**
 
 -  `Frequently asked questions about model
-   building <../faqs/model_building.htm>`__
+   building <../faqs/model_building.html>`__
 
 **Related programs**
 
--  `phenix.find\_helices\_strands <../reference/find_helices_strands.htm>`__:This
+-  `phenix.find\_helices\_strands <../reference/find_helices_strands.html>`__:This
    program can be used to very rapidly locate protein secondary
    structure elements in an electron density map. This can be used even
    at low resolution (4Å or worse). This is extremely useful for quickly
    confirming that a map contains macromolecular features, or for
    interpreting low resolution maps. Optionally, the amino acid sequence
    can be provided and residues will be fitted where density permits.
--  `phenix.fit\_loops <../reference/fit_loops.htm>`__:This program can
+-  `phenix.fit\_loops <../reference/fit_loops.html>`__:This program can
    fit loops into protein structures given the current model, the
    sequence and an electron density map. Model building procedures are
    sometimes unable to fit models to poor density in loop regions,
@@ -52,7 +52,7 @@ here <../reference/autobuild_gui.htm>`__
    becomes more complete and maps improve the weaker density in loops
    regions may become clearer, and thus can be fit using
    phenix.fit\_loops.
--  `phenix.erraser <../reference/erraser.htm>`__:This program uses
+-  `phenix.erraser <../reference/erraser.html>`__:This program uses
    ERRASER (Enumerative Real-space Refinment ASsisted by
    Electron-density under Rosetta) to rebuild RNA structures by
    combining Rosetta and Phenix. By supplementing the Rosetta RNA
@@ -61,4 +61,4 @@ here <../reference/autobuild_gui.htm>`__
    retaining a good fit to the diffraction data.
 
 `Phenix reference manual for
-phenix.autobuild <../reference/autobuild.htm>`__
+phenix.autobuild <../reference/autobuild.html>`__

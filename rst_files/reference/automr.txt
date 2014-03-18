@@ -27,10 +27,10 @@ of the search models that are compatible with the data.
 Usage
 -----
 
-The AutoMR Wizard can be run from the `PHENIX GUI <automr_gui.htm>`__,
+The AutoMR Wizard can be run from the `PHENIX GUI <automr_gui.html>`__,
 from the command-line, and from parameters files. All three versions are
 identical except in the way that they take commands from the user. See
-`Using the PHENIX Wizards <running-wizards.htm>`__ for details of how to
+`Using the PHENIX Wizards <running-wizards.html>`__ for details of how to
 run a Wizard. The command-line version will be described here.
 
 NOTE: You may find it easiest to run the GUI version of AutoMR when you
@@ -200,7 +200,7 @@ In this case you need to give the RMS or identity for each model:
 identity='45 40 35'. Each of the models in the ensemble must be in the
 same orientation as the others, so that the ensemble of models can be
 placed as a group in the unit cell. You may also use
-`phenix.ensembler <ensembler.htm>`__ to generate a single multi-model
+`phenix.ensembler <ensembler.html>`__ to generate a single multi-model
 PDB file containing the entire ensemble. In this case you should specify
 a single overall RMS or identity for the ensemble.
 
@@ -283,7 +283,7 @@ might use by typing:
 You can specify many more parameters as well. See the list of keywords,
 defaults and descriptions at the end of this page and also general
 information about running Wizards at `Using the PHENIX
-Wizards <running-wizards.htm>`__ for how to do this. Some of the most
+Wizards <running-wizards.html>`__ for how to do this. Some of the most
 common parameters are:
 
 ::

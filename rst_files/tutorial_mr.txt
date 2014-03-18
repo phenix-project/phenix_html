@@ -5,16 +5,16 @@ Tutorial 6: solving a structure with Phaser-MR
 Overview
 --------
 
-This tutorial shows how to use the `Phaser-MR GUIs <phaser_mr.htm>`_ to solve
+This tutorial shows how to use the `Phaser-MR GUIs <phaser_mr.html>`_ to solve
 structures by molecular replacement, using example data included with the
 Phenix distribution.  We recommend reading the
-`MR overview <mr_overview.htm>`_ before running these tutorials (and for
+`MR overview <mr_overview.html>`_ before running these tutorials (and for
 adventurous users, the primary Phaser reference as well).
 
 A brief word about terminology: the search models used in Phaser are
 customarily named "ensembles", and in fact Phaser will often work best in
 difficult cases when a set of superposed models (generated using `Ensembler
-<ensembler.htm>`_ or similar tools) is used.  However, this is not required
+<ensembler.html>`_ or similar tools) is used.  However, this is not required
 and for easily solved structures, such as the tutorial datasets used here,
 a single PDB file will be sufficient.  Furthermore, while Phaser can search
 for multiple alternative ensembles and output only the best solution, here we
@@ -39,7 +39,7 @@ recommended.
 Full automation: phaser.MRage
 -----------------------------
 
-The separate `MRage <mrage.htm>`_ program (which uses Phaser as its core) can
+The separate `MRage <mrage.html>`_ program (which uses Phaser as its core) can
 automatically discover and prepare search models, and search in parallel on a
 multi-core workstation or cluster.  A `separate tutorial
 <http://www.phaser.cimr.cam.ac.uk/index.php/Molecular_replacement_with_MRage>`_

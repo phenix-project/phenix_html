@@ -8,7 +8,7 @@ this section essentially reproduces the command-line output of the
 program when run without arguments. As of PHENIX version 1.6.4, much of
 the parameter syntax is identical in ``phenix.maps`` and
 ``phenix.refine``. There is also a `GUI for
-phenix.maps <create_maps.htm>`__, with separate documentation, but most
+phenix.maps <create_maps.html>`__, with separate documentation, but most
 of the information below applies to both the command-line and graphical
 versions.
 
@@ -83,9 +83,9 @@ more complex map calculations may be performed in other programs:
     -  For isomorphous difference maps (Fobs-Fobs), use
        ``phenix.fobs_minus_fobs_map`` (documentation to be added).
     -  For omit maps, including composite omit maps and iterative build
-       omit maps, use the `AutoBuild wizard <autobuild.htm>`__.
+       omit maps, use the `AutoBuild wizard <autobuild.html>`__.
     -  You can also generate a simple simulated-annealing omit map by
        deleting the relevant part of the molecule and running
-       `phenix.refine <refinement.htm>`__ with
+       `phenix.refine <refinement.html>`__ with
        ``simulated_annealing=True``. (This is essentially the same was
        what is done by AutoBuild, however.)

@@ -25,10 +25,10 @@ successful, is a PDB file containing the placed model(s) and an MTZ file
 containing coefficients for the electron density made using the places
 model(s) and the observed experimental amplitudes. For an introduction
 to molecular replacement in Phenix, `click
-here <../reference/mr_overview.htm>`__.
+here <../reference/mr_overview.html>`__.
 
 **How to use the Phaser GUI in Phenix:** `Click
-here <../reference/phaser_mr.htm>`__
+here <../reference/phaser_mr.html>`__
 
 **Common issues**
 
@@ -42,31 +42,31 @@ here <../reference/phaser_mr.htm>`__
    always prudent to use the "Search PDB Symmetry" tool in the Phenix
    GUI to check cell dimensions and space group against the PDB.
 -  `Frequently asked questions about molecular
-   replacement <../faqs/faqs_mr.htm>`__
+   replacement <../faqs/faqs_mr.html>`__
 
 **Related programs**
 
--  `phenix.MRage <../reference/MRage.htm>`__:This program uses Phaser to
+-  `phenix.MRage <../reference/MRage.html>`__:This program uses Phaser to
    perform highly automated molecular replacement. In its simplest form
    it can take experimental diffraction data and a sequence to solve a
    molecular replacement problem.
--  `phenix.sculptor <../reference/sculptor.htm>`__:This program can be
+-  `phenix.sculptor <../reference/sculptor.html>`__:This program can be
    used to prepare models for molecular replacement, by trimming loops
    where there are expected to be insertions of deletions based on
    sequence alignment. It can also trim side chains and modify other
    properties of the model such as atomic displacement parameters.
--  `phenix.ensembler <../reference/ensembler.htm>`__:This program can be
+-  `phenix.ensembler <../reference/ensembler.html>`__:This program can be
    used to prepare ensembles for molecular replacement. An ensemble is a
    set of structurally related models that have been superimposed with
    respect to each other, typically using a conserved structural core.
    Phenix.ensembler automates the process of superimposing models.
--  `phenix.morph\_model <../reference/morph_model.htm>`__:This program
+-  `phenix.morph\_model <../reference/morph_model.html>`__:This program
    can be used to improve an initial model after molecular replacement
    by locally moving the structure to better fit the electron density
    map. This is especially powerful in those cases where the molecular
    replacement solution is structurally too different to provide phases
    for map interpretation or automated model building.
--  `phenix.mr\_rosetta <../reference/mr_rosetta.htm>`__:This program can
+-  `phenix.mr\_rosetta <../reference/mr_rosetta.html>`__:This program can
    be used to improve an initial model after molecular replacement by
    using the Rosetta program to modify the model such that it moves
    closer to the true structure, while also improving the fit to
@@ -75,4 +75,4 @@ here <../reference/phaser_mr.htm>`__
    different to provide phases for map interpretation or automated model
    building.
 
-`Phenix reference manual for Phaser. <../reference/phaser.htm>`__
+`Phenix reference manual for Phaser. <../reference/phaser.html>`__

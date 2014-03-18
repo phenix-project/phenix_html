@@ -67,91 +67,91 @@ for some programs.
 Data analysis
 -------------
 
-- `Xtriage <reference/xtriage_gui.htm>`_: comprehensive reflection data analysis and
+- `Xtriage <reference/xtriage_gui.html>`_: comprehensive reflection data analysis and
   quality assessment; used to detect twinning and other pathologies.  Also
   used internally in the AutoSol and AutoBuild wizards.
 
-- `Calculate merging statistics <reference/unmerged_data.htm>`_: calculate R-sym,
+- `Calculate merging statistics <reference/unmerged_data.html>`_: calculate R-sym,
   R-meas, mean I/sigma, CC1/2, and related statistics starting from scaled,
   unmerged intensities.
 
 Experimental phasing
 --------------------
 
-- `AutoSol <reference/autosol.htm>`_: automated experimental phasing for all
+- `AutoSol <reference/autosol.html>`_: automated experimental phasing for all
   experiment types (SAD, MAD, MIR, etc.); also performs simple model-building
   after phasing.  Combines HySS, Phaser, SOLVE, RESOLVE, and phenix.refine.
 
-- `Hybrid substructure search <reference/hyss.htm>`_: heavy-atom site identification
+- `Hybrid substructure search <reference/hyss.html>`_: heavy-atom site identification
   program.  Used automatically as part of AutoSol.
 
-- `Phaser-EP <reference/phaser_ep.htm>`_: Another Phaser interface, for SAD and MR-SAD
+- `Phaser-EP <reference/phaser_ep.html>`_: Another Phaser interface, for SAD and MR-SAD
   phasing.  We recommend trying AutoSol first, but this GUI exposes
   additional parameters.
 
 Molecular replacement
 ---------------------
 
-- `MRage <reference/MRage.htm>`_: automated molecular replacement using Phaser;
+- `MRage <reference/MRage.html>`_: automated molecular replacement using Phaser;
 
-- `Phaser-MR <reference/phaser_mr.htm>`_: Interface for molecular replacement using
-  standalone `Phaser <reference/phaser.htm>`_, with all parameters available as well
+- `Phaser-MR <reference/phaser_mr.html>`_: Interface for molecular replacement using
+  standalone `Phaser <reference/phaser.html>`_, with all parameters available as well
   as different modes of operation.  We recommend starting with MRage
   first, but this GUI is useful for tough cases.
 
-- `MR-Rosetta <reference/mr_rosetta.htm>`_: automation pipeline for exceptionally
+- `MR-Rosetta <reference/mr_rosetta.html>`_: automation pipeline for exceptionally
   difficult structures, which uses the
   `Rosetta <http://www.rosettacommons.org>`_ software for protein structure
   prediction and design to rebuild poor MR solutions, along with Phaser and
   AutoBuild.  (Separate installation of Rosetta is required.)
 
-- `Sculptor <reference/sculptor.htm>`_: prepare a search model for molecular
+- `Sculptor <reference/sculptor.html>`_: prepare a search model for molecular
   replacement by trimming the structure, modifying B-factors, etc.
 
 - Sculptor - Coot interface: a Coot plugin for running Sculptor interactively
   and visualizing results.
 
-- `Ensembler <reference/ensembler.htm>`_: tool for creating superimposed ensembles
+- `Ensembler <reference/ensembler.html>`_: tool for creating superimposed ensembles
   of related MR search models.
 
 Model building
 --------------
 
-- `AutoBuild <reference/autobuild_gui.htm>`_: automated model-building and refinement
+- `AutoBuild <reference/autobuild_gui.html>`_: automated model-building and refinement
   with RESOLVE and phenix.refine.  This GUI only encapsulates the building
   functions; a separate GUI is available for omit-map calculations.
 
-- `Phase and build <reference/phase_and_build.htm>`_: similar to AutoBuild, but
+- `Phase and build <reference/phase_and_build.html>`_: similar to AutoBuild, but
   significantly faster (although less accurate).
 
-- `Find Helices and Strands <reference/find_helices_strands.htm>`_: fast building of
+- `Find Helices and Strands <reference/find_helices_strands.html>`_: fast building of
   secondary structure (as poly-ALA) into maps with RESOLVE and PULCHRA.
   Especially good for low-resolution data.
 
-- `Fit Loops <reference/fit_loops.htm>`_: simple GUI for building missing loops into
+- `Fit Loops <reference/fit_loops.html>`_: simple GUI for building missing loops into
   a map based on a sequence and start model.
 
-- `Morph model <reference/morph_model.htm>`_: improvement of poor molecular replacement
+- `Morph model <reference/morph_model.html>`_: improvement of poor molecular replacement
   solutions by "morphing" into density and rebuilding.
 
 Refinement
 ----------
 
-- `phenix.refine <reference/refine_gui.htm>`_: automated refinement, supporting both
+- `phenix.refine <reference/refine_gui.html>`_: automated refinement, supporting both
   X-ray and neutron data.  In addition to the features available in the
   command-line program, the GUI version includes graphical atom selection,
   simplified setup of restraints, automatic addition of hydrogens, and
   post-refinement validation.
 
-- `ERRASER <reference/erraser.htm>`_: Rosetta refinement for RNA crystal structures.
+- `ERRASER <reference/erraser.html>`_: Rosetta refinement for RNA crystal structures.
 
-- `ReadySet <reference/ready_set.htm>`_: preparation of input files for refinement,
+- `ReadySet <reference/ready_set.html>`_: preparation of input files for refinement,
   including generating restraints (CIF) files and adding hydrogens.
 
 Validation
 ----------
 
-- `Comprehensive validation <reference/validation.htm>`_: based on the `MolProbity
+- `Comprehensive validation <reference/validation.html>`_: based on the `MolProbity
   server <http://molprobity.biochem.duke.edu>`__ (and sharing much of the
   same code), with added analysis of experimental data.  Reports R-work and
   R-free, statistics for
@@ -161,7 +161,7 @@ Validation
   and clicking a residue or atom will zoom in on that site in the graphics
   window.  Coot will also display clashes detected by PROBE.
 
-- `POLYGON <reference/validation.htm>`_: graphical comparison of user-selected
+- `POLYGON <reference/validation.html>`_: graphical comparison of user-selected
   model statistics with similar structures in the PDB.
 
 - PDB Statistics Overview: This very simple application uses the same
@@ -169,7 +169,7 @@ Validation
   you simply want to view a histogram of a statistic for a filtered subset
   of the PDB.
 
-- `Structure comparison <reference/structure_comparison.htm>`_: a tool for evaluating
+- `Structure comparison <reference/structure_comparison.html>`_: a tool for evaluating
   assorted model features and validation criteria for multiple related
   structures, and highlighting regions of difference.  Automatically
   superposes model and maps into a common frame of reference for viewing in
@@ -183,30 +183,30 @@ will also display a complete validation report at the end of refinement.
 Ligands
 -------
 
-- `LigandFit <reference/ligandfit.htm>`_: wizard for placing ligands in electron
+- `LigandFit <reference/ligandfit.html>`_: wizard for placing ligands in electron
   density maps, accounting for necessary conformational changes.
 
-- `eLBOW <reference/elbow.htm>`_: electronic Ligand Builder and Optimization
+- `eLBOW <reference/elbow.html>`_: electronic Ligand Builder and Optimization
   Workbench, a tool for generating restraints (and geometries) for any
   molecule, using a variety of inputs including PDB file and SMILES string.
 
-- `REEL <reference/reel.htm>`_: "Restraints Editor Especially Ligands", a graphical
+- `REEL <reference/reel.html>`_: "Restraints Editor Especially Ligands", a graphical
   editor for CIF files, also serves as a frontend to eLBOW.  Currently runs
   as a separate program. (GUI only)
 
-- `Ligand search <reference/ligand_identification.htm>`_: program for identifying
+- `Ligand search <reference/ligand_identification.html>`_: program for identifying
   unknown blobs of electron density and placing appropriate ligand(s).
 
 Reflection tools
 ----------------
 
-- `Reflection file editor <reference/reflection_file_editor.htm>`_: utility for
+- `Reflection file editor <reference/reflection_file_editor.html>`_: utility for
   merging reflection files and creating or extending R-free flags. (GUI only)
 
-- `Calculate F(model) <reference/fmodel.htm>`_: utility for generating structure
+- `Calculate F(model) <reference/fmodel.html>`_: utility for generating structure
   factors (as real or complex numbers) from a model alone.
 
-- `Import CIF structure factors <reference/cif_as_mtz.htm>`_: convert a CIF file (used
+- `Import CIF structure factors <reference/cif_as_mtz.html>`_: convert a CIF file (used
   by the PDB to store deposited experimental data) to an MTZ file.  This will
   automatically fetch data for a known ID from the PDB, or you may supply
   your own files.
@@ -215,11 +215,11 @@ Reflection tools
   values for weak and negative intensities.  This is also run automatically
   as part of several programs, including phenix.refine and the Phaser GUIs.
 
-- `Model-based phases <reference/reciprocal_space_arrays.htm>`_: calculate phases and
+- `Model-based phases <reference/reciprocal_space_arrays.html>`_: calculate phases and
   structure factors in a variety of formats (including Hendrickson-Lattman
   coefficients).
 
-- `3D and 2D data viewers <reference/data_viewer.htm>`_: these display data from
+- `3D and 2D data viewers <reference/data_viewer.html>`_: these display data from
   reflection files (usually
   amplitudes or intensities) as they appear in reciprocal space, either in
   a full 3D view or a pseudo-precession camera section.
@@ -227,45 +227,45 @@ Reflection tools
 Maps
 ----
 
-- `Create map coefficients <reference/create_maps.htm>`_: simple GUI for generating
+- `Create map coefficients <reference/create_maps.html>`_: simple GUI for generating
   likelihood-weighted maps, including 2mFo-DFc, mFo-DFc, anomalous, and
   others, including averaged "kick" maps.  Currently works only on untwinned
   data. (GUI only)
 
-- `FFT map coefficients <reference/mtz2map.htm>`_: convert an MTZ file containing
+- `FFT map coefficients <reference/mtz2map.html>`_: convert an MTZ file containing
   map coefficients to one or more CCP4 or XPLOR-format maps suitable for
   viewing in PyMOL, etc.  (Note that the main maps GUI and many other
   programs can also output these files, and the GUI will generate them for
   you as necessary for PyMOL.)
 
-- `AutoBuild - create omit map <reference/autobuild_gui.htm>`_: similar to the main
+- `AutoBuild - create omit map <reference/autobuild_gui.html>`_: similar to the main
   AutoBuild GUI, but used for omit map generation rather than building.
 
-- `RESOLVE density modification <reference/autobuild_gui.htm>`_: This is just a
-  simplified interface for running the `AutoBuild wizard <reference/autobuild.htm>`_ in
+- `RESOLVE density modification <reference/autobuild_gui.html>`_: This is just a
+  simplified interface for running the `AutoBuild wizard <reference/autobuild.html>`_ in
   map-only mode.
 
 - Isomorphous difference map: simple utility for creating a map from two
   sets of amplitudes.  Corresponds to the command-line program
   phenix.fobs_minus_fobs_map.
 
-- `Superpose maps <reference/superpose_maps.htm>`_: given two PDB files and
+- `Superpose maps <reference/superpose_maps.html>`_: given two PDB files and
   accompanying map coefficients
   (in MTZ format), superposes the PDB files and reorients the maps to
   follow them.  Output is the reoriented PDB files and maps in CCP4 format.
 
-- `Cut out density <reference/cut_out_density.htm>`_: extracts a section of electron
+- `Cut out density <reference/cut_out_density.html>`_: extracts a section of electron
   density from input map coefficients, and outputs new map coefficients
   (suitable for running molecular replacement in Phaser).
 
-- `Multi-crystal averaging <reference/multi_crystal_average.htm>`_: performs density
+- `Multi-crystal averaging <reference/multi_crystal_average.html>`_: performs density
   modification on different crystal forms of the same structure and averages
   the maps around the models.
 
 Model tools
 -----------
 
-- `PDB Tools <reference/pdbtools.htm>`_: various model manipulations such as
+- `PDB Tools <reference/pdbtools.html>`_: various model manipulations such as
   modifying atom records, geometry minimization, and generating "fake"
   structure factors.
 
@@ -273,13 +273,13 @@ Model tools
   PDB files (such as massive complexes like the ribosome).  Chain IDs will
   be modified if necessary (using up to two characters).
 
-- `Superpose PDB files <reference/superpose_pdbs.htm>`_: structure alignment program.
+- `Superpose PDB files <reference/superpose_pdbs.html>`_: structure alignment program.
 
-- `NCS identification <reference/find_ncs.htm>`_: determine appropriate NCS operators
+- `NCS identification <reference/find_ncs.html>`_: determine appropriate NCS operators
   and/or restraint groups based on a set of heavy-atom sites, macromolecule
   chains, or electron density.
 
-- `Apply NCS <reference/apply_ncs.htm>`_: apply NCS operators to a PDB file to generate
+- `Apply NCS <reference/apply_ncs.html>`_: apply NCS operators to a PDB file to generate
   the complete asymmetric unit.
 
 Note that a simpler NCS GUI is also available as a plugin
@@ -289,13 +289,13 @@ separately.
 Utilities
 ---------
 
-- `Calculate map correlations <reference/get_cc_mtz_mtz.htm>`_: interface to
+- `Calculate map correlations <reference/get_cc_mtz_mtz.html>`_: interface to
   ``phenix.get_cc_mtz_mtz``.
 
-- `Calculate model-map correlations <reference/get_cc_mtz_pdb.htm>`_: interface to
+- `Calculate model-map correlations <reference/get_cc_mtz_pdb.html>`_: interface to
   ``phenix.get_cc_mtz_pdb``.
 
-- `Generate Table 1 <reference/table_one.htm>`_: utility for extracting statistics from
+- `Generate Table 1 <reference/table_one.html>`_: utility for extracting statistics from
   PDB, reflection, and log files required for publication.
 
 - Diffraction image viewer: a simple utility for inspecting images in a
@@ -448,7 +448,7 @@ Coot integration
 program written by Paul Emsley.   Although we do not distribute it with
 Phenix, it is available as source and binaries for Linux (from the developer's
 page), and third-party Mac binaries are available (provided by Bill Scott).
-Documentation on how to use it with Phenix is `here <coot.htm>`_.  Phenix
+Documentation on how to use it with Phenix is `here <coot.html>`_.  Phenix
 will try to locate Coot on your system automatically, but if it is not found,
 you may specify the command to use under *Preferences->Graphics->Full path to
 Coot.*
@@ -461,7 +461,7 @@ PyMOL integration
 Warren DeLano.  We distribute an older precompiled version (0.99) with Phenix;
 however, we recommend installing the latest version and add the command
 under *Preferences->Graphics->Full path to PyMOL*.  More information is
-in the separate `PyMOL instructions <pymol.htm>`_.
+in the separate `PyMOL instructions <pymol.html>`_.
 
 --------------
 Reporting bugs

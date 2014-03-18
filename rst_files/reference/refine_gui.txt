@@ -9,9 +9,9 @@ The graphical interface for *phenix.refine* runs the unmodified command-line
 version; default settings are unchanged.  All parameters should be
 configurable through the GUI, although some of these (such as NCS restraint
 groups) are handled in a non-standard way.  This document describes the
-behavior of the GUI only; see the `phenix.refine <refinement.htm>`_
+behavior of the GUI only; see the `phenix.refine <refinement.html>`_
 documentation for details on specific parameters and methods.  There is also
-a `list of frequently asked questions <faqs/refine.htm>`_ about phenix.refine.
+a `list of frequently asked questions <faqs/refine.html>`_ about phenix.refine.
 
 At present the GUI has the following capabilities:
 
@@ -342,7 +342,7 @@ main window.
 **Note:** ReadySet look in the PDB's Chemical Components Database (distributed
 with PHENIX) for the three-letter code of any unknown ligands it finds, and use
 the database information to generate restraints.  For non-standard ligands,
-users are advised to run `eLBOW <elbow_gui.htm>`_ with a SMILES string or
+users are advised to run `eLBOW <elbow_gui.html>`_ with a SMILES string or
 equivalent source of information.
 Generating robust geometry restraints from a PDB file alone is
 problematic, because the coordinates are not a reliable guide to molecular
@@ -378,7 +378,7 @@ Atom selection
 ==============
 
 The atom-selection syntax used by PHENIX is described in the
-`phenix.refine manual <refinement.htm#anch297>`_.  In the GUI, any valid
+`phenix.refine manual <refinement.html#anch297>`_.  In the GUI, any valid
 atom selection can be visualized if you have a suitable graphics card
 and have already loaded a PDB file with valid symmetry information.  The
 graphics window can be opened by clicking the "View/pick" button next
@@ -457,14 +457,14 @@ be re-used in future runs.
 
 .. image:: ../images/refine_summary.png
 
-Additional tabs contain the full `validation summary <validation.htm>`_,
+Additional tabs contain the full `validation summary <validation.html>`_,
 which is essentially identical to the standalone validation program.
 
 Frequently Asked Questions
 ==========================
 
 Questions not specific to the graphical interface are answered `here
-<faqs/refine.htm>`_.
+<faqs/refine.html>`_.
 
   - **I have a parameter file that I want to use; how do I load this in the
     GUI?**  You have two options: add it to the list of input files in the

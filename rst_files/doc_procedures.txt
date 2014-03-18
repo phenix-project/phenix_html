@@ -8,10 +8,10 @@ To add a new page:
      and that phenix_html is checked out of SVN.
   2. Create a document, new_doc.txt, at ../phenix_sources/phenix_html/rst_files/
   3. Add the file to the SVN
-  4. Add 'new_doc.htm None None True' to html.list
+  4. Add 'new_doc.html None None True' to html.list
      in ../phenix_sources/phenix_html/
      (but see below for information about incorporating PHIL help)
-  5. Add a reference to new_doc.htm in phenix_documentation.html
+  5. Add a reference to new_doc.html in phenix_documentation.html
   6. execute: phenix_html.rebuild_docs
 
 To update an existing document, just edit the corresponding file in
@@ -34,7 +34,7 @@ If you want to have your documentation page show a full listing of program
 options with help text, the entry in html.list should look something like
 this::
 
-  new_doc.htm  phenix.command_line my_method  True
+  new_doc.html  phenix.command_line my_method  True
 
 Here, "phenix.command_line" is the path to a module, and "my_method" is the
 module containing a master_params object.  In other words, my_method.py is

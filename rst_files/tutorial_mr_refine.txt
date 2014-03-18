@@ -5,7 +5,7 @@ Molecular replacement, refinement, and rebuilding (RanGDP mutant)
 *We are grateful for Murray Stewart (MRC LMB, Cambridge) for this example.*
 
 **This tutorial also requires Coot**, which is not distributed with Phenix;
-see `here <coot.htm>`_ for details on obtaining Coot and using it with the
+see `here <coot.html>`_ for details on obtaining Coot and using it with the
 Phenix GUI.
 
 Overview
@@ -19,10 +19,10 @@ and rebuilding the structure in Coot.  Because the structure involved
 <http://www.rcsb.org/pdb/explore/explore.do?structureId=1QG2>`_)
 is relatively small and moderate resolution, it can be
 significantly improved in a reasonable amount of time without much difficulty.
-You should first read the documentation for the `Phenix GUI <phenix_gui.htm>`_
+You should first read the documentation for the `Phenix GUI <phenix_gui.html>`_
 before running this tutorial.  We also recommend reading the `molecular
-replacement overview <mr_overview.htm>`_ and the documentation for the
-`Xtriage <xtriage_gui.htm>`_ and `phenix.refine <refine_gui.htm>`_ GUIs.
+replacement overview <mr_overview.html>`_ and the documentation for the
+`Xtriage <xtriage_gui.html>`_ and `phenix.refine <refine_gui.html>`_ GUIs.
 
 As with other Phenix tutorial datasets, you can automatically set up a project
 with the necessary files from the GUI; the example will be listed in the
@@ -40,7 +40,7 @@ Step 0: Xtriage
 This step is not strictly necessary to solve the structure, but is strongly
 recommended for any dataset that you are unfamiliar with, especially if you
 are unsure whether and/or how the structure can be solved.  Launch `Xtriage
-<xtriage_gui.htm>`_ by clicking the icon under "Reflection tools" in the main
+<xtriage_gui.html>`_ by clicking the icon under "Reflection tools" in the main
 GUI.  Only the MTZ and FASTA files are used as input for this example (the
 "Reference PDB file" option only applies for models which have already been
 placed correctly and refined agains the data).
@@ -62,7 +62,7 @@ crystal.
 Step 1: Phaser-MR
 -----------------
 
-To solve the structure we will use the simple `Phaser-MR <phaser_mr.htm>`_ GUI,
+To solve the structure we will use the simple `Phaser-MR <phaser_mr.html>`_ GUI,
 which should be the first program in the "Molecular replacement" category.
 This interface is suitable for structures where we only need to use a single
 search model.  All three files (MTZ, PDB, and FASTA) should be used as input.
@@ -127,7 +127,7 @@ worth making any changes to the model until after refinement.
 Step 2: Refinement
 ------------------
 
-You can launch `phenix.refine <refine_gui.htm>`_ directly from Phaser by
+You can launch `phenix.refine <refine_gui.html>`_ directly from Phaser by
 clicking the button labeled "Run phenix.refine".  This will load the output
 model and the MTZ file;
 you should also input the sequence (this is not actually used in refinement,
@@ -316,18 +316,18 @@ There are several other ways you can use this dataset to learn about Phenix:
     search is performed. (Time: several minutes)
 
   - **Ligand fitting**: instead of resetting the occupancy for GDP and MG, you
-    could instead delete these residues and run `LigandFit <ligandfit_gui.htm>`_
+    could instead delete these residues and run `LigandFit <ligandfit_gui.html>`_
     to place GDP in the difference map. (Time: approx. 10 minutes, less if
     multiple processors are available.)
 
   - **AutoBuild**: you can let Phenix rebuild the structure for you in
-    `AutoBuild <autobuild_gui.htm>`_.  Try setting the "rebuild in place"
+    `AutoBuild <autobuild_gui.html>`_.  Try setting the "rebuild in place"
     both ways; True or Auto will move the existing atoms without adding or
     removing any, False will build an entirely new model.  (Time: several
     hours, depending on number of processors.)
 
   - **Advanced refinement**: try experimenting with the settings in
-    `phenix.refine <refine_gui.htm>`_ to get a feel for how these affect
+    `phenix.refine <refine_gui.html>`_ to get a feel for how these affect
     refinement.  Simulated annealing may be particularly interesting.  (Time:
     several minutes to ~1 hour, depending on options and number of processors.)
     If you continue rebuilding the structure after the second refinement, you

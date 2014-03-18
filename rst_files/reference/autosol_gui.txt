@@ -5,7 +5,7 @@ Experimental phasing in the AutoSol GUI
 NOTE: this document is mainly an introduction for users who are not familiar
 with AutoSol (or experimental phasing in general), rather than a comprehensive
 reference for the program.  The documentation for the `command-line version
-<autosol.htm>`_ covers the full range of options and functionality.
+<autosol.html>`_ covers the full range of options and functionality.
 
 AutoSol is an experimental phasing pipeline that combines HySS (Hybrid
 Substructure Search) for finding heavy-atom sites, Phaser or SOLVE for
@@ -110,13 +110,13 @@ Xtriage
 =======
 
 The first step in the phasing pipeline is running the data analysis program
-`phenix.xtriage <xtriage_gui.htm>`_, which identifies potential problems such
+`phenix.xtriage <xtriage_gui.html>`_, which identifies potential problems such
 as twinning, translational pseudo-symmetry, or weak anomalous signal.
 (Xtriage can also be run by itself, starting from the main GUI or the toolbar
 button in AutoSol, but you do not need to do this if AutoSol has already run
 it for you.)  The graphs and summary text from Xtriage may be viewed by
 clicking the button that appears in this section.  We recommend that you read
-the `documentation for the Xtriage GUI <xtriage_gui.htm>`_ for more
+the `documentation for the Xtriage GUI <xtriage_gui.html>`_ for more
 information about interpreting the output.  If AutoSol is not successful in
 phasing your structure, it is especially important to look over the Xtriage
 results before spending more effort on the same data.
@@ -161,7 +161,7 @@ sites should be clearly inside strong density.
 .. image:: ../images/p9_phased_maps.png
 
 The phasing and density modification steps generate several statistics; the
-`full AutoSol manual <autosol.htm>`_ provides a detailed explanation of these
+`full AutoSol manual <autosol.html>`_ provides a detailed explanation of these
 (see the section "Scoring of heavy-atom solutions").  Some approximate
 guidelines for their interpretation:
 
@@ -260,7 +260,7 @@ log-likelihood-gradient completion algorithm to add anomalous scatterers to the
 molecular replacement solution.  The resulting phases combine information from
 both sources, MR and SAD.  This procedure may be successful in situations where
 neither MR nor SAD is sufficient by itself.  To run MR-SAD, first carry out MR
-using either the Phaser-MR or `MRage <mrage.htm>`_ GUI;
+using either the Phaser-MR or `MRage <mrage.html>`_ GUI;
 when it is finished, use the molecular replacement solution as a partial
 model file in the AutoSol GUI.
 

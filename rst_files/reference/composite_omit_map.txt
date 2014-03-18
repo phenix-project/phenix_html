@@ -17,7 +17,7 @@ over multiple processors or cluster nodes to limit the runtime.
 
 The program ``phenix.composite_omit_map`` is used to generate these maps;
 internally, it is essentially no more than a wrapper for `phenix.refine
-<refinement.htm>`_ and
+<refinement.html>`_ and
 the underlying map-calculation code.  It may be run in three different modes:
 
   - **with simulated annealing**, which aggressively removes residual bias
@@ -95,15 +95,15 @@ Other options
 
 There are several other programs in Phenix with similar features:
 
-  - `AutoBuild <autobuild.htm>`_ has an older implementation of this method.
+  - `AutoBuild <autobuild.html>`_ has an older implementation of this method.
     A more powerful approach is to generate an "iterative-build" omit map
     (Terwilliger et al. 2008), which rebuilds the structure instead of
     annealing.
-  - `phenix.refine <refinement.htm>`_ can be used to manually generate omit
+  - `phenix.refine <refinement.html>`_ can be used to manually generate omit
     maps for a smaller selection of the model by specifying the
     ``omit_selection`` keyword.  The single-omit mode of the composite omit
     map program is equivalent to this.
-  - `phenix.maps <maps.htm>`_ can generate simple omit maps without refinement.
+  - `phenix.maps <maps.html>`_ can generate simple omit maps without refinement.
 
 References
 ----------

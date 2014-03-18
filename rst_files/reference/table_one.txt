@@ -10,7 +10,7 @@ Overview
 
 The utility ``phenix.table_one`` is a tool for generating the standard table
 of crystallographic statistics required by most scientific journals.  It
-combines the validation features of `phenix.model_vs_data <model_vs_data.htm>`_
+combines the validation features of `phenix.model_vs_data <model_vs_data.html>`_
 with the ability to calculate merging statistics normally only found in data
 processing log files.  Multiple structures may be input, and a separate column
 will be generated for each one.
@@ -27,7 +27,7 @@ Each structure has a separate tab for data input.  The final model and data
 file including R-free flags are required; these should usually be the same
 files you will submit to the PDB.  It is recommended that you provide any CIF
 (restraints) files for non-standard ligands present in the model; otherwise,
-`eLBOW <elbow.htm>`_ will be run to generate restraints for any unrecognized
+`eLBOW <elbow.html>`_ will be run to generate restraints for any unrecognized
 residues, but this is frequently less accurate when only the model is
 available.  If you have multiple CIF files in a single directory you may
 specify the directory path instead of the individual files.

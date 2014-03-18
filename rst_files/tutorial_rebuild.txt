@@ -35,7 +35,7 @@ If instead you get:
     PHENIX: undefined variable
 
 then you need to set up your PHENIX environment. See the `PHENIX
-installation <install.htm>`__ page for details of how to do this. If you
+installation <install.html>`__ page for details of how to do this. If you
 are using the C-shell environment (**csh**) then all you will need to do
 is add one line to your **.cshrc** (or equivalent) file that looks like
 this:
@@ -93,7 +93,7 @@ remainder of the text in the file using the sh (or bash) -shell
 
 The command **phenix.autobuild** runs the command-line version of
 AutoBuild (see `Automated Structure Solution using
-AutoBuild <autobuild.htm>`__ for all the details about AutoBuild
+AutoBuild <autobuild.html>`__ for all the details about AutoBuild
 including a full list of keywords).
 
 The arguments on the command line tell AutoBuild about the molecular
@@ -122,7 +122,7 @@ just run AutoBuild from a script (**run.sh**), you can run AutoBuild
 yourself from the command line with the same **phenix.autobuild ...**
 command. You can also run AutoBuild from a GUI, or by putting commands
 in another type of script file. All these possibilities are described in
-`Using the PHENIX Wizards <running-wizards.htm>`__.
+`Using the PHENIX Wizards <running-wizards.html>`__.
 
 Where are my files?
 -------------------
@@ -293,7 +293,7 @@ labels for **a2u-sigmaa.mtz**. The input labels in this list correspond
 to **FP SIGFP PHIB FOM HLA HLB HLC HLC FreeR\_flag** and there is no
 Free R data in the input data file. All the data that is expected for
 each input file in AutoBuild can be seen in the
-`AutoBuild <autobuild.htm#stdanch1>`__ web page under "Specifying which
+`AutoBuild <autobuild.html#stdanch1>`__ web page under "Specifying which
 columns of data to use from input data files".
 
 Guessing cell contents
@@ -322,7 +322,7 @@ The AutoBuild Wizard automatically runs phenix.xtriage on your input
 datafile to analyze it for twinning, outliers, translational symmetry,
 and other special conditions that you should be aware of. You can read
 more about xtriage in `Data quality assessment with
-phenix.xtriage <xtriage.htm>`__. The xtriage output is in the file
+phenix.xtriage <xtriage.html>`__. The xtriage output is in the file
 **a2u-sigmaa.mtz\_xtriage.log**. Part of the summary output from xtriage
 for this dataset looks like this:
 
@@ -673,7 +673,7 @@ a ligand or the macromolecule really goes.
 
 The next thing to do is to add in any ligands (metals, cofactors) if
 there is density for them. You can use the LigandFit Wizard (see
-`Automated Ligand Fitting using LigandFit <ligandfit.htm>`__ ) to help
+`Automated Ligand Fitting using LigandFit <ligandfit.html>`__ ) to help
 you fit ligands into your map automatically.
 
 If you do not obtain a good model, then it's not quite time to give up
@@ -700,5 +700,5 @@ Additional information
 ----------------------
 
 For details about the AutoBuild Wizard, see `Automated Model building
-and Rebuilding using AutoBuild <autobuild.htm>`__. For help on running
-Wizards, see `Using the PHENIX Wizards <running-wizards.htm>`__.
+and Rebuilding using AutoBuild <autobuild.html>`__. For help on running
+Wizards, see `Using the PHENIX Wizards <running-wizards.html>`__.

@@ -9,7 +9,7 @@ The program phenix.rosetta_refine provides a convenient wrapper for running
 `Rosetta <http://www.rosettacommons.org>`_ refinement of protein X-ray crystal
 structures (DiMaio et al. 2013), which integrates the Rosetta methods for
 conformational sampling with the X-ray targets, B-factor refinement, and
-map generation in `phenix.refine <refinement.htm>`_ (Afonine et al. 2012).
+map generation in `phenix.refine <refinement.html>`_ (Afonine et al. 2012).
 This is intended for use in difficult cases, especially at low resolution where
 it combines a wide radius of convergence with excellent geometry, and for
 preparing crystal structures for further modelling in Rosetta.
@@ -109,7 +109,7 @@ The program has several restrictions compared to phenix.refine:
     as these will be used later when running the final phenix.refine step.**
 
   - RNA is not supported; however, the separate program `ERRASER
-    <erraser.htm>`_ (Chou et al. 2012) which also employs both Rosetta and
+    <erraser.html>`_ (Chou et al. 2012) which also employs both Rosetta and
     Phenix may be used to optimize the RNA components of the model in real
     space.
 
@@ -126,7 +126,7 @@ The program has several restrictions compared to phenix.refine:
     Rosetta.
 
 Also note that the program is significantly more processor-intensive, although
-less so than `MR-Rosetta <mr_rosetta.htm>`_ (DiMaio et al. 2011).  We
+less so than `MR-Rosetta <mr_rosetta.html>`_ (DiMaio et al. 2011).  We
 recommend that you use a multiprocessor computer or queuing system for greatest
 efficiency.
 
@@ -158,7 +158,7 @@ for best performance:
     radius of convergence of traditional crystallographic refinement, it still
     requires that the molecule(s) be correctly placed in the unit cell.  If
     you are uncertain of your molecular replacement solution, we recommend
-    trying `MR-Rosetta <mr_rosetta.htm>`_ instead.
+    trying `MR-Rosetta <mr_rosetta.html>`_ instead.
 
   - The tests performed in DiMaio et al. 2013 indicated that the best results
     may come from combining orthogonal refinement methods such as DEN

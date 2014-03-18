@@ -40,7 +40,7 @@ Running validation
 ==================
 
 If you are performing refinement with the `*phenix.refine* GUI
-<refine_gui.htm>`_, the validation will be performed automatically as soon as
+<refine_gui.html>`_, the validation will be performed automatically as soon as
 the final model is ready.  To validate a model with diffraction data, launch
 the "Comprehensive validation" app from the main GUI.  At a minimum, you will
 need a PDB file, and should probably add a reflections file containing
@@ -238,7 +238,7 @@ decreases or the resolution gets worse.  Re-refinement with a slightly
 different protocol is often helpful; in particular, explicit hydrogens can
 help constrain the model.  The weight applied to X-ray terms during
 refinement may need to be reduced in favor of geometric restraints;
-this can be done automatically by `phenix.refine <refinement.htm>`_.
+this can be done automatically by `phenix.refine <refinement.html>`_.
 
 References
 ==========

@@ -8,9 +8,9 @@ Overview
 The electronic Ligand Builder and Optimization Workbench (eLBOW) is the
 primary tool for generating non-standard ligand restraints in Phenix.  In
 addition to existing as a standalone program, it is also used internally by
-the `LigandFit wizard <ligandfit_gui.htm>`_ and `phenix.ready_set
-<refine_gui.htm>`_ (integrated with the ``phenix.refine`` GUI).  In addition
-to eLBOW, a separate standalone `graphical restraint editor <reel.htm>`_ is
+the `LigandFit wizard <ligandfit_gui.html>`_ and `phenix.ready_set
+<refine_gui.html>`_ (integrated with the ``phenix.refine`` GUI).  In addition
+to eLBOW, a separate standalone `graphical restraint editor <reel.html>`_ is
 available for advanced customization of restraints and structures.
 
 There are actually two eLBOW GUI available in the Ligands menu. The first is
@@ -109,9 +109,9 @@ By default, eLBOW will generate a PDB file and a CIF file, suitable for use
 in any other Phenix app (or third-party software).  Additional output formats
 are available and may be selected by clicking the "Output. . ." button.
 You may also manipulate other details such as
-`chirality <elbow.htm#ChiralOptions>`__,
-`Cis/Trans <elbow.htm#CisTransOptions>`__,
-`ring pucker <elbow.htm#PuckerOptions>`__
+`chirality <elbow.html#ChiralOptions>`__,
+`Cis/Trans <elbow.html#CisTransOptions>`__,
+`ring pucker <elbow.html#PuckerOptions>`__
 and PDB file attributes
 (including ligand code if you are starting from a SMILES string).
 
@@ -126,11 +126,11 @@ and PDB file attributes
 What to do next
 ---------------
 
-We recommend opening the output CIF file in `REEL <reel.htm>`_ to make sure
+We recommend opening the output CIF file in `REEL <reel.html>`_ to make sure
 that the results are what you expect.  The CIF may be used in any applications
-requiring restraints as input (primarily `phenix.refine <refine_gui.htm>`_,
-the `validation tools <validation.htm>`_, and the `AutoBuild <autobuild.htm>`_
-and `LigandFit <ligandfit_gui.htm>`_ wizards).  If you have not already
+requiring restraints as input (primarily `phenix.refine <refine_gui.html>`_,
+the `validation tools <validation.html>`_, and the `AutoBuild <autobuild.html>`_
+and `LigandFit <ligandfit_gui.html>`_ wizards).  If you have not already
 placed your ligand in the model, the PDB file is suitable for this, but we
 recommend trying LigandFit first to save time.
 

@@ -19,9 +19,9 @@ Other map types
     use ``phenix.fobs_minus_fobs_map`` (documentation to be added).
 
   - For omit maps, including composite omit maps and iterative build omit
-    maps, use the `AutoBuild wizard <autobuild.htm>`_.
+    maps, use the `AutoBuild wizard <autobuild.html>`_.
 
   - You can also generate a simple simulated-annealing omit map by deleting
     the relevant part of the molecule and running `phenix.refine
-    <refinement.htm>`_ with ``simulated_annealing=True``.  (This is essentially
+    <refinement.html>`_ with ``simulated_annealing=True``.  (This is essentially
     the same was what is done by AutoBuild, however.)

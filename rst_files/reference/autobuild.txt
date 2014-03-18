@@ -51,7 +51,7 @@ Usage
 The AutoBuild Wizard can be run from the PHENIX GUI, from the
 command-line, and from parameters files. All three versions are
 identical except in the way that they take commands from the user. See
-`Using the PHENIX Wizards <running-wizards.htm>`__ for details of how to
+`Using the PHENIX Wizards <running-wizards.html>`__ for details of how to
 run a Wizard. The command-line version will be described here.
 
 How the AutoBuild Wizard works
@@ -209,7 +209,7 @@ Specifying other general parameters
 You can specify many more parameters as well. See the list of keywords,
 defaults and descriptions at the end of this page and also general
 information about running Wizards at `Using the PHENIX
-Wizards <running-wizards.htm>`__ for how to do this. Some of the most
+Wizards <running-wizards.html>`__ for how to do this. Some of the most
 common parameters are:
 
 ::
@@ -676,9 +676,9 @@ recombining the models.
 The AutoBuild Wizard is set up to take advantage of multi-processor
 machines or batch queues by splitting the work into separate tasks. See
 `Tutorial 4: Iterative model-building, density modification and
-refinement starting from experimental phases <tutorial_build.htm>`__ and
+refinement starting from experimental phases <tutorial_build.html>`__ and
 `Tutorial 6: Automatically rebuilding a structure solved by Molecular
-Replacement <tutorial_rebuild.htm>`__ for a description of the method
+Replacement <tutorial_rebuild.html>`__ for a description of the method
 used by the AutoBuild Wizard to run build jobs as sub-processes and to
 combine the results into single models.
 

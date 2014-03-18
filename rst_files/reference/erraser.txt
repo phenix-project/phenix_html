@@ -41,7 +41,7 @@ on your machine. Rosetta can be downloaded at
 <https://www.rosettacommons.org/software/>`_. For Rosetta installation
 notes and setting the environmental variable PHENIX_ROSETTA_PATH to tell
 Phenix where to find Rosetta, refer to the
-`phenix.mr_rosetta <mr_rosetta.htm>`_ documentation under "Installing Rosetta for use with mr_rosetta" (the same Rosetta installation will work for mr_rosetta and ERRASER).
+`phenix.mr_rosetta <mr_rosetta.html>`_ documentation under "Installing Rosetta for use with mr_rosetta" (the same Rosetta installation will work for mr_rosetta and ERRASER).
 
 Input files preparation
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,13 +62,13 @@ Examples
 ========
 
 Running ERRASER is easy, and can be done both through the `Phenix GUI
-<phenix_gui.htm>`_ or the command line.  In the GUI, the program is listed
+<phenix_gui.html>`_ or the command line.  In the GUI, the program is listed
 under the **Refinement** category.  Most configuration options are shown in
 the main window:
 
 .. image:: ../images/erraser_input.png
 
-Toolbar buttons to launch `phenix.maps <create_maps.htm>`_ and the FFT utility
+Toolbar buttons to launch `phenix.maps <create_maps.html>`_ and the FFT utility
 are also displayed.
 
 From the command-line you can type::
@@ -118,7 +118,7 @@ statistics:
 
 For the standard rebuilding mode, a subset of the MolProbity analyses will be
 displayed in additional tabs.  Lists of outliers are interactive with Coot (if
-installed); see the `validation documentation <validation.htm>`_ for more
+installed); see the `validation documentation <validation.html>`_ for more
 information.  In single-residue mode, a summary of the validation criteria for
 the specific residue being rebuilt is shown instead:
 

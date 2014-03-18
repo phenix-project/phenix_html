@@ -157,8 +157,8 @@ class FormatIndex(object):
     self.indexes = indexes
     self.cutoff = 10
     self.reject = set([])
-    #with open(os.path.join(HTML_PATH, 'lib', 'reject')) as f:
-    #  self.reject = set([i.strip() for i in f.readlines()])
+    with open(os.path.join(HTML_PATH, 'lib', 'reject')) as f:
+      self.reject = set([i.strip() for i in f.readlines()])
 
   def render(self):
     merged = self.merge_indexes(self.indexes, cutoff=self.cutoff)

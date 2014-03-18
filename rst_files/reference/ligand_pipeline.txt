@@ -6,10 +6,10 @@ Overview
 --------
 
 ``phenix.ligand_pipeline`` is an automation system combining `Xtriage
-<xtriage.htm>`_, `Phaser <mr_overview.htm>`_, `eLBOW <elbow.htm>`_,
-`phenix.refine <refinement.htm>`_, `AutoBuild <autobuild.htm>`_, and
-`LigandFit <ligandfit.htm>`_, with optional interaction with `Coot
-<coot.htm>`_.  In favorable cases, it can produce a near-finished structure
+<xtriage.html>`_, `Phaser <mr_overview.html>`_, `eLBOW <elbow.html>`_,
+`phenix.refine <refinement.html>`_, `AutoBuild <autobuild.html>`_, and
+`LigandFit <ligandfit.html>`_, with optional interaction with `Coot
+<coot.html>`_.  In favorable cases, it can produce a near-finished structure
 of a protein-ligand complex starting from minimal inputs, and can significantly
 reduce the manual effort required for more difficult structures.
 
@@ -86,7 +86,7 @@ the search number instead (e.g. ``copies=2``).  If Phaser finds fewer copies
 than expected, the number of expected ligands will automatically be adjusted.
 Non-water heteroatoms will be preserved at their original occupancies, but
 alternate conformations will be removed.  The model will also be processed
-with `Sculptor <sculptor.htm>`_ to ensure that all residues match the target
+with `Sculptor <sculptor.html>`_ to ensure that all residues match the target
 sequence.
 
 If you want to preserve a specific placement or orientation of the MR solution,
