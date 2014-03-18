@@ -275,12 +275,6 @@ def run (args, out=sys.stdout) :
   if (html_dir is None) :
     raise Sorry("phenix_html repository not found.")
   rst_dir = op.join(html_dir, "rst_files")
-  raw_dir = op.join(html_dir, "raw_files")
-  tmp_dir = op.join(html_dir, "tmp_files")
-  if (not op.isdir(raw_dir)) :
-    os.makedirs(raw_dir)
-  if (not op.isdir(tmp_dir)) :
-    os.makedirs(tmp_dir)
   top_dir = os.path.dirname(html_dir)
   docs_dir = os.path.join(top_dir, "doc")
   if op.exists(docs_dir) and params.clean :
@@ -335,6 +329,8 @@ def run (args, out=sys.stdout) :
                os.path.join(docs_dir, "icons"))
   replace_tree(os.path.join(html_dir, "images"),
                os.path.join(docs_dir, "images"))
+  replace_tree(os.path.join(html_dir, "css"),
+               os.path.join(docs_dir, "css"))
   print >> out, "  making symlinks in subdirectories"
   for dirname, dirnames, filenames in os.walk(rst_dir) :
     for dir_name in dirnames :
@@ -342,6 +338,7 @@ def run (args, out=sys.stdout) :
       if op.isdir(dest_path) :
         link_tree(op.join(docs_dir, "icons"), op.join(dest_path, "icons"))
         link_tree(op.join(docs_dir, "images"), op.join(dest_path, "images"))
+        link_tree(op.join(docs_dir, "css"), op.join(dest_path, "css"))
 
 if (__name__ == "__main__") :
   run(sys.argv[1:])
