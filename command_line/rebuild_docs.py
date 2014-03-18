@@ -1,252 +1,348 @@
+"""Convert PHENIX reStructuredText files to HTML
 
+This includes PHIL documentaiton and citations.
+
+Ian Rees, 2014
+
+"""
 from __future__ import division
-from phenix.utilities import toc_and_index
-from libtbx.utils import Sorry, null_out, import_python_object
-import libtbx.phil.command_line
-from libtbx import easy_run
-import libtbx.load_env
-import os.path as op
-import shutil
-import time
 import os
-import re
+import os.path as op
 import sys
+import shutil
+import tempfile
+import argparse
+import collections
+import re
+import codecs
+import inspect
 
+import docutils.core
+import xml.etree.ElementTree as ET
+
+import phenix.utilities.citations
+import iotbx.phil
+import libtbx.load_env
+import libtbx.utils
+
+HTML_PATH = libtbx.env.find_in_repositories(relative_path="phenix_html")
+if HTML_PATH is None:
+  raise Sorry("Could not find phenix_html.")
+
+class FormatCitation(object):
+  def __init__(self, citation):
+    self.citation = citation
+
+  def format(self):
+    return phenix.utilities.citations.format_citation_html(self.citation)
+
+class FormatPHIL(object):
+  def __init__(self, command):
+    search = ["master_params", "master_phil", "master_params_str", "master_phil_str", "get_master_phil"]
+    master_params = None
+    for i in search:
+      try:
+        master_params = libtbx.utils.import_python_object(
+          import_path='%s.%s'%(command, i),
+          error_prefix="",
+          target_must_be="",
+          where_str="").object
+        break
+      except Exception, e:
+        pass
+
+    if isinstance(master_params, libtbx.phil.scope):
+      pass
+    elif isinstance(master_params, (str, unicode)):
+      master_params = iotbx.phil.parse(master_params, process_includes=True)
+    elif hasattr(master_params, '__call__'):
+      master_params = master_params()
+    else:
+      pass
+
+    if not master_params:
+      raise Exception("No PHIL command found for %s." % command)
+    self.master_params = master_params
+
+  def format(self):
+    return ET.tostring(self._walk())
+
+  def _walk_elem(self, param, depth=0, parent=None, cls='phil-param'):
+    elem = ET.SubElement(parent, 'li', attrib={'class': cls})
+    span = ET.SubElement(elem, 'span', attrib={'class':'phil-name'})
+    span.text = str(param.name)
+    try:
+      param.words
+      words = ET.SubElement(elem, 'span', attrib={'class':'phil-words'})
+      words.text = " = " + " ".join([str(i) for i in param.words]) + " "
+    except Exception, e:
+      pass
+    if param.help:
+      help = ET.SubElement(elem, 'span', attrib={'class':'phil-help'})
+      help.text = str(param.help)
+    return elem
+
+  def _walk(self, params=None, depth=0, parent=None):
+    params = params or self.master_params
+    if parent is None:
+      parent = ET.Element('ul', attrib={'class':'phil'})
+    values = []
+    objects = []
+    res = params.objects
+    for i in res:
+      try:
+        x, y = i.name, i.type
+        values.append(i)
+      except Exception, e:
+        objects.append(i)
+    for i in values:
+      elem = self._walk_elem(i, depth=depth, parent=parent, cls='phil-param')
+    for i in objects:
+      elem = self._walk_elem(i, depth=depth, parent=parent, cls='phil-scope')
+      np = ET.SubElement(elem, 'ul')
+      self._walk(i, depth=depth+1, parent=np)
+    return parent
+
+class PublishRST(object):
+  """Convert RST to HTML."""
+  TAG_RE = re.compile("""({{(?P<tag>.+?):(?P<command>.+?)}})""")
+  KEYWORDS_RE = re.compile("""([a-zA-Z]{3,})""")
+
+  def __init__(self, filename, ignore_tags=False):
+    """Filename is RST .txt file."""
+    self.filename = filename
+    self.doc = None
+    self.data = None
+    self.ignore_tags = ignore_tags
+    with codecs.open(self.filename, 'r', 'utf-8') as f:
+      self.data = f.read()
+
+  def render(self):
+    """Convert RST to HTML, process all tags."""
+    template = os.path.join(HTML_PATH, 'template.html')
+    doc = docutils.core.publish_string(self.data, writer_name='html', settings_overrides={'template':template})
+    if (not self.ignore_tags) :
+      for tag in self.TAG_RE.finditer(doc):
+        doc = self._render_tag(tag.groups()[0], tag.group('tag'), tag.group('command'), doc)
+    self.doc = doc
+    return self.doc
+
+  def _render_tag(self, sub, tag, command, doc):
+    """Process a {{tag:command}}."""
+    result = ""
+    if tag == 'phil':
+      result = "<h3>List of available parameters:</h3>\n" + \
+               "<pre>\n" + FormatPHIL(command).format() + "</pre>"
+    elif tag == 'citation':
+      result = FormatCitation(command).format()
+    return re.sub(sub, result, doc)
+
+  def index(self):
+    """Create index."""
+    # Parse with ElementTree so we can find all text nodes.
+    dom = ET.fromstring(self.doc)
+
+    # xml.ElementTree uses XML-style namespaced tags.
+    index = collections.defaultdict(set)
+    for elem in dom.findall(""".//{http://www.w3.org/1999/xhtml}div[@class='section']"""):
+      for child in elem.findall(""".//"""):
+        for keyword in self._keywords(child.text):
+          index[keyword.lower()].add(elem.attrib['id'])
+    return index
+
+  def _keywords(self, text):
+    if text is None:
+      return set()
+    return set(self.KEYWORDS_RE.findall(text))
+
+class FormatIndex(object):
+  def __init__(self, indexes):
+    self.indexes = indexes
+    self.cutoff = 10
+    self.reject = set([])
+    with open(os.path.join(HTML_PATH, 'lib', 'reject')) as f:
+      self.reject = set([i.strip() for i in f.readlines()])
+
+  def render(self):
+    merged = self.merge_indexes(self.indexes, cutoff=self.cutoff)
+    with open(os.path.join(HTML_PATH, 'template.html')) as f:
+      template = f.read()
+    return template%{
+      'head':"""<title>Index</title>""",
+      'html_body':ET.tostring(self._format(merged))
+    }
+
+  def _format(self, merged):
+    parent = ET.Element('ul', attrib={'class':'phenix-index'})
+    for keyword, references in sorted(merged.items()):
+      elem = ET.SubElement(parent, 'li')
+      elem.text = str(keyword).encode('utf-8')
+      child = ET.SubElement(elem, 'ul')
+      for reference in sorted(references):
+        ref = ET.SubElement(child, 'li')
+        a = ET.SubElement(ref, 'a', attrib={'href':reference})
+        a.text = str(reference)
+    return parent
+
+  def merge_indexes(self, indexes, cutoff=10):
+    """Merged indexes."""
+    merged = collections.defaultdict(set)
+    # Number of times a word appears
+    appeared = collections.defaultdict(int)
+    for filename, index in indexes.items():
+      for keyword, locations in index.items():
+        for location in locations:
+          merged[keyword].add('%s#%s'%(filename, location))
+
+    for word in set(merged.keys()) & self.reject:
+      del merged[word]
+    for word in merged.keys():
+      if len(merged[word]) > cutoff:
+        del merged[word]
+    return merged
+
+class FormatOverview(object):
+  def __init__(self):
+    pass
+
+  def render(self):
+    with open(os.path.join(HTML_PATH, 'phenix_documentation.html')) as f:
+      doc = f.read()
+    with open(os.path.join(HTML_PATH, 'template.html')) as f:
+      template = f.read()
+    return template%{
+      'head': """<title>PHENIX Documentation</title>""",
+      'html_body': doc
+    }
+
+#######################################
+
+# FIXME ignore_errors should be False once we fix remaining issues...
 master_phil_str = """
-force = False
+clean = False
   .type = bool
+  .help = Delete the entire docs directory and re-populate.
+ignore_errors = True
+  .type = bool
+  .help = Don't crash on errors in RST processing.
 """
 
-# FIXME this is an improvement over separate scripts to create these files,
-# but it makes it impossible to combine the command-line and GUI documentation
 create_rst_from_modules = [
   ("mmtbx.command_line.reciprocal_space_arrays","reciprocal_space_arrays.txt"),
   ("mmtbx.command_line.map_value_at_point", "map_value_at_point.txt"),
   ("mmtbx.command_line.fmodel", "fmodel.txt"),
 ]
 
-def raw_from_rst_html (file_name, dirname=None, out=None):
-  raw_header_1 = """\
-<!--REMARK PHENIX TITLE START  Put your title here>
+def replace_tree (src_path, dest_path) :
+  if op.exists(dest_path) :
+    shutil.rmtree(dest_path)
+  shutil.copytree(src_path, dest_path)
 
+def link_tree (src_path, dest_path) :
+  if (sys.platform == "win32") :
+    if op.isdir(dest_path) :
+      shutil.rmtree(dest_path)
+    replace_tree(src_path, dest_path)
+  else :
+    if op.exists(dest_path) :
+      os.remove(dest_path)
+    os.symlink(src_path, dest_path)
 
-<H4><U>"""
+# FIXME this is really not a good idea
+def auto_generate_rst_files (out) :
+  sys.path.append(os.path.join(HTML_PATH, "scripts"))
+  import create_refinement_txt
+  import create_phenix_maps
+  import create_model_vs_data_txt
+  create_refinement_txt.run()
+  create_phenix_maps.run()
+  create_model_vs_data_txt.run()
+  for module_name, rst_file in create_rst_from_modules :
+    print >> out, "    %s" % rst_file
+    legend = libtbx.utils.import_python_object(
+      import_path=module_name+".legend",
+      error_prefix="",
+      target_must_be="",
+      where_str="").object
+    open(op.join("reference", rst_file), "w").write(legend)
 
-  raw_header_2 = """</U></H4>
-
-
-<!--REMARK PHENIX TITLE END-->
-
-<!--REMARK PHENIX BODY START   Put your text here.
-Anything enclosed in header html H4 H5 etc will go in the table of contents>
-"""
-
-  raw_footer = """\
-<!--REMARK PHENIX BODY END-->
-"""
-  if (out is None) : out = sys.stdout
-  title = ""
-  lines_init = iter(open(file_name).read().splitlines())
-  for line in lines_init:
-    if (line.startswith('<h1 class="title">')):
-      line = line[18:]
-      line = line[:line.rfind("<")]
-      title = line
-
-  lines = iter(open(file_name).read().splitlines())
-  for line in lines:
-    if (line == "<body>"):
-      break
-  else:
-    raise RuntimeError("<body> line not found.")
-  out.write(raw_header_1)
-  out.write(title)
-  out.write(raw_header_2)
-  for line in lines:
-    if (   line == "</body>"
-        or line == '<hr class="docutils footer" />'):
-      break
-    if (line.startswith('<div class="image">')):
-      print >> out, line
-      continue
-    if (line.startswith('<h1 class="title">')):
-      continue
-    if (line.startswith("<div ")):
-      continue
-    if (line == "</div>"):
-      continue
-    modify_hi = False
-    if (line.startswith("<h1>")):
-      assert line.endswith("</a></h1>")
-      modify_hi = True
-    elif (line.startswith("<h2>")):
-      assert line.endswith("</a></h2>")
-      modify_hi = True
-    if (modify_hi):
-      line = line[:-9]
-      line = line[line.rfind(">")+1:]
-      line = "<P><H5><U><B>%s</B></U></H5><P>" % line
-    elif (   line.startswith("<ul ")
-          or line.startswith("<ol ")):
-      line = line[:3]+">"
-    print >> out, line
-  else:
-    raise RuntimeError("</body> line not found.")
-  out.write(raw_footer)
-
-def run (args=(), out=None, log=None) :
+def run (args, out=sys.stdout) :
   cmdline = libtbx.phil.command_line.process(
     args=args,
     master_string=master_phil_str)
   params = cmdline.work.extract()
   if (out is None) : out = sys.stdout
-  if (log is None) : log = null_out()
   html_dir = libtbx.env.find_in_repositories(
     relative_path="phenix_html",
     test=os.path.isdir)
   if (html_dir is None) :
     raise Sorry("phenix_html repository not found.")
   rst_dir = op.join(html_dir, "rst_files")
-  raw_dir = op.join(html_dir, "raw_files")
-  tmp_dir = op.join(html_dir, "tmp_files")
-  if (not op.isdir(raw_dir)) :
-    os.makedirs(raw_dir)
-  if (not op.isdir(tmp_dir)) :
-    os.makedirs(tmp_dir)
-  sys.path.append(os.path.join(html_dir, "scripts")) # XXX gross!
-  # FIXME these need to go away
-  import create_refinement_txt
-  import create_phenix_maps
-  import create_model_vs_data_txt
-  os.chdir(html_dir)
   top_dir = os.path.dirname(html_dir)
   docs_dir = os.path.join(top_dir, "doc")
+  if op.exists(docs_dir) and params.clean :
+    shutil.rmtree(docs_dir)
+  if (not op.exists(docs_dir)) :
+    os.makedirs(docs_dir)
   print >> out, "Building PHENIX documentation in %s" % html_dir
   print >> out, "The complete documentation will be in:"
   print >> out, "  %s" % docs_dir
   print >> out, "  creating restructured text files"
   os.chdir(rst_dir)
-  create_refinement_txt.run()
-  create_phenix_maps.run()
-  create_model_vs_data_txt.run()
+  auto_generate_rst_files(out=out)
   os.chdir(rst_dir)
-  for module_name, rst_file in create_rst_from_modules :
-    print >> out, "    %s" % rst_file
-    legend = import_python_object(
-      import_path=module_name+".legend",
-      error_prefix="",
-      target_must_be="",
-      where_str="").object
-    open(op.join(rst_dir, "reference", rst_file), "w").write(legend)
+  indexes = {}
   print >> out, "  building HTML files from restructured text files"
-  if (not params.force) :
-    print >> out, \
-      "      processing modified files only (override with --force)"
   rst_files = []
   for dirname, dirnames, filenames in os.walk(rst_dir) :
     base_dir = os.path.basename(dirname)
     for file_name in filenames :
       relative_path = file_name
+      dest_path = docs_dir
       if (base_dir != "rst_files") :
         relative_path = op.join(base_dir, file_name)
-        if (not op.exists(op.join(raw_dir, base_dir))) :
-          os.makedirs(op.join(raw_dir, base_dir))
+        dest_path = op.join(docs_dir, base_dir)
+        if (not op.exists(dest_path)) :
+          os.makedirs(dest_path)
       if file_name.endswith(".txt") :
-        rst_files.append(relative_path)
-  html_files = []
-  def _cmp_make(f1, f2):
-    if os.stat(f1).st_mtime < os.stat(f2).st_mtime: return 1
-    return -1
-  rst_files.sort(_cmp_make)
-  for file_name in rst_files:
-    assert file_name.endswith(".txt")
-    disable = ("disable_rst2html" in open(file_name).read())
-    if (not disable) :
-      html_name = os.path.splitext(file_name)[0] + ".html"
-      raw_file = op.join(raw_dir, op.splitext(file_name)[0] + ".raw")
-      if op.exists(raw_file) and not params.force :
-        if (op.getmtime(raw_file) > op.getmtime(file_name)) :
-          continue
-      print >> out, "    converting %s to %s" % (os.path.basename(file_name),
-        os.path.basename(html_name))
-      stdout_lines = easy_run.fully_buffered(
-        ["docutils.rst2html", file_name]).raise_if_errors().stdout_lines
-      f = open(html_name, "w")
-      for line in stdout_lines :
-        print >> f, line
-      f.close()
-      html_files.append(html_name)
-  print >> out, "  converting restructured text HTML files to raw HTML files"
-  for file_name in html_files :
-    dirname = op.dirname(file_name)
-    raw_file = op.splitext(file_name)[0] + ".raw"
-    #print >> out, "    converting %s to %s" % (os.path.basename(file_name),
-    #  raw_file)
-    f = open(op.join(raw_dir, raw_file), "w")
-    raw_from_rst_html(file_name, dirname=dirname, out=f)
-    f.close()
-    os.remove(file_name)
-  print >> out, \
-    "  converting raw HTML files, creating tables-of-contents, and indexing"
-  os.chdir(tmp_dir)
-  toc_and_index.run(args=[html_dir], out=log)
-  assert os.path.isfile("phenix_index.htm")
-  print >> out, "  populating documentation directory %s" % docs_dir
-  if (os.path.exists(docs_dir)) :
-    shutil.rmtree(docs_dir)
-  os.makedirs(docs_dir)
-  shutil.copytree(os.path.join(html_dir, "icons"),
-                  os.path.join(docs_dir, "icons"))
-  shutil.copytree(os.path.join(html_dir, "images"),
-                  os.path.join(docs_dir, "images"))
-  for dirname, dirnames, filenames in os.walk(tmp_dir) :
-    base_dir = os.path.basename(dirname)
-    for file_name in filenames :
-      if file_name.endswith(".htm") or file_name.endswith(".html") :
-        file_path = file_name
-        dest_path = docs_dir
-        # enable one additional directory level
-        if (base_dir != "tmp_files") :
-          file_path = op.join(base_dir, file_name)
-          dest_path = op.join(docs_dir, base_dir)
-          if (not op.isdir(dest_path)) :
-            os.makedirs(dest_path)
-        shutil.copy(file_path, dest_path)
-  shutil.copy(op.join(html_dir, "phenix_documentation.html"), docs_dir)
+        outfile = "%s.html" % op.basename(file_name).rpartition(".")[0]
+        out_url = outfile
+        if (base_dir != "rst_files") :
+          out_url = op.join(base_dir, out_url)
+        out_path = op.join(dest_path, outfile)
+        print >> out, "    converting %s to %s" % (file_name, outfile)
+        try:
+          publish = PublishRST(relative_path,
+            ignore_tags=(file_name == "doc_procedures.txt"))
+          doc = publish.render()
+          indexes[out_url] = publish.index()
+        except Exception, e:
+          if (not params.ignore_errors) :
+            raise
+          print "      error: %s" % e
+        else :
+          with open(out_path, "w") as f:
+            f.write(doc)
+  os.chdir(docs_dir)
+  with open("phenix_index.html", "w") as f:
+    f.write(FormatIndex(indexes).render())
+  with open("index.html", "w") as f:
+    f.write(FormatOverview().render())
+  print >> out, "  copying images"
+  replace_tree(os.path.join(html_dir, "icons"),
+               os.path.join(docs_dir, "icons"))
+  replace_tree(os.path.join(html_dir, "images"),
+               os.path.join(docs_dir, "images"))
+  replace_tree(os.path.join(html_dir, "css"),
+               os.path.join(docs_dir, "css"))
   print >> out, "  making symlinks in subdirectories"
   for dirname, dirnames, filenames in os.walk(rst_dir) :
     for dir_name in dirnames :
       dest_path = op.join(docs_dir, dir_name)
       if op.isdir(dest_path) :
-        if (sys.platform == "win32") :
-          shutil.copytree(op.join(docs_dir, "icons"),
-                          op.join(dest_path, "icons"))
-          shutil.copytree(op.join(docs_dir, "images"),
-                          op.join(dest_path, "images"))
-        else :
-          os.symlink(op.join(docs_dir, "icons"), op.join(dest_path, "icons"))
-          os.symlink(op.join(docs_dir, "images"), op.join(dest_path, "images"))
-  os.chdir(docs_dir)
-  phenix_version = os.environ.get("PHENIX_VERSION", None)
-  release_tag = os.environ.get("PHENIX_RELEASE_TAG", None)
-  if (None in [phenix_version, release_tag]) :
-    version = "unknown (built %s)" % time.strftime("%b %d %Y", time.localtime())
-  else :
-    version = "%s-%s" % (phenix_version, release_tag)
-  def set_installed_version (file_name) :
-    html_in = open(file_name).readlines()
-    html_out = open(file_name, "w")
-    for line in html_in :
-      if ("INSTALLED_VERSION" in line) :
-        print >> html_out, re.sub("INSTALLED_VERSION", version, line)
-      else :
-        print >> html_out, line
-  set_installed_version("phenix_documentation.html")
-  set_installed_version(op.join("reference", "index.htm"))
-  if (sys.platform == "win32") :
-    shutil.copy("phenix_documentation.html", "index.html")
-  else :
-    os.symlink("phenix_documentation.html", "index.html")
+        link_tree(op.join(docs_dir, "icons"), op.join(dest_path, "icons"))
+        link_tree(op.join(docs_dir, "images"), op.join(dest_path, "images"))
+        link_tree(op.join(docs_dir, "css"), op.join(dest_path, "css"))
 
 if (__name__ == "__main__") :
-  run(args=sys.argv[1:])
+  run(sys.argv[1:])

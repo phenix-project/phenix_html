@@ -8,11 +8,8 @@ To add a new page:
      and that phenix_html is checked out of SVN.
   2. Create a document, new_doc.txt, at ../phenix_sources/phenix_html/rst_files/
   3. Add the file to the SVN
-  4. Add 'new_doc.html None None True' to html.list
-     in ../phenix_sources/phenix_html/
-     (but see below for information about incorporating PHIL help)
-  5. Add a reference to new_doc.html in phenix_documentation.html
-  6. execute: phenix_html.rebuild_docs
+  4. Add a reference to new_doc.html in phenix_documentation.html
+  5. execute: phenix_html.rebuild_docs
 
 To update an existing document, just edit the corresponding file in
 phenix_html/rst_files/, and then execute phenix_html.rebuild_docs.
@@ -31,16 +28,14 @@ Including PHIL parameter listing
 ================================
 
 If you want to have your documentation page show a full listing of program
-options with help text, the entry in html.list should look something like
-this::
+options with help text, simply place a directive like this at the end of
+the restructured text file:
 
-  new_doc.html  phenix.command_line my_method  True
+  {{phil:phenix.command_line.my_method}}
 
-Here, "phenix.command_line" is the path to a module, and "my_method" is the
-module containing a master_params object.  In other words, my_method.py is
-located in phenix/phenix/command_line/my_method.py.  The keywords for
-the program will automatically be extacted and listed at the end of the
-converted HTML page.
+This gives the path to the module containing the PHIL object from which to
+generate a full keyword listing.  Several different standard names will be
+checked when importing this object.
 
 Including citations
 ===================
@@ -51,7 +46,7 @@ BiBTeX format.  Each publication is tagged with a simple ID (this could simply
 be the PubMed ID, but we usually prefer a program name or other human-readable
 identifier).  In the documentation, full references may be automatically
 inserted (usually at the end of a document) by specifying
-"CITATION:article_id".  We encourage the use of this method for listing
+"{{citation:article_id}}".  We encourage the use of this method for listing
 references, as it allows them to be easily incorporated into other documents
 (or displayed as part of program output, in the GUI, etc.).
 
@@ -88,5 +83,7 @@ below::
   References section
   ------------------
 
-    - CITATION:phenix_refine
-    - CITATION:molprobity
+    {{citation:phenix_refine}}
+    {{citation:molprobity}}
+
+  {{phil:phenix.command_line.some_command_name}}
