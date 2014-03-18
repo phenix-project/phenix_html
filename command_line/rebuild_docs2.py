@@ -188,6 +188,7 @@ class FormatIndex(object):
     # Number of times a word appears
     appeared = collections.defaultdict(int)
     for filename, index in indexes.items():
+      print filename
       for keyword, locations in index.items():
         for location in locations:
           merged[keyword].add('%s#%s'%(filename, location))
@@ -215,10 +216,6 @@ class FormatOverview(object):
     }
 
 master_phil_str = """
-force = False
-  .type = bool
-  .help = Regenerate all HTML files, even if the restructured text has not \
-      been modified.
 clean = False
   .type = bool
   .help = Delete the entire docs directory and re-populate.
@@ -299,9 +296,6 @@ def run (args, out=sys.stdout) :
   os.chdir(rst_dir)
   indexes = {}
   print >> out, "  building HTML files from restructured text files"
-  if (not params.force) :
-    print >> out, \
-      "      processing modified files only (override with --force)"
   rst_files = []
   for dirname, dirnames, filenames in os.walk(rst_dir) :
     base_dir = os.path.basename(dirname)
@@ -315,15 +309,15 @@ def run (args, out=sys.stdout) :
           os.makedirs(dest_path)
       if file_name.endswith(".txt") :
         outfile = "%s.html" % op.basename(file_name).rpartition(".")[0]
+        out_url = outfile
+        if (base_dir != "rst_files") :
+          out_url = op.join(base_dir, out_url)
         out_path = op.join(dest_path, outfile)
-        if (op.exists(out_path)) and (not params.force) :
-          if (op.getmtime(out_path) > op.getmtime(relative_path)) :
-            continue
         print >> out, "    converting %s to %s" % (file_name, outfile)
         try:
           publish = PublishRST(relative_path)
           doc = publish.render()
-          indexes[out_path] = publish.index()
+          indexes[out_url] = publish.index()
         except Exception, e:
           if (not params.ignore_errors) :
             raise
