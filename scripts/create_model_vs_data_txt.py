@@ -8,10 +8,9 @@ import sys
 def run():
   html_dir = libtbx.env.find_in_repositories(relative_path="phenix_html")
   dest_dir = op.join(html_dir, "rst_files", "reference")
-  os.chdir(dest_dir)
   log = StringIO()
   mmtbx.model_vs_data.run(args=[], log = log)
-  ofn = open("model_vs_data.txt","w")
+  ofn = open(op.join(dest_dir, "model_vs_data.txt"), "w")
   ofn.write(log.getvalue())
   ofn.close()
 
