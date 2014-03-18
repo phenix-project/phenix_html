@@ -25,10 +25,12 @@ Individual programs may have additional citations.
 
 **How can I use multiple processors to run a job?**
 
-Only `Autosol <../autosol.html>`_,
-`Autobuild <../autobuild_gui.html>`_, `Ligandfit <../ligandfit_gui.html>`_,
-`phaser.MRage <../MRage.html>`_, `phenix.refine <../refine_gui.html>`_, the
-`structure comparison GUI <../structure_comparison.html>`_, and
+Only `Autosol <../reference/autosol.html>`_,
+`Autobuild <../reference/autobuild_gui.html>`_,
+`Ligandfit <../reference/ligandfit_gui.html>`_,
+`phaser.MRage <../reference/MRage.html>`_,
+`phenix.refine <../reference/refine_gui.html>`_, the
+`structure comparison GUI <../reference/structure_comparison.html>`_, and
 phenix.find_tls_groups support runtime configuration of parallel processing.
 In most cases this is done by adding the "nproc" keyword, for instance::
 

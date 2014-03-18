@@ -2,7 +2,8 @@ body {
   width: 800px;
   margin-left: auto;
   margin-right: auto;
-  font-family: Helvetica, Arial, Sans-Serif;
+  font-family: Verdana, Helvetica, Arial, Sans-Serif;
+  font-size: 0.9em;
 }
 img {
   max-width: 800px;
@@ -15,7 +16,7 @@ img {
   margin-right: 20px;
 }
 #header span {
-  font-size: 14pt;
+  font-size: 12pt;
   padding-bottom: 10px;
   font-style: italic;
 }
@@ -87,5 +88,13 @@ ul.phil {
   display: block;
 }
 
-
-
+/* section headings */
+h1 {
+  font-size: 16pt;
+}
+h2 {
+  font-size: 14pt;
+}
+h3 {
+  font-size: 14pt;
+}

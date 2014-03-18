@@ -129,7 +129,7 @@ class PublishRST(object):
     """Process a {{tag:command}}."""
     result = ""
     if tag == 'phil':
-      result = FormatPHIL(command).format()
+      result = "<pre>\n" + FormatPHIL(command).format() + "</pre>"
     elif tag == 'citation':
       result = FormatCitation(command).format()
     return re.sub(sub, result, doc)
@@ -187,7 +187,6 @@ class FormatIndex(object):
     # Number of times a word appears
     appeared = collections.defaultdict(int)
     for filename, index in indexes.items():
-      print filename
       for keyword, locations in index.items():
         for location in locations:
           merged[keyword].add('%s#%s'%(filename, location))
