@@ -1,6 +1,6 @@
 """Convert PHENIX reStructuredText files to HTML
 
-This includes including PHIL documentaiton and citations.
+This includes PHIL documentaiton and citations.
 
 Ian Rees, 2014
 
@@ -25,10 +25,9 @@ import iotbx.phil
 import libtbx.load_env
 import libtbx.utils
 
-html_dir = libtbx.env.find_in_repositories(relative_path="phenix_html")
-
-def package_file(filename):
-  return os.path.join(os.path.dirname(inspect.getfile(inspect.currentframe())), filename)
+HTML_PATH = libtbx.env.find_in_repositories(relative_path="phenix_html")
+if HTML_PATH is None:
+  raise Sorry("Could not find phenix_html.")
 
 class FormatCitation(object):
   def __init__(self, citation):
@@ -119,7 +118,7 @@ class PublishRST(object):
 
   def render(self):
     """Convert RST to HTML, process all tags."""
-    template = op.join(html_dir, 'template.html')
+    template = os.path.join(HTML_PATH, 'template.html')
     doc = docutils.core.publish_string(self.data, writer_name='html', settings_overrides={'template':template})
     for tag in self.TAG_RE.finditer(doc):
       doc = self._render_tag(tag.groups()[0], tag.group('tag'), tag.group('command'), doc)
@@ -158,12 +157,12 @@ class FormatIndex(object):
     self.indexes = indexes
     self.cutoff = 10
     self.reject = set([])
-    #with open(op.join(html_dir, 'lib', 'reject')) as f:
+    #with open(os.path.join(HTML_PATH, 'lib', 'reject')) as f:
     #  self.reject = set([i.strip() for i in f.readlines()])
 
   def render(self):
     merged = self.merge_indexes(self.indexes, cutoff=self.cutoff)
-    with open(op.join(html_dir, 'template.html')) as f:
+    with open(os.path.join(HTML_PATH, 'template.html')) as f:
       template = f.read()
     return template%{
       'head':"""<title>Index</title>""",
@@ -198,7 +197,6 @@ class FormatIndex(object):
     for word in merged.keys():
       if len(merged[word]) > cutoff:
         del merged[word]
-
     return merged
 
 class FormatOverview(object):
@@ -206,14 +204,16 @@ class FormatOverview(object):
     pass
 
   def render(self):
-    with open(op.join(html_dir, 'phenix_documentation.html')) as f:
+    with open(os.path.join(HTML_PATH, 'phenix_documentation.html')) as f:
       doc = f.read()
-    with open(op.join(html_dir, 'template.html')) as f:
+    with open(os.path.join(HTML_PATH, 'template.html')) as f:
       template = f.read()
     return template%{
       'head': """<title>PHENIX Documentation</title>""",
       'html_body': doc
     }
+
+#######################################
 
 master_phil_str = """
 clean = False
@@ -247,7 +247,7 @@ def link_tree (src_path, dest_path) :
 
 # FIXME this is really not a good idea
 def auto_generate_rst_files (out) :
-  sys.path.append(os.path.join(html_dir, "scripts"))
+  sys.path.append(os.path.join(HTML_PATH, "scripts"))
   import create_refinement_txt
   import create_phenix_maps
   import create_model_vs_data_txt
