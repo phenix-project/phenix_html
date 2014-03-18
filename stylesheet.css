@@ -1,0 +1,38 @@
+body {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#header {
+  border-bottom:solid 1px black;
+}
+#header img {
+  width:172px;
+  margin-right:20px;
+}
+#header span {
+  font-size:14pt;
+  padding-bottom:10px;
+  font-style:italic;      
+}
+.contents {
+  border:solid 1px black;
+  padding: 10px;
+}
+
+/* PHIL formatting */
+ul.phil {
+  list-style: none;
+  padding-left: 0px;
+}
+.phil-scope > span {
+  font-weight: bold;
+}
+.phil-words {
+  font-weight: bold;
+  color: red;
+}
+.phil-help {
+  font-weight: bold;
+  color: blue;
+}
