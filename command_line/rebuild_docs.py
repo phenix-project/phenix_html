@@ -68,7 +68,7 @@ class FormatPHIL(object):
     return ET.tostring(self._walk())
 
   def _walk_elem(self, param, depth=0, parent=None, cls='phil-param'):
-    elem = ET.SubElement(parent, 'li', attrib={'class': cls})
+    elem = ET.SubElement(parent, 'li', attrib={'class': cls, 'data-expert':str(param.expert_level or 0)})
     span = ET.SubElement(elem, 'span', attrib={'class':'phil-name'})
     span.text = str(param.name)
     try:
@@ -98,7 +98,7 @@ class FormatPHIL(object):
     for i in values:
       elem = self._walk_elem(i, depth=depth, parent=parent, cls='phil-param')
     for i in objects:
-      elem = self._walk_elem(i, depth=depth, parent=parent, cls='phil-scope')
+      elem = self._walk_elem(i, depth=depth, parent=parent, cls='phil-param phil-scope')
       np = ET.SubElement(elem, 'ul')
       self._walk(i, depth=depth+1, parent=np)
     return parent
@@ -131,8 +131,7 @@ class PublishRST(object):
     """Process a {{tag:command}}."""
     result = ""
     if tag == 'phil':
-      result = "<h3>List of available parameters:</h3>\n" + \
-               "<pre>\n" + FormatPHIL(command).format() + "</pre>"
+      result = FormatPHIL(command).format()
     elif tag == 'citation':
       result = FormatCitation(command).format()
     return re.sub(sub, result, doc)

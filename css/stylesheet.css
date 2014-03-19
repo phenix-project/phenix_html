@@ -29,21 +29,40 @@ img {
   padding: 10px;
 }
 
+/* section headings */
+h1 {
+  font-size: 16pt;
+}
+h2 {
+  font-size: 14pt;
+}
+h3 {
+  font-size: 14pt;
+}
+
 /* PHIL formatting */
 ul.phil {
+  font-family: monospace;
   list-style: none;
   padding-left: 0px;
+}
+ul.phil ul {
+  list-style: none;
+}
+li.phil-param {
+  clear:both;
+  padding: 5px;
 }
 .phil-scope > span {
   font-weight: bold;
 }
 .phil-words {
-  font-weight: bold;
   color: red;
 }
 .phil-help {
-  font-weight: bold;
   color: blue;
+  width: 500px !important;
+  float: right;
 }
 
 /* Drop-down menu */
@@ -80,21 +99,7 @@ ul.phil {
   list-style: none;
   background: #9ca9b2;
 }
-/*#nav > li > ul > li {
-  margin: 0px;
-  padding: 5px;
-}*/
 #nav > li:hover > ul {
   display: block;
 }
 
-/* section headings */
-h1 {
-  font-size: 16pt;
-}
-h2 {
-  font-size: 14pt;
-}
-h3 {
-  font-size: 14pt;
-}
