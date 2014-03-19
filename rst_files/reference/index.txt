@@ -1,23 +1,23 @@
 ================================================
-PHENIX Documentation - version INSTALLED_VERSION
+Phenix Documentation - version INSTALLED_VERSION
 ================================================
 
 
-Introduction to PHENIX
+Introduction to Phenix
 ----------------------
 
-- `What is PHENIX <../what-is-phenix.html>`__
-- `How to install PHENIX <../install.html>`__
-- `How to set up your environment to use PHENIX <../phenix-environment.html>`__
-- `Running PHENIX <../running-phenix.html>`__
-- `The PHENIX graphical interface <../phenix_gui.html>`__
-- `The main modules in PHENIX <../phenix-modules.html>`__
-- `FAQS: Frequently asked questions <../faqs/general.html>`__
+- `What is Phenix <../what-is-phenix.html>`__
+- `How to install Phenix <../install.html>`__
+- `How to set up your environment to use Phenix <../phenix-environment.html>`__
+- `Running Phenix <../running-phenix.html>`__
+- `The Phenix graphical interface <../phenix_gui.html>`__
+- `The main modules in Phenix <../phenix-modules.html>`__
+- `FAQS: Frequently asked questions <../faqs/index.html>`__
 - `Dictionary of common terms <../dictionary.html>`__
 - `Overview of file formats <../file_formats.html>`__
-- `Index for PHENIX documentation <../phenix_index.html>`__
+- `Index for Phenix documentation <../phenix_index.html>`__
 
-Tools for analysing and manipulating experimental data in PHENIX
+Tools for analysing and manipulating experimental data in Phenix
 ----------------------------------------------------------------
 
 - `Data quality assessment with phenix.xtriage <xtriage.html>`__ (`GUI version <xtriage_gui.html>`__)
@@ -28,7 +28,7 @@ Tools for analysing and manipulating experimental data in PHENIX
 - `Exploring the symmetry of your crystal with phenix.explore\_metric\_symmetry <explore_metric_symmetry.html>`__
 - `Importing data from the PDB with phenix.cif\_as\_mtz <cif_as_mtz.html>`__
 - `Visualizing reciprocal-space data <data_viewer.html>`__
-- `Using unmerged data in PHENIX <unmerged_data.html>`__
+- `Using unmerged data in Phenix <unmerged_data.html>`__
 
 Experimental phasing
 --------------------
@@ -42,7 +42,7 @@ Experimental phasing
 Molecular replacement
 ---------------------
 
-- `Overview of molecular replacement in PHENIX <mr_overview.html>`__
+- `Overview of molecular replacement in Phenix <mr_overview.html>`__
 - `Molecular replacement in the Phaser GUI <phaser_mr.html>`__
 - `MRage: automated molecular replacement <MRage.html>`__
 - `MR and model building with AutoMR, AutoBuild and Rosetta <mr_rosetta.html>`__
@@ -85,7 +85,7 @@ Structure refinement and restraint generation
 Validation
 ----------
 
-- `Validation in the PHENIX GUI <validation.html>`__
+- `Validation in the Phenix GUI <validation.html>`__
 - `phenix.model\_vs\_data: compute model, data and model-to-data fit statistics <model_vs_data.html>`__
 - `Low-resolution secondary structure validation with CaBLAM <cablam_validation.html>`__
 
@@ -94,12 +94,12 @@ Ligand fitting and restraints
 
 - `Automated Ligand Fitting using LigandFit <ligandfit.html>`__ (`GUI version <ligandfit_gui.html>`__)
 - `Automated Ligand Fitting using Guided Ligand Replacement (GLR) <guided_ligand_replacement.html>`__
-- `Automated ligand identification in PHENIX <ligand_identification.html>`__
+- `Automated ligand identification in Phenix <ligand_identification.html>`__
 - `Finding all the ligands in a map with phenix.find\_all\_ligands <find_all_ligands.html>`__
 - `Generating ligand coordinates and restraints using eLBOW <elbow.html>`__ (`GUI version <elbow_gui.html>`__)
 - `Editing ligand restraints from eLBOW using REEL <reel.html>`__
 - `Automated protein-ligand structure determination with phenix.ligand\_pipeline <ligand_pipeline.html>`__
-- `Frequently asked questions about ligand fitting <../faqs/ligand_fitting.html>`__
+- `Frequently asked questions about ligand fitting and restraints <../faqs/ligands.html>`__
 
 Carbohydrates
 -------------
@@ -146,26 +146,26 @@ Model utilities
 - `Calculating Fragment Antigen-Binding (Fab) elbow angle <fab_elbow_angle.html>`__
 - `Find Similar Structures in PDB <structure_search.html>`__
 
-Other tools in PHENIX
+Other tools in Phenix
 ---------------------
 
 - `Characterizing raw data and model with LABELIT <http://cci.lbl.gov/labelit>`__
-- `Running SOLVE/RESOLVE in PHENIX <running-solve-resolve.html>`__
+- `Running SOLVE/RESOLVE in Phenix <running-solve-resolve.html>`__
 - `Parallel validation and analysis of related structures <structure_comparison.html>`__
 - `phenix.reciprocal\_space\_arrays: compute various arrays such as Fcalc, Fmask, Fbulk, HL ... <reciprocal_space_arrays.html>`__
 - `Generating Table 1 for publication <table_one.html>`__
 
-Useful tools outside of PHENIX
+Useful tools outside of Phenix
 ------------------------------
 
 - `Manual model inspection and building with Coot <coot.html>`__
 - `Molecular graphics with PyMOL <pymol.html>`__
 - `MolProbity - An **Active** Validation Tool <molprobity_tool.html>`__
 
-PHENIX Examples and Tutorials
+Phenix Examples and Tutorials
 -----------------------------
 
-- `PHENIX examples <examples.html>`__
+- `Phenix examples <examples.html>`__
 - `Tutorial 1: Solving a structure using SAD data <tutorial_sad.html>`__
 - `Tutorial 2: Solving a structure using MAD data <tutorial_mad.html>`__
 - `Tutorial 3: Solving a structure using MIR data <tutorial_mir.html>`__
@@ -183,4 +183,4 @@ PHENIX Examples and Tutorials
 Appendix
 --------
 
-- `PHENIX html documentation generation procedures <doc_procedures.html>`__
+- `Phenix html documentation generation procedures <doc_procedures.html>`__

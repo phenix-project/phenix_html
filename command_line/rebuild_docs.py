@@ -10,12 +10,9 @@ import os
 import os.path as op
 import sys
 import shutil
-import tempfile
-import argparse
 import collections
 import re
 import codecs
-import inspect
 
 import docutils.core
 import xml.etree.ElementTree as ET
@@ -28,6 +25,16 @@ import libtbx.utils
 HTML_PATH = libtbx.env.find_in_repositories(relative_path="phenix_html")
 if HTML_PATH is None:
   raise Sorry("Could not find phenix_html.")
+
+def replace_phenix_version (doc) :
+  base_version = os.environ.get("PHENIX_VERSION")
+  release_tag = os.environ.get("PHENIX_RELEASE_TAG")
+  if (base_version is None) :
+    version = "unknown"
+  else :
+    assert (release_tag is not None)
+    version = "%s-%s" % (base_version, release_tag)
+  return doc.replace("INSTALLED_VERSION", version)
 
 class FormatCitation(object):
   def __init__(self, citation):
@@ -124,7 +131,7 @@ class PublishRST(object):
     if (not self.ignore_tags) :
       for tag in self.TAG_RE.finditer(doc):
         doc = self._render_tag(tag.groups()[0], tag.group('tag'), tag.group('command'), doc)
-    self.doc = doc
+    self.doc = replace_phenix_version(doc)
     return self.doc
 
   def _render_tag(self, sub, tag, command, doc):
@@ -207,6 +214,7 @@ class FormatOverview(object):
   def render(self):
     with open(os.path.join(HTML_PATH, 'phenix_documentation.html')) as f:
       doc = f.read()
+    doc = replace_phenix_version(doc)
     with open(os.path.join(HTML_PATH, 'template.html')) as f:
       template = f.read()
     return template%{
