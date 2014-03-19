@@ -2,15 +2,15 @@
 SAD and MR-SAD phasing with the Phaser GUI
 ==========================================
 
+.. contents::
+
+Introduction
+------------
+
 Since the two Phaser GUIs use a common base, much of the experimental phasing
 interface is similar to the `Phaser-MR GUI <phaser_mr.html>`_.  This section
 only covers features unique to SAD phasing, including instructions for MR-SAD.
 
-.. |br| raw:: html
-
-   <br /><br />
-
-|br|
 Phaser is used internally in the AutoSol wizard, which automates a complete
 experimental phasing pipeline including heavy atom search, phasing, density
 modification, and preliminary model-building.  (It is also capable of running
@@ -18,7 +18,6 @@ MR-SAD experiments.)  For that reason, we recommend trying AutoSol first,
 and falling back to standalone Phaser for more difficult problems where finer
 control over parameters is required.
 
-|br|
 This document only covers configuration of the Phaser GUI; for a detailed
 explanation of the various terms and search procedures referenced here as well
 as interpretation of results, consult the

@@ -3,7 +3,20 @@ Running PHENIX
 
 Different user interfaces are required depending on the needs of a
 diverse user community. There are currently three different user
-interfaces, each described below.
+interfaces, each described below.  For new users (and those without experience
+with Unix/Linux systems), we recommend using the graphical interface.
+
+The PHENIX GUI
+--------------
+
+To run the PHENIX Graphical Interface:
+
+::
+
+    % phenix &
+
+Please see the other documentation files to get more details about the
+`PHENIX GUI <phenix_gui.html>`__.
 
 Command Line Interface
 ----------------------
@@ -69,18 +82,6 @@ Note: all commands have their regular name and name qualified with the
 version. You can always use the version-qualified name to ensure which
 version of a command you are using (in case you have multiple versions
 of PHENIX or related applications installed).
-
-The PHENIX GUI
---------------
-
-To run the PHENIX Graphical Interface:
-
-::
-
-    % phenix &
-
-Please see the other documentation files to get more details about the
-`PHENIX GUI <phenix_gui.html>`__.
 
 Wizards
 -------

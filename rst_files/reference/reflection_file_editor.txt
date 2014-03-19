@@ -2,9 +2,10 @@
 Merging reflections with the Phenix GUI
 =======================================
 
-.. |br| raw:: html
+.. contents::
 
-   <br /><br />
+Overview
+--------
 
 Phenix includes a simple program for combining reflection data from
 different files and manipulating R-free flags, somewhat similar to the
@@ -46,7 +47,6 @@ non-crystallographic symmetry.  (Since the test set will not be evenly
 distributed across the entire resolution range, don't use this option if
 NCS is not present.)
 
-|br|
 An existing R-free set may also be extended to the entire resolution range of
 the output file, e.g. when switching to a higher-resolution dataset for a
 partially refined structure.  This will also use the highest possible lattice
@@ -54,7 +54,6 @@ symmetry, and will automatically determine the test set size.  If you
 previously assigned the test set in thin shells using DATAMAN or SFTOOLS,
 the program will attempt to detect this and issue a warning.
 
-|br|
 Phenix uses the CNS/XPLOR convention for R-free flags, where 1 marks the test
 set and 0 the "working" set.  By default, all R-free arrays will be written
 in this format as well, regardless of source; if you generated R-free flags in
