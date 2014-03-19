@@ -1,13 +1,18 @@
+==========================
 phenix.ensemble_refinement
-__________________________
+==========================
 
 
-**Purpose**
+Purpose
+-------
+
 phenix.ensemble_refinement is designed to combine X-ray structure refinement with molecular dynamics in order to produce ensemble models fitted to diffraction data.  These ensemble models can contain ~50-500 individual structures and simultaneously account for anisotopic and anharmonic distributions.
 
 Burnley BT, Afonine PV, Adams PD, Gros P. 2012. Modelling dynamics in protein crystal structures by ensemble refinement. eLife 1:e00311. doi: 10.7554/elife.00311. In Press.
 
-**General Procedure**
+General Procedure
+-----------------
+
 The input structure should be a final completed single structure model (e.g. publication ready). If TLS is used the TLS components must be present in the atom records (see phenix.tls). For optimal use explicit hydrogen should be added using either phenix.ready_set or phenix.pdbtools.  The simulation is launched using the command line:
 
 % phenix.ensemble_refinement model.pdb data.mtz [ligands.cif] [parameters]
@@ -16,7 +21,9 @@ For non-covalent ligands (excluding waters) it is recommended to use harmonic re
 
 % phenix.ensemble_refinement model.pdb data.mtz er_harmonic_restraints_selections=’resname PO4 and element P’
 
-**Parameter Optimisation**
+Parameter Optimisation
+----------------------
+
 There are three main empirical parameters should be optimised.
 
 **(1)** pTLS:
@@ -46,5 +53,9 @@ The non-conservative X-ray force generates heat (see Burnley et al 2012), thus a
 The relaxation time (or memory time) in picoseconds of the time-averaged restraints used in the simulation.  As tx increases more structures contribute to the target function (see Burnley et al. 2012 for more details) and the optimum value is correlated with resolution (see Burnley et al. 2012). If tx is not defined (tx = None) a value will be automatically selected based on the dataset resolution.  Values of 2 x automated Tx and 0.5 x automated Tx may also be tested. N.B. the simulation time is based on tx, larger values of tx will produce longer simulations.
 
 The default parameters have been set to give best as possible results.  However, it is strongly recommend that pTLS is optimised on a case by base basis and it may be necessary to optimise the temperature bath offset followed by tx.
+
+
+List of all available keywords
+------------------------------
 
 {{phil:mmtbx.refinement.ensemble_refinement}}

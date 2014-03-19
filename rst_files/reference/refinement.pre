@@ -24,15 +24,13 @@ the program details described in this document should apply to the GUI as well.
 Citation reference and comprehensive methodology details
 ********************************************************
 
-Afonine PV, Grosse-Kunstleve RW & Adams PD.
-The Phenix refinement framework. (2005).
-CCP4 Newsletter on Protein Crystallograph. 42.
+{{citation:phenix.refine}}
 
-Afonine PV, Grosse-Kunstleve RW, Echols N, Headd JJ, Moriarty NW, Mustyakimov M,
-Terwilliger TC, Urzhumtsev A, Zwart PH, Adams PD. (2012).
-Towards automated crystallographic structure refinement with phenix.refine.
-Acta Crystallogr D Biol Crystallogr. 68:352-67.
-PMID: `22505256 <http://www.ncbi.nlm.nih.gov/pubmed/22505256>`_
+{{citation:reference_model}}
+
+{{citation:bss2}}
+
+{{citation:rigid_body}}
 
 Available features at a glance
 ******************************
@@ -2399,11 +2397,6 @@ particular refinement run (no intermediate statistics, time, no file names,
 etc.). This part is supposed to go in PDB and the first part should be removed
 manually.
 
-Relevant reading
-****************
-
-{{citation:phenix.refine}}
-
 Feedback, more information
 --------------------------
 
@@ -2413,5 +2406,9 @@ Feedback, more information
 - More information: www.phenix-online.org or type::
 
    phenix.about
+
+
+List of all available keywords
+------------------------------
 
 {{phil:phenix.refinement}}

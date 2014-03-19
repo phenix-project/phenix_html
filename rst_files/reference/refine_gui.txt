@@ -15,7 +15,8 @@ behavior of the GUI only; see the `phenix.refine <refinement.html>`_
 documentation for details on specific parameters and methods.  There is also
 a `list of frequently asked questions <faqs/refine.html>`_ about phenix.refine.
 
-At present the GUI has the following capabilities:
+At present the GUI has the following capabilities in addition to the features
+included in phenix.refine:
 
   - automatic extraction of parameters from PDB and reflection files
   - detection of unknown ligands, and generation of restraint files
@@ -491,9 +492,15 @@ References
 ==========
 
 {{citation:phenix.refine}}
+
 {{citation:cdl}}
+
 {{citation:molprobity}}
+
 {{citation:reference_model}}
+
 {{citation:elbow}}
+
 {{citation:cdl_tnt}}
+
 {{citation:polygon}}
