@@ -285,15 +285,18 @@ def link_tree (src_path, dest_path) :
       os.remove(dest_path)
     os.symlink(src_path, dest_path)
 
-# FIXME this is really not a good idea
+# FIXME this is really not a good idea - except for the citations, which
+# do actually change regularly
 def auto_generate_rst_files (out) :
   sys.path.append(os.path.join(HTML_PATH, "scripts"))
   import create_refinement_txt
   import create_phenix_maps
   import create_model_vs_data_txt
+  import create_citations_txt
   create_refinement_txt.run()
   create_phenix_maps.run()
   create_model_vs_data_txt.run()
+  create_citations_txt.run()
   for module_name, rst_file in create_rst_from_modules :
     print >> out, "    %s" % rst_file
     legend = libtbx.utils.import_python_object(
