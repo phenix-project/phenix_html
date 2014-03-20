@@ -5,23 +5,8 @@
     
     %(head)s
     
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
     <link rel="stylesheet" type="text/css" href="css/html4css1.css" />
-    
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script type="text/javascript">
-    /*
-    $(document).ready(function() {
-      var hide = $(".phil-param[data-expert!=0]");
-      hide.hide();
-      $("#show-count").text(hide.length);
-      
-      $("#show-expert").click(function() {
-        $(".phil-param[data-expert!=0]").toggle();
-      })
-    });
-    */
-    </script>
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
     
   </head>
   <body>
@@ -40,11 +25,7 @@
       </a>
     </div>
     
-    <div id="body" style="clear:both">
-      %(html_body)s
-    </div>
-
-    <!-- <button id="show-expert">Toggle expert level</button> Hidden: <span id="show-count" /> -->
+    %(html_body)s
     
   </body>
 </html>

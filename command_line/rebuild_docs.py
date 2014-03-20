@@ -37,6 +37,8 @@ def replace_phenix_version (doc) :
   return doc.replace("INSTALLED_VERSION", version)
 
 class FormatCitation(object):
+  """Format a citation as HTML."""
+  
   def __init__(self, citation):
     self.citation = citation
 
@@ -44,7 +46,11 @@ class FormatCitation(object):
     return phenix.utilities.citations.format_citation_html(self.citation)
 
 class FormatPHIL(object):
+  """Format PHIL as HTML."""
+  
   def __init__(self, command):
+    """Command is a PHENIX command, e.g. phenix.refine"""
+    # Search the module for the following attributes:
     search = ["master_params", "master_phil", "master_params_str", "master_phil_str", "get_master_phil"]
     master_params = None
     for i in search:
@@ -58,6 +64,7 @@ class FormatPHIL(object):
       except Exception, e:
         pass
 
+    # Check if the module attribute is a string, a scope, ...
     if isinstance(master_params, libtbx.phil.scope):
       pass
     elif isinstance(master_params, (str, unicode)):
@@ -72,9 +79,11 @@ class FormatPHIL(object):
     self.master_params = master_params
 
   def format(self):
+    """Return PHIL scope as HTML."""
     return ET.tostring(self._walk())
 
   def _walk_elem(self, param, depth=0, parent=None, cls='phil-param'):
+    """Create element from PHIL param. cls are the CSS classes."""
     elem = ET.SubElement(parent, 'li', attrib={'class': cls, 'data-expert':str(param.expert_level or 0)})
     span = ET.SubElement(elem, 'span', attrib={'class':'phil-name'})
     span.text = str(param.name)
@@ -90,9 +99,11 @@ class FormatPHIL(object):
     return elem
 
   def _walk(self, params=None, depth=0, parent=None):
+    """Walk PHIL nodes. Returns an ElementTree element."""
     params = params or self.master_params
     if parent is None:
       parent = ET.Element('ul', attrib={'class':'phil'})
+    # ... check if param or scope.
     values = []
     objects = []
     res = params.objects
@@ -102,8 +113,10 @@ class FormatPHIL(object):
         values.append(i)
       except Exception, e:
         objects.append(i)
+    # Leaf elements for params.
     for i in values:
       elem = self._walk_elem(i, depth=depth, parent=parent, cls='phil-param')
+    # A nested ul element for scopes.
     for i in objects:
       elem = self._walk_elem(i, depth=depth, parent=parent, cls='phil-param phil-scope')
       np = ET.SubElement(elem, 'ul')
@@ -112,6 +125,7 @@ class FormatPHIL(object):
 
 class PublishRST(object):
   """Convert RST to HTML."""
+  # Regular expressions for parsing {{tags}} and keywords.
   TAG_RE = re.compile("""({{(?P<tag>.+?):(?P<command>.+?)}})""")
   KEYWORDS_RE = re.compile("""([a-zA-Z]{3,})""")
 
@@ -125,10 +139,11 @@ class PublishRST(object):
       self.data = f.read()
 
   def render(self):
-    """Convert RST to HTML, process all tags."""
+    """Return RST as HTML and process {{tags}}."""
     template = os.path.join(HTML_PATH, 'template.html')
     doc = docutils.core.publish_string(self.data, writer_name='html', settings_overrides={'template':template})
-    if (not self.ignore_tags) :
+    # Process tags.
+    if not self.ignore_tags:
       for tag in self.TAG_RE.finditer(doc):
         doc = self._render_tag(tag.groups()[0], tag.group('tag'), tag.group('command'), doc)
     self.doc = replace_phenix_version(doc)
@@ -145,11 +160,15 @@ class PublishRST(object):
 
   def index(self):
     """Create index."""
+    index = collections.defaultdict(set)
     # Parse with ElementTree so we can find all text nodes.
-    dom = ET.fromstring(self.doc)
+    try:
+      dom = ET.fromstring(self.doc)
+    except Exception, e:
+      print "Couldn't index: %s"%e
+      return index
 
     # xml.ElementTree uses XML-style namespaced tags.
-    index = collections.defaultdict(set)
     for elem in dom.findall(""".//{http://www.w3.org/1999/xhtml}div[@class='section']"""):
       for child in elem.findall(""".//"""):
         for keyword in self._keywords(child.text):
@@ -157,19 +176,28 @@ class PublishRST(object):
     return index
 
   def _keywords(self, text):
+    """Parse keywords from string."""
     if text is None:
       return set()
     return set(self.KEYWORDS_RE.findall(text))
 
 class FormatIndex(object):
+  """Index page."""
+  # TODO: Maybe this should take list of PublishRST instances
+  #   instead of dict of their index() results.
+  
   def __init__(self, indexes):
+    """Indexes is key: filename, value: PublishRST.index()"""
     self.indexes = indexes
+    # Maximum occurrences of a term.
     self.cutoff = 10
+    # List of words to ignore in index.
     self.reject = set([])
     with open(os.path.join(HTML_PATH, 'lib', 'reject')) as f:
       self.reject = set([i.strip() for i in f.readlines()])
 
   def render(self):
+    """Return HTML formatted index page."""
     merged = self.merge_indexes(self.indexes, cutoff=self.cutoff)
     with open(os.path.join(HTML_PATH, 'template.html')) as f:
       template = f.read()
@@ -179,6 +207,7 @@ class FormatIndex(object):
     }
 
   def _format(self, merged):
+    """Return ul element with nested ul's for each index term."""
     parent = ET.Element('ul', attrib={'class':'phenix-index'})
     for keyword, references in sorted(merged.items()):
       elem = ET.SubElement(parent, 'li')
@@ -191,15 +220,13 @@ class FormatIndex(object):
     return parent
 
   def merge_indexes(self, indexes, cutoff=10):
-    """Merged indexes."""
+    """Return the merged index. Cutoff is the max number of times a word may appear."""
     merged = collections.defaultdict(set)
-    # Number of times a word appears
-    appeared = collections.defaultdict(int)
     for filename, index in indexes.items():
       for keyword, locations in index.items():
         for location in locations:
           merged[keyword].add('%s#%s'%(filename, location))
-
+    # Filter result.
     for word in set(merged.keys()) & self.reject:
       del merged[word]
     for word in merged.keys():
@@ -208,10 +235,13 @@ class FormatIndex(object):
     return merged
 
 class FormatOverview(object):
+  """Format PHENIX Overview page."""
+
   def __init__(self):
     pass
 
   def render(self):
+    """Return HTML formatted overview page."""
     with open(os.path.join(HTML_PATH, 'phenix_documentation.html')) as f:
       doc = f.read()
     doc = replace_phenix_version(doc)
