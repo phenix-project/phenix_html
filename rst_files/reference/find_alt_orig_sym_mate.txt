@@ -243,11 +243,13 @@ The factor log(0.9) is subtracted to ensure that MLAD(\ **0**) = 0.0.
 MLAD can loosely be interpreted as a distance measure between
 structures. But it is not a metric in a strict mathematical sense since the
 triangle inequality is not fulfilled. Unlike a plain root mean square deviation
-MLAD will downplay the
-contributions of spatially distant C-alpha atom pairs which may
-otherwise lead to poor superpositions when the space group has a floating
-origin and the chains tested against one another consists of large
-unaligned domains. phenix.find\_alt\_orig\_sym\_mate.py will for each
+the logarithm in the MLAD formula will downplay the
+contributions of spatially distant atom pairs. If an RMSD were employed
+such contributions would not be downweighted which in turn
+may lead to incorrect superpositions when the chains tested against 
+one another consists of multiple domains
+where one domain has undergone a domain motion.
+phenix.find\_alt\_orig\_sym\_mate.py will for each
 chain in the fixed scope find the smallest MLAD with a copy of each
 chain in the moving scope for a given symmetry operation and alternative
 origin. When all chains in the fixed scope have been tested these copies
