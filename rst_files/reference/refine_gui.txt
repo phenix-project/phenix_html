@@ -115,6 +115,9 @@ additional options may be necessary or beneficial.
 
 .. _strategy:
 
+Parameterization (refinement strategy)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The first set of controls determines the parameterization of the model and
 the attributes to be refined.  By default, the Individual Sites, Individual
 ADPs (B-factors), and Occupancies strategies are selected, since these are
@@ -182,6 +185,9 @@ depending on model quality, data quality, and observation-to-parameters ratio.
     (which shows the location of unmodeled anomalous scatterers).
 
 .. _targets:
+
+Targets and restraints
+~~~~~~~~~~~~~~~~~~~~~~
 
 The refinement protocol can be further modified by manipulating various
 refinement targets, including restraints (structural and otherwise):
@@ -251,6 +257,9 @@ refinement targets, including restraints (structural and otherwise):
     future versions of Phenix.)
 
 .. _optimization:
+
+Optimization methods and other options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Several other options are available for the types of optimization
 used; these typically apply globally, except as noted.
