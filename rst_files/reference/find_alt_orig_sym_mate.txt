@@ -1,6 +1,8 @@
 phenix.find\_alt\_orig\_sym\_mate: Identify equivalent MR solutions of the same dataset irrespective of origin and symmetry operation
 =====================================================================================================================================
 
+.. contents::
+
 **Author(s)**
 -------------
 
@@ -44,7 +46,6 @@ this generally results in an origin offset between chains that is not a rational
 
 
 .. image:: ../images/find_alt_orig_sym_mate2.png
-   :width: 750
 
 
 From the results tab the superposed structure can be visually inspected in Coot or Pymol.
@@ -239,16 +240,22 @@ max(0.9, min(d\ **r**\ ·d\ **r**,1))) - log(0.9)),
 
 where d\ **r** is the difference vector between a pair of aligned
 C-alpha atoms and the sum is taken over all atom pairs in the alignment.
-The factor log(0.9) is subtracted to ensure that MLAD(\ **0**) = 0.0.
+The factor log(0.9) is subtracted to ensure that MLAD(\ **0**) = 0.0, i.e.
+that two identical structures produces the value zero.
+
 MLAD can loosely be interpreted as a distance measure between
 structures. But it is not a metric in a strict mathematical sense since the
 triangle inequality is not fulfilled. Unlike a plain root mean square deviation
-the logarithm in the MLAD formula will downplay the
-contributions of spatially distant atom pairs. If an RMSD were employed
-such contributions would not be downweighted which in turn
+the logarithm in the MLAD formula will downplay
+contributions of atom pairs where the atoms are spatially distant. If an RMSD were employed
+such contributions would contribute with the same amount as those atom pairs that 
+can be superposed perfectly. This in turn
 may lead to incorrect superpositions when the chains tested against 
 one another consists of multiple domains
-where one domain has undergone a domain motion.
+where one domain has undergone a domain motion, i.e. where a subset of atoms in
+one chain are bound to be spatially distant from the atoms in the other chain they have
+been paired with.
+
 phenix.find\_alt\_orig\_sym\_mate.py will for each
 chain in the fixed scope find the smallest MLAD with a copy of each
 chain in the moving scope for a given symmetry operation and alternative
@@ -307,16 +314,16 @@ Literature
 ----------
 
 **Algorithms for deriving crystallographic space-group information** R.W.
-Große-Kunstleve `*Acta Cryst.* **A55**, 383-395 (1999)
+Große-Kunstleve `Acta Cryst. A55, 383-395 (1999)
 <http://dx.doi.org/10.1107/S0108767398010186>`__
 
 **phenix.find_alt_orig_sym_mate** Robert D. Oeffner, Gábor Bunkóczi
-and Randy J. Read `*Computational Crystallography Newsletter 2012 January*,
+and Randy J. Read `Computational Crystallography Newsletter 2012 January,
 5-10 (2012) <http://www.phenix-online.org/newsletter/CCN_2012_01.pdf>`__
 
 **Secondary-structure matching (SSM), a new tool for fast protein structure
 alignment in three dimensions.** E. Krissinel and K. Henrick
-`*Acta Cryst.* **D60**, 2256-2268 (2004)
+`Acta Cryst. D60, 2256-2268 (2004)
 <http://dx.doi.org/10.1107/S0907444904026460>`__
 
 
