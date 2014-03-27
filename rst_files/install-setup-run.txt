@@ -1,0 +1,292 @@
+============================
+How to set up and use PHENIX
+============================
+
+.. contents::
+
+Installation
+============
+
+Platform support
+----------------
+
+PHENIX is supported on most common Linux platforms (kernel 2.6 or newer),
+Mac OS X version 10.4 or newer, and Windows XP or newer.  Binary installers
+are built on the following systems:
+
+  - Fedora Core 8 (64-bit)
+  - Fedora Core 12 (64-bit)
+  - CentOS 4 (32-bit)
+  - CentOS 5 (both)
+  - Ubuntu 10.04 (both)
+  - Windows XP (32-bit)
+  - Windows 7 (64-bit)
+  - Mac OS 10.4 (32-bit)
+  - Mac OS 10.6 (64-bit)
+
+Most of these installers should also run on newer systems and/or different
+Linux distributions such as Linux Mint or SuSE, as long as the architecture is
+the same.   Linux kernels prior to 2.6 are not supported, but kernel versions
+3.x should be compatible with the installers built on 2.6.
+
+If you are running Mac OS 10.6 (Snow Leopard) or newer, you will almost
+certainly want to use the 64-bit Mac installer.  On Linux, you
+can find out what platform you are running with the command 'uname -p';
+for machines reporting "i686", use the intel-linux-2.6 installer.  On Windows,
+the 64-bit Windows 7 installer only supports machines which actually run the
+64-bit version of the OS; if you are using 32-bit Windows 7 (or previous) you
+will need to use the 32-bit installer built on Windows XP.
+
+Space requirements
+-------------------
+
+For the complete PHENIX installation you will need approximately 2.5GB
+of disk space.
+
+Graphical installer (Mac and Windows)
+-------------------------------------
+
+Installation by this method uses familiar interfaces provided by the operating
+systems.  In both cases the destination directory is fixed: on Windows this
+will be the top level of the **C:** drive, on Mac it will be the folder
+**/Applications**.  You will need administrative priviledges to run the
+installers.
+
+Command-line installer (Mac and Linux)
+----------------------------------------
+
+You should obtain the latest distribution of PHENIX including the
+binary bundles for your machine architectures. Unpack the tar file::
+
+  % tar xvf phenix-installer-<version>-<platform>.tar
+
+Change to the installer directory::
+
+  % cd phenix-installer-<version>
+
+To install::
+
+  % ./install       [will install in /usr/local/phenix-<version> by default,
+                     requires root permissions]
+
+  % ./install --prefix=<directory>  [will make <directory>/phenix-<version> and install there]
+
+Note: ``<directory>`` must be a absolute path (i.e. starts with a /). A
+relative path starting with ../ will not work correctly.
+
+Installation of the binary version of PHENIX requires no compilation, only
+the generation of some data files, so you will probably have to wait about
+5-10 minutes for the installation to complete (depending on the performance of
+your installation platform).
+
+For license information please see ``LICENSE`` file.  For source of components
+see ``SOURCES``.
+
+Running Phenix
+==============
+
+If you intend to use the graphical interface and installed Phenix using the
+Mac or Windows graphical installers, no further configuration is necessary -
+just double-click the icon for the main Phenix GUI.  Instructions below are
+for users of the command-line installer and/or programs.
+
+Setting up the command-line environment
+---------------------------------------
+
+Once you have successfully installed PHENIX, to set up your environment
+please source the ``phenix_env`` file in the phenix installation directory
+(for example - replace "<version>" with the actual installed version,
+such as "1.8.4-1496"):
+
+::
+
+    % source /usr/local/phenix-<version>/phenix_env [sh/tcsh users]
+
+or
+
+::
+
+    % . /usr/local/phenix-<version>/phenix_env.sh [sh/bash users]
+
+To run jobs remotely, you need to source the ``phenix_env`` in your .cshrc
+(or equivalent) file.
+
+If you used the graphical Mac installer, you can find the files here:
+
+::
+
+  /Applications/PHENIX-<version>/Contents/phenix-<version>/phenix_env*
+
+The following environmental variables should now be defined (here with
+example values)::
+
+   PHENIX=/usr/local/phenix
+   PHENIX_INSTALLER_DATE=080920070957
+   PHENIX_VERSION=1.3
+   PHENIX_RELEASE_TAG=final
+   PHENIX_ENVIRONMENT=1
+   PHENIX_MTYPE=intel-linux-2.6-x86_64
+   PHENIX_MVERSION=linux
+   PHENIX_USE_MTYPE=intel-linux-2.6-x86_64
+
+It is not necessary (or useful) to define environmental variables for
+SOLVE/RESOLVE for PHENIX.  If you have them set in your environment they
+are ignored by PHENIX.
+
+Documentation
+-------------
+
+You can find documentation in the PHENIX GUI (under the Help menu).
+Alternatively, you can use a web browser to view the documentation
+supplied with PHENIX, by typing:
+
+::
+
+    % phenix.doc
+
+If this doesn't work because of browser installation issues then you can
+point a web browser to the correct location in your PHENIX installation
+(for example):
+
+::
+
+    % firefox /usr/local/phenix-<version>/doc/index.html
+
+or:
+
+::
+
+    % mozilla $PHENIX/doc/index.html
+
+For license information please see the LICENSE file.
+
+For the source of the components see SOURCES.
+
+Help
+----
+
+You can join the PHENIX bulletin board and/or view the archives:
+
+::
+
+    http://www.phenix-online.org/mailman/listinfo/phenixbb
+
+Alternatively you can send email to:
+
+::
+
+    bugs@phenix-online.org  (if you think you've found a bug)
+    help@phenix-online.org  (if you'd like to ask us questions)
+
+User interfaces
+===============
+
+Different user interfaces are required depending on the needs of a
+diverse user community. There are currently three different user
+interfaces, each described below.  For new users (and those without experience
+with Unix/Linux systems), we recommend using the graphical interface.
+
+The PHENIX GUI
+--------------
+
+For new users and anyone unfamiliar with Unix command lines, we recommend
+using the graphical interface.  To run, simply type this command:
+
+::
+
+    % phenix &
+
+Please see the other documentation files to get more details about the
+`PHENIX GUI <phenix_gui.html>`__.
+
+Command Line Interface
+----------------------
+
+Advanced users (or anyone developing automated pipelines) may prefer to use
+the command-line interface.
+This is particularly the case when rapid results are required, such as
+data quality assessment and twinning analysis, or substructure solution
+at the synchrotron beam line. Tools that facilitate the ease of use at
+the early stages of structure solution, such as data analyses
+(phenix.xtriage), substructure solution (phenix.hyss) and reflection
+file manipulations such as the generation of a test set, reindexing and
+merging of data (phenix.reflection_file_converter) are available via
+simple command line interfaces.  Most of the larger programs such as
+phenix.refine and the AutoSol, AutoBuild, and LigandFit wizards are also
+available as command-line tools.
+
+To illustrate the command line interface, the command used to run the
+program that carries out a data quality and twinning analyses is:
+
+::
+
+    phenix.xtriage my_data.sca [options]
+
+Further options can be given on the command line, or can be specified
+via a parameter file:
+
+::
+
+    phenix.xtriage my_parameters.def
+
+A similar interface is used for macromolecular refinement:
+
+::
+
+    phenix.refine my_model.pdb my_data.mtz
+
+Although SCALEPACK and MTZ formats are indicated in the above example,
+reflection file formats such as D\*TREK, CNS/XPLOR or SHELX can be used,
+as the format is detected automatically.
+
+Help for all command line applications can be obtained by use of the
+flag --help :
+
+::
+
+    phenix.refine --help
+
+There are also many other command line tools (described in detail
+elsewhere in this documentation). You can list them all with
+
+::
+
+   phenix.list
+
+or alternatively:
+
+::
+   phenix.list ave
+
+to list all methods that contain the characters ave in their names or
+descriptions.
+
+Note: all commands have their regular name and name qualified with the
+version. You can always use the version-qualified name to ensure which
+version of a command you are using (in case you have multiple versions
+of PHENIX or related applications installed).
+
+The runtime options for most PHENIX tools are controlled using a lightweight
+syntax called PHIL (Python Hierarchial Interface Language), which is designed
+to work both as command-line arguments or as more verbose parameter files.
+A basic overview of PHIL is available in the `overview of file formats
+<file_formats.html#phil>`__.
+
+Wizards
+-------
+
+The decision-making in strategies is local, with decisions being made at
+the end of each task to determine the next path in the network.
+Crystallographers typically make decisions in a very similar way during
+structure solution; a program is run, the outputs manually inspected and
+a decision made about the next step in the process. By contrast, a
+wizard provides a user interface that can make more global decisions, by
+considering all of the available information at each step in the
+process. Wizards can be run from both the command line and the PHENIX
+GUI. Details on wizards can be found in:
+
+-  `Using the PHENIX Wizards <running-wizards.html>`__
+-  `Automated Structure Solution using AutoSol <autosol.html>`__
+-  `Automated Model Building and Rebuilding using
+   AutoBuild <autobuild.html>`__
+-  `Automated Ligand Fitting using LigandFit <ligandfit.html>`__

@@ -6,14 +6,14 @@ phenix.refine - general purpose crystallographic structure refinement program
 
 .. contents::
 
-About this document
-*******************
+Overview
+********
 
 This document describes phenix.refine with the emphasis on the command line use.
 Graphical User Interface (GUI) is availbale for phenix.refine (see below).
 
 Graphical interface
-*******************
+-------------------
 
 A `complete graphical interface for phenix.refine <refine_gui.htm>`_ is
 available; it includes integration with several refinement-related utilities
@@ -22,7 +22,7 @@ such as `phenix.ready_set <ready_set.htm>`_, `phenix.simple_ncs_from_pdb
 the program details described in this document should apply to the GUI as well.
 
 Citation reference and comprehensive methodology details
-********************************************************
+--------------------------------------------------------
 
 {{citation:phenix.refine}}
 
@@ -33,7 +33,7 @@ Citation reference and comprehensive methodology details
 {{citation:rigid_body}}
 
 Available features at a glance
-******************************
+------------------------------
 
 - Coordinate refinement:
 
@@ -75,11 +75,11 @@ Available features at a glance
 - Refinement at subatomic resolution (approx. < 1.0 A) with IAS model
 - Refinement using twinned data
 - Local and global real-space refinement of coordinates including rotamer fitting
+- Optional omit map generation
 
 Current limitations
-*******************
+-------------------
 
-- No omit maps calculation (use PHENIX wizards for this)
 - TLS and individual anisotropic ADP cannot be refined at once for the same group
 - Certain refinement strategies are not available for joint X-ray/neutron refinement
 - No NCS constraints (restraints only)
@@ -89,7 +89,7 @@ Current limitations
 - Oxidation state of metals is ignored: for example, "+2" in Fe+2 will be ignored
 
 Remark on using amplitudes (Fobs) vs intensities (Iobs)
-*******************************************************
+-------------------------------------------------------
 
  Although phenix.refine will read both data types, intensities or amplitudes,
  internally it uses amplitudes in nearly all calculations. Intensities are
@@ -99,7 +99,7 @@ Remark on using amplitudes (Fobs) vs intensities (Iobs)
  is no *strong* points to argue using one data type over another.
 
 phenix.refine organization
-**************************
+--------------------------
 
 A phenix.refine refinement run always consists of three steps:
   1. Reading and processing inputs (model in PDB format, reflections in most
@@ -121,7 +121,7 @@ of a model as illustrated below:
 .. image:: ../images/phenix_refine_flexibility.png
 
 Running phenix.refine
-*********************
+---------------------
 
 phenix.refine can be run from the command line::
 
@@ -222,7 +222,7 @@ To see difference between default settings and a parameter file::
   % phenix.refine --diff-params lysozyme_refine_001.def
 
 Giving parameters on the command line or in files
-*************************************************
+-------------------------------------------------
 
 In phenix.refine parameters to control refinement can be given by the user on
 the command line::
@@ -2398,7 +2398,7 @@ etc.). This part is supposed to go in PDB and the first part should be removed
 manually.
 
 Feedback, more information
---------------------------
+**************************
 
 - Send bug reports to: bugs@phenix-online.org
 - For help write to: help@phenix-online.org
@@ -2409,6 +2409,6 @@ Feedback, more information
 
 
 List of all available keywords
-------------------------------
+******************************
 
 {{phil:phenix.refinement}}

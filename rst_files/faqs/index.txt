@@ -132,6 +132,15 @@ as the NCS relationships will be detected automatically.
 Graphical interface
 -------------------
 
+**When I start up the Phenix GUI for the first time, I get an error message
+"ImportError: libjpeg.so.62: cannot open shared object file: No such file or
+directory".  How do I fix this?**
+
+This error usually occurs on recent versions of Ubuntu, which do not install
+an essential library by default.  You can fix it by running this command::
+
+  sudo apt-get install libjpeg62
+
 **How do I find a specific parameter in the GUI?**
 
 Open the **Settings** menu, and select **Search all parameters**.  This can

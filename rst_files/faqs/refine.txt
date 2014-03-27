@@ -44,6 +44,15 @@ for heavy atoms, and anomalous difference map coefficients will automatically
 be created in the output MTZ file.  For these reasons, anomalous data are
 recommended, but in general the R-factors will be similar.
 
+**Should I use the MTZ file output by phenix.refine as input for the next
+round of refinement?**
+
+The only time this is necessary is when you refined against a dataset that
+did not include R-free flags, and let phenix.refine generate a new test set.
+In this case, you should use the file ending in "_data.mtz" for all future
+rounds of refinement.  You do not need to update the input file in each round,
+as the actual raw data (and R-free flags) are not modified.
+
 **I ran AutoSol to get a partial model that I now want to refine.  Which data
 file should I give as input: the original .sca file from HKL2000, or the file
 overall_best_refine_data.mtz from AutoSol?**
