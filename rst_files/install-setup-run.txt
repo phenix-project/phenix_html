@@ -182,8 +182,9 @@ User interfaces
 ===============
 
 Different user interfaces are required depending on the needs of a
-diverse user community. There are currently three different user
-interfaces, each described below.  For new users (and those without experience
+diverse user community.  Most modules in Phenix can be run either through
+a graphical user interface (GUI) or as command-line programs.
+For new users (and those without experience
 with Unix/Linux systems), we recommend using the graphical interface.
 
 The PHENIX GUI
@@ -271,22 +272,3 @@ syntax called PHIL (Python Hierarchial Interface Language), which is designed
 to work both as command-line arguments or as more verbose parameter files.
 A basic overview of PHIL is available in the `overview of file formats
 <file_formats.html#phil>`__.
-
-Wizards
--------
-
-The decision-making in strategies is local, with decisions being made at
-the end of each task to determine the next path in the network.
-Crystallographers typically make decisions in a very similar way during
-structure solution; a program is run, the outputs manually inspected and
-a decision made about the next step in the process. By contrast, a
-wizard provides a user interface that can make more global decisions, by
-considering all of the available information at each step in the
-process. Wizards can be run from both the command line and the PHENIX
-GUI. Details on wizards can be found in:
-
--  `Using the PHENIX Wizards <running-wizards.html>`__
--  `Automated Structure Solution using AutoSol <autosol.html>`__
--  `Automated Model Building and Rebuilding using
-   AutoBuild <autobuild.html>`__
--  `Automated Ligand Fitting using LigandFit <ligandfit.html>`__

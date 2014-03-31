@@ -5,7 +5,7 @@ Molecular replacement, refinement, and rebuilding (RanGDP mutant)
 *We are grateful for Murray Stewart (MRC LMB, Cambridge) for this example.*
 
 **This tutorial also requires Coot**, which is not distributed with Phenix;
-see `here <coot.html>`_ for details on obtaining Coot and using it with the
+see `here <../coot.html>`_ for details on obtaining Coot and using it with the
 Phenix GUI.
 
 Overview
@@ -19,16 +19,17 @@ and rebuilding the structure in Coot.  Because the structure involved
 <http://www.rcsb.org/pdb/explore/explore.do?structureId=1QG2>`_)
 is relatively small and moderate resolution, it can be
 significantly improved in a reasonable amount of time without much difficulty.
-You should first read the documentation for the `Phenix GUI <phenix_gui.html>`_
+You should first read the documentation for the `Phenix GUI <../phenix_gui.html>`_
 before running this tutorial.  We also recommend reading the `molecular
-replacement overview <mr_overview.html>`_ and the documentation for the
-`Xtriage <xtriage_gui.html>`_ and `phenix.refine <refine_gui.html>`_ GUIs.
+replacement overview <../reference/mr_overview.html>`_ and the documentation
+for the `Xtriage <../reference/xtriage_gui.html>`_ and `phenix.refine
+<../reference/refine_gui.html>`_ GUIs.
 
 As with other Phenix tutorial datasets, you can automatically set up a project
 with the necessary files from the GUI; the example will be listed in the
 "Molecular replacement" category of the example menu.
 
-  .. image:: images/rangdp_setup.png
+  .. image:: ../images/rangdp_setup.png
 
 There will be three input files for this project: the experimental data and
 R-free flags (MTZ format), the wild-type RanGDP used as a search model for
@@ -40,12 +41,12 @@ Step 0: Xtriage
 This step is not strictly necessary to solve the structure, but is strongly
 recommended for any dataset that you are unfamiliar with, especially if you
 are unsure whether and/or how the structure can be solved.  Launch `Xtriage
-<xtriage_gui.html>`_ by clicking the icon under "Reflection tools" in the main
+<../reference/xtriage_gui.html>`_ by clicking the icon under "Reflection tools" in the main
 GUI.  Only the MTZ and FASTA files are used as input for this example (the
 "Reference PDB file" option only applies for models which have already been
 placed correctly and refined agains the data).
 
-  .. image:: images/rangdp_xtriage.png
+  .. image:: ../images/rangdp_xtriage.png
 
 Once you have entered the files, click the Run button to start Xtriage.  The
 program should finish in a few seconds.  Take some time to look through the
@@ -57,12 +58,12 @@ be used instead.)  Note that based on the sequence, Xtriage has (correctly)
 suggested that only one copy is present in the asymmetric unit (ASU) of the
 crystal.
 
-  .. image:: images/rangdp_xtriage_result.png
+  .. image:: ../images/rangdp_xtriage_result.png
 
 Step 1: Phaser-MR
 -----------------
 
-To solve the structure we will use the simple `Phaser-MR <phaser_mr.html>`_ GUI,
+To solve the structure we will use the simple `Phaser-MR <../reference/phaser_mr.html>`_ GUI,
 which should be the first program in the "Molecular replacement" category.
 This interface is suitable for structures where we only need to use a single
 search model.  All three files (MTZ, PDB, and FASTA) should be used as input.
@@ -70,7 +71,7 @@ search model.  All three files (MTZ, PDB, and FASTA) should be used as input.
 or let Phaser guess based on the ensemble, but it is safer and simpler to
 supply detailed information.)
 
-  .. image:: images/rangdp_phaser_config.png
+  .. image:: ../images/rangdp_phaser_config.png
 
 Note that any time you have a field for a file name, there will be a magnifying
 glass icon on the same line (in GUIs like Xtriage this will be a separate
@@ -78,12 +79,12 @@ button).  Click this icon to see basic information about the contents of the
 file (or for text files, open in an editor).  The panel for the PDB file will
 look like this:
 
-  .. image:: images/rangdp_pdb_info.png
+  .. image:: ../images/rangdp_pdb_info.png
 
 For a reflection file, each array of data will have a separate panel, and you can
 select which array to view using the drop-down menu:
 
-  .. image:: images/rangdp_hkl_info.png
+  .. image:: ../images/rangdp_hkl_info.png
 
 Right-clicking on the magnifying glass will open a menu with additional options;
 later in the tutorial you will edit a PDB file this way.
@@ -95,7 +96,7 @@ Again, click "Run" to start Phaser; this should take several minutes.  You
 can watch the status window to see how molecular replacement is proceeding;
 we recommend familiarizing yourself with the log output.
 
-  .. image:: images/rangdp_phaser_run.png
+  .. image:: ../images/rangdp_phaser_run.png
 
 Phaser will open a new tab displaying the results when the job is finished.
 There are several obvious clues that model placement and phasing was
@@ -118,7 +119,7 @@ successful:
     improve upon running full refinement).
 
 
-  .. image:: images/rangdp_phaser_result.png
+  .. image:: ../images/rangdp_phaser_result.png
 
 At this time you can click "Open in Coot" to view the model and maps calculated
 by Phaser.  However, the map quality will be poor at this stage, so it is not
@@ -127,13 +128,13 @@ worth making any changes to the model until after refinement.
 Step 2: Refinement
 ------------------
 
-You can launch `phenix.refine <refine_gui.html>`_ directly from Phaser by
+You can launch `phenix.refine <../reference/refine_gui.html>`_ directly from Phaser by
 clicking the button labeled "Run phenix.refine".  This will load the output
 model and the MTZ file;
 you should also input the sequence (this is not actually used in refinement,
 but the post-refinement validation will check for sequence errors in the model).
 
-  .. image:: images/rangdp_refine_config.png
+  .. image:: ../images/rangdp_refine_config.png
 
 The appropriate column labels and symmetry information should be loaded for
 you automatically.  You should look at the options on the "Refinement settings"
@@ -145,7 +146,7 @@ log output and overall status.  You should familiarize yourself with the log
 output, especially as it provides some insight into how refinement is
 performed in Phenix, but for routine use the graphical view is sufficient.
 
-  .. image:: images/rangdp_refine_log.png
+  .. image:: ../images/rangdp_refine_log.png
 
 If you are running Phenix with default settings and have Coot installed, the
 GUI will start Coot with the current model and maps continuously updated.  (You
@@ -159,7 +160,7 @@ the R-free will converge near 0.30; the structure could probably benefit from
 a couple more cycles but it is clear that manual intervention will be needed,
 and the maps should be much better now.
 
-  .. image:: images/rangdp_refine_status.png
+  .. image:: ../images/rangdp_refine_status.png
 
 *(Note that depending on the operating system and version of Phenix you are
 using, the statistics you obtain may not exactly match those shown here; this is
@@ -170,7 +171,7 @@ results plus a number of validation metrics.  A list of output files is shown
 on the first of these tabs, along with buttons to start Coot or PyMOL.  You
 should now click the Coot button to view the final refined model and maps.
 
-  .. image:: images/rangdp_refine_results.png
+  .. image:: ../images/rangdp_refine_results.png
 
 Step 3: Rebuilding
 ------------------
@@ -182,7 +183,7 @@ problematic, both in terms of geometry and properties of the atoms and maps.
 In particular, the real-space correlation page lists a number of residues with
 a poor correlation coefficient (CC) to the electron density:
 
-  .. image:: images/rangdp_rscc.png
+  .. image:: ../images/rangdp_rscc.png
 
 In general a CC below 0.8 is worrisome; unlike other uses of this metric, even
 the worst-fit residues will never have a negative correlation.  In this model
@@ -190,14 +191,14 @@ the suspicious residues are clustered in several key regions, which can be
 visualized with the multi-criterion plot (which also displays geometry
 outliers):
 
-  .. image:: images/rangdp_multi_criterion.png
+  .. image:: ../images/rangdp_multi_criterion.png
 
 Clicking on any part of this chart, or any item in the list, will recenter
 Coot on the indicated residue.
 For now we will focus on the loop from Val 137 through Arg 140, which has
 obviously undergone a conformational change:
 
-  .. image:: images/rangdp_coot_badmaps.png
+  .. image:: ../images/rangdp_coot_badmaps.png
 
 Although we could attempt to drag the residues into the correct location, it is
 often easier (and more instructive!) to simply delete them and rebuild from
@@ -209,7 +210,7 @@ edited model from Coot.  You should specify a file prefix that clearly
 indicates the purpose of the maps.  All other options can be left alone, since
 we only need the default map coefficients.
 
-  .. image:: images/rangdp_new_maps.png
+  .. image:: ../images/rangdp_new_maps.png
 
 Calculating the maps should only take a few seconds; when complete, a new tab
 will appear with a button to load the results in Coot (along with the model
@@ -242,7 +243,7 @@ be much clearer now.  To rebuild, follow this general outline:
 
 Once you are finished the model should look approximately like this:
 
-  .. image:: images/rangdp_coot_rebuilt.png
+  .. image:: ../images/rangdp_coot_rebuilt.png
 
 There are a few other problems with the model, but we will skip some of these
 to save time.  First, however, the mutation of interest in this structure
@@ -250,7 +251,7 @@ needs to be made; in Phenix, if you included the sequence file the validation
 output will include a sequence check which flags Arg76 as a mismatch.  This
 can be corrected with Coot's "Mutate and AutoFit" function.
 
-  .. image:: images/rangdp_coot_mutation.png
+  .. image:: ../images/rangdp_coot_mutation.png
 
 At this point you should again save the current model and return to Phenix.
 
@@ -265,7 +266,7 @@ previous validation results).  Phenix provides a simple editor for manipulating
 the contents of PDB files; right-click on the magnifying glass next to the
 PDB file in the phenix.refine input file list, and select "Edit structure".
 
-  .. image:: images/rangdp_pdb_open.png
+  .. image:: ../images/rangdp_pdb_open.png
 
 In the editor, click the arrow buttons to open the tree view, and select the
 magnesium and GDP atom groups (hold down the Shift key to select more than
@@ -275,7 +276,7 @@ this and enter an occupancy of 1 in the window that appears, then click "Okay".
 Save the model and exit the editor; the modified PDB file should now have
 replaced the model from Coot.
 
-  .. image:: images/rangdp_pdb_edit.png
+  .. image:: ../images/rangdp_pdb_edit.png
 
 We can still use the default refinement settings, but this time it will also
 be helpful to place solvent atoms, so you should check the "Update waters"
@@ -294,7 +295,7 @@ Phenix tracks a variety of information about each job run through the GUI, which
 can be accessed through the job history panel in the main window.  If you have
 completed step 4 it should look something like this:
 
-  .. image:: images/rangdp_history.png
+  .. image:: ../images/rangdp_history.png
 
 Select a job and click the button labeled "Show details" to view statistics and
 input and output files for the job.  You may also input additional notes if you
@@ -303,7 +304,7 @@ delete it entirely (including the output directory, if any).  Double-clicking
 a job (or clicking the restore button in either the list view or the job info
 panel) will reload the results and configuration.
 
-  .. image:: images/rangdp_job_info.png
+  .. image:: ../images/rangdp_job_info.png
 
 Variations
 ----------
@@ -316,18 +317,18 @@ There are several other ways you can use this dataset to learn about Phenix:
     search is performed. (Time: several minutes)
 
   - **Ligand fitting**: instead of resetting the occupancy for GDP and MG, you
-    could instead delete these residues and run `LigandFit <ligandfit_gui.html>`_
+    could instead delete these residues and run `LigandFit <../reference/ligandfit_gui.html>`_
     to place GDP in the difference map. (Time: approx. 10 minutes, less if
     multiple processors are available.)
 
   - **AutoBuild**: you can let Phenix rebuild the structure for you in
-    `AutoBuild <autobuild_gui.html>`_.  Try setting the "rebuild in place"
+    `AutoBuild <../reference/autobuild_gui.html>`_.  Try setting the "rebuild in place"
     both ways; True or Auto will move the existing atoms without adding or
     removing any, False will build an entirely new model.  (Time: several
     hours, depending on number of processors.)
 
   - **Advanced refinement**: try experimenting with the settings in
-    `phenix.refine <refine_gui.html>`_ to get a feel for how these affect
+    `phenix.refine <../reference/refine_gui.html>`_ to get a feel for how these affect
     refinement.  Simulated annealing may be particularly interesting.  (Time:
     several minutes to ~1 hour, depending on options and number of processors.)
     If you continue rebuilding the structure after the second refinement, you

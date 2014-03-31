@@ -3,7 +3,7 @@ Frequently asked questions for phenix.refine
 ============================================
 
 Note: questions specific to the GUI can be found in its
-`documentation <refine_gui.html>`_.
+`documentation <../reference/refine_gui.html>`_.
 
 .. contents::
 
@@ -82,7 +82,8 @@ acceptable practice.  Traditional criteria for resolution limits include
 (among others) truncating the data at the resolution where the mean I/sigmaI
 falls below 2,
 but this may exclude valuable data.  See the documentation on `unmerged data
-<unmerged_data.html>`_ (especially the cited references) for more details.  In
+<../reference/unmerged_data.html>`_ (especially the cited references) for more
+details.  In
 general it may be useful to include additional, weaker data in refinement in
 the final stages, since the weighting performed by maximum-likelihood
 refinement prevents these from degrading the model, and may improve it in
@@ -206,8 +207,8 @@ protein structure at high resolution are typically 0.02 for RMS(bonds) and
 decreases the acceptable deviation from geometry restraints also decreases,
 so at 3.5 Angstrom, more appropriate values would be 0.01 and 1.0.  We
 recommend using the `POLYGON tool in the validation summary
-<validation.html#polygon>`_ to judge your structure relative to others at
-similar resolutions.
+<../reference/validation.html#polygon>`_ to judge your structure relative to
+others at similar resolutions.
 
 **Why does my output model have very poor geometry (RMS(bonds) and
 RMS(angles))?**
@@ -229,13 +230,13 @@ often help.
 **Why is phenix.refine messing up my ligand geometry?**
 
 This often happens
-when the restraints were generated using `ReadySet <ready_set.html>`_ from a
-PDB file, and
+when the restraints were generated using `ReadySet
+<../reference/ready_set.html>`_ from a PDB file, and
 the ligand code is not recognizable in the Chemical Components Database.
-`eLBOW <elbow_gui.html>`_ will try to guess the molecular topology based on
-the coordinates alone, but this is imprecise and may not yield the desired
-result.  For best results, restraints for non-standard ligands should be
-generated in eLBOW using a SMILES string or similar source of topology
+`eLBOW <../reference/elbow_gui.html>`_ will try to guess the molecular topology
+based on the coordinates alone, but this is imprecise and may not yield the
+desired result.  For best results, restraints for non-standard ligands should
+be generated in eLBOW using a SMILES string or similar source of topology
 information.
 
 **What can I do to make my low-resolution structure better?**
@@ -468,7 +469,7 @@ flags that I don't have access to.  How can I avoid biasing the R-free when
 I refine this model?**
 
 There are several methods for this, but the easiest is to reset the B-factors
-(using `PDBTools <pdbtools.html>`_ or the "Modify start model" option in
+(using `PDBTools <../reference/pdbtools.html>`_ or the "Modify start model" option in
 phenix.refine) and run simulated annealing on the coordinates.  If you are
 especially worried about bias you can alternately randomize the coordinates
 and perform energy minimization, or build an entirely new model starting from
@@ -494,9 +495,9 @@ There are several possible explanations for this:
 
   - Twinning with a relatively small twin fraction (perhaps 10%) may not
     obviously affect map quality, but can still have a significant impact
-    on R-factors.  Run `Xtriage <xtriage_gui.html>`_ to look for evidence
-    of twinning, and possible twin laws for using in phenix.refine.  (As noted
-    above, however, only one twin law may be used at a time.)
+    on R-factors.  Run `Xtriage <../reference/xtriage_gui.html>`_ to look for
+    evidence of twinning, and possible twin laws for using in phenix.refine.
+    (As noted above, however, only one twin law may be used at a time.)
   - Undiagnosed translational NCS (AKA translational pseudosymmetry) can
     have a similar effect.  In this case, the diffraction images may have
     been processed incorrectly, thus missing the fainter spots that result
@@ -552,9 +553,9 @@ Why isn't refinement working?**
 This frequently indicates that too few copies of the structure were placed by
 MR, and an additional chain needs to be added.  Remember that the predictions
 of unit cell contents based on the Matthews coefficient (performed by
-`Xtriage <xtriage_gui.html>`_, for example) only provide an estimate, not an
-exact answer.  At high resolution a solvent content of 40% or less is quite
-common.
+`Xtriage <../reference/xtriage_gui.html>`_, for example) only provide an
+estimate, not an exact answer.  At high resolution a solvent content of 40% or
+less is quite common.
 
 **Why am I seeing negative blobs in the difference (mFo-DFc) map in hydrophobic
 voids?**

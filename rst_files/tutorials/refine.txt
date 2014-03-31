@@ -6,10 +6,10 @@ Overview
 --------
 
 This tutorial will show you how to refine a simple structure using the
-`PHENIX graphical user interface (GUI) <phenix_gui.html>`_.  Please read the
-`phenix.refine documentation <refine_gui.html>`_ before running this tutorial,
+`PHENIX graphical user interface (GUI) <../phenix_gui.html>`_.  Please read the
+`phenix.refine documentation <../reference/refine_gui.html>`_ before running this tutorial,
 as it will familiarize you with the GUI and the options available for
-refinement.  You may also find the `dictionary of terms <dictionary.html>`_
+refinement.  You may also find the `dictionary of terms <../dictionary.html>`_
 helpful.
 
 Setup
@@ -17,11 +17,11 @@ Setup
 
 The example used
 for this tutorial is called **rnase-s**, and can be set up in the GUI as
-`described here <examples.html>`_.  In the tutorial setup window, select the
+`described here <../examples.html>`_.  In the tutorial setup window, select the
 dataset labeled "S. aureofaciens ribonuclease Sa" under "Refinement", and
 click "Okay".
 
-  .. image:: images/tutorial_refine_setup.png
+  .. image:: ../images/tutorial_refine_setup.png
 
 Once you have created the project, click the button labeled "phenix.refine"
 in the main GUI under "Refinement".
@@ -34,7 +34,7 @@ the starting model and the reflections.  These can be added either by dragging
 and dropping them into the input file list from the desktop, or by clicking
 "Add file" and selecting them from the dialog window.
 
-  .. image:: images/tutorial_refine_files.png
+  .. image:: ../images/tutorial_refine_files.png
 
 The space group and unit cell will be loaded automatically; these will always
 be taken from the last symmetry-containing file to be added (in this case, the
@@ -73,7 +73,7 @@ program; it will typically take 15 seconds to several minutes depending on the
 size of the structure and the number of processors used (on Windows this is
 limited to one).
 
-  .. image:: images/tutorial_refine_tls.png
+  .. image:: ../images/tutorial_refine_tls.png
 
 When the program is finished, atom selections for the TLS groups will be
 loaded into the list.  Select one of these and click the button labeled
@@ -82,7 +82,7 @@ manually if you want, but in this case the automatic selections are suitable.
 You can now save the TLS selections by clicking "Update and exit" on the
 toolbar of the TLS editor window.
 
-  .. image:: images/tutorial_refine_select.png
+  .. image:: ../images/tutorial_refine_select.png
 
 In the "Restraints and weighting" section, you should activate the NCS
 restraints option, as the RNase-S structure contains two copies of the
@@ -103,7 +103,7 @@ rotamers** to get a feel for how these options affect performance.
 At this point the **Refinement settings** tab should look approximately like
 the image below:
 
-  .. image:: images/tutorial_refine_options.png
+  .. image:: ../images/tutorial_refine_options.png
 
 The final tab controls output settings; these can also be left alone, but you
 may wish to set the run title, as this will appear in the job history in the
@@ -127,7 +127,7 @@ Because no R-free flags were present in the input file, a dialog will appear
 asking if you want to create new flags, with instructions for how to use these
 flags after refinement:
 
-  .. image:: images/tutorial_refine_newflags1.png
+  .. image:: ../images/tutorial_refine_newflags1.png
 
 You should click "Okay" to proceed; if you want to adjust the parameters used
 for creating the flags, click "Cancel" and then edit settings in the dialog
@@ -135,7 +135,7 @@ opened by clicking "Options" under "X-ray data" in the first configuration
 tab, then re-run.  Immediately after the job starts, another window will
 appear warning you that new flags have been created:
 
-  .. image:: images/tutorial_refine_newflags2.png
+  .. image:: ../images/tutorial_refine_newflags2.png
 
 This is not an error message, but prevents against unknowingly generating
 new R-free flags by mistake.
@@ -146,7 +146,7 @@ refinement statistics (including R-factors, bond and angle deviations, and
 validation scores), both for the current model and plotted over the course of
 refinement:
 
-  .. image:: images/tutorial_refine_stats.png
+  .. image:: ../images/tutorial_refine_stats.png
 
 The appearance of the R-factor plot is an important indicator of whether the
 selected refinement options are appropriate or not.  In this case, since R-free
@@ -161,7 +161,7 @@ should be discarded.
 
 The first tab shows the complete log output:
 
-  .. image:: images/tutorial_refine_log.png
+  .. image:: ../images/tutorial_refine_log.png
 
 You can also view the log file itself by clicking "View log". Experienced
 users may not find it necessary to inspect the log, but we recommend that you
@@ -181,9 +181,9 @@ After refinement
 ----------------
 
 Once the job completes, additional tabs will appear reporting the output files,
-final statistics and a variety of `validation criteria <validation.html>`_:
+final statistics and a variety of `validation criteria <../reference/validation.html>`_:
 
-  .. image:: images/tutorial_refine_summary.png
+  .. image:: ../images/tutorial_refine_summary.png
 
 The output files will mostly take the form **${PREFIX}_${RUN_ID}.${EXTENSION}**,
 for instance "rnase-s_refine_19.mtz" in the image above;
@@ -211,7 +211,7 @@ included.  If you created a new set of flags, as was done for this tutorial,
 you should always use this MTZ file for future refinements.
 
 Guidelines for interpreting the validation results can be found in the
-`documentation for the validation GUI <validation.html>`_ or the external
+`documentation for the validation GUI <../reference/validation.html>`_ or the external
 `Molprobity tutorial <http://kinemage.biochem.duke.edu/teaching/csh2008/>`_
 from the Cold Spring Harbor Laboratory crystallography course.
 

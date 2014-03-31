@@ -5,10 +5,10 @@ Tutorial 7: Fitting a flexible ligand into a difference electron density map
 Overview
 --------
 
-This tutorial describes how to use the `LigandFit wizard <ligandfit_gui.html>`_
+This tutorial describes how to use the `LigandFit wizard <../reference/ligandfit_gui.html>`_
 to automatically place an ATP molecule in a difference map.  An older tutorial
 covering use of LigandFit on the command line is `still available
-<tutorial_ligandfit_cmdline.html>`_.
+<ligandfit_cmdline.html>`_.
 
 Setup
 -----
@@ -21,23 +21,24 @@ under the "Ligands" category.  The files can be added to the input list by
 dragging them from the desktop, or by clicking the "Add file" button and
 selecting them from the browser window.
 
-.. image:: images/nsfd2_ligandfit_input.png
+.. image:: ../images/nsfd2_ligandfit_input.png
 
 The space group and unit cell will be automatically loaded from the data
 file, and suitable column labels added to the "Input labels" menu.  In this
 case, we only have amplitudes available, so these will be used as input, and
 LigandFit will calculate an Fo-Fc map using model phases.  However, in many
 cases you will obtain optimal results by using an mFo-DFc map such as those
-output by `phenix.refine <refine_gui.html>`_ or `phenix.maps <create_maps.html>`_.
+output by `phenix.refine <../reference/refine_gui.html>`_ or `phenix.maps
+<../reference/create_maps.html>`_.
 
 For this example, the rest of the parameters can be left on default settings;
-consult the `full documentation <ligandfit_gui.html>`_ for explanation of what
+consult the `full documentation <../reference/ligandfit_gui.html>`_ for explanation of what
 these mean.  The only exception is "Number of processors"; if you have
 multiple processor cores available, you can set this higher.  Note that since
 the ligand structure has already been
 characterized in the PDB, we could simply enter the three-letter residue name
 ("ATP") under "Ligand code", instead of supplying the ATP as a PDB file.
-However, this will increase the runtime, since `eLBOW <elbow_gui.html>`_ will
+However, this will increase the runtime, since `eLBOW <../reference/elbow_gui.html>`_ will
 be run to generate coordinates.
 
 Running the program
@@ -46,20 +47,20 @@ Running the program
 Click "Run" on the toolbar ot launch LigandFit.  A new tab will appear
 showing the log output:
 
-.. image:: images/nsfd2_ligandfit_status.png
+.. image:: ../images/nsfd2_ligandfit_status.png
 
 LigandFit will start several child processes to sample a wide variety of
 ligand conformations.  The "Parallel jobs" tab will show the output of the
 individual runs as they progress; the best result will be selected for
 real-space refinement and be copied to the main output directory.
 
-.. image:: images/nsfd2_ligandfit_jobs.png
+.. image:: ../images/nsfd2_ligandfit_jobs.png
 
 At the end of the run, the summary tab will list the essential output files
 and the statistics for the final result, and active the buttons to launch
 other programs.
 
-.. image:: images/nsfd2_ligandfit_summary.png
+.. image:: ../images/nsfd2_ligandfit_summary.png
 
 Clicking "Open in Coot" will start Coot and load the difference map, starting
 model, and ligand structure.  Click on the result in the summary tab to
@@ -68,7 +69,7 @@ see that the fit is already very good.  (The excess difference density near
 the phosphate atoms belongs to an unmodeled magnesium ion and coordinating
 waters.)
 
-.. image:: images/nsfd2_ligandfit_coot.png
+.. image:: ../images/nsfd2_ligandfit_coot.png
 
 References
 ----------

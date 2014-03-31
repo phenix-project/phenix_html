@@ -5,16 +5,16 @@ Tutorial 6: solving a structure with Phaser-MR
 Overview
 --------
 
-This tutorial shows how to use the `Phaser-MR GUIs <phaser_mr.html>`_ to solve
+This tutorial shows how to use the `Phaser-MR GUIs <../reference/phaser_mr.html>`_ to solve
 structures by molecular replacement, using example data included with the
 Phenix distribution.  We recommend reading the
-`MR overview <mr_overview.html>`_ before running these tutorials (and for
+`MR overview <../reference/mr_overview.html>`_ before running these tutorials (and for
 adventurous users, the primary Phaser reference as well).
 
 A brief word about terminology: the search models used in Phaser are
 customarily named "ensembles", and in fact Phaser will often work best in
 difficult cases when a set of superposed models (generated using `Ensembler
-<ensembler.html>`_ or similar tools) is used.  However, this is not required
+<../reference/ensembler.html>`_ or similar tools) is used.  However, this is not required
 and for easily solved structures, such as the tutorial datasets used here,
 a single PDB file will be sufficient.  Furthermore, while Phaser can search
 for multiple alternative ensembles and output only the best solution, here we
@@ -39,7 +39,7 @@ recommended.
 Full automation: phaser.MRage
 -----------------------------
 
-The separate `MRage <mrage.html>`_ program (which uses Phaser as its core) can
+The separate `MRage <../reference/MRage.html>`_ program (which uses Phaser as its core) can
 automatically discover and prepare search models, and search in parallel on a
 multi-core workstation or cluster.  A `separate tutorial
 <http://www.phaser.cimr.cam.ac.uk/index.php/Molecular_replacement_with_MRage>`_
@@ -62,7 +62,7 @@ field for all file types, and on most operating systems you can simply drag
 the three files from the project folder into the input field.  Alternatively,
 click "Add file" to open a file dialog.
 
-.. image:: images/a2u-globulin_input.png
+.. image:: ../images/a2u-globulin_input.png
 
 The symmetry information and labels list will automatically be populated when
 the reflections are loaded; you do not need to change the defaults.  You
@@ -80,7 +80,7 @@ of component copies and the number of search copies separately, this would
 allow us to search for a tetramer, while still only supplying the sequence of
 one chain.)
 
-.. image:: images/a2u-globulin_search.png
+.. image:: ../images/a2u-globulin_search.png
 
 Usually it is best not to specify a resolution limit.  Phaser chooses a
 resolution limit based on the particular problem (accuracy and completeness
@@ -108,7 +108,7 @@ one) there will be one or more warnings, but these do not necessarily mean
 that Phaser will not be successful.  This example should finish in several
 minutes.
 
-.. image:: images/a2u-globulin_run.png
+.. image:: ../images/a2u-globulin_run.png
 
 Once the run is complete, a results tab will appear, showing a summary of the
 solution and output files, with buttons to launch other programs.  The two
@@ -118,7 +118,7 @@ translation function Z-score, which denotes the signal-to-noise ratio of
 the solution.  In this case both are excellent, indicating that Phaser found
 an unambiguous solution.
 
-.. image:: images/a2u-globulin_results.png
+.. image:: ../images/a2u-globulin_results.png
 
 At this point we recommend inspecting the maps and crystal packing in Coot.
 Because Phaser only performs rigid-body and group B-factor refinement, the map
@@ -147,7 +147,7 @@ named "beta_blip_P3221.mtz".  The unit cell and space group will be
 automatically filled in, and the "Data labels" menu will be populated with
 suitable choices (only one in this case).
 
-.. image:: images/beta_blip_1.png
+.. image:: ../images/beta_blip_1.png
 
 The other options in this window are equivalent to those in the simple
 interface, and do not need to be modified.
@@ -158,11 +158,11 @@ click "Add file" below the list widget and select "beta.pdb".  This will
 add it to the list with the "Variance" field blank.  Click the "Change
 variance" button, and enter "100" for the sequence identity and click "OK".
 
-.. image:: images/beta_variance.png
+.. image:: ../images/beta_variance.png
 
 The window should now look like this:
 
-.. image:: images/beta_ensemble.png
+.. image:: ../images/beta_ensemble.png
 
 At the bottom of the window, click "Add PDB ensemble".  A second ensemble
 sub-tab will appear.  Now repeat the procedure using "blip.pdb" instead.
@@ -180,14 +180,14 @@ click the button "Add macromolecule(s)" at the bottom of the window to add
 a tab.  The number of copies is 1 in both cases.  (Here the order in which the
 composition is input really is unimportant.)
 
-.. image:: images/blip_component.png
+.. image:: ../images/blip_component.png
 
 The final configuration tab, "Search procedure", is where we tell Phaser
 how to use the ensembles we input, along with several of the most important
 search options.  Each search step has its own tab; assuming the ensembles
 have been entered appropriately, the tab will initially look like this:
 
-.. image:: images/beta_blip_search.png
+.. image:: ../images/beta_blip_search.png
 
 Check "beta", leaving the number of copies set to 1, then click "Add search",
 and in the new tab, check "blip" (still with 1 copy).  This interface allows
@@ -196,9 +196,9 @@ try both as alternatives for the same component and pick just one, which is
 not what we want here.  Each unique ensemble (or set of equally likely
 candidates) should get its own separate search tab.
 
-.. image:: images/blip_search.png
+.. image:: ../images/blip_search.png
 
 At this point we are ready to run Phaser, which should again take only a few
 minutes to complete successfully.
 
-.. image:: images/beta_blip_results.png
+.. image:: ../images/beta_blip_results.png

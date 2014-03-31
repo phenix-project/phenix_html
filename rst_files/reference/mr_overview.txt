@@ -11,7 +11,7 @@ and additionally simplifies model-building, MR is usually the method of choice
 for structure determination when a suitable search model is available.
 
 For new users, we recommend reading this document first, followed by the
-`Phaser-MR tutorial <tutorial_mr.html>`_ for a step-by-step introduction to
+`Phaser-MR tutorial <../tutorials/mr.html>`_ for a step-by-step introduction to
 running MR in the `Phenix GUI`_.
 
 ------------------------------------------------------
@@ -53,7 +53,7 @@ Model selection
    target sequence, and also to apply B-factor weights to the model to weight
    down unreliable parts. Ensembler_ can be used to superpose homologous models
    automatically. The recommended order is to run Sculptor_ and then Ensembler_,
-   for reasons explained in the `MR FAQ <faqs/mr.html#sculptor-ensembler-order>`__.
+   for reasons explained in the `MR FAQ <../faqs/mr.html#sculptor-ensembler-order>`__.
 
 Molecular replacement
 ========================
@@ -122,7 +122,7 @@ For composition, you may supply a sequence file (protein or nucleic acid), or
 simply enter the molecular weight.  The standalone versions of Phaser_ also
 accept the fractional composition of each search ensemble, if known.  Note that
 the composition data does not necessarily have a 1:1 correspondence with the
-search ensembles (see `MR FAQ <faqs/mr.html#composition-search-ensemble-relation>`__
+search ensembles (see `MR FAQ <../faqs/mr.html#composition-search-ensemble-relation>`__
 for details); if you wish to simply specify the molecular weight of a complex
 while searching for multiple subunits, you may enter the mass for the complex
 as a single component.  (You may also use multi-record FASTA-format sequence
@@ -195,7 +195,7 @@ is available on the `Phaser home page`_.
 Frequently Asked Questions
 --------------------------
 
-These are now covered on a `separate section <faqs/mr.html>`_.
+These are now covered on a `separate section <../faqs/mr.html>`_.
 
 ---------
 Reference
@@ -212,7 +212,7 @@ Reference
 .. _`AutoSol wizard`: autosol.html
 .. _`Phaser-EP GUI`: phaser_ep.html
 .. _phenix.cut_out_density: cut_out_density.html
-.. _`Phenix GUI`: phenix_gui.html
+.. _`Phenix GUI`: ../phenix_gui.html
 .. _`NCBI Blast`: http://blast.ncbi.nlm.nih.gov/Blast.cgi
 .. _wwPDB: http://www.wwpdb.org
 .. _`Phaser home page`: http://www.phaser.cimr.cam.ac.uk

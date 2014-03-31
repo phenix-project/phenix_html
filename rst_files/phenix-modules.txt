@@ -5,7 +5,7 @@ Data Analysis
 -------------
 
 Detection of twinning and other pathologies is facilitated via the
-program `phenix.xtriage <xtriage.html>`__. This command line driven
+program `phenix.xtriage <reference/xtriage.html>`__. This command line driven
 program analyses an experimental data set and provides diagnostics that
 aid in the detection of common idiosyncrasies such as the presence of
 pseudo translational symmetry, certain data processing problems and
@@ -30,7 +30,8 @@ Automated Structure Solution Using Experimental Phasing Techniques
 ------------------------------------------------------------------
 
 Structure solution via SAD, MAD or SIR(AS) can be carried out with the
-`AutoSol <autosol.html>`__ wizard. The `AutoSol <autosol.html>`__ wizard
+`AutoSol <reference/autosol.html>`__ wizard.  `AutoSol
+<reference/autosol.html>`__
 performs heavy atom location, phasing, density modification and initial
 model building in an automated manner. The heavy atoms are located with
 substructure solution engine also used in phenix.hyss, a dual space
@@ -43,8 +44,8 @@ process is not necessarily linear but that the wizard can decide to step
 back and (for instance) try another set of heavy atoms if appropriate.
 In the resulting electron density map, a model is built (currently
 limited to proteins). Further model completion can be carried out via
-the `AutoBuild <autobuild.html>`__ wizard. The
-`AutoBuild <autobuild.html>`__ wizard iterates model building and density
+the `AutoBuild <reference/autobuild.html>`__ wizard.
+`AutoBuild <reference/autobuild.html>`__ iterates model building and density
 modification with refinement of the model in a scheme similar to other
 iterative model building methods, for example ARP/wARP.
 
@@ -52,8 +53,8 @@ Automated Structure Solution Via Molecular Replacement
 ------------------------------------------------------
 
 Structure solution via molecular replacement is facilitated via the
-`MRage <mrage.html>`_ procedure.
-`MRage <mrage.html>`_
+`MRage <reference/MRage.html>`_ procedure.
+`MRage <reference/MRage.html>`_
 guides the user through setting up all necessary parameters to run a
 molecular replacement job with PHASER. The molecular replacement carried
 out by PHASER uses likelihood based scoring function, improving the
@@ -64,7 +65,7 @@ likelihood based scoring functions, structure solution is enhanced by
 detailed bookkeeping of all search possibilities when searching for more
 then a single copy in the asymmetric unit or when there the choice of
 space group is ambiguous. When a suitable molecular replacement solution
-is found, the `AutoBuild <autobuild.html>`__ wizard is invoked and
+is found, the `AutoBuild <reference/autobuild.html>`__ wizard is invoked and
 rebuilds the molecular replacement model given the sequence of the model
 under investigation.
 
@@ -72,7 +73,7 @@ Automated Model Building
 ------------------------
 
 Automated model building given a starting model or a set of reasonable
-phases can be carried out by the `AutoBuild <autobuild.html>`__ wizard. A
+phases can be carried out by the `AutoBuild <reference/autobuild.html>`__ wizard. A
 typical AutoBuild job combines density modification, model building,
 macromolecular refinement and solvent model updates ('water picking') in
 an iterative manner. Various modes of building a model are available.
@@ -82,14 +83,14 @@ by building in the density without any information of an available
 model. The rebuilding in place model building is a powerful building
 scheme that is used by default for molecular replacement models that
 have a high sequence similarity to the sequence of the structure that is
-to be built. A fundamental feature of the `AutoBuild <autobuild.html>`__
+to be built. A fundamental feature of the `AutoBuild <reference/autobuild.html>`__
 wizard is that it builds various models, all from slightly different
 starting points. The dependency of the outcome of the model building
 algorithm on initial starting conditions provides a straightforward
 mechanism to obtain a variety of plausible molecular models. It is not
 uncommon that certain sections of a map are built in one model, while
 not in another. Combining these models allows the
-`AutoBuild <autobuild.html>`__ wizard to converge faster to a more
+`AutoBuild <reference/autobuild.html>`__ wizard to converge faster to a more
 complete model than when using a single model building pass for a given
 set of phases. Dedicated loop fitting algorithms are used to close gaps
 between chain segments. This feature, together with the water picking
@@ -100,9 +101,9 @@ for deposition.
 Structure Refinement
 --------------------
 
-The refinement engine used in the `AutoBuild <autobuild.html>`__ and
-`AutoSol <autosol.html>`__ wizards can also be run from the command line
-with the `phenix.refine <refinement.html>`__ command. The phenix.refine
+The refinement engine used in the `AutoBuild <reference/autobuild.html>`__ and
+`AutoSol <reference/autosol.html>`__ wizards can also be run from the command line
+with the `phenix.refine <reference/refinement.html>`__ command. The phenix.refine
 program carries out likelihood based refinement and has the possibility
 to refine positional parameters, individual or grouped atomic
 displacement parameters, individual or grouped occupancies. The
@@ -120,25 +121,25 @@ with severely incomplete atomic models. Another advantage of this
 flexibility in refinement strategy is that a user can perform a complex
 refinement protocol that carries out simulated annealing, isotropic B
 refinement and water picking in 'one go'. Another main feature of
-`phenix.refine <refinement.html>`__ is the way in which the relative
+`phenix.refine <reference/refinement.html>`__ is the way in which the relative
 weights for the geometric and ADP restraints with respect to the X-ray
 target are determined. Considerable effort has been put into devising a
 good set of defaults and weight determination schemes that results in a
 good choice of parameters for the data set under investigation. Defaults
 can of course be overwritten if the user chooses to. Besides being able
 to handle refinement against X-ray data,
-`phenix.refine <refinement.html>`__ can refine against neutron data or
+`phenix.refine <reference/refinement.html>`__ can refine against neutron data or
 against X-ray and neutron data simultaneously.
 
 Automated ligand density analysis
 ---------------------------------
 
 Automated fitting of ligands into the electron density is facilitated
-via the `LigandFit <ligandfit.html>`__ wizard. The ligand building is
+via the `LigandFit <reference/ligandfit.html>`__ wizard. The ligand building is
 performed by finding an initial fit for the largest rigid domain of the
 ligand and extending the remaining part of the ligand from this initial
 'seed'. Besides being able to fit a known ligand into a difference map,
-the `LigandFit <ligandfit.html>`__ wizard is capable of identifying
+the `LigandFit <reference/ligandfit.html>`__ wizard is capable of identifying
 ligands on the basis of the difference density only. In the latter
 scheme, density characteristics for ligands occurring frequently in the
 PDB are used to provide the user with a range of plausible ligands.
@@ -155,18 +156,18 @@ files and SMILES strings. SMILES is a compact, chemically dense
 description of a molecule that contains all element and bonding
 information and optionally other stereo information such as chirality.
 To generate a 3D geometry from an input format that contains no 3D
-geometry information, `eLBOW <elbow.html>`__ uses a Z-Matrix formalism in
+geometry information, `eLBOW <reference/elbow.html>`__ uses a Z-Matrix formalism in
 conjunction with a table of bond lengths calculated using the
 Hartree-Fock method with a 6-31G(d,p) basis set to obtain a Cartesian
 coordinate set. The geometry is then optionally optimized using the
 semi-empirical quantum chemistry method AM1. The AM1 optimization
 provides chemically meaningful and accurate geometries for the class of
-molecule typically complexed with proteins. `eLBOW <elbow.html>`__
+molecule typically complexed with proteins. `eLBOW <reference/elbow.html>`__
 outputs the optimized geometry and a standard CIF restraint file that
-can be read in by `phenix.refine <refinement.html>`__ and can also be
+can be read in by `phenix.refine <reference/refinement.html>`__ and can also be
 used for real space refinement during manual model building sessions in
 the program COOT. An interface is also available to use
-`eLBOW <elbow.html>`__ within COOT.
+`eLBOW <reference/elbow.html>`__ within COOT.
 
 Literature
 ----------

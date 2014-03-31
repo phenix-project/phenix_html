@@ -90,9 +90,9 @@ have a command file ``run.sh`` ready to use. For example::
 **Are any of the sample datasets annotated?**
 
 The PHENIX tutorials listed on the `documentation index
-<../phenix_documentation.html>`_ will walk you through sample datasets, telling
+<../reference/index.html>`_ will walk you through sample datasets, telling
 you what to look for in the output files. For example, the
-`Tutorial 1: Solving a structure using SAD data <../tutorial_sad.html>`_
+`Tutorial 1: Solving a structure using SAD data <../tutorials/sad_phasing.html>`_
 tutorial uses the ``p9-sad`` dataset as example. It tells you how to
 run this example data in autosol and how to interpret the results.
 
@@ -157,7 +157,7 @@ picked for the test set; you don't really need more than this to ensure that
 R-free is statistically significant and that the maximum likelihood
 calculations work properly.  However, if you want to use a full 5%, you can
 tell Phenix not to put any upper absolute limit.  In the `reflection file
-editor <../reflection_file_editor.html>`_ in the GUI, click
+editor <../reference/reflection_file_editor.html>`_ in the GUI, click
 "More options" in the R-free flags section of the editor, and delete the
 field labeled "Maximum number of reflections in test set".
 
@@ -169,8 +169,8 @@ Maps
 **How do I obtain an anomalous difference map in Phenix?**
 
 If you have anomalous data (separate F+ and F- or I+ and I-) and use this
-as input, both `phenix.maps <../create_maps.html>`_ and
-`phenix.refine <../refinement.html>`__ will automatically output the anomalous
+as input, both `phenix.maps <../reference/create_maps.html>`_ and
+`phenix.refine <../reference/refinement.html>`__ will automatically output the anomalous
 difference map in the map coefficients MTZ file.  Note that depending on the
 application, you may need to manually open the MTZ file in Coot to get the
 anomalous map to appear.

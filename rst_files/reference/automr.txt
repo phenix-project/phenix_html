@@ -7,7 +7,6 @@ Automated molecular replacement with AutoMR
 -  Phaser: Randy J. Read, Airlie J. McCoy and Laurent C. Storoni
 -  AutoMR Wizard: Tom Terwilliger, Laurent Storoni, Randy Read, and
    Airlie McCoy
--  PHENIX GUI: Nathaniel Echols
 -  phenix.xtriage: Peter Zwart
 
 Purpose
@@ -27,16 +26,12 @@ of the search models that are compatible with the data.
 Usage
 -----
 
-The AutoMR Wizard can be run from the `PHENIX GUI <automr_gui.html>`__,
-from the command-line, and from parameters files. All three versions are
+The AutoMR wizard has been deprecated and is no longer available in the
+Phenix GUI, but it may still be run
+from the command-line, and from parameters files.  Both versions are
 identical except in the way that they take commands from the user. See
 `Using the PHENIX Wizards <running-wizards.html>`__ for details of how to
-run a Wizard. The command-line version will be described here.
-
-NOTE: You may find it easiest to run the GUI version of AutoMR when you
-are learning how to use it, and then to move to the command-line or
-script versions later, as the GUI version will take you through all the
-necessary steps of organizing your data.
+run a Wizard.
 
 Summary of inputs and outputs for AutoMR
 ----------------------------------------
@@ -513,11 +508,6 @@ and the type of chain to build with chain\_type:
    contain just the first member of the ensemble, so you may wish to put
    the member that is likely to be the most similar to the true
    structure as the first one in your ensemble.
-
--  If you run AutoMR from the GUI and continue on to AutoBuild, and then
-   select "Start run over (delete everything for this run)" it will
-   delete your AutoBuild **and** your AutoMR run and start your AutoMR
-   run all over.
 
 -  AutoMR no longer is able to pass arbitrary commands to AutoBuild
    (this was discontinued to allow for a fixed set of inputs for

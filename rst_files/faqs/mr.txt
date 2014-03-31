@@ -9,13 +9,13 @@ General issues
 
 This is answered in
 detail in the section "Has Phaser solved it?" in the `main Phaser manual
-<phaser.html>`_, but it can be summarized as follows: the final translation
-function Z score (TFZ) should be above 8, and the log-likelihood gain
-(LLG) should be positive and as high as possible.  Of course, as with
+<../reference/phaser.html>`_, but it can be summarized as follows: the final
+translation function Z score (TFZ) should be above 8, and the log-likelihood
+gain (LLG) should be positive and as high as possible.  Of course, as with
 experimental phasing, the ability to `autobuild most of the model
-<autobuild.html>`_ is the single best measure of a correct solution;
-alternately, running a single round of `refinement <refine_gui.html>`_
-should result in an R-free below 0.50.
+<../reference/autobuild_gui.html>`_ is the single best measure of a correct
+solution; alternately, running a single round of `refinement
+<../reference/refine_gui.html>`_ should result in an R-free below 0.50.
 
 **Why doesn't Phaser report an R-factor?**
 
@@ -31,8 +31,8 @@ the GUI.
 **What if I don't get a good solution?**
 
 This is also covered in detail
-in the `main Phaser manual <phaser.html>`_, in the section "What to do in
-difficult cases".
+in the `main Phaser manual <../reference/phaser.html>`_, in the section "What
+to do in difficult cases".
 
 **What resolution cutoff should I use?**
 
@@ -83,7 +83,8 @@ Yes, PHENIX can run MRSAD (molecular replacement, combined with SAD phases) by
 using molecular replacement information in the process of determining the
 anomalous scatterer substructure.  However, this requires separate steps for
 carrying out the MR and finding the substructure.  There are two simple ways to
-do this; both are described in the `AutoSol documentation <autosol.html>`_.
+do this; both are described in the `AutoSol documentation
+<../reference/autosol.html>`_.
 
 **I am using a dimer as my search model.  Why am I getting a warning that the
 unit cell is too full?**
