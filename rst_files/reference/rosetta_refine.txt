@@ -94,6 +94,14 @@ for these methods are included in the Rosetta distribution.  You may also
 create your own XML script with a customized protocol and pass that to
 phenix.rosetta_refine.
 
+You can ask the program to parallelize jobs across multiple CPUs or several
+different queuing systems; the ``technology`` parameter determines the
+method used, and ``nproc`` indicates the number of jobs to run at once.  The
+actual number of processes will be limited by the ``number_of_models``
+parameter, which defaults to 5.  Requesting more models may provide
+incremental improvements in some cases but we have found it rarely makes a
+difference of more than 1-2% in R-free.
+
 Output will be to a new directory with a name such as "rosetta_1", with the
 directory number increasing sequentially as additional runs are created.
 Because phenix.refine is used as the final step, the output files will be
