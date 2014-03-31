@@ -175,6 +175,38 @@ difference map in the map coefficients MTZ file.  Note that depending on the
 application, you may need to manually open the MTZ file in Coot to get the
 anomalous map to appear.
 
+Models
+------
+
+.. _zero_occ:
+
+**The validation GUI (or the PDB deposition annotator) is complaining about
+zero-occupancy atoms.  Why does this happen, and how can I fix it?**
+
+The most common reason for atoms having zero occupancy is heteroatom groups
+(in this context, any atom labeled as HETATM in the `PDB file
+<../file_formats.html#pdb_format>`__) being reset to zero occupancy by
+`Phaser <../reference/phaser_mr.html>`__.  Although this can be avoided by
+modifying the Phaser settings, it is easy to fix using several different
+programs:
+
+  - In `PDBTools <../reference/pdbtools.html>`__, there is an option to
+    reset all selected occupancies to a specified value (usually 1.0).  If you
+    do not want any non-unity occupancies it is safe to do this for the entire
+    model, otherwise you will need to enter an atom selection to modify.
+
+  - For more manual control, the PDB file editor in the Phenix GUI allows you
+    to change the properties of individual atoms (or residues, chains, etc.).
+
+  - In `phenix.refine <../reference/refine_gui.html>`__, there are
+    options to modify the starting model in the middle panel of the
+    configuration interface; these are essentially identical to the options
+    in PDBTools.  (On the `command line <../reference/refinement.html>`__, the
+    parameter scope "modify_start_model" contains these options.)
+
+Please note that any time you modify the atomic properties (or add or remove
+atoms), **it is essential to refine the model again,** as the previously
+calclulated R-factors and maps will be invalid.
 
 Other
 -----
