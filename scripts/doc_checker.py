@@ -47,10 +47,12 @@ def generate_links(lines):
     b = lines.find("<a", start)
     e = lines.find("</a>", start)
     aa = lines[b:e+4]
+    start = e+4
     if not aa: break
-    if aa.find("href")==-1: break
+    if aa.find("href")==-1: continue
     link = aa[aa.find("href"):]
     link = link.split('"')[1]
+    if link.find("http:")>-1: continue
     if link.find("#")>-1:
       link = link.split("#")[0]
     if link.find(".htm")==0: continue
