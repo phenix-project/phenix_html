@@ -33,6 +33,8 @@ def get_unused_files(image_files):
       f.close()
       remove = []
       for i, image_file in enumerate(image_files):
+        image_file = os.path.join(doc_dir, image_file)
+        image_file = os.path.basename(image_file)
         if lines.find(image_file)>-1:
           remove.append(i)
       if remove:
