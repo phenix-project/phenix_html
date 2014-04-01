@@ -246,3 +246,29 @@ and data?**
 There is `a program specifically for this purpose
 <../reference/reciprocal_space_arrays.html>`__; you can find in in the Phenix
 GUI under "Reflection tools".
+
+**What is the best way to generate an omit map in Phenix?**
+
+There are several options (with some overlap in functionality):
+
+  - To remove model bias, the fastest option is to generate a `composite omit
+    map <../reference/composite_omit_map.html>`__ for the entire structure.  By
+    default this uses a very fast procedure for iteratively de-biasing the
+    phases, but other (slower) options are available too.
+  - For omitting just a subset of atoms, an older and very popular option is to
+    run `phenix.refine <refine_gui.html>`__ with simulated annealing, here
+    specifying an
+    atom selection to be omitted.  This also includes an option
+    to harmonically restrain atoms to prevent other parts of the model from
+    drifting into the omitted region.
+  - The `composite omit map tool <../reference/composite_omit_map.html>`__
+    also has an option to use phenix.refine to de-bias the structure, in
+    addition to the fast method described above.  The refinement is much
+    slower, but may be parallelized across multiple CPU cores or a cluster.
+  - Finally, the most thorough procedure for bias removal is the iterative
+    build omit map option in `AutoBuild <../reference/autobuild_gui.html>`__.
+    This rebuilds the entire model, in addition to running refinement.
+  - If you just want a simple omit map for a subset of atoms and do not care
+    about model bias, `phenix.maps <../reference/create_maps.html>`__ has an
+    option to omit a subset of atoms.  This is suitable for quick calculations,
+    but not for generating figures for publication.
