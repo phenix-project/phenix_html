@@ -1,6 +1,6 @@
-=======================================
-Merging reflections with the Phenix GUI
-=======================================
+==========================================================
+Editing and combining reflection files with the Phenix GUI
+==========================================================
 
 .. contents::
 
@@ -8,15 +8,15 @@ Overview
 --------
 
 Phenix includes a simple program for combining reflection data from
-different files and manipulating R-free flags, somewhat similar to the
-programs CAD and FREERFLAG in the CCP4 suite.  Any combination of data in
-the form of Miller arrays (any set of values indexed by h,k,l) may be merged
+different files and manipulating R-free flags.  Any combination of data in
+the form of `Miller arrays <../dictionary.html#miller_array>`__ (any set of
+values indexed by h,k,l) may be merged
 into a single file, with the limitation that the crystal lattices
 specified in each file must be compatible.  All input formats readable by
 Phenix are supported, but only MTZ files are written.  Output is limited to
 25 different columns, which usually corresponds to significantly fewer
 Miller arrays (for example, experimental phases or Hendrickson-Lattman
-coefficients consist of four columns).
+coefficients usually consist of four columns).
 
 .. image:: ../images/reflection_file_editor.png
 
@@ -66,6 +66,24 @@ even if extending existing flags, but this will renumber all flags not in
 the test set.  (It also assumes that the test set size is approximately 5% of
 the total number of reflections.)
 
+Limitations
+-----------
+
+The editor is primarily designed around common functions operating on a single
+experimental dataset - in particular the manipulation of R-free flags.  It is
+not suitable for some more complex (but less frequently used) scenarios.  A
+few specific limitations:
+
+  - Unmerged data is allowed as input, but the output will always be merged
+    (with anomalous pairs preserved if present).
+  - Some features of the MTZ format are not supported.  In particular, all
+    arrays will be treated as part of the same "crystal" and "dataset" objects
+    in the hierarchy of the MTZ file.  This restricts all output arrays to
+    using the same unit cell dimensions.  For this reason, the editor may be
+    unsuitable for multi-crystal experiments such as MIR.
+  - The wavelength (if defined) will also be the same for all arrays.  If not
+    defined it will default to zero.
+
 Notes on usage
 --------------
 
@@ -88,5 +106,6 @@ Notes on usage
     differences in unit cell dimensions and screw axes) or leave it undefined
     (e.g. CNS format).  To mix arrays from files with different symmetry,
     first convert each to the desired final symmetry, then combine them.
-  - All output arrays must also have the same symmetry, including isomorphous
-    unit cells.  (You may, however, disable the check for isomorphism.)
+  - If you want to convert the data into a higher-symmetry space group based
+    on suggestions from Xtriage, the `Xtriage GUI <xtriage_gui.html>`__ now
+    has an option to do this directly instead of running the editor separately.
