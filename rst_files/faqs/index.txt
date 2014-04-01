@@ -129,6 +129,35 @@ matrices for use in RESOLVE.  Files ending in .phil contain atom selections
 for use in phenix.refine.  In most cases, however, you can ignore these files,
 as the NCS relationships will be detected automatically.
 
+.. _pdb_mirror:
+
+**How can I get Phenix to use a local PDB mirror instead of fetching entries
+remotely?**
+
+The `Phenix GUI <../phenix_gui.html>`__, `phenix.cif_as_mtz
+<../reference/cif_as_mtz.html>`__, `MRage <../reference/MRage.html>`__,
+`MR-Rosetta <../reference/mr_rosetta.html>`__ and several other programs use
+a common central function to download PDB files.  You can substitute your
+own local PDB mirror by defining environment variables, for instance in
+bash/sh:
+::
+
+    export PDB_MIRROR_PDB=/data/pdb_mirror/pdb
+    export PDB_MIRROR_STRUCTURE_FACTORS=/data/pdb_mirror/structure_factors
+
+The structure factors are optional and may be left out to conserve disk space;
+most applications are only concerned with the model data.
+In both cases, these directories should contain a series of subdirectories
+with two-character names corresponding to the middle two characters of PDB
+IDs, each containing associated PDB files with specific names such as:
+::
+
+    $PDB_MIRROR_PDB/hb/pdb1hbb.ent.gz
+    $PDB_MIRROR_STRUCTURE_FACTORS/hb/r1hbbsf.ent.gz
+
+If the mirror is out of date and a specific entry cannot be found, the function
+will revert to downloading from the `RCSB <http://www.rcsb.org>`__ PDB site.
+
 Graphical interface
 -------------------
 
