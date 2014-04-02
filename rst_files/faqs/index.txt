@@ -256,8 +256,8 @@ There are several options (with some overlap in functionality):
     default this uses a very fast procedure for iteratively de-biasing the
     phases, but other (slower) options are available too.
   - For omitting just a subset of atoms, an older and very popular option is to
-    run `phenix.refine <refine_gui.html>`__ with simulated annealing, here
-    specifying an
+    run `phenix.refine <../reference/refine_gui.html>`__ with simulated
+    annealing, here specifying an
     atom selection to be omitted.  This also includes an option
     to harmonically restrain atoms to prevent other parts of the model from
     drifting into the omitted region.
