@@ -195,6 +195,8 @@ field labeled "Maximum number of reflections in test set".
 Maps
 ----
 
+.. _anom_map:
+
 **How do I obtain an anomalous difference map in Phenix?**
 
 If you have anomalous data (separate F+ and F- or I+ and I-) and use this
@@ -203,6 +205,53 @@ as input, both `phenix.maps <../reference/create_maps.html>`_ and
 difference map in the map coefficients MTZ file.  Note that depending on the
 application, you may need to manually open the MTZ file in Coot to get the
 anomalous map to appear.
+
+.. _llg_map:
+
+**How can I calculate a log-likelihood gradient SAD map using Phaser?**
+
+Several programs in Phenix interface with Phaser to calcluate an LLG map
+given a model with existing anomalous (and real) scatterers.  This map is
+more sensitive towards weaker scatterers (such as phosphorous, sulfur, and
+chloride, or partially-occupied heavy atoms) because it subtracts the
+contribution of existing atoms.  (In this sense it is similar to any other
+difference map, where the `sigma level <../dictionary.html#sigma_scaling>`__
+of the map around remaining unmodeled atoms becomes increasingly higher as
+more atoms are added to the model).  The first two options are recommended; in
+both cases you will need to request an additional set of map coefficients where
+``map_type=LLG``.  (This is available as a preset option in the GUI.)
+
+  - In `phenix.maps <../reference/create_maps.html>`__, if you specify the
+    ``wavelength`` parameter, the entire structure will have scattering factors
+    adjusted to model the anomalous scattering expected at the given
+    wavelength.  This is relatively fast, but the disadvantage is that the
+    theoretical ``f''`` may be either too high or too low, leading to
+    difference map peaks around existing atoms.
+
+  - In `phenix.refine <../reference/refine_gui.html>`__, if you enable
+    anomalous group refinement and specify the groups to be refined (or
+    manually enter fixed ``f''`` values), the LLG map will reflect the
+    refined values rather than theoretical calculations.  You can also
+    set ``group_anomalous.find_automatically=True`` to identify appropriate
+    groups automatically (based on atomic number).
+
+  - If you use the `Phaser-EP GUI <../reference/phaser_ep.html>`__, there is
+    also an option to output the LLG map coefficients at the end.  However, if
+    you turn on anomalous substructure completion, the final LLG map will
+    usually be relatively flat.  (Alternately, if you do not use substructure
+    completion, you will be limited to whatever anomalously scattering atoms
+    are present in the input sites file.)   Therefore, unless you actually want
+    to perform experimental phasing, when starting from a
+    partial (or mostly complete) model the above methods are more useful.
+
+Finally, for automation purposes, there is a utility for calculating a single
+set of map coefficients:
+::
+
+    mmtbx.compute_map_coefficients model.pdb data.mtz wavelength=0.9792 map_type=llg
+
+This should produce identical output to phenix.maps, but has been streamlined
+to require minimal input.
 
 Models
 ------

@@ -2,6 +2,8 @@
 Frequently asked questions about experimental phasing
 =====================================================
 
+.. contents::
+
 General
 -------
 
@@ -266,3 +268,10 @@ overall_best_refine_data.mtz from autosol?**
 Always use the MTZ file output by autosol.  This contains a new set of R-free
 flags that have been used to refine the model; starting over with the .sca
 file will result in a new set of flags being generated, which biases R-free.
+
+Phaser
+------
+
+**How can I calculate a log-likelihood gradient (LLG) map in Phaser?**
+
+See the `maps section of the general FAQ list <index.html#maps>`__.

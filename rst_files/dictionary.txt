@@ -841,6 +841,8 @@ scattering) are also available.
 several contexts in macromolecular crystallography, most commonly referring
 to the **sigma-scaling** of maps.
 
+.. _sigmaa:
+
 **Sigma-A weighting**: a method of weighting difference map coefficients to
 more accurately account for errors in the model.  This is standard practice
 in macromolecular crystallography, as it leads to improved maps.  A sigma-A
@@ -848,6 +850,8 @@ weighted map will typically described as "2mFo-DFc" or "mFo-DFc", with the "D"
 being the relevant value ("m" is the **Figure of Merit** for each reflection).
 The maximum likelihood target in Phaser is a derivation of this methodology.
 See Read, R.J.: Acta Cryst. A42 (1986) 140-149 for original derivation.
+
+.. _sigma_scaling:
 
 **Sigma scaling**: a method of scaling electron density maps in real space, in
 which the statistics for the entire unit cell are calculated, and the grid
