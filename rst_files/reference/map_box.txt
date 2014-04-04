@@ -1,0 +1,25 @@
+phenix.map_box: extract box with model and map around selected atoms
+====================================================================
+
+**Description**
+ 
+The program carves out a box with model and map around selected atoms. Resulting 
+map is output in three files: map coefficients in MTZ, and maps in CCP4 and 
+X-plor formatted files.
+
+**Contact author**
+
+For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov) 
+
+**Usage examples**
+
+  1) Using map defined in MTZ file as Fourier map coefficients. Box is defined by
+     selected atoms in residues from 1 to 10 in chain A
+  
+     phenix.map_box model.pdb map_coefficients.mtz selection="chain A and resseq 1:10"
+       
+     
+  2) Using CCP4 formatted map
+  
+     phenix.map_box model.pdb map.ccp4 selection="resname LIG"
+     
