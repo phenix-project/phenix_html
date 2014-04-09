@@ -112,3 +112,34 @@ chemical names matching the search terms.
 This will give you a list to choose from (including three-letter codes):
 
 .. image:: images/chemical_comp_search.png
+
+
+Ligand Identification
+---------------------
+
+**What do I expect after a ligand identification run?**
+
+On the main GUI status page or towards the end of the command-line output, you will see a list of ligand ranked by scores, and a summary analysis of the results.  A typical output is shown below.  
+
+.. image:: images/ligand_id-1.png
+
+Occasionally, if none of the candidate ligands in the library can fit the electron density well enough, especially when the density is much smaller than the ligands to be tested, the program will return an empty list.
+
+
+**OK, I see the output and the list.  Now what?**
+
+The program ranks the fitting results based on objective analysis of several parameters (see document).  This usually works well but one should check a few top-ranked ligands in graphics to give the final verdict.  The easiest way to do this is to select (highlight) a ligand on the Results page in the GUI and click on one of the display options provided.  By default, the fitted ligand, the difference map, and the protein model will be displayed together so you can check if the ligand indeed fits the density well and if it's making good contacts with the protein molecule.
+
+.. image:: images/ligand_id-2.png
+
+**I didn't get an output list.  What's the problem?**
+
+As said before, this is usually due to that none of the ligands in the library can fit the electron density well enough, especially when the density is much smaller than the ligands to be tested.  If your density is the size of just a few atoms, ligand_identification is probably not the right tool for you.  If this is not the case, try to use a different ligand library may help. See answer to next question.
+
+**What ligand library should I use?**
+
+The default library is the collection of the top 180 most popular ligands in the PDB.  It covers a wide range of molecules in terms of their sizes and chemical nature.  Very often, top ranked ligands give you good ideas about the class of ligands and what to try next.  Alternatively, one may want to try ligands based on the biological functions of the protein in the crystal.  Ligand_identification provides several build-in tools to do it on-the-fly.  If you know your proteins function in Enzyme Classification (E.C.) terms, E.C. numbers, or Gene Ontology IDs, you can input these information in the run and Ligand_identification will compile and use this function-related ligand library for you.  For command-line users, you can find a few examples in Ligand_identification document.  
+
+**I think I find a ligand that's close enough, what to do next?**
+
+Try to add the ligand into refinement and see what happens.
