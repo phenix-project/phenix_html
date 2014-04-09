@@ -1,73 +1,156 @@
-=========================
+========================= 
 Guided Ligand Replacement
 =========================
 
 .. contents::
 
-Overview
+Authors: Nigel W. Moriarty and Herbert E. Klei
+
+Overview 
 --------
+
+The Guided Ligand Replacement (GLR) module is intended to facilitate
+ligand placement when the X-ray crystal structure of at least one
+similar protein:ligand complex is known.  GLR is often employed in
+structure-assisted drug design where the structures of many related
+protein:inhibitor complexes are determined.  It is especially useful
+for complicated ligands and when there are multiple independent copies
+in the asymmetric unit.
 
 The Guided Ligand Replacement (GLR) tool is designed to use prior
 knowledge from a previously fit ligand to expedite the fitting of a
 "similar" ligand into the same or "similar" protein. The similarity
 required between the pair of ligands can be as little as a few atoms.
 
-The proteins are overlayed using ``phenix.superpose_pdbs``. The ligands
-are matched using the electronic Ligand Builder and Optimization
-Workbench (eLBOW) via another tool called ``phenix.superpose_ligands``.
-Once the ligand has been fit, a Real-Space Refinement (RSR) is
-performed and the final model written to disk.
+The proteins are overlayed using ``phenix.superpose_pdbs``. The
+ligands are matched using the electronic Ligand Builder and
+Optimization Workbench (eLBOW) via another tool called
+``phenix.superpose_ligands``.  Once the ligand has been fit, a
+Real-Space Refinement (RSR) is performed and the final model written
+to disk.
+
+Usage 
+-----
+
+Usage ::
+
+  phenix.guided_ligand_replacement [options] \
+    target_pdb_file_name=structure-in-which-target-ligand-is-to-be-placed.pdb \ 
+    ligand_cif_file_name=parameterization-of-target-ligand.cif \
+    map_coeffs_file_name=map-coefficients-for-target-electron-density.mtz \
+    guide_pdb_file_name=structure-of-reference-protein-ligand-complex.pdb \
+    ligand_selection_in_guide_model=selection-to-identify-reference-ligand \ 
+    replace_ligand_in_guide_pdb_file_name=[true|false]
 
 .. _input-files:
 
-Input files
+Input files 
 -----------
 
-GLR requires a number of inputs and also has some options, all of which
-are provided using the ``phil`` formalism. The list of
-required inputs:
+GLR requires a number of inputs and also has some options, all of
+which are provided using the ``phil`` formalism. The list of inputs:
 
-  - **guide_pdb_file_name**: this is a PDB file containing a model-ligand
-    model.
+  - **guide_pdb_file_name**: Name of the PDB file for the structure of
+    the reference protein:ligand complex.  While the protein used in
+    the target and reference structures is usually the same, the
+    protein sequences need only be sufficiently similar to reliably
+    superimpose.
 
-  - **protein_pdb_file_name**: this is a file containing the protein
-    model of current interest into which the ligand is to be fit.
+  - **protein_pdb_file_name**: Name of PDB file in which the target 
+    (i.e. new) ligand is to be placed.  This structure is typically
+    the apo structure from molecular replacement after one round of
+    refinement.
 
-  - **map_coeffs_file_name**: this is a maps coefficients file output from
-    a ``phenix.refine`` run.
+  - **map_coeffs_file_name**: Name of the map coefficient file for the
+    electron density in which the target ligand is to be placed.
+    This file is typically the MTZ file from latest run of
+    *phenix.refine*.  If this file contains more than one set of
+    possible map coefficients, the first recognized set is used.
+    If structure factors are provided (e.g. MTZ file with only FOBS
+    and SIGFOBS), the 2Fo-Fc map is calculated and used.  Map files
+    (e.g. .map) are used directly.
 
-The input for the ligand can be any input file that is readable by eLBOW.
-Either or both of the following phil parameters can be used.
+The input for the ligand can be any input file that is readable by
+eLBOW.  Either or both of the following phil parameters can be used.
 
-  - **ligand_input_file_name**: this is a file containing chemical information
-    about the ligand.
+  - **ligand_input_file_name**: this is a file containing chemical
+    information about the ligand.
 
-  - **ligand_cif_file_name**: this is the
-    of a ligand restraints file for the RSR step. If not supplied, the
-    restraints are generated from **ligand_input_file_name**.
+  - **ligand_cif_file_name**: this is the of a ligand restraints file
+    for the RSR step. If not supplied, the restraints are generated
+    from **ligand_input_file_name**.
 
-  - **ligand_code**: the ligand code from the PDB Chemical Components so that
-    restraints and geometry can be generated.
+  - **ligand_code**: the ligand code from the PDB Chemical Components
+    so that restraints and geometry can be generated.
 
 Optional inputs include:
 
-  - **ligand_selection_in_guide_model**: this selects a ligand in the guiding
-    model. While GLR tries to make a sensible selection based on ligand code
-    or uniqueness, it may be necessary to make an explicit selection.
+  - **ligand_selection_in_guide_model**: Standard PHENIX selection
+    expression to identify the reference ligand in the reference
+    structure.  A typical selection might look like "resname LG1 and
+    resid 1".  While GLR tries to make a sensible selection based on
+    ligand code or uniqueness, it may be necessary to make an explicit
+    selection.
 
-  - **replace_ligand_in_guide_pdb_file_name**: replace the ligand in the
-    guiding protein model with the input ligand. Useful for 'repairing'
-    ligands.
+  - **replace_ligand_in_guide_pdb_file_name=[true|false]**: By
+    default, this parameter is set to false and can be omitted.  If
+    this parameter is set to true, the reference structure is also
+    used as the target structure (protein_pdb_file_name parameter is
+    ignored).  This functionality is useful in two circumstances::
 
-  - **phenix.superpose_pdbs**: this allows selection of the same parameters
-    as in the standalone program.
+      1) the first copy of the ligand is placed manually and it needs
+      to be propagated throughout the asymmetric unit
 
-Output files
+      2) the current ligand is incorrect (e.g. GTP instead of ATP) or
+      needs to be updated (e.g. remove non-standard atom names).
+
+  - **phenix.superpose_pdbs**: this allows selection of the same
+    parameters as in the standalone program.
+
+Output files 
 ------------
 
 By default, GLR will generate a PDB file with the fit ligand.
 
-References
+Examples 
+--------
+
+Example 1 
++++++++++
+
+The reference FXa structure, 3KQE, and its reference ligand, LGM, is
+used to place the target ligand, LGK, in the target FXa structure 3KQC
+::
+  
+  phenix.guided_ligand_replacement \ 
+    target_pdb_file_name=3KQC-apo.pdb \ 
+    ligand_cif_file_name=LGK.cif \
+    map_coeffs_file_name=refine-apo.mtz \ 
+    guide_pdb_file_name=3KQE.pdb \ 
+    ligand_selection_in_guide_model="resname LGM"
+
+.. Example 2A 
+   ++++++++++
+
+.. A manually placed copy of the ligand, XXX is propagated throughout the
+   asymmetric unit of YYYY.
+
+.. Example 2B 
+   ++++++++++
+
+.. Staged example in which GMP-PNP was initially replaced with AMP-PNP in
+   4L9W.  This same approach could be used to replace ligands with
+   non-standard nomenclature (e.g. atom names).
+
+Example 3 
++++++++++
+
+In all of the above examples, the input can be provided through a PHIL
+file.  :: 
+
+  phenix.guided_ligand_replacement < glr.phil > glr.log
+
+References 
 ----------
 
 {{citation:glr}}
@@ -75,7 +158,7 @@ References
 {{citation:elbow}}
 
 
-List of all available keywords
+List of all available keywords 
 ------------------------------
 
 {{phil:phenix.command_line.guided_ligand_replacement}}
