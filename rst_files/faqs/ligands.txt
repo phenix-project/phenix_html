@@ -126,11 +126,17 @@ On the main GUI status page or towards the end of the command-line output, you w
 Occasionally, if none of the candidate ligands in the library can fit the electron density well enough, especially when the density is much smaller than the ligands to be tested, the program will return an empty list.
 
 
-**OK, I see the output and the list.  Now what?**
+**OK, I see the output and the list of top ranked ligands.  Now what?**
 
 The program ranks the fitting results based on objective analysis of several parameters (see document).  This usually works well but one should check a few top-ranked ligands in graphics to give the final verdict.  The easiest way to do this is to select (highlight) a ligand on the Results page in the GUI and click on one of the display options provided.  By default, the fitted ligand, the difference map, and the protein model will be displayed together so you can check if the ligand indeed fits the density well and if it's making good contacts with the protein molecule.
 
 .. image:: images/ligand_id-2.png
+
+
+
+**Before displaying the results in graphics, is there a way to know if the program finds anything interesting?**
+
+A decent fit usually has a local correlation coefficient (local CC) greater than 0.75.  A local CC close to 0.85 usually indicates a near perfect fit.  If local CC of a few top-ranked ligands are 0.80 or above, you should be able to get a pretty good idea about what the density might be.
 
 **I didn't get an output list.  What's the problem?**
 
