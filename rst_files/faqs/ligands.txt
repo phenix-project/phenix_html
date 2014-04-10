@@ -119,7 +119,7 @@ Ligand Identification
 
 **What do I expect after a ligand identification run?**
 
-On the main GUI status page or towards the end of the command-line output, you will see a list of ligand ranked by scores, and a summary analysis of the results.  A typical output is shown below.  
+On the main GUI status page or towards the end of the command-line output, you will see a list of ligand ranked by scores, and a summary analysis of the results.  A typical output is shown below.
 
 .. image:: images/ligand_id-1.png
 
@@ -144,7 +144,7 @@ As said before, this is usually due to that none of the ligands in the library c
 
 **What ligand library should I use?**
 
-The default library is the collection of the top 180 most popular ligands in the PDB.  It covers a wide range of molecules in terms of their sizes and chemical nature.  Very often, top ranked ligands give you good ideas about the class of ligands and what to try next.  Alternatively, one may want to try ligands based on the biological functions of the protein in the crystal.  Ligand_identification provides several build-in tools to do it on-the-fly.  If you know your proteins function in Enzyme Classification (E.C.) terms, E.C. numbers, or Gene Ontology IDs, you can input these information in the run and Ligand_identification will compile and use this function-related ligand library for you.  For command-line users, you can find a few examples in Ligand_identification document.  
+The default library is the collection of the top 180 most popular ligands in the PDB.  It covers a wide range of molecules in terms of their sizes and chemical nature.  Very often, top ranked ligands give you good ideas about the class of ligands and what to try next.  Alternatively, one may want to try ligands based on the biological functions of the protein in the crystal.  Ligand_identification provides several build-in tools to do it on-the-fly.  If you know your proteins function in Enzyme Classification (E.C.) terms, E.C. numbers, or Gene Ontology IDs, you can input these information in the run and Ligand_identification will compile and use this function-related ligand library for you.  For command-line users, you can find a few examples in Ligand_identification document.
 
 **I think I find a ligand that's close enough, what to do next?**
 

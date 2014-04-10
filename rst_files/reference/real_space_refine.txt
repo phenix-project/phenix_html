@@ -2,17 +2,17 @@ phenix.real_space_refine: a tool for refinement a model against a map
 =====================================================================
 
 **Description**
- 
-The program refines a model into a map. The map can be derived from 
+
+The program refines a model into a map. The map can be derived from
 X-ray or neutron crystallography, or Electron Microscopy, and its quality can be
-from very good to poor. The goal is to obtain a model that fits map as good as 
-possible and that has a meaningful geometry (no stereochemically impossible 
+from very good to poor. The goal is to obtain a model that fits map as good as
+possible and that has a meaningful geometry (no stereochemically impossible
 outliers, such as Ramachandran plot outliers, etc that are not justified by the
 map).
 
 **Contact author**
 
-For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov) 
+For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
 
 **Features**
 
@@ -21,8 +21,8 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
   - Morphing (map guided rigid body shifts of small continuous model fragments)
   - Simulated Annealing refinement
   - Rigid-body refinement
-  - Restraints: Standard set: bond, angle, planarity, chirality, dihedral, 
-    nonbonded repulsion. Extra restraints: Ramachandran plot (two options: 
+  - Restraints: Standard set: bond, angle, planarity, chirality, dihedral,
+    nonbonded repulsion. Extra restraints: Ramachandran plot (two options:
     "oldfield" and "emsley"), C-beta deviations, rotamer, secondary structure,
     starting position
   - Fast and fully automated restraints/map weight optimization
@@ -32,77 +32,76 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
     coefficients
   - ADP (B-factors) can be refined against the map
   - Fast calculations
-  - Input PDB file may contain full molecule or only one NCS copy and NCS 
-    operators (that generate whole molecule from one NCS copy). NCS operators 
+  - Input PDB file may contain full molecule or only one NCS copy and NCS
+    operators (that generate whole molecule from one NCS copy). NCS operators
     need to be stored as MTRIX records in PDB file header
 
 **Usage examples**
 
   1) Running with default settings
-  
+
        phenix.real_space_refine model.pdb map.ccp4
        phenix.real_space_refine model.pdb map_coefficients.mtz
-       
-     This will do several macro-cycles of global real-space refinement with 
-     secondary structure, rotamer, Ramachandran plot and C-beta deviations 
+
+     This will do several macro-cycles of global real-space refinement with
+     secondary structure, rotamer, Ramachandran plot and C-beta deviations
      restraints enabled.
-     
+
   2) Disabling secondary structure, rotamer and Ramachandran plot restraints
-  
+
        phenix.real_space_refine model.pdb map.ccp4 \
        secondary_structure_restraints=False use_rotamer_restraints=False \
        ramachandran_restraints=False
-     
+
   3) Request output model to have bond and angle rmsd from ideal not greater
      than certain values
-     
+
        phenix.real_space_refine model.pdb map.ccp4 target_bonds_rmsd=0.01 \
        target_angles_rmsd=1.0
-       
+
   4) Specify which Fourier map coefficients to use
-  
+
        phenix.real_space_refine model.pdb map.mtz label='2FOFCWT,PH2FOFCWT'
-       
+
   5) Run refinement using global minimization (default), local fitting, morphing,
      and simulated annealing
-       
+
        phenix.real_space_refine model.pdb map.ccp4 \
        run=minimization_global+local_grid_search+morphing+simulated_annealing
-       
+
   6) If PDB file contains unknown to Phenix ligand a ligand CIF file needs to
-     be provided. Ligand CIF file can be obtained using one of corresponding 
-     tools in Phenix (see documentation for more details). Once CIF file is 
+     be provided. Ligand CIF file can be obtained using one of corresponding
+     tools in Phenix (see documentation for more details). Once CIF file is
      available it can be used as following
-     
+
        phenix.real_space_refine model.pdb map.ccp4 ligands.cif
-       
+
 **Notes**
 
-  - Secondary structure (SS) restraints strongly rely on correct SS annotation. 
+  - Secondary structure (SS) restraints strongly rely on correct SS annotation.
     If SHEET and HELIX records are available in PDB file header then
-    they will be used to enforce SS as defined. Incorrect SHEET and HELIX 
-    records are very likely to result in incorrect refined structure. If SHEET 
-    and HELIX records are not present in PDB file header and SS restraints are 
-    enabled then KSDSSP tool will be used internally to annotate SS and use it 
-    as restraints. The outcome of KSDSSP strongly depends on input model quality: 
-    for a model with gross errors SS annotation may be inaccurate resulting in 
+    they will be used to enforce SS as defined. Incorrect SHEET and HELIX
+    records are very likely to result in incorrect refined structure. If SHEET
+    and HELIX records are not present in PDB file header and SS restraints are
+    enabled then KSDSSP tool will be used internally to annotate SS and use it
+    as restraints. The outcome of KSDSSP strongly depends on input model quality:
+    for a model with gross errors SS annotation may be inaccurate resulting in
     poorly refine model.
-    
+
   - Including local fitting, morphing, or simulated annealing (
-    local_grid_search+morphing+simulated_annealing) into refinement may 
+    local_grid_search+morphing+simulated_annealing) into refinement may
     significantly increase runtime.
-    
-  - It is possible to extract a box with map and model in it and do refinement 
-    inside of that box. To extract box with map and model use phenix.map_box 
+
+  - It is possible to extract a box with map and model in it and do refinement
+    inside of that box. To extract box with map and model use phenix.map_box
     command (see Phenix documentation for more details).
-    
+
   - It is important that information provided in CRYST1 record in PDB file (if
     provided) matches box information of CCP4 formatted map or crystal symmetry
     information in MTZ file (whatever used).
 
 **References**
 
-  - P.V.	Afonine, J.J.	Headd, T.C.	Terwilliger	&	P.D.	Adams. Computational	
-    Crystallography	Newsletter	(2013).	Volume	4,	Part	2, 43-44.
+  - P.V.        Afonine, J.J.   Headd, T.C.     Terwilliger     &       P.D.    Adams. Computational
+    Crystallography     Newsletter      (2013). Volume  4,      Part    2, 43-44.
     http://phenix-online.org/newsletter/CCN_2013_07.pdf
-

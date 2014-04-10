@@ -1,0 +1,24 @@
+===================
+Sorting heteroatoms
+===================
+
+The program ``phenix.sort_hetatms`` is a utility designed to re-group the
+non-polymeric molecules (heteroatoms) in a model in a roughly similar manner
+to the format used by the Protein Data Bank.  This consists of matching all
+heteroatoms to the nearest polymer chain, resetting the chain IDs and
+residue numbers, converting ATOM labels to HETATM, and optionally sorting
+waters by B-factor.  It is primarily intended or internal use, and is also
+run within `phenix.ligand_pipeline <ligand_pipeline.html>`__.  The only
+input required is a PDB file, since the program does not deal with molecular
+geometry or experimental data.  Any REMARK records will be removed, but this
+can be disabled by setting ``preserve_remarks=True``.
+
+Note that the PDB will, inevitably, further modify the contents of the model
+according to its own rules.  However, the program output is significantly
+closer to the PDB conventions than the output of phenix.refine or similar
+programs.
+
+List of all available parameters
+--------------------------------
+
+{{phil:mmtbx.command_line.sort_hetatms}}

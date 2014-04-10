@@ -1,4 +1,4 @@
-========================= 
+=========================
 Guided Ligand Replacement
 =========================
 
@@ -6,7 +6,7 @@ Guided Ligand Replacement
 
 Authors: Nigel W. Moriarty and Herbert E. Klei
 
-Overview 
+Overview
 --------
 
 The Guided Ligand Replacement (GLR) module is intended to facilitate
@@ -29,22 +29,22 @@ Optimization Workbench (eLBOW) via another tool called
 Real-Space Refinement (RSR) is performed and the final model written
 to disk.
 
-Usage 
+Usage
 -----
 
 Usage ::
 
   phenix.guided_ligand_replacement [options] \
-    target_pdb_file_name=structure-in-which-target-ligand-is-to-be-placed.pdb \ 
+    target_pdb_file_name=structure-in-which-target-ligand-is-to-be-placed.pdb \
     ligand_cif_file_name=parameterization-of-target-ligand.cif \
     map_coeffs_file_name=map-coefficients-for-target-electron-density.mtz \
     guide_pdb_file_name=structure-of-reference-protein-ligand-complex.pdb \
-    ligand_selection_in_guide_model=selection-to-identify-reference-ligand \ 
+    ligand_selection_in_guide_model=selection-to-identify-reference-ligand \
     replace_ligand_in_guide_pdb_file_name=[true|false]
 
 .. _input-files:
 
-Input files 
+Input files
 -----------
 
 GLR requires a number of inputs and also has some options, all of
@@ -56,7 +56,7 @@ which are provided using the ``phil`` formalism. The list of inputs:
     protein sequences need only be sufficiently similar to reliably
     superimpose.
 
-  - **protein_pdb_file_name**: Name of PDB file in which the target 
+  - **protein_pdb_file_name**: Name of PDB file in which the target
     (i.e. new) ligand is to be placed.  This structure is typically
     the apo structure from molecular replacement after one round of
     refinement.
@@ -107,50 +107,50 @@ Optional inputs include:
   - **phenix.superpose_pdbs**: this allows selection of the same
     parameters as in the standalone program.
 
-Output files 
+Output files
 ------------
 
 By default, GLR will generate a PDB file with the fit ligand.
 
-Examples 
+Examples
 --------
 
-Example 1 
+Example 1
 +++++++++
 
 The reference FXa structure, 3KQE, and its reference ligand, LGM, is
 used to place the target ligand, LGK, in the target FXa structure 3KQC
 ::
-  
-  phenix.guided_ligand_replacement \ 
-    target_pdb_file_name=3KQC-apo.pdb \ 
+
+  phenix.guided_ligand_replacement \
+    target_pdb_file_name=3KQC-apo.pdb \
     ligand_cif_file_name=LGK.cif \
-    map_coeffs_file_name=refine-apo.mtz \ 
-    guide_pdb_file_name=3KQE.pdb \ 
+    map_coeffs_file_name=refine-apo.mtz \
+    guide_pdb_file_name=3KQE.pdb \
     ligand_selection_in_guide_model="resname LGM"
 
-.. Example 2A 
+.. Example 2A
    ++++++++++
 
 .. A manually placed copy of the ligand, XXX is propagated throughout the
    asymmetric unit of YYYY.
 
-.. Example 2B 
+.. Example 2B
    ++++++++++
 
 .. Staged example in which GMP-PNP was initially replaced with AMP-PNP in
    4L9W.  This same approach could be used to replace ligands with
    non-standard nomenclature (e.g. atom names).
 
-Example 3 
+Example 3
 +++++++++
 
 In all of the above examples, the input can be provided through a PHIL
-file.  :: 
+file.  ::
 
   phenix.guided_ligand_replacement < glr.phil > glr.log
 
-References 
+References
 ----------
 
 {{citation:glr}}
@@ -158,7 +158,7 @@ References
 {{citation:elbow}}
 
 
-List of all available keywords 
+List of all available keywords
 ------------------------------
 
 {{phil:phenix.command_line.guided_ligand_replacement}}

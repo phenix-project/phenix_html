@@ -1,0 +1,44 @@
+==========================================
+phenix.dynamics: simple model perturbation
+==========================================
+
+This program performs very crude molecular dynamics on a model, usually for
+the purpose of removing any bias in R-free due to previous refinement against
+a different test set.  **It is not suitable for generating physically realistic
+trajectories**, due to the lack of attractive forces such as electrostatics,
+and lengthy runs will result in the model falling apart.  However, it is very
+effective for de-biasing while maintaining approximately correct geometry, and
+is also very fast (unlike simulated annealing in `phenix.refine
+<refine_gui.html>`__).
+
+The inputs for the program are very similar to those for
+`phenix.geometry_minimization <geometry_minimization.html>`__; the only
+required files are a model and any necessary restraints (CIF) files for
+non-standard ligands.  By default the dynamics is run at approximately room
+temperature; higher temperatures will result in faster movement.  Note however
+that unlike simulated annealing, the model will tend to unfold rapidly at
+high temperatures.
+
+Alternatives and complementary programs
+---------------------------------------
+
+  - Simulated annealing has some advantages due to the ability to
+    simultaneously de-bias and optimize the model against the data, which
+    prevents the structure from unfolding at high temperatures.  The
+    main disadvantage is the much longer runtime.
+  - `phenix.pdbtools <pdbtools.html>`__ can be used to reset B-factors, or
+    shake coordiantes without geometry restraints.  The latter is redundant
+    if dynamics is run, but setting the B-factors to suitably low starting
+    values (approximately 10 for most resolutions) will help remove bias.
+  - Both of the above steps can also be run at the start of `phenix.refine
+    <refine_gui.html>`_; click the "Modify start model" button in the GUI
+    to access options.
+  - To perturb structures for use as molecular replacement models, there is
+    a separate program providing an interface to the normal modes method in
+    Phaser (also available in the GUI under "Model tools").  This does a
+    better job conserving local structure.
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.dynamics}}
