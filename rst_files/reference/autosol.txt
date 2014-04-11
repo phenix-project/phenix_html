@@ -83,7 +83,7 @@ The sequence file for autosol (and autobuild) is the one-letter code sequence of
 
 Usually the chain type (RNA, DNA, PROTEIN) is guessed from the sequence file. You can also specify it directly with a command such as chain_type=PROTEIN.
 
-If there are multiple copies of a chain (ncs) then you can put in a single copy and it will be used for all of them. If there are multiple copies of a set of chains (A,A,A, B,B,B would be 3 copies of chains A and B) then you can put in the unique set (A and B). If there are different numbers of copies of different chains, then put in the relative number of copies of each chain (for a structure with 2 copies of A and one of B, put in A,A,B; for a structure with 4 of A and 2 B put in either (A,A,A,A,B,B) or (A,A,B). The solvent content will be calculated from the value of ncs_copies and the sequences and stoichiometry defined by your sequence file. If you specify ncs_copies=nn then nn will be used for ncs_copies; otherwise ncs_copies will be guessed from the composition in your sequence file, with the contents of the asymmetric unit being calculated as ncs_copies copies of the contents of your sequence file.
+If there are multiple copies of a chain (ncs) then you can put in a single copy and it will be used for all of them. If there are multiple copies of a set of chains (A,A,A, B,B,B would be 3 copies of chains A and B) then you can put in the unique set (A and B). If there are different numbers of copies of different chains, then put in the unique set, and be sure to set the solvent_fraction.
 
 If you have more than one type of chain (RNA, DNA, PROTEIN) then just put in the sequence for the one that is the biggest, and be sure to specify solvent_fraction=xxx so that the correct solvent fraction is used.
 
