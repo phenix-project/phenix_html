@@ -286,7 +286,7 @@ create_rst_from_modules = [
   ("mmtbx.command_line.fmodel", "fmodel.txt"),
 ]
 
-def replace_tree (src_path, dest_path) :
+def replace_tree (src_path, dest_path):
   if os.path.exists(dest_path) :
     shutil.rmtree(dest_path)
   shutil.copytree(src_path, dest_path)
