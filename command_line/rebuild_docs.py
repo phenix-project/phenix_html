@@ -123,40 +123,52 @@ class FormatPHIL(object):
       self._walk(i, depth=depth+1, parent=np)
     return parent
 
-class PublishRST(object):
-  """Convert RST to HTML."""
+class Publish(object):
   # Regular expressions for parsing {{tags}} and keywords.
-  TAG_RE = re.compile("""({{(?P<tag>.+?):(?P<command>.+?)}})""")
+  TAG_RE = re.compile("""({{(?P<tag>\w*)(:)?(?P<command>.+?)?}})""")
   KEYWORDS_RE = re.compile("""([a-zA-Z]{3,})""")
+  
+  # Render interface, tags
+  def render(self, root='', ignore_tags=False):
+    return ''
 
-  def __init__(self, filename, ignore_tags=False):
+  def _render_tags(self, doc, root=''):
+    for match in self.TAG_RE.finditer(doc):
+      sub = match.groups()[0]
+      tag = match.group('tag')
+      command = match.group('command')
+      # print "Rendering tag:", sub, tag, command
+      result = ""
+      if tag == 'phil':
+        result = FormatPHIL(command).format()
+      elif tag == 'citation':
+        result = FormatCitation(command).format()
+      elif tag == 'root':
+          result = root
+      # print "...result:", result
+      doc = re.sub(sub, result, doc)
+    return doc
+
+class PublishRST(Publish):
+  """Convert RST to HTML."""
+
+  def __init__(self, filename):
     """Filename is RST .txt file."""
     self.filename = filename
     self.doc = None
     self.data = None
-    self.ignore_tags = ignore_tags
     with codecs.open(self.filename, 'r', 'utf-8') as f:
       self.data = f.read()
 
-  def render(self):
+  def render(self, root='', ignore_tags=False):
     """Return RST as HTML and process {{tags}}."""
     template = os.path.join(HTML_PATH, 'template.html')
     doc = docutils.core.publish_string(self.data, writer_name='html', settings_overrides={'template':template})
     # Process tags.
-    if not self.ignore_tags:
-      for tag in self.TAG_RE.finditer(doc):
-        doc = self._render_tag(tag.groups()[0], tag.group('tag'), tag.group('command'), doc)
+    if not ignore_tags:
+      doc = self._render_tags(doc, root=root)
     self.doc = replace_phenix_version(doc)
     return self.doc
-
-  def _render_tag(self, sub, tag, command, doc):
-    """Process a {{tag:command}}."""
-    result = ""
-    if tag == 'phil':
-      result = FormatPHIL(command).format()
-    elif tag == 'citation':
-      result = FormatCitation(command).format()
-    return re.sub(sub, result, doc)
 
   def index(self):
     """Create index."""
@@ -181,7 +193,7 @@ class PublishRST(object):
       return set()
     return set(self.KEYWORDS_RE.findall(text))
 
-class FormatIndex(object):
+class FormatIndex(Publish):
   """Index page."""
   # TODO: Maybe this should take list of PublishRST instances
   #   instead of dict of their index() results.
@@ -196,15 +208,19 @@ class FormatIndex(object):
     with open(os.path.join(HTML_PATH, 'lib', 'reject')) as f:
       self.reject = set([i.strip() for i in f.readlines()])
 
-  def render(self):
+  def render(self, root='', ignore_tags=False):
     """Return HTML formatted index page."""
     merged = self.merge_indexes(self.indexes, cutoff=self.cutoff)
     with open(os.path.join(HTML_PATH, 'template.html')) as f:
       template = f.read()
-    return template%{
+    doc = template%{
       'head':"""<title>Index</title>""",
-      'html_body':ET.tostring(self._format(merged))
+      'html_body':ET.tostring(self._format(merged)),
+      'root': ''
     }
+    if not ignore_tags:
+      doc = self._render_tags(doc, root=root)
+    return doc
 
   def _format(self, merged):
     """Return ul element with nested ul's for each index term."""
@@ -234,23 +250,23 @@ class FormatIndex(object):
         del merged[word]
     return merged
 
-class FormatOverview(object):
+class FormatOverview(Publish):
   """Format PHENIX Overview page."""
-
-  def __init__(self):
-    pass
-
-  def render(self):
+  def render(self, root='', ignore_tags=False):
     """Return HTML formatted overview page."""
     with open(os.path.join(HTML_PATH, 'phenix_documentation.html')) as f:
       doc = f.read()
     doc = replace_phenix_version(doc)
     with open(os.path.join(HTML_PATH, 'template.html')) as f:
       template = f.read()
-    return template%{
+    doc = template%{
       'head': """<title>PHENIX Documentation</title>""",
-      'html_body': doc
+      'html_body': doc,
+      'root': ''
     }
+    if not ignore_tags:
+      doc = self._render_tags(doc, root=root)
+    return doc
 
 #######################################
 
@@ -271,23 +287,23 @@ create_rst_from_modules = [
 ]
 
 def replace_tree (src_path, dest_path) :
-  if op.exists(dest_path) :
+  if os.path.exists(dest_path) :
     shutil.rmtree(dest_path)
   shutil.copytree(src_path, dest_path)
 
-def link_tree (src_path, dest_path) :
+def link_tree(src_path, dest_path):
   if (sys.platform == "win32") :
-    if op.isdir(dest_path) :
+    if os.path.isdir(dest_path) :
       shutil.rmtree(dest_path)
     replace_tree(src_path, dest_path)
   else :
-    if op.exists(dest_path) :
+    if os.path.exists(dest_path) :
       os.remove(dest_path)
     os.symlink(src_path, dest_path)
 
 # FIXME this is really not a good idea - except for the citations, which
 # do actually change regularly
-def auto_generate_rst_files (out) :
+def auto_generate_rst_files(out):
   sys.path.append(os.path.join(HTML_PATH, "scripts"))
   import create_refinement_txt
   import create_phenix_maps
@@ -304,85 +320,92 @@ def auto_generate_rst_files (out) :
       error_prefix="",
       target_must_be="",
       where_str="").object
-    open(op.join("reference", rst_file), "w").write(legend)
+    open(os.path.join("reference", rst_file), "w").write(legend)
 
 def run (args, out=sys.stdout) :
   cmdline = libtbx.phil.command_line.process(
     args=args,
     master_string=master_phil_str)
   params = cmdline.work.extract()
-  if (out is None) : out = sys.stdout
-  html_dir = libtbx.env.find_in_repositories(
-    relative_path="phenix_html",
-    test=os.path.isdir)
-  if (html_dir is None) :
-    raise Sorry("phenix_html repository not found.")
-  rst_dir = op.join(html_dir, "rst_files")
-  top_dir = os.path.dirname(html_dir)
+  if (out is None):
+    out = sys.stdout
+
+  # Checked for HTML_PATH at module load.
+  # Start converting all RST .txt to .html.
+  top_dir = os.path.dirname(HTML_PATH)
   docs_dir = os.path.join(top_dir, "doc")
-  if op.exists(docs_dir) and params.clean :
+  rst_dir = os.path.join(HTML_PATH, "rst_files")
+  if os.path.exists(docs_dir) and params.clean:
     shutil.rmtree(docs_dir)
-  if (not op.exists(docs_dir)) :
+  if (not os.path.exists(docs_dir)):
     os.makedirs(docs_dir)
-  print >> out, "Building PHENIX documentation in %s" % html_dir
+    
+  print >> out, "Building PHENIX documentation in %s"%HTML_PATH
   print >> out, "The complete documentation will be in:"
   print >> out, "  %s" % docs_dir
   print >> out, "  creating restructured text files"
   os.chdir(rst_dir)
   auto_generate_rst_files(out=out)
   os.chdir(rst_dir)
-  indexes = {}
+
   print >> out, "  building HTML files from restructured text files"
-  rst_files = []
-  for dirname, dirnames, filenames in os.walk(rst_dir) :
-    base_dir = os.path.basename(dirname)
-    for file_name in filenames :
-      relative_path = file_name
-      dest_path = docs_dir
-      if (base_dir != "rst_files") :
-        relative_path = op.join(base_dir, file_name)
-        dest_path = op.join(docs_dir, base_dir)
-        if (not op.exists(dest_path)) :
-          os.makedirs(dest_path)
-      if file_name.endswith(".txt") :
-        outfile = "%s.html" % op.basename(file_name).rpartition(".")[0]
-        out_url = outfile
-        if (base_dir != "rst_files") :
-          out_url = op.join(base_dir, out_url)
-        out_path = op.join(dest_path, outfile)
-        print >> out, "    converting %s to %s" % (file_name, outfile)
-        try:
-          publish = PublishRST(relative_path,
-            ignore_tags=(file_name == "doc_procedures.txt"))
-          doc = publish.render()
-          indexes[out_url] = publish.index()
-        except Exception, e:
-          if (not params.ignore_errors) :
-            raise
-          print "      error: %s" % e
-        else :
-          with open(out_path, "w") as f:
-            f.write(doc)
+  indexes = {}
+  for dirname, dirnames, filenames in os.walk(rst_dir):
+    for filename in filter(lambda x:x.endswith('.txt'), filenames):      
+      # Some complicated directory relationships.
+      # relpath is the directory relative to rst_dir root (for output)
+      # root is the inverse (for linking between pages)
+      # infile is the actualy input .txt file
+      # outpath is the output dir, outname is HTML file name
+      # outfile is the joined outpath, outname
+      relpath = os.path.relpath(dirname, rst_dir)
+      root = os.path.relpath(rst_dir, dirname)
+      if root == '.':
+        root = ''
+      else:
+        root = root + '/'        
+      infile  = os.path.join(dirname, filename)
+      outname = "%s.html"%os.path.basename(filename).rpartition(".")[0]
+      outpath = os.path.join(docs_dir, relpath)
+      outfile = os.path.join(outpath, outname)
+      # Check the output directory exists.
+      try:
+        os.makedirs(outpath)
+      except:
+        pass
+      
+      print >> out, "    converting %s to %s" % (infile, outfile)
+      try:
+        publish = PublishRST(infile)
+        doc = publish.render(
+          root=root,
+          ignore_tags=(filename=="doc_procedures.txt")
+        )
+        # Make sure we index using relative path!
+        indexes[os.path.join(relpath, outname)] = publish.index()
+      except Exception, e:
+        if (not params.ignore_errors):
+          raise
+        print "      error: %s" % e
+      else :
+        with open(outfile, "w") as f:
+          f.write(doc)
+
+  # Write out the main page, and index page.
   os.chdir(docs_dir)
   with open("phenix_index.html", "w") as f:
     f.write(FormatIndex(indexes).render())
   with open("index.html", "w") as f:
     f.write(FormatOverview().render())
+    
+  # Copy images, CSS, etc.
   print >> out, "  copying images"
-  replace_tree(os.path.join(html_dir, "icons"),
+  replace_tree(os.path.join(HTML_PATH, "icons"),
                os.path.join(docs_dir, "icons"))
-  replace_tree(os.path.join(html_dir, "images"),
+  replace_tree(os.path.join(HTML_PATH, "images"),
                os.path.join(docs_dir, "images"))
-  replace_tree(os.path.join(html_dir, "css"),
+  replace_tree(os.path.join(HTML_PATH, "css"),
                os.path.join(docs_dir, "css"))
-  print >> out, "  making symlinks in subdirectories"
-  for dirname, dirnames, filenames in os.walk(rst_dir) :
-    for dir_name in dirnames :
-      dest_path = op.join(docs_dir, dir_name)
-      if op.isdir(dest_path) :
-        link_tree(op.join(docs_dir, "icons"), op.join(dest_path, "icons"))
-        link_tree(op.join(docs_dir, "images"), op.join(dest_path, "images"))
-        link_tree(op.join(docs_dir, "css"), op.join(dest_path, "css"))
 
 if (__name__ == "__main__") :
   run(sys.argv[1:])
