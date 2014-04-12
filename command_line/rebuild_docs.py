@@ -144,7 +144,7 @@ class Publish(object):
       elif tag == 'citation':
         result = FormatCitation(command).format()
       elif tag == 'root':
-          result = root
+        result = root
       # print "...result:", result
       doc = re.sub(sub, result, doc)
     return doc
