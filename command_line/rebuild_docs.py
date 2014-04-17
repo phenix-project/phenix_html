@@ -129,7 +129,7 @@ class Publish(object):
   KEYWORDS_RE = re.compile("""([a-zA-Z]{3,})""")
   
   # Render interface, tags
-  def render(self, root='', ignore_tags=False):
+  def render(self, root=''):
     return ''
 
   def _render_tags(self, doc, root=''):
@@ -139,14 +139,18 @@ class Publish(object):
       command = match.group('command')
       # print "Rendering tag:", sub, tag, command
       result = ""
-      if tag == 'phil':
-        result = FormatPHIL(command).format()
-      elif tag == 'citation':
-        result = FormatCitation(command).format()
-      elif tag == 'root':
-        result = root
-      # print "...result:", result
-      doc = re.sub(sub, result, doc)
+      try:
+        if tag == 'phil':
+          result = FormatPHIL(command).format()
+        elif tag == 'citation':
+          result = FormatCitation(command).format()
+        elif tag == 'root':
+          result = root
+      except Exception, e:
+        print "Error with tag:", e
+      else:
+        # print "...result:", result
+        doc = re.sub(sub, result, doc)
     return doc
 
 class PublishRST(Publish):
@@ -160,13 +164,12 @@ class PublishRST(Publish):
     with codecs.open(self.filename, 'r', 'utf-8') as f:
       self.data = f.read()
 
-  def render(self, root='', ignore_tags=False):
+  def render(self, root=''):
     """Return RST as HTML and process {{tags}}."""
     template = os.path.join(HTML_PATH, 'template.html')
     doc = docutils.core.publish_string(self.data, writer_name='html', settings_overrides={'template':template})
     # Process tags.
-    if not ignore_tags:
-      doc = self._render_tags(doc, root=root)
+    doc = self._render_tags(doc, root=root)
     self.doc = replace_phenix_version(doc)
     return self.doc
 
@@ -208,7 +211,7 @@ class FormatIndex(Publish):
     with open(os.path.join(HTML_PATH, 'lib', 'reject')) as f:
       self.reject = set([i.strip() for i in f.readlines()])
 
-  def render(self, root='', ignore_tags=False):
+  def render(self, root=''):
     """Return HTML formatted index page."""
     merged = self.merge_indexes(self.indexes, cutoff=self.cutoff)
     with open(os.path.join(HTML_PATH, 'template.html')) as f:
@@ -218,8 +221,7 @@ class FormatIndex(Publish):
       'html_body':ET.tostring(self._format(merged)),
       'root': ''
     }
-    if not ignore_tags:
-      doc = self._render_tags(doc, root=root)
+    doc = self._render_tags(doc, root=root)
     return doc
 
   def _format(self, merged):
@@ -252,7 +254,7 @@ class FormatIndex(Publish):
 
 class FormatOverview(Publish):
   """Format PHENIX Overview page."""
-  def render(self, root='', ignore_tags=False):
+  def render(self, root=''):
     """Return HTML formatted overview page."""
     with open(os.path.join(HTML_PATH, 'phenix_documentation.html')) as f:
       doc = f.read()
@@ -264,8 +266,7 @@ class FormatOverview(Publish):
       'html_body': doc,
       'root': ''
     }
-    if not ignore_tags:
-      doc = self._render_tags(doc, root=root)
+    doc = self._render_tags(doc, root=root)
     return doc
 
 #######################################
@@ -377,10 +378,7 @@ def run (args, out=sys.stdout) :
       print >> out, "    converting %s to %s" % (infile, outfile)
       try:
         publish = PublishRST(infile)
-        doc = publish.render(
-          root=root,
-          ignore_tags=(filename=="doc_procedures.txt")
-        )
+        doc = publish.render(root=root)
         # Make sure we index using relative path!
         indexes[os.path.join(relpath, outname)] = publish.index()
       except Exception, e:
