@@ -272,3 +272,15 @@ syntax called PHIL (Python Hierarchial Interface Language), which is designed
 to work both as command-line arguments or as more verbose parameter files.
 A basic overview of PHIL is available in the `overview of file formats
 <file_formats.html#phil>`__.
+
+Troubleshooting
+===============
+
+Problems starting the GUI
+-------------------------
+
+Ubuntu tends to be installed without an important library that is linked to
+by the GUI code.  If you encounter an error message about a missing library
+upon starting the GUI, you can add it to your system with this command::
+
+  sudo apt-get install libjpeg62
