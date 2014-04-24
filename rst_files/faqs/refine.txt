@@ -33,6 +33,12 @@ There are several limitations to these options:
   - 'nproc' is incompatible with Windows
   - these approaches are incompatible with each other
 
+**I set the number of processors to 8 - why is phenix.refine still only using
+a single processor?**
+
+As noted above, the standard parallelization primarily affects weight
+optimization.  If this is not performed, most of the program will run serially.
+
 **What type of experimental data should I use for refinement?**
 
 Either amplitudes (F) or intensities (I) may be used in refinement (in any
@@ -164,6 +170,14 @@ users will spend an equivalent amount of time manually adjusting the weights
 by trial-and-error.  If you are certain you need to have manual control, the
 parameters fix_wxc (for geometry restraints) and fix_wxu (for B-factor
 restraints) will set the weights.
+
+**Why doesn't phenix.refine use weight optimization even though I selected
+this option?**
+
+Because the weight optimization takes into account (and tries to limit) the
+difference between R-work and R-free, it will be automatically disabled if
+these statistics already very close (or if R-free is greater than R-work), as
+often happens at the start of refinement from an MR solution.
 
 **When should I use non-crystallographic symmetry (NCS) restraints?**
 
