@@ -38,7 +38,11 @@ In most cases this is done by adding the "nproc" keyword, for instance::
 
   phenix.autobuild data.mtz model.pdb seq.dat nproc=5
 
-Equivalent controls are usually displayed in the GUI.  In addition to these
+Equivalent controls are usually displayed in the GUI.  Some of these programs
+also support parallelization over queuing systems; this may require manual
+input of the queue submission command.
+
+In addition to these
 options, it is also possible to compile phenix.refine and Phaser with the
 OpenMP library, which automatically parallelizes specific instructions such
 as the FFT.  This requires using the source installer for Phenix, and adding
@@ -194,6 +198,23 @@ field labeled "Maximum number of reflections in test set".
 
 Maps
 ----
+
+.. _sharpen:
+
+**How do I apply B-factor sharpening or blurring to a map?**
+
+Both phenix.refine and phenix.maps allow you to customize the generation of
+map coefficients and/or CCP4 maps.  In either case, there will be a button to
+enter map options, with several pre-defined map types already entered
+(at least 2mFo-DFc, mFo-DFc, and anomalous).  Each map has a setting to
+activate map sharpening, and an input field to enter the B-factor to apply.
+Negative values sharpen the map, positive values blur it.
+
+  .. image:: images/map_sharpen.png
+
+Note that Coot also allows you to perform these operations interactively
+(Calculate menu --> Map sharpening...), which may be more helpful than
+guessing a number.
 
 .. _anom_map:
 
