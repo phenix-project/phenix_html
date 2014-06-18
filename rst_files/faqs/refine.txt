@@ -789,6 +789,20 @@ constant, taken from International Tables 1992 edition.  wk1995 is from
 (Waasmaier & Kirfel 1995), which is five Gaussians and is more accurate (but
 slower) than it1992.
 
+**Why doesn't phenix.refine use a constant number of resolution bins/why
+doesn't phenix.refine divide reflections evenly into resolution bins?**
+
+Binning reflections evenly is inappropriate for the bulk solvent correction
+and scaling method used in phenix.refine, which instead uses logarithmic
+binning.  The logic is explained in Afonine et al. (2013):
+
+"This scheme allows the higher resolution bins to contain more reflections than
+the lower resolution bins and more detailed binning at low resolution without
+increasing the total number of bins. An additional reason for using logarithmic
+binning is that the dependence of the scales on resolution is approximately
+exponential (see previous sections), which makes the variation of scale factors
+more uniform between bins when a logarithmic binning algorithm is used."
+
 Citations
 =========
 
