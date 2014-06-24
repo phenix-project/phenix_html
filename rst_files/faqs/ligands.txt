@@ -107,11 +107,11 @@ Database code to retrieve the molecular structure, you can click a button
 next to this input field to search the local copy of the database for
 chemical names matching the search terms.
 
-  .. image:: images/chem_comp_search_button.png
+  .. image:: ../images/chem_comp_search_button.png
 
 This will give you a list to choose from (including three-letter codes):
 
-.. image:: images/chemical_comp_search.png
+.. image:: ../images/chemical_comp_search.png
 
 
 Ligand Identification
@@ -121,7 +121,7 @@ Ligand Identification
 
 On the main GUI status page or towards the end of the command-line output, you will see a list of ligand ranked by scores, and a summary analysis of the results.  A typical output is shown below.
 
-.. image:: images/ligand_id-1.png
+.. image:: ../images/ligand_id-1.png
 
 Occasionally, if none of the candidate ligands in the library can fit the electron density well enough, especially when the density is much smaller than the ligands to be tested, the program will return an empty list.
 
@@ -130,7 +130,7 @@ Occasionally, if none of the candidate ligands in the library can fit the electr
 
 The program ranks the fitting results based on objective analysis of several parameters (see document).  This usually works well but one should check a few top-ranked ligands in graphics to give the final verdict.  The easiest way to do this is to select (highlight) a ligand on the Results page in the GUI and click on one of the display options provided.  By default, the fitted ligand, the difference map, and the protein model will be displayed together so you can check if the ligand indeed fits the density well and if it's making good contacts with the protein molecule.
 
-.. image:: images/ligand_id-2.png
+.. image:: ../images/ligand_id-2.png
 
 
 
