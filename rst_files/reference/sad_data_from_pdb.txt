@@ -1,0 +1,66 @@
+Downloading data from PDB and setting up for SAD structure determination with phenix.sad\_data\_from\_pdb
+=========================================================================================================
+
+Author(s)
+---------
+
+-  phenix.sad\_data\_from\_pdb: Tom Terwilliger
+
+Purpose
+-------
+
+phenix.sad\_data\_from\_pdb is a command line tool for downloading coordinates
+and anomalous structure factor data for a PDB deposition and setting up
+for running one or more wavelengths of data as SAD datasets.
+
+Usage
+-----
+
+How phenix.sad\_data\_from\_pdb works:
+--------------------------------------
+
+phenix.sad\_data\_from\_pdb first uses phenix.fetch_pdb to download 
+the data from the PDB.
+
+Then it converts the structure factor data to Scalepack unmerged original
+index format, calculates model map coefficients, and identifies the
+anomalously-scattering atoms in the PDB file, the wavelengths of data
+collection, and the resolution of the data.  If these are not present in the
+PDB deposition then the procedure will not work.
+
+Examples
+--------
+
+Standard run of phenix.sad\_data\_from\_pdb:
+--------------------------------------------
+
+Running phenix.sad\_data\_from\_pdb is easy. You can just type:
+
+::
+
+    phenix.sad_data_from_pdb pdb_ids="2etd"
+
+
+and phenix.sad\_data\_from\_pdb will download the data for 2etd and set up
+a directory with this data and with subdirectories for each wavelength
+of data present (w1, w2, and w3 in this case).  In each subdirectory
+a file run_autosol_std.csh will be created that is suitable for running
+phenix.autosol using that anomalous data.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.command_line.sad_data_from_pdb}}
