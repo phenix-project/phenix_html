@@ -142,6 +142,14 @@ These are all then used in LLG completion and scoring as well.  The process
 takes quite a long time and you would normally use it only if you have
 a multiprocessor machine.
 
+To carry out a very extensive search with brute force, you may want to adjust
+the parameters n_top_patt (target number of Patterson seeds to consider),
+ n_top_patt_min
+(minimum number of seeds to consider, normally the search is terminated when
+the target number of sites is found once n_top_patt_min seeds have 
+been examined), and n_top_llg (number of sites from LLG map to consider for
+each seed.)
+
 Varying the high-resolution limit
 =====================================
 
