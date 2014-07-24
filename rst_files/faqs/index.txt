@@ -28,6 +28,7 @@ Individual programs may have additional citations.
 **How can I use multiple processors to run a job?**
 
 Only `Autosol <../reference/autosol.html>`_,
+`MR-Rosetta <../reference/mr_rosetta.html>`_,
 `Autobuild <../reference/autobuild_gui.html>`_,
 `Ligandfit <../reference/ligandfit_gui.html>`_,
 `phaser.MRage <../reference/MRage.html>`_,
@@ -39,8 +40,8 @@ In most cases this is done by adding the "nproc" keyword, for instance::
   phenix.autobuild data.mtz model.pdb seq.dat nproc=5
 
 Equivalent controls are usually displayed in the GUI.  Some of these programs
-also support parallelization over queuing systems; this may require manual
-input of the queue submission command.
+(phenix.refine is the major exception) also support parallelization over
+queuing systems; this may require manual input of the queue submission command.
 
 In addition to these
 options, it is also possible to compile phenix.refine and Phaser with the
@@ -48,6 +49,20 @@ OpenMP library, which automatically parallelizes specific instructions such
 as the FFT.  This requires using the source installer for Phenix, and adding
 the argument "--openmp" to the install command.  Because of threading
 conflicts, OpenMP is not compatible with the Phenix GUI.
+
+**How can I run Phenix across multiple computers in our lab?**
+
+You will need to install a managed queuing system to handle job submission.
+Currently we support (to varying degrees) Sun Grid Engine, PBS, LSF, and
+Condor.  Note that this assumes that the available processors are dedicated
+for cluster use, otherwise the submitted jobs will compete for resources with
+local processes.
+
+You can use the queuing system in two ways: either to parallelize the execution
+of subprocesses for various programs listed above, or to submit jobs from the
+Phenix GUI.  However, these two options are not inherently compatible: if you
+submit a job from the GUI it will usually be unable to submit additional
+child processes to the queue without further configuration.
 
 **Where can I find sample data?**
 
