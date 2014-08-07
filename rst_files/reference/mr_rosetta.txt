@@ -203,7 +203,7 @@ can supply the aligned, placed structure to mr\_rosetta for rebuilding.
     -in:file:fasta MR_ROSETTA_1/WORK_1/EDITED_1crb_fasta.txt \
     -in:file:alignment MR_ROSETTA_1/WORK_1/EDITED_1crb_2qo4.ali \
     -in:file:template_pdb MR_ROSETTA_1/AutoMR_run_1_/2QO4.1.pdb \
-    -loops:frag_sizes 9 3.2 \
+    -loops:frag_sizes 9 3 \
     -loops:frag_files inputs/aa1crb_09_05.200_v1_3.gz \
        inputs/aa1crb_03_05.200_v1_3.gz none \
     -loops:random_order \
@@ -410,8 +410,8 @@ have all the software you will need for running mr\_rosetta.
 
 Notes on Rosetta versions:
 
--  this set of instructions is for Rosetta version 3.2.. Downloads for
-   other. versions look very similar except for the numbering.
+-  this set of instructions is for Rosetta version 3.6. Downloads for
+   other versions look very similar except for the numbering.
 -  Rosetta versions starting with 3.6 (and weekly builds starting with
    2013 week 45) have a different location of Rosetta files from
    previous versions. Additionally Rosetta commands have changed. There
@@ -425,10 +425,7 @@ compatible and it takes about an hour if you have a 2-processor
 machine...or just a few minutes if you have a multiprocessor machine to
 compile with.
 
-NOTE: If trouble...see the FULL INSTRUCTIONS at
-http://www.rosettacommons.org/manuals/archive/rosetta3.2\_user\_guide/
-or http://www.rosettacommons.org/manuals/archive/rosetta3.2\_ or
-http://www.rosettacommons.org/manuals/archive/rosetta3.2.1\_user\_guide/
+NOTE: If trouble...see the FULL INSTRUCTIONS at https://www.rosettacommons.org/support
 
 NOTE: If trouble on ubuntu 11.04 or later...also see:
 http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 (but just
@@ -440,32 +437,18 @@ scons bin mode=release cxx=gcc cxx\_ver=4.5)
    find "Academic License" and click on "LICENSE". Fill out the form,
    and receive by email a link to the download site and a
    login/password.
--  Go to Rosetta 3.2 on the download site, select Download, and Download
-   Rosetta "as one bundle". Note if you have a mac you may need to
-   install some additional patches (please see the instructions on the
-   download page).
+-  Go to the latest download (for example Rosetta 2014.30)
+   on the download site, select Download, and download Rosetta "as one bundle". 
 -  Unpack and install Rosetta: Go to the directory where you want to
-   install it and move the downloaded file "rosetta3.2\_Bundles.tgz"
-   there. Then...
+   install it and move the downloaded file (something like
+   rosetta\_2014.30.57114\_bundle.tgz)
+   there. Then...changing the names to match your bundle...
 
 ::
 
-    tar xzf rosetta3.2_Bundles.tgz
+    tar xzf rosetta_2014.30.57114_bundle.tgz
 
-This should give you a directory rosetta-3.2 that contains:
-
-::
-
-    BioTools                new_apps.note           rosetta_demos
-    foldit                  release.note            rosetta_fragments
-    manual                  rosetta_database        rosetta_source
-
-NOTE: if your directory contains .tgz files instead of the listing above
-you may need to also run the same tar command on the individual .tgz
-files. NOTE 2: Rosetta versions 3.6 and later have a different directory
-structure. It looks instead like:
-
-::
+This should give you a directory like rosetta\_2014.30.57114\_bundle that contains:
 
     demos   main    tools
 
@@ -497,29 +480,41 @@ it will not run.
 
 ::
 
-    cd rosetta_source
+    cd main/source/
     python external/scons-local/scons.py -j2 bin mode=release
     cd ..
 
 If you get to "scons: done building targets." you are all set!
 
 -  Notice where you have installed rosetta. The directory you just set
-   up, now containing "rosetta\_source" and "rosetta\_database" is to be
-   called "PHENIX\_ROSETTA\_PATH". If this directory is...
-   /net/sigma/raid1/rosetta-3.2 then you can now set a local
+   up, now containing "main" is to be
+   called "PHENIX\_ROSETTA\_PATH". 
+   Now you can now set a local
    environmental variable in your ".profile" (sh or bash shell) or
    ".cshrc" (c-shell) to mark where rosetta is located: if you are using
    the bash or sh shells:
 
 ::
 
-    export PHENIX_ROSETTA_PATH=/your-path-to-rosetta-here/rosetta-3.2
+    export PHENIX_ROSETTA_PATH=/your-path-to-rosetta-here/
 
 or sh (C-shell):
 
 ::
 
-    setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/rosetta-3.2
+    setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/
+
+-  For example if your rosetta directory is:
+
+::
+
+   /Users/terwill/unix/rosetta/rosetta_2014.30.57114_bundle/ 
+
+then you would say in sh:
+
+::
+
+   setenv PHENIX_ROSETTA_PATH /Users/terwill/unix/rosetta/rosetta_2014.30.57114_bundle/
 
 -  If your machine is behind a firewall and there is a proxy server you
    need to go through, then if you use a .hhr file to download files
