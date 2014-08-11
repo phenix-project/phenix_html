@@ -10,9 +10,9 @@ Configuration
 
 The configuration of Xtriage is much simpler than most of the other programs
 in the Phenix GUI; the minimum input is a reflection file and symmetry
-information, which for MTZ files is automatically extracted.  Xtriage is also
-run automatically by the wizards (AutoSol, AutoBuild) and the
-graphical results can be viewed from the GUIs for those programs as well.
+information, which for MTZ files is automatically extracted.  A sequence file
+is helpful for calculting expected solvent content.  A model file (PDB or
+mmCIF), if available, will be used in the calculation of twinning statistics.
 
 To launch Xtriage, open the main Phenix GUI and click on or drag-and-drop a
 reflection file onto the Xtriage module.  The command-line equivalent is
@@ -25,11 +25,15 @@ The **Parameters** button opens a window containing the most essential
 information about the reflection data, including choice of data to analyze
 if more than one suitable Miller array is present.  Xtriage will accept
 any reflection file format and both intensities and amplitudes, but
-a Scalepack or MTZ file with separate I+/I- is the most typical input.  Most
+a Scalepack or MTZ file with separate I+/I- is the most typical input.  (We
+recommend using unmerged data as it will be used in additional analyses of
+data quality and anomalous signal, but this is optional.)  Most
 of this information will be extracted automatically if possible; at a minimum,
 only the input data and crystal symmetry are required.  A complete listing
 of parameters can be found in the `manual for the command-line version
-<xtriage.html>`_.
+<xtriage.html>`_.  Xtriage is also
+run automatically by the wizards (AutoSol, AutoBuild) and the
+graphical results can be viewed from the GUIs for those programs as well.
 
 
 ---------------------------
@@ -37,23 +41,78 @@ Interpreting Xtriage output
 ---------------------------
 
 The output of the GUI is nearly identical in content to the output of the
-command-line version.  The analyses performed can be divided into three
-categories: data strength and completeness, lattice and symmetry properties,
-and twinning detection.  These are shown on three separate tabs in the results
-window; at the top of each tab, a drop-down menu can be used to scroll to each
-sub-section.  Buttons on the toolbar open this page, the full Xtriage log
-file, and a dialog for saving individual graphs, respectively.
+command-line version.  The analyses performed are divided into several
+categories, covered in more detail below:
 
-.. image:: ../images/xtriage_results.png
+  - **Merging statistics**: these evaluate the agreement and quality of
+    redundant experimental observations.  Only included if unmerged data were
+    used as input.
+  - **Solvent content and Matthews coefficient**: attempts to guess the
+    crystal contents based on unit cell and space group (and optionally,
+    information about the crystallized molecules).
+  - **Data strength and completeness**: analysis of signal-to-noise ratio both
+    as an overall average and as a fraction of all possible reflections, and
+    checking for pathologically incomplete data.
+  - **Absolute scaling and Wilson analysis**: calculates overall isotropic and
+    anisotropic B-factors for the data, and compares the Wilson plot to an
+    empirical function derived from PDB structures.  This also includes the
+    detection of ice rings and other pathologies.
+  - **Anomalous signal**: indicates approximate quality of anomalous signal,
+    if anomalous data were provided.
+  - **Systematic absences**: examines the intensity of systematically absent
+    reflections given different space group choices.  (Note that if you have
+    already scaled in a specific space group (e.g. P212121), these reflections
+    may have already been removed from the input file.)
+  - **Diagnostic tests for twinning and pseudosymmetry**: analysis of intensity
+    distribution statistics to detect abnormal data, usually the result of
+    twinning or translational NCS.
+  - **Twin law tests**: determine which twin laws are permitted in the given
+    crystal symmetry, and estimate the twin fraction in each case.  (Note that
+    these are purely theoretical guesses, and do not by themselves indicate
+    that the data are actually twinned.)
+  - **Exploring higher metric symmetry**: if the crystal symmetry permits
+    merging into higher-symmetry space groups, calculate the merging R-factors
+    in each case.
 
-Suggestions for interpreting the results are given where appropriate; more
-detail explanations are hidden by default but may be shown by clicking the
-"Details. . ." text buttons.
+Several additional sections summarize the results from various analyses.  You
+can navigate between sections via the drop-down menu near the top of the
+results tab.
 
-In general, many of the plots described have a distinctive and easily
-recognizable shape for strong, problem-free data.  In some cases pathologies
-may be immediately recognized on the basis of abnormal curves (see for
-instance the section on twinning and pseudotranslation below).
+Alerts for problematic results
+==============================
+
+The first tab provides warnings for a variety of common problems:
+
+.. image:: images/xtriage_summary.png
+
+Each box can be clicked to jump to the detailed results in another tab.
+Analyses tagged with a red icon indicate issues that are likely to make various
+downstream steps such as phasing and refinement difficult (to varying degrees).
+Some of these may be remedied by better data processing, but they may be due to
+inherent issues of crystal quality.  Yellow icons indicate issues that may
+produce sub-optimal results but are not necessarily fatal - for instance, if
+the resolution limit appears to have been chosen too conservatively.  Green
+icons indicate that the data are of acceptable quality.
+
+Merging statistics
+==================
+
+If you provide unmerged (but scaled) intensities as input, the program
+`phenix.merging_statistics <unmerged_data.html>`_ will be run internally and
+the results displayed in their own tab.
+
+.. image:: images/xtriage_merging_overall.png
+
+In addition to the overall analysis, tables and plots display statistics by
+resolution shell, first for general counting statistics and signal-to-noise,
+second for various measures of data quality (including R-merge and CC1/2).
+
+.. image:: images/xtriage_dataset_consistency.png
+
+Clicking the plot button below a table opens plots for each set of analyses in
+a separate window.
+
+.. image:: images/xtriage_cc_one_half.png
 
 Data quality analyses
 =====================
@@ -95,7 +154,7 @@ most data, and a large deviation from expected values is unusual.  However,
 the resolution at which the maximum of the curve is found will be different
 depending on the type of molecule crystallized (protein vs. nucleic acid).
 
-.. image:: ../images/xtriage_wilson.png
+.. image:: ../images/xtriage_wilson_good.png
 
 Problems with the Wilson plot will be identified and reported; again, the
 p9-sad example is relatively free of pathologies:
@@ -112,19 +171,21 @@ Ice ring detection.
 
 Ice rings in the data are detected by analyzing the completeness and the mean intensity:
 
-.. image:: ../images/xtriage_ice.png
+.. image:: ../images/xtriage_ice_good.png
 
 Anomalous signal.
 -----------------
 
 If the input reflection file contains separate intensities for each Friedel
-mate, a quality measure of the anomalous signal is reported.  The p9-sad
+mate, an approximate measure of the anomalous signal is reported.  The p9-sad
 example, a high-resolution SeMet SAD dataset, is shown again:
 
 .. image:: ../images/xtriage_anom_good.png
 
 Suggested resolution cutoffs at which the anomalous signal disappears are
-shown by the vertical lines.  The p9-sad example is unusually excellent; a
+shown by the vertical lines.  Note that these are intended for heavy-atom
+substructure determination using for example `HySS <hyss.html>`_; they are not
+especially robust as a measure of quality.  The p9-sad example is unusually excellent; a
 more difficult (but still solvable) dataset, the sec17 example in the Phenix
 distribution, is below:
 
@@ -134,6 +195,15 @@ Measurability values above 0.05 are encouraging; if the data do not reach this
 threshold at a usable resolution, successful phasing by SAD/MAD is extremely
 unlikely.
 
+A more useful indicator of anomalous signal quality is the CC(anom), which is
+calculated if unmerged data are provided.  This is essentially similar to
+CC1/2: the unmerged observations are separated into two pools, each of which is
+then merged (keeping Friedel mates separate), and the correlation coefficient
+of their anomalous differences is calculated.  Values above 0.3 are very
+encouraging.
+
+.. image:: ../images/xtriage_cc_anom.png
+
 Twinning analyses
 =================
 
@@ -142,7 +212,7 @@ the top of the tab, including merohedral and pseudo-merohedral twin laws
 compatible with the lattice.  Below is the output for the pseudo-merohedrally
 twinned ``porin-twin`` example data:
 
-.. image:: ../images/xtriage_twin_summary.png
+.. image:: ../images/xtriage_twinning_summary.png
 
 Intensity distribution statistics
 ---------------------------------
