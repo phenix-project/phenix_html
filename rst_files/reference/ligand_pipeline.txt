@@ -24,24 +24,28 @@ starting model (with the same number of chains), and a source of ligand
 information.  File types will be automatically detected if explicit parameter
 names are not used, for instance::
 
-  phenix.ligand_pipeline model.pdb data.mtz seq.fa lig.smi
+  phenix.ligand_pipeline model.pdb data.mtz seq.fa lig.cif
 
 The data may be in any format; if R-free flags are not found they will be
 generated automatically, but you may also supply the flags in a separate file
-(``r_free_flags.file_name=flags.mtz``).  The sequence file is optional but
-highly recommended.
+(``r_free_flags.file_name=flags.mtz``).  This is espeically recommended if you
+are working with multiple isomorphous structures.  The sequence file is
+optional but highly recommended.
 
 To specify the ligand geometry, several mutually exclusive options are
 available:
 
-  - Chemical file, such as SMILES, MOL2, or CIF (this can include existing
-    restraints): ``ligand=lig.smi``
+  - Chemical file, such as MOL2, CIF (this can include existing
+    restraints), or SMILES: ``ligand=lig.cif``
 
   - SMILES string: ``ligand_smiles=c1ccccc1``
 
   - For ligands already present in the PDB, if you know the three-letter code
     used, you may specify this instead: ``ligand_code=ATP``
 
+It is recommended that you use the most detailed and explicit information about
+the ligand chemistry and geometry that you have available: a pre-generated and
+manually validated CIF is ideal.
 You may also supply a PDB file (``template_pdb=lig.pdb``) containing the atom
 names to use.  However, PDB files should **not** be the primary source of
 ligand geometry information!  Additionally, if you have additional ligands in
@@ -81,7 +85,9 @@ generate a PDB file, and the input restraints will be used for refinement.
 
 **Molecular replacement**.  Although molecular replacement is optional if the
 starting model is already nearly-complete and isomorphous to the target
-structure, in most cases it is preferable to run Phaser.  The number of search
+structure, in many cases it is preferable to run Phaser.  (This decision will
+be made automatically in the future but at present MR is the default mode.)
+The number of search
 copies will be determined automatically by Xtriage (``copies=Auto``), but
 since this will occasionally guess too few copies, you can explicitly set
 the search number instead (e.g. ``copies=2``).  If Phaser finds fewer copies
@@ -93,7 +99,10 @@ sequence.
 
 If you want to preserve a specific placement or orientation of the MR solution,
 you can specify a previously determined model by passing the
-reference_structure parameter.
+reference_structure parameter.  Alternately, if you are confident that the
+model can be correctly placed without MR, add ``skip_mr=True`` or ``--skip_mr``
+to jump straight to refinement.  (This will automatically turn on rigid-body
+refinement in the subsequent step.)
 
 **Initial refinement**.  The MR solution (or starting model, if MR was not
 performed) will be refined using a relatively conservative resolution-dependent
@@ -105,7 +114,9 @@ molecules will be added if the resolution is sufficient, but these will be
 removed prior to ligand fitting.  Simulated annealing may be run
 if desired (``anneal=True``), but this will significantly increase the
 runtime.  Because rapid convergence is more important at this point than
-ideal geometry, weight optimization will not be used by default.
+ideal geometry, weight optimization will not be used by default.  (Water
+picking is used because this improves the maps, but the solvent atoms will be
+removed prior to ligand fitting to avoid overlap.)
 
 If the refined R-free is above 0.5, the program will immediately exit, since
 this indicates that the structure may be incorrect or at least in need of
@@ -120,11 +131,14 @@ rebuild_in_place=Auto, which in most cases means that residues will not be
 added or removed.  If run, AutoBuild is generally the most time-consuming
 stage in the pipeline, although it can take advantage of multiple processors.
 
-An alternate protocol is to simply delete those residues with poor fit to
-density, with the goal of moving them out of the way of the ligand binding
-site.  This can be turned on by specifying ``prune=True``; you may also wish
-to set ``build=False``.  Note that residues deleted this way will not be
-restored by running AutoBuild in rebuild-in-place mode.
+An alternate protocol, run by default, is to simply delete those residues with
+poor fit to density, with the goal of moving them out of the way of the ligand
+binding site.  Either the mainchain or sidechain atoms or both can be removed,
+but the default is to only prune sidechains.  These may optionally be rebuilt
+after the ligand is placed.
+
+As a final preparation step, waters are removed from the model and the
+difference map is recalculated.
 
 **Ligand placement**.  Currently only LigandFit is supported, although
 additional options will be available in the future.  The target map will be
@@ -274,6 +288,16 @@ appropriate skepticism** and **seek expert opinion if unsure of the results**.
 Limitations
 -----------
 
+- For maximum flexibility, no restriction is placed on the quality of the
+  starting model or its similarity to the target model; the Sculptor step will
+  take care of any necessary sequence deletions.  However, in practice it is
+  vastly more effective when working with near-identical structures.
+
+- When working with a set of related structures that differ from previously
+  solved crystal forms, it will probably be most productive to solve the first
+  one interactively, then use this as a starting point for the remaining
+  structures.
+
 - Only one type of ligand is supported at present.  Essential cofactors or
   other molecules whose binding mode is already known may included in the
   input model; in these cases, you should add keep_hetatms=True to instruct
@@ -287,8 +311,10 @@ Limitations
   will not be handled, and nonbonded forces may distort binding.  Additionally,
   the ligand parameterization may be based on the unbound molecule.
 
-- Structures such as HIV protease which exhibit symmetry binding of inhibitors
-  will not be handled properly.
+- Structures such as HIV protease which exhibit symmetric binding of inhibitors
+  will not be handled properly - and more generally, alternate conformations
+  for the ligand are not modeled.  (The pipeline may be able to place a single
+  conformation, however.)
 
 - The pipeline is designed to work at resolutions of 3.0A or better; while
   it is possible to solve complexes at lower resolution, the ligand fitting
@@ -303,6 +329,11 @@ Limitations
   an entirely new model from scratch, and rebuilds the entire model.  This
   means that for structures where local rebuilding or addition of a few
   residues is required, interactive mode will probably be more successful.
+
+- Most of the optimization of program behavior and parameters has been focused
+  on structures bound to drug-like molecules; less attention has been given to
+  fragments.  These tend to have weaker binding and partial occupancy, and are
+  therefore more difficult to distinguish in maps.
 
 Troubleshooting
 ---------------
@@ -327,11 +358,13 @@ the ligand successfully (in which case a warning message will be printed).
     risk of moving the protein into ligand density.  The interactive mode is
     strongly recommended for overcoming this problem.
 
-  - **Spurious difference density for protein.**  If large regions of positive
-    mFo-DFc density corresponding to missing protein residues are present,
-    LigandFit may sometimes place the ligand in these sites instead of the
-    correct binding site.  Again, interactive mode is the recommended
-    solution (and an optimal search model can help too).
+  - **Spurious difference density for other atoms.**  If large regions of
+    positive mFo-DFc density corresponding to missing protein residues are
+    present, LigandFit may sometimes place the ligand in these sites instead of
+    the correct binding site.  Again, interactive mode is the recommended
+    solution (and an optimal search model can help too).  Note that unexpected
+    ordered buffer components may also lead to false positives; this is
+    especially problematic for fragments.
 
   - **Poor or incomplete difference density.**  In some cases, a particularly
     flexible ligand may not fit entirely into difference density; this is not
@@ -341,7 +374,9 @@ the ligand successfully (in which case a warning message will be printed).
     resolution, or partial binding.  In some cases, it means that the ligand
     is not bound at all.  While reducing the CC cutoff may allow some
     structures to proceed, we recommend inspecting the density interactively,
-    both before and after ligand placement.
+    both before and after ligand placement.  Also note that maximum entropy
+    treatment of the difference map (``maxent=True``) may improve the fitting
+    in borderline cases.
 
   - **Poor ligand geometry.** In some cases eLBOW is unable to automatically
     determine the optimal geometry from the inputs.  Running AM1 optimization
@@ -351,6 +386,37 @@ the ligand successfully (in which case a warning message will be printed).
     we recommend supplying as rich a source of information as possible;
     in particular, if geometry from a crystal structure of the target compound
     is available, this should be included in the inputs.
+
+Other notes about use
+---------------------
+
+**Speeding up execution**: the bulk of the runtime is spent refining the model;
+the default protocol is very robust but not especially fast, and may be
+unnecessarily intensive for easy cases.  You can switch to a faster protocol
+by specifying ``quick_refine=True``, which will shorten both refinement steps
+from 6 to 3 cycles, and disable weight optimization.
+
+**Hydrogen atoms**: these will be added prior to the final refinement step.
+Usually this will improve geometry somewhat (and also R-factors at high
+resolution); however, it has the side effect of making refinement significantly
+slower.  Specfiy ``after_ligand.hydrogens=False`` to leave them off.
+
+**Rebuilding sidechains**: sidechains truncated by a previous step (Sculptor or
+the pruning step), or missing in the input model, may optionally be restored
+after ligand placement by specifying ``extend_model=True``.
+
+**Standalone tools**: although most of the pipeline is built around
+pre-existing programs in Phenix, several new tools have been developed for
+this protocol and are also available as separate command-line programs:
+
+  - **mmtbx.prune_model**: remove protein atoms with poor fit to density.
+  - **mmtbx.extend_sidechains**: rebuild missing protein sidechain atoms and
+    perform quick real-space refinement.
+  - **phenix.development.optimize_model**: this is essentially the final
+    refinement step as a standalone program.  It was originally developed as an
+    automated tool for re-refining structures in the PDB, and may be useful
+    both for preparing starting models and for additional refinement of
+    pipeline-built structures after manual fixes.
 
 References
 ----------
