@@ -410,8 +410,12 @@ pre-existing programs in Phenix, several new tools have been developed for
 this protocol and are also available as separate command-line programs:
 
   - **mmtbx.prune_model**: remove protein atoms with poor fit to density.
+  - **mmtbx.apply_ncs_to_ligand**: place additional copies of the desired
+    ligand using NCS operators between protein chains.
   - **mmtbx.extend_sidechains**: rebuild missing protein sidechain atoms and
     perform quick real-space refinement.
+  - **mmtbx.validate_ligand**: check for possible fitting errors in a specific
+    ligand.
   - **phenix.development.optimize_model**: this is essentially the final
     refinement step as a standalone program.  It was originally developed as an
     automated tool for re-refining structures in the PDB, and may be useful

@@ -214,6 +214,32 @@ field labeled "Maximum number of reflections in test set".
 Maps
 ----
 
+.. _fft:
+
+**I have an MTZ file containing map coefficients.  How can I obtain a map
+appropriate for display in PyMOL?**
+
+In the Phenix GUI, this is almost always automatic: any time a button labeled
+"Open in PyMOL" is displayed, this will perform the necessary conversion to
+CCP4 format.  In the `phenix.refine GUI <../reference/refine_gui.html>`_, there
+is also a separate button to simply generate the CCP4 maps without opening
+PyMOL.  The map grid spacing, which controls the fineness of the displayed
+mesh, can be set in the "Graphics" section of the Preferences.  By default this
+is a relatively conservative ``d_min/3`` for reasons of speed and disk space.
+In most cases the map region will cover the atoms in the corresponding PDB
+file plus a generous buffer.
+
+You may also create CCP4 (or X-PLOR or DSN6) maps manually.  In the GUI, the
+`program <../reference/mtz2map.html>`__ labeled "FFT map coefficients" in the
+"Maps" category performs this
+action; only an MTZ file is required as input, but a PDB file is recommended
+if you want to ensure that all atoms are covered.  Every valid set of map
+coefficients in the MTZ file will be converted, with the exception of F(model)
+arrays.  On the command line, this program exists as ``phenix.fft`` or
+``phenix.mtz2map``::
+
+  phenix.fft refine_001.mtz refine_001.mtz grid_resolution_factor=0.25
+
 **What is the best way to generate an omit map in Phenix?**
 
 There are several options (with some overlap in functionality):
@@ -239,6 +265,27 @@ There are several options (with some overlap in functionality):
   about model bias, `phenix.maps <../reference/create_maps.html>`__ has an
   option to omit a subset of atoms.  This is suitable for quick calculations,
   but not for generating figures for publication.
+
+**Do Phenix maps contain R-free-flagged reflections?**
+
+In most cases, yes (except as noted below).  For programs such as `phenix.refine
+<../reference/refine_gui.html>`_ or `phenix.maps
+<../reference/create_maps.html>`__,
+maps may optionall have the flagged reflections excluded, but this is not the
+default behavior.  In the Phenix GUI, the "Refinement" section of the
+Preferences allows you to set this option this globally.  Usually this will
+lead to flagged reflections being substituted by F(model) to prevent Fourier
+artifacts due to incomplete data; this may slightly increase model bias but
+it will not lead to biasing R-free if the resulting map coefficients are used
+for real-space refinement.  The program `phenix.remove_free_from_map
+<../reference/remove_free_from_map.html>`_ can remove the flagged reflections
+from an existing MTZ file, and ``phenix.fft``/``pheniz.mtz2map`` has an option
+to perform this when converting to CCP4 or similar format.
+
+Although the previous paragraph applies to **output** maps, **the real-space
+refinement in phenix.refine always removes flagged reflections from the maps
+used internally**.  This is essential to prevent biasing R-free by refining
+against the real-space map incorporating the flagged reflections.
 
 .. _sharpen:
 
