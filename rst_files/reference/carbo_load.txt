@@ -24,8 +24,8 @@ give::
 
   CarboLoad - A program for loading carbohydrates into a protein model
 
-  Usage: 
-    phenix.carbo_load protein_pdb_file_name=pdb3a37.ent \ 
+  Usage:
+    phenix.carbo_load protein_pdb_file_name=pdb3a37.ent \
                       carbohydrate_file_name=man.txt \
                       map_coeffs_file_name=pdb3a36_refine_001_map_coeffs.mtz \
                       residue_selection="resname LG1"
@@ -59,13 +59,13 @@ the addition and the carbohydrate information. The addtion of e.g.::
   residue_selection="chainid A resname ASN resid 37" carbohydrate_file_name=NAG-NAG
 
 will add a chain of two NAG units to the selected ASN. THe carbohydrate
-parameter can be a SCaLES string (see below) or a file containing a 
+parameter can be a SCaLES string (see below) or a file containing a
 SCaLES string or GlycoCT format (see below).
 
 Mode 3
 ++++++
 
-If you include a data file or, more efficiently and flexibly, a map file 
+If you include a data file or, more efficiently and flexibly, a map file
 CarboLoad with perform a Real Space Refinement when each saccharide unit is
 placed in the model.
 
@@ -112,7 +112,7 @@ Optional inputs include:
 Optional control parameters include:
 
   - **allow_multiple_chain_selection**: makes the residue selection work
-    on every chain in the model. This is useful in situation where the 
+    on every chain in the model. This is useful in situation where the
     model contains multiple identical (almost) chains.
 
   - **nprocs**: runs each carbohydrate polymer addition in a seperate

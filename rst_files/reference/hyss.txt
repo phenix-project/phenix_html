@@ -45,7 +45,7 @@ HySS is that it can use as many processors as you have on your computer.
 This can make for a really quick direct methods search for your
 anomalously-scattering substructure.
 
-You might notice next that for SAD data 
+You might notice next that for SAD data
 HySS now automatically tries Phaser completion
 to find a solution if the direct methods approach does not give a clear
 solution right away.  Phaser completion uses the SAD likelihood function to
@@ -129,11 +129,11 @@ general take considerably longer. If the full search leads to a better
 consensus model please let us know because we will want to improve the
 automatic termination detection.
 
-Brute-force searches 
+Brute-force searches
 ====================
 
 A second option in cases where HySS does not find a solution
-is to try is the ``strategy=brute-force`` option. The 
+is to try is the ``strategy=brute-force`` option. The
 brute-force approach uses Phaser LLG completion and likelihood scoring as
 in a standard run of HySS with SAD data, except that instead of adding
 the highest set of sites from the LLG map as a group, all combinations
@@ -146,7 +146,7 @@ To carry out a very extensive search with brute force, you may want to adjust
 the parameters n_top_patt (target number of Patterson seeds to consider),
  n_top_patt_min
 (minimum number of seeds to consider, normally the search is terminated when
-the target number of sites is found once n_top_patt_min seeds have 
+the target number of sites is found once n_top_patt_min seeds have
 been examined), and n_top_llg (number of sites from LLG map to consider for
 each seed.)
 
@@ -163,7 +163,7 @@ Trying likelihood-based rescoring with direct methods
 =====================================================
 
 You can use likelihood-based rescoring along with direct methods.
-For this procedure, the keyword ``rescore=phaser-complete`` is recommended. 
+For this procedure, the keyword ``rescore=phaser-complete`` is recommended.
 This approach is less affected by
 suboptimal resolution cutoffs and also provides more discrimination with noisy
 data. Switching on the ``phaser-map`` extrapolation protocol is also worthwhile,

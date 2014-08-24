@@ -438,7 +438,7 @@ scons bin mode=release cxx=gcc cxx\_ver=4.5)
    and receive by email a link to the download site and a
    login/password.
 -  Go to the latest download (for example Rosetta 2014.30)
-   on the download site, select Download, and download Rosetta "as one bundle". 
+   on the download site, select Download, and download Rosetta "as one bundle".
 -  Unpack and install Rosetta: Go to the directory where you want to
    install it and move the downloaded file (something like
    rosetta\_2014.30.57114\_bundle.tgz)
@@ -488,7 +488,7 @@ If you get to "scons: done building targets." you are all set!
 
 -  Notice where you have installed rosetta. The directory you just set
    up, now containing "main" is to be
-   called "PHENIX\_ROSETTA\_PATH". 
+   called "PHENIX\_ROSETTA\_PATH".
    Now you can now set a local
    environmental variable in your ".profile" (sh or bash shell) or
    ".cshrc" (c-shell) to mark where rosetta is located: if you are using
@@ -508,7 +508,7 @@ or sh (C-shell):
 
 ::
 
-   /Users/terwill/unix/rosetta/rosetta_2014.30.57114_bundle/ 
+   /Users/terwill/unix/rosetta/rosetta_2014.30.57114_bundle/
 
 then you would say in sh:
 

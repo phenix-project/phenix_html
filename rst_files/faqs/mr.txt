@@ -16,6 +16,10 @@ experimental phasing, the ability to `autobuild most of the model
 <../reference/autobuild_gui.html>`_ is the single best measure of a correct
 solution; alternately, running a single round of `refinement
 <../reference/refine_gui.html>`_ should result in an R-free below 0.50.
+Note that if the R-free is above 0.5 after refinement, this often indicates
+indicates that the solution is actually incorrect - especially when combined
+with sub-standard TFZ and/or LLG values.  Just because Phaser finds a solution,
+does not mean that it has correctly solved the structure!
 
 **Why doesn't Phaser report an R-factor?**
 
@@ -112,6 +116,85 @@ that the sequence-to-chain alignment could be performed optimally. In common
 cases, this does not impair superposition drastically, since there are still
 many sites to use. In case *SSM* alignment fails, other matching algorithms
 (e.g. residue sequence numbers) can be used.
+
+Refinement after MR
+-------------------
+
+**What should I run after Phaser finds a good solution?**
+
+We usually recommend one (or both) of these two options (and see the next
+question for advice on more difficult cases):
+
+- If the search model is the same protein (or close enough) and is not
+  expected to have large conformational cahnges, run phenix.refine using
+  the default strategy
+  for at least 8-10 macrocycles, but with options adjusted as appropriate for
+  the resolution of the data: for instance, adding NCS restraints at low
+  resolution if multiple copies of a chain are present, or adding the solvent
+  update at moderate-to-high resolution.
+- Run AutoBuild; if the search model is of a significantly different protein,
+  turn off "rebuild-in-place" mode so it will build an entirely new model.
+
+**I ran Phaser, it found a solution, then I ran phenix.refine, and the R-free
+is stuck above 0.4 (but below 0.5).  How do I fix this?**
+
+This is an open-ended question, and there are multiple explanations and
+solutions possible.  We usually recommend a standard series of checks:
+
+- Run `Xtriage <../reference/xtriage_gui.html>`_ and check your data for any
+  pathologies that may make refinement difficult (such as twinning, incomplete
+  data, or translational NCS).
+- It is very important that the search model already match the sequence of the
+  target protein.  If you run Phaser with a homologous structure as input, you
+  should first run Sculptor to edit the search model as needed.  (This is not
+  the same as homology modeling - it simply removes inappropriate atoms,
+  renames and renumbers residues, and adjusts B-factors.)  Refinement will not
+  correct any residual problems if you skip this step.
+- Check whether the MR solution is truly complete - this means that you have
+  placed enough copies of the search model, and that the search model already
+  covers most or all of the target.  Gaps in crystal packing or unusually large
+  blobs of difference density may be indicative of missing scatterers.  At low
+  resolution the difference density will be weaker, but you can still inspect
+  the lattice.  If you are missing significant parts of the model, this will
+  limit how much lower R-factors can get.
+- Make sure you are running enough cycles of refinement.  Sometimes it will
+  take a long time to converge; the default three cycles is the minimum
+  recommnded.
+
+If all of the both indicate that model and data are reasonably sensible, it is
+likely that there are differences/model errors that are beyond the radius of
+convergence of refinement.  Fortunately, this is usually easy to recognize in
+the difference maps even at low resolution; for instance, a representative
+test case at 4.0Å (described in DiMaio et al. 2013):
+
+.. image:: ../images/1isr_1ewt_ref1.png
+
+Here we can see very clearly that the model is simply misfit (although the
+majority of the protein, mostly outside the field of view, is more or less
+correct).  In this case, there are several tools you can try, many of which
+were specifically designed to cope with this class of problems:
+
+- If you have moderate-to-high-resolution data (at least 3.0Å), you can try
+  building an entirely new model in `AutoBuild
+  <../reference/autobuild_gui.html>`_.  This is slower than refinement, but it
+  has a very wide radius of convergence.
+- The model morphing procedure may be helpful; this is available both as an
+  option in AutoBuild, and a `standalone program
+  <../reference/morph_model.html>`_.
+- The `hybrid Rosetta-Phenix refinement <../reference/rosetta_refine.html>`_
+  was also designed to deal with cases like this.
+- `DEN refinement <../reference/den_refine.html>`_ was also designed to deal
+  with structures that need more aggressive improvement, and has proven useful
+  in many similar cases.
+- In extreme cases, `MR-Rosetta <../reference/mr_rosetta.html>`_ may be tried;
+  this is capable of improving **very** poor MR solutions, but is significantly
+  more computationally expensive than the other methods.
+- Sometimes just adding simulated annealing in phenix.refine will be enough
+  (although for the example pictured above, it was not).
+
+Additionally, if multiple structures of the same protein are available for use
+as search models, we recommend checking whether any of these is closer to the
+target than the current search model.
 
 Phaser-MR GUI
 -------------
@@ -248,3 +331,5 @@ Reference
 {{citation:phaser}}
 
 {{citation:mr_rosetta}}
+
+{{citation:rosetta_refine}}
