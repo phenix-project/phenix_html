@@ -119,28 +119,28 @@ run this example data in autosol and how to interpret the results.
 
 The treatment of NCS depends on the specific program or task:
 
-  - In density modification (performed internally by RESOLVE, and used in
-    Autosol, autobuild, phenix.multi_crystal_average, and related programs),
-    NCS relationships (in the form of rotation/translation matrices) are used
-    to average different parts of the map together, which usually improves
-    phase quality.  The NCS operators can be derived from heavy-atom positions,
-    the map itself, or a partial model, but this is normally done
-    automatically (although we recommend specifying the number of NCS-related
-    copies if you know what it should be).
+- In density modification (performed internally by RESOLVE, and used in
+  Autosol, autobuild, phenix.multi_crystal_average, and related programs),
+  NCS relationships (in the form of rotation/translation matrices) are used
+  to average different parts of the map together, which usually improves
+  phase quality.  The NCS operators can be derived from heavy-atom positions,
+  the map itself, or a partial model, but this is normally done
+  automatically (although we recommend specifying the number of NCS-related
+  copies if you know what it should be).
 
-  - In model-building (Autobuild), NCS is also used to copy pieces of the
-    partial model to complete related chains.
+- In model-building (Autobuild), NCS is also used to copy pieces of the
+  partial model to complete related chains.
 
-  - In refinement (both in phenix.refine itself, and in the Autosol/Autobuild
-    pipelines), NCS-related chains will be restrained to have similar
-    conformations.  By default this will be done in torsion-angle space, which
-    allows for local conformational changes if present, and also incorporates
-    advanced sidechain-fitting features.  The NCS groups will be determined
-    automatically based on sequence comparison.  Alternately, you may restrain
-    the NCS groups to be globally similar, treating the relationships as rigid.
-    This may work better in a few cases but is generally not recommended,
-    especially since careful manual setup is usually required for optimal
-    results.
+- In refinement (both in phenix.refine itself, and in the Autosol/Autobuild
+  pipelines), NCS-related chains will be restrained to have similar
+  conformations.  By default this will be done in torsion-angle space, which
+  allows for local conformational changes if present, and also incorporates
+  advanced sidechain-fitting features.  The NCS groups will be determined
+  automatically based on sequence comparison.  Alternately, you may restrain
+  the NCS groups to be globally similar, treating the relationships as rigid.
+  This may work better in a few cases but is generally not recommended,
+  especially since careful manual setup is usually required for optimal
+  results.
 
 Note that several programs may produce multiple forms of output specifying the
 NCS relationships.  Files ending in .ncs_spec contain rotation and translation
@@ -330,28 +330,28 @@ more atoms are added to the model).  The first two options are recommended; in
 both cases you will need to request an additional set of map coefficients where
 ``map_type=LLG``.  (This is available as a preset option in the GUI.)
 
-  - In `phenix.maps <../reference/create_maps.html>`__, if you specify the
-    ``wavelength`` parameter, the entire structure will have scattering factors
-    adjusted to model the anomalous scattering expected at the given
-    wavelength.  This is relatively fast, but the disadvantage is that the
-    theoretical ``f''`` may be either too high or too low, leading to
-    difference map peaks around existing atoms.
+- In `phenix.maps <../reference/create_maps.html>`__, if you specify the
+  ``wavelength`` parameter, the entire structure will have scattering factors
+  adjusted to model the anomalous scattering expected at the given
+  wavelength.  This is relatively fast, but the disadvantage is that the
+  theoretical ``f''`` may be either too high or too low, leading to
+  difference map peaks around existing atoms.
 
-  - In `phenix.refine <../reference/refine_gui.html>`__, if you enable
-    anomalous group refinement and specify the groups to be refined (or
-    manually enter fixed ``f''`` values), the LLG map will reflect the
-    refined values rather than theoretical calculations.  You can also
-    set ``group_anomalous.find_automatically=True`` to identify appropriate
-    groups automatically (based on atomic number).
+- In `phenix.refine <../reference/refine_gui.html>`__, if you enable
+  anomalous group refinement and specify the groups to be refined (or
+  manually enter fixed ``f''`` values), the LLG map will reflect the
+  refined values rather than theoretical calculations.  You can also
+  set ``group_anomalous.find_automatically=True`` to identify appropriate
+  groups automatically (based on atomic number).
 
-  - If you use the `Phaser-EP GUI <../reference/phaser_ep.html>`__, there is
-    also an option to output the LLG map coefficients at the end.  However, if
-    you turn on anomalous substructure completion, the final LLG map will
-    usually be relatively flat.  (Alternately, if you do not use substructure
-    completion, you will be limited to whatever anomalously scattering atoms
-    are present in the input sites file.)   Therefore, unless you actually want
-    to perform experimental phasing, when starting from a
-    partial (or mostly complete) model the above methods are more useful.
+- If you use the `Phaser-EP GUI <../reference/phaser_ep.html>`__, there is
+  also an option to output the LLG map coefficients at the end.  However, if
+  you turn on anomalous substructure completion, the final LLG map will
+  usually be relatively flat.  (Alternately, if you do not use substructure
+  completion, you will be limited to whatever anomalously scattering atoms
+  are present in the input sites file.)   Therefore, unless you actually want
+  to perform experimental phasing, when starting from a
+  partial (or mostly complete) model the above methods are more useful.
 
 Finally, for automation purposes, there is a utility for calculating a single
 set of map coefficients:
@@ -361,6 +361,25 @@ set of map coefficients:
 
 This should produce identical output to phenix.maps, but has been streamlined
 to require minimal input.
+
+.. _superpose_maps:
+
+**I have maps for the same protein(s) in different crystal forms, which I would
+like to compare.  How can I superpose the maps along with the models?**
+
+There are two options for this, with slightly different limitations and uses:
+
+- phenix.superpose_maps: given two models and two MTZ files containing map
+  coefficients, superposes the models (using user-provided selections if
+  desired), moves them into a P1 box (where all sites > [0,0,0]), then
+  transforms the selected maps to follow.  Only works on one pair of map
+  coefficients at a time, but allows any type of complex array to be used.
+
+- structure comparison: given M models containing N copies of chain X, and M
+  corresponding MTZ files, extracts all copies of chain X, superposes in a P1
+  box, transforms the maps to follow.  Works with any arbitrary number of
+  models or chains, but limited to the most common map types (2mFo-DFc,
+  mFo-DFc, anomalous).
 
 Models
 ------
@@ -377,19 +396,19 @@ The most common reason for atoms having zero occupancy is heteroatom groups
 modifying the Phaser settings, it is easy to fix using several different
 programs:
 
-  - In `PDBTools <../reference/pdbtools.html>`__, there is an option to
-    reset all selected occupancies to a specified value (usually 1.0).  If you
-    do not want any non-unity occupancies it is safe to do this for the entire
-    model, otherwise you will need to enter an atom selection to modify.
+- In `PDBTools <../reference/pdbtools.html>`__, there is an option to
+  reset all selected occupancies to a specified value (usually 1.0).  If you
+  do not want any non-unity occupancies it is safe to do this for the entire
+  model, otherwise you will need to enter an atom selection to modify.
 
-  - For more manual control, the PDB file editor in the Phenix GUI allows you
-    to change the properties of individual atoms (or residues, chains, etc.).
+- For more manual control, the PDB file editor in the Phenix GUI allows you
+  to change the properties of individual atoms (or residues, chains, etc.).
 
-  - In `phenix.refine <../reference/refine_gui.html>`__, there are
-    options to modify the starting model in the middle panel of the
-    configuration interface; these are essentially identical to the options
-    in PDBTools.  (On the `command line <../reference/refinement.html>`__, the
-    parameter scope "modify_start_model" contains these options.)
+- In `phenix.refine <../reference/refine_gui.html>`__, there are
+  options to modify the starting model in the middle panel of the
+  configuration interface; these are essentially identical to the options
+  in PDBTools.  (On the `command line <../reference/refinement.html>`__, the
+  parameter scope "modify_start_model" contains these options.)
 
 Please note that any time you modify the atomic properties (or add or remove
 atoms), **it is essential to refine the model again,** as the previously
