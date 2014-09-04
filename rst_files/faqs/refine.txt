@@ -14,10 +14,10 @@ General
 
 There are currently two options for this:
 
-  - compile from source with OpenMP support, which parallelizes the Fast
-    Fourier Transform (FFT) used in structure factor and gradient calculation
-  - specify the 'nproc' parameter (or equivalent control in the GUI), which
-    parallelizes various grid searches by starting multiple Python jobs
+- compile from source with OpenMP support, which parallelizes the Fast
+  Fourier Transform (FFT) used in structure factor and gradient calculation
+- specify the 'nproc' parameter (or equivalent control in the GUI), which
+  parallelizes various grid searches by starting multiple Python jobs
 
 The OpenMP parallelization is not particularly efficient, since the FFTs
 take less than half of the typical runtime; a speedup of 40% is usually the
@@ -29,9 +29,9 @@ benefit from setting 'nproc'.
 
 There are several limitations to these options:
 
-  - OpenMP support is incompatible with the Phenix GUI
-  - 'nproc' is incompatible with Windows
-  - these approaches are incompatible with each other
+- OpenMP support is incompatible with the Phenix GUI
+- 'nproc' is incompatible with Windows
+- these approaches are incompatible with each other
 
 **I set the number of processors to 8 - why is phenix.refine still only using
 a single processor?**
@@ -100,19 +100,19 @@ to run, which often imposes a practical limit on resolution.)
 scaling or ellipsoidal truncation?**
 
 There is no technical reason why this is impossible.  However, modified data
-should be used with extreme caution for several reasons:
+should be avoided for several reasons:
 
-  - phenix.refine already performs anisotropic scaling internally and will
-    correct the output map coefficients for anisotropy, so the pre-scaling
-    should be redundant.
-  - Because phenix.refine (like REFMAC) by default substitutes F-calc for
-    missing reflections when calculating 2mFo-DFc and similar map coefficients,
-    ellipsoidal truncation will result in eliminated high-resolution
-    reflections being replaced by F-calc in the maps.  This will always make
-    the maps look better, because they are more biased to the model!
-  - Even if you do choose to refine against anisotropically scaled data, you
-    should always deposit the original, unmodified data in the PDB upon
-    publication.
+- phenix.refine already performs anisotropic scaling internally and will
+  correct the output map coefficients for anisotropy, so the pre-scaling
+  should be redundant.
+- Because phenix.refine (like REFMAC) by default substitutes F-calc for
+  missing reflections when calculating 2mFo-DFc and similar map coefficients,
+  ellipsoidal truncation will result in eliminated high-resolution
+  reflections being replaced by F-calc in the maps.  This will always make
+  the maps look better, because they are more biased to the model!
+- Even if you do choose to refine against anisotropically scaled data, you
+  should always deposit the original, unmodified data in the PDB upon
+  publication.
 
 Optimization methods
 ====================
@@ -179,40 +179,6 @@ difference between R-work and R-free, it will be automatically disabled if
 these statistics already very close (or if R-free is greater than R-work), as
 often happens at the start of refinement from an MR solution.
 
-**When should I use non-crystallographic symmetry (NCS) restraints?**
-
-An approximate cutoff for NCS restraints is 2.0 Angstrom - at higher
-resolution the data alone are usually sufficient, but at lower resolution
-additional restraints are usually necessary.  This is somewhat subjective
-due to the behavior of the global NCS restraints currently used by default in
-PHENIX, but will be addressed in future versions.
-
-**What is the difference between global and torsion NCS, and which one should
-I pick?**
-
-The global NCS restraints groups as rigid bodies, where all atoms in each
-group are expected to be related to the others by a single rotation and
-translation operation.  This does not respect local deformations in the
-related molecules, which are common even at lower resolution.  The torsion
-NCS restraints restraint dihedral angles instead, and allow them to be
-unrestrained if genuinely different.  This will eventually become the default,
-since it often results in significantly better refinement.
-
-**How do I specify the .ncs_spec file from AutoSol or phenix.find_ncs for use
-in refinement?**
-
-The .ncs_spec files containing rotation and translation matrices are only used
-in density modification and model building.  For refinement, the NCS
-relationships are always given as atom selections, and in the case of the
-default torsion NCS restraints, the automatically detected restraint groups
-should be very accurate.
-
-**Both NCS restraint types make my structure worse - what should I do?**
-
-In most cases this is due to the restraint of B-factors between NCS groups,
-which may actually have very different levels of disorder.
-Setting the NCS B-factor weight term to zero usually fixes the problem.
-
 **My resolution is X Angstroms; what should RMS(bonds) and RMS(angles) be?**
 
 This is somewhat controversial, but absolute upper limits for a well-refined
@@ -263,19 +229,19 @@ sufficient by itself.  There are also several different types of restraint
 specifically designed to help with low-resolution refinement (consult the
 full phenix.refine manual page for details on each):
 
-  - **Reference model**: this restraints the torsion angles to a
-    high-resolution model, using a potential that gently releases angles which
-    are genuinely different (allowing both local deformations or domain
-    movements).  This is usually the best option, and typically improves both
-    R-free, overfitting, and validation statistics.  However, it depends on
-    the availability of a suitable reference model.
-  - **Secondary structure restraints**: these are simply harmonic distance
-    restraints between hydrogen-bonding atoms in protein helices and sheets,
-    and nucleic acid base pairs.  Annotation can be either automatic or manual.
-    The primary limitation is currently the need for outlier filtering, which
-    removes spurious bonds but also some genuine ones.  It has a small effect
-    on validation statistics, and typically none on R-free, but it does keep
-    secondary structures stable.
+- **Reference model**: this restraints the torsion angles to a
+  high-resolution model, using a potential that gently releases angles which
+  are genuinely different (allowing both local deformations or domain
+  movements).  This is usually the best option, and typically improves both
+  R-free, overfitting, and validation statistics.  However, it depends on
+  the availability of a suitable reference model.
+- **Secondary structure restraints**: these are simply harmonic distance
+  restraints between hydrogen-bonding atoms in protein helices and sheets,
+  and nucleic acid base pairs.  Annotation can be either automatic or manual.
+  The primary limitation is currently the need for outlier filtering, which
+  removes spurious bonds but also some genuine ones.  It has a small effect
+  on validation statistics, and typically none on R-free, but it does keep
+  secondary structures stable.
 
 **I have ions very close to water molecules/protein atoms, and phenix.refine
 keeps tring to move them apart.  How can I prevent this?**
@@ -358,6 +324,75 @@ The harmonic restraints are suitable for this purpose.  This is especially
 useful when generating a simulated annealing omit map, where atoms may move
 to fill voids left by omitted scatterers.
 
+Non-crystallographic symmetry (NCS)
+===================================
+
+**When should I use non-crystallographic symmetry (NCS) restraints?**
+
+This will of course require that NCS is actually present in your crystal.
+An approximate cutoff for NCS restraints is 2.0 Angstrom - at higher
+resolution the data alone are usually sufficient, but at lower resolution
+additional restraints are usually necessary.
+
+**What is the difference between global and torsion NCS, and which one should
+I pick?**
+
+The global NCS restraints groups as rigid bodies, where all atoms in each
+group are expected to be related to the others by a single rotation and
+translation operation.  This does not respect local deformations in the
+related molecules, which are common even at lower resolution.  The torsion
+NCS restraints restraint dihedral angles instead, and allow them to be
+unrestrained if genuinely different.  This option has been made the default
+if NCS restraints are activated, since it usually results in significantly
+better refinement, and rarely performs worse than using no restraints at all.
+
+**How do I specify the .ncs_spec file from AutoSol or phenix.find_ncs for use
+in refinement?**
+
+The .ncs_spec files containing rotation and translation matrices are only used
+in density modification and model building.  For refinement, the NCS
+relationships are always given as atom selections, and in the case of the
+default torsion NCS restraints, the automatically detected restraint groups
+should be very accurate.
+
+**How does one define NCS groups manually in the Phenix GUI?**
+
+If you are using the torsion NCS restraints, this should not be necessary, but
+you can enter atom selections manually by selecting "Detect NCS groups" from
+the Utilities menu.  If you have identified a structure where manual group
+assignment is necessary for refinement to behave properly at low resolution,
+this may indicate a bug in phenix.refine; please contact us directly by
+emailing "bugs@phenix-online.org".
+
+For the global/Cartesian NCS restraints, manual selections often **are**
+necessary, and the same menu item will open a different selection window if
+the global option is selected.  However, we encourage you to try the torsion
+NCS restraints first before deciding to use the global parameterization.
+
+**Both NCS restraint types make my structure worse - what should I do?**
+
+If you are refining a structure at high resolution (better than 2.0 Angstrom),
+this is not unexpected; NCS restraints are usually unnecessary in such cases.
+At lower resolution, this may indicate a bug; we encourage you to contact us
+directly.
+
+**What impact do NCS restraints have on the electron density maps?**
+
+The maps will only be affected to the extent that the NCS-related chains will
+be relatively similar, and therefore the map phases will reflect this
+similarity.  The maps will not be directly modified using the NCS
+relationships, however.  If you want phenix.refine to perform NCS averaging on
+the maps, this is available as an option for individual map coefficients.
+
+**Do NCS restraints apply to B-factors?**
+
+By default, no; our testing has indicated that this is rarely beneficial and
+in a significant fraction of structures it may actually yield worse results
+(due to real differences in the disorder present in NCS-related copies).  If
+you want B-factors to be restrained between NCS groups, check the box labeled
+"Restrain NCS-related B-factors" in the "NCS options" window, or on the
+command line, specify ``ncs.restrain_b_factors=True``.
+
 B-factors/ADPs/TLS
 ==================
 
@@ -380,15 +415,15 @@ parameterization; rather, when the "Individual ADPs" strategy is defined,
 the program uses several criteria to determine how atoms should be
 treated:
 
-  - By default, atoms that are anisotropic in the input model (i.e. have
-    ANISOU records) will be kept anisotropic if the resolution is at least
-    1.7A; isotropic atoms remain isotropic.
-  - If the resolution is lower, all atoms will be converted to isotropic
-    unless otherwise specified.
-  - The atom selections for isotropic and anisotropic atoms may also be
-    defined explicitly.  Typically, the hydrogens will always be isotropic;
-    protein atoms will be anisotropic at high resolution, and sometimes
-    waters as well.
+- By default, atoms that are anisotropic in the input model (i.e. have
+  ANISOU records) will be kept anisotropic if the resolution is at least
+  1.7A; isotropic atoms remain isotropic.
+- If the resolution is lower, all atoms will be converted to isotropic
+  unless otherwise specified.
+- The atom selections for isotropic and anisotropic atoms may also be
+  defined explicitly.  Typically, the hydrogens will always be isotropic;
+  protein atoms will be anisotropic at high resolution, and sometimes
+  waters as well.
 
 In the GUI, several common parameterizations are pre-defined in the dialog for
 entering ADP selections.  Note that although it is possible to combine
@@ -399,12 +434,13 @@ nor may the selections for anisotropic ADPs and TLS groups.
 **When should I refine anisotropic ADPs instead of TLS groups?**
 
 There is no precise cutoff where you should turn on anisotropic ADPs, but
-these are approximate guidelines:
+these are approximate guidelines, assuming that the data are actually complete
+to the indicated resolution:
 
-  - At 1.5 Angstrom resolution or better, refine protein/nucleic acid/ligand
-    heavy atoms (C/N/O or heavier) anisotropically, and waters isotropically.
-  - At 1.2 Angstrom or better, waters should also be anisotropic.
-  - It is almost never appropriate to refine hydrogens anisotropically.
+- At 1.4 Angstrom resolution or better, refine protein/nucleic acid/ligand
+  heavy atoms (C/N/O or heavier) anisotropically, and waters isotropically.
+- At 1.1 Angstrom or better, waters should also be anisotropic.
+- It is almost never appropriate to refine hydrogens anisotropically.
 
 There may be circumstances where anisotropic refinement is permissible at
 slightly lower resolution, but 1.7 Angstrom is probably a lower limit.
@@ -421,10 +457,10 @@ NCS, etc.  In general, the higher the data-to-parameter ratio, the more
 likely individual ADPs are to work well.  As an approximate example, consider
 these two hypothetical structures:
 
-  - a 3.5 Angstrom structure of a single protein chain per asymmetric unit,
-    with 38% solvent content
-  - a 4.0 Angstrom structure of 3 NCS-related chains, with 70% solvent
-    content
+- a 3.5 Angstrom structure of a single protein chain per asymmetric unit,
+  with 38% solvent content
+- a 4.0 Angstrom structure of 3 NCS-related chains, with 70% solvent
+  content
 
 In this case, the latter structure can probably be refined with individual
 ADPs, while the former is more marginal.  If in doubt, early rounds of
@@ -437,6 +473,14 @@ guideline.
 Twinning
 ========
 
+**When should I use twinned refinement?**
+
+You should only do this if `Xtriage <../reference/xtriage_gui.html>`_ indicates
+that the intensity statistics are abnormal and cannot be explained by picking
+the wrong space group.  The estimated twin-law-specific twin fractions
+displayed in Xtriage should not be used to determine whether twinning is
+present.
+
 **I performed twin refinement and my R-free went down by 1%; does that mean
 my structure is twinned?**
 
@@ -445,6 +489,15 @@ on the same scale.  In phenix.model_vs_data, the structure is only considered
 twinned if application of a twin law reduces R-work by at least 2%.  Note that
 if you specify twin_law=Auto, phenix.refine will use the same procedure to
 determine the twin law (if any).
+
+**But what if the reported twin fraction is nearly 50%?**
+
+This often means that your data are under-merged, i.e. the crystal symmetry
+is too low and the applied twin operator is substituting for a symmetry
+operation.  If this is case you should merge the data to higher symmetry and
+reduce the model to the new ASU.  Of course it is also possible to have
+perfectly twinned crystals, but the high twin fraction output by phenix.refine
+does not by itself indicate twinning.
 
 **My data has multiple twin laws; can I use these in Phenix?**
 
@@ -507,18 +560,18 @@ high.  How can I make them lower?**
 
 There are several possible explanations for this:
 
-  - Twinning with a relatively small twin fraction (perhaps 10%) may not
-    obviously affect map quality, but can still have a significant impact
-    on R-factors.  Run `Xtriage <../reference/xtriage_gui.html>`_ to look for
-    evidence of twinning, and possible twin laws for using in phenix.refine.
-    (As noted above, however, only one twin law may be used at a time.)
-  - Undiagnosed translational NCS (AKA translational pseudosymmetry) can
-    have a similar effect.  In this case, the diffraction images may have
-    been processed incorrectly, thus missing the fainter spots that result
-    from tNCS.  The program `LABELIT <http://cci.lbl.gov/labelit/>`_, or
-    more specifically the command *labelit.index* (distributed with
-    PHENIX, but not yet available in the GUI) can be run on the original
-    images to provide appropriate indexing parameters.
+- Twinning with a relatively small twin fraction (perhaps 10%) may not
+  obviously affect map quality, but can still have a significant impact
+  on R-factors.  Run `Xtriage <../reference/xtriage_gui.html>`_ to look for
+  evidence of twinning, and possible twin laws for using in phenix.refine.
+  (As noted above, however, only one twin law may be used at a time.)
+- Undiagnosed translational NCS (AKA translational pseudosymmetry) can
+  have a similar effect.  In this case, the diffraction images may have
+  been processed incorrectly, thus missing the fainter spots that result
+  from tNCS.  The program `LABELIT <http://cci.lbl.gov/labelit/>`_, or
+  more specifically the command *labelit.index* (distributed with
+  PHENIX, but not yet available in the GUI) can be run on the original
+  images to provide appropriate indexing parameters.
 
 **The gap between R-work and R-free is very large - how can I fix this?**
 
@@ -556,6 +609,13 @@ the explanation is as simple as running too few cycles of refinement for one
 or the other program.  In general, if you find a case where phenix.refine
 performs significantly worse than another program, we encourage you to contact
 us at bugs@phenix-online.org.
+
+**Are R-free flagged reflections included in the maps used for real-space
+refinement?**
+
+No, this is almost guaranteed to bias R-free; these reflections are removed
+internally prior to map calculation.  However, the output maps will include
+these reflections unless you explicitly request otherwise.
 
 Interpreting results
 ====================
@@ -646,7 +706,8 @@ according to the PDB format version 2 standard; PHENIX can recognize these, but
 defaults to PDB v.3.  To reconcile the different conventions, you can download
 the newer version of the monomer library (currently available
 `here <http://www.ysbl.york.ac.uk/~garib/refmac/data/refmac_experimental/refmac_dictionary_v5.29.tar.gz>`_) and set the environment variable
-COOT_REFMAC_LIB_DIR to point to the directory in which you unpack it.
+COOT_REFMAC_LIB_DIR to point to the directory in which you unpack it.  However,
+newer versions of Coot do not appear to have this problem.
 
 **Why can't PHENIX automatically remove hydrogens from the output PDB file?**
 
