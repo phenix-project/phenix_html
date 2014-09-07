@@ -177,6 +177,29 @@ IDs, each containing associated PDB files with specific names such as:
 If the mirror is out of date and a specific entry cannot be found, the function
 will revert to downloading from the `RCSB <http://www.rcsb.org>`__ PDB site.
 
+Installation
+------------
+
+**I'm upgrading to a new version of Phenix.  How do I uninstall the previous
+version?**
+
+You can simply delete the entire folder, for example
+``/usr/local/phenix-VERSION`` or (on Mac) ``/Applications/PHENIX-VERSION``.
+On Mac, you can drag the folder into the Trash.  Each installation is entirely
+self-contained and all project data is stored elsewhere (for instance in your
+home directory).
+
+**Can multiple installations of Phenix co-exist on the same computer?**
+
+Yes, but note that the command names will overlap, so you will either need to
+source the appropriate ``phenix_env`` script as needed, or launch programs
+with the version suffix:
+::
+
+  phenix.refine-1.8.4-1496
+  phenix.refine-1.9-1962
+
+
 Graphical interface
 -------------------
 
@@ -197,6 +220,13 @@ be used to search for any keyword in the parameter name, label, or help text.
 Working with reflection files
 -----------------------------
 
+**What reflection file formats does Phenix support?**
+
+We recommend using MTZ files where possible but several other formats are also
+read (including XDS and Scalepack).  Programs in Phenix rarely output any
+format other than MTZ, however.  See the overview in the page for `file formats
+<../file_formats.html#reflections>`_ for more details.
+
 **I have requested that the test set fraction be 0.05 (i.e. 5%), but Phenix
 only flags 1% of reflections.  How do I make it use the number I specify?**
 
@@ -209,15 +239,68 @@ editor <../reference/reflection_file_editor.html>`_ in the GUI, click
 "More options" in the R-free flags section of the editor, and delete the
 field labeled "Maximum number of reflections in test set".
 
-  number_of_parallel_models=1 n_cycle_rebuild_max=1
+**Are MTZ files (or R-free flags) output by CCP4 data processing software
+suitable for use in Phenix?**
+
+Yes, absolutely.  By default Phenix uses a different convention for labeling
+the test set when generating new R-free flags, but it will automatically detect
+the CCP4 convention and adjust as needed.
+
+**Phenix generated R-free flags with the test set denoted by 1, but REFMAC
+expects 0.  How can I generate a more compatible MTZ file?**
+
+The `reflection file editor <../reference/reflection_file_editor.html>`_ has
+an option to export R-free flags to the CCP4 convention.  Note however that
+newer versions of REFMAC will adjust to the Phenix convention automatically,
+so we recommend updating your CCP4 installation if you encounter this problem.
+
+**Should I use the MTZ file output by phenix.refine as input for the next
+round of refinement?**
+
+(Excerpted from the `refinement FAQ <refine.html>`__, since this question is
+so common.)
+
+The only time this is necessary is when you refined against a dataset that
+did not include R-free flags, and let phenix.refine generate a new test set.
+In this case, you should use the file ending in "_data.mtz" for all future
+rounds of refinement.  You do not need to update the input file in each round,
+as the actual raw data (and R-free flags) are not modified.
 
 Maps
 ----
 
+.. _coot_maps:
+
+**I generated map coefficients in MTZ format using [some Phenix tool].  Why
+doesn't anything appear when I open it in Coot?**
+
+This almost always results from use of the "Auto-open map coefficients" menu
+item in Coot, which only recognizes several specific MTZ column labels output
+by programs such as phenix.refine, phenix.maps, Phaser, or REFMAC.  (Several
+other programs in Phenix will now also output the FWT,PHWT columns that are
+interpreted as a 2mFo-DFc map, although depending on the program these may
+actually be a density-modified mFo map.)  For any other map coefficient labels,
+for example an anomalous map, you will need to use the next menu item which
+requires explicit selection of the amplitude and phase labels.  You can
+however modify the Coot preferences to recognize additional map types by
+editing the file ``~/coot.py`` and adding one or more lines line the following:
+::
+
+  set_auto_read_column_labels("FEM", "PHIFEM", 0) 
+
+which would make it possible to auto-open the `feature-enhanced maps
+<../reference/fem.html>_`.  (Thanks to Georg Mlynek for this suggestion.)
+
+Note that in most cases the Phenix GUI will automatically load the appropriate
+map coefficients for you upon clicking the Coot button in the results tab.
+Also note that on Macintosh, there are bugs in the X11/XQuartz software which
+often result in the window to select column labels appearing **behind** the
+main Coot window, which is easy to miss.
+
 .. _fft:
 
 **I have an MTZ file containing map coefficients.  How can I obtain a map
-appropriate for display in PyMOL?**
+appropriate for display in PyMOL (or Chimera, etc.)?**
 
 In the Phenix GUI, this is almost always automatic: any time a button labeled
 "Open in PyMOL" is displayed, this will perform the necessary conversion to
@@ -236,7 +319,8 @@ action; only an MTZ file is required as input, but a PDB file is recommended
 if you want to ensure that all atoms are covered.  Every valid set of map
 coefficients in the MTZ file will be converted, with the exception of F(model)
 arrays.  On the command line, this program exists as ``phenix.fft`` or
-``phenix.mtz2map``::
+``phenix.mtz2map``:
+::
 
   phenix.fft refine_001.mtz refine_001.mtz grid_resolution_factor=0.25
 
