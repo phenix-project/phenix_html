@@ -68,7 +68,9 @@ AutoSol will accept the following formats of data:
 
 The data from any of these formats will be converted to amplitudes (F+ , sigF+, and F-, sigF-) internally.
 
-If you supply all scalepack unmerged original index files or all mtz unmerged files then the information in these files can be used to improve scaling. In most cases this is not necessary however. If all the files are scalepack unmerged original index or all the files are mtz unmerged and no anisotropy correction is applied, then SOLVE local scaling will be applied to the data prior to merging and averaging equivalent reflections. In all other cases equivalent reflections will be averaged prior to scaling, so that the scaling may not be as effective at removing systematic errors due to absorption or other effects.
+If you have multiple data files for a single dataset, or if you have original index data with multiple observations of each reflection, you might want to run phenix.scale_and_merge on your data to scale and merge the datasets before you run AutoSol.  This is particularly useful for weak SAD data (such as S-SAD datasets).
+
+Additionally, within AutoSol if you supply all scalepack unmerged original index files or all mtz unmerged files then the information in these files can be used to improve scaling. In most cases this is not necessary however. If all the files are scalepack unmerged original index or all the files are mtz unmerged and no anisotropy correction is applied, then SOLVE local scaling will be applied to the data prior to merging and averaging equivalent reflections. In all other cases equivalent reflections will be averaged prior to scaling, so that the scaling may not be as effective at removing systematic errors due to absorption or other effects.
 
 
 Sequence file format
