@@ -1,0 +1,93 @@
+
+Building the PHENIX documentation
+=================================
+
+To add a new page:
+
+  1. First make sure that $PHENIX/phenix and $PHENIX/phenix_html are up-to-date,
+     and that phenix_html is checked out of SVN.
+  2. Create a document, new_doc.txt, at ../phenix_sources/phenix_html/rst_files/
+  3. Add the file to the SVN
+  4. Add a reference to new_doc.html in phenix_documentation.html
+  5. execute: phenix_html.rebuild_docs
+
+To update an existing document, just edit the corresponding file in
+phenix_html/rst_files/, and then execute phenix_html.rebuild_docs.
+
+Some steps expect that the environment variables PHENIX, PHENIX_VERSION, and
+PHENIX_RELEASE_TAG be defined.  If you are working out of a Phenix
+installation updated to use SVN, this should not be a problem.  Note that you
+may need to run 'libtbx.configure phenix_html' in the build directory for
+the command to appear on your path.
+
+After running the update, the new HTML files will be available in $PHENIX/doc,
+and may be viewed by running 'phenix.doc' (or clicking the help button in the
+PHENIX GUI).
+
+Including PHIL parameter listing
+================================
+
+If you want to have your documentation page show a full listing of program
+options with help text, simply place a directive like this at the end of
+the restructured text file:
+
+  {{phil:phenix.command_line.my_method}}
+
+This gives the path to the module containing the PHIL object from which to
+generate a full keyword listing.  Several different standard names will be
+checked when importing this object.
+
+Including citations
+===================
+
+Published references are stored in PHIL format in
+phenix/phenix/utilities/citations.params; this is not terribly different from
+BiBTeX format.  Each publication is tagged with a simple ID (this could simply
+be the PubMed ID, but we usually prefer a program name or other human-readable
+identifier).  In the documentation, full references may be automatically
+inserted (usually at the end of a document) by specifying
+"{{citation:article_id}}".  We encourage the use of this method for listing
+references, as it allows them to be easily incorporated into other documents
+(or displayed as part of program output, in the GUI, etc.).
+
+A very fast introduction to restructured text format
+====================================================
+
+The official documentation is here:
+
+http://docutils.sourceforge.net/rst.html
+
+For Phenix documentation we use a relatively simple subset of features.  The
+best way to learn the syntax is by examining files in the rst_files
+subdirectory (and comparing to the final HTML), but a simple example is shown
+below::
+
+  ===============
+  This is a title
+  ===============
+
+  Section title
+  -------------
+
+  This is unformatted text; paragraphs are separated by blank lines.  Use
+  **double-asterisk blocks** for bold text, and *single-asterisk blocks* for
+  italic text.  Hyperlinks use the convention `link name <url>`_ (all special
+  characters are literal here).
+
+    - This is a bullet point!
+    - This is another bullet point
+
+  Another section title
+  ---------------------
+
+  References section
+  ------------------
+
+  {{citation:phenix_refine}}
+
+  {{citation:molprobity}}
+
+  List of all available keywords
+  ------------------------------
+
+  {{phil:phenix.command_line.some_command_name}}
