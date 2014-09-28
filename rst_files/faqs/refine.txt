@@ -678,6 +678,17 @@ regions of the plot.  We suggest that you rely primarily on the results in
 Phenix (or MolProbity), as the distributions we use are very accurate and based
 on the latest structural data.
 
+**How come I have a bunch of clashes with water molecules in the validation
+results after running solvent update?**
+
+phenix.refine is relatively aggressive in placing solvent atoms in unmodeled
+density.  However, this may sometimes result in clashes if the density
+represents ions, unmodeled residues, or alternate conformations rather than
+solvent.  For this reason, we recommend that the final round of refinement
+not include solvent update (regardless of resolution), after any clashing
+water atoms have been removed.  (You should also attempt to model the observed
+density features if possible, although this is not always straightforward.)
+
 Hydrogens
 =========
 
@@ -689,7 +700,15 @@ approximately 2 Angstrom or better, they will generally improve R-free as well.
 At atomic resolution (1.5 A or better) they should always be part of the final
 model.  Note that at unless you have true subatomic resolution (0.9 A or
 better), the hydrogens should always be refined as "riding", meaning that their
-coordinates are defined by the heavy atoms, not individually refined.
+coordinates are defined by the heavy atoms, not individually refined against
+X-ray data.
+
+**How can I tell phenix.refine to add hydrogens to my model?**
+
+The command-line program does not add hydrogens; this is performed by a
+separate program, phenix.ready_set.  However, in the GUI there is an option
+in the "Refinement settings" tab to add hydrogens, which simply runs ReadySet
+internally immediately before starting phenix.refine.
 
 **What about water molecules?**
 
@@ -709,22 +728,34 @@ the newer version of the monomer library (currently available
 COOT_REFMAC_LIB_DIR to point to the directory in which you unpack it.  However,
 newer versions of Coot do not appear to have this problem.
 
+**I refined with riding hydrogens - why are they present in the output model?**
+
+phenix.refine will always output all atoms that are part of the atomic model,
+regardless of how they were parameterized during refinement.
+Use of the "riding" model does not necessarily guarantee that the hydrogen
+positions and B-factors are reproducible, as they differ between various
+programs (or program versions).
+
 **Why can't PHENIX automatically remove hydrogens from the output PDB file?**
 
 We strongly discourage removing any atoms used in refinement from the model,
 as it makes reproducing the published R-factors very difficult and eliminates
 essential information about how the structure was refined.
 
-**How come I have a bunch of clashes with water molecules in the validation
-results after running solvent update?**
+**How are X-H (hydrogen to heavy atom) bond lengths defined, and why are
+these different than the ones in molecular mechanics programs?**
 
-phenix.refine is relatively aggressive in placing solvent atoms in unmodeled
-density.  However, this may sometimes result in clashes if the density
-represents ions, unmodeled residues, or alternate conformations rather than
-solvent.  For this reason, we recommend that the final round of refinement
-not include solvent update (regardless of resolution), after any clashing
-water atoms have been removed.  (You should also attempt to model the observed
-density features if possible, although this is not always straightforward.)
+Since X-rays are diffracted by electrons, the default hydrogen positions are
+defined as
+the centers of the electron clouds, not the atomic nuclei.  In most cases this
+results in the bond lengths being 0.1Å shorter than they would be if the
+distances to the nuclei were given.  At high resolution, this will more
+accurately model the X-ray data.  The VDW radii used for nonbonded restraints
+will be larger to compensate for the shorter bonds.
+
+If you are performing neutron refinement, the nuclear positions will be used
+instead, resulting in longer bond lengths and smaller VDW radii.  The
+MolProbity validation should handle both scenarios appropriately.
 
 Miscellaneous
 =============
