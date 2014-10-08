@@ -508,6 +508,18 @@ Please note that any time you modify the atomic properties (or add or remove
 atoms), **it is essential to refine the model again,** as the previously
 calclulated R-factors and maps will be invalid.
 
+**What is the difference between ATOM and HETATM records in a PDB file?**
+
+Within Phenix, few distinctions are made between the different atom labels.
+ATOM generally refers to canonical amino acid residues or nucleic acid bases;
+HETATM ("heteroatom") covers everything else, including non-canonical amino
+acids such as selenomethionine (MSE), covalently modified residues, ligands,
+and solvent.  However, this distinction is not enforced (and is frequently
+ignored) within Phenix, and the choice of label will usually have no effect
+on program behavior.  (The lone exception is Phaser, which by default sets the
+occupancies of HETATMs to zero unless they are part of a protein polymer.)
+The PDB annotators will change ATOM to HETATM as needed upon deposition.
+
 Other
 -----
 

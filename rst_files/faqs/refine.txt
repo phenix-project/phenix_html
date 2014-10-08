@@ -847,6 +847,20 @@ instructing phenix.refine to remove a specific atom selection from occupancy
 refinement (the keyword refinement.refine.occupancies.remove_selection, or
 in the GUI, edit the atom selections for the Occupancy strategy).
 
+**I have sidechains in multiple conformations interacting across a symmetry
+axis, where the 'A' conformations clash with each other and are moved out of
+density by refinement.  How can I tell phenix.refine to ignore this
+interaction?**
+
+This is not uncommon (a classic example is Tyr378 in PDB ID 1GWE), but it is
+not automatically handled right now and the PDB format does not provide a
+means to label the atoms in such a way that clashes are avoided.  The solution
+in phenix.refine is a parameter defining an atom selection for which nonbonded
+restraints should be disabled::
+
+  custom_nonbonded_symmetry_exclusions = "chain A and resseq 378"
+
+
 **How can I extract the isotropic B-factor equivalent from a structure refined
 with TLS or anisotropic atoms?**
 
