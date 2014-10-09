@@ -121,153 +121,6 @@ by typing::
 and if it loads up (just type QUIT or END or control-C to end it) then it
 runs, and if it doesn't, there is a system mismatch.
 
-Experimental phasing (autosol)
-------------------------------
-
-**How can I tell autosol which columns to use
-from my mtz file?**
-
-In the GUI this is handled automatically, and available columns will be
-loaded into drop-down menus.  On the command line,
-autosol will normally try to guess the appropriate columns
-of data from an input data file.  If there are several choices, then you
-can tell autosol which one to use with the
-command_line keywords labels, peak.labels, infl.labels etc.  For
-example if you have two input datafiles w1 and w2 for a
-2-wavelength MAD dataset and you want to select the w1(+) and w1(-) data from
-the first file and w2(+) and w2(-1) from the second,
-you could use following keywords (see "How do I know what
-my choices of labels are for my data file" to know what to put
-in these lines)::
-
-  input_file_list=" w1.mtz w2.mtz"
-  group_labels_list=" 'w1(+) SIGw1(+) w1(-) SIGw1(-)' 'w2(+) SIGw2(+) w2(-) SIGw2(-)'"
-
-Note that all the labels for one set of anomalous data from one file are
-grouped together in each set of quotes.
-
-You could accomplish the same thing from a parameters file
-specifying something like::
-
-  wavelength{
-    wavelength_name = peak
-    data = w1.mtz
-    labels = w1(+) SIGw1(+) w1(-) SIGw1(-)
-  }
-  wavelength{
-    wavelength_name = infl
-    data = w2.mtz
-    labels = w2(+) SIGw2(+) w2(-) SIGw2(-)
-  }
-
-**How do I know what my choices of labels are for my data file?**
-
-You can find out what your choices of labels are by running the command::
-
-  phenix.autosol show_labels=w1.mtz
-
-This will provide a listing of the labels in w1.mtz and suggestions for their
-use in autosol/autobuild/ligandfit. For example the labels for w1.mtz yields::
-
-  List of all anomalous datasets in  w1.mtz
-  'w1(+) SIGw1(+) w1(-) SIGw1(-)'
-
-  List of all datasets in  w1.mtz
-  'w1(+) SIGw1(+) w1(-) SIGw1(-)'
-
-  List of all individual labels in  w1.mtz
-  'w1(+)'
-  'SIGw1(+)'
-  'w1(-)'
-  'SIGw1(-)'
-
-  Suggested uses:
-  labels='w1(+) SIGw1(+) w1(-) SIGw1(-)'
-  input_labels='w1(+) SIGw1(+) None None None None None None None'
-  input_refinement_labels='w1(+) SIGw1(+) None'
-  input_map_labels='w1(+) None None'
-
-**Why do I get "None of the solve versions worked" in autosol?**
-
-If you get this or a similar message for resolve, first have a look at LAST.LOG
-if it exists in your ``AutoSol_run_xx_`` or ``AutoBuild_run_xx_`` directory. The end
-of that file may give you a hint as to what was wrong.
-
-The next thing to try is running one of these commands (just kill
-them with control-C if they do run)::
-
-  phenix.solve
-
-or::
-
-  phenix.resolve
-
-If these load up solve or resolve, then they basically work and the problem
-is probably in the size of your dataset, some formatting issue, or the like.
-
-If they do not run, then the problem is in your system setup. If you are
-using redhat linux, try changing the option of selinux to selinux=disabled
-in your /etc/sysconfig/selinux file.
-
-It is also possible that you do not have the
-application ``csh`` installed
-on your system. If you have Ubuntu linux, csh and tcsh are not included in
-a normal installation.  It is easy to install csh and tcsh under linux
-and it just takes a minute.  On Ubuntu or Debian, you can say::
-
-  apt-get install tcsh
-
-or on Fedora or CentOS and similar distributions::
-
-  yum install tcsh
-
-and that should do it.
-
-**How can I do a quick check for iso and ano differences in an MIR dataset?**
-
-You can say::
-
-  phenix.autosol native.data=native.sca deriv.data=deriv.sca
-
-and wait a couple minutes until it has scaled the data (once it
-says "RUNNING HYSS" you are far enough) and then have a look at::
-
-  AutoSol_run_1_/TEMP0/dataset_1_scale.log
-
-which will say near the end::
-
-  isomorphous differences derivs            1  - native
-
-  Differences by shell:
-
-  shell   dmin    nobs      Fbar      R     scale    SIGNAL  NOISE   S/N
-
-  1     5.600  1018     285.012     0.287   0.998 105.05  26.73   3.93
-  2     4.200  1386     324.927     0.216   1.000  84.78  26.76   3.17
-  3     3.920   542     330.807     0.214   1.002  85.00  28.36   3.00
-  4     3.710   523     286.487     0.237   1.002  81.31  27.29   2.98
-  5     3.500   662     282.383     0.235   1.001  75.58  37.12   2.04
-  6     3.360   518     255.782     0.241   1.003  72.69  27.18   2.67
-  7     3.220   630     237.778     0.253   1.000  68.87  29.94   2.30
-  8     3.080   727     208.271     0.255   1.000  61.39  29.19   2.10
-  9     2.940   897     190.044     0.254   0.999  42.78  42.99   1.00
-  10     2.800  1067     169.022     0.280   0.999  50.54  33.24   1.52
-
-  Total:          7970     256.096     0.245   1.000  75.29  31.41   2.48
-
-Here R is <Fderiv-Fnative>/(2 <Fderiv+Fnative>),
-noise is <sigma>,
-signal is sqrt(<(Fderiv-Fnative)**2>-<sigma**2>),
-and S/N is the ratio of signal to noise.
-
-**I ran AutoSol to get a partial model that I now want to refine.  Which data
-file should I give as input: the original .sca file from HKL2000, or the file
-overall_best_refine_data.mtz from AutoSol?**
-
-Always use the MTZ file output by AutoSol.  This contains a new set of R-free
-flags that have been used to refine the model; starting over with the .sca
-file will result in a new set of flags being generated, which biases R-free.
-
 Model-building (AutoBuild, etc.)
 --------------------------------
 
@@ -620,6 +473,32 @@ models are ok)::
   model=coords1.pdb rebuild_in_place=False \
   consider_main_chain_list=" coords2.pdb coords3.pdb" \
   number_of_parallel_models=1 n_cycle_rebuild_max=1
+
+**I ran AutoSol to get a partial model that I now want to refine.  Which data
+file should I give as input: the original .sca file from HKL2000, or the file
+overall_best_refine_data.mtz from AutoSol?**
+
+Always use the MTZ file output by AutoSol.  This contains a new set of R-free
+flags that have been used to refine the model; starting over with the .sca
+file will result in a new set of flags being generated, which biases R-free.
+
+**I have a partial model that I used as input for AutoBuild.  The output model
+contains the same atoms and hasn't added anything.  Why doesn't it build
+additional residues?**
+
+If the input model matches the sequence (above 50% identity cutoff) and
+rebuild_in_place=Auto (the default), AutoBuild will only rebuild existing atoms
+without adding or removing anything.  Setting rebuild_in_place=False will
+instead tell AutoBuild to generate an entirely new model (although it will also
+use good parts of the input model in the process), but this risks throwing out
+some existing atoms.  Alternately, see the answer to the next question.
+
+**I have a partial model - how do I tell AutoBuild to build new atoms without
+changing the existing ones?**
+
+Specify the partial model as "ligands" (input_lig_file_list), and it will be
+included in refinement but otherwise left alone.  This may not extend existing
+chains, however (only build new chains).
 
 Maps
 ----

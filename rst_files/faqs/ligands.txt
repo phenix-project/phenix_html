@@ -18,6 +18,14 @@ suitable density could be found).  Regardless of the CC, **you should always
 inspect the output model and maps carefully** before and after further
 refinement to evaluate whether the ligand placement is accurate.
 
+**Can LigandFit place a peptide for me?**
+
+LigandFit works well for single amino acids and may work for small peptides
+(2-3 residues), but it is not designed to handle larger peptides, which have
+too many degrees of freedom.  You can use AutoBuild to build additional
+peptides (covered in the `model-building FAQs <model_building.html>`_ but this
+will be significantly slower.
+
 **What can I do if ligandfit says "this version does not seem big enough"?**
 
 Ligandfit tries to automatically determine the size of solve or resolve,
