@@ -146,6 +146,8 @@ class Publish(object):
           result = FormatCitation(command).format()
         elif tag == 'root':
           result = root
+        elif tag == 'anchor' :
+          result = """<a name="%s"/>""" % command
       except Exception, e:
         print "Error with tag:", e
       else:

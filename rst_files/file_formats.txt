@@ -13,12 +13,12 @@ human-readable (and log files, a special case, are intended almost entirely
 for this purpose), but in most cases the format is strictly defined and
 careless editing may lead to errors.
 
-.. _model_formats:
+{{anchor:model_formats}}
 
 Model files
 -----------
 
-.. _pdb_format:
+{{anchor:pdb_format}}
 
 Models are represented primarily as a series of records for each atom, plus
 associated metadata such as crystal symmetry.  The most common format in
@@ -58,7 +58,7 @@ command line and the graphical interface, or phenix.pdb_editor, an interactive
 graphical editor.  Editing by hand is strongly discouraged and often leads to
 program errors.
 
-.. _mmcif_format:
+{{anchor:mmcif_format}}
 
 In some programs in Phenix (in particular `phenix.refine <reference/refine_gui.html>`_),
 support is also provided for reading and writing mmCIF files.  This is a
@@ -72,7 +72,7 @@ determination process.
 See the wwPDB site for full documentation on the `PDB format
 <http://www.wwpdb.org/docs.html#format>`_ and `mmCIF <http://mmcif.wwpdb.org>`_.
 
-.. _reflections:
+{{anchor:reflections}}
 
 Reflection files
 ----------------
@@ -82,7 +82,7 @@ include additional information, described below.  In each format, a list of
 "Miller indices" (h, k, l) is associated with one or more data fields, but
 the exact contents vary widely.
 
-.. _mtz:
+{{anchor:mtz}}
 
 Currently, the best-supported format in Phenix and other macromolecular
 crystallography software is **MTZ format**, which was developed as part of the
@@ -114,7 +114,7 @@ format can include R-free flags; the rest are usually the output of data
 processing programs and require additional processing to be useful, and
 will ultimately be converted to MTZ format.
 
-.. _cns:
+{{anchor:cns}}
 
 **CNS** format is text, and is the primary input and output format of
 the `program of the same name <http://cns-online.org>`_.  It may include any
@@ -122,28 +122,28 @@ combination of data, but usually this will be amplitudes or intensities plus
 R-free flags.  A variety of file extensions may be used, including ``.hkl``,
 ``.fobs``, or ``.cv``.
 
-.. _scalepack:
+{{anchor:scalepack}}
 
 **Scalepack** format is a text format output by the data processing
 software HKL2000.  It only includes experimental intensities, with or
 without Friedel pairs.  Crystal symmetry is explicitly supplied.  These
 almost always use the extension ``.sca``.
 
-.. _scalepack_unmerged:
+{{anchor:scalepack_unmerged}}
 
 **Unmerged Scalepack** format is also produced by HKL2000, but includes
 unmerged intensities and additional data processing information.  This is
 used by several programs (including SOLVE), but it has the disadvantage of
 lacking the unit cell parameters.
 
-.. _shelx:
+{{anchor:shelx}}
 
 **SHELX** format is an even simpler text format.  We do not recommend
 using this if possible, because it doesn ot explicitly specify either the
 crystal symmetry or the data type (amplitudes or intensities).  These files
 also tend to have the extension ``.hkl``.
 
-.. _xds:
+{{anchor:xds}}
 
 **XDS** format is also text, specifying experimental intensities and
 associated information from data processing.  XDS actually outputs several
@@ -156,7 +156,7 @@ If you need to edit or combine reflection files, Phenix includes a
 formats.  However, output is limited to MTZ.  Visualization of reflection
 data is provided by `phenix.data_viewer <reference/data_viewer.html>`_.
 
-.. _cif:
+{{anchor:cif}}
 
 CIF files
 ---------
@@ -198,7 +198,7 @@ the most commonly used program for this purpose is `phenix.cif_as_mtz
 <reference/cif_as_mtz.html>`_.  Some programs such as phenix.refine can also read and
 write mmCIF files.
 
-.. _seq_file:
+{{anchor:seq_file}}
 
 Sequence files
 --------------
@@ -218,7 +218,7 @@ header for each, for instance::
   SYSTMSITDCRETGSSKYPNCAYKTTQANKHIIVACEGNPYVPVHFDASV
 
 
-.. _ccp4_map:
+{{anchor:ccp4_map}}
 
 MAP files
 ---------
@@ -235,7 +235,7 @@ for you by running an FFT.  In the Phenix GUI, most programs that output map
 coefficients will automatically perform the FFT if you click a button to
 open the results in PyMOL.
 
-.. _phil:
+{{anchor:phil}}
 
 PHIL files (.eff, .def, .phil)
 ------------------------------
