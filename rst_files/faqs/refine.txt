@@ -518,6 +518,17 @@ nears 0.5.
 Using R-free
 ============
 
+**phenix.refine stops with this error: "R-free flags not compatible with F-obs
+array: missing flag for 100 F-obs selected for refinement".  How do I fix
+this?**
+
+This means that the experimental data array contains reflections that are not
+present in the R-free flags array (this is required even if the flag is False).
+Use the `reflection file editor <../reference/reflection_file_editor.html>`_
+to extend the existing R-free flags to cover all reflections in the file.
+Make sure that the checkbox labeled "Extend existing R-free array(s) to full
+resolution range" is checked.
+
 **phenix.refine stops with an error message about the model being refined
 against a different set of R-free flags.  How can I fix this?**
 
