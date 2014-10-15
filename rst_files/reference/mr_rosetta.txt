@@ -547,7 +547,7 @@ fragment server at the Univ. of Washington to generate 9-mer and 3-mer
 fragments from the PDB that are compatible with your sequence file. This
 takes a few hours but is very easy to do.
 
-To obtain the two required files:
+To obtain the two optional fragments files:
 
 -  go to: http://robetta.bakerlab.org/fragmentsubmit.jsp
 -  register
@@ -557,7 +557,7 @@ To obtain the two required files:
 -  Download the files (two files, with similar filenames, one containing
    a 9 and and one a 3 like: aat000\_09\_05.200\_v1\_3.gz and
    aat000\_03\_05.200\_v1\_3.gz)
--  These are your fragment files. You will need to list them in your
+-  These are your fragment files. They are optional in your
    mr\_rosetta parameters file
 -  NOTE1: if your chain has more than 650 residues, then you will need
    to split it up into pieces of 650 residues or fewer before submitting
@@ -818,7 +818,7 @@ Examples
 Standard run of mr\_rosetta
 ---------------------------
 
-Before you run mr\_rosetta, you need to get fragment files from the
+Before you run mr\_rosetta, you can optionally get fragment files from the
 Robetta server (see Setting up for a run of mr\_rosetta, part A, above).
 Then you need an hhr alignment information file from the hhpred server
 (see Setting up for a run of mr\_rosetta, part B, above), or else a
@@ -826,7 +826,7 @@ search model and an alignment file to go with it.
 
 Once you have these files, running mr\_rosetta is easy. If you have a
 search model (coords1.pdb) and an alignment file for it (coords1.ali),
-and fragment files test3.gz and test9.gz, and a data file fobs.mtz with
+and a data file fobs.mtz with
 FP SIGFP and FreeR\_flag, you can type:
 
 ::
@@ -837,8 +837,6 @@ FP SIGFP and FreeR\_flag, you can type:
       alignment_files=coords1.ali \
       search_models=coords1.pdb \
       already_placed=False\
-      fragment_files = test3.gz \
-      fragment_files = test9.gz \
       rescore_mr.relax=False \
       rosetta_models=20 \
       ncs_copies=2 \
@@ -871,8 +869,6 @@ already\_placed=True:
       data=coords1.mtz \
       search_models=coords1.pdb \
       already_placed=True \
-      fragment_files = test3.gz \
-      fragment_files = test9.gz \
       rescore_mr.relax=False \
       rosetta_models=20 \
       ncs_copies=2 \
@@ -903,8 +899,6 @@ from that job as a search model in your other runs.
       search_models=coords1.pdb \
       run_prerefine=True \
       number_of_prerefine_models=1000 \
-      fragment_files = test3.gz \
-      fragment_files = test9.gz \
       rescore_mr.relax=False \
       rosetta_models=20 \
       ncs_copies=2 \
@@ -948,8 +942,6 @@ The keyword to use is: hhr\_files=my\_hhr\_file.hhr.
       hhr_files=bfr258e.hhr \
       read_hhpred.number_of_models=1 \
       read_hhpred.number_of_models_to_skip=0 \
-      fragment_files=aabfr__03_05.200_v1_3.gz \
-      fragment_files=aabfr__09_05.200_v1_3.gz \
       rescore_mr.relax=False \
       rosetta_models=20 \
       ncs_copies=1 \
