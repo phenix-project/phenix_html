@@ -69,6 +69,10 @@ want to increase these parameters.
 If you know how many NCS copies are present, you may wish to specifying
 that with ncs\_copies\_max.
 
+If you want to have the program look much harder for NCS, try the keyword
+n\_center\_use=20  (or some other number larger than 1).  It will then take
+the top 20 positions found with guess_molecular_centers and try each one
+as a center for a molecule (instead of trying just the top 1 position).
 
 Literature
 ----------
