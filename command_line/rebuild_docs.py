@@ -22,6 +22,7 @@ import iotbx.phil
 import libtbx.load_env
 import libtbx.utils
 
+# XXX it would be better not to set this globally if possible...
 HTML_PATH = libtbx.env.find_in_repositories(relative_path="phenix_html")
 if HTML_PATH is None:
   raise Sorry("Could not find phenix_html.")
@@ -281,6 +282,9 @@ clean = False
 ignore_errors = True
   .type = bool
   .help = Don't crash on errors in RST processing.
+destination = None
+  .type = path
+  .help = Destination directory (optional)
 """
 
 create_rst_from_modules = [
@@ -326,6 +330,7 @@ def auto_generate_rst_files(out):
     open(os.path.join("reference", rst_file), "w").write(legend)
 
 def run (args, out=sys.stdout) :
+  global HTML_PATH
   cmdline = libtbx.phil.command_line.process(
     args=args,
     master_string=master_phil_str)
@@ -400,12 +405,16 @@ def run (args, out=sys.stdout) :
     
   # Copy images, CSS, etc.
   print >> out, "  copying images"
-  replace_tree(os.path.join(HTML_PATH, "icons"),
-               os.path.join(docs_dir, "icons"))
-  replace_tree(os.path.join(HTML_PATH, "images"),
-               os.path.join(docs_dir, "images"))
-  replace_tree(os.path.join(HTML_PATH, "css"),
-               os.path.join(docs_dir, "css"))
+  replace_tree(op.join(HTML_PATH, "icons"), op.join(docs_dir, "icons"))
+  replace_tree(op.join(HTML_PATH, "images"), op.join(docs_dir, "images"))
+  replace_tree(op.join(HTML_PATH, "css"), op.join(docs_dir, "css"))
+
+  # Copy to destination directory if specified
+  if (params.destination is not None) and op.isdir(params.destination) :
+    if op.isdir(op.join(params.destination, "doc")) :
+      shutil.rmtree(op.join(params.destination, "doc"))
+    print >> out, "Moving to %s/doc..." % params.destination
+    shutil.move(docs_dir, params.destination)
 
 if (__name__ == "__main__") :
   run(sys.argv[1:])
