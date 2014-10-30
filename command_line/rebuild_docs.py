@@ -28,8 +28,7 @@ if HTML_PATH is None:
   raise Sorry("Could not find phenix_html.")
 
 def replace_phenix_version (doc) :
-  base_version = os.environ.get("PHENIX_VERSION")
-  release_tag = os.environ.get("PHENIX_RELEASE_TAG")
+  base_version, release_tag = phenix_info.version_and_release_tag()
   if (base_version is None) :
     version = "unknown"
   else :
