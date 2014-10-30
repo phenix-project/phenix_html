@@ -18,6 +18,7 @@ import docutils.core
 import xml.etree.ElementTree as ET
 
 import phenix.utilities.citations
+from phenix import phenix_info
 import iotbx.phil
 import libtbx.load_env
 import libtbx.utils
