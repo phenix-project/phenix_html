@@ -198,6 +198,24 @@ properly; this can sometimes happen if the starting model also has poor
 geometry.  Optimizing the weight (optimize_xyz_weight=True, or equivalent
 GUI control in the "Refinement settings" tab) will usually fix this problem.
 
+**The RMS(bonds) and RMS(angles) in the output model are too low after weight
+optimization - how can I make them higher?**
+
+This is a common misconception about geometry deviations, based partly on
+anecdotal experience with other refinement programs.  The target RMSDs come
+from looking at very accurate high-resolution small molecule structures, so
+they reflect the real variation that should occur in geometry.  At lower
+resolution, even though you know that the bond lengths and bond angles must
+vary as much as they do in high-resolution structures, there isn’t enough
+experimental data to tell in which direction they should deviate from the
+expected values.  So it is reasonable for the refined RMSDs to be lower than
+the targets.
+
+(Anecdotally, we have found that phenix.refine often refines to much tighter
+RMSDs with similar R-frees to other programs.  This may reflect different
+approaches used in the geometry restraints, X-ray target, or optimization
+methods, but it should not be cause for concern.)
+
 **I have experimental phases for this structure, but the initial maps were
 poor.  Should I still use the MLHL target?**
 
@@ -699,6 +717,34 @@ solvent.  For this reason, we recommend that the final round of refinement
 not include solvent update (regardless of resolution), after any clashing
 water atoms have been removed.  (You should also attempt to model the observed
 density features if possible, although this is not always straightforward.)
+
+**What does it mean when a water atom lies in a positive mFo-DFc peak?**
+
+This indicates that the water is actually something heavier.  If the density
+shape (for both 2mFo-DFc and mFo-DFc maps) is still relatively isolated and
+spherical, this suggests an ion of some sort (chloride, calcium, etc.).  You
+can use the built-in ion identification in phenix.refine to try to model it,
+or make the assignment manually based on examination of the local environment.
+We also recommend looking at the anomalous difference map, as many ions will
+have significant anomalous scattering at typical data collection wavelengths.
+Alternately, if the density is more extended, this indicates that a larger
+ligand is bound.
+
+**I still have some mysterious mFo-DFc blobs that I can't identify; what
+should I do with them?**
+
+One option is to use the `ligand identification
+<../reference/ligand_identification.html>`_ tool to try to place various
+common small molecules in the density; we recommend being very conservative
+in filtering the results.  It is very helpful to check the conditions used for
+purification, crystallization, and cryoprotection, since these frequently
+result in buffer components being visible in the maps.  However, if you are
+unable to positively identify blobs, we recommend leaving them empty (and
+perhaps also noting this in the deposition remarks or publication).  We do
+not recommend filling them with water molecules, as this misrepresents the
+true identity of the blobs, nor do we recommend using "unknown" atoms as
+placeholders (especially since these are incompatible with most tools in
+Phenix).
 
 Hydrogens
 =========
