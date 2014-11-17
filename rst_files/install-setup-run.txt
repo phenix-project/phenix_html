@@ -43,14 +43,49 @@ Space requirements
 For the complete PHENIX installation you will need approximately 2.5GB
 of disk space.
 
-Graphical installer (Mac and Windows)
--------------------------------------
+Graphical installer - Mac
+-------------------------
 
 Installation by this method uses familiar interfaces provided by the operating
-systems.  In both cases the destination directory is fixed: on Windows this
-will be the top level of the **C:** drive, on Mac it will be the folder
-**/Applications**.  You will need administrative priviledges to run the
-installers.
+systems.  Destination directory is fixed to  the folder
+**/Applications**.  You will need administrative privileges to run the
+installer.
+
+Graphical installer - Windows
+-----------------------------
+
+Installation:
+  - Download and run PHENIX from the download_ page
+
+Destination directory is fixed, to the top level of the **C:** drive. You will
+need administrative privileges to run the installer.
+
+Upgrade to newer version:
+  Currently upgrade to new version is done manually
+
+  - Uninstall Phenix by going to the Windows *Programs and Features* in the
+    control panel, choose the existing PHENIX installation and click *Uninstall*
+  - Then install the new version
+
+.. _download: http://www.phenix-online.org/download
+
+Working from command line in Windows:
+If for some reason you would like to work using the PHENIX command line
+commands in Windows, follow those steps
+
+  - Create a *command prompt* shortcut on your desktop
+  - Right click on the shortcut, go to properties, and change the **target**
+    and the **Start in**, according to **your** PHENIX installation.
+
+    - **target** to *"%SystemRoot%\\system32\\WindowsPowerShell\\v1
+      .0\\powershell.exe " -NoExit -Command  & {C:\\WINDOWS\\system32\\cmd
+      .exe /k C:\\PHENIX-1.8.4-1493\\Phenix-1.8.4-1493_build\\setpaths_all
+      .bat }*
+    - **Start in** to the folder you want the command prompt to start in,
+      something like *C:\Users\user_name\work\junk*
+
+Now when you double-click on the shortcut, you will open a command prompt
+with your PHENIX environment.
 
 Command-line installer (Mac and Linux)
 ----------------------------------------
@@ -284,3 +319,4 @@ by the GUI code.  If you encounter an error message about a missing library
 upon starting the GUI, you can add it to your system with this command::
 
   sudo apt-get install libjpeg62
+
