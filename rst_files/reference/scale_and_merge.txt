@@ -1,0 +1,387 @@
+Scaling unmerged anomalous data or multiple datasets with scale_and_merge
+=========================================================================
+
+Author(s)
+---------
+
+-  scale_and_merge: Tom Terwilliger
+
+Purpose
+-------
+
+scale_and_merge is a tool for scaling unmerged anomalous data or multiple
+data files and creating a scaled dataset and two scaled half-datasets.
+This tool normally is used in combination with anomalous\_signal to 
+create a scaled dataset and analyze anomalous signal in a SAD dataset. It
+can also be used to scale any other group of datasets.
+
+Usage
+-----
+
+How scale_and_merge works:
+--------------------------
+
+-  You supply scale_and_merge with a directory containing datafiles or
+   the name of a single unmerged datafile.
+
+-  You can optionally also specify a pair of labels that identifies datasets
+   that are to be kept together. For example if you collected your data
+   as pairs of datafiles with inverse beam geometry, you might have called
+   the members of a pair data_1_0_w1.HKL and data_1_0_w2.HKL, related by 
+   w1 and w2.
+
+-  scale_and_merge will first check the cell dimensions of all the datasets.
+   Normally it will choose the largest set of similar crystals (you can 
+   have it keep all datasets with only_similar_datasets=False). It will also
+   check the anisotropy in all the datafiles and calculate the average
+   anisotropy (to be applied by default to all datafiles before scaling).
+   
+-  scale_and_merge will then scale all the data together.  It will 
+   split your datafiles into smaller files if your datafiles contain duplicate
+   measurements of the same indices.  The intensities in each datafile will
+   be adjusted for anisotropy to match the average anisotropy of
+   all the datafiles. In this way all the datafiles are matched but the overall
+   character of the data is not changed.  
+
+-  scale_and_merge will then scale each individual file with local scaling,
+   producing files in the temporary directory with names ending in _scale.mtz.
+   and then merge them all together. 
+
+-  Merging of the individual datasets is done twice, and then optionally
+   two additional times to optimize anomalous differences.
+
+-  In the first merging the individual datasets are simply averaged with weights
+   based on the sigmas for each reflection. Then the individual datasets are
+   compared with the overall mean dataset and dataset variances (estimates
+   of systematic differences between datasets and the mean) are calculated
+   based on the rms differences from the mean and the individual sigmas. In
+   essence the dataset variance plus the individual variances are then to be
+   used as estimates of the total variance for each reflection.  The second
+   merging uses these total variances in weighting rather than the 
+   original sigmas. The correlations of each individual dataset with the 
+   merged dataset are calculated. 
+
+-  If anomalous differences are optimized 
+   (default with optimize_anomalous=True), merging is carried
+   out another time in order to optimize the weighting of anomalous differences
+   in the merging step.  For each unique reflection in the asymmetric unit of
+   each dataset, the mean I+ and mean I- are used to calculate anomalous 
+   differences.  The anomalous differences from each individual dataset are
+   then compared with the anomalous differences from the merged dataset to
+   estimate individual dataset anomalous difference variances.  Then
+   the anomalous differences from each individual dataset
+   are averaged, with weights based on the original sigmas and the
+   dataset variances.  These merged anomalous differences are then used to
+   replace the anomalous differences in the merged dataset above (for 
+   example, a reflection in the merged dataset above that has I+,sigI+,I-,sigI-
+   would get new values of I+ and I- that have a difference equal to the
+   appropriate merged anomalous difference, but the same mean as before.)
+   The correlation of the anomalous differences in the original merged
+   dataset and after optimization is printed (this should be high, for 
+   example 0.80).
+
+-  The original datasets are then split into two parts for creation of
+   two half-datasets.  These half-datasets are useful for estimating the
+   quality of the data and are used in anomalous_signal for this purpose.
+
+-  The splitting into half-datasets is done in one of three ways, and
+   the method is chosen based on the number of anomalous differences available
+   for comparison using each method.  With each method the data in each
+   half-dataset are scaled just as the entire dataset was scaled.
+   The preferred method is to split by files.  Half of the datafiles are 
+   used to create each half-dataset.  The next preferred method is to split
+   with the first half of each dataset in one half-dataset and the second half
+   in the other.  The third preferred method is splitting alternate reflections
+   with each unique index (after mapping to the asymmetric unit) into the
+   two half-datasets.  The last method is to randomly assign reflections to
+   the two half-datasets.  The reason for this hierarchical approach is that
+   reflections measured close in time, within the same dataset are better
+   matched than those measured further in time or within different datasets.
+   These approaches for splitting the datafiles attempt to pair anomalous
+   differences measured close in time and in the same dataset.
+
+-  After half-datasets are obtained, the correlation of anomalous differences
+   between half-datasets is estimated.
+
+
+*Output from scale_and_merge*
+-------------------------------
+
+scale_and_merge provides a summary half-dataset correlations in your 
+dataset.
+Here is an example with very weak anomalous signal (but present): ::
+
+    Scale and merge...analysis of multi-dataset SAD data
+    input_files {
+      data = "dd"
+      data_labels = None
+      paired_group_ids = None
+    }
+    output_files {
+      output_file = "scaled_data.mtz"
+      output_half_dataset_a = "half_dataset_a.mtz"
+      output_half_dataset_b = "half_dataset_b.mtz"
+      output_file_format = *mtz sca
+    }
+    crystal_info {
+      resolution = None
+      low_resolution = None
+      space_group = None
+      unit_cell = None
+    }
+    data_selection {
+      minimum_datafile_fraction = 0.3
+      require_fpfm = True
+      only_similar_datasets = True
+      relative_length_tolerance = None
+      absolute_angle_tolerance = None
+      choose_optimal_datasets = False
+      sort_datasets_by_anomalous_cc = True
+    }
+    scaling {
+      make_anisotropy_uniform = True
+      overallscale = False
+      skip_scaling = False
+      lowest_resolution_range = 6
+    }
+    merging {
+      optimize_anomalous = True
+      use_best_group_as_target = False
+      rescale_sigmas = False
+    }
+    half_dataset_cc {
+      get_half_dataset_cc = True
+      half_dataset_cc_by_files = True
+      split_as_first_second_half = True
+      split_alternately = True
+      split_randomly = True
+    }
+    directories {
+      temp_dir = None
+      output_dir = ""
+      gui_output_dir = None
+    }
+    control {
+      verbose = False
+      random_seed = 714215
+      comparison_file = None
+      clean_up = True
+    }
+    Comparing crystal symmetries and noting anisotropy in data
+    Relative length tolerance:  0.010  Angle tolerance: 1.000 degrees
+    Taking initial symmetry from /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w2_2.9_90.HKL
+    with 3 similar files
+    
+    
+                File             SG         A       B       C      Alpha   Beta   Gamma 
+    
+    Symmetry group 1
+    WNV_NS1_202_w1_2.9_90.HKL    P 3 2 1  166.997 166.997  94.156  90.000  90.000 120.000
+    WNV_NS1_202_w2_2.9_90.HKL    P 3 2 1  166.704 166.704  94.113  90.000  90.000 120.000
+    WNV_NS1_205_w1_2.9_90.HKL    P 3 2 1  167.578 167.578  93.934  90.000  90.000 120.000
+    WNV_NS1_205_w2_2.9_90.HKL    P 3 2 1  167.639 167.639  93.859  90.000  90.000 120.000
+    
+    Scaling 4 datasets 
+    
+    Scaling data files with local scaling
+    
+    Files to scale:
+    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w1_2.9_90.HKL
+    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w2_2.9_90.HKL
+    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w1_2.9_90.HKL
+    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w2_2.9_90.HKL
+    
+    Selecting just reflections that have both F+ and F- in the same 
+    dataset or are centric
+    
+    Splitting datafiles into sub-files with one copy of each unique hkl
+    
+                  File                    Refl       (rejected)   B1      B2     B3        B-avg
+    
+    TEMP0/WNV_NS1_202_w1_2.9_90_1.sca:   138180     (    6378)    63.9    63.9   55.00      60.9
+    TEMP0/WNV_NS1_202_w1_2.9_90_2.sca:      229     (       0)    63.9    63.9   55.00      60.9
+    TEMP0/WNV_NS1_202_w2_2.9_90_1.sca:   136254     (    6096)    59.4    59.4   49.78      56.2
+    TEMP0/WNV_NS1_202_w2_2.9_90_2.sca:      206     (       0)    59.4    59.4   49.78      56.2
+    TEMP0/WNV_NS1_205_w1_2.9_90_1.sca:   148714     (    4464)    73.7    73.7   63.92      70.4
+    TEMP0/WNV_NS1_205_w1_2.9_90_2.sca:      239     (       0)    73.7    73.7   63.92      70.4
+    TEMP0/WNV_NS1_205_w2_2.9_90_1.sca:   147256     (    4560)    70.3    70.3   60.50      67.0
+    TEMP0/WNV_NS1_205_w2_2.9_90_2.sca:      241     (       0)    70.3    70.3   60.50      67.0
+    
+    Notes:
+    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w1_2.9_90.HKL into 2 files:
+    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w2_2.9_90.HKL into 2 files:
+    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w1_2.9_90.HKL into 2 files:
+    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w2_2.9_90.HKL into 2 files:
+    Keeping split datafiles with at least 44614 reflections
+    
+    High-resolution limit:    2.89
+    
+    Scaling data in batches from individual data files
+    
+    List of scaled data files: 
+    TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz (30844 refl)
+    TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz (30828 refl)
+    TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz (29641 refl)
+    TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz (29527 refl)
+    
+    
+    Scaling and merging data files with overall scale factor
+    
+    Files to scale:
+    TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz
+    TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz
+    TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz
+    TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz
+    
+     ****** Putting all data on common scale ******
+    
+    Standard dataset: 1  I/sigma:    8.30  Nrefl: 59133 
+    
+    
+    Total of 4 datasets to be used
+    
+    Scale factors for data groups:
+     ID    Scale   file_name
+      1  1.000  TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz
+      2  0.683  TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz
+      3  1.198  TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz
+      4  1.366  TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz
+    
+    Mean I of scaled unmerged datasets:
+    1:   9940.78 (N=59133)
+    2:   9926.98 (N=59085)
+    3:  10203.75 (N=56663)
+    4:  10305.51 (N=56463)
+    
+    
+    Getting overall merged dataset using original sigmas
+    
+    
+    Datasets to be merged in estimation of variances:  1 2 3 4
+    Datasets to be merged in final merging step:  1 2 3 4
+    
+    Getting scale factors, dataset variances and scaled intensities
+    
+    Merged mean I:  8966.65 (N=64581) 
+    
+    
+    Dataset variances  
+    (RMS difference from target dataset after accounting for sigmas) 
+                              Dataset 
+       Resolution        1        2        3        4
+     48.40 -  4.94   2923.90  2353.89  6175.92  8461.67
+      4.94 -  3.92   1348.27  1407.39  1191.09  1267.29
+      3.92 -  3.43      0.00     0.00     0.00     0.00
+      3.43 -  3.11      0.00     0.00     0.00     0.00
+      3.11 -  2.89      0.00     0.00     0.00     0.00
+    
+      ALL            2515.66  1935.84  3450.29  5499.59
+    
+    Getting merged dataset including dataset variances
+    
+    Dataset correlations with merged dataset 
+                              Dataset 
+       Resolution        1        2        3        4
+     48.40 -  4.94      1.00     1.00     1.00     0.99
+      4.94 -  3.92      1.00     1.00     1.00     0.99
+      3.92 -  3.43      0.99     0.99     0.98     0.97
+      3.43 -  3.11      0.93     0.92     0.87     0.85
+      3.11 -  2.89      0.84     0.94     0.69     0.55
+    
+      ALL               1.00     1.00     1.00     0.99
+    
+    New merged mean I:  9035.38 (N=64581) and I/sigma:   10.89
+    
+    NOTE: I/sigma cannot be directly compared to original due to including 
+    estimates of dataset variances and changes in number of reflections.
+    
+    
+    Optimizing anomalous differences
+    
+    Merged mean anomalous difference:    -3.48 (N=31009) 
+    
+    
+    Dataset variances (anomalous differences) 
+    (RMS difference from target dataset after accounting for sigmas) 
+                              Dataset 
+       Resolution        1        2        3        4
+     47.38 -  4.94      0.00  1652.13   993.28     0.00
+      4.94 -  3.92    732.44     0.00   503.86     0.00
+      3.92 -  3.43    690.71     0.00     0.00     0.00
+      3.43 -  3.11    272.68     0.00     0.00     0.00
+      3.11 -  2.89      0.00     0.00     0.00     0.00
+    
+      ALL             468.90     0.00   435.50     0.00
+    
+    Getting merged dataset including dataset variances
+    
+    Dataset correlations with merged dataset (anomalous differences)
+                              Dataset 
+       Resolution        1        2        3        4
+     47.38 -  4.94      0.77     0.79     0.69     0.72
+      4.94 -  3.92      0.65     0.73     0.64     0.67
+      3.92 -  3.43      0.70     0.70     0.63     0.66
+      3.43 -  3.11      0.72     0.71     0.70     0.66
+      3.11 -  2.89      0.73     0.81     0.71     0.78
+    
+      ALL               0.73     0.75     0.67     0.70
+    Anom correlation on I of std merged and anom scaled:     0.83 (N=31009)
+    Merged scaled data optimized for anomalous differences: scaled_data.mtz
+    
+    
+    ==============================================================================
+    
+    Splitting data into groups for half-dataset CC
+    
+    Keeping datafiles intact within each half-dataset
+    
+    Half-dataset groups:
+    
+    Group A
+     TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz
+    TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz
+    
+    Group B
+     TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz
+    TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz
+    
+    ---- Calculating anomalous CC between half-datasets A,B----
+    
+    Half-dataset A: half_dataset_a.mtz
+    Half-dataset B: half_dataset_b.mtz
+    Unique reflections:
+    half_dataset_a.mtz: 30242
+    half_dataset_b.mtz: 30222
+    Reflections in common:    29455
+    Overall resolution:    2.90 A  Nrefl: 29455
+    Overall anomalous correlation:   -0.018 
+    
+    Anomalous correlation with varying high-resolution 
+    limits
+    
+      d_min     ---- CC ------       ----  N -----
+               Shell   Cumulative   Shell  Cumulative
+       6.00     0.080    0.080      3392      3392
+       5.50    -0.060    0.043      1052      4444
+       5.00    -0.115   -0.006      1519      5963
+       4.50    -0.040   -0.018      2256      8219
+       4.00    -0.065   -0.036      3540     11759
+       3.50    -0.016   -0.026      5862     17621
+       3.00    -0.009   -0.018      9997     27618
+       2.90    -0.022   -0.018      1837     29455
+    
+    
+    
+Possible Problems
+-----------------
+
+
+Literature
+----------
+
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.command_line.scale_and_merge}}

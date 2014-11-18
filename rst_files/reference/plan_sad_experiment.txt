@@ -1,0 +1,180 @@
+Planning a SAD experiment with plan\_sad\_experiment
+====================================================
+
+Author(s)
+---------
+
+-  plan\_sad\_experiment: Tom Terwilliger
+
+Purpose
+-------
+
+plan\_sad\_experiment is a tool for estimating the anomalous signal that
+you might get from your SAD experiment and for predicting whether this
+signal would be sufficient to solve the structure. plan\_sad\_experiment
+is normally used along with scale\_and\_merge and anomalous\_signal to
+plan a SAD experiment, scale the data, and analyze the anomalous signal
+before solving the structure.
+
+Usage
+-----
+
+How plan\_sad\_experiment works:
+--------------------------------
+
+-  You supply plan\_sad\_experiment with a sequence file, the 
+   anomalously-scattering atom you plan to use for the experiment,
+   and the wavelength for data collection.
+
+-  plan\_sad\_experiment will estimate the necessary I/sigI of your
+   dataset to provide enough anomalous signal to solve the structure.
+
+-  plan\_sad\_experiment will try various values of I/sigI for your
+   dataset at each of several resolutions. For each I/sigI it will estimate
+   the half-dataset anomalous correlation that would result along with the
+   likely true correlation between your anomalous differences and those that
+   would be calculated from a final model of your structure (cc*\_ano). 
+   From this anomalous correlation (cc*\_ano), plan\_sad\_experiment will
+   estimate the anomalous signal (related to cc*\_ano by the square root
+   of the number of reflections divided by the square root of the number of
+   sites).  Then plan\_sad\_experiment will choose a value of I/sigI that gives
+   an anomalous signal of about 30 (if achievable with the maximum I/sigI
+   you specify).
+   
+
+-  The way that plan\_sad\_experiment and anomalous\_signal estimate the 
+   probability that you can solve your dataset is to compare the anomalous 
+   signal in this dataset with the anomalous signal in other datasets at the
+   same resolution. Then the fraction of similar datasets that can be solved
+   by HySS is used as the probability that the anomalous substructure for
+   your dataset will also be found.
+
+-  Similarly, the mean figure of merit for datasets with an estimated 
+   anomalous correlation (cc*_ano) similar to that for your data is used as
+   an estimate of the figure of merit that you would obtain if the substructure
+   is found for your crystal.
+
+*Output from plan\_sad\_experiment*
+-----------------------------------
+
+plan\_sad\_experiment provides a summary of the scattering expected from
+your crystal and a summary of the anomalous signal expected if you are able
+to measure your data with the suggested overall I/sigI.  You can set the
+maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: ::
+
+    =========================== SAD experiment planning ===========================
+    
+    
+       ----------Dataset overall I/sigma required to solve a structure----------
+    
+    
+    Dataset characteristics:
+      Target anomalous signal:    30.0
+      Residues: 325
+      Chain-type: PROTEIN
+      Solvent\_fraction:    0.50
+      Atoms: 2642
+      Anomalously-scattering atom: Se
+      Wavelength:  0.9792 A
+      Sites: 7
+      f-double-prime:    3.84
+    
+    Target anomalous scatterer:
+      Atom: Se  f": 3.84  n:    7   rmsF:   10.2
+    
+    Other anomalous scatterers in the structure:
+      Atom:  C  f": 0.00  n: 1674   rmsF:    0.1
+      Atom:  N  f": 0.01  n:  445   rmsF:    0.1
+      Atom:  O  f": 0.01  n:  514   rmsF:    0.3
+      Atom:  S  f": 0.23  n:   10   rmsF:    0.7
+    
+    Normalized anomalous scattering:
+      From target anomalous atoms rms(x**2)/rms(F**2):     2.97
+      From other anomalous atoms rms(e**2)/rms(F**2):      0.24
+      Correlation of useful to total anomalous scattering: 1.00
+    
+    
+      ----------Dataset <I>/<sigI> needed for anomalous signal of 15-30----------
+    
+    
+                    ----------(Targets for entire dataset)----------
+    
+    
+                                       Anomalous    Useful     Useful    Likely
+                                      Half-dataset  Anom CC   Anomalous  Outcome
+     Dmin   Nrefl   I/sigI rms(sigF)/     CC       (cc*\_anom)  Signal   P(Substr)
+                           rms(F)(%)                                       (%)
+    
+     6.00     852     29      3.0        0.58        0.64         7         51
+     5.00    1473     29      3.0        0.62        0.66         9         79
+     3.00    6821     29      3.0        0.64        0.66        19         89
+     2.50   11787     29      3.0        0.70        0.68        25         96
+     2.00   23021     28      3.2        0.62        0.66        29         97
+     1.50   54569     13      6.7        0.18        0.42        29         97
+    
+    Note: Target anomalous signal not achievable with tested I/sigma (up to 30 )
+    for resolutions of  2.50 A and lower. I/sigma shown achieves about  95% of 
+    maximum anomalous signal.
+    
+    
+    This table says that if you collect your data to a resolution of   2.0 A with
+    an overall <I>/<sigma> of about  28 then the half-dataset anomalous
+    correlation should be about  0.62 (typically within a factor of 2).  This
+    should lead to a correlation of your anomalous data to true anomalous
+    differences (CC*\_ano) of about  0.66, and a useful anomalous signal around
+     29 (again within a factor of about two). With this value of estimated
+    anomalous signal the probability of finding the anomalous substructure is
+    about  96% (based on estimated anomalous signal and actual outcomes for
+    real structures.)  
+    
+    The value of rms(sigF)/rms(F) is approximately the inverse of I/sigma. The
+    calculations are based on rms(sigF)/rms(F).
+    
+    Note that these values assume data measured with little radiation damage or at
+    least with anomalous pairs measured close in time. The values also assume that
+    the anomalously-scattering atoms are nearly as well-ordered as other atoms.
+    If your crystal does not fit these assumptions it may be necessary to collect
+    data with even higher I/sigma than indicated here.
+    
+    Note also that anomalous signal is roughly proportional to the anomalous
+    structure factors at a given resolution. That means that if you have 50%
+    occupancy of your anomalous atoms, the signal will be 50% of what it otherwise
+    would be.  Also it means that if your anomalously scattering atoms only
+    contribute to 5 A, you should only consider data to 5 A in this analysis.
+    
+    What to do next:
+    
+    1. Collect your data, trying to obtain a value of I/sigma for the whole dataset
+       at least as high as your target.
+    2. Scale and analyze your unmerged data with phenix.scale\_and\_merge to get
+       accurate scaled and merged data as well as two half-dataset data files
+       that can be used to estimate the quality of your data.
+    3. Analyze your anomalous data (the scaled merged data and the two half-datdaset
+       data files) with phenix.anomalous_signal to estimate the anomalous signal
+       in your data. This tool will again guess the fraction of the substructure
+       that can be obtained with your data, this time with knowledge of the
+       actual anomalous signal.  It will also estimate the figure of merit of
+       phasing that you can obtain once you solve the substruture. 
+    4. Compare the anomalous signal in your measured data with the
+       estimated values in the table above. If they are lower than expected
+       you may need to collect more data to obtain the target anomalous signal.
+    
+
+Possible Problems
+-----------------
+
+plan\_sad\_experiment assumes that your crystal is similar to others that
+have been solved.  If your crystal has serious decay or other factors that 
+reduce signal to noise, the estimates provided by plan\_sad\_experiment may
+be too optimistic.  Similarly if the occupancies of anomalously-scattering
+atoms are low, that will reduce the anomalous signal.
+
+Literature
+----------
+
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.plan_sad_experiment}}
