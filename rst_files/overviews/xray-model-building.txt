@@ -37,14 +37,14 @@ here <../reference/autobuild_gui.html>`__
 
 **Related programs**
 
--  `phenix.find\_helices\_strands <../reference/find_helices_strands.html>`__:This
+-  `phenix.find\_helices\_strands <../reference/find_helices_strands.html>`__: This
    program can be used to very rapidly locate protein secondary
    structure elements in an electron density map. This can be used even
    at low resolution (4Å or worse). This is extremely useful for quickly
    confirming that a map contains macromolecular features, or for
    interpreting low resolution maps. Optionally, the amino acid sequence
    can be provided and residues will be fitted where density permits.
--  `phenix.fit\_loops <../reference/fit_loops.html>`__:This program can
+-  `phenix.fit\_loops <../reference/fit_loops.html>`__: This program can
    fit loops into protein structures given the current model, the
    sequence and an electron density map. Model building procedures are
    sometimes unable to fit models to poor density in loop regions,
@@ -52,7 +52,7 @@ here <../reference/autobuild_gui.html>`__
    becomes more complete and maps improve the weaker density in loops
    regions may become clearer, and thus can be fit using
    phenix.fit\_loops.
--  `phenix.erraser <../reference/erraser.html>`__:This program uses
+-  `phenix.erraser <../reference/erraser.html>`__: This program uses
    ERRASER (Enumerative Real-space Refinment ASsisted by
    Electron-density under Rosetta) to rebuild RNA structures by
    combining Rosetta and Phenix. By supplementing the Rosetta RNA

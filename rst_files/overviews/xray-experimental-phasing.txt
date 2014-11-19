@@ -50,20 +50,43 @@ here <../reference/autosol_gui.html>`__
 
 **Related programs**
 
-- `phenix.hyss <../reference/hyss.html>`__: This program is used by
+-  `phenix.plan\_sad\_experiment <../reference/plan_sad_experiment.html>`__: 
+   This
+   tool (available in the GUI) allows you to plan your SAD data
+   collection strategy by estimating the anomalous
+   signal and the probability of solving your structure by SAD based on
+   the anomalously-scattering atoms, the wavelength, the size of your
+   molecule, and the overall I/sigI for your dataset.
+-  `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__: This 
+   tool allows you to scale any number of datasets together to
+   obtain a merged, scaled anomalous dataset.  It also produces two
+   half-dataset scaled datasets that can be used by 
+   `phenix.anomalous\_signal <../reference/anomalous_signal.html>`__
+   to accurately evaluate the anomalous signal in your data.
+-  `phenix.anomalous\_signal <../reference/anomalous_signal.html>`__: 
+   This tool is like
+   `phenix.plan\_sad\_experiment <../reference/plan_sad_experiment.html>`__
+   except that it uses your measured data to give much more accurate
+   estimates.  It uses your scaled data and two half-dataset scaled datasets
+   from your data that can be created with
+   `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__
+   to give an estimate of the anomalous signal in your data and the
+   probability of solving your structure by SAD, taking into account the
+   number of sites in the substructure.
+-  `phenix.hyss <../reference/hyss.html>`__: This program is used by
    phenix.autosol to locate the anomalous substructure or heavy atoms.
    It is possible to run this program separately (for anomalous data
    only) if you want to only find the substructure. In general it is
    recommended to use phenix.autosol for this as it makes optimal use
    of phenix.hyss to locate sites.
-- `Phaser EP <../reference/phaser_ep.html>`__: Phaser can be used
+-  `Phaser EP <../reference/phaser_ep.html>`__: Phaser can be used
    directly to perform SAD phasing, given an initial anomalous
    substructure. Phases can be calculated for the given substructure
    hand or boths hands. Phaser will attempt to complete the
    substructure automatically. Note that Phaser can also combine
    information from a molecular replacement solution in the phase
    calculation process (in MR-SAD mode).
-- `phenix.emma <../reference/emma.html>`__: This program can be used
+-  `phenix.emma <../reference/emma.html>`__: This program can be used
    to compare different substructure solution, by superimposing sites
    taking into account crystallographic symmetry, possible origin
    shifts, and polar axes. This can be useful if comparing solutions

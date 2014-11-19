@@ -46,27 +46,27 @@ here <../reference/phaser_mr.html>`__
 
 **Related programs**
 
--  `phenix.MRage <../reference/MRage.html>`__:This program uses Phaser to
+-  `phenix.MRage <../reference/MRage.html>`__: This program uses Phaser to
    perform highly automated molecular replacement. In its simplest form
    it can take experimental diffraction data and a sequence to solve a
    molecular replacement problem.
--  `phenix.sculptor <../reference/sculptor.html>`__:This program can be
+-  `phenix.sculptor <../reference/sculptor.html>`__: This program can be
    used to prepare models for molecular replacement, by trimming loops
    where there are expected to be insertions of deletions based on
    sequence alignment. It can also trim side chains and modify other
    properties of the model such as atomic displacement parameters.
--  `phenix.ensembler <../reference/ensembler.html>`__:This program can be
+-  `phenix.ensembler <../reference/ensembler.html>`__: This program can be
    used to prepare ensembles for molecular replacement. An ensemble is a
    set of structurally related models that have been superimposed with
    respect to each other, typically using a conserved structural core.
    Phenix.ensembler automates the process of superimposing models.
--  `phenix.morph\_model <../reference/morph_model.html>`__:This program
+-  `phenix.morph\_model <../reference/morph_model.html>`__: This program
    can be used to improve an initial model after molecular replacement
    by locally moving the structure to better fit the electron density
    map. This is especially powerful in those cases where the molecular
    replacement solution is structurally too different to provide phases
    for map interpretation or automated model building.
--  `phenix.mr\_rosetta <../reference/mr_rosetta.html>`__:This program can
+-  `phenix.mr\_rosetta <../reference/mr_rosetta.html>`__: This program can
    be used to improve an initial model after molecular replacement by
    using the Rosetta program to modify the model such that it moves
    closer to the true structure, while also improving the fit to

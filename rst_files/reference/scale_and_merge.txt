@@ -1,15 +1,15 @@
-Scaling unmerged anomalous data or multiple datasets with scale_and_merge
-=========================================================================
+Scaling unmerged anomalous data or multiple datasets with scale\_and\_merge
+===========================================================================
 
 Author(s)
 ---------
 
--  scale_and_merge: Tom Terwilliger
+-  scale\_and\_merge: Tom Terwilliger
 
 Purpose
 -------
 
-scale_and_merge is a tool for scaling unmerged anomalous data or multiple
+scale\_and\_merge is a tool for scaling unmerged anomalous data or multiple
 data files and creating a scaled dataset and two scaled half-datasets.
 This tool normally is used in combination with anomalous\_signal to 
 create a scaled dataset and analyze anomalous signal in a SAD dataset. It
@@ -18,33 +18,33 @@ can also be used to scale any other group of datasets.
 Usage
 -----
 
-How scale_and_merge works:
---------------------------
+How scale\_and\_merge works:
+----------------------------
 
--  You supply scale_and_merge with a directory containing datafiles or
+-  You supply scale\_and\_merge with a directory containing datafiles or
    the name of a single unmerged datafile.
 
 -  You can optionally also specify a pair of labels that identifies datasets
    that are to be kept together. For example if you collected your data
    as pairs of datafiles with inverse beam geometry, you might have called
-   the members of a pair data_1_0_w1.HKL and data_1_0_w2.HKL, related by 
+   the members of a pair data\_1\_0\_w1.HKL and data\_1\_0\_w2.HKL, related by 
    w1 and w2.
 
--  scale_and_merge will first check the cell dimensions of all the datasets.
+-  scale\_and\_merge will first check the cell dimensions of all the datasets.
    Normally it will choose the largest set of similar crystals (you can 
-   have it keep all datasets with only_similar_datasets=False). It will also
+   have it keep all datasets with only\_similar\_datasets=False). It will also
    check the anisotropy in all the datafiles and calculate the average
    anisotropy (to be applied by default to all datafiles before scaling).
    
--  scale_and_merge will then scale all the data together.  It will 
+-  scale\n_and\_merge will then scale all the data together.  It will 
    split your datafiles into smaller files if your datafiles contain duplicate
    measurements of the same indices.  The intensities in each datafile will
    be adjusted for anisotropy to match the average anisotropy of
    all the datafiles. In this way all the datafiles are matched but the overall
    character of the data is not changed.  
 
--  scale_and_merge will then scale each individual file with local scaling,
-   producing files in the temporary directory with names ending in _scale.mtz.
+-  scale\_and\_merge will then scale each individual file with local scaling,
+   producing files in the temporary directory with names ending in \_scale.mtz.
    and then merge them all together. 
 
 -  Merging of the individual datasets is done twice, and then optionally
@@ -62,7 +62,7 @@ How scale_and_merge works:
    merged dataset are calculated. 
 
 -  If anomalous differences are optimized 
-   (default with optimize_anomalous=True), merging is carried
+   (default with optimize\_anomalous=True), merging is carried
    out another time in order to optimize the weighting of anomalous differences
    in the merging step.  For each unique reflection in the asymmetric unit of
    each dataset, the mean I+ and mean I- are used to calculate anomalous 
@@ -82,7 +82,7 @@ How scale_and_merge works:
 
 -  The original datasets are then split into two parts for creation of
    two half-datasets.  These half-datasets are useful for estimating the
-   quality of the data and are used in anomalous_signal for this purpose.
+   quality of the data and are used in anomalous\_signal for this purpose.
 
 -  The splitting into half-datasets is done in one of three ways, and
    the method is chosen based on the number of anomalous differences available
@@ -104,7 +104,7 @@ How scale_and_merge works:
    between half-datasets is estimated.
 
 
-*Output from scale_and_merge*
+*Output from scale\_and\_merge*
 -------------------------------
 
 scale_and_merge provides a summary half-dataset correlations in your 
@@ -112,84 +112,84 @@ dataset.
 Here is an example with very weak anomalous signal (but present): ::
 
     Scale and merge...analysis of multi-dataset SAD data
-    input_files {
+    input\_files {
       data = "dd"
-      data_labels = None
-      paired_group_ids = None
+      data\_labels = None
+      paired\_group\_ids = None
     }
-    output_files {
-      output_file = "scaled_data.mtz"
-      output_half_dataset_a = "half_dataset_a.mtz"
-      output_half_dataset_b = "half_dataset_b.mtz"
-      output_file_format = *mtz sca
+    output\_files {
+      output\_file = "scaled\_data.mtz"
+      output\_half\_dataset\_a = "half\_dataset\_a.mtz"
+      output\_half\_dataset\_b = "half\_dataset\_b.mtz"
+      output\_file\_format = *mtz sca
     }
-    crystal_info {
+    crystal\_info {
       resolution = None
-      low_resolution = None
-      space_group = None
-      unit_cell = None
+      low\_resolution = None
+      space\_group = None
+      unit\_cell = None
     }
-    data_selection {
-      minimum_datafile_fraction = 0.3
-      require_fpfm = True
-      only_similar_datasets = True
-      relative_length_tolerance = None
-      absolute_angle_tolerance = None
-      choose_optimal_datasets = False
-      sort_datasets_by_anomalous_cc = True
+    data\_selection {
+      minimum\_datafile\_fraction = 0.3
+      require\_fpfm = True
+      only\_similar\_datasets = True
+      relative\_length\_tolerance = None
+      absolute\_angle\_tolerance = None
+      choose\_optimal\_datasets = False
+      sort\_datasets\_by\_anomalous\_cc = True
     }
     scaling {
-      make_anisotropy_uniform = True
+      make\_anisotropy\_uniform = True
       overallscale = False
-      skip_scaling = False
-      lowest_resolution_range = 6
+      skip\_scaling = False
+      lowest\_resolution\_range = 6
     }
     merging {
-      optimize_anomalous = True
-      use_best_group_as_target = False
-      rescale_sigmas = False
+      optimize\_anomalous = True
+      use\_best\_group\_as\_target = False
+      rescale\_sigmas = False
     }
-    half_dataset_cc {
-      get_half_dataset_cc = True
-      half_dataset_cc_by_files = True
-      split_as_first_second_half = True
-      split_alternately = True
-      split_randomly = True
+    half\_dataset\_cc {
+      get\_half\_dataset\_cc = True
+      half\_dataset\_cc\_by\_files = True
+      split\_as\_first\_second\_half = True
+      split\_alternately = True
+      split\_randomly = True
     }
     directories {
-      temp_dir = None
-      output_dir = ""
-      gui_output_dir = None
+      temp\_dir = None
+      output\_dir = ""
+      gui\_output\_dir = None
     }
     control {
       verbose = False
-      random_seed = 714215
-      comparison_file = None
-      clean_up = True
+      random\_seed = 714215
+      comparison\_file = None
+      clean\_up = True
     }
     Comparing crystal symmetries and noting anisotropy in data
     Relative length tolerance:  0.010  Angle tolerance: 1.000 degrees
-    Taking initial symmetry from /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w2_2.9_90.HKL
+    Taking initial symmetry from /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_205\_w2\_2.9\_90.HKL
     with 3 similar files
     
     
                 File             SG         A       B       C      Alpha   Beta   Gamma 
     
     Symmetry group 1
-    WNV_NS1_202_w1_2.9_90.HKL    P 3 2 1  166.997 166.997  94.156  90.000  90.000 120.000
-    WNV_NS1_202_w2_2.9_90.HKL    P 3 2 1  166.704 166.704  94.113  90.000  90.000 120.000
-    WNV_NS1_205_w1_2.9_90.HKL    P 3 2 1  167.578 167.578  93.934  90.000  90.000 120.000
-    WNV_NS1_205_w2_2.9_90.HKL    P 3 2 1  167.639 167.639  93.859  90.000  90.000 120.000
+    WNV\_NS1\_202\_w1\_2.9\_90.HKL    P 3 2 1  166.997 166.997  94.156  90.000  90.000 120.000
+    WNV\_NS1\_202\_w2\_2.9\_90.HKL    P 3 2 1  166.704 166.704  94.113  90.000  90.000 120.000
+    WNV\_NS1\_205\_w1\_2.9\_90.HKL    P 3 2 1  167.578 167.578  93.934  90.000  90.000 120.000
+    WNV\_NS1\_205\_w2\_2.9\_90.HKL    P 3 2 1  167.639 167.639  93.859  90.000  90.000 120.000
     
     Scaling 4 datasets 
     
     Scaling data files with local scaling
     
     Files to scale:
-    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w1_2.9_90.HKL
-    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w2_2.9_90.HKL
-    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w1_2.9_90.HKL
-    /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w2_2.9_90.HKL
+    /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_202\_w1\_2.9\_90.HKL
+    /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_202\_w2\_2.9\_90.HKL
+    /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_205\_w1\_2.9\_90.HKL
+    /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_205\_w2\_2.9\_90.HKL
     
     Selecting just reflections that have both F+ and F- in the same 
     dataset or are centric
@@ -198,20 +198,20 @@ Here is an example with very weak anomalous signal (but present): ::
     
                   File                    Refl       (rejected)   B1      B2     B3        B-avg
     
-    TEMP0/WNV_NS1_202_w1_2.9_90_1.sca:   138180     (    6378)    63.9    63.9   55.00      60.9
-    TEMP0/WNV_NS1_202_w1_2.9_90_2.sca:      229     (       0)    63.9    63.9   55.00      60.9
-    TEMP0/WNV_NS1_202_w2_2.9_90_1.sca:   136254     (    6096)    59.4    59.4   49.78      56.2
-    TEMP0/WNV_NS1_202_w2_2.9_90_2.sca:      206     (       0)    59.4    59.4   49.78      56.2
-    TEMP0/WNV_NS1_205_w1_2.9_90_1.sca:   148714     (    4464)    73.7    73.7   63.92      70.4
-    TEMP0/WNV_NS1_205_w1_2.9_90_2.sca:      239     (       0)    73.7    73.7   63.92      70.4
-    TEMP0/WNV_NS1_205_w2_2.9_90_1.sca:   147256     (    4560)    70.3    70.3   60.50      67.0
-    TEMP0/WNV_NS1_205_w2_2.9_90_2.sca:      241     (       0)    70.3    70.3   60.50      67.0
+    TEMP0/WNV\_NS1\_202\_w1\_2.9\_90\_1.sca:   138180     (    6378)    63.9    63.9   55.00      60.9
+    TEMP0/WNV\_NS1\_202\_w1\_2.9\_90\_2.sca:      229     (       0)    63.9    63.9   55.00      60.9
+    TEMP0/WNV\_NS1\_202\_w2\_2.9\_90\_1.sca:   136254     (    6096)    59.4    59.4   49.78      56.2
+    TEMP0/WNV\_NS1\_202\_w2\_2.9\_90\_2.sca:      206     (       0)    59.4    59.4   49.78      56.2
+    TEMP0/WNV\_NS1\_205\_w1\_2.9\_90\_1.sca:   148714     (    4464)    73.7    73.7   63.92      70.4
+    TEMP0/WNV\_NS1\_205\_w1\_2.9\_90\_2.sca:      239     (       0)    73.7    73.7   63.92      70.4
+    TEMP0/WNV\_NS1\_205\_w2\_2.9\_90\_1.sca:   147256     (    4560)    70.3    70.3   60.50      67.0
+    TEMP0/WNV\_NS1\_205\_w2\_2.9\_90\_2.sca:      241     (       0)    70.3    70.3   60.50      67.0
     
     Notes:
-    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w1_2.9_90.HKL into 2 files:
-    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_202_w2_2.9_90.HKL into 2 files:
-    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w1_2.9_90.HKL into 2 files:
-    Splitting /Users/terwill/unix/misc/scale_and_merge/dd/WNV_NS1_205_w2_2.9_90.HKL into 2 files:
+    Splitting /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_202\_w1\_2.9\_90.HKL into 2 files:
+    Splitting /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_202\_w2\_2.9\_90.HKL into 2 files:
+    Splitting /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_205\_w1\_2.9\_90.HKL into 2 files:
+    Splitting /Users/terwill/unix/misc/scale\_and\_merge/dd/WNV\_NS1\_205\_w2\_2.9\_90.HKL into 2 files:
     Keeping split datafiles with at least 44614 reflections
     
     High-resolution limit:    2.89
@@ -219,19 +219,19 @@ Here is an example with very weak anomalous signal (but present): ::
     Scaling data in batches from individual data files
     
     List of scaled data files: 
-    TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz (30844 refl)
-    TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz (30828 refl)
-    TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz (29641 refl)
-    TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz (29527 refl)
+    TEMP0/WNV\_NS1\_205\_w1\_2.9\_90\_1\_scale.mtz (30844 refl)
+    TEMP0/WNV\_NS1\_205\_w2\_2.9\_90\_1\_scale.mtz (30828 refl)
+    TEMP0/WNV\_NS1\_202\_w1\_2.9\_90\_1\_scale.mtz (29641 refl)
+    TEMP0/WNV\_NS1\_202\_w2\_2.9\_90\_1\_scale.mtz (29527 refl)
     
     
     Scaling and merging data files with overall scale factor
     
     Files to scale:
-    TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz
-    TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz
-    TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz
-    TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz
+    TEMP0/WNV\_NS1\_205\_w1\_2.9\_90\_1\_scale.mtz
+    TEMP0/WNV\_NS1\_205\_w2\_2.9\_90\_1\_scale.mtz
+    TEMP0/WNV\_NS1\_202\_w1\_2.9\_90\_1\_scale.mtz
+    TEMP0/WNV\_NS1\_202\_w2\_2.9\_90\_1\_scale.mtz
     
      ****** Putting all data on common scale ******
     
@@ -241,11 +241,11 @@ Here is an example with very weak anomalous signal (but present): ::
     Total of 4 datasets to be used
     
     Scale factors for data groups:
-     ID    Scale   file_name
-      1  1.000  TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz
-      2  0.683  TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz
-      3  1.198  TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz
-      4  1.366  TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz
+     ID    Scale   file\_name
+      1  1.000  TEMP0/WNV\_NS1\_205\_w1\_2.9\_90\_1\_scale.mtz
+      2  0.683  TEMP0/WNV\_NS1\_205\_w2\_2.9\_90\_1\_scale.mtz
+      3  1.198  TEMP0/WNV\_NS1\_202\_w1\_2.9\_90\_1\_scale.mtz
+      4  1.366  TEMP0/WNV\_NS1\_202\_w2\_2.9\_90\_1\_scale.mtz
     
     Mean I of scaled unmerged datasets:
     1:   9940.78 (N=59133)
@@ -326,7 +326,7 @@ Here is an example with very weak anomalous signal (but present): ::
     
       ALL               0.73     0.75     0.67     0.70
     Anom correlation on I of std merged and anom scaled:     0.83 (N=31009)
-    Merged scaled data optimized for anomalous differences: scaled_data.mtz
+    Merged scaled data optimized for anomalous differences: scaled\_data.mtz
     
     
     ==============================================================================
@@ -338,20 +338,20 @@ Here is an example with very weak anomalous signal (but present): ::
     Half-dataset groups:
     
     Group A
-     TEMP0/WNV_NS1_205_w1_2.9_90_1_scale.mtz
-    TEMP0/WNV_NS1_202_w1_2.9_90_1_scale.mtz
+     TEMP0/WNV\_NS1\_205\_w1\_2.9\_90\_1\_scale.mtz
+    TEMP0/WNV\_NS1\_202\_w1\_2.9\_90\_1\_scale.mtz
     
     Group B
-     TEMP0/WNV_NS1_205_w2_2.9_90_1_scale.mtz
-    TEMP0/WNV_NS1_202_w2_2.9_90_1_scale.mtz
+     TEMP0/WNV\n_NS1\_205\_w2\_2.9\_90\_1\_scale.mtz
+    TEMP0/WNV\_NS1\_202\_w2\_2.9\_90\_1\_scale.mtz
     
     ---- Calculating anomalous CC between half-datasets A,B----
     
-    Half-dataset A: half_dataset_a.mtz
-    Half-dataset B: half_dataset_b.mtz
+    Half-dataset A: half\_dataset\_a.mtz
+    Half-dataset B: half\_dataset\_b.mtz
     Unique reflections:
-    half_dataset_a.mtz: 30242
-    half_dataset_b.mtz: 30222
+    half\_dataset\_a.mtz: 30242
+    half\_dataset\_b.mtz: 30222
     Reflections in common:    29455
     Overall resolution:    2.90 A  Nrefl: 29455
     Overall anomalous correlation:   -0.018 
@@ -359,7 +359,7 @@ Here is an example with very weak anomalous signal (but present): ::
     Anomalous correlation with varying high-resolution 
     limits
     
-      d_min     ---- CC ------       ----  N -----
+      d\_min     ---- CC ------       ----  N -----
                Shell   Cumulative   Shell  Cumulative
        6.00     0.080    0.080      3392      3392
        5.50    -0.060    0.043      1052      4444

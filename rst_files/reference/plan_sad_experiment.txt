@@ -62,9 +62,6 @@ your crystal and a summary of the anomalous signal expected if you are able
 to measure your data with the suggested overall I/sigI.  You can set the
 maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: ::
 
-    =========================== SAD experiment planning ===========================
-    
-    
        ----------Dataset overall I/sigma required to solve a structure----------
     
     
@@ -74,13 +71,13 @@ maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: :
       Chain-type: PROTEIN
       Solvent\_fraction:    0.50
       Atoms: 2642
-      Anomalously-scattering atom: Se
+      Anomalously-scattering atom: se
       Wavelength:  0.9792 A
       Sites: 7
       f-double-prime:    3.84
     
     Target anomalous scatterer:
-      Atom: Se  f": 3.84  n:    7   rmsF:   10.2
+      Atom: se  f": 3.84  n:    7   rmsF:   10.2
     
     Other anomalous scatterers in the structure:
       Atom:  C  f": 0.00  n: 1674   rmsF:    0.1
@@ -97,24 +94,23 @@ maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: :
       ----------Dataset <I>/<sigI> needed for anomalous signal of 15-30----------
     
     
-                    ----------(Targets for entire dataset)----------
+    -------Targets for entire dataset-------  ----------Likely outcome-----------
     
+                                  Anomalous    Useful    Useful 
+                                Half-dataset  Anom CC   Anomalous 
+     Dmin   N     I/sigI sigF/F     CC       (cc*\_anom)  Signal   P(Substr)   FOM
+                          (%)                                        (%)
     
-                                       Anomalous    Useful     Useful    Likely
-                                      Half-dataset  Anom CC   Anomalous  Outcome
-     Dmin   Nrefl   I/sigI rms(sigF)/     CC       (cc*\_anom)  Signal   P(Substr)
-                           rms(F)(%)                                       (%)
-    
-     6.00     852     29      3.0        0.58        0.64         7         51
-     5.00    1473     29      3.0        0.62        0.66         9         79
-     3.00    6821     29      3.0        0.64        0.66        19         89
-     2.50   11787     29      3.0        0.70        0.68        25         96
-     2.00   23021     28      3.2        0.62        0.66        29         97
-     1.50   54569     13      6.7        0.18        0.42        29         97
+     6.00    852    29    3.0      0.58        0.64        7         51       0.22
+     5.00   1473    29    3.0      0.62        0.66        9         79       0.15
+     3.00   6821    29    3.0      0.64        0.66       19         89       0.22
+     2.50  11787    29    3.0      0.70        0.68       25         96       0.19
+     2.00  23021    28    3.2      0.62        0.66       29         97       0.17
+     1.50  54569    13    6.7      0.18        0.42       29         97       0.15
     
     Note: Target anomalous signal not achievable with tested I/sigma (up to 30 )
-    for resolutions of  2.50 A and lower. I/sigma shown achieves about  95% of 
-    maximum anomalous signal.
+    for resolutions of  2.50 A and lower. I/sigma shown is value 
+    of max\_i\_over\_sigma.
     
     
     This table says that if you collect your data to a resolution of   2.0 A with
@@ -125,10 +121,10 @@ maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: :
      29 (again within a factor of about two). With this value of estimated
     anomalous signal the probability of finding the anomalous substructure is
     about  96% (based on estimated anomalous signal and actual outcomes for
-    real structures.)  
+    real structures.), and the estimated figure of merit of phasing is 0.17.
     
-    The value of rms(sigF)/rms(F) is approximately the inverse of I/sigma. The
-    calculations are based on rms(sigF)/rms(F).
+    The value of sigF/F (actually rms(sigF)/rms(F)) is approximately the inverse 
+    of I/sigma. The calculations are based on rms(sigF)/rms(F).
     
     Note that these values assume data measured with little radiation damage or at
     least with anomalous pairs measured close in time. The values also assume that
@@ -150,7 +146,7 @@ maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: :
        accurate scaled and merged data as well as two half-dataset data files
        that can be used to estimate the quality of your data.
     3. Analyze your anomalous data (the scaled merged data and the two half-datdaset
-       data files) with phenix.anomalous_signal to estimate the anomalous signal
+       data files) with phenix.anomalous\_signal to estimate the anomalous signal
        in your data. This tool will again guess the fraction of the substructure
        that can be obtained with your data, this time with knowledge of the
        actual anomalous signal.  It will also estimate the figure of merit of
@@ -158,16 +154,6 @@ maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: :
     4. Compare the anomalous signal in your measured data with the
        estimated values in the table above. If they are lower than expected
        you may need to collect more data to obtain the target anomalous signal.
-    
-
-Possible Problems
------------------
-
-plan\_sad\_experiment assumes that your crystal is similar to others that
-have been solved.  If your crystal has serious decay or other factors that 
-reduce signal to noise, the estimates provided by plan\_sad\_experiment may
-be too optimistic.  Similarly if the occupancies of anomalously-scattering
-atoms are low, that will reduce the anomalous signal.
 
 Literature
 ----------

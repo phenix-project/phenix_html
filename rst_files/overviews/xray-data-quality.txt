@@ -37,20 +37,46 @@ output.
 
 **Related programs and Documentation**
 
--  `phenix.data\_viewer <../reference/data_viewer.html>`__: this GUI
-   program allows you to visualize reciprocal space data either in
+-  `phenix.plan\_sad\_experiment <../reference/plan_sad_experiment.html>`__: 
+   This tool (available in the GUI) allows you to plan your SAD data 
+   collection strategy by estimating the anomalous
+   signal and the probability of solving your structure by SAD based on
+   the anomalously-scattering atoms, the wavelength, the size of your
+   molecule, and the overall I/sigI for your dataset.
+
+
+-  `phenix.anomalous\_signal <../reference/anomalous_signal.html>`__: 
+   This tool is like 
+   `phenix.plan\_sad\_experiment <../reference/plan_sad_experiment.html>`__
+   except that it uses your measured data to give much more accurate
+   estimates.  It uses your scaled data and two half-dataset scaled datasets
+   from your data that can be created with 
+   `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__
+   to give an estimate of the anomalous signal in your data and the 
+   probability of solving your structure by SAD, taking into account the
+   number of sites in the substructure.
+
+
+-  `phenix.data\_viewer <../reference/data_viewer.html>`__: 
+   This GUI program allows you to visualize reciprocal space data either in
    3-dimensions or 2-dimensions. This can be very useful for detecting
    systematic problems with data completeness (e.g. missing cones,
    wedges).
+
+
 -  `phenix.explore\_metric\_symmetry <../reference/explore_metric_symmetry.html>`__:
-   this program allows you to test whether your crystal lattice is
+   This program allows you to test whether your crystal lattice is
    consistent with other lattices/symmetries. It also can test whether
    two lattices are related. (Command line only).
+
+
 -  `Using unmerged data in Phenix <../reference/unmerged_data.html>`__:
    Unmerged data can be analyzed in Phenix to provide useful
    information, in particular the new CC1/2 and CC\* statistics. The
    program phenix.merging\_statistics can be used to calculate these and
-   a number of other statistics.
+   a number of other statistics.  Additionally the program 
+   `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__ can 
+   scale unmerged data for you.
 
 `Phenix reference manual for
 phenix.xtriage <../reference/xtriage.html>`__
