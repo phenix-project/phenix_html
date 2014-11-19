@@ -83,7 +83,7 @@ Alerts for problematic results
 
 The first tab provides warnings for a variety of common problems:
 
-.. image:: images/xtriage_summary.png
+.. image:: ../images/xtriage_summary.png
 
 Each box can be clicked to jump to the detailed results in another tab.
 Analyses tagged with a red icon indicate issues that are likely to make various
@@ -101,18 +101,18 @@ If you provide unmerged (but scaled) intensities as input, the program
 `phenix.merging_statistics <unmerged_data.html>`_ will be run internally and
 the results displayed in their own tab.
 
-.. image:: images/xtriage_merging_overall.png
+.. image:: ../images/xtriage_merging_overall.png
 
 In addition to the overall analysis, tables and plots display statistics by
 resolution shell, first for general counting statistics and signal-to-noise,
 second for various measures of data quality (including R-merge and CC1/2).
 
-.. image:: images/xtriage_dataset_consistency.png
+.. image:: ../images/xtriage_dataset_consistency.png
 
 Clicking the plot button below a table opens plots for each set of analyses in
 a separate window.
 
-.. image:: images/xtriage_cc_one_half.png
+.. image:: ../images/xtriage_cc_one_half.png
 
 Data quality analyses
 =====================
