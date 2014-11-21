@@ -140,17 +140,18 @@ maximum I/sigI to look for. Here is an example setting max\_i\_over\_sigma=30: :
     
     What to do next:
     
-    1. Collect your data, trying to obtain a value of I/sigma for the whole dataset
-       at least as high as your target.
+    1. Collect your data, trying to obtain a value of I/sigma for the whole 
+       dataset at least as high as your target.
     2. Scale and analyze your unmerged data with phenix.scale\_and\_merge to get
        accurate scaled and merged data as well as two half-dataset data files
        that can be used to estimate the quality of your data.
-    3. Analyze your anomalous data (the scaled merged data and the two half-datdaset
-       data files) with phenix.anomalous\_signal to estimate the anomalous signal
-       in your data. This tool will again guess the fraction of the substructure
-       that can be obtained with your data, this time with knowledge of the
-       actual anomalous signal.  It will also estimate the figure of merit of
-       phasing that you can obtain once you solve the substruture. 
+    3. Analyze your anomalous data (the scaled merged data and the two 
+       half-dataset data files) with phenix.anomalous\_signal to estimate 
+       the anomalous signal in your data. This tool will again guess the 
+       fraction of the substructure that can be obtained with your data, 
+       this time with knowledge of the actual anomalous signal.  It will also 
+       estimate the figure of merit of phasing that you can obtain once you 
+       solve the substruture. 
     4. Compare the anomalous signal in your measured data with the
        estimated values in the table above. If they are lower than expected
        you may need to collect more data to obtain the target anomalous signal.
