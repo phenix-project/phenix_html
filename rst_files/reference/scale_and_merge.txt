@@ -36,7 +36,7 @@ How scale\_and\_merge works:
    check the anisotropy in all the datafiles and calculate the average
    anisotropy (to be applied by default to all datafiles before scaling).
    
--  scale\n_and\_merge will then scale all the data together.  It will 
+-  scale\_and\_merge will then scale all the data together.  It will 
    split your datafiles into smaller files if your datafiles contain duplicate
    measurements of the same indices.  The intensities in each datafile will
    be adjusted for anisotropy to match the average anisotropy of
