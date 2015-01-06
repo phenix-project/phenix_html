@@ -43,7 +43,7 @@ versions.
     -  A map is defined by specifying a map type using 'map\_type'
        keyword available within each scope of parameters:
        'map\_coefficients' or 'map'. The general supported format for
-       'map\_type' is: [p][m]Fo+[q][D]Fc[kick][filled]. For example:
+       'map\_type' is: [p][m]Fo+[q][D]Fc[filled]. For example:
        2Fo-Fc, 2mFobs-DFcalc, 3Fobs-2Fmodel, Fo-Fc, mfobs-Dfcalc, anom.
        The 'map\_type' parser will automatically recognize which map is
        requested.
@@ -52,8 +52,6 @@ versions.
        formatted file with all Fourier map coefficients in it.
     -  The X-plor formatted map can be computed in the entire unit cell
        or around selected atoms only.
-    -  Kick maps and missing Fobs filling is done (if requested) as
-       described in Adams et al. (2010). Acta Cryst. D66, 213-221.
     -  Twinning (if detected) will be accounted for automatically. This
        can be disabled by using "skip\_twin\_detection=True" keyword.
     -  All arrays used in map calculation, for example: Fobs, Fmodel,

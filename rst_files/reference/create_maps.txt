@@ -42,11 +42,6 @@ once map coefficients are available.
 Guidelines for use
 ------------------
 
-  - "Kicked" maps use small random perturbations in coordinates to reduce
-    model bias and noise; the final map is an average of independently
-    calculated perturbed maps.  This adds to calculation time, but is
-    considerably faster than a composite omit map.
-
   - Map quality may be heavily influenced by reflections that are missing due
     to errors in data collection or processing.  Substituting F(calc) for
     missing F(obs) increases model bias but often results in a more easily
