@@ -282,9 +282,6 @@ clean = False
 ignore_errors = True
   .type = bool
   .help = Don't crash on errors in RST processing.
-destination = None
-  .type = path
-  .help = Destination directory (optional)
 """
 
 create_rst_from_modules = [
@@ -341,7 +338,7 @@ def run (args, out=sys.stdout) :
   # Checked for HTML_PATH at module load.
   # Start converting all RST .txt to .html.
   top_dir = os.path.dirname(HTML_PATH)
-  docs_dir = os.path.join(top_dir, "doc")
+  docs_dir = libtbx.env.under_root('doc')
   rst_dir = os.path.join(HTML_PATH, "rst_files")
   if os.path.exists(docs_dir) and params.clean:
     shutil.rmtree(docs_dir)
@@ -409,12 +406,6 @@ def run (args, out=sys.stdout) :
   replace_tree(op.join(HTML_PATH, "images"), op.join(docs_dir, "images"))
   replace_tree(op.join(HTML_PATH, "css"), op.join(docs_dir, "css"))
 
-  # Copy to destination directory if specified
-  if (params.destination is not None) and op.isdir(params.destination) :
-    if op.isdir(op.join(params.destination, "doc")) :
-      shutil.rmtree(op.join(params.destination, "doc"))
-    print >> out, "Moving to %s/doc..." % params.destination
-    shutil.move(docs_dir, params.destination)
 
 if (__name__ == "__main__") :
   run(sys.argv[1:])
