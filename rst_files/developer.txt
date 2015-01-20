@@ -1,0 +1,59 @@
+PHENIX Developer Environment
+============================
+
+Getting started
+---------------
+
+To setup a Phenix developer environment, you need to:
+	1. Copy static sources (boost, scons, phaser)
+	2. Checkout source repositories (cctbx, phenix, dials, etc.)
+	3. Build dependencies (Python, HDF, wxPython, etc.)
+	4. Build PHENIX
+	5. Run tests
+ 
+You can perform this process manually, or you can use the bootstrap.py script to 
+accomplish each task.
+
+To grab the current bootstrap.py script:
+	svn export svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py
+
+Then, to accomplish each corresponding step above:
+	1. python ./bootstrap.py --builder=phenix hot
+	2. python ./bootstrap.py --builder=phenix update
+	3. python ./bootstrap.py --builder=phenix base
+	4. python ./bootstrap.py --builder=phenix build
+	5. python ./bootstrap.py --builder=phenix tests
+	
+Note: if your CCI username is different than your local account, 
+	pass "--cciuser=<username>"
+Also, you may want to do re-checkout the cctbx sources with your sourceforge account:
+ cd modules/cctbx_project
+ svn relocate svn+ssh://<username>@svn.code.sf.net/p/cctbx/code/trunk
+	
+This will create a directory structure where 'modules' contains all the sources,
+'base' contains the dependencies, and 'build' is the build directory. You can then
+work normally with svn, make, etc. You can also re-invoke bootstrap.py at any time
+as a shortcut to update all sources, rebuild, etc. The source controlled copy
+of bootstrap.py lives in modules/cctbx_project/libtbx/auto_build/bootstrap.py.	
+	
+The most common place to encounter problems is step 3, the "base" step, where all
+the various dependency packages are downloaded and compiled. While this is tested
+on Mac and several Linux distributions, there are sometimes differences that cause
+complex packages like wxPython to have trouble building. One way to skip this step
+is to grab the "base" directory from a binary installer. You can either copy over
+the base directory, or use the binary installation directory and remove the 
+"build" and "modules" directories. After this, the process is the same.
+
+Examples
+--------
+
+# Option 1, from scratch:
+svn export svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py
+python ./bootstrap.py --builder=phenix
+
+# Option 2, use the 'base' directory from a binary installer:
+rm -rf build modules
+svn export svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py
+python ./bootstrap.py --builder=phenix
+
+
