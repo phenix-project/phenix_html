@@ -520,6 +520,43 @@ on program behavior.  (The lone exception is Phaser, which by default sets the
 occupancies of HETATMs to zero unless they are part of a protein polymer.)
 The PDB annotators will change ATOM to HETATM as needed upon deposition.
 
+Rosetta
+-------
+
+(These questions pertain to the `Rosetta <http://www.rosettacommons.org>`_
+software for protein structure prediction and design, which is developed and
+distributed separately from Phenix but is used internally by tools such as
+`MR-Rosetta <../reference/mr_rosetta.html>`_, `phenix.rosetta_refine
+<../reference/rosetta_refine.html>`_, and `ERRASER
+<../reference/erraser.html>`_.)
+
+**When I try to build the hybrid Python-enabled Rosetta for running
+refinement, I get the error below.  What does it mean and how can I fix it?**
+
+::
+
+  [root@localhost ~]# rosetta.build_phenix_interface nproc=8
+  scons: Reading SConscript files ...
+  Running versioning script ... Done. (0.0 seconds)
+  Could not find platform independent libraries <prefix>
+  Could not find platform dependent libraries <exec_prefix>
+  Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]
+  ImportError: No module named site
+
+
+This error happens when the Rosetta build system tries to run Python internally
+to generate additional files used in compilation.  Although we include a
+complete Python environment with Phenix, Rosetta will probably use the system's
+Python interpreter (or whatever is defined as the 'python' command).  The error
+message you see means that this interpreter is completely broken, i.e.
+something is wrong with your system.  You can confirm this by running a
+command such as::
+
+  python -c "import site"
+
+You should consult your local system administrator and/or OS reference manual
+for assistance fixing the problem.
+
 Other
 -----
 
