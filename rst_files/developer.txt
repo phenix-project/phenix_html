@@ -24,9 +24,9 @@ Then, to accomplish each corresponding step above:
 	4. python ./bootstrap.py --builder=phenix build
 	5. python ./bootstrap.py --builder=phenix tests
 	
-Note: if your CCI username is different than your local account, 
-	pass "--cciuser=<username>"
-Also, you may want to do re-checkout the cctbx sources with your sourceforge account:
+Note: if your CCI username is different than your local account, pass "--cciuser=<username>"
+Also, you may want to do re-checkout the cctbx sources with your sourceforge account::
+
  cd modules/cctbx_project
  svn relocate svn+ssh://<username>@svn.code.sf.net/p/cctbx/code/trunk
 	
@@ -47,13 +47,15 @@ the base directory, or use the binary installation directory and remove the
 Examples
 --------
 
-# Option 1, from scratch:
-svn export svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py
-python ./bootstrap.py --builder=phenix
+Option 1, from scratch::
 
-# Option 2, use the 'base' directory from a binary installer:
-rm -rf build modules
-svn export svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py
-python ./bootstrap.py --builder=phenix
+  svn export svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py  
+  python ./bootstrap.py --builder=phenix  
+
+Option 2, use the 'base' directory from a binary installer::
+
+  mv modules modules.from_installer
+  svn export svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py  
+  python ./bootstrap.py --builder=phenix  
 
 
