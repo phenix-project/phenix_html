@@ -3,7 +3,7 @@ from libtbx import easy_run
 from libtbx import smart_open
 import libtbx.load_env
 import time
-import sys, os
+import os
 
 pdb = libtbx.env.find_in_repositories(
   relative_path="phenix_regression/pdb/phe_abc_w_h.pdb",
@@ -131,7 +131,8 @@ END
 
 def example_3(commands):
   selected_command = \
-    "% phenix.pdbtools model.pdb keep=backbone set_b_iso=25 selection="+""""chain C" """
+    "% phenix.pdbtools model.pdb keep=backbone set_b_iso=25 modify.selection="+\
+        """"chain C" """
   counter = 0
   selected_command = selected_command.strip()
   for cmd in commands:

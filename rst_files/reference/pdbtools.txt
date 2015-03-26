@@ -8,7 +8,7 @@ Manipulations on a model in a PDB file including
 ------------------------------------------------
 
 The operations below can be applied to the whole model or selected parts
-(e.g. "selection=chain A and backbone"). See examples below.
+(e.g. "modify.selection=chain A and backbone"). See examples below.
 
 - shaking of coordinates (random coordinate shifts)
 - rotation-translation shift of coordinates
@@ -95,7 +95,7 @@ containing chains A and B only. Important: the commands ``keep`` and
 molecules. Remove all but backbone atoms and set b-factors to 25 for chain C
 atoms::
 
-  % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 selection="chain C"
+  % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 modify.selection="chain C"
 
 **6)** Show cmprehensive model statistics::
 
