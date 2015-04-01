@@ -1,5 +1,5 @@
 ==============================================================
-Running phenix.refine with AFITT for ligands
+Running phenix.refine using AFITT gradients for ligands
 ==============================================================
 
 .. contents::
@@ -36,12 +36,12 @@ where, in the presence of ligands, the second term in the above
 equation can be further broken down into:
 
 
-  E_{geometry}=E_{protein}+E_{ligand\_{}non-bonded}+E_{ligand\_{}bonded}
+  E_{geometry}=E_{protein}+E_{ligand\_non-bonded}+E_{ligand\_bonded}
 
 Phenix-AFITT replace Phenix's bonded ligand term with an AFITT term,
 thus yielding the following final energy function:
 
-  E_{Phenix-AFITT}=E_{x-ray}+E_{geometry}-E_{ligand\_{}bonded}^{Phenix}+E_{ligand\_{}bonded}^{AFITT}
+  E_{Phenix-AFITT}=E_{x-ray}+E_{geometry}-E_{ligand\_bonded}^{Phenix}+E_{ligand\_bonded}^{AFITT}
 
 
 Phenix's implementation of AFITT is versatile, easy to use and powerful. 
@@ -161,7 +161,7 @@ individual terms of the energy function. Example usage:
 As always, running an auxiliary program with the "-h" keyword provides
 helpful information about the program.
 
-  .. image:: ..images/energy_4manual.png
+  .. image:: ../images/energy_4manual.png
 
 Example ligand conformational energies after traditional refinement
 and after refinement with Phenix-AFITT. Energies are shown as a
