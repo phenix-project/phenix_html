@@ -51,7 +51,7 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
   2) Disabling secondary structure, rotamer and Ramachandran plot restraints::
 
        phenix.real_space_refine model.pdb map.ccp4 \
-       secondary_structure_restraints=False use_rotamer_restraints=False \
+       secondary_structure.enabled=False use_rotamer_restraints=False \
        ramachandran_restraints=False
 
   3) Request output model to have bond and angle rmsd from ideal not greater
