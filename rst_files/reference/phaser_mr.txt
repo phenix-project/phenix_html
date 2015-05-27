@@ -57,9 +57,13 @@ ensemble out of several (e.g. the protein in a protein-DNA complex), you
 must still supply the expected composition of the entire crystal.
 
 Finally, the "Search procedure" tab defines the steps in the MR search,
-selected from each input ensemble.  Enabling more than one ensemble per
-search will result in the single best solution being used.  You do not need
-to search for all ensembles at once, as described below.
+selected from each input ensemble. This is organized as a tree-like table
+with search components as main branches. Expanding a component branch displays the 
+ensembles used for the searches. Expanding an ensemble branch displays the name
+of the ensemble's constituent coordinate files or the name of the electron density 
+file. Specifying more than one ensemble per
+component will result in the ensemble yielding the best solution being used.  
+You do not need to search for all ensembles at once, as described below.
 
 .. image:: ../images/phaser_mr_search.png
 

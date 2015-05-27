@@ -182,20 +182,24 @@ composition is input really is unimportant.)
 .. image:: ../images/blip_component.png
 
 The final configuration tab, "Search procedure", is where we tell Phaser
-how to use the ensembles we input, along with several of the most important
-search options.  Each search step has its own tab; assuming the ensembles
-have been entered appropriately, the tab will initially look like this:
+how to use the ensembles we input. Initially only the "Component 1" branch
+is shown. Click on the triple dotted button to its right and a menu will appear
+allowing selecting which of the two ensembles defined earlier Phaser should 
+search for. The up-down spin button in the rightmost column lets us specify how 
+many copies in the ASU we want Phaser to attempt placing this component.
+We select the beta ensemble for the first component and choose searching 
+for one copy with phaser. To specify the blip component we press the "Add Search"
+button which will add another Component branch to the Search GUI. As before 
+we instruct Phaser searching for one component but with the blip ensemble.
+
+Note: Selecting both ensembles to be searched for in one component would
+mean that Phaser would try them in turn and then select the ensemble yielding 
+the best result.
+
+
 
 .. image:: ../images/beta_blip_search.png
 
-Check "beta", leaving the number of copies set to 1, then click "Add search",
-and in the new tab, check "blip" (still with 1 copy).  This interface allows
-you to check multiple ensembles in a single search, but this would instead
-try both as alternatives for the same component and pick just one, which is
-not what we want here.  Each unique ensemble (or set of equally likely
-candidates) should get its own separate search tab.
-
-.. image:: ../images/blip_search.png
 
 At this point we are ready to run Phaser, which should again take only a few
 minutes to complete successfully.
