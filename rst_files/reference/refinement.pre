@@ -1175,25 +1175,25 @@ need not match exactly.
 
 The default parameters are a good starting point::
 
-  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+  % phenix.refine data.hkl model.pdb reference_model.enabled=True \
     reference_model.file=reference.pdb
 
 The default sigma value for these reference dihedral restraints is 1.0 degrees.
 To increase the strength of these restraints, select a smaller sigma::
 
-  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+  % phenix.refine data.hkl model.pdb reference_model.enabled=True \
     reference_model.file=reference.pdb reference_model.sigma=0.5
 
 To decrease the strength of the restraints, select a larger sigma::
 
-  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+  % phenix.refine data.hkl model.pdb reference_model.enabled=True \
     reference_model.file=reference.pdb reference_model.sigma=2.0
 
 The reference restraints have a `limit` parameter which turns them off when the
 angle in the working model differs from the reference by an amount greater than
 `limit`.  The default value is 15 degrees, but may be user-defined::
 
-  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+  % phenix.refine data.hkl model.pdb reference_model.enabled=True \
     reference_model.file=reference.pdb reference_model.limit=10
 
 For an optimal set of protein restraints, rotamer outliers in the working model
@@ -1201,7 +1201,7 @@ that have rotameric counterparts in the reference model are automatically correc
 to the rotamer from the reference model prior to refinement.  In practice this step
 almost always improves the final model, but can be turned off if desired::
 
-  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+  % phenix.refine data.hkl model.pdb reference_model.enabled=True \
     reference_model.file=reference.pdb reference_model.fix_outliers=False
 
 Selections may also be used with reference_model restraints.  Selections are useful
@@ -1226,7 +1226,7 @@ To specify selections, create a ``reference.params`` file with selections like::
 
 Specify ``reference.params`` as an additional input when running phenix.refine::
 
-  % phenix.refine data.hkl model.pdb main.reference_model_restraints=True \
+  % phenix.refine data.hkl model.pdb reference_model.enabled=True \
     reference_model.file=reference.pdb reference.params
 
 Each selection (both reference and selection entries as above) may only specify
