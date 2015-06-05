@@ -360,6 +360,37 @@ You can optionally also specify an estimate of the RMSD between your model and t
 
 In this case the MR.pdb file will be used as a partial model in a maximum-likelihood SAD phasing calculation with Phaser to calculate phases and identify sites in Phaser, and the combined MR+SAD phases will be written out.
 
+Notes on model bias and MRSAD.
+------------------------------
+
+There are a number of of factors that influence how much model bias there is in a MR-SAD experiment.   Additionally the model bias is different at different steps in the procedure. You also have several choices that affect how much model bias there is:
+
+Options for reducing model bias in MR-SAD initial phasing
+---------------------------------------------------------
+
+1. Considering just the initial phasing step, you have two options in Phenix: 
+
+A. You can find sites with phaser LLG maximization using your input model as part of the total model, then phase using the sites that you find and exclude the model in the phasing step.  This is the keyword "phaser_sites_then_phase=True" and it has essentially no model bias.
+
+B. You can find sites and phase in one step with Phaser, in which case your phases will contain information from the model and there can be model bias.  You get two different sets of HL coefficients, one is HLA etc, the other is HLanomA etc.  The first contains the same information in the phases, and may be biased by the model. The second does not contain phase information from the model, only from the anomalous differences.  
+
+Options for reducing model bias in MR-SAD in density modification and refinement
+--------------------------------------------------------------------------------
+
+2. Once you have obtained calculated phases and phase probabilities with and without the model (HL and HLanom), you have additional choices as to how to use this information.  In all cases the starting phases are those from step 1, and include model information unless you set phaser_sites_then_phase=True. The choices in this stage consist of whether to use the phase probabilities with model information (HL) or without (HLanom).
+
+A. You can specify whether to use phase probabilities with or without the model in density modification and refinement.   If you set use_hl_anom_in_denmod=False (default) then model information will be used in density modification.  If you set use_hl_anom_in_denmod=True then HLanom coefficients not including model information will be used. 
+
+B. You can separately specify whether to use model information in refinement. If you set use_hl_anom_in_refinement=True (default if a partial model has been supplied as in MR-SAD), then phase probabilities without the model will be used.
+
+Avoiding model bias in MR-SAD
+-----------------------------
+
+You can avoid model bias in MR-SAD completely with phaser_sites_then_phase=True.  You can also have reduced model bias if you set  use_hl_anom_in_denmod=True and use_hl_anom_in_refinement=True.  If you do not reduce model bias in one of these ways, the amount of bias is going to depend very much on the strength of the anomalous signal, the amount of solvent, and the resolution, as all of these factors contribute to the phase information coming from somewhere other than the model.
+
+A good way to check on model bias in this or any other case is to remove a part of your starting model (say, a helix) that you are worried about, and use that omit model in the whole procedure.  Then if the density shows up in the end for this feature you can be sure it is not due to model bias.  You can do this after the fact — you solve your structure, you are worried that something in the map is model bias, you run the whole thing over starting with a model that does not have this feature, it comes back in your maps, and you know it is ok.  You can show the resulting map to anyone and they will know that it is not biased as well.
+
+
 Using placed density from a Phaser MR density search to find sites and as a source of phase information (method #2 for MRSAD)
 -----------------------------------------------------------------------------------------------------------------------------
 
