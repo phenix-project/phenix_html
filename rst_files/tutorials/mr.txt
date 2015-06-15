@@ -55,8 +55,8 @@ a single ensemble; if you instead want to try multiple equally likely
 ensembles and let Phaser pick the best one, use the advanced interface
 (described below).
 
-Start the GUI by clicking "Phaser-MR (simple interface)", the first item in
-the list under "Molecular replacement."  This interface has a single input
+Start the GUI by clicking "Phaser-MR (simple one-component interface)", the second 
+item in the list under "Molecular replacement."  This interface has a single input
 field for all file types, and on most operating systems you can simply drag
 the three files from the project folder into the input field.  Alternatively,
 click "Add file" to open a file dialog.
@@ -88,14 +88,14 @@ straightforward, the resolution will automatically be limited to reduce
 runtime while preserving an excellent chance of solving the structure on the
 first pass.
 
-The other controls on this tab do not need to modified, but the option for
+The other controls on this tab do not need to be modified, but the option for
 alternative space groups deserves special mention.  If there is any ambiguity
-about the precise space group, for instance, if the data were processed as
+about the precise space group, for instance if the data were processed as
 P222 but the exact combination of screw axes is unknown, or the space group
 could be either P6(1) or P6(5), Phaser can try multiple space groups and
 identify the best one at the translation function stage.  The default is to
-try only the enantiomeric space group; this will have no effect for the
-examples used here
+try only the original space group and its enantiomer (if any); this will 
+have no effect for the examples used here
 (the MTZ files already contain the correct symmetry), but it would be
 appropriate for the P6(1) versus P6(5) case.  The most permissive setting is
 "All possible in the same pointgroup".
@@ -122,7 +122,7 @@ an unambiguous solution.
 At this point we recommend inspecting the maps and crystal packing in Coot.
 Because Phaser only performs rigid-body and group B-factor refinement, the map
 quality will most likely be relatively poor compared to a refined map, with
-many unexplained difference peaks, but they should still be interpretable
+many unexplained difference peaks, but the map should still be interpretable
 for a correct solution.
 
 The appropriate next step would be either rebuilding or refinement, both of
@@ -133,11 +133,11 @@ homologous proteins, running AutoBuild would be a better choice.
 Multi-component searches
 ------------------------
 
-The interface for multi-component searches is considerably more complicated,
-especially since the ensemble and composition inputs are split up.  The
-tutorial data for this example is "TEM-1 Beta-lactamase/beta-lactamase\
-inhibitor complex" (or "beta-blip"), and includes five files: an MTZ file and
-two each of search models and sequence files.
+The interface for multi-component and other more difficult searches is considerably 
+more complicated, especially since the ensemble and composition inputs are split 
+up.  The tutorial data for this example is 
+"TEM-1 Beta-lactamase/beta-lactamase inhibitor complex" (or "beta-blip"), and 
+includes five files: an MTZ file and two each of search models and sequence files.
 
 Start the standard Phaser-MR GUI by clicking "Phaser-MR" under the "Molecular
 replacement" section.  The first tab that appears defines the experimental
@@ -149,7 +149,8 @@ suitable choices (only one in this case).
 .. image:: ../images/beta_blip_1.png
 
 The other options in this window are equivalent to those in the simple
-interface, and do not need to be modified.
+interface, and do not need to be modified, though it is always a good idea
+to provide a title for the job.
 
 The second tab, "Ensembles", is where the search models are entered.  First
 we will load the beta-lactamase model: for "Model ID", enter "beta", then
@@ -173,7 +174,9 @@ first, because it is a significantly larger protein.)
 The third configuration tab, "Composition", is where we tell Phaser what
 scattering mass to expect in the crystal.  If we know the exact molecular
 weight (or number of residues) of the entire structure, we could simply enter
-that here, but we will use sequences instead.  The files "beta.seq" and
+that here, but we will use sequences instead.  This has the advantage that the
+sequences are then available if we launch AutoBuild from the Results tab.
+The files "beta.seq" and
 "blip.seq" should be input in the "Sequence file" field in successive tabs;
 click the button "Add macromolecule(s)" at the bottom of the window to add
 a tab.  The number of copies is 1 in both cases.  (Here the order in which the
@@ -184,17 +187,17 @@ composition is input really is unimportant.)
 The final configuration tab, "Search procedure", is where we tell Phaser
 how to use the ensembles we input. Initially only the "Component 1" branch
 is shown. Click on the triple dotted button to its right and a menu will appear
-allowing selecting which of the two ensembles defined earlier Phaser should 
+allowing us to select which of the two ensembles defined earlier Phaser should 
 search for. The up-down spin button in the rightmost column lets us specify how 
-many copies in the ASU we want Phaser to attempt placing this component.
-We select the beta ensemble for the first component and choose searching 
-for one copy with phaser. To specify the blip component we press the "Add Search"
-button which will add another Component branch to the Search GUI. As before 
-we instruct Phaser searching for one component but with the blip ensemble.
+many copies of this component we want Phaser to attempt to place in the ASU.
+We select the beta ensemble for the first component and choose to search
+for one copy. To specify the blip component we press the "Add Search"
+button, which will add another Component branch to the Search GUI. As before 
+we instruct Phaser to search for one component but with the blip ensemble.
 
 Note: Selecting both ensembles to be searched for in one component would
-mean that Phaser would try them in turn and then select the ensemble yielding 
-the best result.
+mean that Phaser would try them in turn as alternative choices of model for
+the same component, and then select the ensemble yielding the best result.
 
 
 
@@ -205,3 +208,9 @@ At this point we are ready to run Phaser, which should again take only a few
 minutes to complete successfully.
 
 .. image:: ../images/beta_blip_results.png
+
+Note that the Results tab that appears at the end of the job allows us easily
+to launch either the phenix.refine or AutoBuild GUI, with many of the fields
+pre-filled.  If the data provided to Phaser had included Friedel pairs (i.e.
+anomalous data), then a button would also be available to launch the AutoSol
+GUI for MR-SAD phasing.

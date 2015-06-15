@@ -7,13 +7,18 @@ Molecular replacement with the Phaser GUI
 Overview
 --------
 
-`MRage <MRage.html>`_ presents a user-friendly and
-automated frontend to Phaser, especially difficult cases may require finer
+`MRage <MRage.html>`_ presents a user-friendly and automated frontend to Phaser, 
+but especially difficult cases may require finer
 control over parameters.  The Phaser-MR GUI exposes all options available in
 the standalone command-line Phaser software, and allows use of additional
 modes besides MR_AUTO.  It can, for instance, be used to search for individual
 components one at a time with modified parameters, or run each stage of the
 search (rotation, translation, packing, phasing+refinement) separately.
+
+There is also a simplified GUI for structures with only one component in the
+crystal, allowing the relevant files to be dragged and dropped into the interface.
+This should only be used for such simple cases, and when no difficulties are
+anticipated.
 
 This document only covers configuration of the Phaser GUI; for a detailed
 explanation of the various terms and search procedures referenced here as well
@@ -47,14 +52,16 @@ to try each in turn (see below).
 You must also define the composition of the asymmetric unit (ASU); this is
 usually done by supplying information about the sequence (one chain at a time),
 mass, or
-type and number of residues.  Alternately, you may give the fractional
+type and number of residues.  Alternatively, you may give the fractional
 composition of each search ensemble, if known.  It is also possible to
 additionally specify heavy atoms that contribute to scattering, but this is
 rarely necessary.  Note that the composition data does not necessarily have
 a 1:1 correspondence with the search ensembles (see FAQ list below for
 details).  Even if you are only searching for a single
 ensemble out of several (e.g. the protein in a protein-DNA complex), you
-must still supply the expected composition of the entire crystal.
+must still supply the expected composition of the entire crystal, because
+Phaser needs to know what fraction of the whole crystal content each search
+model comprises.
 
 Finally, the "Search procedure" tab defines the steps in the MR search,
 selected from each input ensemble. This is organized as a tree-like table
@@ -93,7 +100,12 @@ mode to place one ensemble, then modifying the parameters, selecting the
 previous run as the partial solution, and searching for the second ensemble.
 To do this, select the result which you want to use as input from the menu
 labeled "Use partial solution from previous job" (all previous Phaser jobs for
-the current project will be listed in the menu).
+the current project will be listed in the menu). It is best to do this by
+modifying the configuration of the GUI from the previous Phaser run instead of 
+starting from scratch, because the stored solutions do not contain the 
+definitions of the search ensembles. This means that the existing ensemble 
+definitions must be left unchanged when defining any ensembles needed for 
+further searches.
 
 You may also run each mode separately, e.g. the fast rotation function
 followed by the fast translation function using the previous result, and so

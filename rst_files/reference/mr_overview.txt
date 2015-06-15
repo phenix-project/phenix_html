@@ -22,8 +22,9 @@ Model selection
 ==================
 
    Structures of suitable models are normally found via homology searches
-   (using e.g. `NCBI Blast`_), and can be characterized by the sequence identity
-   with the target sequence.
+   (using e.g. `NCBI Blast`_ for reasonably close relatives or
+   `HHpred`_ for more distant relatives), and can be characterized by the 
+   sequence identity with the target sequence.
 
    The main restriction on the use of molecular replacement is the requirement
    for a suitably similar search model.  Although there is no exact rule for this,
@@ -33,11 +34,13 @@ Model selection
     - **Better than 40% identity**: usually easy, unless large conformational
       changes are involved.
 
-    - **30-40%**: MR possible, but sometimes more difficult.
+    - **30-40%**: MR usually possible, but sometimes more difficult.
 
-    - **20-30%**: MR difficult, careful model preparation required.
+    - **20-30%**: MR usually difficult if at all possible, careful model search
+      and preparation required.
 
-    - **Less than 20%**: MR unlikely to work in most cases.
+    - **Less than 20%**: MR unlikely to work, but MR-Rosetta_ can help in 
+      marginal cases.
 
     - In terms of RMSD, above 2.5A is very unlikely to work, while 1.5A or less
       is preferable.
@@ -45,7 +48,8 @@ Model selection
    Structures that undergo large conformational changes may need to be split
    into separate domains for searching, regardless of sequence identity.  Where
    multiple similar search models are available, combining these into an ensemble
-   may improve the likelihood of success.
+   will often improve the likelihood of success, particularly if the trimming
+   option in Ensembler_ is used to trim the ensemble back to its conserved core.
 
    In Phenix, the Sculptor_ and Ensembler_ utilities are available for preparing
    search models. Sculptor_ can be used to improve the model by pruning residues
@@ -83,8 +87,9 @@ All of the MR programs in Phenix require a single reflections file containing
 experimental data (with sigmas); the `Phaser-MR GUI`_ will accept any file format
 or data type, including intensities.  The procedure traditionally uses all
 reflections, so R-free flags are not required.  (Unlike refinement, this does
-not severely bias the final R-free value, since the placement of molecules
-will be approximate and some conformational changes usually occur.)
+not significantly bias the final R-free value, since there are so few degrees of
+freedom: six to rotate and translate each molecule, and one each for the overall 
+B-factor and estimated RMS error.)
 
 At least one search model is required; in the context of Phaser_ the search
 model is usually referred to as an "ensemble".  In many cases this will be a
@@ -99,7 +104,8 @@ ribosomal subunit) may be used as a search model instead of placing each
 component separately.
 
 Another option is to search using electron density (or rather, an MTZ file
-containing pre-weighted map coefficients), often solved at low resolution.
+containing pre-weighted map coefficients), often solved at low resolution
+or obtained from cryoEM image reconstruction.
 This requires additional information about the center and extent of the map
 section to search with. It is best to prepare this MTZ file using the
 phenix.cut_out_density_ tool, making sure that the density is placed in a unit
@@ -116,7 +122,9 @@ requires eliminating atoms or modifying B-factors.  The Sculptor_ utility will
 perform this step, given a PDB file and a sequence alignment.  (This is usually
 unnecessary for search models with high sequence identity to the target molecule,
 however, especially at lower sequence identity, processing models with the
-Sculptor_ utility is highly recommended.)
+Sculptor_ utility is highly recommended.) Additionally, the Ensembler_ utility
+can trim loops that deviate among members of the ensemble, leaving only the
+conserved core.
 
 For composition, you may supply a sequence file (protein or nucleic acid), or
 simply enter the molecular weight.  The standalone versions of Phaser_ also
@@ -169,7 +177,9 @@ Limitations
 -----------
 
 You should watch out for otherwise valid solutions being thrown out because of
-packing clashes due to model deviations and/or extra residues.  Removing the
+packing clashes due to model deviations and/or extra residues.  Phaser will
+attempt to resolve clashes by pruning segments of chain that refine to low
+occupancy values. If this does not succeed, manually removing the
 offending residues or lowering the packing cutoff can circumvent the problem.
 
 For cases where anomalous data from a SAD experiment are available, a poor (but
@@ -206,6 +216,7 @@ Reference
 
 .. _Phaser: phaser.html
 .. _Sculptor: sculptor.html
+.. _MR-Rosetta: mr_rosetta.html
 .. _Ensembler: ensembler.html
 .. _MRage: MRage.html
 .. _`Phaser-MR GUI`: phaser_mr.html
@@ -214,5 +225,6 @@ Reference
 .. _phenix.cut_out_density: cut_out_density.html
 .. _`Phenix GUI`: ../phenix_gui.html
 .. _`NCBI Blast`: http://blast.ncbi.nlm.nih.gov/Blast.cgi
+.. _`HHpred`: http://toolkit.tuebingen.mpg.de/hhpred
 .. _wwPDB: http://www.wwpdb.org
 .. _`Phaser home page`: http://www.phaser.cimr.cam.ac.uk

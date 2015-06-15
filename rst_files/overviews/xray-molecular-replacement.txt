@@ -5,7 +5,7 @@ Molecular Replacement
 
 One of the biggest problems in crystallography is the phase problem,
 hence the use of experimental phasing. An alternative approach, which is
-increasingly more popular, is the use of known structures to solve the
+increasingly popular, is the use of known structures to solve the
 phase problem. This approach is called molecular replacement - a model,
 very similar in structure to the one crystallized, is computationally
 placed in the crystallographic unit cell. From this model, phases can be
@@ -22,7 +22,7 @@ likelihood algorithms to determine the rotation of the model(s) with
 respect to the unit cell, and then the translation of the rotated
 model(s) within the unit cell. The output of this process, if
 successful, is a PDB file containing the placed model(s) and an MTZ file
-containing coefficients for the electron density made using the places
+containing coefficients for the electron density made using the placed
 model(s) and the observed experimental amplitudes. For an introduction
 to molecular replacement in Phenix, `click
 here <../reference/mr_overview.html>`__.
@@ -37,10 +37,14 @@ here <../reference/phaser_mr.html>`__
    domain protein has undergone a conformational change. In this case
    the molecular should be divided into the individual domains and the
    molecular replacement performed with each domain as a separate search
-   molecule. An alternative cause, thankfully less common, is that the
+   model. An alternative cause, thankfully less common, is that the
    crystallized molecule is not the intended one. For this reason it is
    always prudent to use the "Search PDB Symmetry" tool in the Phenix
    GUI to check cell dimensions and space group against the PDB.
+   A third possibility is that the space group is incorrect, for instance
+   if twinning increases the apparent symmetry of the diffraction pattern.
+   For this reason it is always good to run Xtriage in the "Data analysis"
+   section of the Phenix GUI.
 -  `Frequently asked questions about molecular
    replacement <../faqs/mr.html>`__
 
