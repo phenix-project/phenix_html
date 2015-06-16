@@ -9,7 +9,7 @@ Instructions for use
 program written by Paul Emsley.  If a recent version of Coot (0.5 or later)
 with Python enabled is installed on your system, PHENIX can use it as a
 viewer for map and model files.  The path to the Coot executable will be
-detected automatically if it is already part of the $PATH environment variable
+detected automatically if it is already part of the PATH environment variable
 or is in one of several standard locations.  If not, you will need to enter
 the path explicitly in the Preferences, as shown below.
 
@@ -20,9 +20,14 @@ in most programs contains a "Launch Coot" item.  You must start Coot from
 within PHENIX for the programs to communicate; a single Coot window will be
 shared between all windows in a single instance of PHENIX.  The Graphics
 pane of the Preferences dialog has an option to automatically start Coot
-whenever PHENIX is launched.
+whenever PHENIX is launched. 
 
 .. image:: images/launch_coot.png
+
+On Windows it is called WinCoot (courtesy of Bernhard Lohkamp) rather than Coot.
+Moreover, you would need to specify the full path for the file
+runwincoot.bat, not just the path of the folder where the runwincoot.bat is located. 
+The file is usually located in the topmost directory where you installed WinCoot.
 
 Once the Coot window appears, you should see additional buttons on the
 toolbar for toggling communication with PHENIX and showing/hiding hydrogen
