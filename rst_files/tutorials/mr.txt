@@ -23,10 +23,10 @@ orientation of multiple chains are known (such as physiological dimers,
 multi-subunit complexes, or DNA helices).
 
 An essential feature of Phaser is that it scores possible solutions based on
-the expected crystal composition (that is, the scattering mass).  Therefore,
+the expected asymmetric unit cell (ASU) contents (that is, the scattering mass).  Therefore,
 for the examples shown here, we will be supplying sequence files for the
 crystallized proteins.  We could, however, specify the molecular weight or
-number of residues instead.  Importantly, the manner in which the composition
+number of residues instead.  Importantly, the manner in which the ASU contents
 is specified is completely decoupled from the "ensemble" (search model) input;
 where multiple proteins have been crystallized, we could supply separate
 sequence files (as is done here for the beta-blip example) or a single file
@@ -134,8 +134,8 @@ Multi-component searches
 ------------------------
 
 The interface for multi-component and other more difficult searches is considerably 
-more complicated, especially since the ensemble and composition inputs are split 
-up.  The tutorial data for this example is 
+more complicated, especially since the ensemble and ASU contents inputs are split 
+up. The tutorial data for this example is 
 "TEM-1 Beta-lactamase/beta-lactamase inhibitor complex" (or "beta-blip"), and 
 includes five files: an MTZ file and two each of search models and sequence files.
 
@@ -171,7 +171,7 @@ because Phaser will normally determine the appropriate search order
 automatically.  However, in this case Phaser will indeed search for beta
 first, because it is a significantly larger protein.)
 
-The third configuration tab, "Composition", is where we tell Phaser what
+The third configuration tab, "ASU contents", is where we tell Phaser what
 scattering mass to expect in the crystal.  If we know the exact molecular
 weight (or number of residues) of the entire structure, we could simply enter
 that here, but we will use sequences instead.  This has the advantage that the
@@ -180,7 +180,7 @@ The files "beta.seq" and
 "blip.seq" should be input in the "Sequence file" field in successive tabs;
 click the button "Add macromolecule(s)" at the bottom of the window to add
 a tab.  The number of copies is 1 in both cases.  (Here the order in which the
-composition is input really is unimportant.)
+ASU contents is input really is unimportant.)
 
 .. image:: ../images/blip_component.png
 

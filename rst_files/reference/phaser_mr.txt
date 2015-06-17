@@ -24,7 +24,7 @@ This document only covers configuration of the Phaser GUI; for a detailed
 explanation of the various terms and search procedures referenced here as well
 as interpretation of results, consult the `overview of molecular replacement
 in PHENIX <mr_overview.html>`_ (especially the discussion of "ensembles" and
-composition), the `Phaser documentation <phaser.html>`_, or the
+"ASU contents"), the `Phaser documentation <phaser.html>`_, or the
 `Phaser WIKI <http://www.phaser.cimr.cam.ac.uk/index.php/Phaser_Crystallographic_Software>`_.  Some common user questions are discussed at the end of this
 section, and in the MR overview page.  New users looking for a step-by-step
 introduction should read the `Phaser-MR tutorial <../tutorials/mr.html>`_.
@@ -49,17 +49,17 @@ ensemble does not automatically include it in the search; you may, for
 instance, supply several alternate ensembles for a chain, and instruct Phaser
 to try each in turn (see below).
 
-You must also define the composition of the asymmetric unit (ASU); this is
+You must also define the contents of the asymmetric unit (ASU); this is
 usually done by supplying information about the sequence (one chain at a time),
 mass, or
 type and number of residues.  Alternatively, you may give the fractional
-composition of each search ensemble, if known.  It is also possible to
+ASU contents of each search ensemble, if known.  It is also possible to
 additionally specify heavy atoms that contribute to scattering, but this is
-rarely necessary.  Note that the composition data does not necessarily have
+rarely necessary.  Note that the ASU contents data does not necessarily have
 a 1:1 correspondence with the search ensembles (see FAQ list below for
 details).  Even if you are only searching for a single
 ensemble out of several (e.g. the protein in a protein-DNA complex), you
-must still supply the expected composition of the entire crystal, because
+must still supply the expected ASU contents of the entire crystal, because
 Phaser needs to know what fraction of the whole crystal content each search
 model comprises.
 

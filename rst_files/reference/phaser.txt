@@ -123,28 +123,28 @@ error you expect is essentially the error you expect from the template
 structure (if not worse!). So specify the sequence identity of the
 template, not of the homology model.
 
-**How to Define Composition**
+**How to Define ASU contents**
 -----------------------------
 
-The composition defines the total amount of protein and nucleic acid
+This defines the total amount of protein and nucleic acid
 that you have in the asymmetric unit not the fraction of the asymmetric
-unit that you are searching for. You can mix compositions entered by
+unit that you are searching for. You can mix ASU contents entered by
 molecular weight with those entered by sequence.
 
-Composition by Molecular Weight
+ASU contents by Molecular Weight
 -------------------------------
 
-The composition is calculated from the molecular weight of the protein
+The ASU contents is calculated from the molecular weight of the protein
 and nucleic acid assuming the protein and nucleic acid have the average
 distribution of amino acids and bases. If your protein or nucleic acid
-has an unusual amino acid or base distribution the composition should be
-entered by sequence. You can mix compositions entered by molecular
+has an unusual amino acid or base distribution the ASU contents should be
+entered by sequence. You can mix ASU contents entered by molecular
 weight with those entered by sequence.
 
-Composition by Sequence
+ASU contents by Sequence
 -----------------------
 
-The composition is calculated from the amino acid sequence of the
+The ASU contents is calculated from the amino acid sequence of the
 protein and the base sequence of the nucleic acid in fasta format.
 
 **How to Select Peaks**

@@ -61,15 +61,15 @@ or automated re-building.
 
 .. _composition-search-ensemble-relation:
 
-**How are the composition and search ensembles related?**
+**How are the ASU contents and search ensembles related?**
 
 Technically, they aren't connected.  The ensembles are used in the actual MR
-search; the composition only tells Phaser what to expect for the overall
+search; the ASU contents only tells Phaser what to expect for the overall
 scattering mass of the asymmetric unit (an important factor in the maximum
 likelihood scoring).  Although you may only specify one sequence per component,
 you can instead provide a molecular weight for a collection of chains.  You may
 also split a model into smaller ensembles (for instance, different domains)
-while keeping the composition the same, or use a multi-chain search model while
+while keeping the ASU contents the same, or use a multi-chain search model while
 specifying a sequence file for each chain.
 
 **How can I make Phaser go faster?**
@@ -95,9 +95,9 @@ do this; both are described in the `AutoSol documentation
 **I am using a dimer as my search model.  Why am I getting a warning that the
 unit cell is too full?**
 
-Remember, the composition of the asymmetric unit is specified independently
+Remember, the contents of the asymmetric unit is specified independently
 of the model.  If you have supplied a single sequence to define the
-composition, check to make sure that you have specified that the contents
+ASU contents, check to make sure that you have specified that the contents
 of the asymmetric unit include two copies.
 
 .. _sculptor-ensembler-order:
@@ -246,7 +246,7 @@ interface, Phaser-MR in Phenix does not make use of .sol files, since the
 information is passed internally.  You should then load the new ensembles
 to search for; ensembles that were used in the previous run do not need to
 be re-loaded unless you wish to find more copies.  If you have already
-provided complete information about the composition correctly, this will
+provided complete information about the ASU contents correctly, this will
 not need to be changed.
 
 **How do I run a new search starting from an existing model in the correct

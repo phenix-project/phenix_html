@@ -113,7 +113,7 @@ cell that is at least 2.5 times the x, y and z extents of the density.
 
 The maximum likelihood phasing methods used in Phaser_ require prior knowledge
 about the deviation (or variance) of the search model(s) from the real
-structure, and the expected composition or scattering mass of the crystal.  To
+structure, and the expected ASU contents or scattering mass of the crystal.  To
 specify the model variance, either an RMSD value or percent sequence identity
 may be used (these will be converted internally, using relationships determined
 from a database of test calculations).  It is important to minimize the
@@ -126,17 +126,17 @@ Sculptor_ utility is highly recommended.) Additionally, the Ensembler_ utility
 can trim loops that deviate among members of the ensemble, leaving only the
 conserved core.
 
-For composition, you may supply a sequence file (protein or nucleic acid), or
+For ASU contents, you may supply a sequence file (protein or nucleic acid), or
 simply enter the molecular weight.  The standalone versions of Phaser_ also
-accept the fractional composition of each search ensemble, if known.  Note that
-the composition data does not necessarily have a 1:1 correspondence with the
+accept the fractional ASU contents of each search ensemble, if known.  Note that
+the ASU contents data does not necessarily have a 1:1 correspondence with the
 search ensembles (see `MR FAQ <../faqs/mr.html#composition-search-ensemble-relation>`__
 for details); if you wish to simply specify the molecular weight of a complex
 while searching for multiple subunits, you may enter the mass for the complex
 as a single component.  (You may also use multi-record FASTA-format sequence
 files.)  Even if you are only searching for a single ensemble out of several
 (e.g. the protein in a protein-DNA complex), you must still supply the expected
-composition of the entire crystal because Phaser needs to know what fraction of
+ASU contents of the entire crystal because Phaser needs to know what fraction of
 the asymmetric unit each search model comprises.
 
 Outline of MR procedure
