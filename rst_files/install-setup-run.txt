@@ -11,7 +11,7 @@ Platform support
 ----------------
 
 PHENIX is supported on most common Linux platforms (kernel 2.6 or newer),
-Mac OS X version 10.4 or newer, and Windows XP or newer.  Binary installers
+Mac OS X version 10.4 or newer, and Windows 7 or newer.  Binary installers
 are built on the following systems:
 
   - Fedora Core 8 (64-bit)
@@ -19,8 +19,8 @@ are built on the following systems:
   - CentOS 4 (32-bit)
   - CentOS 5 (both)
   - Ubuntu 10.04 (both)
-  - Windows XP (32-bit)
-  - Windows 7 (64-bit)
+  - Windows 7 or newer (32-bit)
+  - Windows 7 or newer (64-bit)
   - Mac OS 10.4 (32-bit)
   - Mac OS 10.6 (64-bit)
 
@@ -34,8 +34,8 @@ certainly want to use the 64-bit Mac installer.  On Linux, you
 can find out what platform you are running with the command 'uname -p';
 for machines reporting "i686", use the intel-linux-2.6 installer.  On Windows,
 the 64-bit Windows 7 installer only supports machines which actually run the
-64-bit version of the OS; if you are using 32-bit Windows 7 (or previous) you
-will need to use the 32-bit installer built on Windows XP.
+64-bit version of the OS; if you are using 32-bit Windows 7 you
+will need to use the 32-bit installer.
 
 Space requirements
 -------------------
@@ -55,37 +55,19 @@ Graphical installer - Windows
 -----------------------------
 
 Installation:
-  - Download and run PHENIX from the download_ page
+  - Download and run the PHENIX setup executable on your PC and follow the 
+    instructions.
 
-Destination directory is fixed, to the top level of the **C:** drive. You will
-need administrative privileges to run the installer.
+For ordinary users the destination directory defaults to the folder defined
+by expanding the environment variables %HOMEDRIVE%%HOMEPATH%.
+If you want to install Phenix for all users you need admin privileges when you run
+the installer. PHENIX will then default to be installed in the folder defined
+by expanding the environment variables %SystemRoot%%ProgramFiles%.
+C/C++ sources are included for expert users wishing to recompile code.
 
-Upgrade to newer version:
-  Currently upgrade to new version is done manually
-
-  - Uninstall Phenix by going to the Windows *Programs and Features* in the
-    control panel, choose the existing PHENIX installation and click *Uninstall*
-  - Then install the new version
 
 .. _download: http://www.phenix-online.org/download
 
-Working from command line in Windows:
-If for some reason you would like to work using the PHENIX command line
-commands in Windows, follow those steps
-
-  - Create a *command prompt* shortcut on your desktop
-  - Right click on the shortcut, go to properties, and change the **target**
-    and the **Start in**, according to **your** PHENIX installation.
-
-    - **target** to *"%SystemRoot%\\system32\\WindowsPowerShell\\v1
-      .0\\powershell.exe " -NoExit -Command  & {C:\\WINDOWS\\system32\\cmd
-      .exe /k C:\\PHENIX-1.8.4-1493\\Phenix-1.8.4-1493_build\\setpaths_all
-      .bat }*
-    - **Start in** to the folder you want the command prompt to start in,
-      something like *C:\Users\user_name\work\junk*
-
-Now when you double-click on the shortcut, you will open a command prompt
-with your PHENIX environment.
 
 Command-line installer (Mac and Linux)
 ----------------------------------------
