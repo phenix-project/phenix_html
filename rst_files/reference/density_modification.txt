@@ -1,0 +1,226 @@
+Density modification with  with phenix.density\_modification
+============================================================
+
+.. contents::
+
+Author(s)
+---------
+
+-  phenix.density\_modification: Tom Terwilliger
+
+Purpose
+-------
+
+phenix.density\_modification is a tool to run Resolve to carry out density
+modification, including the use of NCS symmetry and electron-density
+distributions. Masks for the solvent boundary and for the region where
+NCS operators are to be applied can be specified as PDB files with dummy
+atoms marking the masked regions.
+
+Usage
+-----
+
+How phenix.density\_modification works
+--------------------------------------
+
+In phenix.density\_modification phases are improved by combining
+any existing phase information with phase probabilities based on
+the agreement of your electron density map with expectations about
+that map. This procedure is known as statisical density modification and
+is carried out by phenix.resolve.  The expectations about a map include:
+
+- A flat solvent region
+- Matching NCS-related density 
+- Density distributions (histograms of density) matching expected 
+  distributions
+- Density in a region where a model has been built matching expected density
+  for the model
+
+The inputs to phenix.density\_modification are :
+
+Required:
+
+- F, SIGF: Structure factor amplitudes for your structure. 
+
+Optional:
+
+- PHIB, FOM, HLA HLB HLC HLC: Phases and figure of merit and Hendrickson
+  Lattman (HL) coefficients. These normally come from experimental phasing, but
+  they can be from any source.  These are optional if you supply a model.
+  The HL coefficients describe the phase probabilities for each phase.
+
+- Model:  This is normally a PDB file containing your current model.
+  It can be used as a source of phase information (calculated starting phases)
+  and also as a target for density modification.
+
+- NCS operators: These are supplied as a .ncs_spec file 
+  that you can create by running phenix.find_ncs on a model with NCS or 
+  using heavy-atom sites and a map or just with a map.
+
+- Solvent boundary file: This is a PDB file that defines the region 
+  that is not solvent (the macromolecule) as dummy atoms. 
+
+- NCS boundary file: This is a PDB file that defines the region
+  where NCS is to be applied (all the NCS copies) as dummy atoms.
+
+Density modification starting with phases and HL coefficients
+-------------------------------------------------------------
+
+This kind of density modification is normally carried out after 
+experimental phasing, but it can also be carried out if you have 
+created HL coefficients from your data and a model.
+
+In these cases you have phases and phase probability information 
+(F, SIGF, PHIB FOM, HLA HLB HLC HLD).
+
+Prior to density modification, the amplitudes (F, SIGF) are normally
+corrected for anisotropy and sharpened. You can control this
+by specifying the target overall B value after sharpening. By default
+the target overall (Wilson) B is 10 times the high-resolution limit
+of the data (or the resolution that you specify), up to a maximum
+of 40 (you can change that too).
+
+A starting map is calculated from F, PHIB, FOM. The location of the 
+macromolecule and solvent are estimated in a probabilistic way using the
+local variation in the map (with a smoothing radius of rad_wang) to 
+discriminate between the two.
+
+Phases are optimized to agree with the HL coefficients and to yield a map 
+that has a flat solvent, NCS (if present), and density distributions matching
+model maps.
+
+Density modification with NCS
+-----------------------------
+
+If you supply NCS operators, phenix.density\_modification will automatically
+figure out the region over which this NCS is present. Within this region,
+it will weight the density for NCS calculations according to how similar the
+density is at NCS-related locations.  If you supply an NCS mask, that is used
+instead.  The density at NCS-related locations is used as part of the target 
+for density modification.
+
+Density modification with a model
+---------------------------------
+
+If you supply a model, density modification occurs in several steps.  First
+the data are corrected for anisotropy as above.  Then
+the model is used to estimate phases, fom, and HL coefficients. Then density
+modification is carried out much as described above for experimental phasing.
+Then a final step is carried out in which model density is used as part of the
+target for density modification.
+
+To instead create HL coefficients from your data and model and use those
+with phenix.density\_modification, first run phenix.refine
+to refine your model. Then run phenix.reciprocal_space_arrays with your model
+and data and it will create HL coefficients for you.
+
+
+*Output files from phenix.density\_modification*
+--------------------------------------------------
+
+**denmod.mtz**: Density-modified map coefficients. If you specify
+   hl_in_output_mtz=True then it will also contain Hendrickson Lattman
+   coefficients
+
+**solvent_boundary.map**: CCP4-style map file showing the solvent boundary
+
+**ncs_boundary.map**: CCP4-style map file showing the asymmetric unit of NCS
+
+
+Examples
+--------
+
+Standard run of phenix.density\_modification
+--------------------------------------------
+
+Running phenix.density\_modification from the command line is easy.
+
+::
+
+    phenix.phenix.density_modification phaser_1.mtz solvent_content=0.5
+
+In this example, phaser_1.mtz (the output of Phaser experimental phasing)
+normally has F, SIGF, PHIB, FOM, HLA HLB HLC HLD, each of which is 
+identified automatically.  Standard density modification using
+these experimental phases and phase probabilities is carried out.
+
+Run specifying resolution, mask type, and output mtz
+----------------------------------------------------
+
+::
+
+    phenix.phenix.density_modification phaser_1.mtz solvent_content=0.64 \
+    resolution=3 output_mtz=denmod_std.mtz mask_type=histograms
+
+In this example, the high-resolution limit is set to 3 A, the output
+file is denmod_std.mtz, and the solvent mask is identified using a
+histogram-based method (mask_type=histograms).
+
+Run specifying a mask for the solvent boundary 
+----------------------------------------------
+
+::
+
+    phenix.phenix.density_modification phaser_1.mtz solvent_content=0.64 \
+    mask_from_pdb=mask.pdb rad_mask=4
+
+In this example, the file mask.pdb has dummy atoms that indicate where the
+macromolecule is located.  All points within 4 A (rad_mask=4) of an atom in
+mask.pdb are considered to be within the macromolecule region.
+
+Run specifying NCS operators 
+----------------------------
+
+::
+
+    phenix.phenix.density_modification phaser_1.mtz solvent_content=0.64 \
+    ncs_file=ncs.ncs_spec
+
+In this example, the file ncs.ncs_spec (created with phenix.find_ncs or
+phenix.autosol or phenix.simple_ncs_from_pdb or phenix.autobuild) 
+contains the NCS operators. These will be used to automatically find the 
+region where NCS applies. Then the NCS-related density will be used as
+part of density modification.
+
+Run specifying NCS operators and the region where they are to apply
+-------------------------------------------------------------------
+
+::
+
+    phenix.phenix.density_modification phaser_1.mtz solvent_content=0.64 \
+    ncs_file=ncs.ncs_spec ncs_domain_pdb=ncs_mask.pdb rad_mask=5
+
+This example is like the previous one, except instead of finding the region 
+where NCS applies automatically, it is defined by the atoms in ncs_mask.pdb.
+All points within rad_mask (5 A in this example) of an atom in ncs_mask.pdb
+are considered to be within the region where NCS applies.  This is useful 
+if you want to apply NCS only to a part of the region where NCS is present. 
+
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+
+Literature
+----------
+
+{{citation:find_ncs}}
+
+{{citation:dm_ncs}}
+
+{{citation:resolve}}
+
+{{citation:map_ml_phase}}
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:solve_resolve.resolve_python.density_modify_in_memory}}
