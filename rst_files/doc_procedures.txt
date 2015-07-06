@@ -31,7 +31,7 @@ If you want to have your documentation page show a full listing of program
 options with help text, simply place a directive like this at the end of
 the restructured text file:
 
-  {{phil:phenix.command_line.my_method}}
+  {{phil:phenix.command_line.autobuild}}
 
 This gives the path to the module containing the PHIL object from which to
 generate a full keyword listing.  Several different standard names will be
@@ -45,8 +45,8 @@ phenix/phenix/utilities/citations.params; this is not terribly different from
 BiBTeX format.  Each publication is tagged with a simple ID (this could simply
 be the PubMed ID, but we usually prefer a program name or other human-readable
 identifier).  In the documentation, full references may be automatically
-inserted (usually at the end of a document) by specifying
-"{{citation:article_id}}".  We encourage the use of this method for listing
+inserted (usually at the end of a document) by specifying something like
+"{{citation:molprobity}}".  We encourage the use of this method for listing
 references, as it allows them to be easily incorporated into other documents
 (or displayed as part of program output, in the GUI, etc.).
 
@@ -83,11 +83,9 @@ below::
   References section
   ------------------
 
-  {{citation:phenix_refine}}
-
   {{citation:molprobity}}
 
   List of all available keywords
   ------------------------------
 
-  {{phil:phenix.command_line.some_command_name}}
+  {{phil:phenix.command_line.autobuild}}
