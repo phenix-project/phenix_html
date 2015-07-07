@@ -2,8 +2,6 @@
 
 This includes PHIL documentaiton and citations.
 
-Ian Rees, 2014
-
 """
 from __future__ import division
 import os
