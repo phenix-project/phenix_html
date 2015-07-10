@@ -20,20 +20,23 @@ General description
 -------------------
 
 To activate secondary structure restraints in phenix.refine, simply add the
-parameter ``main.secondary_structure_restraints=True`` on the command line,
+parameter ``secondary_structure.enabled=True`` on the command line,
 or check the box labeled "Secondary structure restraints" in the configuration
 window of the phenix.refine GUI.  Assignment of atom selections will be fully
-automatic.  We recommend using explicit hydrogens in refinement, but if you
-prefer, N-O distances may be restrained instead.  This should be automatic,
-but you can force N-O bonds by adding
-``h_bond_restraints.substitute_n_for_h=True``.  Bond lengths are restrained
-at 1.975A for H-O and 2.9A for N-O.  Outliers (defined as H-O bonds
-greater than 2.5A, or N-O bonds greater than 3.5A) will be automatically
-removed, but you may prevent this with
-``h_bond_restraints.remove_outliers=False``.  This may be helpful for very
-poor low-resolution structures, e.g. to force proper structure on a manually
-built helix, but it will also cause completely spurious bond restraints to be
-overlooked.
+automatic.  We recommend using explicit hydrogens in refinement, but
+hydrogen bonds will be specified between heavy atoms anyway.
+
+
+Proteins
+--------
+
+Hydrogen bond lengths for protein secondary structure are restrained at 2.9A
+with sigma 0.05A for N-O.  Outliers (defined as N-O bonds greater than 3.5A)
+will be automatically removed, but you may prevent this with
+``secondary_structure.protein.remove_outliers=False``.  This may be helpful
+for very poor low-resolution structures, e.g. to force proper structure on a
+manually built helix, but it will also cause completely spurious bond
+restraints to be overlooked.
 
 Annotation of secondary structure is performed by KSDSSP, an open-source
 implementation by UCSF's Computer Graphics Laboratory (authors of the
@@ -56,7 +59,13 @@ will include a more intelligent editor to assist in annotation.
 Nucleic acids
 -------------
 
-Coming soon!
+Hydrogen bonding and stacking interactions stablilize structure of nucleic
+acids. Restraints include base-pairing restraints (hydrogen bonding and
+keeping basepairs in plane) and stacking restraints to keep stacked bases
+parallel to each other. These restraints are turned on with the main switch
+``secondary_structure.enabled=True``. They could be turned off individually:
+``secondary_structure.nucleic_acid.enabled=False``. Annotation is performed
+automatically or could be supplied in parameter file.
 
 
 Graphical editor
@@ -70,11 +79,7 @@ Configuration syntax
 Limitations
 -----------
 
-  - Only bond length is restrained; angles may move freely.
-
-  - Support for PDB files containing non-blank insertion codes is currently
-    limited, especially if an insertion code occurs in the middle of a
-    secondary structure element.
+  - Only bond length is restrained in proteins, angles may move freely.
 
   - The distribution of oxygen-nitrogen distances in beta sheets appears to be
     very slightly bimodal, probably due to the difference in geometry between
