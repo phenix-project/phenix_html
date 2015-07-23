@@ -1,0 +1,90 @@
+===============================
+phenix.structural_domain_search
+===============================
+
+.. contents::
+
+Finds domains by calculating low cuts in the interaction graph, and evaluates
+whether the cut would correspond to a viable domain decomposition.
+
+Algorithm
+=========
+
+Assuming that interaction within a domain are much stronger than between
+domains, a domain can be considered a low cut within a suitable constructed
+interaction graph.
+
+The structure is divided up into chunks, and an interaction network is
+calculated. This is then turned into an interaction graph, and low cuts are
+enumerated. Cuts are then enumerated whether they would correspond to viable
+domains, based on size, compactness and interface strength, and viable domains
+are stored. The procedure is then repeated recursively until no viable cuts can
+be found.
+
+Usage
+=====
+
+The only required input to the program is a structure file (PDB/cif), which
+will then be analysed. The domain finding algorithm is then repeated for each
+protein chains, and results will be written to the logfile, and also into
+PHIL-syntax .eff-files.
+
+The simplest command line::
+
+  phenix.structural_domain_search example.pdb
+
+Runtime depends on the structure size, typically 1 min for structures between
+200-300 residues, and 10 min for structures up to 1000 residues.
+
+Important parameters
+--------------------
+
+* *max_iterations*: controls how many low cuts to enumerate. Increasing this
+  number will make the search more exhaustive, but also slower.
+
+* *sufficient_count*: terminate the search early if the requested number of
+  cuts have been found. It is probably a good idea to search for more than one,
+  since the lowest cut does not always correspond to the highest domain quality
+  score, but the default value (30) is perhaps slightly conservative, and good
+  results can be achieved with *sufficient_count* = 10. On the other hand, the
+  underlying clustering algorithm gets very slow when more then 100 values need
+  to be clustered, and hence this is a practical upper limit.
+
+* *min_size*: minimum size for an acceptable domain. Domains smaller than this
+  will not be accepted. Default is 30.
+
+* *prune_fraction*: controls whether to simplify the interaction graph by
+  joining low-connected vertices. This can make the correct domain
+  decomposition to appear earlier and hence make the search more efficient, at
+  a slight loss of cut precision. A typical *prune_fraction* is 0.05-0.15.
+
+* *algorithm*: the *quick* algorithm typically gives correct results, but for
+  some tricky (especially multiple domain) structures the *thorough* algorithm
+  may find a better decomposition. Running times up to 10 times of the *quick*
+  algorithm are not uncommon.
+
+Output
+------
+
+The program writes out the best domain decomposition for each chain, as a
+series of .eff-files containing the residue segments.
+
+All considered decompositions are recorded in the logfile.
+
+References
+==========
+
+{{citation:graph_cut_enumeration}}
+
+{{citation:stoer_wagner_min_cut}}
+
+{{citation:boykov_kolmogorov_max_flow}}
+
+{{citation:domain_parser}}
+
+
+Command-line options
+====================
+
+{{phil:phaser.command_line.structural_domain_search}}
+
