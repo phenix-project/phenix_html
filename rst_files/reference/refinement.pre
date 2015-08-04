@@ -1058,21 +1058,22 @@ No NCS restraints applied to B-factors.
 
 1. Refinement with automatic group determination::
 
-     % phenix.refine data.hkl model.pdb main.ncs=True
+     % phenix.refine data.hkl model.pdb ncs_search.enabled=True
 
 2. Refinement with user provided NCS selections:
 
    Create a ``torsion_ncs.params`` file with selections like::
 
-     refinement.ncs.torsion.restraint_group {
-       selection = chain A
+     refinement.pdb_interpretation.ncs_group {
+       reference = chain A
        selection = chain B
        selection = chain C
      }
 
    Specify ``torsion_ncs.params`` as an additional input when running phenix.refine::
 
-     % phenix.refine data.hkl model.pdb main.ncs=True torsion_ncs.params
+     % phenix.refine data.hkl model.pdb ncs_search.enabled=True \
+       torsion_ncs.params
 
 *Cartesian NCS (optional)*
 
@@ -1093,21 +1094,18 @@ detected or adjusted NCS groups.
    phenix.refine::
 
      % phenix.refine data.hkl model.pdb ncs_groups.params \
-       main.ncs=True ncs.type=cartesian
+       ncs_search.enabled=True ncs.type=cartesian
 
    This will perform the default refinement round (individual coordinates and
    B-factors) using NCS restraints on coordinates and B-factors.
 
-   Note: user specified NCS restraints in ``ncs_groups.params`` can be modified
-   automatically if better selection is found. To disable this potential
-   automatic adjustment::
-
-     % phenix.refine data.hkl model.pdb ncs_groups.params main.ncs=True \
-       ncs.type=cartesian ncs.find_automatically=False
+   Note: user specified NCS restraints in ``ncs_groups`` may be modified
+   automatically if specified groups are not match each other. 
 
    Automatic detection of NCS groups::
 
-     % phenix.refine data.hkl model.pdb main.ncs=True ncs.type=cartesian
+     % phenix.refine data.hkl model.pdb ncs_search.enabled=True \
+       ncs.type=cartesian
 
    This will perform the default refinement round (individual coordinates and
    B-factors) using NCS restraints automatically created based on input PDB
