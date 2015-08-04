@@ -280,6 +280,9 @@ clean = False
 ignore_errors = True
   .type = bool
   .help = Don't crash on errors in RST processing.
+process_all_files = False
+  .type = bool
+  .help = If False, only process .txt files that have been modified.
 """
 
 create_rst_from_modules = [
@@ -376,6 +379,10 @@ def run (args, out=sys.stdout) :
         os.makedirs(outpath)
       except:
         pass
+
+      if not params.process_all_files:
+        if os.path.exists(outfile):
+          if os.stat(infile).st_mtime<os.stat(outfile).st_mtime: continue
       
       print >> out, "    converting %s to %s" % (infile, outfile)
       try:
