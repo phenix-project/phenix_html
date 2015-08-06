@@ -5,67 +5,91 @@ Secondary structure restraints
 
    <br /><br />
 
-Refinement may be stabilized by addition of hydrogen-bond restraints to
-maintain (or idealize) secondary structure.  This is particularly important
-at low resolution, where the protein geometry should be kept as precise as
-possible to avoid overfitting, but it appears to help even at moderate
-resolutions (up to 2.0 A, maybe further).  Applying these restraints
-usually improves R-free by up to 0.005, and often keeps R-work and R-free
-from diverging as much as they might otherwise.  (Note that this is not
-always true, and depends strongly on the weighting and outlier filtering;
-for this reason, we recommend experimenting with this setting to see whether
-and how it helps your structure, rather than blindly enabling this feature.)
 
+At lower resolution (lower than ~3A) refinement of biological macromolecules may be unstable. In some cases even secondary structure (SS) elements may be distorted during coordinate refinement. SS elements include helices and sheets in protein structures, base-pairs and stacking bases in nucleic acids. This applies to refinement against both X-ray and EM data. To preserve correct geometry of SS it may be useful to use specifically designed secondary structure restraints.
+Using SS restraints in moderate-to-low resolution refinement may help to preserve correct geometry of SS elements in the structure and sometimes correct slightly distorted SS elements.
+
+-------------------
 General description
 -------------------
 
-To activate secondary structure restraints in phenix.refine, simply add the
-parameter ``secondary_structure.enabled=True`` on the command line,
-or check the box labeled "Secondary structure restraints" in the configuration
-window of the phenix.refine GUI.  Assignment of atom selections will be fully
-automatic.  We recommend using explicit hydrogens in refinement, but
-hydrogen bonds will be specified between heavy atoms anyway.
+SS restraints are available in most refinement tools in Phenix package. Their behaviour is regulated by the same scope of parameters (see the bottom of the page for the full listing). They could be turned on in GUI by checking "Use secondary structure restraints" checkbox. This is equivalent to command-line option ``secondary_structure.enabled=True``. In this case SS elements will be found automatically and outputted to the resulting .pdb and log files. We recommend to check carefully automatic assignments of SS elements because incorrect assignments can lead to wrong refinement results. 
 
-
+--------
 Proteins
 --------
 
-Hydrogen bond lengths for protein secondary structure are restrained at 2.9A
-with sigma 0.05A for N-O.  Outliers (defined as N-O bonds greater than 3.5A)
+Secondary structure elements of proteins are helices and sheets. The main stabilizing factor is their hydrogen bonds. 
+
+The PDB format supports 10 different types of helix, but only three of these
+(alpha, pi, and 3_10) are common in naturally occurring proteins and have
+easily deciphered hydrogen-bonding rules.  User-specified helices default to
+alpha form (hydrogen bonds between residue n and residue n+4).  Sheets may
+be either parallel or antiparallel. 
+
+The most common way to specify secondary structure is to use HELIX and SHEET records in the beginning of .pdb file. There are several ways to obtain such records. Examples of such records:
+
+::
+
+  HELIX    1  HA GLY A   86  GLY A   94  1                                   9
+  SHEET    1   A 5 THR A 107  ARG A 110  0
+  SHEET    2   A 5 ILE A  96  THR A  99 -1  N  LYS A  98   O  THR A 107
+  SHEET    3   A 5 ARG A  87  SER A  91 -1  N  LEU A  89   O  TYR A  97
+  SHEET    4   A 5 TRP A  71  ASP A  75 -1  N  ALA A  74   O  ILE A  88
+  SHEET    5   A 5 GLY A  52  PHE A  56 -1  N  PHE A  56   O  TRP A  71
+
+
+Full reference to HELIX and SHEET records PDB format may be found `here <http://www.wwpdb.org/documentation/file-format-content/format23/sect5.html>`__
+Only bond length is restrained in proteins, angles may move freely. Hydrogen bond lengths for protein secondary structure are restrained at 2.9A
+with sigma 0.05A for N-O. Outliers (defined as N-O bonds greater than 3.5A)
 will be automatically removed, but you may prevent this with
 ``secondary_structure.protein.remove_outliers=False``.  This may be helpful
 for very poor low-resolution structures, e.g. to force proper structure on a
 manually built helix, but it will also cause completely spurious bond
 restraints to be overlooked.
 
-Annotation of secondary structure is performed by KSDSSP, an open-source
-implementation by UCSF's Computer Graphics Laboratory (authors of the
-molecular graphics program Chimera) of the original DSSP algorithm (Kabsch
-and Sander 1983).  Users may also provide their own annotation in the form
-of HELIX and SHEET records from the PDB; however, because this format is
-difficult to use, we recommend using the configuration syntax used in
-phenix.refine, and/or visually editing the secondary structure in the PHENIX
-GUI (both described below).
 
-The PDB format supports 10 different types of helix, but only three of these
-(alpha, pi, and 3_10) are common in naturally occurring proteins and have
-easily deciphered hydrogen-bonding rules.  User-specified helices default to
-alpha form (hydrogen bonds between residue n and residue n+4).  Sheets may
-be either parallel or antiparallel.  Because additional details are required
-to establish the hydrogen bonding pattern, we do not recommend defining
-sheets manually unless you are certain you know what to do.  Future versions
-will include a more intelligent editor to assist in annotation.
+How to obtain HELIX/SHEET records
+---------------------------------
 
+There are various programs available that can produce HELIX/SHEET records
+suitable for use in refinement. There are several ways to obtain HELIX/SHEET records for particular structure:
+
+- Check your .pdb file. They may be already there
+- Run any refinement program from Phenix suite with secondary structure restraints turned on and look in the resulting .pdb file
+- Use `phenix.secondary_structure_restraints <secondary_structure_restraints.html>`__ command-line utility.
+- Use `phenix.ksdssp <ksdssp.html>`__ command-line utility
+- Use any other third-party program that have an option to export secondary structure definition in PDB format.
+
+It is highly recommended to check manually all SS annotations coming from any source. They may often contain errors. We encourage users to verify
+all secondary structure annotations carefully with model. The format of 
+HELIX/SHEET records is described `here <http://www.wwpdb.org/documentation/file-format-content/format23/sect5.html>`__. The most common errors are:
+- Lack of registration part of SHEET record (second part of SHEET record when sense is not 0)
+- Strands are not combined into sheets, i.e. all SHEET records have different
+- Wrong sense in SHEET record
+- Not necessary pi-helices containing only 3 residues
+
+-------------
 Nucleic acids
 -------------
 
-Hydrogen bonding and stacking interactions stablilize structure of nucleic
-acids. Restraints include base-pairing restraints (hydrogen bonding and
-keeping basepairs in plane) and stacking restraints to keep stacked bases
-parallel to each other. These restraints are turned on with the main switch
-``secondary_structure.enabled=True``. They could be turned off individually:
-``secondary_structure.nucleic_acid.enabled=False``. Annotation is performed
-automatically or could be supplied in parameter file.
+Secondary structure elements for nucleic acids are base-pairs and stacking pairs. Base-pairs are supposed to be somewhat planar and stacking nucleobases are supposed to be parallel to each other. Several types of restraints to make these features present in resulting model are available in Phenix. 
+
+Base-pairs
+----------
+
+Restraints to keep correct geometry of base-pairs involves hydrogen bonding, planarity and paralleltiy restraints. Hydrogen bond restraints include distance and angle restraints. Two types of restraints available to keep base-pairs planar: standard planarity restraints and parallelity restraint. We use parallelity by default. User can change it to planarity or even use both of them (not recommended) separately for each defined base-pair in parameter file.
+
+Stacking pairs
+--------------
+
+We use parallelity restraint to keep stacked pairs parallel to each other.
+
+How to obtain annotations
+-------------------------
+
+The annotation could be done automatically during refinement and it will be printed out to .def file for future runs. Another way is to use `phenix.secondary_structure_restraints <secondary_structure_restraints.html>`__ command-line utility which can produce annotations in suitable format. PDB does not have suitable records, therefore the only way now to supply custom annotations is to use Phenix parameter files.
+
 
 
 Graphical editor
@@ -73,27 +97,15 @@ Graphical editor
 
 Documentation coming soon!
 
-Configuration syntax
---------------------
 
-Limitations
------------
-
-  - Only bond length is restrained in proteins, angles may move freely.
-
-  - The distribution of oxygen-nitrogen distances in beta sheets appears to be
-    very slightly bimodal, probably due to the difference in geometry between
-    parallel and antiparallel sheets.  Increasing the slack may compensate for
-    this, but it isn't clear whether this is necessary.
-
-  - Although hydrogen bond outliers are filtered by default, very little
-    validation of secondary structure definitions is performed.
 
 References
 ----------
+{{citation:tech_parallelity}}
 
-  - Kabsch, W., & Sander, C. (1983).  Dictionary of Protein Secondary
-    Structure: Pattern Recognition of Hydrogen-Bonded and Geometrical
-    Features.  Biopolymers, 22, 2577-2637.
 
-  - Fabiola et al. (...)
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.secondary_structure.__init__}}

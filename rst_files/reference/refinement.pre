@@ -1114,6 +1114,8 @@ detected or adjusted NCS groups.
 Using secondary structure restraints
 ------------------------------------
 
+Please read an `overview <reference/secondary_structure.html>`__ about secondary structure restraints which provides overall description and ways to get correct secondary structure definitions. This part of documentation provides only specific to phenix.refine information.
+
 At low resolutions it is often beneficial to restrain hydrogen bonding
 distances in helices, sheets, and nucleic acid base pairs.  These can be used
 with or without explicit hydrogen atoms.  Appropriate atom selections will
@@ -1125,7 +1127,7 @@ a single extra parameter is sufficient::
   % phenix.refine data.hkl model.pdb secondary_structure.enabled=True
 
 You can also generate starting parameters for secondary structure restraints
-using a standalone utility::
+using a `standalone utility <secondary_structure_restraints.html>`__ ::
 
   % phenix.secondary_structure_restraints model.pdb
 
@@ -1135,26 +1137,23 @@ may be edited to correct errors or add undetected groups.
 Like other restraints, the hydrogen bond distances have adjustable sigma and
 target values; these are defined in the secondary_structure.proteins scope.  
 The default potential mimics the covalent bond restraints.
-The sigma defaults to 0.05 Angstrom; the targets will be different depending
-on whether explicit hydrogens are used or not (defaults are 1.975A or 2.9A)::
+The sigma defaults to 0.05 Angstrom; the default target is 2.9A, but can be 
+changed::
 
   % phenix.refine data.hkl model.pdb secondary_structure.enabled=True \
-    secondary_structure.proteins.distance_ideal_h_o=2.0
-
-  % phenix.refine data.hkl model.pdb secondary_structure.enabled=True \
-    secondary_structure.proteins.distance_ideal_h_o=3.0 \
+    secondary_structure.proteins.distance_ideal_n_o=2.0
 
 Parameters such as sigma, slack and the usage of top_out potential are defined 
 separately for each secondary structure element.
 A relatively strict outlier cutoff is applied by default, to
 prevent improperly restraining incorrectly annotated residues.  Any bonds
-longer than the outlier cutoffs (2.5A for H-O, or 3.5A for N-O) will be
-be weighted down to zero during refinement (they may contribute later if the
-bond length decreases).  If you are certain of your annotations,
-you can increase or remove the cutoff:
+longer than the outlier cutoff (3.5A) will not be restrained.
+If you are certain of your annotations, you can increase the cutoff::
 
   % phenix.refine data.hkl model.pdb secondary_structure.enabled=True \
-    secondary_structure.proteins.distance_cut_h_o=3.0
+    secondary_structure.proteins.distance_cut_n_o=4.0
+
+ or disable utliers removal completely::
 
   % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
     secondary_structure.proteins.remove_outliers=False

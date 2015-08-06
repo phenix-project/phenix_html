@@ -1,9 +1,9 @@
-refinement.ncs.restraint_group {
+refinement.pdb_interpretation.ncs_group {
   reference = chain A resid 1:4
   selection = chain B and resid 1:3
   selection = chain C
 }
-refinement.ncs.restraint_group {
+refinement.pdb_interpretation.ncs_group {
   reference = chain E
   selection = chain F
 }

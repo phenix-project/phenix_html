@@ -1,0 +1,41 @@
+phenix.secondary_structure_restraints
+=====================================
+
+Description
+-----------
+
+It is a tool to generate secondary structure annotation in various formats using pdb file. When HELIX/SHEET records are present in input pdb file, no searching occurs, they are used as source of information about protein secondary structure. 
+
+There are several methods available to search protein secondary structure:
+
+- ksdssp (default): uses KSDSSP, the same as stand-alone tool `phenix.ksdssp <ksdssp.html>`__
+- dssp Slightly different method by Nat Echols, stand-alone tool is mmtbx.dssp
+- from_ca: Tries to find protein secondary structure from position of C-alpha atoms. Finds more SS elements than other methods, works better when the structure is distorted (author Tom Terwilliger).
+
+
+Output format:
+
+- phenix (default): Phil parameter file suitable to use with all Phenix tools except phenix.refine
+- phenix.refine: Phil parameter file suitable to use with phenix.refine
+- pdb: HELIX/SHEET records in PDB format
+- pymol: output pymol script which can be loaded in pymol along with pdb file to show hydrogen bonds 
+
+Command line usage examples
+---------------------------
+
+  % phenix.secondary_structure_restraints model.pdb
+
+  % phenix.secondary_structure_restraints model.pdb format=phenix.refine
+
+  % phenix.secondary_structure_restraints model.pdb search_method=from_ca format=pdb
+
+
+GUI
+---
+
+Graphical user interface is currently available only for proteins under phenix.refine GUI, "Refinement settings" tab, "Secondary structure restraints" button.
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.secondary_structure_restraints}}

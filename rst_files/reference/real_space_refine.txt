@@ -72,8 +72,8 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
 
   6) If PDB file contains unknown to Phenix ligand a ligand CIF file needs to
      be provided. Ligand CIF file can be obtained using one of corresponding
-     tools in Phenix (see documentation for more details). Once CIF file is
-     available it can be used as following::
+     tools in Phenix `(see documentation for more details) <elbow.html>`__. 
+     Once CIF file is available it can be used as following::
 
        phenix.real_space_refine model.pdb map.ccp4 ligands.cif
 
@@ -93,7 +93,7 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
     enabled then KSDSSP tool will be used internally to annotate SS and use it
     as restraints. The outcome of KSDSSP strongly depends on input model quality:
     for a model with gross errors SS annotation may be inaccurate resulting in
-    poorly refine model.
+    poorly refine model. Please refer to `SS documentation <secondary_structure.html>`__ for more details.
 
   - Including local fitting, morphing, or simulated annealing (
     local_grid_search+morphing+simulated_annealing) into refinement may

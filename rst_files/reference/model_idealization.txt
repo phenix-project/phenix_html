@@ -1,0 +1,26 @@
+phenix.model_idealization
+=====================================
+
+Description
+-----------
+The program for geometry idealization of protein secondary structure.
+
+Program reads model from .pdb file, extracts information from HELIX/SHEET records if available and replaces these helices and sheets with geometrically ideal ones while preserving initial atom positions as much as possible.
+
+If HELIX/SHEET records are not available, it will try to find them automatically. Correct secondary structure annotation is extremely important for proper functioning of this program. Incorrect annotations most likely will lead to distorted model. Please refer to `SS documentation <secondary_structure.html>`__ for more details.
+
+Command line usage examples
+---------------------------
+
+  % phenix.model_idealization model.pdb
+
+GUI
+---
+
+Not available
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.model_idealization}}
