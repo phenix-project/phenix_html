@@ -5,9 +5,7 @@ structure_search
 Overview
 --------
 
-Structure_search is a tool to quickly identify structural homologues of the input PDB file from the Protein Data Bank. It uses the SARST_ algorithm, and it's very fast. A typical search time against the whole PDB is usually less than one second.
-Structure_search requires Blast executable to run.  Currently, Blast is not distributed with PHENIX.  You can use keyword 'blastpath' to tell PHENIX where it can find your local Blast application.  If you do not have Blast installed on your computer, Blast can be downloaded from
-ftp://ftp.ncbi.nlm.nih.gov/blast/executables/release/2.2.26/
+Structure_search is a tool to quickly identify structural homologues of the input PDB file from the Protein Data Bank. It uses the SARST_ algorithm, and it's very fast. A typical search time against the whole PDB is usually less than one second.  There is an option to allow users to obtain a list of ligands found in structures of those homologs.
 
 
 Usage
