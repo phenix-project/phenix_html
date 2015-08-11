@@ -5,17 +5,15 @@ structure_search
 Overview
 --------
 
-Structure_search is a tool to quickly identify structural homologues of the input PDB file from the Protein Data Bank. It uses the SARST_ algorithm, and it's very fast. A typical search time against the whole PDB is usually less than one second.  There is an option to allow users to obtain a list of ligands found in structures of those homologs.
+Structure_search is a tool to quickly identify structural homologs of the input PDB file from the Protein Data Bank. It uses the SARST_ algorithm, and it's very fast. A typical search time against the whole PDB is usually less than one second.  There is an option to allow users to obtain a list of ligands found in structures of those homologs.
 
 
 Usage
 -----
-  - obtain a list of PDB is and chains sorted by similarities to mypdb.pdb
-     phenix.structure_search pdb_file=mypdb.pdb
-  - same as above, but specify location of blast executable
-     phenix.structure_search pdb_file=mypdb.pdb blastpath=/my/blast/blastall
+  - obtain a list of PDB ids and chains sorted by similarities to mypdb.pdb
+     phenix.structure_search mypdb.pdb
   - obtain a list of homologs of mypdb.pdb and all ligands found in structures of those homologs
-     phenix.structure_search pdb_file=mypdb.pdb get_ligand=True
+     phenix.structure_search mypdb.pdb get_ligand=True
 
 More information can be found in input/Output files sections below:
 
@@ -28,10 +26,11 @@ required input:
 
 Optional inputs :
 
-  - **blastpath**: path to local blastall or blastall.exe (Windows) file.
   - **get_ligand**:"=True" if want a list of ligands found in homologous PDBs,  Default = False.
-  - **job_title**: Current job title
+  - **job_title**: current job title
   - **output_prefix**: prefix for output files if needed.
+  - **get_pdb**:Collect and superpose the top N omologous pdbs (default=10).
+  - **coot_display**: Display superposed pdb files in coot. (default=True)
 
 Output files
 ------------
