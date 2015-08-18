@@ -13,11 +13,26 @@ phenix.fem: compute Feature Enhanced Map (FEM)
     - ResolveDM,PHIResolveDM: Resolve density modified map coefficients
     - FEM,PHIFEM: Feature Enhanced Map
 
-**Command line usage examples**::
+**Command line usage examples**
 
-  % phenix.fem model.pdb data.mtz
-  % phenix.fem data.mtz model.pdb label=Fobs
-  % phenix.fem model.pdb data.mtz scattering_label=neutron
+  1) Running with all defaults::
+
+     % phenix.fem model.pdb data.mtz
+
+  2) Specify data label::
+
+     % phenix.fem data.mtz model.pdb label=Fobs
+
+  3) Specify scattering dictionary (X-ray, electron, neutron)::
+
+     % phenix.fem model.pdb data.mtz scattering_label=neutron
+
+  4) Some other settings and their defaults:
+      - use_omit=True        : use OMIT map
+      - use_resolve=Auto     : use Resolve DM as extra filter
+      - use_max_map=True     : use 'maximal synthesis'
+      - file_name_prefix=fem : file prefix for output
+      - For more settings run phenix.fem without arguments in the command line.
 
 **GUI**
 
@@ -27,7 +42,7 @@ phenix.fem: compute Feature Enhanced Map (FEM)
 
   Latest presentation of FEM methodology:
 
-    http://phenix-online.org/presentations/fem_SEP2013.pdf
+    http://phenix-online.org/presentations/fem_06MAY2014.pdf
 
   Publication in Computational Crystallography Newsletter (front page):
 
