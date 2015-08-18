@@ -43,7 +43,7 @@ Available features at a glance
  4. Selective removing of stereochemistry restraints
  5. Adding custom (user-defined) restraints (bonds, angles, etc)
  6. Fixing (not refining) coordinates of any selected part of the structure
- 7. NCS: global (Cartesian) or local (torsion)
+ 7. NCS: global (Cartesian), local (torsion), constraints ("strict" NCS)
  8. Restraints specific to low-resolution refinement: secondary structure,
     reference model, Ramachandran plot restraints
 
@@ -68,7 +68,7 @@ Available features at a glance
 - Simple structure factor and map calculation
 - Combined automatic ordered solvent building, update and refinement
 - Complete model and data statistics: ready to PDB deposition REMARK 3 records
-- Detection and using NCS in refinement (NCS restraints)
+- Detection and using NCS in refinement (NCS restraints or constraints)
 - Refinement using X-ray, neutron or both data simultaneously (joint X-ray and
   neutron refinement)
 - Complex refinement strategies in one run
@@ -82,21 +82,16 @@ Current limitations
 
 - TLS and individual anisotropic ADP cannot be refined at once for the same group
 - Certain refinement strategies are not available for joint X-ray/neutron refinement
-- No NCS constraints (restraints only)
 - Atoms with anisotropic ADP in NCS groups
 - No Simulated Annealing for selected fragments
 - Two twin domains only
-- Oxidation state of metals is ignored: for example, "+2" in Fe+2 will be ignored
 
 Remark on using amplitudes (Fobs) vs intensities (Iobs)
 -------------------------------------------------------
 
  Although phenix.refine will read both data types, intensities or amplitudes,
  internally it uses amplitudes in nearly all calculations. Intensities are
- converted into amplitudes using French&Wilson method. Both ways of doing
- refinement, with Iobs or Fobs, have their own slight advantages and
- disadvantages that are not well explored or documented. To our knowledge there
- is no *strong* points to argue using one data type over another.
+ converted into amplitudes using French&Wilson method.
 
 phenix.refine organization
 --------------------------
@@ -1031,22 +1026,22 @@ a log-likelihood gradient anomalous map (map_type=llg) in the output, as this
 will show any unmodeled anomalous scattering with greater sensitivity than the
 conventional anomalous difference map.
 
-Using NCS restraints in refinement
-----------------------------------
+Using NCS in refinement
+-----------------------
 
-phenix.refine has both torsion-based and Cartesian-based NCS implementations.
-NCS-related atoms can be identified automatically or be defined by the
-user.
+phenix.refine can use NCS as restraints or constraints. NCS restraints can be
+torsion- or Cartesian-based. NCS-related atoms can be identified automatically
+or be defined by the user.
 
 The default NCS implementation in phenix.refine restrains NCS-related chains
-in torsion space.
+in torsion angle space.
 
 Hydrogen atoms are excluded from NCS restraints.
 
 *Torsion NCS (default)*
 
 Torsion-based NCS restraints use a flexible target function that is smoothly
-shut off as the difference between related torsions increases, allowing for
+shuts off as the difference between related torsions increases, allowing for
 local differences between NCS-related chains. The default behavior identifies
 related chains automatically, but users may also specify NCS groups.
 
@@ -1088,7 +1083,15 @@ detected or adjusted NCS groups.
 
    Create a ``ncs_groups.params`` file with the NCS selections::
 
-     #include_params ncs_groups.params
+     refinement.pdb_interpretation.ncs_group {
+       reference = chain A resid 1:4
+       selection = chain B and resid 1:3
+       selection = chain C
+     }
+     refinement.pdb_interpretation.ncs_group {
+       reference = chain E
+       selection = chain F
+     }
 
 2. Specify ``ncs_groups.params`` as an additional input when running
    phenix.refine::
@@ -1100,7 +1103,7 @@ detected or adjusted NCS groups.
    B-factors) using NCS restraints on coordinates and B-factors.
 
    Note: user specified NCS restraints in ``ncs_groups`` may be modified
-   automatically if specified groups are not match each other. 
+   automatically if specified groups are not match each other.
 
    Automatic detection of NCS groups::
 
@@ -1111,10 +1114,26 @@ detected or adjusted NCS groups.
    B-factors) using NCS restraints automatically created based on input PDB
    file.
 
+*NCS constraints (optional)*
+
+NCS constraints are used very similarly to NCS restraints (see above) except
+that ``ncs.type`` needs to be set to ``constraints``::
+
+     % phenix.refine data.hkl model.pdb ncs_search.enabled=True \
+       ncs.type=constraints
+
+or in case NCS groups are provided::
+
+     % phenix.refine data.hkl model.pdb ncs_search.enabled=True \
+       ncs.type=constraints ncs_groups.params
+
 Using secondary structure restraints
 ------------------------------------
 
-Please read an `overview <reference/secondary_structure.html>`__ about secondary structure restraints which provides overall description and ways to get correct secondary structure definitions. This part of documentation provides only specific to phenix.refine information.
+Please read an `overview <reference/secondary_structure.html>`__ about
+secondary structure restraints which provides overall description and
+ways to get correct secondary structure definitions. This part of
+documentation provides only specific to phenix.refine information.
 
 At low resolutions it is often beneficial to restrain hydrogen bonding
 distances in helices, sheets, and nucleic acid base pairs.  These can be used
@@ -1135,15 +1154,15 @@ This will print a set of parameters suitable for use in phenix.refine, which
 may be edited to correct errors or add undetected groups.
 
 Like other restraints, the hydrogen bond distances have adjustable sigma and
-target values; these are defined in the secondary_structure.proteins scope.  
+target values; these are defined in the secondary_structure.proteins scope.
 The default potential mimics the covalent bond restraints.
-The sigma defaults to 0.05 Angstrom; the default target is 2.9A, but can be 
+The sigma defaults to 0.05 Angstrom; the default target is 2.9A, but can be
 changed::
 
   % phenix.refine data.hkl model.pdb secondary_structure.enabled=True \
     secondary_structure.proteins.distance_ideal_n_o=2.0
 
-Parameters such as sigma, slack and the usage of top_out potential are defined 
+Parameters such as sigma, slack and the usage of top_out potential are defined
 separately for each secondary structure element.
 A relatively strict outlier cutoff is applied by default, to
 prevent improperly restraining incorrectly annotated residues.  Any bonds
