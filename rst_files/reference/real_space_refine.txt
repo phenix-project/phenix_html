@@ -17,15 +17,15 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
 
 - Fast gradient-driven minimization of combined map and restraints target::
 
-    T = Tmap + weight * Trestraints
-
+    T = Tmap + weight * Trestraints 
+  
 - Local grid search based fit to fix rotamer outliers or poor map-to-model fit
 - Morphing (map guided rigid body shifts of small continuous model fragments)
 - Simulated Annealing refinement
 - Rigid-body refinement
    - Rigid groups need to be defined
 - Restraints:
-   - Standard: bond, angle, planarity, chirality, dihedral, nonbonded repulsion.
+   - Standard: bond, angle, planarity, chirality, dihedral, nonbonded repulsion. 
    - Extra restraints: Ramachandran plot (two options:
      "oldfield" and "emsley"), C-beta deviations, rotamer, secondary structure,
      reference model, starting position
@@ -34,7 +34,7 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
 - NCS (non-crystallographic symmetry): restraints and constraints
    - NCS groups are determined automatically or can be provided manually
 - Input map format: CCP4 map file or MTZ file with Fourier map coefficients
-   - In case of CCP4 map resolution must be specified using "resolution"
+   - In case of CCP4 map resolution must be specified using "resolution" 
      keyword
 - ADP (B-factors) refinement against the map
    - Currently done using reciprocal space
@@ -53,15 +53,15 @@ No GUI available yet. Command line only.
 
        phenix.real_space_refine model.pdb map_coefficients.mtz
 
-     This will do 5 macro-cycles of global real-space
+     This will do 5 macro-cycles of global real-space 
      refinement with rotamer, Ramachandran plot and C-beta deviations
-     restraints enabled. If NCS is present it will be used as constraints with
+     restraints enabled. If NCS is present it will be used as constraints with 
      NCS groups found by the program automatically. Note: if map is used then
      resolution needs to be provided.
 
   2) Rotamer, c-beta and Ramachandran plot restraints as well as using
      NCS constraints are enabled by default. To disable these restraints::
-
+ 
        phenix.real_space_refine model.pdb map.mtz ncs_constraints=False \
        rotamer_restraints=False ramachandran_restraints=False \
        c_beta_restraints=False
@@ -76,7 +76,7 @@ No GUI available yet. Command line only.
 
        phenix.real_space_refine model.pdb map.mtz label='2FOFCWT,PH2FOFCWT'
 
-  5) Run refinement using global minimization (default), local rotamer fitting,
+  5) Run refinement using global minimization (default), local rotamer fitting, 
      morphing and simulated annealing::
 
        phenix.real_space_refine model.pdb map.mtz \
@@ -84,7 +84,7 @@ No GUI available yet. Command line only.
 
   6) If PDB file contains unknown to Phenix ligand a ligand CIF file needs to
      be provided. Ligand CIF file can be obtained using one of corresponding
-     tools in Phenix `(see documentation for more details) <elbow.html>`__.
+     tools in Phenix `(see documentation for more details) <elbow.html>`__. 
      Once CIF file is available it can be used as following::
 
        phenix.real_space_refine model.pdb map.mtz ligands.cif
@@ -103,7 +103,7 @@ No GUI available yet. Command line only.
      where rigid.eff contains definitions of rigid body groups::
 
        rigid_body {
-         group = chain A
+         group = chain A 
          group = chain B or chain C
          group = chain Z
        }
@@ -129,6 +129,19 @@ No GUI available yet. Command line only.
          }
        }
 
+  10) Use if secondary structure restraints is controlled by 
+      ``secondary_structure.enabled`` keyword::
+ 
+       phenix.real_space_refine model.pdb map.mtz \
+       secondary_structure.enabled=True
+
+      If HELIX/SHEET records are present in PDB file they will be used to 
+      construct restraints. Otherwise one of Phenix tools will be run 
+      internally to derive secondary structure information from the 
+      input model. DNA/RNA specific restraints will be generated internally.
+      For more details on secondary structure restraints see separate 
+      documentation referenced below.
+
 **Notes**
 
   - Generally, refinement with all defaults (example #1 above) is sufficient.
@@ -141,7 +154,7 @@ No GUI available yet. Command line only.
     enabled then KSDSSP tool will be used internally to annotate SS and use it
     as restraints. The outcome of KSDSSP strongly depends on input model quality:
     for a model with gross errors SS annotation may be inaccurate resulting in
-    poorly refine model. Please refer to
+    poorly refine model. Please refer to 
     `SS documentation <secondary_structure.html>`__ for more details.
 
   - Including local fitting, morphing, or simulated annealing (
@@ -158,7 +171,7 @@ No GUI available yet. Command line only.
 
   - ADP (B-factor) values do not affect the refinement of coordinates.
 
-  - It is best to do ADP refinement once the model fits the map well.
+  - It is best to do ADP refinement once the model fits the map well. 
     Normally this would be next to final step.
 
 **References**
