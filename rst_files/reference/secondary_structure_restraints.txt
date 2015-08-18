@@ -4,7 +4,7 @@ phenix.secondary_structure_restraints
 Description
 -----------
 
-It is a tool to generate secondary structure annotation in various formats using pdb file. When HELIX/SHEET records are present in input pdb file, no searching occurs, they are used as source of information about protein secondary structure. 
+It is a tool to generate secondary structure annotation in various formats using pdb file. When HELIX/SHEET records are present in input pdb file, no searching occurs, they are used as source of information about protein secondary structure. To force automatic detection of protein secondary structure elements, one needs to remove them from input file.
 
 There are several methods available to search protein secondary structure:
 
