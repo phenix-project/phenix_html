@@ -902,7 +902,9 @@ Truncate density at heavy-atom sites
 The heavy-atom sites in ha.pdb will be used to mark locations where high
 density is to be ignored during initial cycles of density modification.
 This can be useful if the heavy-atom peaks are very pronounced in the
-experimental map.
+experimental map. The sites in ha.pdb will also be included in the model for
+the structure if they do not overlap with any atoms that are built as part of
+the model. 
 
 Skip NCS in model\_building and refinement
 ------------------------------------------
