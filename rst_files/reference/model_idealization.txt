@@ -9,6 +9,10 @@ Program reads model from .pdb file, extracts information from HELIX/SHEET record
 
 If HELIX/SHEET records are not available, it will try to find them automatically. Correct secondary structure annotation is extremely important for proper functioning of this program. Incorrect annotations most likely will lead to distorted model. Please refer to `SS documentation <secondary_structure.html>`__ for more details.
 
+If input .pdb file contains unknown ligands, their description should be supplied. This description can be obtained using `eLBOW <elbow.html>`__ (`GUI version <elbow_gui.html>`__)
+
+The model should not contain non-standard protein residues inside secondary structure elements. The presence of unknown (UNK) residues in model (outside SS elements) is not advised because appropriate geometry restraints will not be generated for them and therefore such residues may be significantly distorted.
+
 Command line usage examples
 ---------------------------
 
