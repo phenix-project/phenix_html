@@ -362,8 +362,7 @@ rigid body group selection containing no atoms on special positions.
 
        % phenix.refine data.hkl model.pdb strategy=rigid_body
 
-  2. Multiple groups (requires a basic knowledge of the PHENIX atom
-     selection language, see below)::
+  2. Multiple groups (requires a basic knowledge of the `Phenix atom selection syntax <atom_selections.html>`__)::
 
        % phenix.refine data.hkl model.pdb strategy=rigid_body \
          sites.rigid_body="chain A" sites.rigid_body="chain B"
@@ -939,9 +938,8 @@ Examples:
 
      % phenix.refine data.hkl model.pdb strategy=occupancies occ.params
 
-  The amount of atom selections makes it inconvenient to type them all from the
-  command line. This is why the parameter file ``occ.params`` is used and it
-  contains following lines::
+  The amount of `atom selections <atom_selections.html>`__ makes it 
+  inconvenient to type them all from the command line. This is why the parameter file ``occ.params`` is used and it contains following lines::
 
     #include_params occ.params
 
@@ -994,7 +992,8 @@ refinement run with the parameters above included into
 
 If required, multiple scopes can be specified, one for each unique
 pair of f' and f" values. These values are assigned to all selected
-atoms (see below for atom selection details). Often it is possible
+atoms (see `Phenix atom selection syntax <atom_selections.html>`__ for
+details). Often it is possible
 to start the refinement from zero. If the refinement is not stable,
 it may be necessary to start from better estimates, or even to fix
 some values. For example (file ``group_anomalous_2.params``)::
@@ -2261,10 +2260,10 @@ can be specified in this way::
 
   #include_params restraints_edits.params
 
-The atom selections must uniquely select a single atom. Save the
-geometry_restraints.edits to a file and specify the file name as
-an additional argument when running phenix.refine for the first
-time. For example::
+The `atom selections <atom_selections.html>`__ must uniquely select a 
+single atom. Save the geometry_restraints.edits to a file and specify 
+the file name as an additional argument when running phenix.refine for 
+the first time. For example::
 
   % phenix.refine model.pdb data.hkl restraints_edits.params
 
@@ -2326,79 +2325,6 @@ these in the log file::
      Sn4+     1     45.79       1
   (...)
 
-
-Atom selection examples
-***********************
-**All atoms**
-::
-
-    all
-
-**All C-alpha atoms (not case sensitive)**
-::
-
-    name ca
-
-**All atoms with ``H`` in the name (``*`` is a wildcard character)**
-::
-
-    name *H*
-
-**Atoms names with ``*`` (backslash disables wildcard function)**
-::
-
-    name o2\*
-
-**Atom names with spaces**
-::
-
-    name 'O 1'
-
-**Atom names with primes don't necessarily have to be quoted**
-::
-
-    name o2'
-
-**Boolean ``and``, ``or`` and ``not``**
-::
-
-    resname ALA and (name ca or name c or name n or name o)
-    chain a and not altid b
-    resid 120 and icode c and model 2
-    segid a and element c and charge 2+ and anisou
-
-**Residue 188**
-::
-
-    resseq 188
-
-``resid`` is a synonym for ``resseq``::
-
-    resid 188
-
-Note that if there are several chains containing residue number 188, all of
-them will be selected. To be more specific and select residue 188 in particular
-chain::
-
-    chain A and resid 188
-
-this will select residue 188 only in chain A.
-
-**Residues 2 through 10 (including 2 and 10)**
-::
-
-    resseq 2:10
-
-**"Smart" selections**
-::
-
-    resname ALA and backbone
-    resname ALA and sidechain
-    peptide backbone
-    rna backbone or dna backbone
-    water or nucleotide
-    dna and not (phosphate or ribose)
-    within(5, (nucleotide or peptide) backbone)
 
 Depositing refined structure with PDB
 *************************************

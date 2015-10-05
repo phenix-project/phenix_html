@@ -66,6 +66,22 @@ alanine residues, but if the parentheses are omitted::
 it will instead select C-alpha atoms in ALA, plus all atoms named C, N, or O
 regardless of residue name.
 
+Also note that the outcome of boolean expression can be somewhat different from
+what one may expect comparing it with natural language. For example, if one
+wants to select ALA and GLY residues in the molecule, the selection should be
+::
+
+    resname ALA or resname GLY
+
+because suitable residues have residue name ALA or GLY. On the contrary, 
+selection
+::
+
+    resname ALA and resname GLY
+
+will result in empty selection because there is no residue that can satisfy
+both conditions simultaneously.
+
 **A single residue by number**
 ::
 
