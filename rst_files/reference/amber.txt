@@ -69,7 +69,7 @@ the two Amber files for atom order and must be used in phenix.refine replacing
 
 ::
 
-  phenix.refine 4phenix_9xyz.pdb 9xyz.mtz use_amber=True topology_file_name=4amber_9xyz.prmtop coordinate_file_name=4amber_9xyz.rst7 wxc_factor=0.025
+  phenix.refine 4phenix_9xyz.pdb 9xyz.mtz use_amber=True topology_file_name=4amber_9xyz.prmtop coordinate_file_name=4amber_9xyz.rst7 wxc_factor=0.1
 
 Here is list of keywords:
 
@@ -80,14 +80,16 @@ Here is list of keywords:
       file. This is the *prmtop* file created by AmberPrep.
     coordinate_file_name - relative path to the Amber coordinate
       file. This is the *rst7* file created by AmberPrep.  
-    wxc_factor - relative weight between the x-ray and the Amber 
-      geometry restraint terms in refinement. By default this is set to
-      0.5 which is the value that works best with conventional (Engh&Huber)
-      restraints. When using Amber we recommend wxc_factor=0.025, but
-      tests indicate that values from 0.025 to 0.075 work well. Lower
-      values improve model quality while higher values tend to improve
+    wxc_factor - a factor for relative weight between the x-ray and the Amber 
+      geometry restraint terms in refinement. By default the wxc_slace is 
+      set to 0.5, a value that works best with conventional (Engh&Huber)
+      restraints. The default for the Amber factor is 0.1 which sets the 
+      overall wxc_scale to 0.05. When using Amber we recommend 
+      wxc_factor=0.1, which sets wxc_scale to 0.05 but
+      tests indicate that values for wxc_scale from 0.025 to 0.075 work well. 
+      Lower values improve model quality while higher values tend to improve
       R-factors. The user is encouraged to experiment.  (Float;
-      default=0.5)
+      default=0.1)
 
 ADDITIONAL INFORMATION:
 
@@ -163,11 +165,8 @@ md_engine=mdgx keyword for phenix.refine. The default md_engine is Sander.
 3. phenix.refine with Amber also has a hidden wxc_factor parameter. In
 ordinary refinement the x-ray term is scaled by the ratio of the
 gradient norms between the x-ray and geometry terms times the
-wxc_factor (default 0.5 when using E&H; recommended 0.025 when using
-Amber). If wxc_factor is set, the ratio of the gradient norms will be
-ignored and the x-ray term will be scaled by wxc_factor directly. This
-is an experimental feature and has not been shown to improve
-refinement in any way.
+wxc_factor (recommended 0.1 when using
+Amber).
 
 4. The advanced user may wish to change the Amber force field used to
 impose geometry restraints. Be default the force field used is
