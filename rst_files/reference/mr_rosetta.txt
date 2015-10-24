@@ -38,6 +38,11 @@ resulting models with Rosetta, select the highest and score with LLG,
 verify that the top solutions are all about the same (electron density
 maps are correlated), and rebuild the top models with autobuild.
 
+During both the Rosetta and phenix.autobuild model-building the starting 
+model may be modified by insertion and deletion of loops based on the
+sequence provided. The extent of loop fitting will normally depend on 
+the quality of the map that is obtained by mr\_rosetta.
+
 mr\_rosetta can handle a single copy of a single chain, or multiple
 copies of a single chain (NCS), or multiple copies of multiple chains
 (groups of NCS). If you supply one or more input search models, then the
