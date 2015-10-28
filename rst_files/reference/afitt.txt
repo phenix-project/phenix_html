@@ -56,29 +56,17 @@ Running refinement with Phenix and AFITT
 ========================================
 
 First, the user should make sure that the latest version of Phenix and
-AFITT are installed. On Linux, make sure that the OE_DIR
-environment variable is set and points to a valid directory. For
+AFITT are installed. On Linux and OSX, make sure that the OE_EXE
+environment variable is set and points to the execuable (usually flynn). For
 example:
 
 ::
 
-	[~:]$ echo $OE_DIR
-	/home/pawelrc/.OpenEye
+	[~:]$ echo $OE_EXE
+	/usr/local/bin/flynn
 
-Second prepare the .pdb, .mtz and .cif dictionaries for non-standard
-residues in your model. One simple way to create the cif file is to
-use AFITT's *writedict* facility:
-
-::
-
-  writedict -in mymodel.pdb -out myligand -planarAniline -nolookup  
-          -dictionary_type phenix
-
-Make sure you specify the -type 2 flag. The former ensures that
-MMFF94s is used (parameters for crystallographic structures which
-experience the effect of time and space averaging ). The latter
-creates cif dictionaries specifically compatible with
-Phenix.refine. Now running Phenix-AFITT refinement is just a question
+Second prepare the .pdb, .mtz and .cif dictionaries for the ligand in 
+your model. Now running Phenix-AFITT refinement is just a question
 of running standard Phenix.refine with some additional keywords. For
 example like this:
 
