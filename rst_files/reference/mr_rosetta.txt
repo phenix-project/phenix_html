@@ -588,7 +588,9 @@ To obtain the two optional fragments files:
    fragment\_files\_9\_mer\_by\_chain instead of fragment\_files. Use
    fragment\_files\_chain\_list to define which chain ID each of your
    fragment\_files\_3\_mer\_by\_chain and
-   fragment\_files\_9\_mer\_by\_chain go with.
+   fragment\_files\_9\_mer\_by\_chain go with. In this case you must make
+   sure that there are no chains in your model other than the ones that
+   you specify with fragment\_files\_chain\_list (no waters, no ligands etc).
 -  NOTE3: You only need one set of fragments files for each UNIQUE
    chain. So if chains A and C are the same, you just need to specify
    fragments for chain A. If you have two different chains A and B and
