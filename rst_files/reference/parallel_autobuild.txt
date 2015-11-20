@@ -61,6 +61,13 @@ as qsub) or on a multiprocessor machine (e.g., with sh).
 **Possible Problems**
 ---------------------
 
+Please note that for parallel\_autobuild the input data file must be an MTZ
+file and it must have columns for FP SIGFP FreeR\_flag. A convenient way to
+create the right file is to run phenix.autobuild with your data (you don't
+need to let it finish, just get started), then use
+the exptl\_fobs\_freeR\_flags.mtz (or overall\_best.refine\_data.mtz) it 
+creates as your data file for phenix.parallel\_autobuild.
+
 **Specific limitations:**
 -------------------------
 
