@@ -22,22 +22,27 @@ Input files
 
 required input:
 
-  - **pdb_file**: the file containing the protein model of interest.
+  - **pdb_file**: the file containing the protein model of interest. 
 
 Optional inputs :
 
   - **get_ligand**:"=True" if want a list of ligands found in homologous PDBs,  Default = False.
   - **job_title**: current job title
   - **output_prefix**: prefix for output files if needed.
-  - **get_pdb**:Collect and superpose the top N omologous pdbs (default=10).
-  - **coot_display**: Display superposed pdb files in coot. (default=True)
+  - **get_pdb**:Collect and superpose the top N homologous pdbs (default=10).
+  - **coot_display**: Display superposed pdb files in coot. [default=(False/True) as E-value(>/<)1E-18].
+  - **sequence_only**: Perform Blast sequence search against PDB database using Phenix internal DB. This
+                       option does not require network connection.
 
 Output files
 ------------
 
 In addition to screen output, these files contains results of structure_search:
   - **output.txt**: file containing homologs of 'pdb_file' sorted by scores.
+  - **MyBlast.log**: Standard BLAST output with selected pairwise alignments. NOTE: for structure alignment, the
+                     'sequences' are structure-based Ramachandran codes (see reference), not 1-letter code for amino acids.
   - **pdb_ligand.txt** (if get_ligand=True): file containing all ligands found in all homologs from this search.
+  - **superposed PDB files**: Can be found in TEMPPDB_## subdirectory as prompted in the program output. 
 
 References
 ----------
