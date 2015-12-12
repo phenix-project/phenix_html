@@ -10,10 +10,12 @@ Structure_search is a tool to quickly identify structural homologs of the input 
 
 Usage
 -----
-  - obtain a list of PDB ids and chains sorted by similarities to mypdb.pdb
+  - obtain superposed PDB chains sorted by similarities to mypdb.pdb
      phenix.structure_search mypdb.pdb
   - obtain a list of homologs of mypdb.pdb and all ligands found in structures of those homologs
      phenix.structure_search mypdb.pdb get_ligand=True
+  - Use a local PDB mirror and obtain superposed homologs of mypdb.pdb 
+     phenix.structure_search mypdb.pdb PDB_MIRRORDIR=/path/to/pdb_mirror/top-level
 
 More information can be found in input/Output files sections below:
 
@@ -33,6 +35,9 @@ Optional inputs :
   - **coot_display**: Display superposed pdb files in coot. [default=(False/True) as E-value(>/<)1E-18].
   - **sequence_only**: Perform Blast sequence search against PDB database using Phenix internal DB. This
                        option does not require network connection.
+  - **PDB_MIRRORDIR**: Set option to use local PDB mirror instead of using RCSB server. See 'Using Local PDB mirror' section.
+  - **PDB_MIRROR_PDB**: Set path to the coordinate files of the local PDB mirror. See 'Using Local PDB mirror' section.
+  - **PDB_MIRROR_STRUCTURE_FACTORS**: Set path to the structure factor files of the local PDB mirror. See 'Using Local PDB mirror' section
 
 Output files
 ------------
@@ -43,6 +48,18 @@ In addition to screen output, these files contains results of structure_search:
                      'sequences' are structure-based Ramachandran codes (see reference), not 1-letter code for amino acids.
   - **pdb_ligand.txt** (if get_ligand=True): file containing all ligands found in all homologs from this search.
   - **superposed PDB files**: Can be found in TEMPPDB_## subdirectory as prompted in the program output. 
+
+Using Local PDB mirror
+------------
+
+By default the program retrieves homologous PDB files from RCSB server for downstream processes.  Users may choose to use their local PDB mirror if environmental variables "PDB_MIRROR_PDB" and "PDB_MIRROR_STRUCTURE_FACTORS" have already been defined in the running shell of phenix.structure_search.  Alternatively, users may define one of more keywords in the command-line script --
+  - **PDB_MIRRORDIR**: Defines the top level of the local PDB mirror.  The program will try to retrieve PDBs and/or structure 				factors from local mirror unless path does not exist. Note this assumes the directory tree under it 				follows that in RCSB server, i.e. pdb files as 'pdb####.ent.gz' in 
+			PDB_MIRRORDIR/data/structures/divided/pdb directory. If you use PDB's rsync script, this variable 				sould be the same as the $MIRRORDIR in the script.
+  - **PDB_MIRROR_PDB**: Alternatively, one may set explicit path to the pdb coordinate directly.  This keyword direct the pdb 				retrieval to $PDB_MIRRORDIR/data/structures/divided/pdb directory.
+  - **PDB_MIRROR_STRUCTURE_FACTORS**: Same idea as PDB_MIRROR_PDB except this is for structure factors.
+
+We recommend setting PDB_MIRRORDIR as it will take care of both PDB_MIRROR_PDB and PDB_MIRROR_STRUCTURE_FACTORS together.  However, users may choose to specify PDB_MIRROR_PDB or PDB_MIRROR_STRUCTURE_FACTORS instead. The progran will fall back to RCSB server should any of the path has errors.
+
 
 References
 ----------
