@@ -50,7 +50,7 @@ In addition to screen output, these files contains results of structure_search:
   - **superposed PDB files**: Can be found in TEMPPDB_## subdirectory as prompted in the program output. 
 
 Using Local PDB mirror
-------------
+----------------------
 
 By default the program retrieves homologous PDB files from RCSB server for downstream processes.  Users may choose to use their local PDB mirror if environmental variables "PDB_MIRROR_PDB" and "PDB_MIRROR_STRUCTURE_FACTORS" have already been defined in the running shell of phenix.structure_search.  Alternatively, users may define one of more keywords in the command-line script --
   - **PDB_MIRRORDIR**: Defines the top level of the local PDB mirror.  The program will try to retrieve PDBs and/or structure 				factors from local mirror unless path does not exist. Note this assumes the directory tree under it 				follows that in RCSB server, i.e. pdb files as 'pdb####.ent.gz' in 
