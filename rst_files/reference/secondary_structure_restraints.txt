@@ -10,7 +10,8 @@ There are several methods available to search protein secondary structure:
 
 - ksdssp (default): uses KSDSSP, the same as stand-alone tool `phenix.ksdssp <ksdssp.html>`__
 - dssp: slightly different method by Nat Echols, stand-alone tool is mmtbx.dssp
-- from_ca: tries to find protein secondary structure from position of C-alpha atoms. Finds more SS elements than other methods, works better when the structure is distorted (author Tom Terwilliger).
+- from_ca: tries to find protein secondary structure from position of C-alpha atoms. Finds more SS elements than other methods, works better when the structure is distorted. (author Tom Terwilliger).
+- cablam: CaBLAM uses CA-trace geometry to validate protein backbone. Since the CA trace is more reliably modeled from low-resolution density than the full backbone trace, CaBLAM can identify modeling errors and intended secondary structure elements in low-resolution models. (author Christopher Williams).
 
 
 Output format:
