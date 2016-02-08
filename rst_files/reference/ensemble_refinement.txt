@@ -8,18 +8,28 @@ Purpose
 
 phenix.ensemble_refinement is designed to combine X-ray structure refinement with molecular dynamics in order to produce ensemble models fitted to diffraction data.  These ensemble models can contain ~50-500 individual structures and simultaneously account for anisotopic and anharmonic distributions.
 
-Burnley BT, Afonine PV, Adams PD, Gros P. 2012. Modelling dynamics in protein crystal structures by ensemble refinement. eLife 1:e00311. doi: 10.7554/elife.00311. In Press.
+
+Development & implementation:
+Burnley BT, Afonine PV, Adams PD, Gros P. 2012. Modelling dynamics in protein crystal structures by ensemble refinement. eLife 1:e00311. doi: 10.7554/elife.00311.
+
+Simple test case:
+Burnley BT, Gros P. 2013. phenix.ensemble_refinement: a test study of apo and holo BACE1. Computational Crystallography Newsletter Vol 4:2, 51-58.
+
+Application:
+Forneris F, Burnley BT, Gros P. 2014. Ensemble refinement shows conformational flexibility in crystal structures of human complement factor D. Acta D, 70:3, 733-743.
+
+
 
 General Procedure
 -----------------
 
-The input structure should be a final completed single structure model (e.g. publication ready). If TLS is used the TLS components must be present in the atom records (see phenix.tls). For optimal use explicit hydrogen should be added using either phenix.ready_set or phenix.pdbtools.  The simulation is launched using the command line:
+The input structure should be a traditionally refined single structure model (i.e. post phenix.refine, publication quality). If TLS is used the TLS components must be present in the atom records (see phenix.tls). For optimal use explicit hydrogen should be added using either phenix.ready_set or phenix.pdbtools.  The simulation is launched using the command line:
 
 % phenix.ensemble_refinement model.pdb data.mtz [ligands.cif] [parameters]
 
 For non-covalent ligands (excluding waters) it is recommended to use harmonic restraints e.g.:
 
-% phenix.ensemble_refinement model.pdb data.mtz er_harmonic_restraints_selections=’resname PO4 and element P’
+% phenix.ensemble_refinement model.pdb data.mtz harmonic_restraints.selections=’resname PO4 and element P’
 
 Parameter Optimisation
 ----------------------
@@ -30,17 +40,17 @@ There are three main empirical parameters should be optimised.
 
 % phenix.ensemble_refinement x.pdb x.mtz ptls=0.7
 
-Defines the fraction of atoms included in the TLS fitting procedure (see Burnley et al. 2012).  The optimum value for this parameter cannot be determined a priori.  Setting up an array of simultaneous simulations with different values (e.g. 1.0, 0.9, 0.8, 0.6) is recommended.  By default the TLS groups are applied to each separate chain. TLS groups can be user defined using:
+This defines the fraction of atoms included in the TLS fitting procedure (see Burnley et al. 2012).  The optimum value for this parameter cannot be determined a priori.  Setting up an array of simultaneous simulations with different values (e.g. 1.0, 0.9, 0.8, 0.6) is recommended.  By default the TLS groups are applied to each separate chain. TLS groups can be user defined using:
 
 % phenix.ensemble_refinement x.pdb x.mtz tls_group_selections=chain a tls_group_selections=chain b
 
-Excessive numbers of TLS groups will result in intramolecular disorder being absorbed by the TLS B-factors rather than being modelled by atomic fluctuations in the simulation therefore it is recommended to use as few as possible, e.g. one per chain (see Burnley et al. 2012). The TLS fitting process requires that the number of non-hydrogen non-solvent atoms per TLS group * ptls to be greater than 63, otherwise ptls is automatically increased.  If any TLS group has less than 63 non-solvent, non-hydrogen atoms then an isotropic model, based on the Wilson B-factor, is automatically applied.
+Excessive numbers of TLS groups will result in intramolecular disorder being absorbed by the TLS B-factors rather than being modelled by atomic fluctuations in the simulation therefore it is recommended to use as few as possible, e.g. one per chain (see Burnley et al. 2012). The TLS fitting process requires that the number of non-hydrogen, non-solvent atoms, per TLS group * ptls to be greater than 63, otherwise ptls is automatically increased.  If any TLS group has less than 63 non-solvent, non-hydrogen atoms then an isotropic model, based on the Wilson B-factor, is automatically applied.
 
 **(2)** wxray_coupled_tbath_offset:
 
 % phenix.ensemble_refinement x.pdb x.mtz wxray_coupled_tbath_offset=10.0
 
-Unintuitively wxray_coupled_tbath_offset controls the X-ray weight.  The X-ray weight is modulated in situ such that the simulation runs at the target temperature (cartesian_dynamics.temperature).  The simulation uses velocity scaling to maintain the target temperature. This is coupled to a temperature thermostat which is set as:
+Unintuitively wxray_coupled_tbath_offset controls the X-ray weight!  The X-ray weight is modulated in situ such that the simulation runs at the target temperature (cartesian_dynamics.temperature).  The simulation uses velocity scaling to maintain the target temperature. This is coupled to a temperature thermostat which is set as:
 
 thermostat = cartesian_dynamics.temperature - wxray_coupled_tbath_offset
 
@@ -53,6 +63,8 @@ The non-conservative X-ray force generates heat (see Burnley et al 2012), thus a
 The relaxation time (or memory time) in picoseconds of the time-averaged restraints used in the simulation.  As tx increases more structures contribute to the target function (see Burnley et al. 2012 for more details) and the optimum value is correlated with resolution (see Burnley et al. 2012). If tx is not defined (tx = None) a value will be automatically selected based on the dataset resolution.  Values of 2 x automated Tx and 0.5 x automated Tx may also be tested. N.B. the simulation time is based on tx, larger values of tx will produce longer simulations.
 
 The default parameters have been set to give best as possible results.  However, it is strongly recommend that pTLS is optimised on a case by base basis and it may be necessary to optimise the temperature bath offset followed by tx.
+
+The ens_pdb.py and ens_tools.py scripts referred to in "phenix.ensemble_refinement: a test study of apo and holo BACE1" are availble within cctbx here: cctbx/mmtbx/refinement/ensemble_refinement/scripts/.
 
 
 List of all available keywords
