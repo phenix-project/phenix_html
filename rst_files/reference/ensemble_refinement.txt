@@ -66,6 +66,8 @@ The default parameters have been set to give best as possible results.  However,
 
 The ens_pdb.py and ens_tools.py scripts referred to in "phenix.ensemble_refinement: a test study of apo and holo BACE1" are availble within cctbx here: cctbx/mmtbx/refinement/ensemble_refinement/scripts/.
 
+N.B. if you wish to display individual atom's b and q properties in PyMol the descrete=1 argument should be used when loading the ensemble (e.g. load ens.pdb, discrete=1).
+
 
 List of all available keywords
 ------------------------------
