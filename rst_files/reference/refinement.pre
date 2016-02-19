@@ -1562,8 +1562,8 @@ Guidelines for structure refinement at high resolution:
 
   - the default weights for stereochemical and ADP restraints are most likely
     too tight at this resolution, so most likely the corresponding values need
-    to be relaxed. Use ``wxc_scale`` and ``wxu_scale`` for this; lower values,
-    like 1/2, 1/3, 1/4, ... etc of the default ones should be tried.
+    to be relaxed. Use ``wxc_scale`` and ``wxu_scale`` for this; higher values,
+    like 1, 1.5, 2, ... etc should be tried.
     phenix.refine allows automatically optimize these values (
     ``optimize_xyz_weight=True`` and ``optimize_adp_weight=True``), however this
     is a very slow task so it may be considered for an over night run or even
