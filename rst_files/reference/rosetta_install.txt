@@ -1,0 +1,139 @@
+General installation instructions for Rosetta for use in Phenix
+===============================================================
+
+.. contents::
+
+General notes
+-------------
+
+Rosetta is used by a number of modules in Phenix including
+rosetta\_refine, ERRASER and MR\_rosetta. Installing Rosetta for
+rosetta\_refine involves compiling some more programs for the interface
+between Phenix and Rosetta. The other programs will run with a binary
+installation of Rosetta or the compiled installation of Rosetta. From a
+practical point-of-view, making the effort to install the compiled
+version of Rosetta means that you can run all three programs.
+
+To run any Rosetta programs, you need to install Rosetta from the Baker
+laboratory at the University of Washington.
+Once you have installed Rosetta you
+need to set the environmental variable $PHENIX\_ROSETTA\_PATH, $ROSETTA\_BIN and $ROSETTA3\_DB.
+
+You will need the 2016.02.58402 bundle. It is quicker to download the source
+bundle and the binaries are not required when installing for ALL programs.
+
+NOTE: If trouble...see the FULL INSTRUCTIONS at https://www.rosettacommons.org/support
+
+Proceed with the following.
+
+-  go to `https://c4c.uwc4c.com/express\_license\_technologies/rosetta <https://c4c.uwc4c.com/express_license_technologies/rosetta>`__,
+   find "Academic License" and click on "LICENSE". Fill out the form,
+   and receive by email a link to the download site and a
+   login/password.
+-  Go to the latest download (for example Rosetta 2014.30)
+   on the download site, select Download, and download Rosetta "as one bundle".
+-  Unpack and install Rosetta: Go to the directory where you want to
+   install it and move the downloaded file (something like
+   rosetta\_src\_2016.02.58402\_bundle.tgz)
+   there. Then...changing the names to match your bundle...
+
+::
+
+    tar xzf rosetta_src_2016.02.58402_bundle.tgz
+
+This should give you a directory like rosetta\_src\_2016.02.58402\_bundle that contains:
+
+    demos   main    tools
+
+-  Now you want to compile. You must have python on your machine...if
+   not you will need to install it from http://www.python.org/. You will
+   also need scons. If you don't have scons you can get it from
+   www.scons.org/. NOTE: you will need version 2.2 or later of python
+   and 0.96.1 of scons. You can check your versions with:
+
+::
+
+      python --version
+      scons --version
+
+-  NOTE 2: on Ubuntu you may also need zlib1g-dev. You can get this
+   library and scons with:
+
+::
+
+        sudo su   # UBUNTU ONLY FOR INSTALLING zlib1g and scons
+        apt-get install zlib1g-dev
+        apt-get install scons
+
+In the scons command below the "-j2" means use 2 processors....adjust
+for your system. Takes about 1 hour with 2 processors. Please note: Do
+not move your Rosetta installation after compiling it. The compilation
+builds in path names, and if you move the binaries to some other place
+it will not run.
+
+::
+
+    cd rosetta/main/source/
+    ./scons.py -j2
+    cd ..
+
+If you get to "scons: done building targets." you are all set!
+
+-  Notice where you have installed rosetta. The directory you just set
+   up, now containing "main" is to be
+   called "PHENIX\_ROSETTA\_PATH".
+   Now you can now set a local
+   environmental variable in your ".profile" (sh or bash shell) or
+   ".cshrc" (c-shell) to mark where rosetta is located: if you are using
+   the bash or sh shells:
+
+::
+
+    export PHENIX_ROSETTA_PATH=/your-path-to-rosetta-here/
+    export ROSETTA_BIN=$PHENIX_ROSETTA_PATH/main/source/bin
+    export ROSETTA3_DB=$PHENIX_ROSETTA_PATH/main/database
+
+or sh (C-shell):
+
+::
+
+    setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/
+    setenv ROSETTA_BIN $PHENIX_ROSETTA_PATH/main/source/bin
+    setenv ROSETTA3_DB $PHENIX_ROSETTA_PATH/main/database
+
+- The final step is to build the interface for rosetta\_refine. This is a
+  similar step to the previous scons step so supply as many nproc as
+  available on your machine.
+
+::
+  
+  rosetta.build_phenix_interface nproc=2
+
+
+Specific notes
+--------------
+
+To use the fragment server and your machine is behind a firewall and
+there is a proxy server you need to go through, then if you use a .hhr
+file to download files from the PDB then you will need to specify your
+proxy server. You can use the following command to specify the proxy
+server (replacing it with YOUR proxy server).
+
+If you are using the bash or sh shells:
+
+::
+
+    export HTTP_PROXY=proxyout.mydomain.edu:8080
+
+or sh (C-shell):
+
+::
+
+    setenv HTTP_PROXY proxyout.mydomain.edu:8080
+
+-  Now you are completely ready to go with Rosetta in Phenix
+
+NOTE: If trouble on ubuntu 11.04 or later...also see:
+http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 (but just
+concerning basic.settings and options.settings modifications and using :
+scons bin mode=release cxx=gcc cxx\_ver=4.5)

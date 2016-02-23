@@ -24,13 +24,6 @@ have a Mac or Linux system to use this program.**
 Installation
 ------------
 
-**Because the build mechanism for hybrid Rosetta/Phenix refinement requires
-some specialized handling of the Rosetta package, it may interfere with other
-uses of the suite (e.g. MR-Rosetta).
-We recommend creating a separate installation for Rosetta if
-you plan to use it for other purposes.**  This limitation will be resolved in
-future releases.
-
 First, you should install the appropriate version of Phenix.  The binary
 installers should be sufficient; users of the Mac graphical package can
 set up the command-line environment with this command (replacing the version
@@ -38,32 +31,7 @@ number as needed)::
 
   source /Applications/PHENIX-1.8.4-1496/Contents/phenix-1.8.4-1496/phenix_env.sh
 
-You must obtain a `separate license for Rosetta
-<http://c4c.uwc4c.com/express_license_technologies/rosetta>`_, which is free
-for academic users.  The software is primarily distributed as source code,
-which will be linked to Phenix as part of the install process.  Once you have
-obtained and unpacked the Rosetta distribution, the top-level directory should
-have a sub-directory called "main", containing additional sub-directories
-"source" and "database".  You should first set environment variables to tell
-Phenix where to find the Rosetta distribution, and tell Rosetta where to find
-the database files, for example::
-
-  export PHENIX_ROSETTA_PATH=/usr/local/rosetta
-  export ROSETTA3_DB=/usr/local/rosetta/main/database
-
-or for csh/tcsh users::
-
-  setenv PHENIX_ROSETTA_PATH "/usr/local/rosetta"
-  setenv ROSETTA3_DB "/usr/local/rosetta/main/database"
-
-Once you have both a Phenix installation and a Rosetta source distribution,
-you can build the hybrid system with this command (located in the Phenix
-tree)::
-
-  rosetta.build_phenix_interface nproc=X
-
-where X is the number of processors you wish to use for compilation.  This
-will automatically set up Rosetta to use the Python bundled with Phenix.
+`Check the central installation notes <rosetta_install.html>`__
 
 Execution
 ---------
