@@ -15,6 +15,9 @@ side-chains from a rotamer library based on an electron density map.
 NOTE: Normally this method is called from phenix.phase\_and\_build but
 you can use it interactively if you want.
 
+You can also use it to identify side chains (sequence) from a model 
+without side chains (or with) and a map using sequence_from_density=True.
+
 Usage
 -----
 
@@ -45,6 +48,20 @@ type:
 
 You should supply a sequence file that matches the sequence of the
 model.
+
+Using replace\_side\_chains to sequence a protein from density:
+---------------------------------------------------------------
+
+From the command-line you can type:
+
+::
+
+    phenix.replace_side_chains model.pdb map_coeffs.mtz sequence_from_density=True
+
+You don't need a sequence file but if you supply one the residues 
+allowed are those in your sequence file.
+
+
 
 Possible Problems
 -----------------
