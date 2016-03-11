@@ -1,0 +1,82 @@
+===============================
+Generating a polder map
+===============================
+
+.. contents::
+
+Overview
+--------
+
+A polder map is an omit map which excludes the bulk solvent around the 
+omitted region. This way, weak densities, which can be obscured by bulk
+solvent, may become visible. Typical omitted regions are:
+
+  - ligands
+  - residues protruding into solvent area and with unclear side chain 
+    orientations (such as lysine, arginine, etc.)
+  - C- or N-terminal residues
+
+It is not recommended to omit large portions of the model at once (as 
+the excluded bulk solvent volume might become too large) or to omit 
+single atoms. Instead: several residues or one ligand are typical 
+selections for polder maps. It should be kept in mind that ``phenix.polder`` 
+does map calculations, no bias-removal strategies (such as refinement, 
+annealing, etc.) are applied. 
+
+A presentation file with examples can be found `here 
+<https://www.phenix-online.org/presentations/phenix_polder.pdf>`_.
+
+
+Running the program
+-------------------
+
+``phenix.polder`` is executed via the command line::
+
+  % phenix.polder model.pdb data.mtz selection='chain B and resseq 3'
+
+This command calculates an omit map of residue 3 in chain B. Common file 
+formats are supported (.pdb and .cif for models; .mtz, .hkl files for data). 
+The syntax for the `selections <atom_selections.html>`_ is the same as used 
+by other phenix tools.
+
+Output of ``phenix.polder`` consists of a single MTZ file, named 
+``polder_map_coeffs.mtz`` by default. This file will contain amplitudes and phases 
+for two maps:
+
+  - **mFo-DFc_polder:** map coefficients of polder omit map
+  - **mFo-DFc_omit:** map coefficients for omit map where bulk solvent floods into 
+    omitted region. It is equivalent to remove the selection from the model and 
+    to calculate a difference map. This map can be used for comparison with the 
+    polder map. 
+
+Both map types require you to load them manually in Coot, by choosing the "Open
+MTZ, mmCIF, fcf or phs..." option and by activating the "Is a Difference Map" 
+option in the window which opens after choosing the filename.
+
+
+Other options
+-------------
+
+There are several other programs in Phenix for calculating omit maps. 
+
+  - `phenix.composite_omit_map <composite_omit_map.html>`_ can produce 
+    relatively bias-free maps by computing a number of omit maps covering 
+    specific regions, and then combining the areas around the omitted regions. 
+    Default options allows the bulk solvent mask to extend into the omitted 
+    region
+  - `phenix.refine <refinement.html>`_ can be used to manually generate omit
+    maps for a smaller selection of the model by specifying the
+    ``omit_selection`` keyword.  The single-omit mode of the composite omit
+    map program is equivalent to this.
+  - `phenix.maps <maps.html>`_ can generate simple omit maps without refinement.
+
+Reference
+----------
+
+in preparation
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.polder}}
