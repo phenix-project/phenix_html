@@ -1,0 +1,141 @@
+Segmenting cryo-EM maps with segment\_and\_split\_map
+=====================================================
+
+Author(s)
+---------
+
+-  segment\_and\_split\_map: Tom Terwilliger
+
+Purpose
+-------
+
+The routine segment\_and\_split\_map will identify the asymmetric
+unit of a map (typically cryo-EM) and contiguous regions of density
+within the asymmetric unit of the map.
+
+Usage
+-----
+
+How segment\_and\_split\_map works:
+----------------------------
+
+If you have a CCP4-style (mrc, etc) map and a sequence file, 
+you can use segment\_and\_split\_map to split the map into smaller pieces 
+suitable for model-building or viewing.
+The tool segment\_and\_split\_map will will find where your 
+molecule is in the map and cut out and work with just that part of the density.
+If your map has been averaged based on NCS symmetry and 
+you supply a file with that NCS information (.ncs_spec, biomtr.dat, etc),
+segment\_and\_split\_map will find the asymmetric unit of NCS and work
+with that.
+
+Finally, the segment\_and\_split\_map tool will cut the density 
+in the asymmetic unit of your map into small pieces of connected density and 
+write out a map for each one.
+
+All the maps that are written by segment\_and\_split\_map are superimposable
+on each other. They typically are all shifted from the original map to place
+the origin of the maps on the grid point (0,0,0).
+
+*Output files from segment\_and\_split\_map*
+----------------------------------
+
+**shifted\_map.ccp4**: Original map, shifted to place the origin on grid point (0,0,)
+
+**shifted\_ncs.ncs_spec**: NCS operators (if any), shifted to match shifted\_map.ccp4.
+
+**shifted\_pdb.pdb**: Input PDB file (if any), shifted to match shifted\_map.ccp4.
+
+**box\_map\_au.ccp4**: Same as shifted\_map.ccp4, except that everything except the asymmetric unit of NCS is zeroed out (map shows the asymmetric unit only).
+
+**box\_mask\_au.ccp4**: Mask showing location of NCS asymmetric unit. Superimposes on box\_map\_au.ccp4 and shifted\_map.ccp4.
+
+**segment\_and\_split\_map\_info.pkl**: Pickled file with information about the segmentation. Used in phenix.map\_to\_model and to restore a shifted PDB file to original location.
+
+
+*Shifting the map to the origin*
+--------------------------------
+
+Most crystallographic maps have the origin at the corner of the map (
+grid point [0,0,0]), while most cryo-EM maps have the orgin in the 
+middle of the map.  To make a consistent map, any maps with an origin not 
+at the corner are shifted to put the origin at grid point [0,0,0]. This map
+is the shifted map that is used for further steps in model-building.
+At the conclusion of model-building, the model is shifted back to 
+superimpose on the original map.
+
+*Finding the region containing the molecule*
+--------------------------------------------
+
+By default (density\_select=True), the region of the map containing density
+is cut out of the entire map. This is particularly useful if the original map
+is very large and the molecule only takes up a small part of the map.  This
+portion of the map is then shifted to place the origin at grid point [0,0,0].
+(At the conclusion of model-building, the final model is shifted back to 
+superimpose on the original map.)  The region containing density is chosen
+as a box containing all the points above a threshold, typically 5% of the
+maximum in the map.
+
+
+*Finding the NCS asymmetric unit of the map*
+--------------------------------------------
+
+If you supply NCS matrices describing the NCS used to average the map (if any),
+then segment\_and\_split\_map will try to define a region of the map that represents
+the NCS asymmetric unit.  Application of the NCS operators to the NCS 
+asymmetric unit will generate the entire map, and application to a model built
+into the asymmetric unit will generate the entire model.  Normally
+identification of the NCS asymmetric unit and segmentation of the map (below)
+are done as a single step, yielding an asymmetric unit and a set of
+contiguous regions of density within that asymmetric unit. The asymmetric unit
+of NCS will be written out as a map to the segmentation\_dir directory,
+superimposed on the shifted map (so that they can be viewed together in Coot).
+
+*Segmentation of the map*
+-------------------------
+
+By default (segment=True) the map or NCS asymmetric unit of the map will
+be segmented (cut into small pieces) into regions of connected density. This
+is done by choosing a threshold of density and identifying contiguous regions
+where all grid points are above this threshold. The threshold is chosen to
+yield regions that have a size corresponding to about 50 residues.  The
+regions of density are written out to the segmentation\_dir directory
+and are superimposed on the shifted map (if you load the shifted map in 
+Coot and a region map in Coot, they should superimpose.) 
+
+
+Examples
+--------
+
+Standard run of segment\_and\_split\_map:
+-------------------------------
+
+Running segment\_and\_split\_map is easy. From the command-line you can type:
+
+::
+
+    phenix.segment\_and\_split\_map my_map.map seq.fa ncs_file=find_ncs.ncs_spec
+
+where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
+sequence file, and find_ncs.ncs_spec is an optional file specifying any
+NCS operators used in averaging the map. This can be in the form of
+BIOMTR records from a PDB file as well.
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.command_line.map_to_model}}
