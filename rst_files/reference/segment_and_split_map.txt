@@ -17,7 +17,7 @@ Usage
 -----
 
 How segment\_and\_split\_map works:
-----------------------------
+-----------------------------------
 
 If you have a CCP4-style (mrc, etc) map and a sequence file, 
 you can use segment\_and\_split\_map to split the map into smaller pieces 
@@ -38,7 +38,7 @@ on each other. They typically are all shifted from the original map to place
 the origin of the maps on the grid point (0,0,0).
 
 *Output files from segment\_and\_split\_map*
-----------------------------------
+--------------------------------------------
 
 **shifted\_map.ccp4**: Original map, shifted to place the origin on grid point (0,0,)
 
@@ -108,7 +108,7 @@ Examples
 --------
 
 Standard run of segment\_and\_split\_map:
--------------------------------
+-----------------------------------------
 
 Running segment\_and\_split\_map is easy. From the command-line you can type:
 
@@ -138,4 +138,4 @@ Additional information
 List of all available keywords
 ------------------------------
 
-{{phil:phenix.command_line.map_to_model}}
+{{phil:cctbx.maptbx.segment_and_split_map}}
