@@ -1153,13 +1153,13 @@ This will print a set of parameters suitable for use in phenix.refine, which
 may be edited to correct errors or add undetected groups.
 
 Like other restraints, the hydrogen bond distances have adjustable sigma and
-target values; these are defined in the secondary_structure.proteins scope.
+target values; these are defined in the secondary_structure.protein scope.
 The default potential mimics the covalent bond restraints.
 The sigma defaults to 0.05 Angstrom; the default target is 2.9A, but can be
 changed::
 
   % phenix.refine data.hkl model.pdb secondary_structure.enabled=True \
-    secondary_structure.proteins.distance_ideal_n_o=2.0
+    secondary_structure.protein.distance_ideal_n_o=2.0
 
 Parameters such as sigma, slack and the usage of top_out potential are defined
 separately for each secondary structure element.
@@ -1169,12 +1169,12 @@ longer than the outlier cutoff (3.5A) will not be restrained.
 If you are certain of your annotations, you can increase the cutoff::
 
   % phenix.refine data.hkl model.pdb secondary_structure.enabled=True \
-    secondary_structure.proteins.distance_cut_n_o=4.0
+    secondary_structure.protein.distance_cut_n_o=4.0
 
- or disable utliers removal completely::
+or disable outliers removal completely::
 
-  % phenix.refine data.hkl model.pdb main.secondary_structure_restraints=True \
-    secondary_structure.proteins.remove_outliers=False
+  % phenix.refine data.hkl model.pdb secondary_structure_restraints=True \
+    secondary_structure.protein.remove_outliers=False
 
 Using a reference model in refinement
 -------------------------------------
