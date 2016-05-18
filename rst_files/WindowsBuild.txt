@@ -1,0 +1,235 @@
+==============================
+How to build PHENIX on Windows
+==============================
+
+.. contents::
+
+Introduction
+============
+
+This document describes how to build Phenix from sources on Windows. Given that 
+Windows is not shipped with the necessary tools for building Phenix how to set up
+these tools is also covered here.
+
+A typical PHENIX installation takes up the order of 5Gb disk space. If you build PHENIX 
+from scratch including an installer this will be of the order of 15Gb.
+
+
+Necessary prerequisites
+=======================
+
+To build PHENIX from scratch and create a binary Windows installer the following is required:
+ - Python 2.7 (any version)
+ - makensis from Nullsoft
+ - Microsoft Visual C++ 9.0 / Microsoft Visual Studio 2008
+ - PuTTY software suite
+ - TortoiseSVN with command line tools
+ - TortoiseGit
+ - Git
+ - optionally wtee.exe for duplicating stdout to file and console.
+
+To build PHENIX from an existing installation with sources the following is required:
+ - Microsoft Visual C++ 9.0 / Microsoft Visual Studio 2008
+
+Makensis from Nullsoft is only required for creating an executable Windows installer package
+for deployment of PHENIX.
+
+
+The Microsoft compiler is available for free in the Windows 7 SDK from the Microsoft website:
+https://www.microsoft.com/en-gb/download/details.aspx?id=3138
+It should be titled "Microsoft Windows SDK for Windows 7 and .NET Framework 3.5 SP1". 
+There are newer versions of this SDK using more recent compilers. As these use a newer 
+C-runtime library I suspect compiled programs may not binary compatible with Python 2.7 which
+is compiled with Visual C++ 9.0. You would still be able to build individual statically 
+linked executables with those newer compilers. But whether or not compiled python modules 
+can run without crashing using a newer runtime is questionable. After installing the 
+compiler it can be invoked once environment variables have been set by calling scripts 
+such as vcvars32.bat or vcvars64.bat from a cmd-shell.
+
+**Issue setting compiler environment variables**
+
+If you want to run manual builds environment variables are readily invoked by calling
+vcvars32.bat or vcvars64.bat. But if doing an automated build with Buildbot
+all the necessary prerequisites must be acessible in the executable path from a cmd-shell.
+For most programs this is achieved by appending the PATH environment with the location of
+binaries of the prerequisite programs. But this is not feasible for the compiler. Instead
+we set the autorun registry key
+::
+
+  HKEY_LOCAL_MACHINE\Software\Microsoft\Command Processor\AutoRun
+
+or 
+
+::
+
+  HKEY_CURRENT_USER\Software\Microsoft\Command Processor\AutoRun
+
+to a string with the full path of a cmd script that runs either of vcvars32.bat or vcvars64.bat
+whenever a cmd shell is started. However, due to 
+a flaw in in those files this may lead to a cmd-shell hanging in an infinite loop.
+One remedy is to copy vcvars32.bat and vcvars64.bat to myvcvars32.bat and myvcvars64.bat and
+replace the lines :
+::
+
+    :GetWindowsSdkDirHelper
+    @for /F "tokens=1,2*" %%i in ('reg query "%1\SOFTWARE\Microsoft\Microsoft SDKs\Windows" /v "CurrentInstallFolder"') DO (
+    	if "%%i"=="CurrentInstallFolder" (
+    		SET "WindowsSdkDir=%%k"
+    	)
+    )
+
+with
+::
+
+    :GetWindowsSdkDirHelper
+    SET fname=%TEMP%\tmpSDKvars.txt
+    reg query "%1\SOFTWARE\Microsoft\Microsoft SDKs\Windows" /v "CurrentInstallFolder" > %fname%
+    
+    @SET WindowsSdkDir=
+    @for /F "tokens=1,2*" %%i in (%fname%) DO (
+    	if "%%i"=="CurrentInstallFolder" (
+    		SET "WindowsSdkDir=%%k"
+    	)
+    )
+    del %fname%
+
+to make a cmd shell start up properly when the autorun key is set to point to 
+myvcvars32.bat or myvcvars64.bat.
+
+**OpenSSH tools**
+
+Currently the PuTTY software suite is used in place of OpenSSH. This may change in the future.
+Putty contains Pageant which allows SVN access with public/private keys where seamless 
+ssh or scp access is required. For setting up public/private keys for SVN access you need 
+to generate an ssh key pair with the PuTTYgen program, copy the public key to the servers 
+where files are checked out with ssh, create an environment variable SVN_SSH that points 
+to the location of plink.exe (using forward slashes instead of back slashes) and also 
+create an environment variable GIT_SSH that points to the location of plink.exe (using 
+forward slashes instead of back slashes).
+
+Pageant works similar to ssh_agent from OpenSSH and if you already have a set of 
+public/private keys you can just convert them to the PuTTY format with the PuTTYgen 
+program. Some repositories require authenticated access to where you should have 
+deposited your public keys. Your corresponding private keys should then be loaded into pageant
+before starting the build.
+
+
+
+Bundling base components together as zip files
+----------------------------------------------
+There are two base components which do not have to be compiled from scratch but are bundled
+in zip files for easy installation. This is possible because unlike Unix operating 
+systems binary compatibility of executables with Windows is retained over successive 
+versions of Windows apart from the distinction between 32 and 64 bit executables.
+
+The first base component bundled is python 2.7 with installed modules such as matplotlib, 
+numpy, biopython, wxpython, etc. The second base component bundled is the HDF5 library. 
+`Click here <windows_bundles.html>`__ for details on how to create these bundles.
+
+These components are only necessary to create once or if you wish to update the 
+existing components.
+
+During manual build or automated build bootstrap.py will download these two components from
+`http://cci.lbl.gov/cctbx_dependencies <http://cci.lbl.gov/cctbx_dependencies>`__.
+
+
+
+Manual build
+============
+
+From an existing PHENIX installation
+------------------------------------
+
+If you want to build PHENIX from an existing installation on Windows where the 
+sources are present you will need to have the compiler installed and do the 
+following steps:
+
+  - From the Start menu open a PHENIX Command Prompt
+  - run vcvars32.bat or vcvars64.bat depending on the platform
+  - chdir to %PHENIX%\build
+  - If compiling for the first time then delete all files and directories except config_modules.cmd
+  
+    - run config_modules.cmd
+    
+  - run libtbx.scons -j <nproc>
+
+From bootstrap.py
+-------------------
+
+Below is a cmd script for manually building PHENIX with bootstrap.py. It first downloads sources
+from external repositories, then compiles them, then runs tests and finally creates a binary
+installer. It is assumed the script is started with command line arguments specifying 
+platform and Phenix version.
+
+::
+
+  SET PLATFORM=%1
+  SET PHENIXVERSION=%2
+  
+  IF DEFINED PLATFORM (
+  IF %PLATFORM% == x32 (
+    call "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat"
+    set PYTHONEXE=C:\Python27_32\python.exe
+  )
+  
+  IF %PLATFORM% == x64 (
+    call "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars64.bat"
+    set PYTHONEXE=C:\Python27_64\python.exe
+  )
+  )
+  
+  REM Get latest bootstrap from svn repo
+  svn export --force svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py 2>&1 | wtee build.log
+  
+  REM             hot update base build
+  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 2>&1 | wtee -a ..\build%PHENIXVERSION%-%PLATFORM%.log
+  
+  REM            run tests
+  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 tests 2>&1 | wtee -a ..\tests%PHENIXVERSION%-%PLATFORM%.log
+  
+  REM            create installer
+  call build\bin\libtbx.create_installer.bat --binary --version %PHENIXVERSION% --install_script modules\phenix\phenix\installer\phenix_installer.py --license modules\phenix\LICENSE.txt --readme modules\phenix\CHANGES --readme modules\phenix\phenix\installer\README --readme modules\phenix\phenix\installer\SOURCES --dist_dir dist\%PHENIXVERSION% tmp\phenix-installer-%PHENIXVERSION%-win7vc90 2>&1 | wtee -a ..\CreateInstaller%PHENIXVERSION%-%PLATFORM%.log
+  
+
+
+
+
+
+
+Automated build with Buildbot
+=============================
+
+Assuming the PC runs as a Buildbot slave builds are automated from the Buildbot master
+machine. Necessary private keys must be loaded in pageant and cmd shells must set the 
+compiler environment variables with the registry key
+::
+
+  HKEY_CURRENT_USER\Software\Microsoft\Command Processor\AutoRun
+
+as detailed above.
+
+
+
+
+Important tweaks for shortening duration of builds
+===================================================
+
+For the directory where nightly builds are done:
+
+ - Exclude it from Windows indexing. 
+ - Exclude it from on-access virus scan (both read and write)
+ - Avoid storing several previous builds since NTFS doesn't perform well 
+   when zillions of files are present on the same disc. Zip up previous builds 
+   into single files or move to a different partition if they must be retained
+
+Failure to follow these recommendations may over time make successive builds extremely slow (+24 hours)
+
+Clear virtual memory at shutdown:
+Go to Control Panel\All Control Panel Items\Administrative Tools->Local Security Policy->Local Policies->Security Options->Shutdown: Clear virtual memory pagefile
+
+Adjust for best performance of background processes:
+Check Control Panel\All Control Panel Items\System->Advanced system settings->System Properties | Advanced tab->Performance settings->Performance Options | Advanced tab->Adjust for best performance of Background services
+
+Ensure at least weekly disk defragmentation which does not occur at the same time as a build.
+
+
