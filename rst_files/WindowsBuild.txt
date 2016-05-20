@@ -8,17 +8,58 @@ Introduction
 ============
 
 This document describes how to build Phenix from sources on Windows. Given that 
-Windows is not shipped with the necessary tools for building Phenix how to set up
-these tools is also covered here.
+Windows does not have all the necessary tools for building Phenix, how to set up
+these tools is covered here in some detail.
 
 A typical PHENIX installation takes up the order of 5Gb disk space. If you build PHENIX 
 from scratch including an installer this will be of the order of 15Gb.
+Throughout this document "cmd shell" refers to what also is termed "command prompt" or more
+archaichally the "DOS prompt". 
 
+Necessary tweaks of the Windows PC
+===================================
+
+Automatically run script for every cmd shell
+---------------------------------------------
+
+On Unix startup scripts such as .bashrc or .tcshrc
+are convenient for initiating commonly used environment variables for a user.
+Windows has a different technique for achieving the same for the cmd shell. In the registry
+editor, locate the AutoRun registry key:
+::
+
+  HKEY_CURRENT_USER\Software\Microsoft\Command Processor\AutoRun
+
+If there is no AutoRun key present under the "Command Processor" key then create a new one
+of type string. This key can be set to the full path of a cmd script you have 
+written that does something such as initiating enviroment variables for that cmd shell. 
+We will call it ntshell.cmd.
+
+Alternatively one could just have defined the enviroment variables through the 
+Control Panel\\All Control Panel Items\\User Accounts and click on "Change my enviroment variables".
+But this is not feasible if there are many variables or some variable values are 
+deduced on the fly from scripts.
+
+Run a script once at every logon
+---------------------------------
+
+Say you have a script in your %HOMEPATH% directory named logon.cmd.
+To make this script run only once at every logon, open the Task Scheduler in the Control Panel, 
+click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of your 
+script. This script will then run next time you log on. The cmd shell
+will remain visible after it has executed the tasks in logon.cmd. To avoid this set 
+the last line in logon.cmd to:
+::
+
+  EXIT
+
+and it will go away.
 
 Necessary prerequisites
 =======================
 
 To build PHENIX from scratch and create a binary Windows installer the following is required:
+
  - Python 2.7 (any version)
  - makensis from Nullsoft
  - Microsoft Visual C++ 9.0 / Microsoft Visual Studio 2008
@@ -28,75 +69,32 @@ To build PHENIX from scratch and create a binary Windows installer the following
  - Git
  - optionally wtee.exe for duplicating stdout to file and console.
 
+
 To build PHENIX from an existing installation with sources the following is required:
+
  - Microsoft Visual C++ 9.0 / Microsoft Visual Studio 2008
 
-Makensis from Nullsoft is only required for creating an executable Windows installer package
-for deployment of PHENIX.
 
+Visual C++ 9.0
+---------------
 
 The Microsoft compiler is available for free in the Windows 7 SDK from the Microsoft website:
-https://www.microsoft.com/en-gb/download/details.aspx?id=3138
+https://www.microsoft.com/en-gb/download/details.aspx?id=3138 . 
 It should be titled "Microsoft Windows SDK for Windows 7 and .NET Framework 3.5 SP1". 
-There are newer versions of this SDK using more recent compilers. As these use a newer 
-C-runtime library I suspect compiled programs may not binary compatible with Python 2.7 which
+There are newer versions of this SDK using more recent compilers. As these use a more recent 
+C-runtime library compiled programs may not be binary compatible with Python 2.7 which
 is compiled with Visual C++ 9.0. You would still be able to build individual statically 
 linked executables with those newer compilers. But whether or not compiled python modules 
 can run without crashing using a newer runtime is questionable. After installing the 
 compiler it can be invoked once environment variables have been set by calling scripts 
-such as vcvars32.bat or vcvars64.bat from a cmd-shell.
-
-**Issue setting compiler environment variables**
-
-If you want to run manual builds environment variables are readily invoked by calling
-vcvars32.bat or vcvars64.bat. But if doing an automated build with Buildbot
-all the necessary prerequisites must be acessible in the executable path from a cmd-shell.
-For most programs this is achieved by appending the PATH environment with the location of
-binaries of the prerequisite programs. But this is not feasible for the compiler. Instead
-we set the autorun registry key
+such as vcvars32.bat or vcvars64.bat from a cmd-shell or in a build script prior to compiling.
+These files live in the folder
 ::
 
-  HKEY_LOCAL_MACHINE\Software\Microsoft\Command Processor\AutoRun
+  C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin
 
-or 
-
-::
-
-  HKEY_CURRENT_USER\Software\Microsoft\Command Processor\AutoRun
-
-to a string with the full path of a cmd script that runs either of vcvars32.bat or vcvars64.bat
-whenever a cmd shell is started. However, due to 
-a flaw in in those files this may lead to a cmd-shell hanging in an infinite loop.
-One remedy is to copy vcvars32.bat and vcvars64.bat to myvcvars32.bat and myvcvars64.bat and
-replace the lines :
-::
-
-    :GetWindowsSdkDirHelper
-    @for /F "tokens=1,2*" %%i in ('reg query "%1\SOFTWARE\Microsoft\Microsoft SDKs\Windows" /v "CurrentInstallFolder"') DO (
-    	if "%%i"=="CurrentInstallFolder" (
-    		SET "WindowsSdkDir=%%k"
-    	)
-    )
-
-with
-::
-
-    :GetWindowsSdkDirHelper
-    SET fname=%TEMP%\tmpSDKvars.txt
-    reg query "%1\SOFTWARE\Microsoft\Microsoft SDKs\Windows" /v "CurrentInstallFolder" > %fname%
-    
-    @SET WindowsSdkDir=
-    @for /F "tokens=1,2*" %%i in (%fname%) DO (
-    	if "%%i"=="CurrentInstallFolder" (
-    		SET "WindowsSdkDir=%%k"
-    	)
-    )
-    del %fname%
-
-to make a cmd shell start up properly when the autorun key is set to point to 
-myvcvars32.bat or myvcvars64.bat.
-
-**OpenSSH tools**
+OpenSSH tools
+--------------
 
 Currently the PuTTY software suite is used in place of OpenSSH. This may change in the future.
 Putty contains Pageant which allows SVN access with public/private keys where seamless 
@@ -113,10 +111,34 @@ program. Some repositories require authenticated access to where you should have
 deposited your public keys. Your corresponding private keys should then be loaded into pageant
 before starting the build.
 
+If setting up a PC for regular production builds it is worth ensuring that pageant is loaded
+with your private keys as soon as you have logged on. One way of doing so is by making a link of
+pageant.exe in the Startup group. Then edit the properties of this link to specify the full path 
+of your private keys:
+::
+
+  "C:\Program Files (x86)\PuTTY\pageant.exe"  C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
+
+Another way is to add the lines:
+::
+
+  START C:\Program Files (x86)\PuTTY\pageant.exe C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
+  
+to your logon.cmd script. This may be the only way on Windows 8 or higher where Microsoft
+have made the Startup group difficult to access.
+
+
+Makensis
+---------
+
+Makensis from Nullsoft is only required for creating an executable Windows installer package
+for deployment of PHENIX.
+
 
 
 Bundling base components together as zip files
-----------------------------------------------
+===============================================
+
 There are two base components which do not have to be compiled from scratch but are bundled
 in zip files for easy installation. This is possible because unlike Unix operating 
 systems binary compatibility of executables with Windows is retained over successive 
@@ -125,6 +147,9 @@ versions of Windows apart from the distinction between 32 and 64 bit executables
 The first base component bundled is python 2.7 with installed modules such as matplotlib, 
 numpy, biopython, wxpython, etc. The second base component bundled is the HDF5 library. 
 `Click here <windows_bundles.html>`__ for details on how to create these bundles.
+
+To add python modules to python from online repos chdir to toplevel of python and type
+"python -m pip install XXX" 
 
 These components are only necessary to create once or if you wish to update the 
 existing components.
@@ -141,8 +166,7 @@ From an existing PHENIX installation
 ------------------------------------
 
 If you want to build PHENIX from an existing installation on Windows where the 
-sources are present you will need to have the compiler installed and do the 
-following steps:
+sources are present do the following steps:
 
   - From the Start menu open a PHENIX Command Prompt
   - run vcvars32.bat or vcvars64.bat depending on the platform
@@ -159,10 +183,15 @@ From bootstrap.py
 Below is a cmd script for manually building PHENIX with bootstrap.py. It first downloads sources
 from external repositories, then compiles them, then runs tests and finally creates a binary
 installer. It is assumed the script is started with command line arguments specifying 
-platform and Phenix version.
+platform and version label that will be tagged to the executables during the build.
 
-::
+**PhenixBuild.cmd**
 
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:300px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
   SET PLATFORM=%1
   SET PHENIXVERSION=%2
   
@@ -190,9 +219,8 @@ platform and Phenix version.
   REM            create installer
   call build\bin\libtbx.create_installer.bat --binary --version %PHENIXVERSION% --install_script modules\phenix\phenix\installer\phenix_installer.py --license modules\phenix\LICENSE.txt --readme modules\phenix\CHANGES --readme modules\phenix\phenix\installer\README --readme modules\phenix\phenix\installer\SOURCES --dist_dir dist\%PHENIXVERSION% tmp\phenix-installer-%PHENIXVERSION%-win7vc90 2>&1 | wtee -a ..\CreateInstaller%PHENIXVERSION%-%PLATFORM%.log
   
-
-
-
+  </pre>
+  </div>
 
 
 
@@ -209,10 +237,130 @@ compiler environment variables with the registry key
 as detailed above.
 
 
+Issue initiating compiler environment variables
+------------------------------------------------
+
+If you want to run manual builds the environment variables are readily invoked by calling
+vcvars32.bat or vcvars64.bat. But if doing an automated build with Buildbot
+all the necessary prerequisites must be acessible in the executable path from a cmd-shell.
+At first glance the thing to do is to add the full path of vcvars32.bat or vcvars64.bat to
+ntshell.cmd. However, due to a flaw in those files this may lead all cmd shells to hang in
+an infinite loop.
+One remedy is to copy vcvars32.bat and vcvars64.bat to myvcvars32.bat and myvcvars64.bat. Then
+replace the lines:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:150px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  :GetWindowsSdkDirHelper
+  @for /F "tokens=1,2*" %%i in ('reg query "%1\SOFTWARE\Microsoft\Microsoft SDKs\Windows" /v "CurrentInstallFolder"') DO (
+    if "%%i"=="CurrentInstallFolder" (
+      SET "WindowsSdkDir=%%k"
+    )
+  )
+  </pre>
+  </div>
+
+with
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:220px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  :GetWindowsSdkDirHelper
+  SET fname=%TEMP%\tmpSDKvars.txt
+  reg query "%1\SOFTWARE\Microsoft\Microsoft SDKs\Windows" /v "CurrentInstallFolder" > %fname%
+  
+  @SET WindowsSdkDir=
+  @for /F "tokens=1,2*" %%i in (%fname%) DO (
+    if "%%i"=="CurrentInstallFolder" (
+      SET "WindowsSdkDir=%%k"
+    )
+  )
+  del %fname%
+  </pre>
+  </div>
+
+then add a line to your ntshell.cmd  with the full path of myvcvars32.bat or myvcvars64.bat
+like:
+::
+
+  call "C:\Users\builder\MyVSvars32.bat"
+
+
+
+
+Setting up a PC as a Buildbot slave
+------------------------------------
+
+The Buildbot slave is installed as per the 
+`online documentation <http://trac.buildbot.net/wiki/DownloadInstall>`__. For instance 
+for installing a slave named intel-windows-x86_64 in C:\\Users\\builder\\slave chdir to the installed
+python and type:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  C:\Python2.7.9x64\Scripts\easy_install.exe buildbot-slave
+  </pre>
+  </div>
+
+and then:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  C:\Python2.7.9x64\Scripts\buildslave create-slave C:\Users\builder\slave cci-vm-6.lbl.gov:9989 intel-windows-x86_64 pass
+  </pre>
+  </div>
+
+which will make it listen to a master on port 9989 from cci-vm-6.lbl.gov. It is possible to
+start this slave automatically as a Windows service (equivalent of a Unix daemon) but a simpler
+procedure is to add the following line:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  START "Running BuildBot Slave. Do not close!" /MIN cmd /c C:\Python2.7.9x64\Scripts\buildslave start C:\Users\builder\slave
+  </pre>
+  </div>
+
+to your logon.cmd script. Once you have logged on this will place an icon of a minimised cmd 
+shell on the taskbar which should not be interfered with, let alone closed.
+
+
+
+
+
+Creating an executable Windows installer program
+===================================================
+
+If the build is done manually from bootstrap.py the installer program can optionally be 
+created with the last line in the PhenixBuild.cmd script above. It uses the makensis program.
+`Click here <nsis_windows_installer_script.html>`__ for further discussion on how to 
+compose the script that makensis uses for creating the installer.
+
 
 
 Important tweaks for shortening duration of builds
 ===================================================
+
+Clear virtual memory at shutdown:
+Go to Control Panel\\All Control Panel Items\\Administrative Tools->Local Security Policy->Local Policies->Security Options->Shutdown: Clear virtual memory pagefile
+
+Adjust for best performance of background processes:
+Check Control Panel\\All Control Panel Items\\System->Advanced system settings->System Properties | Advanced tab->Performance settings->Performance Options | Advanced tab->Adjust for best performance of Background services
+
+Ensure at least weekly disk defragmentation which does not coincide with doing builds.
 
 For the directory where nightly builds are done:
 
@@ -220,16 +368,9 @@ For the directory where nightly builds are done:
  - Exclude it from on-access virus scan (both read and write)
  - Avoid storing several previous builds since NTFS doesn't perform well 
    when zillions of files are present on the same disc. Zip up previous builds 
-   into single files or move to a different partition if they must be retained
+   into single files or move them to a different partition if they must be retained
 
-Failure to follow these recommendations may over time make successive builds extremely slow (+24 hours)
+Failure to follow these recommendations could over time make successive builds extremely slow (+24 hours)
 
-Clear virtual memory at shutdown:
-Go to Control Panel\All Control Panel Items\Administrative Tools->Local Security Policy->Local Policies->Security Options->Shutdown: Clear virtual memory pagefile
-
-Adjust for best performance of background processes:
-Check Control Panel\All Control Panel Items\System->Advanced system settings->System Properties | Advanced tab->Performance settings->Performance Options | Advanced tab->Adjust for best performance of Background services
-
-Ensure at least weekly disk defragmentation which does not occur at the same time as a build.
 
 
