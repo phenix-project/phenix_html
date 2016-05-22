@@ -203,15 +203,9 @@ your run number:
 Running from a parameters file
 ------------------------------
 
-You can run phenix.ligandfit from a parameters file. This is often
-convenient because you can generate a default one with:
-
-::
-
-    phenix.ligandfit --show_defaults > my_ligandfit.eff
-
-and then you can just edit this file to match your needs and run it
-with:
+You can run phenix.ligandfit from a parameters file. When you
+run ligandfit a parameters file is written in the output directory.
+Then you can edit this file and run it with:
 
 ::
 
