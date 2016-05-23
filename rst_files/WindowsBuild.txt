@@ -346,6 +346,8 @@ Creating an executable Windows installer program
 
 If the build is done manually from bootstrap.py the installer program can optionally be 
 created with the last line in the PhenixBuild.cmd script above. It uses the makensis program.
+If the build is done with Buildbot this will currently be created after the various tests
+have completed.
 `Click here <nsis_windows_installer_script.html>`__ for further discussion on how to 
 compose the script that makensis uses for creating the installer.
 
