@@ -36,14 +36,14 @@ the key;
 
 ::
 
-  HKEY_CURRENT_USER\\Software\\Python\\PythonCore\\2.7\\InstallPath
+  HKEY_CURRENT_USER\Software\Python\PythonCore\2.7\InstallPath
   
 The easiest thing may be to either uninstall any existing python or to make a backup of
 the registry key
 
 ::
 
-  HKEY_CURRENT_USER\\Software\\Python
+  HKEY_CURRENT_USER\Software\Python
   
 and then delete it. After that, install python in a folder that has no blank spaces in its name.
 
@@ -119,7 +119,12 @@ installed. The free version of the compiler from the Windows 7 SDK seems to conf
 other compilers are present. This leads to error messages when attempting to build the library.
 
 HDF5 can be downloaded from http://www.hdfgroup.org/ftp/HDF5/current/src/ such as a zipped 
-file like CMake-hdf5-1.8.16.zip. Expand it on your PC. In the folder CMake-hdf5-1.8.16 there 
+file like CMake-hdf5-1.8.16.zip. Expand it on your PC. 
+
+Adapting build scripts to Visual Studio 2008
+--------------------------------------------------
+
+In the folder CMake-hdf5-1.8.16 there 
 should be cmd scripts such as build-VS2012-32.bat, build-VS2013-32.bat etc. but none targetting
 Visual Studio 2008, i.e. with "VS2008" as part of the filename. We need to adapt HDF5 to 
 build with Visual Studio 2008. To do this open one of the existing cmd scripts such as 
@@ -332,8 +337,24 @@ and uncomment them:
   </pre>
   </div>
 
+Doing the actual build
+------------------------
+
 The configuration is now good to build. Open a command prompt and change directory to 
-the CMake-hdf5-1.8.16 folder with the amended build script files. CMake installed earlier 
+the CMake-hdf5-1.8.16 folder with the amended build script files. Initialise the compilers
+environment variables by running
+
+::
+
+  C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat
+
+or
+
+::
+
+  C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars64.bat
+
+CMake installed earlier 
 may not be in the executable path in which case you can add it temporarily by entering:
 
 ::
