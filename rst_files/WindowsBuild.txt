@@ -122,16 +122,29 @@ before starting the build.
 
 If setting up a PC for regular production builds it is worth ensuring that pageant is loaded
 with your private keys as soon as you have logged on. One way of doing so is by making a link of
-pageant.exe in the Startup group. Then edit the properties of this link to specify the full path 
-of your private keys:
-::
+pageant.exe in the Startup group. Right click on the link and select properties. On the
+shortcut tab edit the Target of this link adding the full path of the private keys that 
+should be loaded:
 
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
   "C:\Program Files (x86)\PuTTY\pageant.exe"  C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
+  </pre>
+  </div>
 
 Another way is to add the lines:
-::
 
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
   START C:\Program Files (x86)\PuTTY\pageant.exe C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
+  </pre>
+  </div>
   
 to your logon.cmd script. This may be the only way on Windows 8 or higher where Microsoft
 have made the Startup group difficult to access.
@@ -140,8 +153,9 @@ have made the Startup group difficult to access.
 Makensis
 ---------
 
-Makensis from Nullsoft is only required for creating an executable Windows installer package
-for deployment of PHENIX.
+Makensis from `Nullsoft <http://nsis.sourceforge.net>`__ is only required for creating an 
+executable Windows installer package for deployment of PHENIX. Bundled up zip files of an
+installation is always created.
 
 
 
@@ -167,7 +181,7 @@ sources are present do the following steps:
 
   - From the Start menu open a PHENIX Command Prompt
   - run vcvars32.bat or vcvars64.bat depending on the platform
-  - chdir to %PHENIX%\build
+  - chdir to %PHENIX%\\build
   - If compiling for the first time then delete all files and directories except config_modules.cmd
   
     - run config_modules.cmd
@@ -218,7 +232,6 @@ platform and version label that will be tagged to the executables during the bui
   
   </pre>
   </div>
-
 
 
 Automated build with Buildbot
