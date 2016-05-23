@@ -13,32 +13,41 @@ these tools is covered here in some detail.
 
 A typical PHENIX installation takes up the order of 5Gb disk space. If you build PHENIX 
 from scratch including an installer this will be of the order of 15Gb.
-Throughout this document "cmd shell" refers to what also is termed "command prompt" or more
-archaichally the "DOS prompt". 
+Throughout this document the "command prompt" (archaichally termed the "DOS prompt" by some)
+refers to the commandline interpreter program, cmd.exe, which broadly speaking works 
+similarly to bash or tcsh on Unix. On the Startup menu it is located in the "Accessories" 
+group.
 
 Necessary tweaks of the Windows PC
 ===================================
 
-Automatically run script for every cmd shell
----------------------------------------------
+Automatically run script for every command prompt
+--------------------------------------------------
 
 On Unix startup scripts such as .bashrc or .tcshrc
 are convenient for initiating commonly used environment variables for a user.
-Windows has a different technique for achieving the same for the cmd shell. In the registry
-editor, locate the AutoRun registry key:
+Windows has a different technique for achieving the same for the command prompt. 
+In the registry editor, regedit.exe, locate the AutoRun registry key:
 ::
 
   HKEY_CURRENT_USER\Software\Microsoft\Command Processor\AutoRun
 
 If there is no AutoRun key present under the "Command Processor" key then create a new one
 of type string. This key can be set to the full path of a cmd script you have 
-written that does something such as initiating enviroment variables for that cmd shell. 
-We will call it ntshell.cmd.
+written that does something such as initiating enviroment variables for that command prompt. 
+Call this script ntshell.cmd and store it in path pointed to by the %HOMEDRIVE%%HOMEPATH% 
+environment variables.
+
+.. warning:: Be very careful when editing the Windows registry. Entering wrong values or accidentally
+  deleting values may render Windows bricked. Always ensure you have a recent "System Restore"
+  point in your Windows backup. This will allow you to boot the PC to 
+  "Last known good configuration" if the registry gets corrupted.
 
 Alternatively one could just have defined the enviroment variables through the 
 Control Panel\\All Control Panel Items\\User Accounts and click on "Change my enviroment variables".
 But this is not feasible if there are many variables or some variable values are 
-deduced on the fly from scripts.
+deduced on the fly from scripts which is the case for initialising environment variable for
+the compiler.
 
 Run a script once at every logon
 ---------------------------------
@@ -46,7 +55,7 @@ Run a script once at every logon
 Say you have a script in your %HOMEPATH% directory named logon.cmd.
 To make this script run only once at every logon, open the Task Scheduler in the Control Panel, 
 click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of your 
-script. This script will then run next time you log on. The cmd shell
+script. This script will then run next time you log on. The command prompt
 will remain visible after it has executed the tasks in logon.cmd. To avoid this set 
 the last line in logon.cmd to:
 ::
@@ -87,8 +96,8 @@ is compiled with Visual C++ 9.0. You would still be able to build individual sta
 linked executables with those newer compilers. But whether or not compiled python modules 
 can run without crashing using a newer runtime is questionable. After installing the 
 compiler it can be invoked once environment variables have been set by calling scripts 
-such as vcvars32.bat or vcvars64.bat from a cmd-shell or in a build script prior to compiling.
-These files live in the folder
+such as vcvars32.bat or vcvars64.bat from a command prompt or in a build script prior 
+to compiling. These files live in the folder
 ::
 
   C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin
@@ -139,24 +148,12 @@ for deployment of PHENIX.
 Bundling base components together as zip files
 ===============================================
 
-There are two base components which do not have to be compiled from scratch but are bundled
-in zip files for easy installation. This is possible because unlike Unix operating 
-systems binary compatibility of executables with Windows is retained over successive 
-versions of Windows apart from the distinction between 32 and 64 bit executables.
-
-The first base component bundled is python 2.7 with installed modules such as matplotlib, 
-numpy, biopython, wxpython, etc. The second base component bundled is the HDF5 library. 
-`Click here <windows_bundles.html>`__ for details on how to create these bundles.
-
-To add python modules to python from online repos chdir to toplevel of python and type
-"python -m pip install XXX" 
-
-These components are only necessary to create once or if you wish to update the 
-existing components.
-
-During manual build or automated build bootstrap.py will download these two components from
-`http://cci.lbl.gov/cctbx_dependencies <http://cci.lbl.gov/cctbx_dependencies>`__.
-
+The Windows build does not need to compile python or the HDF5 library from scratch.
+Instead these two components are bundled as separate zip files which bootstrap.py 
+will download from
+`http://cci.lbl.gov/cctbx_dependencies <http://cci.lbl.gov/cctbx_dependencies>`__ during the
+first stages of the build. `Click here <windows_bundles.html>`__ for details on how to 
+create these bundles or on how to update the python.
 
 
 Manual build
@@ -228,23 +225,19 @@ Automated build with Buildbot
 =============================
 
 Assuming the PC runs as a Buildbot slave builds are automated from the Buildbot master
-machine. Necessary private keys must be loaded in pageant and cmd shells must set the 
-compiler environment variables with the registry key
-::
-
-  HKEY_CURRENT_USER\Software\Microsoft\Command Processor\AutoRun
-
-as detailed above.
+machine. Required private keys should be loaded in pageant through a logon.cmd script and 
+command prompts must set the compiler environment variables through an ntshell.cmd script
+as `detailed above <WindowsBuild.html#automatically-run-script-for-every-command-prompt>`__.
 
 
 Issue initiating compiler environment variables
-------------------------------------------------
+-----------------------------------------------
 
 If you want to run manual builds the environment variables are readily invoked by calling
 vcvars32.bat or vcvars64.bat. But if doing an automated build with Buildbot
-all the necessary prerequisites must be acessible in the executable path from a cmd-shell.
+all the necessary prerequisites must be acessible in the executable path from a command prompt.
 At first glance the thing to do is to add the full path of vcvars32.bat or vcvars64.bat to
-ntshell.cmd. However, due to a flaw in those files this may lead all cmd shells to hang in
+ntshell.cmd. However, due to a flaw in those files this may lead all command prompts to hang in
 an infinite loop.
 One remedy is to copy vcvars32.bat and vcvars64.bat to myvcvars32.bat and myvcvars64.bat. Then
 replace the lines:
@@ -334,8 +327,8 @@ procedure is to add the following line:
   </pre>
   </div>
 
-to your logon.cmd script. Once you have logged on this will place an icon of a minimised cmd 
-shell on the taskbar which should not be interfered with, let alone closed.
+to your logon.cmd script. Once you have logged on this will place an icon of a minimised command 
+prompt on the taskbar which must not be interfered with, let alone closed.
 
 
 
@@ -345,11 +338,13 @@ Creating an executable Windows installer program
 ===================================================
 
 If the build is done manually from bootstrap.py the installer program can optionally be 
-created with the last line in the PhenixBuild.cmd script above. It uses the makensis program.
-If the build is done with Buildbot this will currently be created after the various tests
-have completed.
-`Click here <nsis_windows_installer_script.html>`__ for further discussion on how to 
-compose the script that makensis uses for creating the installer.
+created with the last line in the PhenixBuild.cmd script above. If the build is done with 
+Buildbot the installer will currently be created after the various tests
+have completed. In both cases the makensis program creates the installer program by reading a
+separate script part of which is located in 
+cctbx_project\\libtbx\\auto_build\\mainphenixinstaller.nsi.
+`Click here <nsis_windows_installer_script.html>`__ for further details on how to 
+compose this script that makensis uses for creating the installer.
 
 
 
@@ -370,9 +365,9 @@ For the directory where nightly builds are done:
  - Exclude it from on-access virus scan (both read and write)
  - Avoid storing several previous builds since NTFS doesn't perform well 
    when zillions of files are present on the same disc. Zip up previous builds 
-   into single files or move them to a different partition if they must be retained
+   into single files or move them to a different partition if they have to be retained.
 
-Failure to follow these recommendations could over time make successive builds extremely slow (+24 hours)
+Failure to follow these steps could over time make successive builds extremely slow (+24 hours)
 
 
 

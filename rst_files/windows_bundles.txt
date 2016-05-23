@@ -1,0 +1,355 @@
+=====================================================================
+Bundling base components as zip files for the Windows build
+=====================================================================
+
+.. contents::
+
+Introduction
+============
+
+This document details how to create zip file bundles of python and the HDF5 library used
+for the Windows build of Phenix as `described here <WindowsBuild.html>`__.
+
+These two base components do not have to be compiled from scratch but can be bundled
+as zip files to be downloaded which makes it easier to create installers for Windows. 
+This is possible because unlike Unix operating 
+systems binary compatibility of executables with Windows has been retained over successive 
+versions of Windows apart from the distinction between 32 and 64 bit executables.
+These components are only necessary to create once. Bootstrap.py will then download them from
+http://cci.lbl.gov/cctbx_dependencies during the first stages of the build.
+
+
+Python 2.7
+============
+
+The first base component bundled is python 2.7.9 with installed modules such as matplotlib, 
+numpy, biopython, wxpython, etc. Version 2.7.9 is the minimum version that provides tools like
+"pip install" which makes it much easier to enhance python with 3rd party modules.
+
+Creating the python bundle
+---------------------------
+
+The first step is to download and install python2.7.9 (or higher) to your PC. Unfortunately
+the Python for Windows installer is much too clever for its own good. It may overwrite any
+existing python installation on your PC as well as specifying this in the Windows registry in
+the key;
+
+::
+
+  HKEY_CURRENT_USER\\Software\\Python\\PythonCore\\2.7\\InstallPath
+  
+The easiest thing may be to either uninstall any existing python or to make a backup of
+the registry key
+
+::
+
+  HKEY_CURRENT_USER\\Software\\Python
+  
+and then delete it. After that, install python in a folder that has no blank spaces in its name.
+
+.. warning:: Be very careful when editing the Windows registry. Entering wrong values or accidentally
+  deleting values may render Windows bricked. Always ensure you have a recent "System Restore"
+  point in your Windows backup. This will allow you to boot the PC to 
+  "Last known good configuration" if the registry gets corrupted.
+
+Next we need to install wxPython package for the GUI. This is available as a binary installer
+from http://www.wxpython.org. Get version 3.0.2 and install it into your python 
+installation. It should default to live in <your python folder>\\Lib\\site-packages.
+
+The list of additional 3rd party python modules and their versions necessary for
+the python for Windows distributed with Phenix is:
+
+::
+
+  Cython==0.22
+  PIL==1.1.7
+  Pillow==2.8.1
+  PyOpenGL==3.1.1a1
+  PyRTF==0.45
+  Pygments==2.1.3
+  biopython==1.65
+  comtypes==1.1.1
+  docutils==0.12
+  h5py==2.5.0
+  libsvm==3.20
+  matplotlib==1.4.3
+  numpy==1.9.2
+  psutil==2.2.1
+  py2exe==0.6.9
+  pyparsing==2.0.3
+  python-dateutil==2.4.2
+  pytz==2015.2
+  reportlab==3.1.44
+  scipy==0.15.1
+  six==1.9.0
+
+These can be added to your python installation from online repositories as follows: In a 
+command prompt change directory to the toplevel directory of your python installation and type:
+
+::
+
+  python -m pip install moduleXYZ
+
+where "moduleXYZ" is one of the above. Modules not found through the online database of python 
+modules or those which have not been compiled with Visual C++ 2008 may be found on
+`Christoph Gohlke's site <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`__. Make sure that the
+python version and compiler version of the modules matches 2.7 and Visual Studio 2008 
+respectively.
+
+Now your customised python is ready to be bundled into a zip file. Open Windows Explorer, 
+locate the folder above your python, right-click on your python folder and select 
+"Send to Compressed (zipped) Folder". This will create a zip file named python.zip 
+which contains everything in your customised python. Depending on the platform you are 
+targetting rename it to python2.7.9_x86_64_plus_relocatable.zip or  
+python2.7.9_x86_32_plus_relocatable.zip. Upload it to http://cci.lbl.gov/cctbx_dependencies
+and bootstrap.py should be be able to download it during the build and expand it in the
+subdirectory directory named base of your build location.
+
+
+
+
+HDF5 library
+=============
+
+The second base component bundled is the HDF5 library which is necesary for Dials and Xia2.
+On Windows the build tool CMake from https://cmake.org/ must be installed first.
+
+On this occassion it seems to be necessary to have the full Visual Studio 2008 
+installed. The free version of the compiler from the Windows 7 SDK seems to confuse CMake if
+other compilers are present. This leads to error messages when attempting to build the library.
+
+HDF5 can be downloaded from http://www.hdfgroup.org/ftp/HDF5/current/src/ such as a zipped 
+file like CMake-hdf5-1.8.16.zip. Expand it on your PC. In the folder CMake-hdf5-1.8.16 there 
+should be cmd scripts such as build-VS2012-32.bat, build-VS2013-32.bat etc. but none targetting
+Visual Studio 2008, i.e. with "VS2008" as part of the filename. We need to adapt HDF5 to 
+build with Visual Studio 2008. To do this open one of the existing cmd scripts such as 
+build-VS2012-32.bat and replace the line
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  ctest -S HDF518config.cmake,BUILD_GENERATOR=VS2012 -C Release -V -O hdf518.log
+  </pre>
+  </div>
+
+with
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  ctest -S HDF518config.cmake,BUILD_GENERATOR=VS2008 -C Release -V -O hdf518.log
+  </pre>
+  </div>
+
+Save this file with the name "build-VS2008-32.bat". Now open the file "HDF518config.cmake".
+Locate the section:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  # build generator must be defined
+  if(NOT DEFINED BUILD_GENERATOR)
+    message(FATAL_ERROR "BUILD_GENERATOR must be defined - Unix, VS200864, VS2013, VS201364, VS2012, or VS201264")
+  else()
+    if(${BUILD_GENERATOR} STREQUAL "Unix")
+      set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2015")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 14 2015")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201564")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 14 2015 Win64")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2013")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 12 2013")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201364")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 12 2013 Win64")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2012")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 11 2012")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201264")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 11 2012 Win64")
+    else()
+      message(FATAL_ERROR "Invalid BUILD_GENERATOR must be - Unix, VS2013, VS201364, VS2012, or VS201264")
+    endif()
+  endif()
+  </pre>
+  </div>
+
+and add entries for VS2008 like:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  # build generator must be defined
+  if(NOT DEFINED BUILD_GENERATOR)
+    message(FATAL_ERROR "BUILD_GENERATOR must be defined - Unix, VS2008, VS200864, VS2013, VS201364, VS2012, or VS201264")
+  else()
+    if(${BUILD_GENERATOR} STREQUAL "Unix")
+      set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2015")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 14 2015")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201564")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 14 2015 Win64")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2013")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 12 2013")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201364")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 12 2013 Win64")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2012")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 11 2012")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201264")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 11 2012 Win64")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2008")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 9 2008")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS200864")
+      set(CTEST_CMAKE_GENERATOR "Visual Studio 9 2008 Win64")
+    else()
+      message(FATAL_ERROR "Invalid BUILD_GENERATOR must be - Unix, VS2013, VS201364, VS2012, or VS201264")
+    endif()
+  endif()
+  </pre>
+  </div>
+
+Now locate the section:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  #########       Following describes compiler           ############
+  if(WIN32)
+    set(SITE_OS_NAME "Windows")
+    set(SITE_OS_VERSION "WIN7")
+    if(${BUILD_GENERATOR} STREQUAL "VS201564")
+      set(SITE_OS_BITS "64")
+      set(SITE_COMPILER_NAME "vs2015")
+      set(SITE_COMPILER_VERSION "14")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2015")
+      set(SITE_OS_BITS "32")
+      set(SITE_COMPILER_NAME "vs2015")
+      set(SITE_COMPILER_VERSION "14")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201364")
+      set(SITE_OS_BITS "64")
+      set(SITE_COMPILER_NAME "vs2013")
+      set(SITE_COMPILER_VERSION "12")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2013")
+      set(SITE_OS_BITS "32")
+      set(SITE_COMPILER_NAME "vs2013")
+      set(SITE_COMPILER_VERSION "12")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201264")
+      set(SITE_OS_BITS "64")
+      set(SITE_COMPILER_NAME "vs2012")
+      set(SITE_COMPILER_VERSION "11")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2012")
+      set(SITE_OS_BITS "32")
+      set(SITE_COMPILER_NAME "vs2012")
+      set(SITE_COMPILER_VERSION "11")
+    endif()
+  ##  Set the following to unique id your computer  ##
+  </pre>
+  </div>
+
+and add entries for the VS2008 compiler like:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  #########       Following describes compiler           ############
+  if(WIN32)
+    set(SITE_OS_NAME "Windows")
+    set(SITE_OS_VERSION "WIN7")
+    if(${BUILD_GENERATOR} STREQUAL "VS201564")
+      set(SITE_OS_BITS "64")
+      set(SITE_COMPILER_NAME "vs2015")
+      set(SITE_COMPILER_VERSION "14")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2015")
+      set(SITE_OS_BITS "32")
+      set(SITE_COMPILER_NAME "vs2015")
+      set(SITE_COMPILER_VERSION "14")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201364")
+      set(SITE_OS_BITS "64")
+      set(SITE_COMPILER_NAME "vs2013")
+      set(SITE_COMPILER_VERSION "12")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2013")
+      set(SITE_OS_BITS "32")
+      set(SITE_COMPILER_NAME "vs2013")
+      set(SITE_COMPILER_VERSION "12")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS201264")
+      set(SITE_OS_BITS "64")
+      set(SITE_COMPILER_NAME "vs2012")
+      set(SITE_COMPILER_VERSION "11")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2012")
+      set(SITE_OS_BITS "32")
+      set(SITE_COMPILER_NAME "vs2012")
+      set(SITE_COMPILER_VERSION "11")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS200864")
+      set(SITE_OS_BITS "64")
+      set(SITE_COMPILER_NAME "vs2008")
+      set(SITE_COMPILER_VERSION "9")
+    elseif(${BUILD_GENERATOR} STREQUAL "VS2008")
+      set(SITE_OS_BITS "32")
+      set(SITE_COMPILER_NAME "vs2008")
+      set(SITE_COMPILER_VERSION "9")
+    endif()
+  ##  Set the following to unique id your computer  ##
+  </pre>
+  </div>
+
+Finally due to licensing terms of the optionally compiled SZIP library as detailed here:
+https://www.hdfgroup.org/doc_resource/SZIP/ this needs to be excluded from builds. To do that
+find the lines:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:110px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  ### disable ext libs building
+  #set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")
+  #set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF")
+  #set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_SZIP_ENCODING:BOOL=OFF")
+  </pre>
+  </div>
+
+and uncomment them:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:110px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  ### disable ext libs building
+  set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")
+  set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF")
+  set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_SZIP_ENCODING:BOOL=OFF")
+  </pre>
+  </div>
+
+The configuration is now good to build. Open a command prompt and change directory to 
+the CMake-hdf5-1.8.16 folder with the amended build script files. CMake installed earlier 
+may not be in the executable path in which case you can add it temporarily by entering:
+
+::
+  
+  set PATH=%PATH%;C:\Program Files\CMake\bin
+  
+Then run the build script by entering:
+
+::
+
+  build-VS2008-32.bat
+
+This should build the library, bundle it into a compressed zip file in living in
+CMake-hdf5-1.8.16\\build and named HDF5-1.8.16-win32.zip or HDF5-1.8.16-win64.zip depending 
+on the platform. As with the python bundles these files should be uploaded to 
+http://cci.lbl.gov/cctbx_dependencies so that bootstrap.py may fetch it during a build of 
+Phenix.
+
+
