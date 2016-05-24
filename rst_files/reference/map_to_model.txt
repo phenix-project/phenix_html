@@ -39,7 +39,24 @@ the best-fitting non-overlapping chains are chosen.
 ----------------------------------
 
 **map\_to\_model.pdb**: A PDB file with the resulting model, superimposed on
-   the original map
+   the original map (or on the magnified map if magnification is applied).
+
+
+
+*Applying magnification to the map*
+-----------------------------------
+
+Cryo-EM maps often have a scale that is not precisely defined by the 
+experiment. map\_to\_model allows application of a scale factor
+(magnification) to the grid of the map.  Normally this scale factor
+will be close to 1. If the magnification is specified and is not
+equal to 1, it will be applied to the input map and a magnification map
+will be written out to the output directory and will be used as if it were
+the original input file from then on.  Additionally any input NCS information
+will be adjusted by the same magnification factor (translations and
+centers are scaled by the magnification factor, rotations are unchanged).
+Any input models are not modified.
+
 
 *Shifting the map to the origin*
 --------------------------------
@@ -144,9 +161,93 @@ sequence file, and find_ncs.ncs_spec is an optional file specifying any
 NCS operators used in averaging the map. This can be in the form of
 BIOMTR records from a PDB file as well.
 
+Combining partial runs from map\_to\_model:
+-------------------------------------------
+
+If you have a completed or partially-completed run of map\_to\_model and 
+you want to run again but you do not want to re-run all the steps, you can
+skip building some models by specifying a previously-built model for 
+some steps. The models you can specify are:
+
+::
+
+    init_PROTEIN 
+
+    init_RNA 
+
+    init_DNA 
+
+    helices_strands_only_PROTEIN 
+
+    build_rna_helices_RNA 
+
+    standard_PROTEIN 
+
+    standard_RNA 
+
+    standard_DNA 
+
+    final_PROTEIN 
+
+    final_RNA 
+
+    final_DNA
+
+For example, you can say:
+
+::
+
+    phenix.map\_to\_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
+      partial_model=last_run/final_PROTEIN.pdb 
+      partial_model_type=final_PROTEIN 
+      partial_model=last_run/final_RNA.pdb
+      partial_model_type=final_RNA
+   
+and then the files last_run/final_PROTEIN.pdb and last_run/final_RNA.pdb
+will simply be combined to create a new model, instead of doing a full
+model-building run. 
+
+The stages of model-building that can be replaced are:
+
+::
+
+    init (building into individual regions of density)
+
+    helices_strands_only (PROTEIN search for helices and strands)
+
+    build_rna_helices (RNA search for A-form helices)
+
+    standard (RESOLVE model-building on entire structure)
+
+    final (combined model for one chain type)
+
+The chain-types that can be specified are:
+
+::
+
+    PROTEIN
+
+    RNA
+
+    DNA
+
+
 
 Possible Problems
 -----------------
+
+If you have a very large structure it is possible that your computer may not
+have enough memory to run map\_to\_model and that one or more sub-processes 
+might crash.  The best solution for this is to try on a computer with even
+more memory.  You can also cut back the resolution used in steps that use
+Fourier transformation.
+
+If your queueing system crashes during a run or one or more sub-processes
+crashes, then you might end up with models built for some stages of
+building and others not. You can carry out another run and read in the models
+that have already been built so that you do not need to build them again 
+(see above in the section on combining partial runs).
+
 
 Specific limitations and problems:
 ----------------------------------
