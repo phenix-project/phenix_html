@@ -52,6 +52,11 @@ here <../reference/autobuild_gui.html>`__
    becomes more complete and maps improve the weaker density in loops
    regions may become clearer, and thus can be fit using
    phenix.fit\_loops.
+-  `phenix.map\_to\_model <../reference/map_to_model.html>`__: This is 
+   designed for lower resolution model-building. It is suitable for
+   both crystallographic maps and cryo-EM maps.  It can take into account
+   symmetry that has been used to create a map, building only the unique
+   part of the model and expanding to the remaining NCS-related copies.
 -  `phenix.erraser <../reference/erraser.html>`__: This program uses
    ERRASER (Enumerative Real-space Refinment ASsisted by
    Electron-density under Rosetta) to rebuild RNA structures by
