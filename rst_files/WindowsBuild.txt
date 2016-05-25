@@ -14,8 +14,8 @@ these tools is covered here in some detail.
 A typical PHENIX installation takes up the order of 5Gb disk space. If you build PHENIX 
 from scratch including an installer this will be of the order of 15Gb.
 Throughout this document the "command prompt" (archaichally termed the "DOS prompt" by some)
-refers to the commandline interpreter program, cmd.exe, which broadly speaking works 
-similarly to bash or tcsh on Unix. On the Startup menu it is located in the "Accessories" 
+refers to the commandline interpreter program, cmd.exe, which serves the
+same purpose as bash or tcsh on Unix. On the Startup menu it is located in the "Accessories" 
 group.
 
 Necessary tweaks of the Windows PC
@@ -34,7 +34,7 @@ In the registry editor, regedit.exe, locate the AutoRun registry key:
 
 If there is no AutoRun key present under the "Command Processor" key then create a new one
 of type string. This key can be set to the full path of a cmd script you have 
-written that does something such as initiating enviroment variables for that command prompt. 
+written that does something such as initiating environment variables for that command prompt. 
 Call this script ntshell.cmd and store it in path pointed to by the %HOMEDRIVE%%HOMEPATH% 
 environment variables.
 
@@ -43,7 +43,7 @@ environment variables.
   point in your Windows backup. This will allow you to boot the PC to 
   "Last known good configuration" if the registry gets corrupted.
 
-Alternatively one could just have defined the enviroment variables through the 
+Alternatively one could just have defined the environment variables through the 
 Control Panel\\All Control Panel Items\\User Accounts and click on "Change my enviroment variables".
 But this is not feasible if there are many variables or some variable values are 
 deduced on the fly from scripts which is the case for initialising environment variable for
@@ -54,8 +54,8 @@ Run a script once at every logon
 
 Say you have a script in your %HOMEPATH% directory named logon.cmd.
 To make this script run only once at every logon, open the Task Scheduler in the Control Panel, 
-click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of your 
-script. This script will then run next time you log on. The command prompt
+click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of the 
+logon.cmd file. This script will then run next time you log on. The command prompt
 will remain visible after it has executed the tasks in logon.cmd. To avoid this set 
 the last line in logon.cmd to:
 ::
@@ -87,11 +87,12 @@ To build PHENIX from an existing installation with sources the following is requ
 Visual C++ 9.0
 ---------------
 
-The Microsoft compiler is available for free in the Windows 7 SDK from the Microsoft website:
+If you have not purchased Microsoft Visual Studio 2008
+the compiler is available for free in the Windows 7 SDK from the Microsoft website:
 https://www.microsoft.com/en-gb/download/details.aspx?id=3138 . 
 It should be titled "Microsoft Windows SDK for Windows 7 and .NET Framework 3.5 SP1". 
-There are newer versions of this SDK using more recent compilers. As these use a more recent 
-C-runtime library compiled programs may not be binary compatible with Python 2.7 which
+There are newer versions of this SDK for Windows 7. But as these use more recent 
+C-runtime libraries compiled programs may not be binary compatible with Python 2.7 which
 is compiled with Visual C++ 9.0. You would still be able to build individual statically 
 linked executables with those newer compilers. But whether or not compiled python modules 
 can run without crashing using a newer runtime is questionable. After installing the 
@@ -114,7 +115,8 @@ to the location of plink.exe (using forward slashes instead of back slashes) and
 create an environment variable GIT_SSH that points to the location of plink.exe (using 
 forward slashes instead of back slashes).
 
-Pageant works similar to ssh_agent from OpenSSH and if you already have a set of 
+Pageant works similar to ssh-agent from OpenSSH for mediating key authentication during ssh 
+logon. If you already have a set of 
 public/private keys you can just convert them to the PuTTY format with the PuTTYgen 
 program. Some repositories require authenticated access to where you should have 
 deposited your public keys. Your corresponding private keys should then be loaded into pageant
@@ -177,16 +179,15 @@ From an existing PHENIX installation
 ------------------------------------
 
 If you want to build PHENIX from an existing installation on Windows where the 
-sources are present do the following steps:
+sources have also been installed then do the following:
 
-  - From the Start menu open a PHENIX Command Prompt
-  - run vcvars32.bat or vcvars64.bat depending on the platform
-  - chdir to %PHENIX%\\build
-  - If compiling for the first time then delete all files and directories except config_modules.cmd
-  
-    - run config_modules.cmd
-    
-  - run libtbx.scons -j <nproc>
+  1. From the Start menu open a PHENIX Command Prompt.
+  #. Run vcvars32.bat or vcvars64.bat depending on the platform.
+  #. Change directory to %PHENIX%\\build.
+      - If compiling for the first time delete all files and directories except 
+        config_modules.cmd.
+  #. Run config_modules.cmd.
+  #. Run libtbx.scons -j <nproc>.
 
 From bootstrap.py
 -------------------
@@ -345,8 +346,6 @@ prompt on the taskbar which must not be interfered with, let alone closed.
 
 
 
-
-
 Creating an executable Windows installer program
 ===================================================
 
@@ -356,8 +355,7 @@ Buildbot the installer will currently be created after the various tests
 have completed. In both cases the makensis program creates the installer program by reading a
 separate script part of which is located in 
 cctbx_project\\libtbx\\auto_build\\mainphenixinstaller.nsi.
-`Click here <nsis_windows_installer_script.html>`__ for further details on how to 
-compose this script that makensis uses for creating the installer.
+`Click here for further details <creating_windows_installer.html>`__.
 
 
 
@@ -382,5 +380,13 @@ For the directory where nightly builds are done:
 
 Failure to follow these steps could over time make successive builds extremely slow (+24 hours)
 
+.. raw:: html  
 
+  <br/><HR><FONT size="1">
+  <script type="text/javascript">
+  <!--
+  document.write("Last updated on " + Date(document.lastModified));
+  // -->
+  </script>  
+  </FONT><HR>
 

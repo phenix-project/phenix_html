@@ -11,10 +11,10 @@ This document details how to create zip file bundles of python and the HDF5 libr
 for the Windows build of Phenix as `described here <WindowsBuild.html>`__.
 
 These two base components do not have to be compiled from scratch but can be bundled
-as zip files to be downloaded which makes it easier to create installers for Windows. 
+as zip files to be downloaded when building for Windows. 
 This is possible because unlike Unix operating 
 systems binary compatibility of executables with Windows has been retained over successive 
-versions of Windows apart from the distinction between 32 and 64 bit executables.
+versions of Windows apart from the distinction between the 32 and 64 bit platforms.
 These components are only necessary to create once. Bootstrap.py will then download them from
 http://cci.lbl.gov/cctbx_dependencies during the first stages of the build.
 
@@ -24,22 +24,24 @@ Python 2.7
 
 The first base component bundled is python 2.7.9 with installed modules such as matplotlib, 
 numpy, biopython, wxpython, etc. Version 2.7.9 is the minimum version that provides tools like
-"pip install" which makes it much easier to enhance python with 3rd party modules.
+"pip install" which makes it much easier to enhance python with 3rd party modules from
+https://pypi.python.org.
 
 Creating the python bundle
 ---------------------------
 
 The first step is to download and install python2.7.9 (or higher) to your PC. Unfortunately
 the Python for Windows installer is much too clever for its own good. It may overwrite any
-existing python installation on your PC as well as specifying this in the Windows registry in
+existing python installation on your PC as well as the registry key that specifies the
+existing installation:
 the key;
 
 ::
 
   HKEY_CURRENT_USER\Software\Python\PythonCore\2.7\InstallPath
   
-The easiest thing may be to either uninstall any existing python or to make a backup of
-the registry key
+To deal with this the easiest thing may be to either uninstall the existing python or to 
+make a backup of the registry key
 
 ::
 
@@ -83,8 +85,8 @@ the python for Windows distributed with Phenix is:
   scipy==0.15.1
   six==1.9.0
 
-These can be added to your python installation from online repositories as follows: In a 
-command prompt change directory to the toplevel directory of your python installation and type:
+These can be added to your python installation as follows: In a command prompt change 
+directory to the toplevel directory of your python installation and type:
 
 ::
 
@@ -100,11 +102,12 @@ Now your customised python is ready to be bundled into a zip file. Open Windows 
 locate the folder above your python, right-click on your python folder and select 
 "Send to Compressed (zipped) Folder". This will create a zip file named python.zip 
 which contains everything in your customised python. Depending on the platform you are 
-targetting rename it to python2.7.9_x86_64_plus_relocatable.zip or  
-python2.7.9_x86_32_plus_relocatable.zip. Upload it to http://cci.lbl.gov/cctbx_dependencies
-and bootstrap.py should be be able to download it during the build and expand it in the
-subdirectory directory named base of your build location.
-
+targetting rename this file to python2.7.9_x86_64_plus_relocatable.zip or  
+python2.7.9_x86_32_plus_relocatable.zip. Once it has been uploaded to 
+http://cci.lbl.gov/cctbx_dependencies
+bootstrap.py will download it during the build and uncompress it in the base
+subdirectory of your build location. This currently happens onwards 
+from line 131 in the file cctbx_project\\libtbx\\auto_build\\install_base_packages.py.
 
 
 
@@ -115,11 +118,12 @@ The second base component bundled is the HDF5 library which is necesary for Dial
 On Windows the build tool CMake from https://cmake.org/ must be installed first.
 
 On this occassion it seems to be necessary to have the full Visual Studio 2008 
-installed. The free version of the compiler from the Windows 7 SDK seems to confuse CMake if
-other compilers are present. This leads to error messages when attempting to build the library.
+installed. The free version of the compiler in the Windows 7 SDK seems to confuse CMake if
+other and newer Visual Studio compilers are present. This leads to error messages when 
+attempting to build the library.
 
 HDF5 can be downloaded from http://www.hdfgroup.org/ftp/HDF5/current/src/ such as a zipped 
-file like CMake-hdf5-1.8.16.zip. Expand it on your PC. 
+file like CMake-hdf5-1.8.16.zip. Uncompress it on your PC. 
 
 Adapting build scripts to Visual Studio 2008
 --------------------------------------------------
@@ -133,7 +137,7 @@ build-VS2012-32.bat and replace the line
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:40px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   ctest -S HDF518config.cmake,BUILD_GENERATOR=VS2012 -C Release -V -O hdf518.log
   </pre>
@@ -144,7 +148,7 @@ with
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:40px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   ctest -S HDF518config.cmake,BUILD_GENERATOR=VS2008 -C Release -V -O hdf518.log
   </pre>
@@ -374,3 +378,12 @@ http://cci.lbl.gov/cctbx_dependencies so that bootstrap.py may fetch it during a
 Phenix.
 
 
+.. raw:: html  
+
+  <br/><HR><FONT size="1">
+  <script type="text/javascript">
+  <!--
+  document.write("Last updated on " + Date(document.lastModified));
+  // -->
+  </script>  
+  </FONT><HR>
