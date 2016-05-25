@@ -49,9 +49,9 @@ make a backup of the registry key
   
 and then delete it. After that, install python in a folder that has no blank spaces in its name.
 
-.. warning:: Be very careful when editing the Windows registry. Entering wrong values or accidentally
+.. warning:: Entering wrong values or accidentally
   deleting values may render Windows bricked. Always ensure you have a recent "System Restore"
-  point in your Windows backup. This will allow you to boot the PC to 
+  point in your Windows backup. This will allow you to boot Windows to 
   "Last known good configuration" if the registry gets corrupted.
 
 Next we need to install wxPython package for the GUI. This is available as a binary installer
@@ -358,8 +358,9 @@ or
 
   C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars64.bat
 
-CMake installed earlier 
-may not be in the executable path in which case you can add it temporarily by entering:
+according to the platform you are targetting. CMake installed earlier 
+may not be in the executable path in which case you can add it temporarily to your 
+command prompt by entering:
 
 ::
   

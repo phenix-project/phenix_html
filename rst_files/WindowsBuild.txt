@@ -7,8 +7,8 @@ How to build PHENIX on Windows
 Introduction
 ============
 
-This document describes how to build Phenix from sources on Windows. Given that 
-Windows does not have all the necessary tools for building Phenix, how to set up
+This document describes how to build Phenix from sources on Windows 7 or more recent versions. 
+Given that Windows does not have all the necessary tools for building Phenix, how to set up
 these tools is covered here in some detail.
 
 A typical PHENIX installation takes up the order of 5Gb disk space. If you build PHENIX 
@@ -34,26 +34,28 @@ In the registry editor, regedit.exe, locate the AutoRun registry key:
 
 If there is no AutoRun key present under the "Command Processor" key then create a new one
 of type string. This key can be set to the full path of a cmd script you have 
-written that does something such as initiating environment variables for that command prompt. 
-Call this script ntshell.cmd and store it in path pointed to by the %HOMEDRIVE%%HOMEPATH% 
+written that does something such as defining environment variables for that command prompt. 
+Call this script **ntshell.cmd** and store it in path pointed to by the %HOMEDRIVE%%HOMEPATH% 
 environment variables.
 
-.. warning:: Be very careful when editing the Windows registry. Entering wrong values or accidentally
+.. warning:: Entering wrong values or accidentally
   deleting values may render Windows bricked. Always ensure you have a recent "System Restore"
-  point in your Windows backup. This will allow you to boot the PC to 
+  point in your Windows backup. This will allow you to boot Windows to 
   "Last known good configuration" if the registry gets corrupted.
 
-Alternatively one could just have defined the environment variables through the 
-Control Panel\\All Control Panel Items\\User Accounts and click on "Change my enviroment variables".
-But this is not feasible if there are many variables or some variable values are 
-deduced on the fly from scripts which is the case for initialising environment variable for
+Alternatively one could may define environment variables through the 
+Control Panel\\All Control Panel Items\\User Accounts and click on 
+"Change my enviroment variables".
+But this method is not feasible if there are many variables or some variable values are 
+deduced on the fly from scripts. This is the case for initialising environment variable for
 the compiler.
 
 Run a script once at every logon
 ---------------------------------
 
-Say you have a script in your %HOMEPATH% directory named logon.cmd.
-To make this script run only once at every logon, open the Task Scheduler in the Control Panel, 
+Say you have a script in your %HOMEPATH% directory named **logon.cmd**.
+To make this script run only once at every logon, open the Task Scheduler in the 
+"Administrative tools" group in Control Panel, 
 click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of the 
 logon.cmd file. This script will then run next time you log on. The command prompt
 will remain visible after it has executed the tasks in logon.cmd. To avoid this set 
@@ -244,8 +246,8 @@ command prompts must set the compiler environment variables through an ntshell.c
 as `detailed above <WindowsBuild.html#automatically-run-script-for-every-command-prompt>`__.
 
 
-Issue initiating compiler environment variables
------------------------------------------------
+Issue defining environment variables for the compiler
+------------------------------------------------------
 
 If you want to run manual builds the environment variables are readily invoked by calling
 vcvars32.bat or vcvars64.bat. But if doing an automated build with Buildbot
