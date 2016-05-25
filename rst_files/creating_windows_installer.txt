@@ -9,11 +9,10 @@ Introduction
 
 Once you are satisfied that your `Windows build of PHENIX <WindowsBuild.html>`__ passes all 
 tests you may want to bundle it into an executable setup program to make installation easy 
-for users. Various programs are available for doing this. 
-Currently the lightweight tool `Makensis from Nullsoft <http://nsis.sourceforge.net>`__ is used 
-for creating the installer. 
+for users. Currently the lightweight tool 
+`Makensis from Nullsoft <http://nsis.sourceforge.net>`__ is used for creating the installer. 
 
-Downloadand install it on your PC and modify the PATH environment variable to make 
+Download and install it on your PC and modify the PATH environment variable to make 
 makensis.exe accesible from a command prompt. Although not necessary it is useful to 
 install the syntax highlightening editor "HM NIS Edit" for editing .nsi script. Help on 
 composing .nsi scripts describes in detail how such a script can be composed.
@@ -113,7 +112,7 @@ completed. After Makensis has completed the installer is available as a file wit
 
   dist\<version>\Phenix-<version>-<platform>-Setup.exe
   
-which may now be deployed to users.
+which can then be deployed to users.
 
 
 
