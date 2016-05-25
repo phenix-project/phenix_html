@@ -137,7 +137,7 @@ build-VS2012-32.bat and replace the line
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:40px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:40px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   ctest -S HDF518config.cmake,BUILD_GENERATOR=VS2012 -C Release -V -O hdf518.log
   </pre>
@@ -148,7 +148,7 @@ with
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:40px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:40px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   ctest -S HDF518config.cmake,BUILD_GENERATOR=VS2008 -C Release -V -O hdf518.log
   </pre>
@@ -160,7 +160,7 @@ Locate the section:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:200px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   # build generator must be defined
   if(NOT DEFINED BUILD_GENERATOR)
@@ -192,7 +192,7 @@ and add entries for VS2008 like:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:200px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   # build generator must be defined
   if(NOT DEFINED BUILD_GENERATOR)
@@ -228,7 +228,7 @@ Now locate the section:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:200px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   #########       Following describes compiler           ############
   if(WIN32)
@@ -268,7 +268,7 @@ and add entries for the VS2008 compiler like:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:200px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:200px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   #########       Following describes compiler           ############
   if(WIN32)
@@ -318,7 +318,7 @@ find the lines:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:110px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:110px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   ### disable ext libs building
   #set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")
@@ -332,7 +332,7 @@ and uncomment them:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:110px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:110px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   ### disable ext libs building
   set(ADD_BUILD_OPTIONS "${ADD_BUILD_OPTIONS} -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")

@@ -10,12 +10,14 @@ Introduction
 Once you are satisfied that your `Windows build of PHENIX <WindowsBuild.html>`__ passes all 
 tests you may want to bundle it into an executable setup program to make installation easy 
 for users. Currently the lightweight tool 
-`Makensis from Nullsoft <http://nsis.sourceforge.net>`__ is used for creating the installer. 
+Makensis from `Nullsoft Scriptable Install System <http://nsis.sourceforge.net>`__ is used 
+for creating the installer. 
 
 Download and install it on your PC and modify the PATH environment variable to make 
 makensis.exe accesible from a command prompt. Although not necessary it is useful to 
-install the syntax highlightening editor "HM NIS Edit" for editing .nsi script. Help on 
-composing .nsi scripts describes in detail how such a script can be composed.
+install the syntax highlightening editor "HM NIS Edit" for editing .nsi script. 
+
+Nullsoft Scriptable Install System comes with detailed help on composing .nsi scripts. 
 
 
 How makensis.exe is run
@@ -60,14 +62,24 @@ place them on the users PC. It is composed of the preamble prepended to the file
 
   cctbx_project\libtbx\auto_build\mainphenixinstaller.nsi
 
-which contains the bulk of information for creating the installer.
+which contains the bulk of information for creating the setup program.
+Once Makensis has finished running the setup program is available as a file 
+with the name:
+
+::
+
+  dist\<version>\Phenix-<version>-<platform>-Setup.exe
+  
+which can then be deployed to users.
+
 
 
 A few details of what is installed
 -------------------------------------
 
-The installer allows the user to install Phenix as a standard user as well as an administrator.
-In the latter case it should be invoked with administrative privileges. Phenix will then 
+The mainphenixinstaller.nsi script has been written to allow the user to install Phenix as 
+a standard user as well as an administrator. In the latter case the produced setup program 
+should be invoked with administrative privileges. Phenix will then 
 default to be installed in the directory pointed to by the %ProgramFiles(x86)% or 
 %ProgramFiles% environment variables.
 It will also allow the user to install the C/C++ source code used for the build.
@@ -79,7 +91,7 @@ It will create a Startup group named Phenix\\<version> which contains links to
   - a command prompt where the Phenix environment variables have been defined, 
   - the uninstaller program.
 
-The installer will also create a registry entry of type string in:
+The setup program will also create a registry entry of type string in:
 
 ::
   
@@ -95,24 +107,13 @@ which points to the full path of the top level directory where Phenix has been i
 This is useful for 3rd party programs that may want to test for the presence of Phenix on 
 the PC.
 
-During the installation an external command prompt window will appear for compiling python 
+During the installation a command prompt window will appear that compiles all the python 
 sources. 
 
-The uninstaller is also defined in mainphenixinstaller.nsi. It is done in 5 steps of which 
-the one lasting the longest is  
-
-::
-
-  RMDir /r "$INSTDIR\${SOURCEDIR}"
-  
+The uninstaller is also defined in mainphenixinstaller.nsi. Uninstalling Phenix is done in 5 
+steps of which the one lasting the longest is removing all the installed files 
 As a side effect, during uninstallation the progress bar will hang until this step has been
-completed. After Makensis has completed the installer is available as a file with the name:
-
-::
-
-  dist\<version>\Phenix-<version>-<platform>-Setup.exe
-  
-which can then be deployed to users.
+completed. 
 
 
 

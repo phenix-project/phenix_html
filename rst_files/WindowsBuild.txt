@@ -133,7 +133,7 @@ should be loaded:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:50px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   "C:\Program Files (x86)\PuTTY\pageant.exe"  C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
   </pre>
@@ -144,7 +144,7 @@ Another way is to add the lines:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:50px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   START C:\Program Files (x86)\PuTTY\pageant.exe C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
   </pre>
@@ -204,7 +204,7 @@ platform and version label that will be tagged to the executables during the bui
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:300px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:300px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   SET PLATFORM=%1
   SET PHENIXVERSION=%2
@@ -255,13 +255,13 @@ all the necessary prerequisites must be acessible in the executable path from a 
 At first glance the thing to do is to add the full path of vcvars32.bat or vcvars64.bat to
 ntshell.cmd. However, due to a flaw in those files this may lead all command prompts to hang in
 an infinite loop.
-One remedy is to copy vcvars32.bat and vcvars64.bat to myvcvars32.bat and myvcvars64.bat. Then
-replace the lines:
+One remedy is to copy vcvars32.bat and vcvars64.bat to the %HOMEDRIVE%%HOMEPATH% folder and
+rename them myvcvars32.bat and myvcvars64.bat. Then replace the lines:
 
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:150px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:150px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   :GetWindowsSdkDirHelper
   @for /F "tokens=1,2*" %%i in ('reg query "%1\SOFTWARE\Microsoft\Microsoft SDKs\Windows" /v "CurrentInstallFolder"') DO (
@@ -277,7 +277,7 @@ with
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:220px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:220px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   :GetWindowsSdkDirHelper
   SET fname=%TEMP%\tmpSDKvars.txt
@@ -293,11 +293,11 @@ with
   </pre>
   </div>
 
-then add a line to your ntshell.cmd  with the full path of myvcvars32.bat or myvcvars64.bat
+then add a line to your ntshell.cmd with the full path of myvcvars32.bat or myvcvars64.bat
 like:
 ::
 
-  call "C:\Users\builder\MyVSvars32.bat"
+  call "C:\Users\builder\myvcvars32.bat"
 
 
 
@@ -305,7 +305,7 @@ like:
 Setting up a PC as a Buildbot slave
 ------------------------------------
 
-The Buildbot slave is installed as per the 
+The Buildbot slave is installed as per  
 `online documentation <http://trac.buildbot.net/wiki/DownloadInstall>`__. For instance 
 for installing a slave named intel-windows-x86_64 in C:\\Users\\builder\\slave chdir to the installed
 python and type:
@@ -313,7 +313,7 @@ python and type:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:50px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   C:\Python2.7.9x64\Scripts\easy_install.exe buildbot-slave
   </pre>
@@ -324,7 +324,7 @@ and then:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:50px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   C:\Python2.7.9x64\Scripts\buildslave create-slave C:\Users\builder\slave cci-vm-6.lbl.gov:9989 intel-windows-x86_64 pass
   </pre>
@@ -337,7 +337,7 @@ procedure is to add the following line:
 .. raw:: html  
 
   <div id="Layer1" style=
-  "position:relative; width:90%; height:50px; z-index:1; left: 4px; top: 0px; overflow: auto; background: #eee;">
+  "position:relative; width:90%; height:50px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
   START "Running BuildBot Slave. Do not close!" /MIN cmd /c C:\Python2.7.9x64\Scripts\buildslave start C:\Users\builder\slave
   </pre>
