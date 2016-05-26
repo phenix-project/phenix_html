@@ -380,6 +380,7 @@ For the directory where nightly builds are done:
    when zillions of files are present on the same disc. Zip up previous builds 
    into single files or move them to a different partition if they have to be retained.
 
+
 Failure to follow these steps could over time make successive builds extremely slow (+24 hours)
 
 .. raw:: html  
@@ -387,7 +388,8 @@ Failure to follow these steps could over time make successive builds extremely s
   <br/><HR><FONT size="1">
   <script type="text/javascript">
   <!--
-  document.write("Last updated on " + Date(document.lastModified));
+  var d = new Date(document.lastModified);
+  document.write("Last updated on " + d);
   // -->
   </script>  
   </FONT><HR>

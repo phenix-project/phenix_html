@@ -123,7 +123,8 @@ completed.
   <br/><HR><FONT size="1">
   <script type="text/javascript">
   <!--
-  document.write("Last updated on " + Date(document.lastModified));
+  var d = new Date(document.lastModified);
+  document.write("Last updated on " + d);
   // -->
   </script>  
   </FONT><HR>
