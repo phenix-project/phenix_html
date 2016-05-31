@@ -69,7 +69,7 @@ and it will go away.
 Necessary prerequisites
 =======================
 
-To build PHENIX from scratch and create a binary Windows installer the following is required:
+To build PHENIX from scratch and create a binary Windows installer the following tools are required:
 
  - Python 2.7 (any version)
  - makensis from Nullsoft
@@ -78,7 +78,7 @@ To build PHENIX from scratch and create a binary Windows installer the following
  - TortoiseSVN with command line tools
  - TortoiseGit
  - Git
- - optionally wtee.exe for duplicating stdout to file and console.
+ - optionally mtee.exe for duplicating stdout to file and console.
 
 
 To build PHENIX from an existing installation with sources the following is required:
@@ -222,19 +222,37 @@ platform and version label that will be tagged to the executables during the bui
   )
   
   REM Get latest bootstrap from svn repo
-  svn export --force svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py 2>&1 | wtee build.log
+  svn export --force svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py 2>&1 | mtee build.log
+  IF ERRORLEVEL 1 (
+    EXIT
+  ) 
   
   REM             hot update base build
-  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 2>&1 | wtee -a ..\build%PHENIXVERSION%-%PLATFORM%.log
+  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 2>&1 | mtee ..\build%PHENIXVERSION%-%PLATFORM%.log
+  IF ERRORLEVEL 1 (
+    EXIT
+  ) 
+
   
   REM            run tests
-  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 tests 2>&1 | wtee -a ..\tests%PHENIXVERSION%-%PLATFORM%.log
+  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 tests 2>&1 | mtee ..\tests%PHENIXVERSION%-%PLATFORM%.log
+  IF ERRORLEVEL 1 (
+    EXIT
+  ) 
   
   REM            create installer
-  call build\bin\libtbx.create_installer.bat --binary --version %PHENIXVERSION% --install_script modules\phenix\phenix\installer\phenix_installer.py --license modules\phenix\LICENSE.txt --readme modules\phenix\CHANGES --readme modules\phenix\phenix\installer\README --readme modules\phenix\phenix\installer\SOURCES --dist_dir dist\%PHENIXVERSION% tmp\phenix-installer-%PHENIXVERSION%-win7vc90 2>&1 | wtee -a ..\CreateInstaller%PHENIXVERSION%-%PLATFORM%.log
+  call build\bin\libtbx.create_installer.bat --binary --version %PHENIXVERSION% --install_script modules\phenix\phenix\installer\phenix_installer.py ^
+   --license modules\phenix\LICENSE.txt --readme modules\phenix\CHANGES --readme modules\phenix\phenix\installer\README --readme modules\phenix\phenix\installer\SOURCES ^
+   --dist_dir dist\%PHENIXVERSION% tmp\phenix-installer-%PHENIXVERSION%-win7vc90 2>&1 | mtee ..\CreateInstaller%PHENIXVERSION%-%PLATFORM%.log
   
   </pre>
   </div>
+  
+In the above script mtee.exe from http://www.commandline.co.uk/mtee/ is used for piping stdout to a 
+file as well as to the console. 
+It works similar to tee on Unix platforms. A newer version has been compiled that also retains the
+error code of the program that streams to stdout. This is useful when checking for the success of 
+the builds. Source code and executable is available from http://oeffner.net/development/Stuff/mtee.zip.
 
 
 Automated build with Buildbot
@@ -372,6 +390,9 @@ Check Control Panel\\All Control Panel Items\\System->Advanced system settings->
 
 Ensure at least weekly disk defragmentation which does not coincide with doing builds.
 
+If used for nightly builds then disable automatic installation of updates as this often triggers an 
+automatic reboot of the PC. This can be done as described on http://www.howtogeek.com/224471/how-to-prevent-windows-10-from-automatically-downloading-updates/
+
 For the directory where nightly builds are done:
 
  - Exclude it from Windows indexing. 
@@ -381,16 +402,5 @@ For the directory where nightly builds are done:
    into single files or move them to a different partition if they have to be retained.
 
 
-Failure to follow these steps could over time make successive builds extremely slow (+24 hours)
-
-.. raw:: html  
-
-  <br/><HR><FONT size="1">
-  <script type="text/javascript">
-  <!--
-  var d = new Date(document.lastModified);
-  document.write("Last updated on " + d);
-  // -->
-  </script>  
-  </FONT><HR>
+Failure to follow these steps could over time make successive builds very slow (+24 hours)
 
