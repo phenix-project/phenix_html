@@ -38,7 +38,7 @@ written that does something such as defining environment variables for that comm
 Call this script **ntshell.cmd** and store it in path pointed to by the %HOMEDRIVE%%HOMEPATH% 
 environment variables.
 
-.. warning:: Entering wrong values or accidentally
+.. warning:: Entering wrong values in the registry or accidentally
   deleting values may render Windows bricked. Always ensure you have a recent "System Restore"
   point in your Windows backup. This will allow you to boot Windows to 
   "Last known good configuration" if the registry gets corrupted.
