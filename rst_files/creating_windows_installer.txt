@@ -14,22 +14,21 @@ Makensis from `Nullsoft Scriptable Install System <http://nsis.sourceforge.net>`
 for creating the installer. 
 
 Download and install it on your PC and modify the PATH environment variable to make 
-makensis.exe accesible from a command prompt. Although not necessary it is useful to 
-install the syntax highlightening editor "HM NIS Edit" for editing .nsi script. 
-
-Nullsoft Scriptable Install System comes with detailed help on composing .nsi scripts. 
+makensis.exe accesible from a command prompt. It is useful to install the syntax 
+highlightening editor "HM NIS Edit" for editing .nsi script. In addition it provides
+context sensitive help on keywords in the scripts.
 
 
 How makensis.exe is run
 =========================
 
-Creating the installer starts with
+Creating the installer starts with calling
 
 ::
 
   build\bin\libtbx.create_installer.bat
 
-as in the last line of example build script,
+with appropriate arguments as in the last line of example build script,
 `Phenixbuild.cmd <WindowsBuild.html#from-bootstrap-py>`__. It calls
 
 ::
@@ -91,7 +90,7 @@ It will create a Startup group named Phenix\\<version> which contains links to
   - a command prompt where the Phenix environment variables have been defined, 
   - the uninstaller program.
 
-The setup program will also create a registry entry of type string in:
+The setup program will also create a registry value of type string in the key:
 
 ::
   
@@ -103,7 +102,7 @@ or, if invoked with administrative privileges:
   
   HKEY_LOCAL_MACHINE\SOFTWARE\Phenix\<version>\InstallPath
   
-which points to the full path of the top level directory where Phenix has been installed.
+which stores the full path of where Phenix has been installed.
 This is useful for 3rd party programs that may want to test for the presence of Phenix on 
 the PC.
 

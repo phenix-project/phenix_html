@@ -24,7 +24,7 @@ Necessary tweaks of the Windows PC
 Automatically run script for every command prompt
 --------------------------------------------------
 
-On Unix startup scripts such as .bashrc or .tcshrc
+On Unix a startup script such as .bashrc or .tcshrc
 are convenient for initiating commonly used environment variables for a user.
 Windows has a different technique for achieving the same for the command prompt. 
 In the registry editor, regedit.exe, locate the AutoRun registry key:
@@ -33,29 +33,30 @@ In the registry editor, regedit.exe, locate the AutoRun registry key:
   HKEY_CURRENT_USER\Software\Microsoft\Command Processor\AutoRun
 
 If there is no AutoRun key present under the "Command Processor" key then create a new one
-of type string. This key can be set to the full path of a cmd script you have 
+of type string. The value of this key can be set to the full path of a cmd script you have 
 written that does something such as defining environment variables for that command prompt. 
-Call this script **ntshell.cmd** and store it in path pointed to by the %HOMEDRIVE%%HOMEPATH% 
-environment variables.
+This script can have any name but we will call it **ntshell.cmd** and store it in path 
+pointed to by the %HOMEDRIVE%%HOMEPATH% environment variables.
 
 .. warning:: Entering wrong values in the registry or accidentally
   deleting values may render Windows bricked. Always ensure you have a recent "System Restore"
   point in your Windows backup. This will allow you to boot Windows to 
   "Last known good configuration" if the registry gets corrupted.
 
-Alternatively one could may define environment variables through the 
+Alternatively one can also define environment variables through the 
 Control Panel\\All Control Panel Items\\User Accounts and click on 
 "Change my enviroment variables".
 But this method is not feasible if there are many variables or some variable values are 
-deduced on the fly from scripts. This is the case for initialising environment variable for
+deduced on the fly from scripts. This is the case when initialising environment variable for
 the compiler.
 
 Run a script once at every logon
 ---------------------------------
 
-Say you have a script in your %HOMEPATH% directory named **logon.cmd**.
-To make this script run only once at every logon, open the Task Scheduler in the 
-"Administrative tools" group in Control Panel, 
+Say you have a script in the derectory pointed to by the %HOMEDRIVE%%HOMEPATH% environment 
+variables named **logon.cmd** or whatever.
+To make this script run once every time you log in to your account, open the Task Scheduler 
+in the "Administrative tools" group in Control Panel, 
 click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of the 
 logon.cmd file. This script will then run next time you log on. The command prompt
 will remain visible after it has executed the tasks in logon.cmd. To avoid this set 
@@ -372,10 +373,7 @@ Creating an executable Windows installer program
 If the build is done manually from bootstrap.py a Setup.exe program can optionally be 
 created with the last line in the PhenixBuild.cmd script above. If the build is done with 
 Buildbot this installer will currently be created after the various tests
-have completed. In both cases the makensis program creates the installer by reading a
-separate script part of which is located in 
-cctbx_project\\libtbx\\auto_build\\mainphenixinstaller.nsi.
-`Click here for further details <creating_windows_installer.html>`__.
+have completed. `Click here for further details <creating_windows_installer.html>`__.
 
 
 
@@ -391,7 +389,8 @@ Check Control Panel\\All Control Panel Items\\System->Advanced system settings->
 Ensure at least weekly disk defragmentation which does not coincide with doing builds.
 
 If used for nightly builds then disable automatic installation of updates as this often triggers an 
-automatic reboot of the PC. This can be done as described on http://www.howtogeek.com/224471/how-to-prevent-windows-10-from-automatically-downloading-updates/
+automatic reboot of the PC. This can be done from the control panel on Windows 7. On
+Windows 10 follow the steps described on http://www.howtogeek.com/224471/how-to-prevent-windows-10-from-automatically-downloading-updates/
 
 For the directory where nightly builds are done:
 
