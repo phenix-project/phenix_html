@@ -53,7 +53,7 @@ the compiler.
 Run a script once at every logon
 ---------------------------------
 
-Say you have a script in the derectory pointed to by the %HOMEDRIVE%%HOMEPATH% environment 
+Say you have a script in the directory pointed to by the %HOMEDRIVE%%HOMEPATH% environment 
 variables named **logon.cmd** or whatever.
 To make this script run once every time you log in to your account, open the Task Scheduler 
 in the "Administrative tools" group in Control Panel, 
@@ -109,50 +109,38 @@ to compiling. These files live in the folder
 OpenSSH tools
 --------------
 
-Currently the PuTTY software suite is used in place of OpenSSH. This may change in the future.
-Putty contains Pageant which allows SVN access with public/private keys where seamless 
-ssh or scp access is required. For setting up public/private keys for SVN access you need 
-to generate an ssh key pair with the PuTTYgen program, copy the public key to the servers 
-where files are checked out with ssh, create an environment variable SVN_SSH that points 
-to the location of plink.exe (using forward slashes instead of back slashes) and also 
-create an environment variable GIT_SSH that points to the location of plink.exe (using 
-forward slashes instead of back slashes).
+The OpenSSH tools used for the Windows build are the ones that come with Git for Windows.
+If Git has been installed in 
+::
 
-Pageant works similar to ssh-agent from OpenSSH for mediating key authentication during ssh 
-logon. If you already have a set of 
-public/private keys you can just convert them to the PuTTY format with the PuTTYgen 
-program. Some repositories require authenticated access to where you should have 
-deposited your public keys. Your corresponding private keys should then be loaded into pageant
-before starting the build.
+  C:\Program Files\Git
 
-If setting up a PC for regular production builds it is worth ensuring that pageant is loaded
-with your private keys as soon as you have logged on. One way of doing so is by making a link of
-pageant.exe in the Startup group. Right click on the link and select properties. On the
-shortcut tab edit the Target of this link adding the full path of the private keys that 
-should be loaded:
+then OpenSSH tools lives in the directory 
+::
 
-.. raw:: html  
+  C:\Program Files\Git\usr\bin
 
-  <div id="Layer1" style=
-  "position:relative; width:90%; height:50px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
-  <pre class="code">
-  "C:\Program Files (x86)\PuTTY\pageant.exe"  C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
-  </pre>
-  </div>
+which you have to add to the %PATH% environment variable. To have the build run without
+interrupts the private keys matching your public keys on the svn or git repos must be 
+loaded prior to the build with
+ssh-agent. Create a .ssh directory in the directory pointed to by the 
+%USERPROFILE% environment variable and store your private keys there.
+Then add the lines
+::
 
-Another way is to add the lines:
+  C:\Program Files\Git\usr\bin\start-ssh-agent.cmd
+  SETX SSH_AUTH_SOCK "%SSH_AUTH_SOCK%" 
+  SETX SSH_AGENT_PID "%SSH_AGENT_PID%" 
 
-.. raw:: html  
+to your **logon.cmd** file and it will pick up the private keys in your 
+%USERPROFILE%\\.ssh folder. If keys require password you will be prompted for them
+when you logon to the PC. If a key is not picked up if can be loaded explicitly with 
+the line
+::
 
-  <div id="Layer1" style=
-  "position:relative; width:90%; height:50px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
-  <pre class="code">
-  START C:\Program Files (x86)\PuTTY\pageant.exe C:\Users\builder\.ssh\id_rsaBB.ppk  C:\Users\builder\.ssh\id_rsabuildbot.ppk
-  </pre>
-  </div>
-  
-to your logon.cmd script. This may be the only way on Windows 8 or higher where Microsoft
-have made the Startup group difficult to access.
+  C:\Program Files\Git\cmd\ssh-add <mykey_rsa>
+
+
 
 
 Makensis
