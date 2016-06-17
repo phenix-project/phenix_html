@@ -47,7 +47,7 @@ Alternatively one can also define environment variables through the
 Control Panel\\All Control Panel Items\\User Accounts and click on 
 "Change my enviroment variables".
 But this method is not feasible if there are many variables or some variable values are 
-deduced on the fly from scripts. This is the case when initialising environment variable for
+deduced on the fly from scripts. This is the case when initialising environment variables for
 the compiler.
 
 Run a script once at every logon
@@ -55,7 +55,7 @@ Run a script once at every logon
 
 Say you have a script in the directory pointed to by the %HOMEDRIVE%%HOMEPATH% environment 
 variables named **logon.cmd** or whatever.
-To make this script run once every time you log in to your account, open the Task Scheduler 
+To make this script run once every time you log on to your account, open the Task Scheduler 
 in the "Administrative tools" group in Control Panel, 
 click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of the 
 logon.cmd file. This script will then run next time you log on. 
@@ -130,20 +130,21 @@ Then add the lines
   </pre>
   </div>
 
-to your **logon.cmd** file and it will pick up the private keys in your 
-%USERPROFILE%\\.ssh folder. If keys require password you will be prompted for them
-when you logon to the PC. If a key is not picked up if can be loaded explicitly with 
-the line
+to your **logon.cmd** file. When you log on it will pick up the private keys in your %USERPROFILE%\\.ssh 
+folder. 
+If keys require password you will be prompted for them when you logon to the PC. If a key, say 
+"mykey_rsa", is not picked up it can be loaded explicitly by adding the line
 
 .. raw:: html  
 
   <div id="Layer1" style=
   "position:relative; width:90%; height:30px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
-  C:\Program Files\Git\cmd\ssh-add <mykey_rsa>
+  C:\Program Files\Git\cmd\ssh-add "mykey_rsa"
   </pre>
   </div>
 
+right after the above 3 lines.
 
 Makensis
 ---------
@@ -261,11 +262,11 @@ Issue defining environment variables for the compiler
 If you want to run manual builds the environment variables are readily invoked by calling
 vcvars32.bat or vcvars64.bat. But if doing an automated build with Buildbot
 all the necessary prerequisites must be acessible in the executable path from a command prompt.
-At first glance the thing to do is to add the full path of vcvars32.bat or vcvars64.bat to
-ntshell.cmd. However, due to a flaw in those files this may lead all command prompts to hang in
+At first glance one might add the full path of vcvars32.bat or vcvars64.bat to
+**ntshell.cmd**. However, due to a bug in those files this may lead all command prompts to hang in
 an infinite loop.
-One remedy is to copy vcvars32.bat and vcvars64.bat to the %HOMEDRIVE%%HOMEPATH% folder and
-rename them myvcvars32.bat and myvcvars64.bat. Then replace the lines:
+A workaround is to copy vcvars32.bat and vcvars64.bat to the %HOMEDRIVE%%HOMEPATH% folder and
+rename them myvcvars32.bat and myvcvars64.bat, respectively. Then replace the lines:
 
 .. raw:: html  
 
@@ -302,7 +303,7 @@ with
   </pre>
   </div>
 
-then add a line to your ntshell.cmd with the full path of myvcvars32.bat or myvcvars64.bat
+then add a line to your **ntshell.cmd** with the full path of myvcvars32.bat or myvcvars64.bat
 like:
 ::
 
@@ -352,7 +353,7 @@ procedure is to add the following line:
   </pre>
   </div>
 
-to your logon.cmd script. Once you have logged on this will place an icon of a minimised command 
+to your **logon.cmd** script. Once you have logged on this will place an icon of a minimised command 
 prompt on the taskbar which must not be interfered with, let alone closed.
 
 
