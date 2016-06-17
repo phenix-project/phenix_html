@@ -58,14 +58,7 @@ variables named **logon.cmd** or whatever.
 To make this script run once every time you log in to your account, open the Task Scheduler 
 in the "Administrative tools" group in Control Panel, 
 click "Create Task", set "Triggers" to "At logon" and set "Action" to the full path of the 
-logon.cmd file. This script will then run next time you log on. The command prompt
-will remain visible after it has executed the tasks in logon.cmd. To avoid this set 
-the last line in logon.cmd to:
-::
-
-  EXIT
-
-and it will go away.
+logon.cmd file. This script will then run next time you log on. 
 
 Necessary prerequisites
 =======================
@@ -75,11 +68,10 @@ To build PHENIX from scratch and create a binary Windows installer the following
  - Python 2.7 (any version)
  - makensis from Nullsoft
  - Microsoft Visual C++ 9.0 / Microsoft Visual Studio 2008
- - PuTTY software suite
  - TortoiseSVN with command line tools
- - TortoiseGit
+ - TortoiseGit (optionally)
  - Git
- - optionally mtee.exe for duplicating stdout to file and console.
+ - mtee.exe (optionally for duplicating stdout to file and console)
 
 
 To build PHENIX from an existing installation with sources the following is required:
@@ -126,21 +118,31 @@ loaded prior to the build with
 ssh-agent. Create a .ssh directory in the directory pointed to by the 
 %USERPROFILE% environment variable and store your private keys there.
 Then add the lines
-::
 
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:70px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
   C:\Program Files\Git\usr\bin\start-ssh-agent.cmd
   SETX SSH_AUTH_SOCK "%SSH_AUTH_SOCK%" 
   SETX SSH_AGENT_PID "%SSH_AGENT_PID%" 
+  </pre>
+  </div>
 
 to your **logon.cmd** file and it will pick up the private keys in your 
 %USERPROFILE%\\.ssh folder. If keys require password you will be prompted for them
 when you logon to the PC. If a key is not picked up if can be loaded explicitly with 
 the line
-::
 
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:30px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
   C:\Program Files\Git\cmd\ssh-add <mykey_rsa>
-
-
+  </pre>
+  </div>
 
 
 Makensis
@@ -248,8 +250,8 @@ Automated build with Buildbot
 =============================
 
 Assuming the PC runs as a Buildbot slave builds are automated from the Buildbot master
-machine. Required private keys should be loaded in pageant through a logon.cmd script and 
-command prompts must set the compiler environment variables through an ntshell.cmd script
+machine. Required private keys should be loaded in a **logon.cmd** script with ssh-agent and 
+command prompts must set the compiler environment variables through an **ntshell.cmd** script
 as `detailed above <WindowsBuild.html#automatically-run-script-for-every-command-prompt>`__.
 
 
