@@ -107,14 +107,14 @@ If Git has been installed in
 
   C:\Program Files\Git
 
-then OpenSSH tools lives in the directory 
+then OpenSSH tools live in the directory 
 ::
 
   C:\Program Files\Git\usr\bin
 
 which you have to add to the %PATH% environment variable. To have the build run without
-interrupts the private keys matching your public keys on the svn or git repos must be 
-loaded prior to the build with
+interrupts the private keys matching your public keys on the remote svn or git repositories
+must be loaded prior to the build with
 ssh-agent. Create a .ssh directory in the directory pointed to by the 
 %USERPROFILE% environment variable and store your private keys there.
 Then add the lines
@@ -144,7 +144,7 @@ If keys require password you will be prompted for them when you logon to the PC.
   </pre>
   </div>
 
-right after the above 3 lines.
+just below the above 3 lines.
 
 Makensis
 ---------
@@ -240,7 +240,7 @@ platform and version label that will be tagged to the executables during the bui
   </pre>
   </div>
   
-In the above script mtee.exe from http://www.commandline.co.uk/mtee/ is used for piping stdout to a 
+In the above script mtee.exe from https://ritchielawrence.github.io/mtee/ is used for piping stdout to a 
 file as well as to the console. 
 It works similar to tee on Unix platforms. A newer version has been compiled that also retains the
 error code of the program that streams to stdout. This is useful when checking for the success of 
@@ -317,8 +317,8 @@ Setting up a PC as a Buildbot slave
 
 The Buildbot slave is installed as per  
 `online documentation <http://trac.buildbot.net/wiki/DownloadInstall>`__. For instance 
-for installing a slave named intel-windows-x86_64 in C:\\Users\\builder\\slave chdir to the installed
-python and type:
+for installing a slave named intel-windows-x86_64 in C:\\Users\\builder\\slave chdir to python
+installed in C:\\Python2.7.9x64 type:
 
 .. raw:: html  
 
@@ -354,7 +354,8 @@ procedure is to add the following line:
   </div>
 
 to your **logon.cmd** script. Once you have logged on this will place an icon of a minimised command 
-prompt on the taskbar which must not be interfered with, let alone closed.
+prompt on the taskbar which must not be interfered with, let alone closed. The account can now be 
+locked (Windows key + L) and is ready for doing reqular builds from a Buildbot master.
 
 
 
