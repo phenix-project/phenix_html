@@ -7,23 +7,23 @@ Generating a polder map
 Overview
 --------
 
-A polder map is an omit map which excludes the bulk solvent around the 
+A polder map is an omit map which excludes the bulk solvent around the
 omitted region. This way, weak densities, which can be obscured by bulk
 solvent, may become visible. Typical omitted regions are:
 
   - ligands
-  - residues protruding into solvent area and with unclear side chain 
+  - residues protruding into solvent area and with unclear side chain
     orientations (such as lysine, arginine, etc.)
   - C- or N-terminal residues
 
-It is not recommended to omit large portions of the model at once (as 
-the excluded bulk solvent volume might become too large) or to omit 
-single atoms. Instead: several residues or one ligand are typical 
-selections for polder maps. It should be kept in mind that ``phenix.polder`` 
-does map calculations, no bias-removal strategies (such as refinement, 
-annealing, etc.) are applied. 
+It is not recommended to omit large portions of the model at once (as
+the excluded bulk solvent volume might become too large) or to omit
+single atoms. Instead: several residues or one ligand are typical
+selections for polder maps. It should be kept in mind that ``phenix.polder``
+does map calculations, no bias-removal strategies (such as refinement,
+annealing, etc.) are applied.
 
-A presentation file with examples can be found `here 
+A presentation file with examples can be found `here
 <https://www.phenix-online.org/presentations/phenix_polder.pdf>`_.
 
 
@@ -34,35 +34,61 @@ Running the program
 
   % phenix.polder model.pdb data.mtz selection='chain B and resseq 3'
 
-This command calculates an omit map of residue 3 in chain B. Common file 
-formats are supported (.pdb and .cif for models; .mtz, .hkl files for data). 
-The syntax for the `selections <atom_selections.html>`_ is the same as used 
+This command calculates an omit map of residue 3 in chain B. Common file
+formats are supported (.pdb and .cif for models; .mtz, .hkl files for data).
+The syntax for the `selections <atom_selections.html>`_ is the same as used
 by other phenix tools.
 
-Output of ``phenix.polder`` consists of a single MTZ file, named 
-``polder_map_coeffs.mtz`` by default. This file will contain amplitudes and phases 
+Output of ``phenix.polder`` consists of a single MTZ file, named
+``polder_map_coeffs.mtz`` by default. This file will contain amplitudes and phases
 for two maps:
 
   - **mFo-DFc_polder:** map coefficients of polder omit map
-  - **mFo-DFc_omit:** map coefficients for omit map where bulk solvent floods into 
-    omitted region. It is equivalent to remove the selection from the model and 
-    to calculate a difference map. This map can be used for comparison with the 
-    polder map. 
+  - **mFo-DFc_omit:** map coefficients for omit map where bulk solvent floods into
+    omitted region. It is equivalent to remove the selection from the model and
+    to calculate a difference map. This map can be used for comparison with the
+    polder map.
 
 Both map types require you to load them manually in Coot, by choosing the "Open
-MTZ, mmCIF, fcf or phs..." option and by activating the "Is a Difference Map" 
-option in the window which opens after choosing the filename.
+MTZ, mmCIF, fcf or phs..." option and by activating the "Is a Difference Map"
+option in the window which opens after choosing the filename
 
+
+Examples
+----------
+The following two figures show examples where polder maps are more informative
+than conventional OMIT maps.
+
+.. image:: ../images/polder1.png
+
+Solvent molecule MES88 in structure 1ABA. The positive
+and negative mFobs-DFmodel OMIT difference density is displayed in green and red,
+respectively. (a) OMIT map contoured at +/-3σ. (b) Polder map contoured at +/-3σ.
+In the OMIT map, there is only some density for the O, N and S atoms.
+The polder map shows difference electron density for the entire molecule
+
+
+.. image:: ../images/polder2.png
+
+Residue Gln H105 in structure 1F8T: (a) Original 2mFobs-DFmodel (blue, 1σ contour)
+and mFobs-DFmodel maps,(b) OMIT map and (c) polder map f. The positive and negative
+mFobs-DFmodel difference density contoured at 3σ is displayed in green and red,
+respectively. In (c), the GLN side chain was real space refined in COOT.
+There is no density for the GLN side chain in the 2mFobs-DFmodel map (a),
+and the residual mFobs-DFmodel map has a negative peak at the side chain position,
+suggesting that the modeled orientation is incorrect. The OMIT map (b) shows
+no density for the glutamine side chain. The polder map shows continuous v-shaped
+density suggesting a different orientation for the side chain (c).
 
 Other options
 -------------
 
-There are several other programs in Phenix for calculating omit maps. 
+There are several other programs in Phenix for calculating omit maps.
 
-  - `phenix.composite_omit_map <composite_omit_map.html>`_ can produce 
-    relatively bias-free maps by computing a number of omit maps covering 
-    specific regions, and then combining the areas around the omitted regions. 
-    Default options allows the bulk solvent mask to extend into the omitted 
+  - `phenix.composite_omit_map <composite_omit_map.html>`_ can produce
+    relatively bias-free maps by computing a number of omit maps covering
+    specific regions, and then combining the areas around the omitted regions.
+    Default options allows the bulk solvent mask to extend into the omitted
     region
   - `phenix.refine <refinement.html>`_ can be used to manually generate omit
     maps for a smaller selection of the model by specifying the
