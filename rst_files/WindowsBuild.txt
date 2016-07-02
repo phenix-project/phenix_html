@@ -124,9 +124,9 @@ Then add the lines
   <div id="Layer1" style=
   "position:relative; width:90%; height:70px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
-  C:\Program Files\Git\usr\bin\start-ssh-agent.cmd
-  SETX SSH_AUTH_SOCK "%SSH_AUTH_SOCK%" 
-  SETX SSH_AGENT_PID "%SSH_AGENT_PID%" 
+  call "C:\Program Files\Git\cmd\start-ssh-agent.cmd"
+  SETX SSH_AUTH_SOCK "%SSH_AUTH_SOCK%"
+  SETX SSH_AGENT_PID "%SSH_AGENT_PID%"
   </pre>
   </div>
 
@@ -355,7 +355,7 @@ procedure is to add the following line:
 
 to your **logon.cmd** script. Once you have logged on this will place an icon of a minimised command 
 prompt on the taskbar which must not be interfered with, let alone closed. The account can now be 
-locked (Windows key + L) and is ready for doing reqular builds from a Buildbot master.
+locked (Windows key + L) and is ready for doing regular builds from a Buildbot master.
 
 
 
