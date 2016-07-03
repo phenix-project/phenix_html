@@ -112,7 +112,7 @@ then OpenSSH tools live in the directory
 
   C:\Program Files\Git\usr\bin
 
-which you have to add to the %PATH% environment variable. To have the build run without
+which you must add to the %PATH% environment variable. To have the build run without
 interrupts the private keys matching your public keys on the remote svn or git repositories
 must be loaded prior to the build with
 ssh-agent. Create a .ssh directory in the directory pointed to by the 
@@ -133,14 +133,14 @@ Then add the lines
 to your **logon.cmd** file. When you log on it will pick up the private keys in your %USERPROFILE%\\.ssh 
 folder. 
 If keys require password you will be prompted for them when you logon to the PC. If a key, say 
-"mykey_rsa", is not picked up it can be loaded explicitly by adding the line
+``mykey_rsa``, is not picked up it can be loaded explicitly by adding the line
 
 .. raw:: html  
 
   <div id="Layer1" style=
   "position:relative; width:90%; height:30px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
-  C:\Program Files\Git\cmd\ssh-add "mykey_rsa"
+  ssh-add mykey_rsa
   </pre>
   </div>
 
