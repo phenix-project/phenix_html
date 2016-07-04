@@ -739,50 +739,6 @@ or If you have a 20-processor machine instead, then you might say
 so that it would run your jobs with sh on your machine, and run them all
 in the background (i.e., all at one time).
 
-*Model editing during rebuilding with the Coot-PHENIX interface*
-----------------------------------------------------------------
-
-The AutoBuild Wizard allows you to edit a model and give it back to the
-Wizard during the iterative model-building, density modification and
-refinement process. The Wizard will consider the model that you give it
-along with the models that it generates automatically, and will choose
-the parts of your model that fit the density better than other models.
-
-You can edit a model using the PHENIX-Coot interface. This interface is
-accessible through via the command-line.
-
-The PHENIX-Coot interface is accessible via the command-line. When a
-model has been produced by the AutoSol Wizard, you can open a new window
-and type:
-
-::
-
-    phenix.autobuild coot
-
-which will start Coot with your current map and model.
-
-When Coot has been loaded, your map and model will be displayed along
-with a **PHENIX-Coot Interface** window. You can edit your model and
-then save it, giving it back to PHENIX with the button labelled
-something like **Save model as COMM/overall\_best\_coot\_7.pdb**. This
-button creates the indicated file and also tells PHENIX to look for this
-file and to try and include the contents of the model in the building
-process.
-
-The precise use of the model that you save depends on the type of
-model-building that is being carried out by the AutoBuild Wizard. If you
-are using **rebuild\_in\_place** then the main-chain and side-chains of
-the model are considered as replacements for the current working model.
-Any ligands or unrecognized residues are (by default) not rebuilt but
-are included in refinement. By default, solvent in the model is ignored.
-If you are not using **rebuild\_in\_place**, only the main-chain
-conformation is considered, and the side-chains are ignored. Ligands
-(but not solvent) in the model are (by default) kept and included in
-refinement.
-
-As the AutoBuild Wizard continues to build new models and create new
-maps, you can update in the PHENIX-Coot Interface to the current best
-model and map with the button **Update with current files from PHENIX**.
 
 *Resolution limits in AutoBuild*
 --------------------------------
@@ -804,6 +760,17 @@ list of these limits and how their default values are set:
 +------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------+
 | multiple\_models\_starting\_resolution   | Resolution for the initial rebuilding of a model in the multiple-models procedure. Normally a low resolution to generate diversity.                                                                                                                                                                                                                                         | 4 A by default                                                                                        |
 +------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------+
+
+
+*Phase extension in AutoBuild*
+--------------------------------
+
+If you supply a starting map file  and
+a hires_file (with native data to higher resolution) and you do not supply
+a model,then autobuild will by default carry out phase extension (in 
+increments of s (1/d_min) of s_step).  If you do supply a model, or you do
+not supply a hires_file, or you do not supply a starting map file, then
+the resolution used will be the final resolution (no phase extension steps.)
 
 Sample AutoBuild Commands
 -------------------------
