@@ -18,8 +18,9 @@ versions of Windows apart from the distinction between the 32 and 64 bit platfor
 These components are only necessary to create once. Bootstrap.py will then download them from
 http://cci.lbl.gov/cctbx_dependencies during the first stages of the build. This happens around 
 lines 136 - 156 in ``cctbx_project\libtbx\auto_build\install_base_packages.py``, svn revision
-24805. The python bundle is uncompressed into ``%PHENIX%\base\bin\python`` and the HDF5 bundle 
-is expanded into ``%PHENIX%\base\HDF5-1.8.16``. Unlike the case on Unix the respective library and 
+24805. The python bundle is uncompressed into ``base\bin\python`` and the HDF5 bundle 
+is expanded into ``base\HDF5-1.8.16`` within the directory from where the bootstrap build is being
+done. Unlike the directory location on Unix the respective library and 
 header files of these two bundles are stored as sub directories within these directories and not 
 in common ``base\include`` and ``base\lib`` directories.
 
