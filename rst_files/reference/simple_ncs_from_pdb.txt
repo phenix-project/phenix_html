@@ -4,8 +4,7 @@ Finding NCS in chains from a PDB file with simple\_ncs\_from\_pdb
 Author(s)
 ---------
 
--  simple\_ncs\_from\_pdb : Tom Terwilliger
--  simple\_ncs\_from\_pdb : Youval Dar
+-  simple\_ncs\_from\_pdb : Tom Terwilliger, Youval Dar, Oleg Sobolev
 -  Phil command interpreter: Ralf W. Grosse-Kunstleve
 -  find\_domain: Peter Zwart
 
@@ -24,26 +23,22 @@ How simple\_ncs\_from\_pdb works:
 
 The basic steps that the simple\_ncs\_from\_pdb carries out are:
 
--  (1) Identify sets of matching segments in chains in the PDB file by
-   sequences. These are potential NCS-related chains.
+1. Remove part of the structure specified in in exclude\_selection parameter.
 
--  (2) Determine which matching segments have overall rms distance (RMSD) within
-   the given tolerance (max\_rmsd, typically 2 A)
+2. Identify sets of matching segments in chains in the PDB file by
+   sequences (use value of chain\_similarity\_threshold as cutoff). 
+   These are potential NCS-related chains.
 
--  (3) Remove residues from matching segments if locally spatially
-   misaligned (match\_radius, exclude\_misaligned\_residues)
+3. Determine which matching segments have overall rms distance (RMSD) within
+   the given tolerance (chain\_max\_rmsd, typically 2 A)
 
--  (4) Remove atoms from matching resides if not in both residues (for
+4. Remove residues from matching segments if locally spatially
+   misaligned (residue\_match\_radius)
+
+5. Remove atoms from matching residues if not in both residues (for
    example, if a side chain is missing in one of the matching residues)
 
--  (5) Optionally, can check atoms order residues
-
--  (6) Group all chains with common matching segments. (keeping minimal common
-   segments)
-
--  (7) Group Master-Copies pairs that share rotation and translation. Can group
-   in a way tha minimize the number of chains in the master copy, or that
-   minimize the overall numbers of transforms (rotation & translation)
+6. Check atoms order residues
 
 
 Additional notes on how simple\_ncs\_from\_pdb works:
@@ -64,28 +59,9 @@ If matching residues have different number of atoms (For example if one
 containing the side chain while the other not), only the matching atoms will
 be included.
 
-Grouping of chains done in two steps. First, a single master chain to copies
-that share matching segments. Second, if two groups of master and copies
-share the same rotations and translations, we group the masters and the copies.
+Grouping of chains is not performed. 
 
-When grouping chains together, we limit the similarity level of chains pairs
-being grouped using similarity/_threshold. Lower similarity/_threshold will
-allow grouping of more chains.
-
-Similarity groping example: Consider four chains (A,B,C,D) where
-A has 100 residues, B has 50, C has 50 and D has 50. Consider that A-B have
-50 contiguous matching residues and that C and D have 40. Also assume
-that A -> B has the same rotation and translation as C -> D.
-(A,B) similarity is 50/100 = 0.5 and (C,D) similarity is 40/50 = 0.8.
-The 0.5/0.8 = 0.625, if the similarity/_threshold=0.95 we can't group will get
-two groups [(A),(B)] , [(C),(D)]. but if the similarity/_threshold=0.6,
-we will get a single group [(A,C),(B,D)] where each NCS copy contains two
-chains.
-
-The search for master to group is done using spatial proximity, to improve
-the probability that chains that are next to each other will be group together.
-
-Alternative confirmation are excluded from matching segments.
+Alternative conformation are excluded from matching segments.
 
 The matching is done by the residues name strings, not by the residue numbers,
 this allows handling of insertions in PDB file.
@@ -95,14 +71,14 @@ or non-NCS related regions, to the atom level. In every NCS group all copies
 have the same number of atoms and can be reproduced by applying the applying
 the appropriate rotation and translation to the master copy.
 
-*Output files from simple\_ncs\_from\_pdb*
-------------------------------------------
+Examples
+--------
 
 When running
 
 ::
 
-    phenix.simple_ncs_from_pdb 4boz.pdb
+    phenix.simple_ncs_from_pdb 2h50.pdb
 
 The following files will be produced
 
@@ -110,28 +86,48 @@ The following files will be produced
 
 ::
 
-    4boz_simple_ncs_from_pdb.ncs
+    2h50_simple_ncs_from_pdb.phil
 
 
--  NCS operators written in format for the PHENIX Wizards
-
-::
-
-    4boz_simple_ncs_from_pdb.ncs_spec
-    4boz_simple_ncs_from_pdb.resolve
-
-
-Examples
---------
-
-Standard run of simple\_ncs\_from\_pdb:
----------------------------------------
-
-Running simple\_ncs\_from pdb is easy. For example, you can type:
+-  NCS operators written in format for the PHENIX Wizards (if write_spec_files=True)
 
 ::
 
-    phenix.simple_ncs_from_pdb 4boz.pdb
+    2h50_simple_ncs_from_pdb.ncs_spec
+    2h50_simple_ncs_from_pdb.resolve
+
+The file that should be used for refinement is 4boz\_simple\_ncs\_from\_pdb.phil. 
+This file can also be modified if a particular NCS relations need to be changed. The
+content of that file is the exact selection sting of the atoms in the NCS groups
+
+The content of 2h50\_simple\_ncs\_from\_pdb.ncs is
+
+::
+
+    ncs_group {
+      reference = chain 'A'
+      selection = chain 'C'
+      selection = chain 'E'
+      selection = chain 'G'
+      selection = chain 'I'
+      selection = chain 'K'
+      selection = chain 'M'
+      selection = chain 'O'
+      selection = chain 'Q'
+      selection = chain 'S'
+      selection = chain 'U'
+      selection = chain 'W'
+    }
+
+
+Other outputs
+-------------
+
+To get output in other format:
+
+::
+
+    phenix.simple_ncs_from_pdb 4boz.pdb write_spec_files=True
 
 Simple\_ncs\_from\_pdb will analyze the chains in 4boz.pdb and identify
 any NCS that exists. For this sample run the following output is
@@ -141,10 +137,9 @@ produced:
 
     GROUP 1
     Summary of NCS group with 2 operators:
-    ID of chain/residue where these apply:
-    [['A', 'D'], [[[147, 150], [152, 211], [213, 275], [280, 305],
-    [307, 308]], [[147, 150], [152, 211], [213, 275], [280, 305], [307, 308]]]]
-    RMSD (A) from chain A:  0.0  0.82
+    ID of chain/residue where these apply: [['A', 'D'], [[[147, 150], [152, 211], 
+    [213, 275], [280, 305], [307, 308]], [[147, 150], [152, 211], [213, 275], [280, 305], [307, 308]]]]
+    RMSD (A) from chain A:  0.0  0.72
     Number of residues matching chain A:[155, 155]
 
     OPERATOR 1
@@ -158,21 +153,21 @@ produced:
     OPERATOR 2
     CENTER:   15.9430   11.8822    0.6609
 
-    ROTA 1:    0.7955   -0.5660    0.2164
-    ROTA 2:   -0.5511   -0.8242   -0.1300
-    ROTA 3:    0.2520   -0.0159   -0.9676
-    TRANS:    18.4021    5.3569  -23.3621
+    ROTA 1:    0.7964   -0.5651    0.2152
+    ROTA 2:   -0.5503   -0.8249   -0.1295
+    ROTA 3:    0.2507   -0.0152   -0.9680
+    TRANS:    18.3631    5.3425  -23.3604
 
 
     GROUP 2
-    Summary of NCS group with 2 operators:
-    ID of chain/residue where these apply:
-    [['B', 'E'], [[[1, 41], [43, 76]], [[1, 41], [43, 76]]]]
-    RMSD (A) from chain B:  0.0  0.88
-    Number of residues matching chain B:[75, 75]
+    Summary of NCS group with 3 operators:
+    ID of chain/residue where these apply: [['B', 'C', 'E'], [[[1, 41], [43, 71]], 
+    [[1, 41], [43, 71]], [[1, 41], [43, 71]]]]
+    RMSD (A) from chain B:  0.0  0.8  0.77
+    Number of residues matching chain B:[70, 70, 70]
 
     OPERATOR 1
-    CENTER:   46.1427   -9.2567  -26.1789
+    CENTER:   47.5581   -9.5652  -26.8403
 
     ROTA 1:    1.0000    0.0000    0.0000
     ROTA 2:    0.0000    1.0000    0.0000
@@ -180,14 +175,22 @@ produced:
     TRANS:     0.0000    0.0000    0.0000
 
     OPERATOR 2
-    CENTER:   28.3065   -4.0803   11.2523
+    CENTER:   27.7410  -11.0237  -49.7361
 
-    ROTA 1:    0.7550   -0.5940    0.2778
-    ROTA 2:   -0.5894   -0.8004   -0.1096
-    ROTA 3:    0.2874   -0.0810   -0.9544
-    TRANS:    19.2296    5.3926  -23.9141
+    ROTA 1:   -0.6661    0.2615   -0.6986
+    ROTA 2:    0.2866   -0.7749   -0.5634
+    ROTA 3:   -0.6886   -0.5755    0.4412
+    TRANS:    34.1743  -54.0788    7.8610
 
-Another way to view the results without creating files is
+    OPERATOR 3
+    CENTER:   29.3812   -4.6379   12.2671
+
+    ROTA 1:    0.7539   -0.5901    0.2888
+    ROTA 2:   -0.5860   -0.8027   -0.1106
+    ROTA 3:    0.2971   -0.0858   -0.9510
+    TRANS:    19.1286    5.2864  -24.3021
+
+Another way to view the results is
 
 ::
 
@@ -195,21 +198,21 @@ Another way to view the results without creating files is
 
     Chains in model:
     ---------------------------------------------------
-    A    B    C    D    E
-    . . . . . . . . . . . . . . . . . . . . . . . . . .
+    A    B    C    D    E    
+    . . . . . . . . . . . . . . . . . . . . . . . . . . 
 
     NCS summary:
     ---------------------------------------------------
     Number of NCS groups     :   2
     Group #                  :   1
     Number of copies         :   2
-    Chains in master         :   A
-    Chains in copies         :   D
+    Chains in master         :   'A'
+    Chains in copies         :   'D'
     Group #                  :   2
-    Number of copies         :   2
-    Chains in master         :   B
-    Chains in copies         :   E
-    . . . . . . . . . . . . . . . . . . . . . . . . . .
+    Number of copies         :   3
+    Chains in master         :   'B'
+    Chains in copies         :   'C', 'E'
+    . . . . . . . . . . . . . . . . . . . . . . . . . . 
 
     Transforms:
     ---------------------------------------------------
@@ -220,14 +223,14 @@ Another way to view the results without creating files is
     ROTA   1    0.0000    1.0000    0.0000
     ROTA   2    0.0000    0.0000    1.0000
     TRANS       0.0000    0.0000    0.0000
-    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
     Transform #              :   2
-    RMSD                     :   0.817
-    ROTA   0    0.7955   -0.5511    0.2520
-    ROTA   1   -0.5660   -0.8242   -0.0159
-    ROTA   2    0.2164   -0.1300   -0.9676
-    TRANS      -5.7994   14.4602  -25.8920
-    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    RMSD                     :   0.720792956817
+    ROTA   0    0.7964   -0.5503    0.2507
+    ROTA   1   -0.5651   -0.8249   -0.0152
+    ROTA   2    0.2152   -0.1295   -0.9680
+    TRANS      -5.8295   14.4282  -25.8708
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
     Group #                  :   2
     Transform #              :   1
     RMSD                     :   0
@@ -235,24 +238,30 @@ Another way to view the results without creating files is
     ROTA   1    0.0000    1.0000    0.0000
     ROTA   2    0.0000    0.0000    1.0000
     TRANS       0.0000    0.0000    0.0000
-    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
     Transform #              :   2
-    RMSD                     :   0.8756
-    ROTA   0    0.7550   -0.5894    0.2874
-    ROTA   1   -0.5940   -0.8004   -0.0810
-    ROTA   2    0.2778   -0.1096   -0.9544
-    TRANS      -4.4667   13.8014  -27.5738
-
+    RMSD                     :   0.796197645664
+    ROTA   0   -0.6661    0.2866   -0.6886
+    ROTA   1    0.2615   -0.7749   -0.5755
+    ROTA   2   -0.6986   -0.5634    0.4412
+    TRANS      43.6766  -46.3175  -10.0616
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+    Transform #              :   3
+    RMSD                     :   0.772963874518
+    ROTA   0    0.7539   -0.5860    0.2971
+    ROTA   1   -0.5901   -0.8027   -0.0858
+    ROTA   2    0.2888   -0.1106   -0.9510
+    TRANS      -4.1022   13.4462  -28.0502
 
 There are 5 chains in the PDB file (A,B,C,D,E). In the first group the master
-is A the the copy D and in the second group the master is B and the copy is E.
+is A the the copy D and in the second group the master is B and the copy is C and E.
 Chain C is not in any group.
 
 ::
 
-    RMSD (A) from chain A:  0.0  0.82
+    RMSD (A) from chain A:  0.0  0.72
 
-show the RMSD of matching atoms between the master and every other copy,
+shows the RMSD of matching atoms between the master and every other copy,
 The list of numbers is the list of matching residues by residue number.
 Note that this is not the exact selection, as it appears in:
 4boz\_simple\_ncs\_from\_pdb.ncs.
@@ -321,55 +330,33 @@ ncs-related copy on to the first copy.
       RESSEQ 307:308
 
 
-The file used for refinement is 4boz\_simple\_ncs\_from\_pdb.ncs. This file
-can also be modified if a particular NCS relations need to be reinforced. The
-content of that file is the exact selection sting of the atoms in the NCS groups
-
-The content of 1vcr\_simple\_ncs\_from\_pdb.ncs is
-
-::
-
-    refinement.ncs.restraint_group {
-      reference = chain A
-      selection = chain B
-      selection = chain C
-      selection = chain D
-      selection = chain E
-    }
-
-If the following option is used
-
-::
-
-    phenix.simple_ncs_from_pdb 1vcr.pdb ncs_file_format=constraints
-
-The content of 1vcr\_simple\_ncs\_from\_pdb.ncs will have constraint\_group
-instead of restraint\_group
-
-::
-
-    refinement.ncs.constraint_group {
-      reference = chain A
-      selection = chain B
-      selection = chain C
-      selection = chain D
-      selection = chain E
-    }
-
-
 Possible Problems
 -----------------
+- Simple\_ncs\_from\_pdb cannot find NCS groups: try relaxing search parameters,
+   e.g. set bigger chain\_max\_rmsd, smaller chain\_similarity\_threshold.
+
+- Simple\_ncs\_from\_pdb produces very complicated selections, like 
+  ::
+
+    reference = (chain 'A' and (resid 147:150 or resid 152:194 or (resid 195 and 
+    (name N or name CA or name C or name O or name CB )) or resid 196:211 or 
+    resid 213:229 or (resid 230 and (name N or name CA or name C or name O or name 
+    CB or name CG )) or resid 231:298 or (resid 299 and (name N or name CA or name 
+    C or name O or name CB or name CG )) or resid 300:305 or resid 307:308))
+
+  This indicates that procedure is trying to exclude some residues or atoms
+  from the selections. This could be caused by alternative confomations of
+  residues (not supported), poor alignment of particular residues (try to 
+  increase residue\_match\_radius) or missing atoms in one of the chains.
+
 
 Specific limitations and problems:
 ----------------------------------
 
--  a large min\_percent can prevent matching segments in chains that are of
-   very different size.
+-  a large chain\_similarity\_threshold can prevent matching segments 
+   in chains that are of very different size.
 
--  While the grouping is done using spatial proximity order, there is no
-   guaranty of finding the absolute optimal grouping.
-
--  The value of max\_rmsd, the RMSD limit between chains should be set with
+-  The value of chain\_max\_rmsd, the RMSD limit between chains should be set with
    care. Small value might exclude chains with problems in the model, even
    though they are NCS related. Large value might cause non-NCS related
    chains and to be constraint as related.
@@ -387,14 +374,14 @@ Specific limitations and problems:
 
     Master = ROT x Copy + TRANS
 
-   and not:
+and not:
 
 ::
 
     Copy = ROT x Master + TRANS
 
-   They are the inverse of the rotation and translation that are used in the
-   implementation of the NCS relation.
+They are the inverse of the rotation and translation that are used in the
+implementation of the NCS relation.
 
 Literature
 ----------
