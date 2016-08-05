@@ -154,7 +154,7 @@ Running map\_to\_model is easy. From the command-line you can type:
 
 ::
 
-    phenix.map\_to\_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
+    phenix.map_to_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
 
 where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
 sequence file, and find_ncs.ncs_spec is an optional file specifying any
@@ -197,7 +197,7 @@ For example, you can say:
 
 ::
 
-    phenix.map\_to\_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
+    phenix.map_to_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
       partial_model=last_run/final_PROTEIN.pdb 
       partial_model_type=final_PROTEIN 
       partial_model=last_run/final_RNA.pdb
