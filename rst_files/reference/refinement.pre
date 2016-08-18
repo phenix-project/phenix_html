@@ -10,7 +10,7 @@ Overview
 ********
 
 This document describes phenix.refine with the emphasis on the command line use.
-Graphical User Interface (GUI) is availbale for phenix.refine (see below).
+Graphical User Interface (GUI) is available for phenix.refine (see below).
 
 Graphical interface
 -------------------
@@ -152,7 +152,7 @@ When you do this a number of things happen:
     - Copy if input data (for example, Iobs, R-free flags)
     - Data actually used in refinement and calculation of reported statistics.
       These can be different from input data for a number of reasons: a)
-      convertion Iobs to Fobs (if Iobs were input), b) truncation by resolution
+      conversion Iobs to Fobs (if Iobs were input), b) truncation by resolution
       and/or sigma (if requested by the user), c) automated rejection of
       reflection-outliers.
     - Total model structure factors (Fmodel). Fmodel includes all scales and
@@ -169,8 +169,8 @@ When you do this a number of things happen:
  4. geo file is a foot print of all geometry restraints used in refinement, such
     as bonds, angles, planarity, chirality, dihedral, non-bonded. For each type
     of restraints current model and ideal (library) values are listed. This file
-    allows to pinpoint all the restraints that an atom in question is invlolved.
- 5. Optionally, actual maps can be output in CCP4 binary formar or X-plor plain
+    allows to pinpoint all the restraints that an atom in question is involved.
+ 5. Optionally, actual maps can be output in CCP4 binary format or X-plor plain
     text format.
  6. def file: a new defaults file to run the next cycle of refinement, e.g.
     lysozyme_refine_002.def. This means you can run the next cycle of
@@ -560,7 +560,7 @@ done using phenix.tls tool.
 When performing TLS refinement along with individual isotropic refinement the
 restraints are applied to Ulocal only and not to the total ADP.
 
-Group isotorpic ADP or TLS refinement do not use any restraints.
+Group isotropic ADP or TLS refinement do not use any restraints.
 
 When ADP refinement is run without using selections then ADP of all atoms are
 refined. If selections are used, only ADP of selected atoms are refined.
@@ -724,7 +724,7 @@ special positions.
 
        % phenix.find_tls_groups model.pdb nproc=48
 
-     Very important: automatic TLS group identicication strongly relies on
+     Very important: automatic TLS group identication strongly relies on
      correctly refined B-factors and relatively good model geometry. Poor
      B-factors or model geometry may result in nonsensical TLS groups.
 
