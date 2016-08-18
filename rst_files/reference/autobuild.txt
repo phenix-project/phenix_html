@@ -319,6 +319,28 @@ automatically. However if there is a conflict between this test_flag_value
 and the default value based on your data file, you may have to specify which
 to use.
 
+Special note on anomalous data and AutoBuild: Autobuild does not support 
+anomalous test sets.  If you have a data file with anomalous data that 
+has Rfree flags such as Rfree(+),Rfree(-) then you will need to merge these
+Rfree flags before running Autobuild.  Here is how:
+
+Go to the reflection file editor, read in your refine_data.mtz (or whatever
+it is called) file with anomalous data.  Copy all the data and Rfree 
+flags to the output file, but select "Edit arrays" and in the window 
+that comes up do the following:
+
+1. Change the names of the output data arrays from 
+      I+ SigI+  I- SigI- to I SigI (or equivalent)
+
+2. Specify "merge if present" for "anomalous"
+
+3. Do the same for the Rfree Flags array.
+
+4. Run the reflection editor.
+
+Now you have a data file that is non-anomalous and that has the same test set as your original. You can use this in AutoBuild.
+
+
 Specifying phenix.refine parameters
 -----------------------------------
 
