@@ -1,6 +1,12 @@
-#cat ../phenix_index.htm | grep '<LI>' | grep -v '<LI><A' > list1.dat
+#cat ../phenix_index.htm | grep '<li>' | grep -v '<li><A' > list1.dat
 all_lines=[]
-for line in open('../phenix_index.htm').readlines():
+txt=open('../../../doc/phenix_index.html').read()
+txt=txt.replace("<ul>","\n<ul>")
+txt=txt.replace("<li>","\n<LI>")
+txt=txt.replace("</li>","</LI>")
+txt=txt.replace("<LI><a","<LI><A")
+
+for line in txt.splitlines():
   if line and line.find("<LI>")>-1 and not line.find("<LI><A")>-1:
     all_lines.append(line.replace("<LI>","").replace("\n",""))
 
