@@ -58,7 +58,6 @@ suitable for use in refinement. There are several ways to obtain HELIX/SHEET rec
 - Check your .pdb file. They may be already there
 - Run any refinement program from Phenix suite with secondary structure restraints turned on and look in the resulting .pdb file
 - Use `phenix.secondary_structure_restraints <secondary_structure_restraints.html>`__ command-line utility.
-- Use `phenix.ksdssp <ksdssp.html>`__ command-line utility
 - Use any other third-party program that have an option to export secondary structure definition in PDB format.
 
 It is highly recommended to check manually all SS annotations coming from any source. They may often contain errors. We encourage users to verify
