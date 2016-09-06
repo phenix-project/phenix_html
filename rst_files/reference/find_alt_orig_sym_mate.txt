@@ -4,23 +4,24 @@ phenix.find\_alt\_orig\_sym\_mate: Identify equivalent MR solutions of the same 
 .. contents::
 
 **Author(s)**
--------------
+---------------
 
 -  phenix.find\_alt\_orig\_sym\_mate: Robert D. Oeffner
 -  PHENIX GUI: Nat Echols
+
 
 Purpose
 -------
 
 phenix.find\_alt\_orig\_sym\_mate attempts to find the best superposition
 of two different molecular replacement solutions of the same dataset termed
-moving\_pdb and fixed\_pdb with respect
+``moving.pdb`` and ``fixed.pdb`` with respect
 to all symmetry operations and alternate origin shifts permitted by
 the spacegroup of the crystal. If either of the pdb files contain more chains
 each chain will be tested for their best match against chains in the other pdb file.
 It does so by calculating a score value, MLAD (see Algorithm_), for all possible symmetry operations
-and alternate origin shifts of each chain in moving\_pdb compared with chains in
-fixed\_pdb. The transformation with the smallest MLAD is retained for that particular
+and alternate origin shifts of each chain in ``moving.pdb`` compared with chains in
+``fixed.pdb``. The transformation with the smallest MLAD is retained for that particular
 pair of chains.
 
 
@@ -65,51 +66,49 @@ Using from the command-line
 It can also be run from the command-line with PHIL input in either a
 text file or as keywords like::
 
-    phenix.find_alt_orig_sym_mate moving_pdb=pdbfile1 fixed_pdb=pdbfile2
+    phenix.find_alt_orig_sym_mate moving.pdb=pdbfile1 fixed.pdb=pdbfile2
 
 or::
 
     phenix.find_alt_orig_sym_mate my_phil_input.txt.
 
-The PHIL input specifies the MR solution files either as "moving\_pdb"
-and "fixed\_pdb" or as the scopes, "moving" and "fixed". Both these
-scopes must hold valid content. The two scopes hold the parameter
-"xyzfname" and the sub-scopes "mrsolution" and "pickle\_solution". For a
-scope to be valid one and only of the methods (1), (2) and (3) must be
-followed:
+The PHIL input scopes, ``moving`` and ``fixed``, specifies the MR solutions.
+Both scopes
+are programmatically equivalent and must be non-empty. This means that a
+scope should either specify the parameter ``xyzfname`` or the sub-scope 
+``mrsolution`` or the sub-scope ``pickle.solution``. 
 
--  Assign the "moving\_pdb" or "fixed\_pdb" parameter to the pdb file
-   from one of the MR solutions in question. This is useful for simple
-   cases such as when the solution comes from the PHENIX MRage GUI is
-   or when it is from a different MR program other than Phaser.
--  Specify a Phaser MR solution by assigning the file name of the
-   solution file to the "moving.mrsolution.solfname" or
-   "fixed.mrsolution.solfname" parameter as well as assigning the IDs of
+Examples:
+
+
+-  Use the pdb file from one of the MR solutions in a scope. 
+   This is useful for simple
+   cases such as when the solution comes from the PHENIX MRage GUI or 
+   when it is obtained from another MR program than Phaser.
+-  Specify a Phaser MR solution by assigning the .sol file name of the
+   solution to the ``mrsolution.solfname`` parameter of the sub-scope
+   as well as assigning the IDs of
    the ensembles and the corresponding MR models to the parameters
-   "moving.mrsolution.ensembles.name" or 
-   "fixed.mrsolution.ensembles.name" and
-   "moving.mrsolution.ensembles.xyzfname" or
-   "fixed.mrsolution.ensembles.xyzfname" respectively. Multiple
+   ``mrsolution.ensembles.name`` and ``mrsolution.ensembles.xyzfname``. 
+   Multiple search
    components are specified as multiple ensembles. This way of
    specifying solutions is useful for solution files produced when
-   Phaser is run from the command line.
--  Use a solution from the PhaserMR GUI in PHENIX. In that case the
-   parameter "moving.pickle\_solution.pklfname" or
-   "fixed.pickle\_solution.pklfname" is assigned to the solution file
+   Phaser is run from the command line and it produces several
+   solutions of which one is the correct solution.
+-  Use a solution from the Phaser-MR GUI in PHENIX. In that case the
+   parameter ``pickle.solution.pklfname`` in the sub-scope should be 
+   assigned to the solution file
    that is produced by PHENIX after an MR calculation. The
-   "moving.pickle\_solution.philfname" or
-   "fixed.pickle\_solution.philfname" is then assigned to the input file
+   ``pickle.solution.philfname`` should then be assigned to the input file
    for the MR calculation. This way of specifying solutions is useful
    when MR solutions are available from having run Phaser through the
    PHENIX interface.
--  There is no restriction on what method to use for the fixed scope
-   depending on the method used on the moving scope, and vice versa. If
-   space group and the unit cell dimensions is not available when for
-   instance (2) is used for both the moving and the fixed scopes then
-   these need to be specified by assigning the parameter,
-   "spacegroupfname", to a PDB file with a CRYST1 record or to an MTZ
-   file with that information. Typically this would be the data file
-   used for the molecular replacement calculation.
+-  If space group and the unit cell dimensions is not available from
+   any of the input files then these need to be specified by assigning
+   the parameter, ``spacegroupfname``,  either to a PDB file with a 
+   CRYST1 record or to an MTZ file with that information. This should be 
+   the data file used for the molecular replacement calculation.
+
 
 Examples of PHIL input
 ----------------------
@@ -137,7 +136,7 @@ specified as a PDB file:
             xyzfname = "testdata/sculpt_3ECI_A0.pdb"
           }
         }
-        AltOrigSymMates.moving_pdb="testdata/2z0d.pdb"
+        AltOrigSymMates.moving.pdb="testdata/2z0d.pdb"
 
 Testing two set of solution files from the PHENIX Phaser-MR GUI against
 one another:
@@ -225,7 +224,7 @@ Algorithm
 
 phenix.find\_alt\_orig\_sym\_mate computes configurations by looping
 over all symmetry operations and alternative origin shifts. An alignment
-between C-alpha atoms from moving\_pdb and fixed\_pdb is computed using
+between C-alpha atoms from ``moving.pdb`` and ``fixed.pdb`` is computed using
 secondary structure matching (SSM). If that fails or if the MLAD score
 achieved with SSM is larger than 2.0 an alignment is computed using
 MMTBX alignment functions which is part of the CCTBX. To estimate the
@@ -248,9 +247,9 @@ structures. But it is not a metric in a strict mathematical sense since the
 triangle inequality is not fulfilled. Unlike a plain root mean square deviation
 the logarithm in the MLAD formula will downplay
 contributions of atom pairs where the atoms are spatially distant. If an RMSD were employed
-such contributions would contribute with the same amount as those atom pairs that
+such atom pairs would contribute on an equal footing with those groups of atom pairs that
 can be superposed perfectly. This in turn
-may lead to incorrect superpositions when the chains tested against
+may lead to non-optimal superpositions when the structures tested against
 one another consists of multiple domains
 where one domain has undergone a domain motion, i.e. where a subset of atoms in
 one chain are bound to be spatially distant from the atoms in the other chain they have
@@ -262,7 +261,7 @@ chain in the moving scope for a given symmetry operation and alternative
 origin. When all chains in the fixed scope have been tested these copies
 will be saved to a file. For spacegroups with floating origin the
 minimum MLAD is found by doing a Golden Sectioning minimization along
-the polar axis for each copy of chains in moving\_pdb.
+the polar axis for each copy of chains in ``moving.pdb``.
 
 Also move HETATM (hetero atoms)
 -------------------------------
