@@ -9,7 +9,9 @@ Authors
 
 Principal authors: Pawel Janowski and Nigel W. Moriarty
 
-Contributions from: Jason Swails (Python Sander API), Romain Wolf (pdb4amber which is used in AmberPrep)
+Contributions from: Jason Swails (Python Sander API), Romain Wolf 
+(pdb4amber which is used in AmberPrep), David A. Case (General code 
+improvements to AmberPrep).
 
 Theory and Background
 =====================
@@ -28,15 +30,43 @@ overfitting as compared to conventional restraints.
 Running refinement with Phenix and Amber
 ========================================
 
-The Phenix user should install the latest AmberTools. AmberTools is
-avaialable free of charge at www.ambermd.org. Follow the installation
-instructions in the Amber manual. In particular make sure to set the
-AMBERHOME environment variable and source the $AMBERHOME/amber.sh or
-$AMBERHOME/amber.csh script, depending on the shell you use. This is
-required for the installation and can be added to the appropriate
-login script (bashrc or cshrc).
+The Phenix user should install the latest AmberTools. The interface in
+Phenix was updated to AmberTools16 on 1 AUG 2016. There is no support
+for older versions of AmberTools.  AmberTools is avaialable free of
+charge at www.ambermd.org. Follow the installation instructions in the
+Amber manual. In particular make sure to set the AMBERHOME environment
+variable. There is a file for setting your environment
+($AMBERHOME/amber.sh or $AMBERHOME/amber.csh script, depending on the
+shell) that can be used in conjunction with Amber. This is required
+for the installation using Amber and can be added to the appropriate
+login script (bashrc or cshrc) but only AMBERHOME needs to be set for
+use inside Phenix. This is because Phenix uses "dispatchers" which
+setup all the details of the environment from AMBERHOME.
 
-To create to bridge between Phenix and Amber, run:
+To build Amber, there are instructions in the Amber distribution, but
+there are some things that can make things run smoothly when installing
+Amber specfically for Phenix. Run, in $AMBERHOME, the updates command:
+
+::
+	[~:]$ ./update_amber --update
+
+Next:
+
+::
+	[~:]$ ./configure --no-updates --with-python=`which phenix.python` -noX11 -macAccelerate -nofftw3 <compiler>
+
+The compiler is based on the OS and available compilers. The -macAccelerate is
+ignored in non-OSX machines. The 'make' should now compile Amber using the
+Phenix python and complete with something like:
+
+::
+
+  ==============================================================
+  /home/builder/slave/phenix-externals-regression-bot/modules/amber/src/Makefile not found, or -noamber was set.
+  This is expected if you do not have Amber16.
+  ==============================================================
+
+To create the bridge between Phenix and Amber (and setup the dispatchers), run:
 
 ::
 
@@ -51,7 +81,7 @@ Phenix modules/amber_adaptbx directory and run:
 
 ::
 
-	phenix.python tst_refinement.py
+	amber.run_tests
 
 To run Amber in Phenix, in addition to a PDB file, a topology and a
 coordinate file must be provided for Amber. You can easily create
@@ -59,23 +89,24 @@ these files by using the provided AmberPrep utility:
 
 ::
 
-  phenix.AmberPrep 9xyz.pdb
+  phenix.fetch_pdb 4Lzt --mtz
+  phenix.AmberPrep 4Lzt.pdb
 
 which will generate three files.
 
 ::
 
-  4amber_9xyz.prmtop
-  4amber_9xyz.rst7
-  4phenix_9xyz.pdb
+  4amber_4Lzt.prmtop
+  4amber_4Lzt.rst7
+  4phenix_4Lzt.pdb
 	
 The first two are the Amber files and the last one is the PDB file that matches
 the two Amber files for atom order and must be used in phenix.refine replacing
-9xyz.pdb. Having created the input files, refinement can be run as follows:
+4Lzt.pdb. Having created the input files, refinement can be run as follows:
 
 ::
 
-  phenix.refine 4phenix_9xyz.pdb 9xyz.mtz use_amber=True topology_file_name=4amber_9xyz.prmtop coordinate_file_name=4amber_9xyz.rst7 wxc_scale=0.025
+  phenix.refine 4phenix_4Lzt.pdb 4Lzt.mtz use_amber=True topology_file_name=4amber_4Lzt.prmtop coordinate_file_name=4amber_4Lzt.rst7
 
 Here is list of keywords:
 
@@ -102,7 +133,7 @@ as follows:
 
 ::
 
-	phenix.geometry_minimization 4amber_xyz.pdb amber.use=True topology_file_name=4amber_9xyz.prmtop coordinate_file_name=4amber_9xyz.rst7
+	phenix.geometry_minimization 4amber_xyz.pdb amber.use=True topology_file_name=4amber_4Lzt.prmtop coordinate_file_name=4amber_4Lzt.rst7
 
 2. AmberPrep contains additional options that the user may wish to use.
 Run:
