@@ -57,7 +57,12 @@ Next:
 
 The compiler is based on the OS and available compilers. The -macAccelerate is
 ignored in non-OSX machines. The 'make' should now compile Amber using the
-Phenix python and complete with something like:
+Phenix python:
+
+::
+ 	[~:]$ make -j 2 install
+
+and complete with something like:
 
 ::
 
