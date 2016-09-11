@@ -23,10 +23,14 @@ and a sequence file, you can use map\_to\_model to build a model into
 your map. The tool map\_to\_model will identify what kind of chains to
 build based on your sequence file.  It will find where your molecule is
 in the map and cut out and work with just that part of the density.
+
 If your map has been averaged based on NCS symmetry and 
 you supply a file with that NCS information (.ncs_spec, biomtr.dat, etc),
 map\_to\_model will find the asymmetric unit of NCS, build that, then
-expand to the entire map.  The map\_to\_model tool will cut the density 
+expand to the entire map.  You can also just supply the type of symmetry
+(e.g., D7) or ask to check all plausible symmetry.
+
+The map\_to\_model tool will cut the density 
 in your map into small pieces of connected density and 
 try to build model into each one. It will merge all the 
 pieces into a compact model, refine it, and superimpose 
@@ -82,6 +86,56 @@ as a box containing all the points above a threshold, typically 5% of the
 maximum in the map.
 
 
+*Map sharpening/blurring*
+-------------------------
+
+By default (auto\_sharpen=True) the resolution dependence of the map will
+be adjusted to maximize the clarity of the map.  You can choose to use
+map kurtosis or the adjusted surface area of the map (default) for this 
+purpose.  
+
+Kurtosis is a standard statistical measure that reflects the peakiness of 
+the map.  
+
+The adjusted surface area is a combination of the surface area of
+contours in the map at a particular threshold
+and of the number of distinct regions enclosed by the top 30% (default) of
+those contours.  The threshold is chosen by default to be one where the 
+volume enclosed by the contours is 20% of the non-solvent volume in the map. 
+The weighting between the surface area (to be maximized) and number of regions
+enclosed (to be minimized) is chosen empirically (default region_weight=20).
+
+
+Several resolution-dependent functions are tested, and the one
+that gives the best kurtosis (or adjusted surface area) is chosen.  
+In each case the map is transformed to obtain Fourier coefficients. The
+amplitudes of these coefficients are then adjusted, keeping the phases
+constant. The available functions for modifying the amplitudes are:
+
+::
+
+  No sharpening (map is left as is)
+
+  Sharpening b-factor applied over entire resolution range (b_sharpen
+  applied to achieve an effective isotropic overall b-value of b_iso).
+
+  Sharpening b-factor applied up to resolution specified with the
+  resolution=xxx keyword, then not applied beyond this resolution (with
+  transition specified by the keyword k_sharpen, b_iso_to_d_cut).  If 
+  blurring (sharpening with value less than zero) is applied, 
+  the blurring is applied over the entire resolution range.
+
+  Resolution-dependent sharpening factor with three parameters.
+  First the resolution-dependence of the map is removed by normalizing the
+  amplitudes.  Then a scale factor S is to the data, where  
+  log10(S) is determined by coefficients b[0],b[1],b[2] and a resolution 
+  d_cut (typically d_cut is the nominal resolution of the map).
+  The value of log10(S) varies smoothly from 0 at resolution=infinity, to b[0]
+  at d_cut/2, to b[1] at d_cut, and to b[1]+b[2] at the highest resolution
+  in the map.  The value of b[1] is limited to being no larger than b[0] and the
+  value of b[1]+b[2] is limited to be no larger than b[1]. 
+
+
 *Finding the NCS asymmetric unit of the map*
 --------------------------------------------
 
@@ -89,7 +143,14 @@ If you supply NCS matrices describing the NCS used to average the map (if any),
 then map\_to\_model will try to define a region of the map that represents
 the NCS asymmetric unit.  Application of the NCS operators to the NCS 
 asymmetric unit will generate the entire map, and application to a model built
-into the asymmetric unit will generate the entire model.  Normally
+into the asymmetric unit will generate the entire model.  
+
+You can also supply the type of symmetry (e.g., C3, D7, etc) 
+and map\_to\_model will try to find that symmetry in the map. You can even
+search for all plausible symmetry (ANY).  For helical symmetry either an NCS
+file or the rotation and translation information is required, however.
+
+Normally
 identification of the NCS asymmetric unit and segmentation of the map (below)
 are done as a single step, yielding an asymmetric unit and a set of
 contiguous regions of density within that asymmetric unit. The asymmetric unit
@@ -160,6 +221,19 @@ where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
 sequence file, and find_ncs.ncs_spec is an optional file specifying any
 NCS operators used in averaging the map. This can be in the form of
 BIOMTR records from a PDB file as well.
+
+Standard run of map\_to\_model, specifying NCS type:
+-------------------------------
+
+Finding NCS map\_to\_model is easy. From the command-line you can type:
+
+::
+
+    phenix.map_to_model my_map.map seq.fa ncs_type=D7
+
+Here map\to\_model will look for D7 (7-fold symmetry along the c-axis and 
+2-fold symmetry along a or b) in the map and apply it if it is found. It will
+also write out the NCS matrices corresponding to this symmetry.
 
 Combining partial runs from map\_to\_model:
 -------------------------------------------
