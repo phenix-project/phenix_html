@@ -1,0 +1,125 @@
+Auto-sharpening cryo-EM maps with auto_sharpen
+=====================================================
+
+Author(s)
+---------
+
+-  auto_sharpen: Tom Terwilliger
+
+Purpose
+-------
+
+The routine auto_sharpen will automatically identify optimal
+sharpening/blurring/map adjustment for the input map and will write
+out an optimized version of the map. Whether or not the origin is in
+the middle of the input map, the output map will have the origin at one corner.
+
+Usage
+-----
+
+How auto_sharpen works:
+-----------------------
+
+Auto-sharpen adjusts the resolution dependence of the map 
+to maximize the clarity of the map.  You can choose to use
+map kurtosis or the adjusted surface area of the map (default) for this 
+purpose.  
+
+Kurtosis is a standard statistical measure that reflects the peakiness of 
+the map.  
+
+The adjusted surface area is a combination of the surface area of
+contours in the map at a particular threshold
+and of the number of distinct regions enclosed by the top 30% (default) of
+those contours.  The threshold is chosen by default to be one where the 
+volume enclosed by the contours is 20% of the non-solvent volume in the map. 
+The weighting between the surface area (to be maximized) and number of regions
+enclosed (to be minimized) is chosen empirically (default region_weight=20).
+
+Several resolution-dependent functions are tested, and the one
+that gives the best kurtosis (or adjusted surface area) is chosen.  
+In each case the map is transformed to obtain Fourier coefficients. The
+amplitudes of these coefficients are then adjusted, keeping the phases
+constant. The available functions for modifying the amplitudes are:
+
+::
+
+  No sharpening (map is left as is)
+
+  Sharpening b-factor applied over entire resolution range (b_sharpen
+  applied to achieve an effective isotropic overall b-value of b_iso).
+
+  Sharpening b-factor applied up to resolution specified with the
+  resolution=xxx keyword, then not applied beyond this resolution (with
+  transition specified by the keyword k_sharpen, b_iso_to_d_cut).  If 
+  blurring (sharpening with value less than zero) is applied, 
+  the blurring is applied over the entire resolution range.
+
+  Resolution-dependent sharpening factor with three parameters.
+  First the resolution-dependence of the map is removed by normalizing the
+  amplitudes.  Then a scale factor S is to the data, where  
+  log10(S) is determined by coefficients b[0],b[1],b[2] and a resolution 
+  d_cut (typically d_cut is the nominal resolution of the map).
+  The value of log10(S) varies smoothly from 0 at resolution=infinity, to b[0]
+  at d_cut/2, to b[1] at d_cut, and to b[1]+b[2] at the highest resolution
+  in the map.  The value of b[1] is limited to being no larger than b[0] and the
+  value of b[1]+b[2] is limited to be no larger than b[1]. 
+
+
+You can also choose to specify the sharpening/blurring parameters for your
+map and they will simply be applied to the map. For example you can apply
+a sharpening B-value (b_sharpen) to sharpen the map, or you can specify a
+target overall B-value (b_iso) to obtain after sharpening.
+
+*Output files from auto_sharpen*
+--------------------------------
+
+**sharpened_shifted\_map.ccp4**: Sharpened map, shifted to place the origin on grid point (0,0,0) and sharpened
+
+**sharpened_shifted\_map.mtz**: Sharpened map, shifted to place the origin on grid point (0,0,0) and sharpened. Map coefficients corresponding to the ccp4 map.
+
+
+*Shifting the map to the origin*
+--------------------------------
+
+Most crystallographic maps have the origin at the corner of the map (
+grid point [0,0,0]), while most cryo-EM maps have the orgin in the 
+middle of the map.  To make a consistent map, any maps with an origin not 
+at the corner are shifted to put the origin at grid point [0,0,0]. This map
+is the shifted map that is used for further steps in model-building.
+At the conclusion of model-building, the model is shifted back to 
+superimpose on the original map.
+
+Examples
+--------
+
+Standard run of auto_sharpen:
+-----------------------------
+
+Running auto_sharpen is easy. From the command-line you can type:
+
+::
+
+    phenix.auto_sharpen my_map.map resolution=2.6
+
+where my_map.map is a CCP4, mrc or other related map format, and you 
+specify the nominal resolution of the map.
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:cctbx.maptbx.auto_sharpen}}
