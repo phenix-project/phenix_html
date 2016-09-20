@@ -53,7 +53,7 @@ Amber specfically for Phenix. Run, in $AMBERHOME, the updates command:
 Next:
 
 ::
-	[~:]$ ./configure --no-updates --with-python=`which phenix.python` -noX11 -macAccelerate -nofftw3 <compiler>
+	[~:]$ ./configure --no-updates --with-python `which phenix.python` -noX11 -macAccelerate -nofftw3 <compiler>
 
 The compiler is based on the OS and available compilers. The -macAccelerate is
 ignored in non-OSX machines. The 'make' should now compile Amber using the
