@@ -1,0 +1,490 @@
+Ensemble creation with Ensembler
+================================
+
+Purpose
+-------
+
+Ensembling is a superposition of multiple homologous structures, which often
+gives superior performance when used as search model for molecular replacement.
+
+Usage
+-----
+
+There is a standalone *ensembler_new* program available from the command line.
+The unified model preparation program *sculpt_ensemble* is available from the
+command line and also from the PHENIX GUI.
+
+Input files
+-----------
+
+-  **Structures** *(compulsory)*. The chains that are to be superposed.
+   Protein/DNA/RNA chains are automatically identified, other chains are
+   not used in the superposition step. These non-recognized chains are either
+   discarded, or if these are associated with a chain that is used for
+   superposition (this is governed by whether these chains have the same
+   chainID), these can also be transformed by the appropriate transformation
+   matrix. In case the structure contains multiple chains, these are either
+   superposed as independent entities (default), or as an assembly (e.g. a
+   tetramer) - this is governed by the ``assembly`` keyword (defines a group of
+   chains that should be superposed as a group - this can be used multiple
+   times) or the ``read_single__assembly_from_file`` keyword (to treat the
+   contents of the file as a single assembly).
+   Accepted formats: PDB. Recognized extensions: ``.pdb``, ``.ent``.
+-  **Alignment** *(optional)*. In case a user-supplied residue mapping
+   is requested, this keywords allows the input for alignment files. In case
+   assemblies are also defined, the user-supplied residue mapping option (and
+   the corresponding alignment file) can be configured on an assembly-member
+   basis, and this can be achieved by listing the mapping option/corresponding
+   alignment in the same order as the assembly members.
+   The program recognizes alignment files from their extensions [``.aln``
+   (CLUSTAL format), ``.pir`` (PIR-format) and ``.ali`` (relaxed PIR-like
+   format) are accepted], but in case multiple alignment input is required,
+   it has to be used with a full assignment syntax, e.g.
+   ``alignment="my1.aln my2.aln"``.
+
+Output files
+------------
+
+The superposed chains can be written out either as a quasi multiple
+model PDB file that is readable by phaser directly (output style
+``merged``, output file name ``root_merged.pdb``) or as a series of
+files containing each chain separately (output style ``separate``, file
+name ``root_pdb_chain.pdb``, where pdb is the name of the PDB file the
+chain was read from, and chain is the chain identifier). The file name
+``root`` can be changed via the ``root`` parameter of the ``output``
+(default: ``ensemble``).
+
+Description
+-----------
+
+The workflow consists of several stages that can be independently
+configured. These are listed in order of execution.
+For a summary of all parameters with the corresponding defaults, see the
+`Additional information`__ section.
+
+__ additional_
+
+Model input
+-----------
+
+The syntax allows the definition of structural assemblies in a flexible manner,
+and is also backwards-compatible with the previous version, i.e. existing
+command lines do not have to be changed.
+
+Single-chain structures
++++++++++++++++++++++++
+
+These only require the input of files that contain the structures to be
+superposed. In case multiple chains are present in a file, these are superposed
+independently, but it is also possible to restrict participating chains to a
+selection (using the ``selection`` keyword).
+
+For example, to superpose all chains in a.pdb with all chains in b.pdb, the
+following PHIL is needed (these can also be specified as command-line
+arguments):
+
+::
+
+  input.model.file_name=a.pdb
+  input.model.file_name = b.pdb
+
+To superpose only chains A and B from a.pdb with chains A and C from b.pdb, the
+``selection`` keyword can be used (please note that this can now longer be
+achieved from the command line):
+
+::
+
+  input {
+    model {
+      file_name = a.pdb
+      selection = chain A or chain B
+      }
+
+    model {
+      file_name = b.pdb
+      selection = chain A or chain C
+      }
+    }
+
+
+Multimeric assemblies
++++++++++++++++++++++
+
+In this case the individual assemblies need to be specified using either the
+``assembly`` keyword or the ``read_single_assembly_from_file`` keyword if the
+respective structure file contains a single assembly only.
+
+In case the input PDB file contains multiple MODEL sections, these are
+automatically treated as separate assemblies and no further action is required.
+However, it is still possible to omit chains from the assembly by listing only
+the chainIDs on the ``assembly`` keyword. On the other hand, the
+``read_single_assembly_from_file`` is not applicable to such a PDB file, and
+will result in an error message.
+
+For example, the structure 4QTR_ contains two copies of a protein-DNA complex:
+protein chains A and B interact with DNA chains E and F, while protein
+chains C and D interact with DNA chains G and H.
+
+.. _4QTR: http://www.rcsb.org/pdb/explore/explore.do?structureId=4qtr
+
+To superpose these two assemblies, the following input is required:
+
+::
+
+  input {
+    model {
+      file_name = 4qtr.pdb
+      assembly = A B E F
+      assembly = C D G H
+      }
+    }
+
+To superpose a subset of the assemblies, it is sufficient to specify the subset
+to be superposed. Additional chains are automatically discarded. For example,
+to superpose a partial assembly from the previous example, one can use the
+following command file:
+
+::
+
+  input {
+    model {
+      file_name = 4qtr.pdb
+      assembly = A E F
+      assembly = C G H
+      }
+    }
+
+If the assemblies to be superposed are present in separate files, one can use
+a more convenient syntax:
+
+::
+
+  input {
+    model {
+      file_name = 4qtr_1.pdb
+      read_single_assembly_from_file = True
+      }
+    model {
+      file_name = 4qtr_2.pdb
+      read_single_assembly_from_file = True
+      }
+    }
+
+Input summary
++++++++++++++
+
+The program list the chains that were read from input files, and also displays
+the identified macromolecule type. It also does a consistency check to ensure
+that all assemblies have the same number of chains and these are of identical
+types.
+
+Residue mapping
+---------------
+
+Establishes the equivalence of residues among the input chains. There
+are several options available:
+
+-  ``ssm`` - Do structure-based pairwise SSM alignment, using the first chain
+   as reference (default).
+-  ``ssm_multiple_alignment`` - Do structure-based multiple SSM alignment.
+-  ``muscle`` - Generate a sequence alignment with MUSCLE and use that
+   to align the residues.
+-  ``multiple_alignment`` - A user supplied multiple alignment is used.
+   An error message will be raised if this is not present or does not
+   cover all present chains.
+-  ``resid`` - Residue sequence number with insertion code will be used.
+
+Residue mapping can be requested on an assembly-member basis, by specifying the
+requested options in the same order as the chains of the assembly. This is not
+compulsory, and if no options are specified, a default dependent on the
+macromolecule type will be used (for ``protein``, the default is ``ssm``, for
+nucleic acids it is ``muscle``). It is also possible to request specific
+mapping algorithms for a subset of all chains of the assembly, but in this case
+these have to come first in the list.
+
+For example, to request non-default mapping options for the 4QTR_ example, the
+following options are needed (``input`` section repeated for convenience):
+
+::
+
+  input {
+    model {
+      file_name = 4qtr.pdb
+      assembly = A B E F
+      assembly = C D G H
+      }
+    }
+
+  configuration {
+    mapping = ssm muscle muscle resid
+    }
+
+This will use the ``ssm`` option for chains A and B, ``muscle`` for chains B
+and D, ``muscle`` for chains E and G and ``resid`` for chains F and H. Note
+that these coincide with the defaults for chains A and B (assembly position 1,
+protein chain) as well as for chains E and G (assembly position 3, DNA chains).
+To request non-default options only, one has to rearrange the assembly so that
+positions 2 and 4 in the current setup become positions 1 and 2:
+  
+::
+
+  input {
+    model {
+      file_name = 4qtr.pdb
+      assembly = B F A E
+      assembly = D H C G
+      }
+    }
+
+  configuration {
+    mapping = muscle resid
+    }
+
+In this case, since no specific mapping is requested for assembly positions 3
+and 4, the default options will be used.
+
+Atom mapping
+------------
+
+Maps selected atoms within equivalent residues to each other. The
+mapping is done by name hence the order of atoms in the residue does not
+matter. If atoms are missing from certain residues (or if certain
+residues contain extra atoms), a gap will be filled where necessary.
+
+Atom selection is controlled by the ``atoms`` parameter of the
+``configuration`` scope. If multiple atom names are requested, these need to be
+separated by a comma (``,``). If no selection is requested, a type dependent on
+the macromolecule will be used (``CA`` for ``protein`` and ``P`` for nucleic
+acids). There are also type-dependent shorthands available (``backbone`` and
+``all``).
+
+For assembly structures, it is possible to request atom selection on an
+assembly-member basis, with the same limitation that was explained in the
+previous section. As an example, here is a selection for the 4QTR_ structure:
+
+::
+
+  input {
+    model {
+      file_name = 4qtr.pdb
+      assembly = A B E F
+      assembly = C D G H
+      }
+    }
+
+  configuration {
+    atoms = C,CA,N,O backbone all backbone
+    }
+
+This instructs the program to use atoms C, CA, N, O for assembly position 1
+(chains A and C), backbone atoms for assembly position 2 (chains B and D; since
+these are protein chains, the shorthand ``backbone`` stands for atoms C, CA, N
+and O), all atoms for assembly position 3 (chains E and G ) and backbone atoms
+for assembly position 4 (chains F and H; since these are DNA chains, backbone
+selection includes all atoms from the phosphate and the deoxy-ribose).
+
+Superposition
+-------------
+
+Equivalent positions are superposed iteratively to find a globally
+optimal solution. There are two superposition algorithms implemented,
+which primarily differ in how they handle gaps in equivalent positions.
+
+-  ``gapless``. This algorithm discards all positions where gaps are
+   present, For further details, see `Diamond (1992)`__.
+
+__ Diamond1992_
+
+-  ``gapped``. This algorithm can use all positions as long as there are
+   two sites presents (i.e. not gaps), and may give better results for
+   chains with distant sequence identity. For the exact algorithm, see
+   `Wang & Snoeyink (2008)`__.
+
+__ WangSnoeyink2008_
+
+Both algorithms use Diamond's formulation to solve the pairwise
+rotational superposition problem (`Diamond, 1988`__).
+
+__ Diamond1988_
+
+An exception is raised if there are less than 3 sites present for
+superposition.
+
+Multiple superposition is an iterative process and consists of a series
+of pairwise superpositions. The convergence criterion is controlled by
+the ``convergence`` parameter (in the ``superposition`` scope), which is
+the r.m.s. difference change between two consecutive iterations.
+
+Weighting
+---------
+
+Automatic weighting can be used to improve superposition, either to
+amplify highly homologous regions or to decrease the effect of incorrect
+site-equivalence (typically arises because of a wrong alignment).
+Implemented weighting schemes are as follows:
+
+-  ``unit`` - Unit weights (equivalent to no weighting).
+-  ``robust_resistant`` - Robust-resistant weighting scheme (default).
+   This tends to converge fast and give reliable results. The exact
+   formula for weighting is as follows::
+
+      w = 1 - ( delta2 / tolerance2 )2 if delta < tolerance
+      w = 0 (otherwise)
+
+   where ``delta`` is the deviation from the average. Tolerance is an
+   empirical value, and its optimal value is close to (unweighted r.m.s.d.) :sup:`2`
+   and can be controlled by the ``critical`` parameter of the ``robust_resistant``
+   scope.
+
+Weighting is iterated with superposition until weights converge, which
+can be controlled by the ``convergence`` parameter of the ``weighting``
+scope.
+
+In case of highly dissimilar structures (or incorrect residue mapping),
+weight determination may temporarily need to be damped to avoid
+divergence. This is done automatically (in steps controlled by the
+``incremental_damping_factor`` parameter of the ``weighting`` scope),
+until a preset value (controlled by the ``max_damping_factor`` parameter
+of the ``weighting`` scope) is reached, at which point an exception is
+raised.
+
+Cluster analysis
+----------------
+
+Hierarchical cluster analysis is performed using the pairwise r.m.s.
+differences as a distance measure. The ``clustering`` parameter of the
+``configuration`` score can be used to adjust cluster boundaries. Clustering
+information can be requested for multiple thresholds. Default: no clustering
+performed.
+
+Chain trimming
+--------------
+
+This option trims residues from the final superposed model where the
+unweighted r.m.s.d. is above a certain threshold (``threshold``
+parameter of the ``trimming`` scope). Useful in removing flexible loops,
+etc. Default: no trimming.
+
+Sorting
+-------
+
+After superposition is complete, the chains can be sorted by sequence
+identity (``identity``), fraction of common sites wrt all aligned atom
+positions (``overlap``), weighted r.m.s.d. (``wrmsd``) or unweighted
+r.m.s.d. (``unwrmsd``). This is controlled by the ``sort`` parameter of
+the ``output`` scope. Default: input order (``input``).
+
+Command line
+------------
+
+::
+
+    phenix.ensembler \
+        [ command-line switches ] \
+        [ PHIL-format parameter files ] \
+        [ PHIL command-line assignments ] \
+        [ PDB-files ] \
+        [ alignment files ]
+
+Command-line switches:
+++++++++++++++++++++++
+
+::
+
+
+      -h, --help            show this help message and exit
+      --show-defaults       print PHIL and exit
+      -i, --stdin           read PHIL from stdin as well
+      -v, --verbosity       set verbosity level (info,debug,verbose)
+      --version             show program's version number and exit
+      --text-logfile FILE   Verbatim copy of log stream
+      --html-logfile FILE   Verbatim copy of log stream in HTML
+
+PHIL arguments:
++++++++++++++++
+
+Everything not starting with a dash('-') is interpreted as a PHIL
+argument. This can be a PHIL-format file containing parameters,
+command-line assignment or a file whose type is automatically recognized
+(based on file extension; structure files and alignment files are
+recognized automatically).
+
+Specific limitations and possible problems
+------------------------------------------
+
+Processing features
++++++++++++++++++++
+
+- When an alignment-based residue mapping protocol is requested, very short
+  residue segments (shorter than 3 consecutive residues) cannot be reliably
+  aligned to the sequence, and these will be discarded from the superposition.
+
+Warning and error messages
+++++++++++++++++++++++++++
+
+- ``No input pdb files``: no PDB files were given.
+- ``Cannot treat multiple MODELs as a single assembly``: the
+  ``read_single_assembly_from_file`` keyword was used in connection with a PDB
+  file that contains multiple MODEL records.
+- ``No chains read from input PDB files``: no superposable chain was found in
+  input files. Superposable chains are protein, DNA and RNA.
+- ``No chain with allowed type found``: no superposable chains found in
+  structure file. Superposable chains are protein, DNA and RNA.
+- ``No chain '..' found``: chain '..' (requested as part of an
+  assembly) is not present.
+- ``Inconsistency between assembly 1 and assembly ..: different number of
+  chains``: assembly 1 and assembly .. do not have the same number of chains.
+- ``Inconsistency between assembly 1 and assembly ..: different chain types``:
+  an assembly position in assembly 1 and assembly .. do not have the same
+  macromolecule type. The information on chains types in the assembly is given
+  prior to this error message.
+- ``Mapping .. is not applicable to chain type ..``: the mapping method .. is
+  not applicable to a chain with macromolecule type .. (e.g. SSM superposition
+  can only be used with protein chains).
+-  ``No alignment specified``: no alignment file was specified and a
+   user-supplied alignment based mapping method was requested.
+-  ``No matching alignment found``: no alignment sequence matches
+   from the ser-supplied alignment matches the chain sequence.
+-  ``SSM error:...``: an error occurred during SSM superposition.
+- ``No sites selected``: the requested atom selection results in no sites
+  selected for superposition.
+-  ``Less than 2 chains for superposition``: superposition cannot
+   proceed because there are less than 2 chains found.
+- ``Insufficient overlap among structures``: superposition cannot proceed
+   because there are less than 3 sites available (this is checked after
+   discarding gaps). If this error occurs, discarding the chain with the
+   lowest overlap (printed just before the error is raised) may allow
+   one to proceed.
+-  ``Excessive weight shift, damping weight change``: this warning is
+   emitted if weights need to be damped, because all weights are zero.
+-  ``Weight damping recovery exhausted``: this error is raised if even
+   after successive rounds of re-weighting, all weights are still zero.
+   This either indicates incorrect alignment of the chains or too tight
+   expected error.
+
+References
+----------
+
+.. [Diamond1988]
+   **A note on the rotational superposition problem**
+   R. Diamond *Acta Cryst.* **A44**, 211-216 (1988)
+
+.. [Diamond1992]
+   **On the multiple simultaneous superposition of molecular structures by rigid body transformations**
+   R. Diamond *Protein Science* **1**, 1279-1287 (1992)
+
+.. [WangSnoeyink2008]
+   **Defining and computing optimum RMSD for gapped and weighted multiple-structure alignment**
+   X. Wang and J. Snoeyink
+   *EEE/ACM Transactions on Computational Biology and Bioinformatics* **5**, 525-533 (2008)
+
+.. _additional:
+
+Additional_information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phaser.ensembler_new}}
