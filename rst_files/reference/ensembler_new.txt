@@ -1,6 +1,8 @@
 Ensemble creation with Ensembler
 ================================
 
+.. contents::
+
 Purpose
 -------
 
@@ -10,9 +12,9 @@ gives superior performance when used as search model for molecular replacement.
 Usage
 -----
 
-There is a standalone *ensembler_new* program available from the command line.
-The unified model preparation program *sculpt_ensemble* is available from the
-command line and also from the PHENIX GUI.
+There is a standalone ``ensembler_new`` program available from the command
+line. The unified model preparation program ``sculpt_ensemble`` is available
+from the command line and also from the PHENIX GUI.
 
 Input files
 -----------
@@ -60,9 +62,7 @@ Description
 The workflow consists of several stages that can be independently
 configured. These are listed in order of execution.
 For a summary of all parameters with the corresponding defaults, see the
-`Additional information`__ section.
-
-__ additional_
+`Additional information`_ section.
 
 Model input
 -----------
@@ -225,7 +225,7 @@ that these coincide with the defaults for chains A and B (assembly position 1,
 protein chain) as well as for chains E and G (assembly position 3, DNA chains).
 To request non-default options only, one has to rearrange the assembly so that
 positions 2 and 4 in the current setup become positions 1 and 2:
-  
+
 ::
 
   input {
@@ -478,13 +478,10 @@ References
    X. Wang and J. Snoeyink
    *EEE/ACM Transactions on Computational Biology and Bioinformatics* **5**, 525-533 (2008)
 
-.. _additional:
-
-Additional_information
+Additional information
 ----------------------
 
-
 List of all available keywords
-------------------------------
+++++++++++++++++++++++++++++++
 
 {{phil:phaser.ensembler_new}}

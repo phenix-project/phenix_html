@@ -1,0 +1,147 @@
+Homology modelling using simple_homology_model
+==============================================
+
+.. contents::
+
+Purpose
+-------
+
+This program can be used for building a homology model for a target sequence
+using a template structure and an alignment.
+
+Usage
+-----
+
+``simple_homology_model`` is available from the command line.
+
+Input files
+-----------
+
+-  **Structure** *(compulsory)*. The template structure.
+   Accepted formats: PDB. Recognized extensions: ``.pdb``, ``.ent``.
+-  **Alignment** *(compulsory)*. Alignment between the target and template
+   sequences.
+   Accepted formats:
+
+   + ``.aln``: CLUSTAL format.
+   + ``.pir``: PIR format.
+   + ``.ali``: relaxed PIR-like format.
+
+- **Sequence** *(optional)*. The complete target sequence if the alignment does
+  not fully cover it. If not specified, the first sequence from the alignment
+  will be used as target.
+
+Output files
+------------
+
+The homology model is written out as specified in ``output.model``.
+
+Description
+-----------
+
+The program first discard all residues from the template structure that are not
+present in the target and morphs the residue type when they are (this step is
+performed by Sculptor_ and is governed by the alignment). The missing segments
+are detected, a suitable loop modelling setup is devised, which is then fed
+into Rosetta_ to do the actual building.
+
+Chain-to-alignment-matching
++++++++++++++++++++++++++++
+
+This controls how chain-to-alignment matching is performed. For more
+information, see the `Sculptor documentation`__.
+
+__ sculptor_chain_to_alignment_matching_
+
+Homology modelling setup
+++++++++++++++++++++++++
+
+For each loop, the program backtracks ``min_residue_margin`` number of residues
+on both ends, then checks the distance between bridge residues. If this is
+shorter than ``residue_distance`` * number-of-residues-in-between, than
+backtracks one residues more on each side, and keeps doing this until the
+criterion is statisfied, or hits a terminus on either end. After this, it
+evaluates residue segments that are not assigned for loop modelling and will be
+kept fixed during the modelling step. Segments shorter than
+``min_edge_segment_length`` will be discarded at the termini, and shorter than
+``min_intenal_segment_length`` will be discarded internally, and the
+surrounding loops joined. It then checks the loop lengths, and stops with an
+error message if a loop is longer than ``max_loop_length``.
+
+Homology modelling
+++++++++++++++++++
+
+The program runs Rosetta_ with a kinematic loop closure algorithm
+(``rosetta_loop_closure``), as this does not require selected fragments. After
+the loop is closed, Rosetta can be instructed to run a refinement
+(``rosetta_loop_refinement``).
+
+Command line
+------------
+
+::
+
+    phaser.simple_homology_model \
+        [ command-line switches ] \
+        [ PHIL-format parameter files ] \
+        [ PHIL command-line assignments ] \
+        [ PDB file ] \
+        [ alignment file ] \
+        [ sequence file ]
+
+Command-line switches:
+++++++++++++++++++++++
+
+::
+
+
+      -h, --help            show this help message and exit
+      --show-defaults       print PHIL and exit
+      -i, --stdin           read PHIL from stdin as well
+
+PHIL arguments:
++++++++++++++++
+
+Everything not starting with a dash('-') is interpreted as a PHIL
+argument. This can be a PHIL-format file containing parameters,
+command-line assignment or a file whose type is automatically recognized
+(based on file extension; structure files and alignment files are
+recognized automatically).
+
+Warning and error messages
+--------------------------
+
+Error messages
+++++++++++++++
+
+- ``Structure file is missing``: no PDB file specified.
+- ``Chain .. is not recognised as protein``: the chain specified for modelling
+  is not protein.
+- ``Alignment file is missing``: no alignment file specified.
+- ``Could not match chain with alignment``: chain-to-alignment matching was not
+  successful (reason indicated in previous line).
+- ``..: loop longer than maximum allowed``: loop .. is longer than the maximum
+  allowed.
+- ``Incomplete Rosetta environment setup: ..``: Rosetta environment is not
+  setup.
+- ``Cannot locate loopmodel: ..": the ``loopmodel`` Rosetta executable is not
+  found.
+- ``Cannot locate Rosetta database``: the Rosetta database is not found.
+- ``Rosetta finished with error code ..``: Rosetta exited with an error code.
+- ``No models produced``: although Rosetta exited indicating success, no model
+  is created.
+
+Warnings
+++++++++
+
+- ``No sequence file provided``: no sequence file provided, the first sequence
+  from the alignment will be used as target.
+- `` Multiple models output - using only first``: Rosetta generated multiple
+  models, and only the first on will be used.
+
+
+
+.. _Rosetta: https://www.rosettacommons.org/
+.. _Sculptor: sculptor_new.html
+.. _sculptor_chain_to_alignment_matching: sculptor_new.html#chain-to-alignment-matching
+

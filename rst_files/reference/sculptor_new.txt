@@ -1,0 +1,567 @@
+Model editing with Sculptor
+===========================
+
+.. contents::
+
+Purpose
+-------
+
+Sculptor can be used to improve a molecular replacement model using
+additional information available from an alignment and/or structure. It is
+based on an algorithm outlined in `Schwarzenbacher et al. (2004)`__.
+
+__ Schwarzenbacher2004_
+
+Conventions
+-----------
+
+The following terms are used with the special meaning:
+
+-  **target:** the structure to be solved
+-  **model:** the structure used as a model for the target
+
+Usage
+-----
+
+There is a standalone ``sculptor_new`` program available from the command line.
+The unified model preparation program ``sculpt_ensemble`` is available from the
+command line and also from the PHENIX GUI.
+
+Input files
++++++++++++
+
+- **Structure** *(compulsory)*: the structure to be modified. Specific
+  parts can be selected using CNS-style atom selection syntax. Chains
+  are divided into *protein*, *DNA*, *RNA*, *hetero*, *monosaccharide* and
+  *other* chain categories, and processed according to instructions given for
+  the appropriate chain type. Accepted formats: PDB. Recognized extensions:
+  ``.pdb``, ``.ent``.
+- **Alignments**: sequence alignment with the target sequence. The alignment
+  contains information that can be exploited in model improvement (this is
+  currently only implemented for protein chains). The chains are
+  automatically associated with the corresponding alignment based on a
+  sequence comparison. The target sequence is also automatically identified if
+  it is provided through the ``target_sequence`` keyword, otherwise the first
+  sequence in the alignment is used as target. Alignment input is optional, in
+  case it is not provided, an alignment will be made up using the chain
+  sequence with itself.
+  Accepted extensions (with the corresponding format) are ``.aln`` (CLUSTAL
+  format), ``.pir`` (PIR-format) and ``.ali`` (relaxed PIR-like format).
+- **Homology search files**: hits from a homology search. These work very
+  similarly to a set of *alignment files*. It is assumed that the first
+  sequence in each alignment is the target sequence (the sequence used for
+  searching homologues).
+  Accepted extensions (with the corresponding format) are ``.xml``
+  (BLAST-family XML output) and ``.hhr`` (HHPRED output).
+- **Sequence files**: target sequence. In case no alignment is available,
+  Sculptor can be instructed to prepare an alignment the using the sequences
+  of model chains assigned on the ``chain_ids`` parameter (please note that
+  in this case this alignment will be used for the specified chains, and any
+  user-supplied alignments will be ignored). Multiple sequence files can be
+  provided when target sequences for distinct protein chains differ.
+  Accepted extensions are ``.fasta``, ``.faa`` or ``.fa`` for FASTA
+  format, ``.pir`` for PIR-format and ``.seq`` or ``.dat`` for a
+  relaxed PIR/FASTA-like format.
+- **Error files** and **Superposition error** files: error estimates coming
+  either from a model quality assessment program (MQAP) or from a
+  superposition. Errors from MQAPs can be used in mainchain processing and also
+  in B-factor weighting, while those from a superposition can only be used for
+  mainchain processing. The inputs are kept separate, and hence it is possible
+  to use two different error estimates for each macromolecule chain.
+
+Output files
+++++++++++++
+
+The fully processed structure is output. The file is named according to the
+following convention: ``root_pdb.pdb``, where ``root`` is a user-defined
+parameter (accessible from the ``output`` scope), and ``pdb`` is the basename
+of the input PDB file.
+
+Outline of the procedure
+------------------------
+
+The workflow consists of several stages that can be independently
+configured. These are listed in order of execution. For a summary of all
+keywords with the corresponding defaults, see the `Additional information`_
+section.
+
+Preprocessing
++++++++++++++
+
+- ``selection``: selects a subset of the input PDB file, using
+   CNS-style atom selection syntax. Default: ``all``.
+- ``remove_alternate_conformations``: selects the first alternate
+   conformation for disordered entities, and discards the rest. Also
+   involes ``sanitize_occupancies``.
+- ``sanitize_occupancies``: resets all occupancies to 1.0.
+- ``keep_crystal_symmetry``: retain the CRYST record of the model structure.
+
+In addition, chains will be analysed, hetero, sugar and solvent atoms will be
+separated from protein/DNA/RNA chains if they are not separated by ``TER``
+cards.
+
+Chain-to-alignment matching
++++++++++++++++++++++++++++
+
+Parameters in the ``chain_to_alignment_matching`` scope control how a sequence
+from an alignment is matched to the sequence of a macromolecule chain, and what
+constitutes an acceptable match. The sequence from the alignment is considered
+strictly consecutive, while gaps are allowed in the sequence derived from the
+protein chain (this is governed by the ``consecutivity`` parameter;
+``geometry`` means that a chain segment is strictly consecutive if there is a
+bond to the neighbouring residue, and ``numbering`` means that residue
+numbering should be used to decide whether a residue is connected to
+neighbouring ones). The ``min_sequence__identity`` parameter is used as a
+threshold to accept a possible match between the two sequences.
+
+Error estimates
++++++++++++++++
+
+These parameters control how error estimates input are matched to
+macromolecule chains. In addition, if no external errors are available, the
+modelling program * Rosetta_ * is installed and configured to be used with
+PHENIX, and there is network connectivity, Sculptor can be instructed to
+calculate an error estimate (``calculate_if not_provided`` parameter and
+``homology_modelling`` scope) by first making a homology model using
+* Rosetta_ * and then submitting this to the ProQ2_ server. Please note that
+this only works for protein chains.
+
+.. _Rosetta: https://www.rosettacommons.org
+.. _ProQ2: http://duffman.it.liu.se/ProQ2/index.php
+
+Chain processing
+++++++++++++++++
+
+Protein chains
+**************
+
+Deletion
+########
+
+Discards residues from a model chain that are unlikely to improve signal
+in molecular replacement. This information is calculated either from the
+alignment or from estimated errors.
+
+There are multiple algorithms available:
+
+- ``gap``: Deletes residues that are not present in the target (model
+  residue is aligned with a gap). For this algorithm, the supplied
+  alignment is used as a pairwise alignment.
+- ``threshold_based_similarity``: Deletes residues for which the
+  sequence similarity is below a certain threshold. All sequences in a
+  multiple alignment contribute to the score. Details of the sequence
+  similarity calculation are given in the section
+  `Sequence similarity calculation`_.
+- ``completeness_based_similarity``: Deletes the same number of
+  residues (modified by a fractional offset) as the ``gap`` algorithm
+  would but residues that get removed are the ones with the lowest
+  sequence similarity. This way the default values are valid over a
+  much larger sequence similarity range than those in
+  ``threshold_based_similarity``. All sequences in a multiple alignment
+  contribute to the score. Details of the sequence similarity
+  calculation are given in the section `Sequence similarity calculation`_.
+- ``remove_long``: Deletes residues from the model if these are aligned with
+  gaps and at least ``minimum_length`` long.
+- ``rms``: Deletes residues whose estimated error is over a certain threshold.
+  Missing values are filled in using parameters in the
+  ``missing_value_substitution`` scope (see `Missing value substitution`_).
+- ``superposition``: Deletes residues whose superposition error is over a
+  certain threshold. Missing values are filled in using parameters in the
+  ``missing_value_substitution`` scope (see `Missing value substitution`_).
+
+These algorithms can also be used together in any combination. In this
+case, a residue will be deleted if assigned for deletion by any active
+algorithms.
+
+Polishing
+#########
+
+Makes small adjustments to the mainchain of a chain (taking results from
+deletion into account) to make it obey basic macromolecular features.
+
+- ``remove_short``. Deletes additional residue segments from the
+  molecule so that no continuous segment is shorter than a preset limit
+  (determined by the ``minimum_length`` parameter of the
+  ``remove_short`` scope). Segment boundaries are determined from
+  spatial connectivity of residues. This algorithm is primarily
+  intended to remove "floating" residues that are the result of
+  extensive loop truncation.
+- ``undo_short``. Reinstate short segment that are assigned for deletion. The
+  maximum length is controlled by the ``maximum_length`` parameter.
+- ``keep_regular``. Reinstate deleted residues if they are in regular
+  secondary structure and the segment marked for deletion is shorter
+  than the ``maximum_length`` parameter of the ``keep_regular`` scope.
+
+These algorithms can also be used together in combination. In this case,
+the chain will be processed sequentially by both algorithms.
+
+Atom mapping
+############
+
+This governs how the sidechain of an amino acid residue in the model is morphed
+into the target type.
+
+- ``connectivity``. This uses atom-connectivity-based similarity to match one
+  sidechain to another. The matching can take into account whether the chemical
+  element of the model and target type agree (``match_chemical_elements``
+  keyword).
+- ``geometry``. This uses the actual observed geometry of the sidechain in the
+  model structure and tries to map it onto all known rotamers of the target
+  amino acid, and selects the rotamer that results in the highest number of
+  atoms mapped. Geometric matching is done via matching distances, and the
+  tolerance is controlled by the ``tolerance`` keyword. The algorithm can also
+  take into account the chemical elements explicitly, but this is probably not
+  as useful, since implicitly these are always taken into account through
+  bond lengths and angles. Rotamer information is obtained through the monomer
+  library, and hence this algorithm only works well if the monomer library
+  contains this information. With this algorithm, matching a particular
+  sidechain with the same type can result in a partial match if the observed
+  sidechain conformation is not rotameric. The keyword ``match_if_identical``
+  controls whether matching should be performed in this case or just an
+  identity atom map should be used.
+
+Pruning
+#######
+
+This phase determines the level distance from the C\ :sub:`alpha` atom
+up to which a residue sidechain in the model is potentially similar to
+its counterpart in the target.
+
+- ``null``. No pruning is applied (unmatched atoms will still be discarded).
+- ``schwarzenbacher``. Implements the algorithm published by
+  Schwarzenbacher *et al.* (2004), who propose that for optimal
+  molecular replacement results a residue sidechain should be truncated
+  if aligned with a non-identical residue, and not truncated otherwise.
+  The level of truncation is controlled by the ``pruning_level``
+  parameter, and defaults to 3 (which corresponds to C\ :sub:`gamma`)
+  and can be controlled by the ``pruning_level`` parameter of the
+  ``schwarzenbacher`` scope.
+- ``Similarity``. Uses sequence similarity values for deciding the
+  level of truncation. Residues above ``full_truncation_limit`` are not
+  truncated at all, those below the ``full_truncation_limit`` are
+  truncated to C\ :sub:`beta`, and those in between are truncated
+  according to the ``pruning_level`` parameter (all available from the
+  ``similarity`` scopei). Results tend to be similar to those given by
+  the Schwarzenbacher algorithm; however, it is possible to get high
+  similarity values (and full sidechain preservation) for certain
+  substitutions (i.e. TYR to PHE), and low-sequence similarity zones
+  can end up being truncated to C\ :sub:`beta`. Details of the sequence
+  similarity calculation are given in the section
+  `Sequence similarity calculation`_.
+
+These algorithms can also be used together in any combination, in which
+case the sidechain will be truncated to the shortest value suggested.
+
+B-factor prediction
+###################
+
+B-factor prediction tries to increase B-factors for atoms that are
+likely to be more flexible or more in error. The calculation takes
+simple physical properties into account, and these are linearly
+transformed to B-factors (controlled by the ``factor`` parameter of the
+corresponding scope). If this value is lower than the ``minimum`` (from
+the ``bfactor``\ scope) parameter, a constant is added to all B-factors
+so that the lowest of those equals to ``minimum`` (this is primarily
+intended to avoid negative B-factors).
+
+- ``original``. This uses the original B-factor of atoms. This is
+  primarily intended as a contributor to a combination, but can also be
+  used to manipulate current B-factors, e.g. set them to a constant
+  value.
+- ``asa``. This calculates accessible surface area for an isolated
+  chain and transforms the raw values to B-factors. A high ASA-value
+  indicates a potential for flexibility. The calculation can be
+  configured by the ``precision`` and ``probe_radius`` parameters of
+  the ``asa`` scope.
+- ``similarity``. Low sequence similarity regions tend to be more
+  dissimilar. Details of the sequence similarity calculation are given
+  in the section `Sequence similarity calculation`_.
+
+- ``rms``. Use error estimates (either input or those calculated within the
+  program) to weight atoms. The theoretical scale factor of 8/3 * pi^2 is
+  already built into the calculation, but this can be adjusted if necessary.
+  Missing values are filled in using parameters in the
+  ``missing_value_substitution`` scope (see `Missing value substitution`_).
+
+Algorithms can be used in combination, in which case the sum of the
+predicted B-factors is used. This mode can also be used to map sequence
+similarity or accessible surface area to residues/atoms for display
+purposes.
+
+Renumber
+########
+
+Renumbers residues according to the ``target`` or ``model`` sequence. It
+is also possible to turn renumbering off (option ``original``).
+
+Rename
+######
+
+Renames residues according their counterpart in the target sequence. Please
+note that this is only a name change. Sidechain atoms are always mapped onto
+their target counterparts, and deleted if not present in the target. On the
+other hand, the addition of atoms that are present in the target and not in the
+model does not take place if renaming is not performed.
+
+Completion
+##########
+
+Controls the addition of missing atoms.
+
+- ``cbeta``. Adds C\ :sub:`beta` atom if the residue is not glycine,
+  and C, N and C\ :sub:`alpha` atoms are all present. A common C\ :sub:`beta`
+  position is used for all non-proline residues, and a slightly differing ones
+  for prolines.
+- ``cbeta_and_pro``. Fills in C\ :sub:`beta` where possible for non-proline
+  residues, and the whole sidechain for prolines.
+- ``sidechain``. Fills in missing atoms for all sidechains. The algorithm tries
+  to get as close as possible to the atoms present in the structure, but in the
+  general case, all sidechain atoms within the residue may move slightly.
+
+DNA/RNA chains
+**************
+
+Deletion
+########
+
+Discards residues from a model chain that are unlikely to improve signal
+in molecular replacement.
+
+There are two algorithms available:
+
+- ``all``: Deletes all residues.
+- ``superposition``: Deletes residues whose superposition error is over a
+  certain threshold. Missing values are filled in using parameters in the
+  ``missing_value_substitution`` scope (see `Missing value substitution`_).
+
+These algorithms can also be used together in any combination. In this
+case, a residue will be deleted if assigned for deletion by any active
+algorithms.
+
+Polishing
+#########
+
+Makes small adjustments to the mainchain of a chain (taking results from
+deletion into account) to make it obey basic macromolecular features.
+
+- ``remove_short``. Deletes additional residue segments from the
+  molecule so that no continuous segment is shorter than a preset limit
+  (determined by the ``minimum_length`` parameter of the
+  ``remove_short`` scope). Segment boundaries are determined from
+  spatial connectivity of residues. This algorithm is primarily
+  intended to remove "floating" residues that are the result of
+  extensive loop truncation.
+
+These algorithms can also be used together in combination. In this case,
+the chain will be processed sequentially by both algorithms.
+
+Monosaccharide chains
+*********************
+
+This can be used to trim existing glucosyl chains based on the distance from
+the residue to which they are attached. Connectivity of glycosyl chains is
+worked out from distance tests, and the ``maximum_bond_length`` parameter can
+be used to adjust this slightly. Branched glycosyl chains are also handled.
+
+Hetero chains
+*************
+
+Residues in these chains are normally deleted, unless an exception is
+made by specifying the residue codes that are to be retained. This is
+primarily intended to keep a known ligands of protein classes (e.g.
+HEM).
+
+Other chains
+************
+
+These are removed from the model.
+
+Sequence similarity calculation
+-------------------------------
+
+Sequence similarity is calculated from the full alignment supplied
+(taking all present sequences into account), using a scoring matrix
+(currently ``blosum50``, ``blosum62``, ``dayhoff`` and ``identity`` are
+available). Raw scores are then smoothed using one of two alogrithms:
+
+- ``linear``: averaging is done over a ``window`` of residues (this is measured
+  from the residue in question, i.e. 2*window + 1 residues scores are used),
+  and is weighted using either ``uniform`` or ``triangular`` weights. The
+  resulting scores are "normalized" so that 1.0 would indicate a perfect
+  alignment, 0.0 would be a random match, and -1.0 a (locally) fully gapped
+  alignment (on average). Note, it is possible to obtain values outside this
+  range. This helps to ensure that defaults are sensible irrespective of the
+  choice for the scoring matrix.
+- ``spatial``: averaging is done over a sphere with radius ``maximum_distance``
+  using all residue scores that are within this limit. Residues that are not
+  present in the model and hence no spatial coordinate can be associated with
+  them affect the raw scores of neighbouring residues (using a convolution with
+  a triangular weight function).
+
+Sequence similarity calculation is configured individually for the steps
+that are using it.
+
+Missing value substitution
+--------------------------
+
+Governs how missing error values are substituted.
+
+- ``maximum_value``: uses the maximum value encountered for the particular
+  chain.
+- ``scaled_interpolated_value``: interpolates within a chain or extrapolates at
+  the termini. Extrapolation is done by increasing the B-factor of the closest
+  residue with a factor that is calculated as the nth power of a constant value
+  (``extrapolation_step_scale`` parameter), where n is the distance from the
+  closest residue. Interpolation is done in two steps. First linear
+  interpolation is performed between the two bridge residues, and then these
+  are multiplied with a factor that is calculated as the nth power of a
+  constant value (``interpolation_step_scale``), where n is the distance from
+  the nearest bridge residue.
+
+Missing value substitution is configured individually for the steps that are
+using it.
+
+Command line
+------------
+
+::
+
+    phenix.sculptor \
+        [ command-line switches ] \
+        [ PHIL-format parameter files ] \
+        [ PHIL command-line assignments ] \
+        [ PDB-files ] \
+        [ alignment files ]
+
+Command-line switches:
+++++++++++++++++++++++
+
+::
+
+
+      -h, --help            show this help message and exit
+      --show-defaults       print PHIL and exit
+      -i, --stdin           read PHIL from stdin as well
+      -v, --verbosity       set verbosity level (info,debug,verbose)
+      --version             show program's version number and exit
+      --text-logfile FILE   Verbatim copy of log stream
+      --html-logfile FILE   Verbatim copy of log stream in HTML
+
+PHIL arguments:
++++++++++++++++
+
+Everything not starting with a dash ('-') is interpreted as a PHIL
+argument. This can be a PHIL-format file containing parameters,
+command-line assignment or a file whose type is automatically recognized
+(based on file extension). Note that sequence files are not accepted on
+the command line, since associated chains could not easily be guessed
+and require a fully specified parameter scope.
+
+Specific limitations and possible problems
+------------------------------------------
+
+Processing features
++++++++++++++++++++
+
+- Very short residue segments (shorter in ``min_hss_length`` consecutive
+  residues than ``min_hss_length`` parameter in the
+  ``chain_to_alignment_matching`` scope) cannot be reliably aligned to the
+  sequence, and these may be discarded from the model.
+- The ``similarity`` algorithm from the ``deletion`` scope may result
+  in residues that are aligned with a gap being included in the model.
+  Although this possibly indicates an error in the alignment and is
+  potentially beneficial for molecular replacement, this causes a
+  problem at the ``rename`` stage, as there is no 3-letter residue name
+  for a "-"; these residues are named according to the ``gapname`` parameter
+  (default: ``ALA``).
+- Residue numbers for gap residues are built up using the residue
+  number of the previous non-gap residue and an insertion code (A-Z,
+  depending on the number of gap residues after the previous non-gap
+  residue).
+
+Error messages
+++++++++++++++
+
+- ``No pdb files specified``: there are no PDB files to process.
+- ``Applicable chain_ids not specified for ..``: the input file requires the
+  specification chainIDs (sequence file, error files and superposition error
+  files).
+- ``No atoms left after atom selection``: the atom selection provided
+  results in an empty structure.
+- ``Error while reading alignment: ..``: some error occurred while trying to
+  read an alignment file:
+
+  + ``..: input alignment is empty``: no alignment sequences were found in
+    alignment file ..
+  + ``..: no alignment sequences match``: the target sequence specified for
+    alignment file .. does not match any alignment sequences.
+
+- ``Cannot open file``: a file cannot be opened for reading (possibly does not
+  exist).
+- ``No hit with index .. in ..``: the requested homology search hit from
+  homology search file .. does not exist.
+
+
+Warning messages
+++++++++++++++++
+
+Alignment
+*********
+
+- ``Aligner: no aligned candidates``: no alignment sequence match the observed
+  chain sequence. In this case a dummy alignment will be used.
+- ``No sequences read from file``: the sequence file given as the target
+  sequence does not contain any sequences.
+- ``Multiple sequences found, using first``: the sequence file given as the
+  target sequence contains multiple sequences.
+
+Sequence files
+**************
+
+- ``File contains multiple sequences, only the first will be used``: the
+  sequence file given as the target sequence contains multiple sequences.
+
+Error files
+***********
+
+- ``Duplicate resid: '..'``: resid .. occurs multiple times.
+- ``Cannot convert '..' to floating-point number``: the error value is
+  non-numeric.
+- ``Error file specified for chain fail criteria``: the error values that are
+  specified for a particular chain are rejected, because they fail the set
+  criteria.
+
+Error estimation
+****************
+
+- ``Homology modelling failed``: no homology model can be created.
+- ``ProQ2 error estimation failed``: no error values could be obtained from the
+  ProQ2 server.
+- ``ProQ2 structure contains multiple chains``: although a single chain was
+  submitted to ProQ2, the results returned contain multiple chains.
+- ``Chain '..' is not '..'``: chain .. is not recognised as a macromolecular
+  chain.
+- ``PDB could not be matched to sequence``: sequence-to-structure matching fail
+  for the returned results.
+
+References
+----------
+
+.. [Schwarzenbacher2004]
+   **The importance of alignment accuracy for molecular replacement.**
+   R. Schwarzenbacher, A. Godzik, S. K. Grzechnik and L. Jaroszewski
+   *Acta Cryst.* **D60**, 1229-1236 (2004)
+
+Citation
+--------
+
+**Improvement of molecular-replacement models with Sculptor.** G.
+Bunkoczi and R. J. Read *Acta Cryst.* **D67**, 303-312 (2011)
+
+Additional information
+----------------------
+
+List of all available keywords
+++++++++++++++++++++++++++++++
+
+{{phil:phaser.sculptor_new}}
