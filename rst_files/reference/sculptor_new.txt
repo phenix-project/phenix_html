@@ -54,7 +54,7 @@ Input files
   Accepted extensions (with the corresponding format) are ``.xml``
   (BLAST-family XML output) and ``.hhr`` (HHPRED output).
 - **Sequence files**: target sequence. In case no alignment is available,
-  Sculptor can be instructed to prepare an alignment the using the sequences
+  Sculptor can be instructed to prepare an alignment using the sequences
   of model chains assigned on the ``chain_ids`` parameter (please note that
   in this case this alignment will be used for the specified chains, and any
   user-supplied alignments will be ignored). Multiple sequence files can be
@@ -433,8 +433,8 @@ Command line
         [ PDB-files ] \
         [ alignment files ]
 
-Command-line switches:
-++++++++++++++++++++++
+Command-line switches
++++++++++++++++++++++
 
 ::
 
@@ -447,8 +447,8 @@ Command-line switches:
       --text-logfile FILE   Verbatim copy of log stream
       --html-logfile FILE   Verbatim copy of log stream in HTML
 
-PHIL arguments:
-+++++++++++++++
+PHIL arguments
+++++++++++++++
 
 Everything not starting with a dash ('-') is interpreted as a PHIL
 argument. This can be a PHIL-format file containing parameters,

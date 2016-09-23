@@ -65,7 +65,7 @@ For a summary of all parameters with the corresponding defaults, see the
 `Additional information`_ section.
 
 Model input
------------
+***********
 
 The syntax allows the definition of structural assemblies in a flexible manner,
 and is also backwards-compatible with the previous version, i.e. existing
@@ -179,7 +179,7 @@ that all assemblies have the same number of chains and these are of identical
 types.
 
 Residue mapping
----------------
+***************
 
 Establishes the equivalence of residues among the input chains. There
 are several options available:
@@ -244,7 +244,7 @@ In this case, since no specific mapping is requested for assembly positions 3
 and 4, the default options will be used.
 
 Atom mapping
-------------
+************
 
 Maps selected atoms within equivalent residues to each other. The
 mapping is done by name hence the order of atoms in the residue does not
@@ -284,7 +284,7 @@ for assembly position 4 (chains F and H; since these are DNA chains, backbone
 selection includes all atoms from the phosphate and the deoxy-ribose).
 
 Superposition
--------------
+*************
 
 Equivalent positions are superposed iteratively to find a globally
 optimal solution. There are two superposition algorithms implemented,
@@ -316,7 +316,7 @@ the ``convergence`` parameter (in the ``superposition`` scope), which is
 the r.m.s. difference change between two consecutive iterations.
 
 Weighting
----------
+*********
 
 Automatic weighting can be used to improve superposition, either to
 amplify highly homologous regions or to decrease the effect of incorrect
@@ -349,7 +349,7 @@ of the ``weighting`` scope) is reached, at which point an exception is
 raised.
 
 Cluster analysis
-----------------
+****************
 
 Hierarchical cluster analysis is performed using the pairwise r.m.s.
 differences as a distance measure. The ``clustering`` parameter of the
@@ -358,7 +358,7 @@ information can be requested for multiple thresholds. Default: no clustering
 performed.
 
 Chain trimming
---------------
+**************
 
 This option trims residues from the final superposed model where the
 unweighted r.m.s.d. is above a certain threshold (``threshold``
@@ -366,7 +366,7 @@ parameter of the ``trimming`` scope). Useful in removing flexible loops,
 etc. Default: no trimming.
 
 Sorting
--------
+*******
 
 After superposition is complete, the chains can be sorted by sequence
 identity (``identity``), fraction of common sites wrt all aligned atom
@@ -386,8 +386,8 @@ Command line
         [ PDB-files ] \
         [ alignment files ]
 
-Command-line switches:
-++++++++++++++++++++++
+Command-line switches
+*********************
 
 ::
 
@@ -400,8 +400,8 @@ Command-line switches:
       --text-logfile FILE   Verbatim copy of log stream
       --html-logfile FILE   Verbatim copy of log stream in HTML
 
-PHIL arguments:
-+++++++++++++++
+PHIL arguments
+**************
 
 Everything not starting with a dash('-') is interpreted as a PHIL
 argument. This can be a PHIL-format file containing parameters,
@@ -413,14 +413,14 @@ Specific limitations and possible problems
 ------------------------------------------
 
 Processing features
-+++++++++++++++++++
+*******************
 
 - When an alignment-based residue mapping protocol is requested, very short
   residue segments (shorter than 3 consecutive residues) cannot be reliably
   aligned to the sequence, and these will be discarded from the superposition.
 
 Warning and error messages
-++++++++++++++++++++++++++
+**************************
 
 - ``No input pdb files``: no PDB files were given.
 - ``Cannot treat multiple MODELs as a single assembly``: the
@@ -482,6 +482,6 @@ Additional information
 ----------------------
 
 List of all available keywords
-++++++++++++++++++++++++++++++
+******************************
 
 {{phil:phaser.ensembler_new}}

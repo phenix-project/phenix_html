@@ -1,0 +1,158 @@
+Model preparation with sculpt_ensemble
+======================================
+
+.. contents::
+
+Purpose
+-------
+
+``sculpt_ensemble`` is a unified model preparation program that internally uses
+Sculptor_ and Ensembler_. When these two programs are run separately, the
+result is dependent on what order these programs are run, and no matter what
+order the programs are run, there are corner cases that it is suboptimal.
+In the unified program no information loss occurs and there are further
+benefits as well.
+
+Usage
+-----
+
+The program ``sculpt_ensemble`` is available from the command line and will also
+be available from the PHENIX GUI.
+
+Input files
++++++++++++
+
+- **Structures** *(compulsory)*: structures to be superposed and modified.
+  For each structure, specific parts can be selected using PHENIX atom
+  selection syntax, and assembly information can be associated with the using
+  the ``assembly`` keyword, or the convenience keyword
+  ``read_single_assembly_from_file`` (for more information please see the
+  `Ensembler documentation`__).
+
+  __ ensembler_model_input_
+
+  Error files associated with the input PDB file can also be input using the
+  ``errors`` scope. See the `Sculptor documentation`__ for more details (please
+  note that there is no input for superposition errors, since those are
+  calculated within the ensembling step and passed onto Sculptor_).
+
+  __ sculptor_input_files_
+
+  Accepted formats: PDB. Recognized extensions: ``.pdb``, ``.ent``.
+- **Sequence files**: target sequences (for each assembly position). This is
+  used to identify the target sequence for each alignment. In case no alignment
+  is available, and the target sequence for the given assembly position is
+  available, ``sculpt_ensemble`` prepares an alignment using the sequence
+  of the model chain (if no target sequence available, and no suitable
+  alignment is found, a dummy alignment will be used instead).
+  Accepted extensions are ``.fasta``, ``.faa`` or ``.fa`` for FASTA
+  format, ``.pir`` for PIR-format and ``.seq`` or ``.dat`` for a
+  relaxed PIR/FASTA-like format.
+- **Alignments**: sequence alignment with the target sequence. The alignment
+  contains information that can be exploited in model improvement (this is
+  currently only implemented for protein chains). The chains are
+  automatically associated with the corresponding alignment based on a
+  sequence comparison. The target sequence is also automatically identified if
+  it is provided through the ``target_sequence`` keyword (see above), otherwise
+  the first sequence in the alignment is used as target. Alignment input is
+  optional, in case it is not provided, an alignment will be made up using the
+  chain sequence with itself.
+  Accepted extensions (with the corresponding format) are ``.aln`` (CLUSTAL
+  format), ``.pir`` (PIR-format) and ``.ali`` (relaxed PIR-like format).
+- **Homology search files**: hits from a homology search. These work very
+  similarly to a set of *alignment files*. It is assumed that the first
+  sequence in each alignment is the target sequence (the sequence used for
+  searching homologues).
+  Accepted extensions (with the corresponding format) are ``.xml``
+  (BLAST-family XML output) and ``.hhr`` (HHPRED output).
+
+Output files
+++++++++++++
+
+The fully processed structure is output. The file is named according to the
+following convention: ``root_merged.pdb``, where ``root`` is a user-defined
+parameter (accessible from the ``output`` scope), and is similar to *merged*
+output style from Ensembler_.
+
+Description
+-----------
+
+The program reads in the input files, creates assembly, and runs ensembling__
+first. The assemblies are then transformed, superposition error is associated
+with respective chains, and processed sequentially according to the
+corresponding `Sculptor protocol`__ (note that although the superposition
+errors are always present, these are not used unless requested explicitly by
+enabling a protocol). See the respective documentation for more details.
+
+__ ensembler_description_
+__ sculptor_outline_of_the_procedure_
+
+In case there is only a single assembly present, the superposition step is
+skipped, and the program works as the standalone Sculptor_. It is also possible
+to disable the processing step (``sculpting.disable``), in which case the
+program works as the standalone Ensembler_.
+
+Trimming
+++++++++
+
+``sculpt_ensemble`` also supports `chain trimming`__, but unlike the
+explicit option in Ensembler_, this is available as the ``superposition``
+option within the mainchain processing section in the `sculpting machinery`__.
+In addition, this can also be used in combination with polishing options.
+
+__ ensembler_chain_trimming_
+__ sculptor_deletion_
+
+Command line
+------------
+
+::
+
+    phenix.sculpt_ensemble \
+        [ command-line switches ] \
+        [ PHIL-format parameter files ] \
+        [ PHIL command-line assignments ] \
+        [ PDB-files ] \
+        [ alignment files ] \
+        [ sequence files ]
+
+Command-line switches
++++++++++++++++++++++
+
+::
+
+
+      -h, --help            show this help message and exit
+      --show-defaults       print PHIL and exit
+      -i, --stdin           read PHIL from stdin as well
+      -v, --verbosity       set verbosity level (info,debug,verbose)
+      --version             show program's version number and exit
+      --text-logfile FILE   Verbatim copy of log stream
+      --html-logfile FILE   Verbatim copy of log stream in HTML
+
+PHIL arguments
+++++++++++++++
+
+Everything not starting with a dash ('-') is interpreted as a PHIL
+argument. This can be a PHIL-format file containing parameters,
+command-line assignment or a file whose type is automatically recognized
+(based on file extension). Note that sequence files are not accepted on
+the command line, since associated chains could not easily be guessed
+and require a fully specified parameter scope.
+
+.. _Sculptor: sculptor_new.html
+.. _Ensembler: ensembler_new.html
+.. _ensembler_model_input: ensembler_new.html#model-input
+.. _sculptor_input_files: sculptor_new.html#input-files
+.. _ensembler_description: ensembler_new.html#description
+.. _sculptor_outline_of_the_procedure: sculptor_new.html#outline-of-the-procedure
+.. _ensembler_chain_trimming: ensembler_new.html#chain-trimming
+.. _sculptor_deletion: sculptor_new.html#deletion
+
+Additional information
+----------------------
+
+List of all available keywords
+++++++++++++++++++++++++++++++
+
+{{phil:phaser.sculpt_ensemble}}
