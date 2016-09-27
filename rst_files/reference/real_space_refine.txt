@@ -6,12 +6,21 @@ phenix.real_space_refine: a tool for refinement a model against a map
 The program refines a model into a map. The map can be derived from
 X-ray or neutron crystallography, or Electron Microscopy, and its quality can
 vary from good to poor. The program aims at obtaining a model that fits the map
-as good as possible while posessing a meaningful geometry (no validation
+as good as possible while possessing a meaningful geometry (no validation
 outliers, such as Ramachandran plot or rotamer outliers).
 
 **Contact author**
 
 For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
+
+IMPORTANT: any bug or problem report should be sent after trying the latest 
+nightly build of Phenix::
+  
+  https://www.phenix-online.org/download/nightly_builds.cgi
+  
+Bug or problem reports should include at least 1) all input files used to run, 
+2) list of parameters that were customized, 3) error message. Please use file 
+sharing tools such as Dropbox to send large files.
 
 **Features**
 
@@ -29,21 +38,26 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
    - Extra restraints: Ramachandran plot (two options:
      "oldfield" and "emsley"), C-beta deviations, rotamer, secondary structure,
      reference model, starting position
-- Fast and fully automated restraints/map weight optimization
+- Fast and fully automated restraints/map weight optimization is always performed
 - Support for maps having non-zero origin
 - NCS (non-crystallographic symmetry): restraints and constraints
    - NCS groups are determined automatically or can be provided manually
+   - NCS operators are refined 
 - Input map format: CCP4 map file or MTZ file with Fourier map coefficients
    - In case of CCP4 map resolution must be specified using "resolution" 
      keyword
 - ADP (B-factors) refinement against the map
+   - Enabled by default
    - Currently done using reciprocal space
+   - Performed at the last macro-cycle only
+   - Runtime can benefit from multiple CPU
 - Custom restraints for selected atoms
 - Non-standard ligand support (ligand CIF needs to be provided)
+- Input and Output model can be in PDB or mmCIF formats
 
 **GUI**
 
-No GUI available yet. Command line only.
+Graphical User Interface is available.
 
 **Usage examples**
 
@@ -83,7 +97,7 @@ No GUI available yet. Command line only.
        run=minimization_global+local_grid_search+morphing+simulated_annealing
 
   6) If PDB file contains unknown to Phenix ligand a ligand CIF file needs to
-     be provided. Ligand CIF file can be obtained using one of corresponding
+     be provided. Ligand CIF file can be obtained using one of available
      tools in Phenix `(see documentation for more details) <elbow.html>`__. 
      Once CIF file is available it can be used as following::
 
@@ -91,12 +105,21 @@ No GUI available yet. Command line only.
 
   7) Group ADP (B-factor) refinement. Currently only one option available:
      restrained group ADP refinement with two B-factors per residue (one for
-     main and one for side chains)::
+     main and one for side chains). This is enabled by default. The command
+     below will do B factor refinement only::
 
        phenix.real_space_refine model.pdb map.mtz run=adp
+       
+     To make use of multiple CPU for B factor refinement use ``nproc=``::
+     
+       phenix.real_space_refine model.pdb map.ccp4 resolution=3.2 nproc=12
+       
+     Note: multiple CPUs will only be used for B-factor refinement (which is 
+     done by default).
 
   8) Running rigid-body refinement. Rigid body refinement can be run alone or
-     in combination with other refinement strategies::
+     in combination with other refinement strategies. This will run rigid-body
+     refinement only::
 
        phenix.real_space_refine model.pdb map.mtz run=rigid_body rigid.eff
 
@@ -107,8 +130,13 @@ No GUI available yet. Command line only.
          group = chain B or chain C
          group = chain Z
        }
+       
+     This will run rigid-body and individual coordinate refinement only::
+     
+       phenix.real_space_refine model.pdb map.mtz run=rigid_body+minimization_global
 
-  9) In case NCS is present the program will attempt to determine NCS groups.
+  9) In case NCS is present the program will attempt to determine NCS groups 
+     automatically and use to define NCS constraints.
      Automatically found definitions for NCS groups will be printed to the log.
      It is possible to provide NCS group definitions manually::
 
@@ -128,8 +156,15 @@ No GUI available yet. Command line only.
            selection = chain Z
          }
        }
+       
+     NCS group definitions can be obtained using GUI or command line tool::
+       
+       phenix.simple_ncs_from_pdb model.pdb
+       
+     NCS operators are refined if NCS constraints are used. To disable refinement
+     of NCS operators use ``refine_ncs_operators=False``.
 
-  10) Use if secondary structure restraints is controlled by 
+  10) Use if secondary structure (SS) restraints is controlled by 
       ``secondary_structure.enabled`` keyword::
  
        phenix.real_space_refine model.pdb map.mtz \
@@ -138,9 +173,85 @@ No GUI available yet. Command line only.
       If HELIX/SHEET records are present in PDB file they will be used to 
       construct restraints. Otherwise one of Phenix tools will be run 
       internally to derive secondary structure information from the 
-      input model. DNA/RNA specific restraints will be generated internally.
-      For more details on secondary structure restraints see separate 
-      documentation referenced below.
+      input model. DNA/RNA specific restraints will be generated internally. Not 
+      all provided SS will be used by default: some H-bonds that exceed a 
+      certain threshold will be filtered out. To force using all SS annotations
+      use ``remove_outliers=False`` keyword.
+      
+      ``phenix.secondary_structure_restraints`` can create SS annotations and
+      restraints given a model file. This will output HELIX/SHEET records::
+      
+        phenix.secondary_structure_restraints model.pdb format=pdb
+        
+      and this will create a parameter file that defines SS restraints ready to
+      use for refinement::
+      
+        phenix.secondary_structure_restraints model.pdb format=phenix
+      
+      None SS annotation programs can determine SS 100% reliably in all cases! 
+      SS annotation given to refinement will be enforced on the refined model.
+      This means that any errors in HELIX/SHEET records or in SS restraints file 
+      will be propagated onto refined model. Therefore it is critical to make 
+      sure that provided SS annotations are as correct as possible. It is 
+      recommended to use one of available programs (such as 
+      phenix.secondary_structure_restraints) to obtain initial guess at SS 
+      annotation and then verify it manually to remove incorrect and add missing
+      annotations.
+      
+  11) Weight between data and restraints is determined automatically to achieve 
+      specified rms deviations for covalent bonds and angles, which default to
+      ``target_bonds_rmsd=0.01`` and ``target_angles_rmsd=1.0``. Alternatively,
+      the value of the weight can be specified manually::
+
+        phenix.real_space_refine model.pdb map.ccp4 resolution=4.2 weight=123.
+        
+  12) Number of refinement macro-cycles defaults to 5, which is sufficient in
+      most cases. If model geometry or/and model-to-map fit is poor then using
+      more macro-cycles may be helpful::
+      
+        phenix.real_space_refine model.pdb map.mtz macro_cycles=12
+        
+  13) It is possible to define a bond between any pair of atoms, any number of 
+      bonds. Likewise, an angle restraint can be defined between any triplet of 
+      atoms, any number of such restraints. Similarly, dihedral, planarity and
+      parallelity restraints can be added. This example adds two custom bonds 
+      (one of which is between symmetry related atoms) and one angle restraints::
+      
+        geometry_restraints {
+          edits {
+            bond {
+              atom_selection_1 = chain A and resseq 123 and name O
+              atom_selection_2 = chain Z and resname LIG and name ND1
+              symmetry_operation = -x,y,z
+              distance_ideal = 1.4
+              sigma = 0.025
+            }
+            bond {
+              atom_selection_1 = chain B and resseq 321 and name O1
+              atom_selection_2 = chain Z and resseq 234 and name O2
+              distance_ideal = 1.3
+              sigma = 0.03
+            }
+            angle {
+              action = *add delete change
+              atom_selection_1 = chain C and resseq 2 and name CA
+              atom_selection_2 = chain X and resseq 4 and name HG
+              atom_selection_3 = chain Z and resseq 8 and name O
+              angle_ideal = 120.
+              sigma = 5.
+            }
+          }
+        }
+        
+     The lines above need to be saved into a file, say ``edits.eff``, and then
+     given to refinement along with all other inputs::
+     
+       phenix.real_space_refine model.pdb map.mtz edits.eff
+       
+     To verify that these restraints (along with others) were actually used in 
+     refinement inspect .geo file that lists all restraints for all atoms.
+     
+     The GUI provides a grafical way of defining custom restraints.
 
 **Notes**
 
@@ -151,9 +262,9 @@ No GUI available yet. Command line only.
     they will be used to enforce SS as defined. Incorrect SHEET and HELIX
     records are very likely to result in incorrectly refined structure. If SHEET
     and HELIX records are not present in PDB file header and SS restraints are
-    enabled then KSDSSP tool will be used internally to annotate SS and use it
-    as restraints. The outcome of KSDSSP strongly depends on input model quality:
-    for a model with gross errors SS annotation may be inaccurate resulting in
+    enabled then the program will annotate SS and use it
+    as restraints. The SS annotation strongly depends on input model quality:
+    for a model with errors SS annotation may be inaccurate resulting in
     poorly refine model. Please refer to 
     `SS documentation <secondary_structure.html>`__ for more details.
 
@@ -173,6 +284,8 @@ No GUI available yet. Command line only.
 
   - It is best to do ADP refinement once the model fits the map well. 
     Normally this would be next to final step.
+    
+  - Part of the model can be refined against entire map.
 
 **References**
 
