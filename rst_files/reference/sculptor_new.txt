@@ -123,11 +123,14 @@ modelling program * Rosetta_ * is installed and configured to be used with
 PHENIX, and there is network connectivity, Sculptor can be instructed to
 calculate an error estimate (``calculate_if not_provided`` parameter and
 ``homology_modelling`` scope) by first making a homology model using
-* Rosetta_ * and then submitting this to the ProQ2_ server. Please note that
-this only works for protein chains.
+* Rosetta_ * and then submitting this to the ProQ2_ server. Raw results
+* obtained will be written out if the ``output_prefix`` parameter is set.
+Please note that this only works for protein chains. For more information, see
+the the `simple_homology_model documentation`__.
 
 .. _Rosetta: https://www.rosettacommons.org
 .. _ProQ2: http://duffman.it.liu.se/ProQ2/index.php
+__ simple_homology_model.html#description
 
 Chain processing
 ++++++++++++++++

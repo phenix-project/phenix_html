@@ -43,7 +43,8 @@ The program first discard all residues from the template structure that are not
 present in the target and morphs the residue type when they are (this step is
 performed by Sculptor_ and is governed by the alignment). The missing segments
 are detected, a suitable loop modelling setup is devised, which is then fed
-into Rosetta_ to do the actual building.
+into Rosetta_ to do the actual building. For a summary of all keywords with the
+corresponding defaults, see the `Additional information`_ section.
 
 Chain-to-alignment-matching
 +++++++++++++++++++++++++++
@@ -144,4 +145,12 @@ Warnings
 .. _Rosetta: https://www.rosettacommons.org/
 .. _Sculptor: sculptor_new.html
 .. _sculptor_chain_to_alignment_matching: sculptor_new.html#chain-to-alignment-matching
+
+Additional information
+----------------------
+
+List of all available keywords
+++++++++++++++++++++++++++++++
+
+{{phil:phaser.command_line.simple_homology_model}}
 
