@@ -24,6 +24,7 @@ sharing tools such as Dropbox to send large files.
 
 **Features**
 
+- Graphical User Interface (GUI) is available
 - Fast gradient-driven minimization of combined map and restraints target::
 
     T = Tmap + weight * Trestraints 
@@ -252,6 +253,52 @@ Graphical User Interface is available.
      refinement inspect .geo file that lists all restraints for all atoms.
      
      The GUI provides a grafical way of defining custom restraints.
+     
+  14) Reference model restraints come in two flavors. One allows to restrain 
+      model to its initial coordinates::
+      
+        phenix.real_space_refine model.pdb map.mtz \
+        reference_coordinate_restraints.enabled=true \
+        reference_coordinate_restraints.selection="chain A and resseq 12:21" \
+        reference_coordinate_restraints.sigma=0.05
+        
+      Here only residues from 12 to 21 in chain A will be restrained with the 
+      weight 1/0.05**2.
+      
+      Another allows to provide a reference model in one or several files. 
+      This may be a higher quility (resolution) model and it does not have to be 
+      idential to refining model (similarity 85% or better, which is a parameter).
+      In this example two reference models are used: chain Z from 
+      reference_model_1.pdb file and chain C from reference_model_2.pdb file. 
+      Chain Z from the first file serves as a reference for chain A in refining 
+      model, and chain C from the second file serves as a reference for 
+      residued 123-321 in chain B of refining model::
+      
+        refinement {
+          reference_model {
+            enabled = True
+            reference_group {
+              reference = chain A
+              selection = chain Z
+              file_name = reference_model_1.pdb
+            }
+            reference_group {
+              reference = chain B and resseq 123:321
+              selection = chain C
+              file_name = reference_model_2.pdb
+            }
+          }
+        }
+      
+     To use reference model restraints a parameter file (for example, called 
+     reference.eff) with lines like above needs to be created and provided as 
+     input::
+     
+       phenix.real_space_refine model.pdb map.mtz reference.eff
+      
+  15) To see all parameters::
+      
+        phenix.real_space_refine -h
 
 **Notes**
 
