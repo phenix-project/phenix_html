@@ -3,101 +3,103 @@ General installation instructions for Rosetta for use in Phenix
 
 .. contents::
 
-General notes
--------------
+Installation 
+------------
 
-Rosetta is used by a number of modules in Phenix including
-rosetta\_refine, ERRASER and MR\_rosetta. Installing Rosetta for
-rosetta\_refine involves compiling some more programs for the interface
-between Phenix and Rosetta. The other programs will run with a binary
-installation of Rosetta or the compiled installation of Rosetta. From a
+Rosetta is software from the Baker laboratory at the University of Washington https://www.rosettacommons.org.  Rosetta is used by a number of modules in Phenix
+
+- phenix.erraser
+- phenix.mr\_rosetta
+- phenix.simple\_homology\_model.
+- phenix.rosetta\_refine
+
+phenix.rosetta\_refine requires a compilation of Rosetta from source as it requires some programs for the interface between Phenix and Rosetta that are not in the binary distribution.
+The first three programs will run with a binary
+installation of Rosetta (or the compiled installation of Rosetta). From a
 practical point-of-view, making the effort to install the compiled
-version of Rosetta means that you can run all three programs.
+version of Rosetta means that you can run all phenix Rosetta dependent programs.
 
-To run any Rosetta programs, you need to install Rosetta from the Baker
-laboratory at the University of Washington.
+
 Once you have installed Rosetta you
 need to set the environmental variable $PHENIX\_ROSETTA\_PATH.
 
-.. $ROSETTA\_BIN and $ROSETTA3\_DB.
-
-You will need the 2016.02.58402 bundle or later so Rosetta version 3.6 is a
-fine choice. It is quicker to download the source
-bundle and the binaries are not required when installing for ALL programs.
-
-NOTE: If trouble...see the FULL INSTRUCTIONS at https://www.rosettacommons.org/support
-
 Proceed with the following.
 
--  go to `https://c4c.uwc4c.com/express\_license\_technologies/rosetta <https://c4c.uwc4c.com/express_license_technologies/rosetta>`__,
-   find "Academic License" and click on "LICENSE". Fill out the form,
-   and receive by email a link to the download site and a
-   login/password.
--  Go to the latest download (for example Rosetta 2016.40)
-   on the download site, select Download, and download Rosetta "as one bundle".
--  Unpack and install Rosetta: Go to the directory where you want to
-   install it and move the downloaded file (something like
-   rosetta\_src\_2016.02.58402\_bundle.tgz)
-   there. Then...changing the names to match your bundle...
+- Go to `https://c4c.uwc4c.com/express\_license\_technologies/rosetta <https://c4c.uwc4c.com/express_license_technologies/rosetta>`__,
+  find "Academic License" and click on "LICENSE". Fill out the form,
+  and receive by email a link to the download site and a
+  login/password.
+- You will need the 2016.02.58402 bundle or later so Rosetta version 3.6 is a
+  fine choice. It is quicker to download the source
+  bundle. The binaries are not required when installing for ALL programs.
+- Make the directory where you want to install Rosetta (if it does not already exist).
+  Move the downloaded file (something like
+  rosetta\_src\_2016.02.58402\_bundle.tgz)
+  there. Then unpack the bundle... 
 
 ::
 
-    tar xzf rosetta_src_2016.02.58402_bundle.tgz
+  % tar xzf rosetta_src_2016.02.58402_bundle.tgz (changing the names to match your bundle)
 
-This should give you a directory like rosetta\_src\_2016.02.58402\_bundle that contains:
-
-    demos   main    tools
-
-.. Now you want to compile. You must have python on your machine...if
-   not you will need to install it from http://www.python.org/. You will
-   also need scons. If you don't have scons you can get it from
-   www.scons.org/. NOTE: you will need version 2.2 or later of python
-   and 0.96.1 of scons. You can check your versions with:
-
-..    python --version
-      scons --version
-
--  NOTE: on Ubuntu you may also need zlib1g-dev. You can get this
-   library and scons with:
+- You should have a directory like rosetta\_src\_2016.02.58402\_bundle that contains:
 
 ::
 
-        sudo su   # UBUNTU ONLY FOR INSTALLING zlib1g and scons
-        apt-get install zlib1g-dev
-        apt-get install scons
+   demos   main    tools
 
-Notice where you have installed rosetta. The directory you just set
-up, now containing "main" is to be called "PHENIX\_ROSETTA\_PATH".
-Now you can now set a local environmental variable in your ".profile"
-(sh or bash shell) or ".cshrc" (c-shell) to mark where rosetta is
-located: if you are using the bash or sh shells:
+- You may also need zlib1g-dev and scons (e.g. Ubuntu). You can get this library and scons with
 
 ::
 
-    export PHENIX_ROSETTA_PATH=/your-path-to-rosetta-here/
+   % sudo apt-get install zlib1g-dev
+   % sudo apt-get install scons
 
-..  export ROSETTA_BIN=$PHENIX_ROSETTA_PATH/main/source/bin
-    export ROSETTA3_DB=$PHENIX_ROSETTA_PATH/main/database
-
-or sh (C-shell):
+-  Now you want to compile. Follow the instructions in main/source/readme.txt. Note that the default compilation is mode=debug, which builds executables 10x slower than mode=release executables. Set the number of processors to speed up the compilation.
 
 ::
 
-    setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/
+   % cd main/source
+   % scons bin mode=release -j4 
 
-..  setenv ROSETTA_BIN $PHENIX_ROSETTA_PATH/main/source/bin
-    setenv ROSETTA3_DB $PHENIX_ROSETTA_PATH/main/database
+-  **Troubleshooting**
 
-The final step is to build the interface for rosetta\_refine. This is a
-similar step to the previous scons step so supply as many nproc as
-available on your machine.
+ - See FULL INSTRUCTIONS at https://www.rosettacommons.org/support
+ - Build may also be called with ./scons.py bin mode=release -j4
+ - Build may fail because it is unable to find the g++ requested by build. This can be fixed in two ways
+
+   (1) If you have the correct version of g++ installed, but it is not called by the name expected by the build, simply set a soft link from g++ to e.g. g++-4.6 
+   (2) See: http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 for how to edit to tools/build/basic.settings and tools/build/options.settings and using "scons bin mode=release cxx=gcc cxx\_ver=4.5"
+
+ - Build may fail due to shallow warnings. Edit tools/build/basic.settings to comment out all "warn" flags for your operating system.
+
+
+- The directory containing "main demo tools" is to be called "PHENIX\_ROSETTA\_PATH".
+  Now you can now set a local environmental variable in your ".profile"
+  (sh or bash shell) or ".cshrc" (c-shell) to mark where rosetta is
+  located: if you are using the bash or sh shells:
+
+::
+
+    %  export PHENIX_ROSETTA_PATH=/your-path-to-rosetta-here/
+
+    or sh (C-shell):
+
+::
+
+    %  setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/
+
+- The final step is to build the interface for rosetta\_refine. This is a
+  similar step to the previous scons step so supply as many nproc as
+  available on your machine.
 
 ::
   
-  rosetta.build_phenix_interface nproc=2
+  % rosetta.build_phenix_interface nproc=2
 
-Specific notes
---------------
+You should now be completely ready to go with Rosetta in Phenix
+
+Proxy Server Setup
+------------------
 
 To use the fragment server and your machine is behind a firewall and
 there is a proxy server you need to go through, then if you use a .hhr
@@ -109,17 +111,12 @@ If you are using the bash or sh shells:
 
 ::
 
-    export HTTP_PROXY=proxyout.mydomain.edu:8080
+  % export HTTP_PROXY=proxyout.mydomain.edu:8080
 
 or sh (C-shell):
 
 ::
 
-    setenv HTTP_PROXY proxyout.mydomain.edu:8080
+  % setenv HTTP_PROXY proxyout.mydomain.edu:8080
 
--  Now you are completely ready to go with Rosetta in Phenix
 
-NOTE: If trouble on ubuntu 11.04 or later...also see:
-http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 (but just
-concerning basic.settings and options.settings modifications and using :
-scons bin mode=release cxx=gcc cxx\_ver=4.5)
