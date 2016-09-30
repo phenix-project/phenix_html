@@ -132,11 +132,19 @@ the the `simple_homology_model documentation`__.
 .. _ProQ2: http://duffman.it.liu.se/ProQ2/index.php
 __ simple_homology_model.html#description
 
+Please note that the input/obtained error estimates are only used if a suitable
+processing method is selected. Such methods are available in the `Deletion`__
+and `B-factor prediction`_ sections.
+
+__ protein_deletion_
+
 Chain processing
 ++++++++++++++++
 
 Protein chains
 **************
+
+.. _protein_deletion:
 
 Deletion
 ########
