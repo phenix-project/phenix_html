@@ -414,6 +414,16 @@ Once this window is open, it does not need to be closed; clicking a different
 will first need to open the *Actions* menu and click *Restore parent window*
 to transfer mouse and keyboard controls back to the configuration dialog.)
 
+There is also a unified selection interface for
+
+- Secondary structure annotations (helices, beta sheets, etc.)
+- NCS groups
+- TLS groups
+- Refinement strategy options (occupancies, rigid bodies, etc.)
+- Custom geometry restraints (bonds, angles, dihedrals, etc.)
+
+More information can be found `here <selection_editor.html>`_.
+
 Identifying and editing TLS groups
 ==================================
 
@@ -426,14 +436,11 @@ list control similar to others in PHENIX:
 
 .. image:: ../images/tls_editor.png
 
-Clicking the "Find TLS groups" button will launch the identification program,
+Clicking the "Find TLS" button will launch the identification program,
 which typically takes a few seconds to a few minutes to run depending on the
 size of the structure and the number of processors available.  All CPU cores
-will be used by default, but this can be adjusted using the control near the
-bottom of the window.  You may alternately specify TLS groups manually, or
-upload a file from the `TLSMD server <skuld.bmsc.washington.edu/~tlsmd>`_.
-Once you have the desired groups input, close the editor by clicking either
-of the buttons at the upper or lower left of the window.
+will be used by default.  You may alternately specify TLS groups manually, or
+upload a file from the `TLSMD server <http://skuld.bmsc.washington.edu/~tlsmd>`_.
 
 Running phenix.refine
 =====================
