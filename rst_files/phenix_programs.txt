@@ -40,7 +40,6 @@ Molecular Replacement
 - phenix.adjust_robetta_resid: Apply sequence offset to a fragments file
 - phenix.automr: Automated MR and model-building
 - phenix.cut_out_density: Create MTZ coeffs with density cut out from a map
-- phenix.ensembler: Superpose PDB files to create ensemble for MR
 - phenix.find_alt_orig_sym_mate: Superimpose structures allowing origin shifts (see also map_to_object)
 - phenix.morph_model: Morph a model to match a map
 - phenix.mr_model_preparation: Download and edit PDB files for MR
@@ -49,6 +48,8 @@ Molecular Replacement
 - phenix.mr_rosetta_rebuild: Rebuild model with Rosetta
 - phenix.phaser: Run PHASER
 - phenix.sculptor: Improve molecular replacment models using sequence alignment and structural infomation
+- phenix.ensembler: Superpose PDB files to create ensemble for MR
+- phenix.sculpt_ensemble: Combined sculptor and ensembler
 
 Model Building
 --------------
