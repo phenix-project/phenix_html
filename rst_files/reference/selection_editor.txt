@@ -67,14 +67,14 @@ times, it is more sensible to toggle through a series of choices for a parameter
 for beta strands) and double-clicking that field will do that instead.
 
 Deleting groups behaves similarly to adding groups. Multiple groups can be deleted at the same
-time by shift-clicking the range of groups or alt-clicking (option-clicking on macOS) a
+time by shift-clicking the range of groups or alt-clicking (command-clicking on macOS) a
 non-contiguous set. For the second type, be careful when deleting an entire group. That option
 is available if any selection within the group is highlighted. That is, an entire beta sheet
 can be deleted by clicking "Delete Sheet" when any strand within that sheet is highlighted.
 
 Some options are shown in the left panel under "Other settings." These are usually options
 where it is sensible to apply them to many groups. After several groups are selected, either
-by shift-clicking a range or alt-clicking (option-clicking on macOS), changing a value in
+by shift-clicking a range or alt-clicking (command-clicking on macOS), changing a value in
 "Other settings" will update all the selected groups. If a parameter in "Other settings" is
 also shown as a column field, the selection editor will update that column to the new value
 for the selected groups.
@@ -126,5 +126,11 @@ Known Issues
 ------------
 
 - Graphically making selections can expand the selection syntax into an all-atom selection
-- With the model viewer open, highlighting many selections may be slow
+- With the model viewer open, highlighting many selections may be slow; close
+  the model viewer for faster performance when highlighting many selections
+- When an invalid type is entered (e.g. a letter is provided when the field
+  expects a number), the selection editor will complain one more time after a
+  valid type is entered.
+- After clicking "Validate Syntax", the currently selected or most recently
+  selected rows may not be highlighted in red if the syntax is incorrect.
 - On macOS, the text in editing mode can be slightly offset in the row
