@@ -3,6 +3,8 @@ General installation instructions for Rosetta for use in Phenix
 
 .. contents::
 
+.. |rsb| replace:: rosetta\_src\_2016.35.xxxxx\_bundle
+
 Installation 
 ------------
 
@@ -29,19 +31,19 @@ Proceed with the following.
   find "Academic License" and click on "LICENSE". Fill out the form,
   and receive by email a link to the download site and a
   login/password.
-- You will need the 2016.02.58402 bundle or later so Rosetta version 3.6 is a
-  fine choice. It is quicker to download the source
+- You will need Rosetta version 3.7 or later.
+  It is quicker to download the source
   bundle. The binaries are not required when installing for ALL programs.
-- Make the directory where you want to install Rosetta (if it does not already exist).
-  Move the downloaded file (something like
-  rosetta\_src\_2016.02.58402\_bundle.tgz)
+- Make the directory where you want to install Rosetta (if it does not 
+  already exist). Move the downloaded file (something like
+  |rsb|.tgz)
   there. Then unpack the bundle... 
 
 ::
 
-  % tar xzf rosetta_src_2016.02.58402_bundle.tgz (changing the names to match your bundle)
+  % tar xzf rosetta_src_20??.??.?????_bundle.tgz (changing the names to match your bundle)
 
-- You should have a directory like rosetta\_src\_2016.02.58402\_bundle that contains:
+- You should have a directory like |rsb| that contains:
 
 ::
 
