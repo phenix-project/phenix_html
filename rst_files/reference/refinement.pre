@@ -504,7 +504,12 @@ rigid body group selection containing no atoms on special positions.
 
 - *Real-space refinement of coordinates*
 
-  XXX SOME TEXT GOES HERE.
+  Local refinement: amino-acid side-chain rotamer correction to eliminate 
+  outliers and find better fit to the map. Enabled by default, and controlled
+  by ``strategy=individual_sites_real_space`` keyword. Overall (global) real-space
+  refinement only happens at low resolution if the program decided to do so.
+  Results of global real-space refinement may or may not be accepted by the
+  program, which is based on comparison of R factors before and after refinement.
 
 Refinement of Atomic Displacement Parameters (ADP or B-factors)
 ---------------------------------------------------------------
