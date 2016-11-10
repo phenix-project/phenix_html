@@ -136,6 +136,9 @@ What the AutoBuild wizard needs to run
 -  a sequence file (seq.dat or seq\_file=seq.dat) or a model
    (coords.pdb or model=coords.pdb)
 
+-  NOTE: you need to supply either both phases and HL coeffs or neither. You
+   can specify neither with the keyword use_hl_if_present=False.
+
 ...and optional files
 ~~~~~~~~~~~~~~~~~~~~~
 
