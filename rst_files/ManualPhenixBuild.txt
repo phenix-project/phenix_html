@@ -1,0 +1,87 @@
+============================================================
+How to rebuild PHENIX from an existing installation
+============================================================
+
+.. contents::
+
+Introduction
+============
+
+Phenix is build nightly through an automated bootstrap mechanism. This procedure is very lengthy 
+and only available to authorised Phenix developers. If you have a recent existing installation
+of Phenix and wish to recompile the sources on your own machine a quicker procedure exists. You do
+not have to be a Phenix developer either.
+This document describes how to build Phenix from the sources in your installation 
+without using bootstrap.py. It applies to both Linux and MacOSX. Links to Windows build is included.
+
+
+Prerequisites on Linux 
+----------------------------------
+
+To build PHENIX from an existing installation with sources the following is required:
+
+ - gcc and g++ compilers
+ - OpenGL headers ( on Ubuntu fetch with ``sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev`` )
+
+Prerequisites on MacOSX
+----------------------------------
+
+To build PHENIX from an existing installation with sources the following is required:
+
+ - Xcode development tools
+
+
+Build procedure
+================
+
+
+Assuming your installation is located in ``/path/to/my/phenix/`` change directory from a Bash shell
+to ``/path/to/my/phenix/build``. Then from that Bash shell and in that directory run the commands:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:65px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  shopt -s extglob 
+  rm -- !(config_modules.sh)
+  </pre>
+  </div>
+
+This has the effect of deleting all files and directories from the build directory except 
+for the ``config_modules.sh`` file. Now run the command:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:45px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  config_modules.sh
+  </pre>
+  </div>
+
+This will prepare the build of Phenix using the python and necessary base components shipped with your 
+Phenix installation. Then run the commands:
+
+.. raw:: html  
+
+  <div id="Layer1" style=
+  "position:relative; width:90%; height:65px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
+  <pre class="code">
+  source setpaths.sh
+  libtbx.scons -j nproc
+  </pre>
+  </div>
+
+where ``nproc`` is the number of cpu cores you want to use for the build. The build should take less than 
+an hour on a modern multicore PCs. 
+
+
+Windows Build
+=============
+
+The above procedure is much the same for building on Windows systems.
+`Click here <WindowsBuild.html#manual-build>`__ for further details. 
+
+
+
