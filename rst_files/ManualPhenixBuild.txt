@@ -49,14 +49,14 @@ to ``/path/to/my/phenix/build``. Then from that Bash shell and in that directory
   </div>
 
 This has the effect of deleting all files and directories from the build directory except 
-for the ``config_modules.sh`` file. Now run the command:
+for the ``config_modules.sh`` file. Now within the ``/path/to/my/phenix/build`` directory run the command:
 
 .. raw:: html  
 
   <div id="Layer1" style=
   "position:relative; width:90%; height:45px;  left: 4px; top: 0px; overflow: auto; background: #eee;">
   <pre class="code">
-  config_modules.sh
+  ./config_modules.sh
   </pre>
   </div>
 
@@ -74,7 +74,7 @@ Phenix installation. Then run the commands:
   </div>
 
 where ``nproc`` is the number of cpu cores you want to use for the build. The build should take less than 
-an hour on a modern multicore PCs. 
+an hour on a modern multicore PC. 
 
 
 Windows Build
