@@ -19,7 +19,7 @@ Output format:
 - phenix (default): Phil parameter file suitable to use with all Phenix tools except phenix.refine
 - phenix.refine: Phil parameter file suitable to use with phenix.refine
 - pdb: HELIX/SHEET records in PDB format
-- pymol: output pymol script which can be loaded in pymol along with pdb file to show hydrogen bonds 
+- pymol: output pymol script which can be loaded in pymol along with pdb file to show hydrogen bonds
 
 Command line usage examples
 ---------------------------
@@ -27,6 +27,8 @@ Command line usage examples
   % phenix.secondary_structure_restraints model.pdb
 
   % phenix.secondary_structure_restraints model.pdb format=phenix.refine
+
+  % phenix.secondary_structure_restraints model.pdb ignore_annotation_in_file=True
 
   % phenix.secondary_structure_restraints model.pdb search_method=from_ca format=pdb
 
