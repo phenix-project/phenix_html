@@ -13,19 +13,19 @@ Using SS restraints in moderate-to-low resolution refinement may help to preserv
 General description
 -------------------
 
-SS restraints are available in most refinement tools in Phenix package. Their behaviour is regulated by the same scope of parameters (see the bottom of the page for the full listing). They could be turned on in GUI by checking "Use secondary structure restraints" checkbox. This is equivalent to command-line option ``secondary_structure.enabled=True``. In this case SS elements will be found automatically and outputted to the resulting .pdb and log files. We recommend to check carefully automatic assignments of SS elements because incorrect assignments can lead to wrong refinement results. 
+SS restraints are available in most refinement tools in Phenix package. Their behaviour is regulated by the same scope of parameters (see the bottom of the page for the full listing). They could be turned on in GUI by checking "Use secondary structure restraints" checkbox. This is equivalent to command-line option ``secondary_structure.enabled=True``. In this case SS elements will be found automatically and outputted to the resulting .pdb and log files. We recommend to check carefully automatic assignments of SS elements because incorrect assignments can lead to wrong refinement results.
 
 --------
 Proteins
 --------
 
-Secondary structure elements of proteins are helices and sheets. The main stabilizing factor is their hydrogen bonds. 
+Secondary structure elements of proteins are helices and sheets. The main stabilizing factor is their hydrogen bonds.
 
 The PDB format supports 10 different types of helix, but only three of these
 (alpha, pi, and 3_10) are common in naturally occurring proteins and have
 easily deciphered hydrogen-bonding rules.  User-specified helices default to
 alpha form (hydrogen bonds between residue n and residue n+4).  Sheets may
-be either parallel or antiparallel. 
+be either parallel or antiparallel.
 
 The most common way to specify secondary structure is to use HELIX and SHEET records in the beginning of .pdb file. There are several ways to obtain such records. Examples of such records:
 
@@ -61,7 +61,7 @@ suitable for use in refinement. There are several ways to obtain HELIX/SHEET rec
 - Use any other third-party program that have an option to export secondary structure definition in PDB format.
 
 It is highly recommended to check manually all SS annotations coming from any source. They may often contain errors. We encourage users to verify
-all secondary structure annotations carefully with model. The format of 
+all secondary structure annotations carefully with model. The format of
 HELIX/SHEET records is described `here <http://www.wwpdb.org/documentation/file-format-content/format23/sect5.html>`__. The most common errors are:
 - Lack of registration part of SHEET record (second part of SHEET record when sense is not 0)
 - Strands are not combined into sheets, i.e. all SHEET records have different
@@ -72,7 +72,7 @@ HELIX/SHEET records is described `here <http://www.wwpdb.org/documentation/file-
 Nucleic acids
 -------------
 
-Secondary structure elements for nucleic acids are base-pairs and stacking pairs. Base-pairs are supposed to be somewhat planar and stacking nucleobases are supposed to be parallel to each other. Several types of restraints to make these features present in resulting model are available in Phenix. 
+Secondary structure elements for nucleic acids are base-pairs and stacking pairs. Base-pairs are supposed to be somewhat planar and stacking nucleobases are supposed to be parallel to each other. Several types of restraints to make these features present in resulting model are available in Phenix. None of them are symmetry-aware, e.g. for PDB ID 9dna basepair hydrogen bonds could not be determined automatically. Nevertheless, they still could be specified manually via geometry_restraints.edits mechanism.
 
 Base-pairs
 ----------
