@@ -84,8 +84,12 @@ Visual C++ 9.0
 
 If you have not purchased Microsoft Visual Studio 2008
 the compiler is available for free in the Windows 7 SDK from the Microsoft website:
-https://www.microsoft.com/en-gb/download/details.aspx?id=3138 . 
+https://www.microsoft.com/en-gb/download/details.aspx?id=3138&fa43d42b-25b5-4a42-fe9b-1634f450f5ee=True . 
 It should be titled "Microsoft Windows SDK for Windows 7 and .NET Framework 3.5 SP1". 
+Rather than doing the automated installation from the website it may be convenient to 
+download the DVD iso image of the SDK and then do the installation
+from that. The 32 bit version is named
+``GRMSDK_EN_DVD.iso`` whereas the 64 bit version is named ``GRMSDKX_EN_DVD.iso``.
 There are newer versions of this SDK for Windows 7. But as these use more recent 
 C-runtime libraries compiled programs may not be binary compatible with Python 2.7 which
 is compiled with Visual C++ 9.0. You would still be able to build individual statically 
