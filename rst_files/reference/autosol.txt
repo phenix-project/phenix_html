@@ -503,6 +503,8 @@ mad_ha_add_f_prime_list=" -7 -10"
 mad_ha_add_f_double_prime_list=" 4.2 12"
 but the values from table lookup should be fine. Note that there must be the same number of entries in each of these three keyword lists, if given. During phasing Phaser will try to add whichever atom types best fit the scattering from each new site. This option is available for SAD phasing only and only for a single dataset (not with SAD+MIR etc).
 
+Note: if you are running SAD or MRSAD and your wavelength is longer than 3 A, you will need to supply f' and f" for all atoms that are anomalous scatterers (i.e., any atoms in your model plus any atoms that are added). You can use the mad_ha_add_list to do this.
+
 A particularly useful way to use this feature is to add in S atoms in a protein structure that has SeMet (specifying S with mad_ha_add_list will then, with luck, find the Cys sulfurs), or to add in P atoms in a nucleic acid structure phased by some other atom such as I.  This works especially well at high resolution.
 
 MIR dataset
