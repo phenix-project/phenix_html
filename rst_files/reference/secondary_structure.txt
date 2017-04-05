@@ -40,13 +40,22 @@ The most common way to specify secondary structure is to use HELIX and SHEET rec
 
 
 Full reference to HELIX and SHEET records PDB format may be found `here <http://www.wwpdb.org/documentation/file-format-content/format23/sect5.html>`__
-Only bond length is restrained in proteins, angles may move freely. Hydrogen bond lengths for protein secondary structure are restrained at 2.9A
+Hydrogen bond lengths for protein secondary structure are restrained at 2.9A
 with sigma 0.05A for N-O. Outliers (defined as N-O bonds greater than 3.5A)
 will be automatically removed, but you may prevent this with
 ``secondary_structure.protein.remove_outliers=False``.  This may be helpful
 for very poor low-resolution structures, e.g. to force proper structure on a
 manually built helix, but it will also cause completely spurious bond
 restraints to be overlooked.
+Three hydrogen bond angles are also restrained for alpha-helices. The first and the
+last bond angles are restrained with RMSD of 10 degrees, inner angles restrained
+with RMSD of 5 degrees. Target values are the following:
+
+- C  - O - N: 155
+- CA - N - O: 116
+- C  - N - O: 121
+
+These angle restraints can be turned off by setting ``secondary_structure.protein.restrain_hbond_angles=False``.
 
 
 How to obtain HELIX/SHEET records
