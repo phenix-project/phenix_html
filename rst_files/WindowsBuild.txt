@@ -162,12 +162,14 @@ installation is always created.
 Bundling base components together as zip files
 ===============================================
 
-The Windows build does not need to compile python or the HDF5 library from scratch.
+The Windows build does not need to compile Python or the HDF5 library from scratch.
 Instead these two components are bundled as separate zip files which bootstrap.py 
 will download from
 `http://cci.lbl.gov/cctbx_dependencies <http://cci.lbl.gov/cctbx_dependencies>`__ during the
-first stages of the build. `Click here <windows_bundles.html>`__ for details on how to 
-create these bundles or on how to update the python.
+first stages of the build. The Python bundle has had all the necessary 3rd party modules 
+added to it for running PHENIX on a PC.
+`Click here <windows_bundles.html>`__ for details on how these bundles were created
+or on how to update this Python bundle with additional modules.
 
 
 Manual build
@@ -193,7 +195,9 @@ From bootstrap.py
 Below is a cmd script for manually building PHENIX with bootstrap.py. It first downloads sources
 from external repositories, then compiles them, then runs tests and finally creates a binary
 installer. It is assumed the script is started with command line arguments specifying 
-platform and version label that will be tagged to the executables during the build.
+platform and version label that will be tagged to the executables during the build. Because the PHENIX
+build will access repositories that requires authentication you must provide appropriate user names for the 
+flags ``--sfuser=`` and ``--cciuser=``.
 
 **PhenixBuild.cmd**
 
@@ -217,8 +221,8 @@ platform and version label that will be tagged to the executables during the bui
   )
   )
   
-  REM Get latest bootstrap from svn repo
-  svn export --force svn://svn.code.sf.net/p/cctbx/code/trunk/libtbx/auto_build/bootstrap.py 2>&1 | mtee build.log
+  REM Get latest bootstrap.py from Githup
+  curl https://raw.githubusercontent.com/cctbx/cctbx_project/master/libtbx/auto_build/bootstrap.py > bootstrap.py 2>&1 | mtee build.log
   IF ERRORLEVEL 1 (
     EXIT
   ) 

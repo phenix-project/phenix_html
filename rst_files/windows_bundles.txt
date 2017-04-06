@@ -28,7 +28,7 @@ in common ``base\include`` and ``base\lib`` directories.
 Python 2.7
 ============
 
-The first base component bundled is python 2.7.9 with installed modules such as matplotlib, 
+The first base component bundled is Python 2.7.12 with installed modules such as matplotlib, 
 numpy, biopython, wxpython, etc. Version 2.7.9 is the minimum version that provides tools like
 "pip install" which makes it much easier to enhance python with 3rd party modules from
 https://pypi.python.org.
@@ -37,10 +37,9 @@ Creating the python bundle
 ---------------------------
 
 The first step is to download and install python2.7.9 (or higher) to your PC. Unfortunately
-the Python for Windows installer is much too clever for its own good. It may overwrite any
-existing python installation on your PC as well as the registry key that specifies the
-existing installation:
-the key;
+the Python for Windows installer is too clever for its own good. It may overwrite any
+existing Python installation on your PC as well as the registry key that specifies the
+existing installation: The key;
 
 ::
 
