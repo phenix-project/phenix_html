@@ -55,7 +55,10 @@ How to run the phenix.ligand\_identification
 --------------------------------------------
 
 Example commands are provided below. The nsf-d2 files are in
-$PHENIX/phenix\_examples/nsf-d2-ligand
+$PHENIX/phenix\_examples/nsf-d2-ligand.  This program accepts
+all `LigandFit keywords<ligandfit.html#list-of-all-available-keywords>`__
+ in addition to the build-in keywords 
+listed at the end of this document.
 
 What the phenix.ligand\_identification command needs to run:
 ------------------------------------------------------------
@@ -178,18 +181,18 @@ files described below.
 
     display.com (uses ligid.scm, also in the same directory)
 
-Multi-thread computing
+Multiprocessing
 ----------------------
 
-The phenix.ligand\_identification program has build-in multi-thread
+The phenix.ligand\_identification program has build-in multi-
 processing capability. Use keyword
 
 ::
 
     --nproc=[number of threads]
 
-to run the command in multi-threaded mode. In general, the processing
-speed is proportional to the the number of threads used, up to the
+to run the command in multiprocessing mode. In general, the processing
+speed is proportional to the the number of CPU cores used, up to the
 maximum free cores the system can allocate at run time. For example, it
 takes about 25 minutes for the nsf-d2 example to run in 8 threaded mode,
 while single-process uses about 180 minutes for the same job on a
