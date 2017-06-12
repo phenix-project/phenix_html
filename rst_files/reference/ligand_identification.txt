@@ -17,21 +17,20 @@ Purpose of the phenix.ligand\_identification command
 ----------------------------------------------------
 
 The phenix.ligand\_identification command carries out fitting of a
-library of `180 most frequently observed
-ligands <ligand_identification.html#anch70>`__ in the PDB to a given
+library of 180 most frequently observed
+ligands in the PDB to a given
 electron density map. The program also conducts the analysis and ranking
 of the ligand fitting results.
 
 The phenix.ligand\_identification command works with the ligand library
-provided with the Phenix program by default. It can also take a `custom
-ligand library <ligand_identification.html#anch25>`__ provided by the
-users.
+provided with the Phenix program by default. It can also take a custom
+ligand library provided by the users.
 
 Usage
 -----
 
-The phenix.ligand\_identification task can be run from `command
-line <ligand_identification.html#anch45>`__, or from the PHENIX GUI.
+The phenix.ligand\_identification task can be run from command
+line, or from the PHENIX GUI.
 
 How the phenix.ligand\_identification works:
 --------------------------------------------
@@ -39,8 +38,7 @@ How the phenix.ligand\_identification works:
 The phenix.ligand\_identification command uses RESOLVE ligand fitting
 methods as described in the `LigandFit documentation. <ligandfit.html>`__
 The phenix.ligand\_identification carries out this fitting process for a
-library of `180 most frequently observed
-ligands <ligand_identification.html#anch70>`__ in the Protein Data Bank,
+library of 180 most frequently observed ligands in the Protein Data Bank,
 or a custom library as described above, scores and ranks the overall
 fitting results. A real-space refinement is carried out on the ligand by
 default between RESOLVE fitting and Phenix scoring. The scoring
@@ -71,8 +69,7 @@ The phenix.ligand\_identification command needs:
 *Choice of ligand library* (keywords+examples)
 ----------------------------------------------
 
-\*\ `default ligand library <ligand_identification.html#anch70>`__: no
-keyword needed
+\*\ default ligand library: no keyword needed
 
 \*to specify a list of ligands in 3-letter codes:
 
