@@ -24,7 +24,7 @@ import libtbx.utils
 # XXX it would be better not to set this globally if possible...
 HTML_PATH = libtbx.env.find_in_repositories(relative_path="phenix_html")
 if HTML_PATH is None:
-  raise Sorry("Could not find phenix_html.")
+  raise libtbx.utils.Sorry("Could not find phenix_html.")
 
 def replace_phenix_version (doc) :
   base_version, release_tag = phenix_info.version_and_release_tag()
@@ -395,6 +395,10 @@ def run (args, out=sys.stdout) :
           raise
         print "      error: %s" % e
       else :
+        if doc.find('system-messages')!=-1:
+          raise libtbx.utils.Sorry('''
+        Something is wrong with input. Please correct syntax.
+        ''')
         with open(outfile, "w") as f:
           f.write(doc)
 
