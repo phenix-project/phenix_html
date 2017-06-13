@@ -25,6 +25,23 @@ The operations below can be applied to the whole model or selected parts
 - convert SeMet residues to Met
 - adjust segid field in PDB format
 
+Video Tutorial
+--------------
+
+.. raw:: html
+
+   <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/uJs6ah27PKE" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+
+The `tutorial video <https://youtu.be/uJs6ah27PKE>`_ is available on the
+`Phenix YouTube channel
+<https://www.youtube.com/channel/UCcdI0hfHngWAZLJWynxPQWg>`_ and covers the
+following topics:
+
+- basic overview
+- how to run PDBTools via the GUI
+- example 1: prepare model file for usage with lower resolution data
+- example 2: convert all residues in a model to alanine
+
 Graphical interface
 -------------------
 
@@ -47,20 +64,6 @@ have separate (optional) atom selections.
 (Note: in past versions PDBTools was also responsible for geometry minimization
 and addition of hydrogen atoms using Reduce; these methods have been moved to
 the programs phenix.geometry_minimization and phenix.ready_set, respectively.)
-
-Video Tutorial
---------------
-
-The `tutorial video <https://youtu.be/uJs6ah27PKE>`_ is available on the
-`Phenix YouTube channel
-<https://www.youtube.com/channel/UCcdI0hfHngWAZLJWynxPQWg>`_ and covers the
-following topics:
-
-- basic overview
-- how to run PDBTools via the GUI
-- example 1: prepare model file for usage with lower resolution data
-- example 2: convert all residues in a model to alanine
-
 
 Command-line use
 ----------------
