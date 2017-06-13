@@ -7,7 +7,7 @@ Molecular replacement with the Phaser GUI
 Overview
 --------
 
-`MRage <MRage.html>`_ presents a user-friendly and automated frontend to Phaser, 
+`MRage <MRage.html>`_ presents a user-friendly and automated frontend to Phaser,
 but especially difficult cases may require finer
 control over parameters.  The Phaser-MR GUI exposes all options available in
 the standalone command-line Phaser software, and allows use of additional
@@ -28,6 +28,21 @@ in PHENIX <mr_overview.html>`_ (especially the discussion of "ensembles" and
 `Phaser WIKI <http://www.phaser.cimr.cam.ac.uk/index.php/Phaser_Crystallographic_Software>`_.  Some common user questions are discussed at the end of this
 section, and in the MR overview page.  New users looking for a step-by-step
 introduction should read the `Phaser-MR tutorial <../tutorials/mr.html>`_.
+
+Video Tutorial
+--------------
+
+.. raw:: html
+
+   <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/lJ7t8dgfFjk" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+
+The `tutorial video <https://youtu.be/lJ7t8dgfFjk>`_ is available on the
+`Phenix YouTube channel
+<https://www.youtube.com/c/phenixtutorials>`_ and covers the
+following topics:
+
+- Basic overview
+- How to run Phaser MR using the tutorial data.
 
 Input files and mandatory parameters
 ------------------------------------
@@ -65,11 +80,11 @@ model comprises.
 
 Finally, the "Search procedure" tab defines the steps in the MR search,
 selected from each input ensemble. This is organized as a tree-like table
-with search components as main branches. Expanding a component branch displays the 
+with search components as main branches. Expanding a component branch displays the
 ensembles used for the searches. Expanding an ensemble branch displays the name
-of the ensemble's constituent coordinate files or the name of the electron density 
+of the ensemble's constituent coordinate files or the name of the electron density
 file. Specifying more than one ensemble per
-component will result in the ensemble yielding the best solution being used.  
+component will result in the ensemble yielding the best solution being used.
 You do not need to search for all ensembles at once, as described below.
 
 .. image:: ../images/phaser_mr_search.png
@@ -101,10 +116,10 @@ previous run as the partial solution, and searching for the second ensemble.
 To do this, select the result which you want to use as input from the menu
 labeled "Use partial solution from previous job" (all previous Phaser jobs for
 the current project will be listed in the menu). It is best to do this by
-modifying the configuration of the GUI from the previous Phaser run instead of 
-starting from scratch, because the stored solutions do not contain the 
-definitions of the search ensembles. This means that the existing ensemble 
-definitions must be left unchanged when defining any ensembles needed for 
+modifying the configuration of the GUI from the previous Phaser run instead of
+starting from scratch, because the stored solutions do not contain the
+definitions of the search ensembles. This means that the existing ensemble
+definitions must be left unchanged when defining any ensembles needed for
 further searches.
 
 You may also run each mode separately, e.g. the fast rotation function
