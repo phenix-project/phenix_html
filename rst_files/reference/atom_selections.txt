@@ -2,6 +2,11 @@
 The Phenix atom selection syntax
 ================================
 
+.. contents::
+
+Introduction
+------------
+
 Many of the programs in Phenix, and `phenix.refine <refine_gui.html>`__ in
 particular, allow (or require) you to specify selections
 of atoms in a model.  Common examples include:
@@ -16,7 +21,27 @@ All of these parameters are defined using a common syntax similar to what is
 used in `CNS <http://cns-online.org>`__ or `PyMOL <http://pymol.org>`__.
 The syntax allows for selection of atomic properties such as atom name,
 residue number, chain ID, or B-factor, which can be combined by the use of
-simple boolean statements (``and``, ``or``, or ``not``).  Several examples:
+simple boolean statements (``and``, ``or``, or ``not``).
+
+Video Tutorial
+--------------
+
+.. raw:: html
+
+   <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/K28q378F39s" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+
+The `tutorial video <https://youtu.be/K28q378F39s>`_ is available on the
+`Phenix YouTube channel
+<https://www.youtube.com/c/phenixtutorials>`_ and covers the
+following topics:
+
+- Basic overview
+- Examples for selection syntax
+- Examples for combined expressions
+- How to test if an expression works (phenix.pdb_atom_selection)
+
+Examples for selection expressions
+----------------------------------
 
 **All atoms**
 ::
@@ -73,7 +98,7 @@ wants to select ALA and GLY residues in the molecule, the selection should be
 
     resname ALA or resname GLY
 
-because suitable residues have residue name ALA or GLY. On the contrary, 
+because suitable residues have residue name ALA or GLY. On the contrary,
 selection
 ::
 
