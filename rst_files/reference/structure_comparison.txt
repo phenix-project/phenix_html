@@ -1,5 +1,5 @@
 ==============================================
-Comparing related structures in the PHENIX GUI
+Comparing related structures in the Phenix GUI
 ==============================================
 
 .. contents::
@@ -26,7 +26,7 @@ ensure consistency and/or fix errors, and recovered in their original
 orientations for further refinement and rebuilding.
 
 We have included a set of representative structures of human Protein Kinase A
-(PKA) for comparison in the PHENIX distribution.  To automatically set up a
+(PKA) for comparison in the Phenix distribution.  To automatically set up a
 new project with these data, click "New Project" in the main GUI toolbar and
 then "Set up tutorial data..." in the dialog which appears, and select
 "Protein Kinase A (Structure Comparison)" from the drop-down menu.
@@ -110,7 +110,7 @@ There are several options to open files or file pairs:
 
 The map calculations have been parallelized, and this part of the program
 scales extremely well over multiple processors.  The GUI will automatically
-be set to use NCPU - 1 processes, but you may reduce this if desired.
+be set to use ``ncpu=1`` processes, but you may increase this if desired.
 
 The most important configurable option is the choice of superposing the
 models and maps prior for viewing together in Coot or PyMOL.  This is very
@@ -269,8 +269,8 @@ toolbar of the results window.  A small panel will appear:
 
 Click the button labeled "Load models and maps" to read all structures into
 Coot simultaneously.  Once this is complete they will appear in a checklist
-in PHENIX; unchecking any structure will hide the associated objects in Coot.
-As with other validation programs in the PHENIX GUI, clicking on the field for
+in Phenix; unchecking any structure will hide the associated objects in Coot.
+As with other validation programs in the Phenix GUI, clicking on the field for
 any residue in the results grid will recenter Coot on that residue (in the
 appropriate frame of reference depending on whether models were superposed).
 You may now adjust the models to match a consensus if desired.
@@ -280,7 +280,7 @@ You may now adjust the models to match a consensus if desired.
 If the structures were superposed, you should not try to use the models in
 Coot for further refinement.  Instead, click the button labeled "Fetch
 modified structures" to write out the models from Coot to the results
-directory.  PHENIX will automatically recover the original orientation and
+directory.  Phenix will automatically recover the original orientation and
 replace the unmodified chain in the input structure with the model from Coot,
 while leaving all other atoms in place.  The complete files will be written
 out to the result directory, renamed with the extension "_modified.pdb".
@@ -296,6 +296,10 @@ Citations
   - Lovell SC, Word JM, Richardson JS, Richardson DC.  The penultimate rotamer
     library.  Proteins 2000 40:389-408.
     PubMed PMID: 10861930
+
+  - Hintze BJ, Lewis SM, Richardson JS, Richardson DC. Molprobity’s ultimate 
+    rotamer-library distributions for model validation. 
+    Proteins-Struct. Funct. Bioinforma. 2016 84:1177–1189.
 
   - Madhusudan, Akamine P, Xuong NH, Taylor SS. Crystal structure of a
     transition  state mimic of the catalytic subunit of cAMP-dependent protein
