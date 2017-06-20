@@ -1,0 +1,126 @@
+===================================================
+Generating a polder map with the compute_box option
+===================================================
+
+.. contents::
+
+Overview
+--------
+
+A polder OMIT map can help visualizing weak densities by exluding bulk solvent
+around the omitted region. This type of OMIT map is particularly useful for
+ligands.
+However, to calculate the polder map, it is necessary to have the ligand
+(or a placeholder) present in the model and there might be cases where it is
+useful to calculate a polder map when nothing has been placed yet. Strictly
+speaking, this type of map is thus not an OMIT map but a difference map, with
+the option to define a region where the bulk solvent mask is excluded.
+Such a map can be calculated with the use_box option of the polder tool.
+
+
+Example
+-------
+
+The COOT screenshot below shows difference density in the outside region of
+a protein. The positive difference density (green) seems connected, but the
+shape is not very clear.
+
+.. image:: ../images/polder_box_1.png
+
+The next figure shows the bulk solvent mask (blue) covering the density peak:
+
+.. image:: ../images/polder_box_2.png
+
+In the next sections, it is explained how to caluclate a difference map
+in which the bulk solvent is exluded around this density peak.
+(The map was calculated using model 1ABA, in which MES A88 was deleted, let's
+call this model 1aba_mod.pdb.)
+
+
+How to use the compute_box option
+---------------------------------
+
+**1. Obtain the selection:**
+Select several atoms around the peaks, approximately forming a rectangle
+containing the area of interest. These atoms will be used to define the region
+in which the bulk solvent mask will be excluded. The atoms will still contribute
+to structure factor calculations, so they will not be omitted.
+For example, the following atoms could be used (name - residue number - chain):
+
+  - CG1 48 A
+  - OE1 60 A
+  - CD2 7 A
+  - CB 64 A
+
+**2. "Translate" this selection to a selection string recognized by Phenix:**
+(chain A and ((resseq 48 and name CG1) or (resseq 60 and name OE1) or
+(resseq 7 and name CD2) or (resseq 64 and name CB)))
+
+**3. Run phenix.polder:**
+
+  Command line usage:
+
+  % phenix.polder 1aba_mod.pdb 1aba.mtz compute_box=true box_buffer=3 mask_output=True
+  selection='(chain A and ((resseq 48 and name CG1) or (resseq 60 and name OE1) or
+  (resseq 7 and name CD2) or (resseq 64 and name CB)))'
+
+  If the calculation is performed with the GUI, activate the follwing options:
+
+.. image:: ../images/polder_box_3.png
+
+
+**4. Meaning of the options:**
+  - compute_box: uses the compute_box option instead of the OMIT option in the
+    polder tool
+  - box_buffer: Increase the box in every direction by the value specified
+    (in Ånstroem). See the next section why this might be useful.
+  - mask_output: Output the bulk solvent mask. It is recommended to inspect the
+    mask to make sure that the peak is included in the modified mask.
+
+**5. Check the modified mask in COOT:**
+Open the model file in coot. Click "File" --> "Open Map" --> and choose the file
+mask_polder.ccp4 (it might be necessary to increase the contour level to make
+the map appear). Center on the peak in question.
+
+.. image:: ../images/polder_box_4.png
+
+The bulk solvent mask (pink) does not cover the difference density peak anymore.
+
+.. image:: ../images/polder_box_5.png
+
+Another view showing the rectangular shape of the modified area.
+
+**6. Inspect the polder difference map:** The difference density is clearer and
+it a MES molecule fits it well.
+
+.. image:: ../images/polder_box_6.png
+
+Why the mask should be inspected
+--------------------------------
+The bulk solvent mask is excluded in the smallest reactangle which contains the
+selected atoms and which is **parallel to unit cell axes**. It can thus occur
+that the box excluding the mask does not cover the density peak in question.
+The figure below shows the bulk solvent mask when box_buffer=0. The mask (blue)
+still covers part of the density to be investigated (bottom right).
+
+.. image:: ../images/polder_box_7.png
+
+To prevent this, either the parameter box_buffer can be used or the selection
+can be changed. The latter is preferred for the reason below.
+
+Do not increase the box_buffer too much
+---------------------------------------
+If the value for box_buffer is too high, large volumes of bulk solvent might
+not be accounted for, which can be detrimental to the detailed features of the
+difference map which we want to visualize. The figure below shows the resulting
+difference map when box_buffer = 12. The difference map is worse than the
+initial map.
+
+.. image:: ../images/polder_box_8.png
+
+**Explanation:** The unit cell for 1ABA is relatively small (30, 48, 61 in
+P212121) and using such a large value for box_buffer is almost equivalent to
+not using any bulk solvent at all and keeping the intermolecular volume empty.
+The value for box_buffer should therefore not exceed 5 A. Also, choosing
+carefully the selection defining the box can prevent the need for using the
+box_buffer parameter.
