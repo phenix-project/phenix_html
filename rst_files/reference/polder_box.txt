@@ -21,20 +21,23 @@ Such a map can be calculated with the use_box option of the polder tool.
 Example
 -------
 
-The COOT screenshot below shows difference density in the outside region of
-a protein. The positive difference density (green) seems connected, but the
-shape is not very clear.
+The COOT screenshot below shows difference density in the outer region of
+a protein (model 1ABA, in which the solvent molecule MES A88 was deleted:
+1aba_mod.pdb). The positive difference density (green) seems connected, but
+the shape is not very clear.
 
 .. image:: ../images/polder_box_1.png
 
-The next figure shows the bulk solvent mask (blue) covering the density peak:
+The next figure shows the bulk solvent mask (blue) covering the density peak.
+The bulk solvent density might hide additional features of the peak.
 
 .. image:: ../images/polder_box_2.png
 
-In the next sections, it is explained how to caluclate a difference map
-in which the bulk solvent is exluded around this density peak.
-(The map was calculated using model 1ABA, in which MES A88 was deleted, let's
-call this model 1aba_mod.pdb.)
+The compute_box option of the polder tool reassigns a local, user-defined,
+box-shaped portion of the bulk solvent mask. This way, interesting difference
+density peaks can be inspected without bias from the bulk solvent density
+(with the benefit of not having to disable the bulk solvent model for the
+entire structure)
 
 
 How to use the compute_box option
@@ -91,7 +94,7 @@ The bulk solvent mask (pink) does not cover the difference density peak anymore.
 Another view showing the rectangular shape of the modified area.
 
 **6. Inspect the polder difference map:** The difference density is clearer and
-it a MES molecule fits it well.
+a MES molecule fits it well.
 
 .. image:: ../images/polder_box_6.png
 
@@ -106,7 +109,8 @@ still covers part of the density to be investigated (bottom right).
 .. image:: ../images/polder_box_7.png
 
 To prevent this, either the parameter box_buffer can be used or the selection
-can be changed. The latter is preferred for the reason below.
+can be changed. The latter is preferred because a large box buffer can be
+detrimental to the map (see next section for an example).
 
 Do not increase the box_buffer too much
 ---------------------------------------
