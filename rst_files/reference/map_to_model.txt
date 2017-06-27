@@ -135,6 +135,23 @@ constant. The available functions for modifying the amplitudes are:
   in the map.  The value of b[1] is limited to being no larger than b[0] and the
   value of b[1]+b[2] is limited to be no larger than b[1]. 
 
+  Sharpening using a half-dataset correlation.  
+  The resolution-dependent correlation of density in two half-maps
+  is used to identify the optimal resolution-dependent weighting of
+  the map.  This approach requires a target resolution which is used
+  to set the overall fall-off with resolution for an ideal map.  That
+  fall-off for an ideal map is then multiplied by an estimated
+  resolution-dependent correlation of density in the map with the true
+  map (the estimation comes from the half-map correlations).
+  
+  
+  Model-based sharpening.
+  You can identify the sharpening parameters using your map and a
+  model.  This approach requires a guess of the RMSD between the model and
+  the true model.  The resolution-dependent correlation of model and map
+  density is used as in the half-map approach above to identify the
+  weighting of Fourier coefficients.
+
 
 *Finding the NCS asymmetric unit of the map*
 --------------------------------------------
@@ -203,6 +220,16 @@ part of the map.  The models are refined again.
 Then (if present) NCS is applied to the model and the full model is refined.
 Finally the best model, with NCS applied if present, is shifted to match 
 the original map and is written out.
+
+
+*Iterative map improvement with model-building and sharpening*
+--------------------------------------------------------------
+
+You can carry out multiple cycles of model-building and map sharpening,
+using the model from each cycle in the sharpening process. The map is 
+sharpened to make it as similar as possible to density calculated from
+the current model and the new map is used for the next cycle of model
+building.
 
 
 Examples
