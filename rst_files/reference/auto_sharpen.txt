@@ -1,4 +1,4 @@
-Auto-sharpening cryo-EM maps with auto_sharpen
+Auto-sharpening cryo-EM or crystallographic maps with auto_sharpen
 =====================================================
 
 Author(s)
@@ -11,8 +11,7 @@ Purpose
 
 The routine auto_sharpen will automatically identify optimal
 sharpening/blurring/map adjustment for the input map and will write
-out an optimized version of the map. Whether or not the origin is in
-the middle of the input map, the output map will have the origin at one corner.
+out an optimized version of the map. 
 
 Usage
 -----
@@ -71,24 +70,68 @@ map and they will simply be applied to the map. For example you can apply
 a sharpening B-value (b_sharpen) to sharpen the map, or you can specify a
 target overall B-value (b_iso) to obtain after sharpening.
 
-*Output files from auto_sharpen*
+*Box of density in sharpening*
+------------------------------
+
+Normally phenix.auto_sharpen will determine the optimal sharpening by 
+examining the density in a box cut out of your map, then apply this to
+the entire map.
+
+*Local sharpening*
+------------------
+
+You can choose to apply autosharpening locally if you want.  In this case
+the auto-sharpening parameters are determined in many boxes cut out of
+the map, and corresponding sharpened maps are calculated.  The map that
+is produced is a weighted map where the density at a particular point 
+comes most from the sharpened map based on a box near that point.
+
+*Half-map-based sharpening*
+---------------------------
+
+You can identify the sharpening parameters using two half-maps if you 
+want.  The resulution-dependent correlation of density in the two half-maps
+is used to identify the optimal resolution-dependent weighting of 
+the map.  This approach requires a target resolution which is used
+to set the overall fall-off with resolution for an ideal map.  That
+fall-off for an ideal map is then multiplied by an estimated 
+resolution-dependent correlation of density in the map with the true
+map (the estimation comes from the half-map correlations).
+
+
+*Model-based sharpening*
+------------------------
+
+You can identify instead the sharpening parameters using your map and a
+model.  This approach requires a guess of the RMSD between the model and
+the true model.  The resolution-dependent correlation of model and map
+density is used as in the half-map approach above to identify the
+weighting of Fourier coefficients.
+
+*Using crystallographic maps*
 --------------------------------
 
-**sharpened_shifted\_map.ccp4**: Sharpened map, shifted to place the origin on grid point (0,0,0) and sharpened
-
-**sharpened_shifted\_map.mtz**: Sharpened map, shifted to place the origin on grid point (0,0,0) and sharpened. Map coefficients corresponding to the ccp4 map.
-
+You can use phenix.auto_sharpen with a crystallographic map (represented 
+as map coefficients).
 
 *Shifting the map to the origin*
 --------------------------------
 
 Most crystallographic maps have the origin at the corner of the map (
 grid point [0,0,0]), while most cryo-EM maps have the orgin in the 
-middle of the map.  To make a consistent map, any maps with an origin not 
-at the corner are shifted to put the origin at grid point [0,0,0]. This map
-is the shifted map that is used for further steps in model-building.
-At the conclusion of model-building, the model is shifted back to 
-superimpose on the original map.
+middle of the map.  An output map with the origin shifted to the
+corner of the map is optionally written out.
+
+
+*Output files from auto_sharpen*
+--------------------------------
+
+**sharpened_map.ccp4**: Sharpened map.
+
+**shifted_sharpened_map.ccp4**: Sharpened map, shifted to place the origin on grid point (0,0,0) and sharpened
+
+**sharpened_map_coeffs.mtz**: Sharpened map, shifted to place the origin on grid point (0,0,0) and sharpened, represented as map coefficients.
+
 
 Examples
 --------
