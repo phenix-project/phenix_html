@@ -137,6 +137,15 @@ no density for the glutamine side chain. The polder map shows continuous v-shape
 density suggesting a different orientation for the side chain (c).
 
 
+What if no ligand has been modeled yet?
+---------------------------------------
+
+To compute a polder map, the ligand has to be present in the model.
+To calculate a difference map excluding locally the bulk solvent around a
+density peak, use the compute_box option of polder, which has a separate
+`documentation page <polder_box.html>`_ .
+
+
 Other options
 -------------
 
