@@ -13,7 +13,7 @@ phenix.find\_alt\_orig\_sym\_mate: Identify equivalent MR solutions of the same 
 Purpose
 -------
 
-phenix.find\_alt\_orig\_sym\_mate attempts to find the best superposition
+phenix.find\_alt\_orig\_sym\_mate (or phenix.famos) attempts to find the best superposition
 of two different molecular replacement solutions of the same dataset termed
 ``moving.pdb`` and ``fixed.pdb`` with respect
 to all symmetry operations and alternate origin shifts permitted by
@@ -49,12 +49,17 @@ this generally results in an origin offset between chains that is not a rational
 .. image:: ../images/find_alt_orig_sym_mate2.png
 
 
+In the case illustrated above the chains A, B, C in the file 1tfx.pdb all have unique
+good matches with chains H, A, I in the file test42.pdb. This is stated in the log file as
+well as printed with green text on the GUI. One pair of chains does not make a good match.
+A warning is then printed with red text.
+The second column in the table in the end of the log file contains the RMSDs of the pairs of 
+matched chains. 
 From the results tab the superposed structure can be visually inspected in Coot or Pymol.
 Matches with low MLAD scores will have correspondingly good superpositions.
 
 
 .. image:: ../images/find_alt_orig_sym_mate3.png
-   :width: 750
 
 
 
@@ -63,10 +68,10 @@ Using from the command-line
 ---------------------------
 
 
-It can also be run from the command-line with PHIL input in either a
+phenix.find\_alt\_orig\_sym\_mate can also be run from the command-line with PHIL input in either a
 text file or as keywords like::
 
-    phenix.find_alt_orig_sym_mate moving.pdb=pdbfile1 fixed.pdb=pdbfile2
+    phenix.famos moving.pdb=pdbfile1 fixed.pdb=pdbfile2
 
 or::
 
@@ -211,9 +216,11 @@ Do the MR solutions match?
 --------------------------
 
 A good match between two chains usually have a MLAD value below 1.5
-whereas a bad match usually have a value above 2.0. This is a rule of
-thumb and exceptions do occur. It is advisable to visually inspect that
-the structures superpose one another in a molecular graphics viewing
+whereas a bad match usually have a value above 2.0. The RMSD value for each match is
+also computed using the sequence alignment that the SSM superpose program 
+uses. But without superposing the chains. If a match is good the RMSD will be small
+just like the MLAD value. It is advisable to visually inspect that the chains of 
+structures have been transformed to the same origins in a molecular graphics viewing
 program.
 
 
