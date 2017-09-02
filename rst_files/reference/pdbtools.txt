@@ -68,11 +68,6 @@ the programs phenix.geometry_minimization and phenix.ready_set, respectively.)
 Command-line use
 ----------------
 
-In the absence of a CRYST1 record in the PDB file, functionality
-that doesn't require knowledge of the crystal symmetry is still
-available. To enable the full functionality, the crystal symmetry
-can be specified externally (e.g. via the --symmetry option).
-
 Some specific examples:
 
 **1)** Type ``phenix.pdbtools`` from the command line for instructions::
@@ -81,7 +76,7 @@ Some specific examples:
 
 **2)** To see all default parameters::
 
-  % phenix.pdbtools --show-defaults=all
+  % phenix.pdbtools
 
 **3)** Suppose a PDB model consist of three chains A, B and C and some water
 molecules. Remove all atoms in chain C and all waters::
@@ -104,19 +99,15 @@ The result of all four equivalent commands above will be a new PDB file
 containing chains A and B only. Important: the commands ``keep`` and
 ``remove`` cannot be used simultaneously.
 
-**4)** Remove all but backbone atoms and set all b-factors to 25::
+**4)** Remove all water and set all b-factors to 25::
 
-  % phenix.pdbtools model.pdb keep=backbone set_b_iso=25
+  % phenix.pdbtools model.pdb remove=water set_b_iso=25
 
 **5)** Suppose a PDB model consist of three chains A, B and C and some water
-molecules. Remove all but backbone atoms and set b-factors to 25 for chain C
+molecules. Remove all but water atoms and set b-factors to 25 for chain C
 atoms::
 
-  % phenix.pdbtools model.pdb keep=backbone set_b_iso=25 modify.selection="chain C"
-
-**6)** Show cmprehensive model statistics::
-
-  % phenix.pdbtools model.pdb model_statistics=true
+  % phenix.pdbtools model.pdb keep=water set_b_iso=25 modify.selection="chain C"
 
 
 List of all available keywords
