@@ -8,26 +8,32 @@ General installation instructions for Rosetta for use in Phenix
 Installation 
 ------------
 
-Rosetta is software from the Baker laboratory at the University of Washington https://www.rosettacommons.org.  Rosetta is used by a number of modules in Phenix
+Rosetta is software from the Baker laboratory at the University of Washington 
+https://www.rosettacommons.org.  Rosetta is used by a number of modules in 
+Phenix
 
 - phenix.erraser
 - phenix.mr\_rosetta
 - phenix.simple\_homology\_model.
 - phenix.rosetta\_refine
 
-phenix.rosetta\_refine requires a compilation of Rosetta from source as it requires some programs for the interface between Phenix and Rosetta that are not in the binary distribution.
-The first three programs will run with a binary
+phenix.rosetta\_refine requires a compilation of Rosetta from source as it 
+requires some programs for the interface between Phenix and Rosetta that are 
+not in the binary distribution. The first three programs will run with a binary
 installation of Rosetta (or the compiled installation of Rosetta). From a
 practical point-of-view, making the effort to install the compiled
 version of Rosetta means that you can run all phenix Rosetta dependent programs.
 
-
 Once you have installed Rosetta you
 need to set the environmental variable $PHENIX\_ROSETTA\_PATH.
 
+Installation - Using standard Phenix installation
+-------------------------------------------------
+
 Proceed with the following.
 
-- Go to `https://c4c.uwc4c.com/express\_license\_technologies/rosetta <https://c4c.uwc4c.com/express_license_technologies/rosetta>`__,
+- Go to `https://c4c.uwc4c.com/express\_license\_technologies/rosetta 
+  <https://c4c.uwc4c.com/express_license_technologies/rosetta>`__,
   find "Academic License" and click on "LICENSE". Fill out the form,
   and receive by email a link to the download site and a
   login/password.
@@ -35,13 +41,13 @@ Proceed with the following.
   It is quicker to download the source
   bundle. The binaries are not required when installing for ALL programs.
 - Make the directory where you want to install Rosetta (if it does not 
-  already exist). Move the downloaded file (something like
-  |rsb|.tgz)
+  already exist). Move the downloaded file (something like |rsb|.tgz)
   there. Then unpack the bundle... 
 
 ::
 
-  % tar xzf rosetta_src_20??.??.?????_bundle.tgz (changing the names to match your bundle)
+  % tar xzf rosetta_src_20??.??.?????_bundle.tgz (changing the names to 
+    match your bundle)
 
 - You should have a directory like |rsb| that contains:
 
@@ -49,14 +55,18 @@ Proceed with the following.
 
    demos   main    tools
 
-- You may also need zlib1g-dev and scons (e.g. Ubuntu). You can get this library and scons with
+- You may also need zlib1g-dev and scons (e.g. Ubuntu). You can get this 
+  library and scons with
 
 ::
 
    % sudo apt-get install zlib1g-dev
    % sudo apt-get install scons
 
--  Now you want to compile. Follow the instructions in main/source/readme.txt. Note that the default compilation is mode=debug, which builds executables 10x slower than mode=release executables. Set the number of processors to speed up the compilation.
+-  Now you want to compile. Follow the instructions in main/source/readme.txt. 
+   Note that the default compilation is mode=debug, which builds executables 
+   10x slower than mode=release executables. Set the number of processors to 
+   speed up the compilation.
 
 ::
 
@@ -98,7 +108,26 @@ Proceed with the following.
   
   % rosetta.build_phenix_interface nproc=2
 
-You should now be completely ready to go with Rosetta in Phenix
+You should now be completely ready to go with Rosetta in Phenix that can be
+tested using
+
+::
+
+  % rosetta.run_tests
+
+Installation - Using the latest Rosetta version and Phenix source
+-----------------------------------------------------------------
+
+To use the latest Rosetta version, Phenix needs to be compiled from source 
+using a compiler that is c++11 compatible. To compile,
+
+::
+
+  % cd <phenix-installer-1.12-2829-source directory>
+  % ./install --prefix=<installation location>
+
+Once Phenix is installed, the interface needs to build using the command
+in the last section.
 
 Proxy Server Setup
 ------------------
