@@ -11,36 +11,30 @@ Platform support
 ----------------
 
 PHENIX is supported on most common Linux platforms (kernel 2.6 or newer),
-Mac OS X version 10.4 or newer, and Windows 7 or newer.  Binary installers
+Mac OS X version 10.6 or newer, and Windows 7 or newer.  Binary installers
 are built on the following systems:
 
-  - Fedora Core 8 (64-bit)
-  - Fedora Core 12 (64-bit)
-  - CentOS 4 (32-bit)
-  - CentOS 5 (both)
-  - Ubuntu 10.04 (both)
-  - Windows 7 or newer (32-bit)
-  - Windows 7 or newer (64-bit)
-  - Mac OS 10.4 (32-bit)
-  - Mac OS 10.6 (64-bit)
+  - CentOS 5 (32-bit and 64-bit)
+  - CentOS 6 (64-bit)
+  - Windows 7 (32-bit and 64-bit)
+  - macOS 10.9 (64-bit)
 
 Most of these installers should also run on newer systems and/or different
-Linux distributions such as Linux Mint or SuSE, as long as the architecture is
-the same.   Linux kernels prior to 2.6 are not supported, but kernel versions
-3.x should be compatible with the installers built on 2.6.
+Linux distributions such as Ubuntu, Linux Mint, or openSuSE, as long as the
+architecture is the same. Linux kernels prior to 2.6 are not supported, but
+kernel versions 3.x should be compatible with the installers built on 2.6.
+You should pick the architecture that matches the one for your operating
+system. For example, on Windows, only use the 64-bit version of Phenix if
+your version of Windows is also 64-bit.
 
-If you are running Mac OS 10.6 (Snow Leopard) or newer, you will almost
-certainly want to use the 64-bit Mac installer.  On Linux, you
-can find out what platform you are running with the command 'uname -p';
-for machines reporting "i686", use the intel-linux-2.6 installer.  On Windows,
-the 64-bit Windows 7 installer only supports machines which actually run the
-64-bit version of the OS; if you are using 32-bit Windows 7 you
-will need to use the 32-bit installer.
+If you are running macOS 10.6 - 10.8, the command-line tools will work, but
+the GUI will have issues updating the display. Both the command-line tools and
+the GUI will work on macOS 10.9 and later.
 
 Space requirements
 -------------------
 
-For the complete PHENIX installation you will need approximately 2.5GB
+For the complete PHENIX installation you will need approximately 4 GB
 of disk space.
 
 Graphical installer - Mac
@@ -55,7 +49,7 @@ Graphical installer - Windows
 -----------------------------
 
 Installation:
-  - Download and run the PHENIX setup executable on your PC and follow the 
+  - Download and run the PHENIX setup executable on your PC and follow the
     instructions.
 
 For ordinary users the destination directory defaults to the folder defined
@@ -69,7 +63,7 @@ C/C++ sources are included for expert users wishing to recompile code.
 .. _download: http://www.phenix-online.org/download
 
 
-Command-line installer (Mac and Linux)
+Command-line installer (macOS and Linux)
 ----------------------------------------
 
 You should obtain the latest distribution of PHENIX including the
@@ -102,11 +96,11 @@ see ``SOURCES``.
 Rosetta Installation
 --------------------
 
-Installation of Rosetta, software developed from the Baker laboratory at the University of Washington, is required for running 
+Installation of Rosetta, software developed from the Baker laboratory at the University of Washington, is required for running
 
 - `phenix.mr\_rosetta <reference/rosetta_refine.html>`__
 
-- `phenix.rosetta\_refine <reference/rosetta_refine.html>`__ 
+- `phenix.rosetta\_refine <reference/rosetta_refine.html>`__
 
 - `phenix.erraser <reference/erraser.html>`__
 
@@ -316,4 +310,3 @@ by the GUI code.  If you encounter an error message about a missing library
 upon starting the GUI, you can add it to your system with this command::
 
   sudo apt-get install libjpeg62
-
