@@ -1,0 +1,66 @@
+===============================
+Fitting to a cryo-EM map
+===============================
+
+.. contents::
+
+Overview
+--------
+CryoFit fits biomolecule (protein and nucleic acids) to Cryo-EM map
+that is reconstructed by single particle analysis.
+
+Install method, tutorial run files, troubleshooting can be found `here
+<https://www.dropbox.com/sh/nnxcwzyidqi4p6g/AAAA5yULDUNPKtJ72Ecug0Ffa?dl=0>`_.
+
+
+Input
+-------------------
+<initial_model>.pdb and <target_map>.sit
+
+
+Running the program
+-------------------
+
+``cyro_fit.run`` can be executed via the GUI, or the command line::
+
+  % cyro_fit.run <initial_model>.pdb <target_map>.sit
+  
+example command line::
+
+  % cyro_fit.run tRNA.pdb tRNA.sit
+
+
+Output
+-------------------
+A final cryo_fitted structure: steps/7_cryo_fit/cryo_fitted.pdb (or cryo_fitted.gro if you specified .gro
+for your vmd visualization)
+
+Correlation coefficients (CC) between cryo_fitted structures and cryo-EM maps: steps/7_cryo_fit/cc_record
+
+
+Examples
+----------
+CryoFit example with tRNA
+
+.. image:: ../images/cryo_fit_tRNA.png
+
+.. image:: ../images/cryo_fit_tRNA_cc.png
+
+
+Reference
+----------
+
+S. Kirmizialtin, J. Loerke, E. Behrmann, C. MT. Spahn, K. Y Sanbonmatsu,
+Using Molecular Simulation to Model High-Resolution Cryo-EM Reconstructions, 
+Methods Enzymol., 558, 2015, 497-514
+
+
+Options
+-------------------
+All options will be used as default. Gromacs expert users are welcome to 
+customize those options if they wish.
+
+List of all keywords
+--------------------
+
+{{phil:cryo_fit.command_line.run}}

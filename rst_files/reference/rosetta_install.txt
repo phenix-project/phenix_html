@@ -55,36 +55,6 @@ Proceed with the following.
 
    demos   main    tools
 
-- You may also need zlib1g-dev and scons (e.g. Ubuntu). You can get this 
-  library and scons with
-
-::
-
-   % sudo apt-get install zlib1g-dev
-   % sudo apt-get install scons
-
--  Now you want to compile. Follow the instructions in main/source/readme.txt. 
-   Note that the default compilation is mode=debug, which builds executables 
-   10x slower than mode=release executables. Set the number of processors to 
-   speed up the compilation.
-
-::
-
-   % cd main/source
-   % scons bin mode=release -j4 
-
--  **Troubleshooting**
-
- - See FULL INSTRUCTIONS at https://www.rosettacommons.org/support
- - Build may also be called with ./scons.py bin mode=release -j4
- - Build may fail because it is unable to find the g++ requested by build. This can be fixed in two ways
-
-   (1) If you have the correct version of g++ installed, but it is not called by the name expected by the build, simply set a soft link from g++ to e.g. g++-4.6 
-   (2) See: http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 for how to edit to tools/build/basic.settings and tools/build/options.settings and using "scons bin mode=release cxx=gcc cxx\_ver=4.5"
-
- - Build may fail due to shallow warnings. Edit tools/build/basic.settings to comment out all "warn" flags for your operating system.
-
-
 - The directory containing "main demo tools" is to be called "PHENIX\_ROSETTA\_PATH".
   Now you can now set a local environmental variable in your ".profile"
   (sh or bash shell) or ".cshrc" (c-shell) to mark where rosetta is
@@ -126,8 +96,36 @@ using a compiler that is c++11 compatible. To compile,
   % cd <phenix-installer-1.12-2829-source directory>
   % ./install --prefix=<installation location>
 
-Once Phenix is installed, the interface needs to build using the command
-in the last section.
+- You may also need zlib1g-dev and scons (e.g. Ubuntu). You can get this 
+  library and scons with
+
+::
+
+   % sudo apt-get install zlib1g-dev
+   % sudo apt-get install scons
+
+-  Now you want to compile. Follow the instructions in main/source/readme.txt. 
+   Note that the default compilation is mode=debug, which builds executables 
+   10x slower than mode=release executables. Set the number of processors to 
+   speed up the compilation.
+
+::
+
+   % cd main/source
+   % scons bin mode=release -j4 
+
+-  **Troubleshooting**
+
+ - See FULL INSTRUCTIONS at https://www.rosettacommons.org/support
+ - Build may also be called with ./scons.py bin mode=release -j4
+ - Build may fail because it is unable to find the g++ requested by build. This can be fixed in two ways
+
+   (1) If you have the correct version of g++ installed, but it is not called by the name expected by the build, simply set a soft link from g++ to e.g. g++-4.6 
+   (2) See: http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 for how to edit to tools/build/basic.settings and tools/build/options.settings and using "scons bin mode=release cxx=gcc cxx\_ver=4.5"
+
+ - Build may fail due to shallow warnings. Edit tools/build/basic.settings to comment out all "warn" flags for your operating system.
+
+
 
 Proxy Server Setup
 ------------------
