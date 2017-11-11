@@ -11,7 +11,7 @@ Platform support
 ----------------
 
 PHENIX is supported on most common Linux platforms (kernel 2.6 or newer),
-Mac OS X version 10.6 or newer, and Windows 7 or newer.  Binary installers
+Mac OS X version 10.7 or newer, and Windows 7 or newer.  Binary installers
 are built on the following systems:
 
   - CentOS 5 (32-bit and 64-bit)
@@ -22,12 +22,12 @@ are built on the following systems:
 Most of these installers should also run on newer systems and/or different
 Linux distributions such as Ubuntu, Linux Mint, or openSuSE, as long as the
 architecture is the same. Linux kernels prior to 2.6 are not supported, but
-kernel versions 3.x should be compatible with the installers built on 2.6.
-You should pick the architecture that matches the one for your operating
+kernel versions 3.x and later should be compatible with the installers built
+on 2.6. You should pick the architecture that matches the one for your operating
 system. For example, on Windows, only use the 64-bit version of Phenix if
 your version of Windows is also 64-bit.
 
-If you are running macOS 10.6 - 10.8, the command-line tools will work, but
+If you are running macOS 10.7 - 10.8, the command-line tools will work, but
 the GUI will have issues updating the display. Both the command-line tools and
 the GUI will work on macOS 10.9 and later.
 
