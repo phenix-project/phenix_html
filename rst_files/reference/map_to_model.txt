@@ -24,9 +24,9 @@ your map. The tool map\_to\_model will identify what kind of chains to
 build based on your sequence file.  It will find where your molecule is
 in the map and cut out and work with just that part of the density.
 
-If your map has been averaged based on NCS symmetry and 
-you supply a file with that NCS information (.ncs_spec, biomtr.dat, etc),
-map\_to\_model will find the asymmetric unit of NCS, build that, then
+If your map has been averaged based on reconstruction symmetry and 
+you supply a file with that symmetry information (.ncs_spec, biomtr.dat, etc),
+map\_to\_model will find the asymmetric unit of the map, build that, then
 expand to the entire map.  You can also just supply the type of symmetry
 (e.g., D7) or ask to check all plausible symmetry.
 
@@ -56,8 +56,8 @@ experiment. map\_to\_model allows application of a scale factor
 will be close to 1. If the magnification is specified and is not
 equal to 1, it will be applied to the input map and a magnification map
 will be written out to the output directory and will be used as if it were
-the original input file from then on.  Additionally any input NCS information
-will be adjusted by the same magnification factor (translations and
+the original input file from then on.  Additionally any input symmetry
+information will be adjusted by the same magnification factor (translations and
 centers are scaled by the magnification factor, rotations are unchanged).
 Any input models are not modified.
 
@@ -153,31 +153,32 @@ constant. The available functions for modifying the amplitudes are:
   weighting of Fourier coefficients.
 
 
-*Finding the NCS asymmetric unit of the map*
---------------------------------------------
+*Finding the asymmetric unit of the map*
+----------------------------------------
 
-If you supply NCS matrices describing the NCS used to average the map (if any),
+If you supply symmetry matrices describing the symmetry used to average 
+the map (if any),
 then map\_to\_model will try to define a region of the map that represents
-the NCS asymmetric unit.  Application of the NCS operators to the NCS 
+the asymmetric unit of the map.  Application of the symmetry operators to the 
 asymmetric unit will generate the entire map, and application to a model built
 into the asymmetric unit will generate the entire model.  
 
 You can also supply the type of symmetry (e.g., C3, D7, etc) 
 and map\_to\_model will try to find that symmetry in the map. You can even
-search for all plausible symmetry (ANY).  For helical symmetry either an NCS
-file or the rotation and translation information is required, however.
+search for all plausible symmetry (ANY).  For helical symmetry either a
+symmetry file or the rotation and translation information is required, however.
 
 Normally
-identification of the NCS asymmetric unit and segmentation of the map (below)
+identification of the asymmetric unit and segmentation of the map (below)
 are done as a single step, yielding an asymmetric unit and a set of
 contiguous regions of density within that asymmetric unit. The asymmetric unit
-of NCS will be written out as a map to the segmentation\_dir directory,
+will be written out as a map to the segmentation\_dir directory,
 superimposed on the shifted map (so that they can be viewed together in Coot).
 
 *Segmentation of the map*
 -------------------------
 
-By default (segment=True) the map or NCS asymmetric unit of the map will
+By default (segment=True) the map or asymmetric unit of the map will
 be segmented (cut into small pieces) into regions of connected density. This
 is done by choosing a threshold of density and identifying contiguous regions
 where all grid points are above this threshold. The threshold is chosen to
@@ -196,7 +197,7 @@ are:
 ::
 
   Standard RESOLVE model-building for PROTEIN/RNA/DNA for the entire 
-  asymmetric unit  of NCS (or the entire molecule if no NCS).
+  asymmetric unit  (or the entire molecule if no symmetry was used ).
 
   Helices (RNA) or helices/strands (PROTEIN) for entire asymmetric unit
 
@@ -209,7 +210,7 @@ are:
 Intermediate models are refined with phenix.real\_space\_refine and are
 written out relative to the shifted map with origin at [0,0,0]. 
 You can view these intermediate models, the shifted map, and the 
-shifted map containing just the asymmetric unit of NCS, and any 
+shifted map containing just the asymmetric unit , and any 
 region maps in Coot and they should all superimpose.
 
 Once all intermediate models are built, all models of each chain type are
@@ -217,8 +218,8 @@ combined, taking the best-fitting model for each part of the map. Then all
 chain types are combined, once again taking the best-fitting model for each
 part of the map.  The models are refined again.
 
-Then (if present) NCS is applied to the model and the full model is refined.
-Finally the best model, with NCS applied if present, is shifted to match 
+Then (if present) symmetry is applied to the model and the full model is refined.
+Finally the best model, with symmetry applied if present, is shifted to match 
 the original map and is written out.
 
 
@@ -246,13 +247,13 @@ Running map\_to\_model is easy. From the command-line you can type:
 
 where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
 sequence file, and find_ncs.ncs_spec is an optional file specifying any
-NCS operators used in averaging the map. This can be in the form of
+symmetry operators used in averaging the map. This can be in the form of
 BIOMTR records from a PDB file as well.
 
-Standard run of map\_to\_model, specifying NCS type:
-----------------------------------------------------
+Standard run of map\_to\_model, specifying symmetry type:
+---------------------------------------------------------
 
-Finding NCS map\_to\_model is easy. From the command-line you can type:
+Running map\_to\_model is easy. From the command-line you can type:
 
 ::
 
@@ -260,78 +261,114 @@ Finding NCS map\_to\_model is easy. From the command-line you can type:
 
 Here map\_to\_model will look for D7 (7-fold symmetry along the c-axis and 
 2-fold symmetry along a or b) in the map and apply it if it is found. It will
-also write out the NCS matrices corresponding to this symmetry.
+also write out the matrices corresponding to this symmetry.
 
-Combining partial runs from map\_to\_model:
--------------------------------------------
+Using carry\_on to continue with a partially-finished run
+---------------------------------------------------------
 
 If you have a completed or partially-completed run of map\_to\_model and 
 you want to run again but you do not want to re-run all the steps, you can
-skip building some models by specifying a previously-built model for 
-some steps. The models you can specify are:
+just carry on from where you left off by using the keyword carry\_on=True.
+
+Using carry\_on to break up your run into small pieces 
+------------------------------------------------------
+
+You can use carry\_on=True to progressively build up your model 
+from pieces or to run many jobs in parallel.
+
+First you run map_to_model with build_new_model=False (or 
+just run segment_and_split) to split up your
+map and write a file (the info_pickle_file) that has all the 
+necessary information to put everything together.
+
+
+Then you can run many jobs in parallel, building just part of the chain
+in each job,  using a set of keywords like this (here only RNA will
+be built, building will be done in just region number 26,
+secondary structure searches are disabled and overall model-building
+is disabled:
 
 ::
 
-    init_PROTEIN 
+  do_only_one_thing=True 
+  chain_type=RNA
+  build_in_regions=True
+  input_map_id_start=26
+  input_map_id_end=26
 
-    init_RNA 
+  include_helices_strands_only=False
+  include_phase_and_build=False
 
-    init_DNA 
-
-    helices_strands_only_PROTEIN 
-
-    build_rna_helices_RNA 
-
-    standard_PROTEIN 
-
-    standard_RNA 
-
-    standard_DNA 
-
-    final_PROTEIN 
-
-    final_RNA 
-
-    final_DNA
-
-For example, you can say:
+You might then do another run like this, where overall model-building
+is done starting with model number 4:
 
 ::
 
-    phenix.map_to_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
-      partial_model=last_run/final_PROTEIN.pdb 
-      partial_model_type=final_PROTEIN 
-      partial_model=last_run/final_RNA.pdb
-      partial_model_type=final_RNA
-   
-and then the files last_run/final_PROTEIN.pdb and last_run/final_RNA.pdb
-will simply be combined to create a new model, instead of doing a full
-model-building run. 
+  do_only_one_thing=True 
+  chain_type=PROTEIN
+  build_in_regions=False
+  include_helices_strands_only=False
+  include_phase_and_build=True
+  model_start=4
 
-The stages of model-building that can be replaced are:
+You can run all the combinations that you would like in parallel.
 
-::
-
-    init (building into individual regions of density)
-
-    helices_strands_only (PROTEIN search for helices and strands)
-
-    build_rna_helices (RNA search for A-form helices)
-
-    standard (RESOLVE model-building on entire structure)
-
-    final (combined model for one chain type)
-
-The chain-types that can be specified are:
+After they all run, you can combine all the models you have created in
+two steps:
 
 ::
 
-    PROTEIN
+  First you must delete the files: model_PROTEIN.pdb model_RNA.pdb 
+  final_model_PROTEIN.pdb final_model_RNA.pdb final_model_PROTEIN_RNA.pdb.
+  The reason you need to delete these is that they may have been
+  created using only some of the partial models you generated.  If you 
+  delete them they will be re-created using all the partial models that
+  are present.
+  
+  Then you can run map_to_model from the beginning again with carry_on=True 
+  and build_new_model=False and all the intermediate files will be 
+  combined to yield a full model.  This can still take a little time as
+  sequence identification, symmetry checking and refinement are carried
+  out on the full model.
 
-    RNA
+Building just the asymmetric unit of your model to save memory
+--------------------------------------------------------------
 
-    DNA
+If you have a very big structure and your computer does not have a huge
+amount of memory then map_to_model can crash, particularly in stages
+where multiple processes are run at the same time.  One solution is to
+run just the segment_and_split step of map_to_model on a computer with a 
+lot of memory, then use the small map created by segment_and_split
+for subsequent stages, and then finally take the resulting model for this
+small map, put it into map_to_model on the computer with a lot of
+memory and use it to create a final model.  Here are the steps for doing this:
 
+::
+
+  In a clean directory,
+  run phenix.segment_and_split_map on your map, including symmetry 
+  information. Run this on a computer with a huge amount of memory.
+  Your segmentation information will be in segmented_maps/
+
+  Take the file segmented_maps/box_map_au.ccp4, which contains just the
+  asymmetric unit of density from your original map, and in a new 
+  directory (perhaps box_map_directory/) 
+  run phenix.map_to_model with box_map_au.ccp4 and the unique
+  part of your sequence file.  This can be run (with luck) on a computer
+  with a more moderate amount of memory.  The final model will be
+  box_map_directory/map_to_model/map_to_model.pdb; 
+  it should match the box_map_au.ccp4 map.
+
+  Go back to the original directory where you split up your original map.
+  Run phenix.map_to_model with carry_on=True and specifying three keywords:
+
+  starting_model=box_map_directory/map_to_model/map_to_model.pdb 
+  starting_model_is_from_box_map_au=True 
+  build_new_model=False 
+
+  Now map_to_model will start with your model from the small map, shift it
+  to match the original map, apply any symmetry you used originally,
+  refine the model, and write out a model map_to_model/map_to_model.pdb
 
 
 Possible Problems
@@ -339,9 +376,10 @@ Possible Problems
 
 If you have a very large structure it is possible that your computer may not
 have enough memory to run map\_to\_model and that one or more sub-processes 
-might crash.  The best solution for this is to try on a computer with even
-more memory.  You can also cut back the resolution used in steps that use
-Fourier transformation.
+might crash.  One solution for this is to build just the asymmetric
+unit of your model (if your map has symmetry).   You can also set the
+keyword coarse_grid=True to use a coarse grid in RESOLVE and save memory.  You can also cut back the resolution which will save memory.  Otherwise, you can try on a computer with even more memory.  
+
 
 If your queueing system crashes during a run or one or more sub-processes
 crashes, then you might end up with models built for some stages of
