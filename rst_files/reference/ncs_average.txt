@@ -13,6 +13,11 @@ These simple NCS averaged maps can be accurate maps for cases with high
 NCS symmetry and they are useful for evaluating what an NCS density
 modified map should be expected to look like.
 
+If you want to see the region that is being averaged, you can run 
+``phenix.ncs_average`` like this (notice the double and single quotes, 
+both are necessary):
+
+``phenix.ncs_average  ncs_map_coeffs.mtz ncs.ncs_spec resolve_command_list=" 'ncs_mask_file ncs_mask.ccp4' "``
 
 List of all available keywords
 ------------------------------
