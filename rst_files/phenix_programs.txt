@@ -29,7 +29,7 @@ Experimental Phasing
 - phenix.autosol: Automated structure solution by MR/MAD/SAD
 - phenix.find_ncs: Find NCS in a model, map or heavy-atom sites
 - phenix.hyss: Identify heavy-atom sites from anomalous dataset
-- phenix.density_modification: Density modification 
+- phenix.density_modification: Density modification
 - phenix.multi_crystal_average: Multi-crystal averaging
 - phenix.ncs_and_number_of_ha: Guess solvent content and number of heavy-atom sites
 - phenix.ncs_average: NCS average (no density modification) and write map file
@@ -104,7 +104,7 @@ Ligands
 
 Deposition
 ----------
-- mmtbx.prepare_pdb_deposit: produce mmCIF files for deposition
+- mmtbx.prepare_pdb_deposition: produce mmCIF files for deposition
 
 Reflection data tools
 ---------------------
@@ -131,7 +131,7 @@ Map tools
 - phenix.density_outside_model: Remove density near a model from a map
 - phenix.cut_out_density: Create MTZ coeffs with density cut out from a map
 - phenix.segment_and_split_map: Split a map into regions of density
-- phenix.auto_sharpen: Auto-sharpen/blur a map 
+- phenix.auto_sharpen: Auto-sharpen/blur a map
 - phenix.get_cc_mtz_mtz: Offset maps using allowed origin shifts and get correlation
 - phenix.guess_molecular_centers: Guess molecular centers from local RMS density
 - phenix.map_box: Simple cut out map around a PDB file
