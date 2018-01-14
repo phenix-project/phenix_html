@@ -1,0 +1,67 @@
+Comparison of CA positions in two models allowing any order of fragments
+========================================================================
+
+Author(s)
+---------
+
+-  chain\_comparison: Tom Terwilliger
+
+Purpose
+-------
+
+Identify how many of the CA atoms in one model match CA atoms in another 
+model. Separately identify how many of these go in the same direction and
+how many of the residue names match.
+
+Usage
+-----
+
+How chain\_comparison works:
+----------------------------
+
+chain\_comparison runs normally selects the unique part of the target model
+(the first model specified), then it takes the entire query model and counts 
+how many residues in the target model are matched by a residue in the
+query model.  If NCS is supplied, the unique part of the query is selected,
+NCS is applied and then the same analysis is carried out.
+
+If desired, you can have chain\_comparison write out all the residues in
+the query model that are matching residues in the target model.
+
+Examples
+--------
+
+Standard run of chain\_comparison:
+----------------------------------
+
+Running chain\_comparison is easy. From the command-line you can type:
+
+::
+
+    phenix.chain_comparison target.pdb query.pdb
+
+If you want to compare P positions for RNA/DNA instead, you can say:
+
+::
+
+    phenix.chain_comparison target.pdb query.pdb chain_type=RNA
+
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.validation.chain_comparison}}
