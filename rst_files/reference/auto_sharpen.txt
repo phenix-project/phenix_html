@@ -36,7 +36,7 @@ The weighting between the surface area (to be maximized) and number of regions
 enclosed (to be minimized) is chosen empirically (default region_weight=20).
 
 Several resolution-dependent functions are tested, and the one
-that gives the best kurtosis (or adjusted surface area) is chosen.  
+that gives the best adjusted surface area (or kurtosis) is chosen.  
 In each case the map is transformed to obtain Fourier coefficients. The
 amplitudes of these coefficients are then adjusted, keeping the phases
 constant. The available functions for modifying the amplitudes are:
@@ -49,9 +49,9 @@ constant. The available functions for modifying the amplitudes are:
   applied to achieve an effective isotropic overall b-value of b_iso).
 
   Sharpening b-factor applied up to resolution specified with the
-  resolution=xxx keyword, then not applied beyond this resolution (with
+  resolution=xxx keyword, then blurred beyond this resolution (with
   transition specified by the keyword k_sharpen, b_iso_to_d_cut).  If 
-  blurring (sharpening with value less than zero) is applied, 
+  the sharpening b_sharpen is negative (blurring the map),
   the blurring is applied over the entire resolution range.
 
   Resolution-dependent sharpening factor with three parameters.
@@ -157,6 +157,8 @@ Specific limitations and problems:
 
 Literature
 ----------
+
+{{citation:autosharpen}}
 
 Additional information
 ----------------------

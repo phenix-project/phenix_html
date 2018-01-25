@@ -107,7 +107,7 @@ enclosed (to be minimized) is chosen empirically (default region_weight=20).
 
 
 Several resolution-dependent functions are tested, and the one
-that gives the best kurtosis (or adjusted surface area) is chosen.  
+that gives the best adjusted surface area (or kurtosis) is chosen.  
 In each case the map is transformed to obtain Fourier coefficients. The
 amplitudes of these coefficients are then adjusted, keeping the phases
 constant. The available functions for modifying the amplitudes are:
@@ -120,9 +120,9 @@ constant. The available functions for modifying the amplitudes are:
   applied to achieve an effective isotropic overall b-value of b_iso).
 
   Sharpening b-factor applied up to resolution specified with the
-  resolution=xxx keyword, then not applied beyond this resolution (with
+  resolution=xxx keyword, then blurring applied beyond this resolution (with
   transition specified by the keyword k_sharpen, b_iso_to_d_cut).  If 
-  blurring (sharpening with value less than zero) is applied, 
+  sharpening value is less than zero (map is to be blurred),
   the blurring is applied over the entire resolution range.
 
   Resolution-dependent sharpening factor with three parameters.
@@ -151,6 +151,17 @@ constant. The available functions for modifying the amplitudes are:
   the true model.  The resolution-dependent correlation of model and map
   density is used as in the half-map approach above to identify the
   weighting of Fourier coefficients.
+
+
+*Local sharpening*
+------------------
+
+Any of the sharpening methods can be applied locally instead of globally
+over the entire map. For local sharpening, the map is cut into overlapping
+boxes and sharpening parameter are determined for that box and applied.
+For parts of boxes that overlap, the distances from a grid point to the 
+centers of the corresponding boxes are used to weight the values for those
+boxes.
 
 
 *Finding the asymmetric unit of the map*
@@ -244,6 +255,7 @@ Running map\_to\_model is easy. From the command-line you can type:
 ::
 
     phenix.map_to_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
+       resolution=3
 
 where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
 sequence file, and find_ncs.ncs_spec is an optional file specifying any
@@ -253,11 +265,12 @@ BIOMTR records from a PDB file as well.
 Standard run of map\_to\_model, specifying symmetry type:
 ---------------------------------------------------------
 
-Running map\_to\_model is easy. From the command-line you can type:
+Running map\_to\_model with symmetry is also easy. From the command-line 
+you can type:
 
 ::
 
-    phenix.map_to_model my_map.map seq.fa ncs_type=D7
+    phenix.map_to_model my_map.map seq.fa ncs_type=D7 resolution=3
 
 Here map\_to\_model will look for D7 (7-fold symmetry along the c-axis and 
 2-fold symmetry along a or b) in the map and apply it if it is found. It will
@@ -276,14 +289,23 @@ Using carry\_on to break up your run into small pieces
 You can use carry\_on=True to progressively build up your model 
 from pieces or to run many jobs in parallel.
 
-First you run map_to_model with build_new_model=False (or 
-just run segment_and_split) to split up your
+First you run map_to_model with segment_and_split_only=True
+to split up your
 map and write a file (the info_pickle_file) that has all the 
 necessary information to put everything together.
 
+Then you can create script files to run each small step in the
+analysis. You can do that with the keyword split_up_job=True. This
+will put your scripts in a commands/ subdirectory and you can
+run them with your queueing system.  When they are done,
+you can use carry_on=True to put everything together.
 
-Then you can run many jobs in parallel, building just part of the chain
-in each job,  using a set of keywords like this (here only RNA will
+You can also specify a source or other command to be placed in all
+your scripts with the keyword source_command="xxx".
+
+
+The scripts created by the split_up_job command use a set of keywords 
+like this (here only RNA will
 be built, building will be done in just region number 26,
 secondary structure searches are disabled and overall model-building
 is disabled:
@@ -299,7 +321,7 @@ is disabled:
   include_helices_strands_only=False
   include_phase_and_build=False
 
-You might then do another run like this, where overall model-building
+Another run might look like this, where overall model-building
 is done starting with model number 4:
 
 ::
@@ -313,23 +335,6 @@ is done starting with model number 4:
 
 You can run all the combinations that you would like in parallel.
 
-After they all run, you can combine all the models you have created in
-two steps:
-
-::
-
-  First you must delete the files: model_PROTEIN.pdb model_RNA.pdb 
-  final_model_PROTEIN.pdb final_model_RNA.pdb final_model_PROTEIN_RNA.pdb.
-  The reason you need to delete these is that they may have been
-  created using only some of the partial models you generated.  If you 
-  delete them they will be re-created using all the partial models that
-  are present.
-  
-  Then you can run map_to_model from the beginning again with carry_on=True 
-  and build_new_model=False and all the intermediate files will be 
-  combined to yield a full model.  This can still take a little time as
-  sequence identification, symmetry checking and refinement are carried
-  out on the full model.
 
 Building just the asymmetric unit of your model to save memory
 --------------------------------------------------------------
@@ -346,7 +351,8 @@ memory and use it to create a final model.  Here are the steps for doing this:
 ::
 
   In a clean directory,
-  run phenix.segment_and_split_map on your map, including symmetry 
+  run phenix.map_to_model with the keyword
+  stop_after_segment_and_split_map=True on your map, including symmetry 
   information. Run this on a computer with a huge amount of memory.
   Your segmentation information will be in segmented_maps/
 
@@ -378,13 +384,14 @@ If you have a very large structure it is possible that your computer may not
 have enough memory to run map\_to\_model and that one or more sub-processes 
 might crash.  One solution for this is to build just the asymmetric
 unit of your model (if your map has symmetry).   You can also set the
-keyword coarse_grid=True to use a coarse grid in RESOLVE and save memory.  You can also cut back the resolution which will save memory.  Otherwise, you can try on a computer with even more memory.  
-
+keyword coarse_grid=True to use a coarse grid in RESOLVE and save memory.  
+You can also cut back the resolution which will save memory.  
+Otherwise, you can try on a computer with even more memory.  
 
 If your queueing system crashes during a run or one or more sub-processes
 crashes, then you might end up with models built for some stages of
-building and others not. You can carry out another run and read in the models
-that have already been built so that you do not need to build them again 
+building and others not. You can continue on with the keyword
+carry_on=True in this case.
 (see above in the section on combining partial runs).
 
 
