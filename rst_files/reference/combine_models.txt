@@ -25,9 +25,37 @@ The main uses of phenix.combine\_models are:
 
 How combine\_models works:
 --------------------------
+The phenix.combine_models tool can combine the best parts of two or more 
+models. You can use it in either of two different ways.  
+One approach keeps segments in the models intact, and the 
+second applies crossovers within segments.
 
-Combine\_models starts with two input models. The first model is used as
-the default; if nothing can be found in the second model that is better
+In the first approach (merge_by_segment_correlation=True), each fragment 
+in each model is scored based on correlation to the map. The scoring also 
+includes a weight based on the square root of the length of the segment. It 
+also includes weights based on whether a segment has been assigned to the 
+sequence and the number of secondary structure hydrogen bonds in that 
+segment.  This approach can combine chains of different types as well. A 
+final increment is added to the score for a segment if it is considered 
+very likely to be correct with different thresholds for chains of 
+different types. 
+
+Then the segments are picked in rank order to create a composite model. Any 
+part of a segment that does not overlap an existing part of the composite 
+model is kept. If symmetry is present, overlaps include that symmetry.
+
+In the second approach, (merge_by_segment_correlation=False), a working 
+model is created by taking all of the first model supplied and filling 
+in any empty regions with fragments from other models. Then one by one, 
+the segments in the working model are recombined with all other segments.  
+To carry out recombination between two chains, residues that match in the 
+two chains are identified. Then for each segment between matching pairs of 
+residues, whichever chain has the higher correlation to the map is kept to 
+create a composite model.
+
+This second approach to combine\_models starts with two input models. 
+The first model is used as the default; if nothing can be found in the 
+second model that is better
 than what is in the first model, then that part of the first model is
 kept. The second model is used as a template for improving the first
 model. Fragments of the second model are considered as alternatives for
@@ -47,7 +75,8 @@ crystal, then combine\_models will move the pieces from the second model
 to the corresponding locations in the first model. In this way the final
 model has all its parts in the same place.
 
-Combine\_models has four main steps, each of which is optional:
+The second approach in combine\_models has four main steps, each of 
+which is optional:
 
 -  Selecting parts of the input models to consider, using atom
    selections. This step allows you to do things such as removing a
@@ -77,6 +106,10 @@ Combine\_models has four main steps, each of which is optional:
    the sequence alignment to the model may need to be changed. This step
    carries that out.
 
+
+
+
+
 *Output files from combine\_models*
 -----------------------------------
 
@@ -100,6 +133,18 @@ Running combine\_models is easy. From the command-line you can type:
 This will combine first.pdb and second.pdb based on fit to the map from
 map\_coeffs.mtz, recheck the sequence alignment to seq.dat, and write
 out the resulting model.
+
+Ranking all fragments and picking the best ones:
+------------------------------------------------
+    phenix.combine_models pdb_in=model.pdb \
+       seq.dat \
+       map_coeffs.mtz \
+       merge_by_segment_correlation=True
+
+This will score each segment (fragment), then work down from best to worst,
+keeping any part of any segment that does not overlap with a better-scoring
+segment.
+ 
 
 Selecting pieces from the two models:
 -------------------------------------

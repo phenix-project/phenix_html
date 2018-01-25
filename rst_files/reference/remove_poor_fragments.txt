@@ -1,0 +1,88 @@
+Removing protein chains built into RNA density with remove_poor_fragments
+=========================================================================
+
+Author(s)
+---------
+
+-  remove_poor_fragments: Tom Terwilliger
+
+Purpose
+-------
+
+This routine takes a model that contains RNA and protein and tries to
+identify fragments of protein that were accidentally built into RNA
+density.
+
+Usage
+-----
+
+When carrying out model-building for complexes between protein and RNA it 
+sometimes happens that protein can be built accidentally into regions that 
+are really RNA. The phenix.remove_poor_fragments tool is used to try and 
+identify such incorrectly-built regions. 
+
+How remove_poor_fragments works:
+--------------------------------
+The key idea in this approach is that these incorrectly-built regions tend 
+to be isolated (not in the middle of a protein domain) and to have lower 
+map-model correlation than the correct parts of the protein chains.  The 
+phenix.remove_poor_fragments tool ranks all protein segments on these 
+criteria and removes the worst ones. The threshold that is chosen based 
+on the number of residues of RNA expected in the molecule that were not 
+built, the fraction of protein that was built, and the quality of the 
+model, using the formula:
+
+residues_to_remove = A * protein_built * rna_not_built/(cc*protein_present)
+
+where cc is the map-model correlation for the protein part of the model, 
+protein_present is the number of protein residues in the sequence file, 
+protein_built are residues of protein built, and rna_not_built are 
+residues of RNA in the sequence file minus the number built.
+
+The logic of this formula is that there is a certain volume, proportional 
+to rna_not_built, that is really RNA that might be accidentally built as 
+protein. Furthermore the logic is that the number of residues of protein 
+that might be built in that volume is higher if more residues of protein 
+have been built and higher if the model-map correlation for the protein 
+model is low. These relationships were seen in an analysis of ribosome 
+structures. A scale factor A of 0.53 relating the optimal number of 
+residues to remove to the other factors was found empirically.  
+
+
+*Output files from remove_poor_fragments*
+-----------------------------------------
+
+**trimmed_pdb.pdb**: A PDB file with your trimmed model.
+
+Examples
+--------
+
+Standard run of remove_poor_fragments:
+--------------------------------------
+
+Running remove_poor_fragments is easy. From the command-line you can type:
+
+::
+
+    phenix.remove_poor_fragments model_with_protein_and_rna.pdb \
+       seq.dat \
+       map.ccp4
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.autosol.remove_poor_fragments}}
