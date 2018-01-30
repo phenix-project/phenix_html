@@ -336,12 +336,26 @@ is done starting with model number 4:
 You can run all the combinations that you would like in parallel.
 
 
+Special treatment of structures with very high symmetry
+-------------------------------------------------------
+
+If your structure has very high symmetry (by default, 20 or more symmetry
+operators), then segment\_and\_split\_map will try to cut out a piece
+of your map and work with that instead of working with the whole map.
+You can control this with the keyword select_au_box=True (or None, which
+will give the default behavior).  If you use select_au_box then a box
+that contains about n_au_box asymmetric units of the map (default of 5)
+will be cut out of your map.  That map will be worked with along with the
+symmetry operators that apply to it for the remainder of the analysis.
+At the end of the analysis, just the region cut out will be built and
+placed in the original reference frame.  This process can greatly speed
+up building and save on memory.
+
+
 Building just the asymmetric unit of your model to save memory
 --------------------------------------------------------------
 
-If you have a very big structure and your computer does not have a huge
-amount of memory then map_to_model can crash, particularly in stages
-where multiple processes are run at the same time.  One solution is to
+Another way to save on memory is to 
 run just the segment_and_split step of map_to_model on a computer with a 
 lot of memory, then use the small map created by segment_and_split
 for subsequent stages, and then finally take the resulting model for this
@@ -382,7 +396,12 @@ Possible Problems
 
 If you have a very large structure it is possible that your computer may not
 have enough memory to run map\_to\_model and that one or more sub-processes 
-might crash.  One solution for this is to build just the asymmetric
+might crash.  
+
+One solution for this is that map\_to\_model will automatically build just
+a small part of structures with high symmetry.
+
+A second solution for this is to build just the asymmetric
 unit of your model (if your map has symmetry).   You can also set the
 keyword coarse_grid=True to use a coarse grid in RESOLVE and save memory.  
 You can also cut back the resolution which will save memory.  

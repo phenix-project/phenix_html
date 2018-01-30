@@ -103,6 +103,19 @@ regions of density are written out to the segmentation\_dir directory
 and are superimposed on the shifted map (if you load the shifted map in 
 Coot and a region map in Coot, they should superimpose.) 
 
+*Special treatment of structures with very high symmetry*
+---------------------------------------------------------
+
+If your structure has very high symmetry (by default, 20 or more symmetry
+operators), then segment\_and\_split\_map will try to cut out a piece
+of your map and work with that instead of working with the whole map.
+You can control this with the keyword select_au_box=True (or None, which
+will give the default behavior).  If you use select_au_box then a box
+that contains about n_au_box asymmetric units of the map (default of 5)
+will be cut out of your map.  That map will be worked with along with the
+symmetry operators that apply to it for the remainder of the analysis.
+placed in the original reference frame.  This process can greatly 
+save on memory.
 
 Examples
 --------
