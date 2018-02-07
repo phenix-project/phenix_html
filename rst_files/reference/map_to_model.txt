@@ -24,6 +24,10 @@ your map. The tool map\_to\_model will identify what kind of chains to
 build based on your sequence file.  It will find where your molecule is
 in the map and cut out and work with just that part of the density.
 
+To run map\_to\_model successfully, you'll need a map with resolution of
+about 4.5 A or better.  The higher the resolution, the more complete the
+model that you will typically get.
+
 If your map has been averaged based on reconstruction symmetry and 
 you supply a file with that symmetry information (.ncs_spec, biomtr.dat, etc),
 map\_to\_model will find the asymmetric unit of the map, build that, then

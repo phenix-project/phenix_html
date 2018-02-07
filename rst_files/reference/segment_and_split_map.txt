@@ -22,8 +22,13 @@ How segment\_and\_split\_map works:
 If you have a CCP4-style (mrc, etc) map and a sequence file, 
 you can use segment\_and\_split\_map to split the map into smaller pieces 
 suitable for model-building or viewing.
+
+The segment\_and\_split\_map tool works best at resolutions of about 
+4.5 A or better.
+
 The tool segment\_and\_split\_map will will find where your 
 molecule is in the map and cut out and work with just that part of the density.
+
 If your map has been averaged based on NCS symmetry and 
 you supply a file with that NCS information (.ncs_spec, biomtr.dat, etc),
 segment\_and\_split\_map will find the asymmetric unit of NCS and work
