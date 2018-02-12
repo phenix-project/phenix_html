@@ -504,7 +504,7 @@ rigid body group selection containing no atoms on special positions.
 
 - *Real-space refinement of coordinates*
 
-  Local refinement: amino-acid side-chain rotamer correction to eliminate 
+  Local refinement: amino-acid side-chain rotamer correction to eliminate
   outliers and find better fit to the map. Enabled by default, and controlled
   by ``strategy=individual_sites_real_space`` keyword. Overall (global) real-space
   refinement only happens at low resolution if the program decided to do so.
@@ -943,7 +943,7 @@ Examples:
 
      % phenix.refine data.hkl model.pdb strategy=occupancies occ.params
 
-  The amount of `atom selections <atom_selections.html>`__ makes it 
+  The amount of `atom selections <atom_selections.html>`__ makes it
   inconvenient to type them all from the command line. This is why the parameter file ``occ.params`` is used and it contains following lines::
 
     #include_params occ.params
@@ -1244,6 +1244,9 @@ To specify selections, create a ``reference.params`` file with selections like::
        selection = chain B
      }
 
+Note that ``reference`` will be applied to reference model and ``selection``
+will be applied to refined model.
+
 Specify ``reference.params`` as an additional input when running phenix.refine::
 
   % phenix.refine data.hkl model.pdb reference_model.enabled=True \
@@ -1275,6 +1278,9 @@ include a parameter file that contains::
        selection = chain B
        file_name = reference_B.pdb
      }
+
+Note that even though ``file_name`` parameter is provided in both reference groups,
+``refinement.reference_model.file`` should still contain both file names.
 
 The refinement.reference_model.reference_group.file_name parameter is only required
 when more than one reference file is used. This parameter allows the reference model
@@ -2265,9 +2271,9 @@ can be specified in this way::
 
   #include_params restraints_edits.params
 
-The `atom selections <atom_selections.html>`__ must uniquely select a 
-single atom. Save the geometry_restraints.edits to a file and specify 
-the file name as an additional argument when running phenix.refine for 
+The `atom selections <atom_selections.html>`__ must uniquely select a
+single atom. Save the geometry_restraints.edits to a file and specify
+the file name as an additional argument when running phenix.refine for
 the first time. For example::
 
   % phenix.refine model.pdb data.hkl restraints_edits.params
