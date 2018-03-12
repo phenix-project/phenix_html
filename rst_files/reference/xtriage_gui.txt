@@ -10,22 +10,43 @@ Video Tutorial
 
 .. raw:: html
 
-   <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/lWBDjfVN9D4" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/lWBDjfVN9D4" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
 
-The `tutorial video <https://youtu.be/lWBDjfVN9D4>`_ is available on the
-`Phenix YouTube channel
-<https://www.youtube.com/c/phenixtutorials>`_ and covers the
-following topics:
+The basic xtriage `tutorial video <https://youtu.be/lWBDjfVN9D4>`_ is
+available on the `Phenix YouTube channel
+<https://www.youtube.com/c/phenixtutorials>`_ and explains how to run
+phenix.xtriage via the GUI.
 
-- basic overview
-- how to run phenix.xtriage via the GUI
+The advanced tutorials cover (click on the link to access the video on the
+tutorial channel):
+
+  - `Translational NCS (tNCS) <https://youtu.be/7QbPvVA-wRQ>`_
+  - `Twinning <https://www.youtube.com/embed/36mc80lrSVU>`_
+  - `Space Group Identification, Ice rings & Wilson Plot <https://www.youtube.com/embed/QlWahDGBTbE>`_
+
+.. raw:: html
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/7QbPvVA-wRQ" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+
+  <p></p>
+
+.. raw:: html
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/36mc80lrSVU" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+
+  <p></p>
+
+.. raw:: html
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/QlWahDGBTbE" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+
+  <p></p>
 
 -------------
 Configuration
 -------------
 
-The configuration of Xtriage is much simpler than most of the other programs
-in the Phenix GUI; the minimum input is a reflection file and symmetry
+The minimum input for xtriage is a reflection file and symmetry
 information, which for MTZ files is automatically extracted.  A sequence file
 is helpful for calculting expected solvent content.  A model file (PDB or
 mmCIF), if available, will be used in the calculation of twinning statistics.
