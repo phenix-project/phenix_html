@@ -360,6 +360,10 @@ Specific limitations and problems
    each conformation of the ring (rings are taken as fixed units in
    LigandFit).
 
+-  If you want to treat your entire ligand as a single entity (no groups),
+   then use the command: resolve_command_list="'bond_tol 100'"  (both sets
+   of quotes needed in command line, in GUI put in the inner set of quotes).
+
 -  LigandFit ignores insertion codes, so if you specify a residue with
    ligand\_near\_res, only the residue number is used.
 
