@@ -9,7 +9,8 @@ def run():
   html_dir = libtbx.env.find_in_repositories(relative_path="phenix_html")
   dest_dir = op.join(html_dir, "rst_files", "reference")
   log = StringIO()
-  mmtbx.model_vs_data.run(args=[], log = log)
+  print >> log, mmtbx.model_vs_data.msg
+  print >> log, """Default parameters:\n{{phil:mmtbx.model_vs_data}}"""
   ofn = open(op.join(dest_dir, "model_vs_data.txt"), "w")
   ofn.write(log.getvalue())
   ofn.close()
