@@ -22,3 +22,30 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
   2) Using CCP4 formatted map
 
      phenix.map_box model.pdb map.ccp4 selection="resname LIG"
+
+
+  3) Extract unique part of a map:
+
+     phenix.map_box map.ccp4 symmetry.ncs_spec molecular_mass=100000
+
+**Notes**
+
+  1)  By default the output map will superimpose on the input map 
+      (keep_origin=True).  The output map is normally smaller than the
+      input map. For example, the input map might go 
+      from (0,0,0) to (100,100,100) and the output map might include only
+      grid points from (50,50,50) to (100,100,100).  The origin of the
+      output map in this case will be (50,50,50). If the two maps are
+      displayed, the region from (50,50,50) to (100,100,100) will be the same
+      for the two maps.  Not that anything outside of this range is
+      meaningless for the output map. 
+
+  2)  The cell dimensions of the output map will be the dimensions of the
+      part that is cut out.  In the above example, if the starting unit
+      cell was (200,200,200) then be output map will have a unit cell of
+      (100,100,100).
+
+
+**List of all parameters**
+
+{{phil:mmtbx.command_line.map_box}}

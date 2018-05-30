@@ -1,0 +1,81 @@
+Identifying symmetry in a map with map_symmetry
+===============================================
+
+Author(s)
+---------
+
+-  map_symmetry: Tom Terwilliger
+
+Purpose
+-------
+
+The routine map_symmetry will identify the symmetry in a map and create a
+file with the symmetry operations.
+
+Usage
+-----
+
+How map_symmetry works:
+-----------------------
+
+Map-symmetry uses the density at a set of randomly-chosen points in a map
+to identify the symmetry in a map from a set of pre-defined symmetry types that
+include point-group symmetry as well as helical symmetry.  For each possible
+symmetry, the correlation of values at symmetry-related points is calculated.
+The score for the symmetry type is the square root of the number of elements 
+in the symmetry multiplied by the map correlation for that symmetry.
+
+Map-symmetry assumes that the principal axes of symmetry in a map are along
+x, y, or z, and that helical symmetry is helical along z.  The software
+has a database of 45 common symmetry elements and point groups, along with
+alternative settings of some of these. The user can specify a specific symmetry
+type to examine (e.g., I for icosahedral or D7 for a 7-fold axis along z
+perpendicular to a 2-fold axis along x or along y), or all elements in the
+database can be examined.
+
+For helical symmetry, a Fourier transform of the density is examined along the
+c* axis to find periodicity along z likely to correspond to the helical 
+translation.  These likely translations (and integer fractions of them) are 
+tested along with possible rotations to check for helical symmetry.
+
+
+Examples
+--------
+
+Standard run of map_symmetry:
+-----------------------------
+
+Running map_symmetry is easy. From the command-line you can type:
+
+::
+
+    phenix.map_symmetry emd_8750.map symmetry=D7
+
+where emd_8750.map is a map (CCP4, mrc or other related format), and in
+this case you are specifying that only D7 symmetry should be considered.
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Map-symmetry assumes that the principal symmetry axes are along the x, y,
+and z-axes of the map (or half-way between in some cases).  If the symmetry
+in your map is arbitrarily oriented then this procedure will not work.
+
+Helical symmetry is assumed to be along the z-axis.
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.map_symmetry}}

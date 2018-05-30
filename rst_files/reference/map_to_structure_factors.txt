@@ -3,13 +3,26 @@ phenix.map_to_structure_factors: convert map into structure factors
 
 **Description**
 
-  The program reads CCP4 formatted map and converts it into structure factors.
+  The program reads a CCP4 (MRC) formatted map and converts it into 
+  structure factors.
 
   Output: mtz file containing
 
   - Fourier transform of input map: complex array (F, PHIF) of given (d_min)
     resolution
-  - Aray of amplitudes F (F_ampl) and phases as HL coefficients
+  - Array of amplitudes F (F_ampl) and phases as HL coefficients
+
+**Notes**
+
+  If the map has an origin that is not (0,0,0), by default that origin is
+  preserved in the output mtz file (if you create a map from the output 
+  map coefficients, that map will superimpose on the input map).
+
+  You can adjust the origin of the output map with the keywords:
+
+  - keep_origin=False:   this will shift the origin to (0,0,0)
+  - output_origin_grid_units=100,100,100:  this will shift the origin to
+     (100,100,100)
 
 **Contact author**
 
@@ -22,3 +35,8 @@ phenix.map_to_structure_factors: convert map into structure factors
 **Current limitations**:
 
   X-plor formatted map files are not supported.
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.map_to_structure_factors}}

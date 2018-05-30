@@ -1,0 +1,75 @@
+Docking a model into a cryo-EM map with dock_in_map
+===================================================
+
+Author(s)
+---------
+
+-  dock_in_map: Tom Terwilliger
+
+Purpose
+-------
+
+The routine dock_in_map will automatically dock a model or models into a map.
+
+Usage
+-----
+
+How dock_in_map works:
+----------------------
+
+Dock-in-map uses a convolution-based shape search to find a part of a map
+that is similar to the model.  The key elements of the search are:
+
+::
+
+  Initial search at lower resolution that focuses on overall shape of the
+  molecule.  This allows a quick search but is less effective if the
+  map contains more than one molecule
+
+  Initial search without rotation.  This allows a fast search that can place
+  a molecule that is just shifted by a translation
+
+  Optional initial search based on matching moments of inertia of model and map.
+  This is also a fast search but requires an accurate map that looks a lot
+  like the model and does not have extra density.
+
+  Full search at the full resolution of the map.  This search can be run on
+  multiple processors to speed it up.
+
+
+Examples
+--------
+
+Standard run of dock_in_map:
+----------------------------
+
+Running dock_in_map is easy. From the command-line you can type:
+
+::
+
+  phenix.dock_in_map 1ss8_A.pdb emd_8750.map resolution=4 nproc=4 \
+     pdb_out=placed_model_from_emd_8750.pdb
+
+where 1ss8_A.pdb is the model you would like to place, 
+emd_8750.map is a CCP4, mrc or other related map format, and you 
+specify the nominal resolution of the map and the number of processors to use.
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.dock_in_map}}
