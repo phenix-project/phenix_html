@@ -1,0 +1,53 @@
+Evaluating map quality with mtriage
+===================================
+
+Author(s)
+---------
+
+-  mtriage: Pavel Afonine 
+
+Purpose
+-------
+
+The routine mtriage will evaluate the resolution in a map, compare half-maps,
+and compare model and map
+
+Usage
+-----
+
+How mtriage works:
+------------------
+
+Examples
+--------
+
+Standard run of mtriage:
+-----------------------------
+
+Running mtriage is easy. From the command-line you can type:
+
+::
+
+    phenix.mtriage emd_8750.map 5w0s.pdb
+
+where emd_8750.map is a map (CCP4, mrc or other related format) and
+5w0s.pdb is a model that matches the map
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.mtriage}}
