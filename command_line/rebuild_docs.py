@@ -15,7 +15,7 @@ import codecs
 import docutils.core
 import xml.etree.ElementTree as ET
 
-import phenix.utilities.citations
+import libtbx.citations
 from phenix import phenix_info
 import iotbx.phil
 import libtbx.load_env
@@ -37,16 +37,16 @@ def replace_phenix_version (doc) :
 
 class FormatCitation(object):
   """Format a citation as HTML."""
-  
+
   def __init__(self, citation):
     self.citation = citation
 
   def format(self):
-    return phenix.utilities.citations.format_citation_html(self.citation)
+    return libtbx.citations.format_citation_doc(self.citation)
 
 class FormatPHIL(object):
   """Format PHIL as HTML."""
-  
+
   def __init__(self, command):
     """Command is a PHENIX command, e.g. phenix.refine"""
     # Search the module for the following attributes:
@@ -126,7 +126,7 @@ class Publish(object):
   # Regular expressions for parsing {{tags}} and keywords.
   TAG_RE = re.compile("""({{(?P<tag>\w*)(:)?(?P<command>.+?)?}})""")
   KEYWORDS_RE = re.compile("""([a-zA-Z]{3,})""")
-  
+
   # Render interface, tags
   def render(self, root=''):
     return ''
@@ -201,7 +201,7 @@ class FormatIndex(Publish):
   """Index page."""
   # TODO: Maybe this should take list of PublishRST instances
   #   instead of dict of their index() results.
-  
+
   def __init__(self, indexes):
     """Indexes is key: filename, value: PublishRST.index()"""
     self.indexes = indexes
@@ -345,7 +345,7 @@ def run (args, out=sys.stdout) :
     shutil.rmtree(docs_dir)
   if (not os.path.exists(docs_dir)):
     os.makedirs(docs_dir)
-    
+
   print >> out, "Building PHENIX documentation in %s"%HTML_PATH
   print >> out, "The complete documentation will be in:"
   print >> out, "  %s" % docs_dir
@@ -357,7 +357,7 @@ def run (args, out=sys.stdout) :
   print >> out, "  building HTML files from restructured text files"
   indexes = {}
   for dirname, dirnames, filenames in os.walk(rst_dir):
-    for filename in filter(lambda x:x.endswith('.txt'), filenames):      
+    for filename in filter(lambda x:x.endswith('.txt'), filenames):
       # Some complicated directory relationships.
       # relpath is the directory relative to rst_dir root (for output)
       # root is the inverse (for linking between pages)
@@ -369,7 +369,7 @@ def run (args, out=sys.stdout) :
       if root == '.':
         root = ''
       else:
-        root = root + '/'        
+        root = root + '/'
       infile  = os.path.join(dirname, filename)
       outname = "%s.html"%os.path.basename(filename).rpartition(".")[0]
       outpath = os.path.join(docs_dir, relpath)
@@ -377,13 +377,13 @@ def run (args, out=sys.stdout) :
       # Check the output directory exists.
       try:
         os.makedirs(outpath)
-      except:
+      except Exception:
         pass
 
       if not params.process_all_files:
         if os.path.exists(outfile):
           if os.stat(infile).st_mtime<os.stat(outfile).st_mtime: continue
-      
+
       print >> out, "    converting %s to %s" % (infile, outfile)
       try:
         publish = PublishRST(infile)
@@ -408,7 +408,7 @@ def run (args, out=sys.stdout) :
     f.write(FormatIndex(indexes).render())
   with open("index.html", "w") as f:
     f.write(FormatOverview().render())
-    
+
   # Copy images, CSS, etc.
   print >> out, "  copying images"
   replace_tree(op.join(HTML_PATH, "icons"), op.join(docs_dir, "icons"))
