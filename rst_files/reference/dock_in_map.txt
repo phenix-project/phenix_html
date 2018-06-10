@@ -36,6 +36,38 @@ that is similar to the model.  The key elements of the search are:
   Full search at the full resolution of the map.  This search can be run on
   multiple processors to speed it up.
 
+Uses
+----
+
+You can use dock_in_map to place any number of copies of any number of unique
+molecules.  You specify the molecules one by one:
+
+::
+
+  search_model=model1.pdb
+  search_model=model2.pdb
+  search_model=model3.pdb
+
+and the number of copies all at once with:
+
+::
+
+   search_model_copies="3 1 2"
+
+to look for 3 copies of model1.pdb, one of model2.pdb and two of model3.pdb.
+
+You can also use dock_in_map to superimpose density from one map on another 
+map. You just specify the second map with the density:
+
+::
+
+  search_map_file=map_file.ccp4
+
+and dock_in_map will find the density in this map, convert it to a pseudo-model
+that corresponds to this density, and then search for the pseudo-model just as
+any other model.  When dock_in_map is done finding the pseudo-model, it applies
+the transformation that it found to the original density in your search_map_file
+to create a new map that superimposes on the target map.
 
 Examples
 --------
@@ -53,6 +85,12 @@ Running dock_in_map is easy. From the command-line you can type:
 where 1ss8_A.pdb is the model you would like to place, 
 emd_8750.map is a CCP4, mrc or other related map format, and you 
 specify the nominal resolution of the map and the number of processors to use.
+
+For docking density into a map:
+
+
+  phenix.dock_in_map emd_8750.map density.ccp4 resolution=4 \
+    superposed_map_file=density_superposed.ccp4
 
 
 Possible Problems
