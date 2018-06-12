@@ -1,0 +1,113 @@
+Putting the best parts of several maps together with combine_focused_maps
+=========================================================================
+
+Author(s)
+---------
+
+-  combine_focused_maps: Tom Terwilliger
+
+Purpose
+-------
+
+The routine combine_focused_maps uses rigid-body refinement to place
+a model in several maps.  It then uses the map-model correlation to
+identify which are the best parts of each map and the relationships
+among the models in the different maps to superpose the best parts
+of each map to create a composite map.
+
+Usage
+-----
+
+How combine_focused_maps works:
+-------------------------------
+
+Combine-focused-maps uses the fit of chains in a model to each map to
+identify the correspondence between the maps. Using this approach it is not
+necessary that the maps are all superimposed or even that they have the
+same gridding or size.
+
+If the maps all do superimpose (approximately), you can supply a single
+model. The model will be refined separately against each map with 
+rigid-body refinement. The placements of each chain in each map will then 
+be used to identify the transformations needed to superimpose the 
+parts of each map corresponding to each chain.
+
+If the maps are quite different, then you will need to supply one model for
+each map, where you have already placed each chain so that it
+superimposes with the appropriate part of each map. 
+The models should all be the same except that they have been
+rigid-body-refined against the various maps.
+You can use the phenix tool phenix.dock_in_map to place the chains in each
+map if you have not done it in some other way.
+
+Once a set of models has been set up to match the maps, the map-model
+correlation in the region of each chain in each model is calculated. This
+correlation is calculated in a special way: the B-values of all the atoms
+in the model are set to zero before map-model correlation is evaluated. This
+step is important in order to make sure that a perfect high-resolution map 
+always will score better than a perfect low_resolution map. (If B-values are
+variable then a perfect high-resolution map and a perfect low-resolution
+map will both have correlations of 1, but with a B-value of zero the 
+high-resolution map will have a higher correlation.)
+
+For each chain in the model, the map-model correlations for each map are 
+then used to identify the weighting on that map.   An empirical weighting
+scheme is used.  The relative weights of two maps (for this one chain) with
+a difference in map_model_cc of delta_cc are given by:
+
+::
+
+   exp(-delta_cc/delta_cc_norm)
+
+where delta_cc_norm is typically about 0.05.  This means a map that has a
+map-model cc 0.1 less than another map gets a weight of about 1/10 of the
+better-fitting map.  Using this weighting scheme and transformations
+calculated from the positions of this chain after rigid-body refinement
+against each map, a weighted average map is created for each chain in the 
+model.  These maps are all superimposed on the reference map and masked around
+the chain that each is to represent.
+
+Finally all the weighted average maps are combined to form a composite map.
+
+
+Examples
+--------
+
+Standard run of combine_focused_maps:
+-------------------------------------
+
+Running combine_focused_maps is easy. From the command-line you can type:
+
+::
+
+    phenix.combine_focused_maps reference_map.map focused_map_1.map \
+       focused_map_2.map model.pdb resolution=4
+
+where reference_map is the map (CCP4, mrc or other related format) that will
+be used as the template to superimpose all other maps will be superimposed,
+and focused_map_1.map and focused_map_2.map are maps that are focused on
+some part of the map (and the remainder of those maps may be poor). The 
+model will be rigid-body refined against all three maps (keeping chains
+fixed as rigid bodies).  The best parts of each map will be selected and
+combined to create a composite map.
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.combine_focused_maps}}
