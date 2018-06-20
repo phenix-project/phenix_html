@@ -84,6 +84,14 @@ as the search library:
 
     --ligand_dir=/my/compound/library/A1217321
 
+\*to use all ligands fround in sequence and structural homologs of the input model
+as the search library.  (Note, the compilation of ligand library is all done 
+internally.  No query is sent throught the network.) :
+
+::
+
+    --use_pdb_ligand=True
+
 \*to use all ligands associated with proteins of specific function found
 in the PDB as the search library:
 
@@ -291,7 +299,16 @@ libraries based on the 'standard run' example above.
 This command will take all .pdb files in the ligand\_dir and a make a
 custom library to carry out the search
 
-\5. Identify ligand from a library composed of all ligands found in Tyrosine kinases in the PDB, and number of non-H atoms between 20 and 40
+\5. Identify ligand from a library of ligands founds in homologous structures (sequence or structural homologs) of the input pdb file.
+
+::
+
+    phenix.ligand_identification mtz_in=nsf-d2.mtz model=nsf-d2_noligand.pdb 
+     input_labels=F use_pdb_ligand=True
+
+This command will compile a library of ligands found in homologous pdbs of the 'model=' pdb file from Phenix's internal library.  You can combine this keyword with other functional keywords (function, EC, pfam, ipro ...etc) and the program will compile a non-redundant combined ligand library.  You may further filter the library to limit the sizes of ligands used in the search. See below.  All these can be done in the GUI as well.
+
+\6. Identify ligand from a library composed of all ligands found in Tyrosine kinases in the PDB, and number of non-H atoms between 20 and 40
 
 ::
 
@@ -303,7 +320,7 @@ ligand library. The 'function' should be in one of the EC terms. Note in
 the above example, if only "kinase" is specified, ligand found in all
 types of kinases will be searched.
 
-\6. Identify ligand from a library composed of all ligands found in proteins belonging to a specific Enzyme Classification
+\7. Identify ligand from a library composed of all ligands found in proteins belonging to a specific Enzyme Classification
 
 ::
 
