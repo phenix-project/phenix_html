@@ -63,7 +63,8 @@ Specific limitations and problems:
 
 Map-symmetry assumes that the principal symmetry axes are along the x, y,
 and z-axes of the map (or half-way between in some cases).  If the symmetry
-in your map is arbitrarily oriented then this procedure will not work.
+in your map is arbitrarily oriented then this procedure will not work. You
+can try using phenix.find_ncs_from_density to find symmetry in such a case.
 
 Helical symmetry is assumed to be along the z-axis.
 
