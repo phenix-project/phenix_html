@@ -26,7 +26,7 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
 
   3) Extract unique part of a map:
 
-     phenix.map_box map.ccp4 symmetry.ncs_spec molecular_mass=100000
+     phenix.map_box map.ccp4 extract_unique=True symmetry.ncs_spec molecular_mass=100000
 
 **Notes**
 
