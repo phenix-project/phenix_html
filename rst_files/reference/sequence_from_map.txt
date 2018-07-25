@@ -1,0 +1,140 @@
+Guessing sequence from a map with sequence_from_map
+=========================================================
+
+Author(s)
+---------
+
+-  sequence_from_map: Tom Terwilliger
+
+Purpose
+-------
+
+The routine sequence_from_map will use a map to guess the sequence of a 
+supplied segment or of segments built automatically.
+
+Usage
+-----
+
+How sequence_from_map works:
+----------------------------
+
+Sequence-from-map examines the features in a map at the position where side
+chains in a model are expected to be located and uses these features 
+to guess the identity of the side chain at each position.
+
+The procedure used by sequence-from-map is has several steps:
+
+::
+
+
+  If map (and no model) is supplied, a model is created by searching for regular
+  secondary structure in the map.  First the unique part of the map is 
+  identified and cut out to form a new map.
+  This is done first using the map_symmetry to find helical or point-group
+  symmetry in the map.  If any is found, a new map is created containing just
+  the unique part of the map. Then (if improper_symmetry is set), the new map
+  is examined to see if there is any local symmetry remaining. If so, the unique
+  part is cut out and a new map is created. Then the tool find_helices_strands
+  is used to analyze the new map to find regular secondary structure. 
+
+  Once a map and model are available, each segment (a piece of chain without 
+  breaks) is compared to the map and sequences compatible with the map 
+  are identified.
+
+  The core of sequence-from-map is to generate a scoring matrix for each
+  segment that reflects the relative probability that each possible side chain
+  is located at each position in the segment.  This probability is estimated
+  from the map-model correlation for each side chain (after examining all 
+  rotamers of the side chain and picking the one with the highest correlation).
+  A Z-score (value for this side chain minus mean for this side chain at all 
+  positions, divided by the standard deviation of this quantity) is calculated
+  for each side chain at each position, where Z values less than zero are set 
+  to zero.  These Z-scores are used as approximate minus-log-likelihood scores 
+  for side chain probabilities and make up the scoring matrix for the segment.
+
+  A best-fitting sequence is generated for each segment by simply picking the
+  highest-scoring side chain at each position.  Optionally, if
+  score_by_residue_groups is set and residue groups are defined 
+  (residue_groups = "VGASCTI P LDNEQM KR FHY W"), one representative of each
+  residue group is chosen to represent all the side chains in that group.
+
+  Optionally (if minimum_discrimination is defined and trim_models is set),
+  the scoring matrix is used to cut the model up into pieces, removing
+  any residues where the discrimination between the most probable and 
+  least probable side chain is less than minimum_discrimination.  The
+  segments are then cut up at these points and smaller segments are created.
+
+  Also optionally (if trim_models is set to some value N), the N residues on
+  each end of each segment are removed before analysis.
+  
+  If one or more potential sequences representing the molecule in the map are
+  provided, these sequences are scored, one at a time, by evaluating the
+  optimal alignment of the sequence to the segments in the model. 
+
+  The alignment of a sequence to a set of segments is done by considering
+  all possible alignments for all segments, keeping the highest-scoring
+  segment-sequence alignment, then repeating the process with all remaining
+  segments.  Optionally, the alignments can be restricted to a set that
+  uses each residue in the sequence only once (allow_duplicates set to False).
+  Optionally, sequences that are shorter than the number of residues in the
+  model are rejected (if skip_if_too_short is set).
+
+  The raw score for one segment-sequence alignment is given by the sum of the
+  position-dependent minus-log-likelihood scores for all the side chains 
+  in the alignment. This raw score is then adjusted by subtracting the mean
+  value of raw segment-sequence alignment scores for random sequences of the
+  same length as the sequence being considered.  The random sequences are
+  created using a residue frequency of eukaryotic amino acids (this can be 
+  adjusted with the default_sequence parameter).  If positive_only is set, 
+  negative segment-sequence alignment scores are ignored.
+
+  Once the best-fitting sequence is identified, the side chains of the
+  model are re-fit using this sequence and a model with the fitted side
+  chains is written out.
+
+Examples
+--------
+
+Standard run of sequence_from_map:
+----------------------------------
+
+You can use sequence_from_map to guess the sequence of a fragment you 
+have built:
+
+::
+
+   phenix.sequence_from_map my_fragment.pdb my_map.mrc resolution=2.8
+
+You can also use it to try and pick out which sequence file matches your map:
+
+::
+
+  phenix.sequence_from_map my_map.mrc resolution=3 seq_dir=sequences/
+
+where the directory sequences has a set of fasta or similar files representing
+possible sequences that might match your map.
+
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+{{citation:resolve_seq_assign}}
+{{citation:terwilliger_find_helices}}
+{{citation:terwilliger_find_sheets}}
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.sequence_from_map}}
+
