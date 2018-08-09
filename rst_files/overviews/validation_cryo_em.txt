@@ -1,0 +1,73 @@
+Validation
+==========
+
+**Why**
+
+The aim of modeling experimental data is to find a mathematical description that 
+allows an accurate and unambiguous explanation of the data. This description can 
+then be used to explain known features of the system studied and to predict new 
+features. The path from initial idea about the molecule to study to a final 
+atomic model and its interpretation is long. It includes many steps stretched 
+over the time: from obtaning samples and data acquisition and analysis to 
+building and refining an atomic model that represents the data. Errors can occur 
+in each of these steps. To assertain the good quality of the result of structural 
+work - the atomic model - validation procedures should be implemented at each of 
+these steps.
+
+
+**What**
+
+  **Model.** The atomic models derived from cryo-EM reconstructions should 
+  conform to prior knowledge about stereochemistry. This covers a wide
+  range of information, ranging from covalent geometry, through non-bonded
+  interactions, up to known distributions of side chain and main chain
+  conformations in both proteins and nucleic acids. Validation is required
+  to check the consistency of an atomic model with this prior knowledge to
+  identify possible errors in the model. 
+  
+  **Model to data fit.** A perfectly good model from stereochemistry prospection 
+  may not describe (fit) the experimental data (3D reconstruction) sufficeintly 
+  well or at all. Therefore it is important to validate how well the atomic model 
+  described the experimental information.
+  
+  **Data.** The quality of experimental data, such as the resolution or amount 
+  noise defines the quality of derived models. For example, a higher-resolution
+  data is likely to yield a more accurate atomic model than a lower-resolution
+  date. It is vital then to learn about data quality as much as possible to have
+  correct expectations about corresponding models as well as to use correct
+  model building and refinement procedures appropriate for the data at hand.
+
+**How**
+
+`Comprehensive validation (cryo-EM)` is one stop program in Phenix that 
+validates model, data and model-to-data fit. Minimal input to `Comprehensive 
+validation` is a map (mrc, ccp4 or related format) or an atomic model in PDB or 
+mmCIF format. However, providing the map, model and two half-maps is desirable.
+For geometric validation Phenix uses MolProbity, which is fully integrated into 
+into the packadge, and Coot that is enabled to communicate validation results.
+
+**How to use the validation tools in the Phenix GUI:** `Click here <../reference/XXX.html>`__
+
+**Common issues**
+
+-  Outliers versus errors: in most structures there will be a non-zero
+   number of Ramachandran and side chain rotamer outliers. If the
+   data (the map), and surrounding chemistry, supports the outlier
+   conformation then it is most probable that this is correct (i.e. an
+   outlier from prior expectations, rather than an error). However, in
+   the absence of supporting density, and/or conflicting local
+   chemistry, it is most probably an error that needs correction. For example, 
+   an atomic model derived from low-resolution data is expected to have no 
+   geometrical outliers because they are unlikely to be supported by the 
+   experimental data.
+
+**Related programs**
+
+-  **phenix.mtriage** program computes various map statistics inclusing 
+   resolution estimates, FSC curves and more.
+-  **phenix.model_statistics** computes covalent model geomtry statistics as well
+   as various MolProbity scores (Clashscore, rotamer and Ramachandran plot, 
+   C-beta deviations and much more), ADP (B-factor) and occupancy statistics.
+- **phenix.map_model_cc** (or phenix.model_map_cc) computes various model-map
+  correlation coefficients, such as overall CC, CC per each chain and CC per each
+  residue.
