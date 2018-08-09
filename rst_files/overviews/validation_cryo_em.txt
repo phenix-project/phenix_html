@@ -3,16 +3,16 @@ Validation
 
 **Why**
 
-The aim of modeling experimental data is to find a mathematical description that 
-allows an accurate and unambiguous explanation of the data. This description can 
-then be used to explain known features of the system studied and to predict new 
-features. The path from initial idea about the molecule to study to a final 
-atomic model and its interpretation is long. It includes many steps stretched 
-over the time: from obtaning samples and data acquisition and analysis to 
-building and refining an atomic model that represents the data. Errors can occur 
-in each of these steps. To assertain the good quality of the result of structural 
-work - the atomic model - validation procedures should be implemented at each of 
-these steps.
+- The aim of modeling experimental data is to find a mathematical description that 
+  allows an accurate and unambiguous explanation of the data. This description can 
+  then be used to explain known features of the system studied and to predict new 
+  features. The path from initial idea about the molecule to study to a final 
+  atomic model and its interpretation is long. It includes many steps stretched 
+  over the time: from obtaning samples and data acquisition and analysis to 
+  building and refining an atomic model that represents the data. Errors can occur 
+  in each of these steps. To assertain the good quality of the result of structural 
+  work - the atomic model - validation procedures should be implemented at each of 
+  these steps.
 
 
 **What**
@@ -63,11 +63,14 @@ into the packadge, and Coot that is enabled to communicate validation results.
 
 **Related programs**
 
--  **phenix.mtriage** program computes various map statistics inclusing 
-   resolution estimates, FSC curves and more.
--  **phenix.model_statistics** computes covalent model geomtry statistics as well
-   as various MolProbity scores (Clashscore, rotamer and Ramachandran plot, 
-   C-beta deviations and much more), ADP (B-factor) and occupancy statistics.
+These three command line programs are the main drivers of the `Comprehensive 
+validation (cryo-EM)` tool in Phenix GUI:
+
+- **phenix.mtriage** program computes various map statistics inclusing 
+  resolution estimates, FSC curves and more.
+- **phenix.model_statistics** computes covalent model geomtry statistics as well
+  as various MolProbity scores (Clashscore, rotamer and Ramachandran plot, 
+  C-beta deviations and much more), ADP (B-factor) and occupancy statistics.
 - **phenix.map_model_cc** (or phenix.model_map_cc) computes various model-map
   correlation coefficients, such as overall CC, CC per each chain and CC per each
   residue.
