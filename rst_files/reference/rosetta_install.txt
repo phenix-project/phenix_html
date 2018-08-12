@@ -3,7 +3,7 @@ General installation instructions for Rosetta for use in Phenix
 
 .. contents::
 
-.. |rsb| replace:: rosetta\_src\_2016.35.xxxxx\_bundle
+.. |rsb| replace:: rosetta\_src\_2018.09.xxxxx\_bundle
 
 Installation
 ------------
@@ -76,7 +76,14 @@ Proceed with the following.
 
 - The final step is to build the interface for rosetta\_refine. This is a
   similar step to the previous scons step so supply as many nproc as
-  available on your machine.
+  available on your machine. NOTE: On linux, if you are using GCC 5.1 or
+  later (Ubuntu 16.04 or later), there is an `ABI change
+  <https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html>`_
+  that requires an additional flag to allow linking between our CentOS 6
+  binary build and Rosetta. To apply this flag, copy this
+  `site.settings <../extras/site.settings>`_ file
+  to ${PHENIX_ROSETTA_PATH}/main/source/tools/build/site.settings before
+  running this final step.
 
 ::
 
@@ -123,5 +130,3 @@ or sh (C-shell):
 ::
 
   % setenv HTTP_PROXY proxyout.mydomain.edu:8080
-
-

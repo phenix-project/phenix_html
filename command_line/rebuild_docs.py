@@ -415,6 +415,9 @@ def run (args, out=sys.stdout) :
   replace_tree(op.join(HTML_PATH, "images"), op.join(docs_dir, "images"))
   replace_tree(op.join(HTML_PATH, "css"), op.join(docs_dir, "css"))
 
+  # Copy extras
+  print >> out, "  copying extras"
+  replace_tree(op.join(HTML_PATH, 'extras'), op.join(docs_dir, 'extras'))
 
 if (__name__ == "__main__") :
   run(sys.argv[1:])
