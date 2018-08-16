@@ -17,14 +17,14 @@ If you want to see the region that is being averaged, you can run
 ``phenix.ncs_average`` like this (notice the double and single quotes, 
 both are necessary):
 
- ``phenix.ncs_average  ncs_map_coeffs.mtz ncs.ncs_spec resolve_command_list=" 'ncs_mask_file ncs_mask.ccp4' "``
+  ``phenix.ncs_average ncs_map_coeffs.mtz ncs.ncs_spec resolve_command_list=" 'ncs_mask_file ncs_mask.ccp4' "``
 
 If you want to specify the region to be averaged, you can do this by supplying
-a PDB file and the mask will be around atoms in that file.  Note:  the mask
+a PDB file and the mask will be around atoms in that file. Note: the mask
 you supply is an overall mask around ALL the areas to be averaged, not just
 a single asymmetric unit of NCS.
 
- ``phenix.ncs_average ncs_map_coeffs.mtz ncs.ncs_spec resolve_command_list=" 'ncs_mask_file ncs_mask.ccp4' 'model model_defining_mask.pdb' 'use_model_mask' 'rad_mask 5 ' "`` 
+  ``phenix.ncs_average ncs_map_coeffs.mtz ncs.ncs_spec resolve_command_list=" 'ncs_mask_file ncs_mask.ccp4' 'model model_defining_mask.pdb' 'use_model_mask' 'rad_mask 5 ' "`` 
 
 List of all available keywords
 ------------------------------

@@ -78,7 +78,7 @@ Has Phaser Solved It?
 +--------------------------------------------------+-------------------+
 | more than 8\*                                    | definitely        |
 +--------------------------------------------------+-------------------+
-| \*\ *6 for 1st model in monoclinic space groups* |                   |
+| \*\ *6 for 1st model in monoclinic space groups*                     |
 +--------------------------------------------------+-------------------+
 
 Ideally, a unique solution with a strong signal will be found at the end of the search. If you are searching for multiple components, then ideally the
@@ -147,10 +147,10 @@ packing, and the refined LLG.
 +--------------------------------------------------------------------------+--------------------------------------------------------------------------+
 | TF*0                                                                     | Translation vector 000 identified by low R-factor of input model         |
 +--------------------------------------------------------------------------+--------------------------------------------------------------------------+
-| (& ... & ...)                                                            | Set of TFZ PAK and LLG values for placements that were amalgamated (more |
+| (... ...)                                                                | Set of TFZ PAK and LLG values for placements that were amalgamated (more |
 |                                                                          | than one placement from a single Translation Function)                   |
 +--------------------------------------------------------------------------+--------------------------------------------------------------------------+
-| LLG+=(... & ...)                                                         | Set of LLG values calculated during amalgamation, which will always be   |
+| LLG+=(... ...)                                                           | Set of LLG values calculated during amalgamation, which will always be   |
 |                                                                          | increasing in value                                                      |
 +--------------------------------------------------------------------------+--------------------------------------------------------------------------+
 | +TNCS                                                                    | Components added by Translational NCS relation                           |
@@ -164,9 +164,9 @@ TFZ score would have been with the correct (refined) orientation. You should see
 solution, and that the LLG (log-likelihood gain) increases as each component of the solution is added. For example, in the case of beta-blip the
 annotation for the single solution output in the .sol file shows these features
 
-| ``SOLU SET RFZ=10.7 TFZ=24.3 PAK=0 LLG=472 TFZ==24.7 RFZ=6.4 TFZ=24.4 PAK=0 LLG=1006 TFZ==29.7 LLG=1006 TFZ==29.7``
-| ``SOLU 6DIM ENSE beta EULER 200.849 41.269 183.909 FRAC -0.49604 -0.15830 -0.28092 BFAC 0.00000``
-| ``SOLU 6DIM ENSE blip EULER 43.749 80.793 117.292 FRAC -0.12289 0.29435 -0.09266 BFAC 0.00000``
+| ``SOLU SET RFZ=10.7 TFZ=24.3 PAK=0 LLG=472 TFZ==24.7 RFZ=6.4 TFZ=24.4 PAK=0 LLG=1006 TFZ==29.7 LLG=1006 TFZ==29.7``
+| ``SOLU 6DIM ENSE beta EULER 200.849 41.269 183.909 FRAC -0.49604 -0.15830 -0.28092 BFAC 0.00000``
+| ``SOLU 6DIM ENSE blip EULER 43.749 80.793 117.292 FRAC -0.12289 0.29435 -0.09266 BFAC 0.00000``
 
 Note that the Euler angles in Phaser follow the same convention as those defined for the Crowther fast rotation function, i.e. z-y-z (rotate around
 the z-axis, followed by the new y-axis, followed by the new z-axis).
@@ -195,13 +195,13 @@ SOLUTION SET annotation, this is useful in your analysis of the output.
 
 For example, in the case of beta-blip the annotation for the single solution output in the .sol file shows these features
 
-| ``SOLU HISTORY RF/TF(1/1:1)PAK(1:1)RNP(1:1)RNP(1:1)``
-| ``SOLU 6DIM ENSE beta EULER 200.849 41.269 183.909 FRAC -0.49604 -0.15830 -0.28092 BFAC 0.00000``
-| ``SOLU 6DIM ENSE blip EULER 43.749 80.793 117.292 FRAC -0.12289 0.29435 -0.09266 BFAC 0.00000``
+| ``SOLU HISTORY RF/TF(1/1:1)PAK(1:1)RNP(1:1)RNP(1:1)``
+| ``SOLU 6DIM ENSE beta EULER 200.849 41.269 183.909 FRAC -0.49604 -0.15830 -0.28092 BFAC 0.00000``
+| ``SOLU 6DIM ENSE blip EULER 43.749 80.793 117.292 FRAC -0.12289 0.29435 -0.09266 BFAC 0.00000``
 
 A more complicated structure solution may have
 
-``SOLU HISTORY RF/TF(7/1:10)PAK(10:10)RNP(10,12,13,11,17,16,18,25,3,8,22,21,20,7,969,6,5,201,9,4,390,2,1,19:1)RNP(1:1)``
+``SOLU HISTORY RF/TF(7/1:10)PAK(10:10)RNP(10,12,13,11,17,16,18,25,3,8,22,21,20,7,969,6,5,201,9,4,390,2,1,19:1)RNP(1:1)``
 
 What to do in Difficult Cases
 -----------------------------
@@ -214,7 +214,7 @@ on why your structure is difficult.
        The relative orientations of the domains may be different in your crystal than in the model. If that may be the case, break the model into
        separate PDB files containing rigid-body units, enter these as separate ensembles, and search for them separately. If you find a convincing
        solution for one domain, but fail to find a solution for the next domain, you can take advantage of the knowledge that its orientation is
-       likely to be similar to that of the first domain. The ROTAte AROUnd option of the brute rotation search can be used to restrict the search to
+       likely to be similar to that of the first domain. The ROTAte AROUnd option of the brute rotation search can be used to restrict the search to
        orientations within, say, 30 degrees of that of the known domain. Allow for close approach of the domains by increasing the allowed clashes
        with the PACK keyword by, say, 1 for each domain break that you introduce. Note that it is possible to use the brute rotation search as part of
        the automated molecular replacement pipeline, by changing the choice of the type of rotation search. Alternatively, you could try generating a
@@ -229,7 +229,7 @@ on why your structure is difficult.
        the fast rotation function if the decault pass does not find a solution with a high z-score, but you can manually reduce this further with the
        PEAKS and PURGE keywords. You can also try turning off the clustering of fast rotation function peaks because the correct orientation may sit
        on the shoulder of a peak in the rotation function.
-       As shown convincingly by Schwarzenbacher *et al.* (Schwarzenbacher, Godzik, Grzechnik & Jaroszewski, *Acta Cryst.* D\ **60**, 1229-1236, 2004),
+       As shown convincingly by Schwarzenbacher *et al.* (Schwarzenbacher, Godzik, Grzechnik and Jaroszewski, *Acta Cryst.* D\ **60**, 1229-1236, 2004),
        judicious editing can make a significant difference in the quality of a distant model. In a number of tests with their data on models below 30%
        sequence identity, we have found that Phaser works best with a "mixed model" (non-identical sidechains longer than Ser replaced by Ser). In
        agreement with their results, the best models are generally derived using more sophisticated alignment protocols, such as their FFAS protocol.
@@ -239,9 +239,9 @@ on why your structure is difficult.
 
        If there are clear peaks in the self-rotation function, you can expect orientations to be related by this known NCS. Methods to automatically
        use such information will be implemented in a future version of Phaser. In the meantime, you can work out for yourself the orientations that
-       would be consistent with NCS and use the ROTAte AROUnd option to sample similar orientations. Alternatively, you may have an oligomeric model
+       would be consistent with NCS and use the ROTAte AROUnd option to sample similar orientations. Alternatively, you may have an oligomeric model
        and expect similar NCS in the crystal. First search with the oligomeric model; if this fails, search with a monomer. If that succeeds, you can
-       again use the ROTAte AROUnd option to force a subsequent monomer to adopt an orientation similar to the one you expect.
+       again use the ROTAte AROUnd option to force a subsequent monomer to adopt an orientation similar to the one you expect.
 
 -  **What not to do**
 
@@ -314,7 +314,7 @@ one pdb file in an ensemble and/or the pdbfile(s) have HETATM records.
 .. table:: **Initial estimate of RMS deviation in Angstrom: Number of residues in model (upper row) versus sequence identity (left column)**
 
    +-------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-   |             | #50   | #100  | #200  | #300  | #400  | #600  | #850  | #1000 | #1500 | #2000 |
+   |  Identity   | #50   | #100  | #200  | #300  | #400  | #600  | #850  | #1000 | #1500 | #2000 |
    +=============+=======+=======+=======+=======+=======+=======+=======+=======+=======+=======+
    | **ID=0%**   | 1.579 | 1.689 | 1.875 | 2.030 | 2.164 | 2.391 | 2.625 | 2.748 | 3.093 | 3.375 |
    +-------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
