@@ -5,12 +5,12 @@ structure_search
 Overview
 --------
 
-Structure_search is a tool to quickly identify structural homologs of the input PDB file from the Protein Data Bank. It uses the SARST_ algorithm, and it's very fast. A typical search time against the whole PDB is usually less than one second.  There is an option to allow users to obtain a list of ligands found in structures of those homologs.
+Structure_search is a tool to quickly identify structural and/or sequence homologs of the input PDB file from the Protein Data Bank. It uses the SARST_ algorithm, and it's very fast. A typical search time against the whole PDB is usually less than one second.  There is an option to allow users to obtain a list of ligands found in PDB structures of those homologs.
 
 
 Usage
 -----
-  - obtain superposed PDB chains sorted by similarities to mypdb.pdb
+  - Identify and superpose homologous pdbs of mypdb.pdb
      phenix.structure_search mypdb.pdb
   - obtain a list of homologs of mypdb.pdb and all ligands found in structures of those homologs
      phenix.structure_search mypdb.pdb get_ligand=True
@@ -25,6 +25,7 @@ Input files
 required input:
 
   - **pdb_file**: the file containing the protein model of interest. 
+	By default, structure_search will search structure and sequence homologs of the input PDB file.
 
 Optional inputs :
 
@@ -33,8 +34,8 @@ Optional inputs :
   - **output_prefix**: prefix for output files if needed.
   - **get_pdb**:Collect and superpose the top N homologous pdbs (default=10).
   - **coot_display**: Display superposed pdb files in coot. [default=(False/True) as E-value(>/<)1E-18].
-  - **sequence_only**: Perform Blast sequence search against PDB database using Phenix internal DB. This
-                       option does not require network connection.
+  - **sequence_only**:"=False" Perform only sequence search against PDB database using Phenix' internal DB. 
+  - **structure_only**: Perform only structure search against PDB database using the SARST method. 
   - **PDB_MIRRORDIR**: Set option to use local PDB mirror instead of using RCSB server. See 'Using Local PDB mirror' section.
 
 
@@ -42,9 +43,8 @@ Output files
 ------------
 
 In addition to screen output, these files contains results of structure_search:
-  - **output.txt**: file containing homologs of 'pdb_file' sorted by scores.
-  - **MyBlast.log**: Standard BLAST output with selected pairwise alignments. NOTE: for structure alignment, the
-                     'sequences' are structure-based Ramachandran codes (see reference), not 1-letter code for amino acids.
+  - **output_(sequence/structure).txt**: files containing sequence/structure homologs of 'pdb_file' sorted by scores.
+  - **MyBlast_(sequence/structure).log**: Standard BLAST output with selected pairwise alignments. NOTE: for structure alignment, the 'sequences' are structure-based Ramachandran codes (see reference), not 1-letter code for amino acids.
   - **pdb_ligand.txt** (if get_ligand=True): file containing all ligands found in all homologs from this search.
   - **superposed PDB files**: Can be found in TEMPPDB_## subdirectory as prompted in the program output. 
 
