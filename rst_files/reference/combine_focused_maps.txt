@@ -106,6 +106,19 @@ Literature
 Additional information
 ----------------------
 
+If you supply a model for each map, the models are used to define what 
+parts of each map are included in the analysis. If the model for your 
+target map has chains ABC and one focused map has just chain A, then only
+chain A from the focused map will be transferred to the target map. If the
+model for the focused map has chains ABC then weighted versions of the map
+in the vicinities of ABC will be included.
+
+If you have a model with symmetry (say, chains A B C D are all the same) and 
+just one focused map (say, focused on A), then you can supply your target map,
+target model with chains ABCD, an one focused map and a model for the focused
+map that contains just chain A. Then you add the keyword 
+"use_model_symmetry=True"  and the focused map from chain A is 
+applied to A B C and D in the target map.
 
 List of all available keywords
 ------------------------------
