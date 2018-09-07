@@ -1,0 +1,96 @@
+==================================
+Cryo-EM Validation tools in Phenix
+==================================
+
+.. contents::
+
+Overview
+========
+
+Phenix has multiple tools for validating cryo-EM maps and models. They are
+combined into a single tool called ``phenix.validation_cryoem``. This can be run
+in the GUI by selecting "Comprehensive Validation (cryo-EM)" either from the
+"Validation" section or the "Cryo-EM" section.
+
+.. image:: ../images/validation_cryoem_main.png
+
+Opening the program will show a window for supplying your input files and basic
+settings.
+
+.. image:: ../images/validation_cryoem_input.png
+
+You will need at least a model and one map. If you provide half maps, be sure to
+indicate which map is the full map and which maps are the half maps. To do so,
+after adding the files, you can right-click on the row of a map file and select
+either "Full map" or "Half map."
+
+.. image:: ../images/validation_cryoem_map_input.png
+
+Lastly, before running the program, enter the resolution of the map.
+
+**Important note:** The default scattering table for cryo-EM tools is "electron."
+A consequence of this setting is that Phenix does not have electron scattering
+factors for ions. You may get error messages if your cryo-EM structures have ions.
+
+Once the program finishes the analysis, you will get a page that summarizes all
+the results, as well as additional pages for more detailed information about each
+section.
+
+.. image:: ../images/validation_cryoem_summary.png
+
+Similar to the "Comprehensive Validation (X-ray/Neutron)" GUI, the model and map
+can be viewed in Coot and the pages with more detail information will allow you
+to zoom into the more problematic areas of your structure.
+
+There is also a button, "Export Table 1," for exporting the summary statistics
+into plain text, comma separated text, or rich-text format.
+
+
+Model
+=====
+
+This page contains the model-related metrics with additional pages for each
+major metric.
+
+Generally, clicking on a row of a table or clicking a point in the graph
+
+.. image:: ../images/validation_cryoem_ile.png
+
+will zoom in on that particular atom/residue in Coot.
+
+.. image:: ../images/validation_cryoem_ile_coot.png
+
+The results are subdivided into several categories listed below.
+
+ - **Clashes:** this shows areas of the structure where atoms may be too close to
+   each other. In Coot, this is shown by red dots.
+ - **CaBLAM:** this is the output from `phenix.cablam <cablam_validation.html>`_,
+   which looks at several measures based on the geometry of the C-|agr| atoms.
+ - **C** |bgr|: this looks for any deviations in the C-|bgr| atoms.
+ - **Cis/Twisted:** Cis peptides are generally rare (~5% of prolines and ~0.03%
+   of other residues), so make sure that a cis conformation is really supported
+   by the map. Twisted peptides are almost always incorrect.
+ - **Rotamers:** this checks that the sidechains are in the expected regions
+   according to compiled distributions of the |khgr|-angles in the Top8000
+   database.
+ - **Ramachandran:** this checks that the dihedral angles of the protein residues
+   are in the expected regions according to the Top8000 database.
+ - **Geometry restraints:** this checks that the bond lengths, bond angles,
+   dihedral angles, and other geometric restraints do not deviate too much from
+   the mean value.
+
+Model and Data Fit
+==================
+
+
+Data
+====
+
+References
+==========
+
+{{citation:phenix.validation_cryoem}}
+
+{{citation:molprobity}}
+
+.. include:: <isogrk1.txt>
