@@ -32,7 +32,12 @@ Installation - Using standard Phenix installation
 
 To use the latest Rosetta version, Phenix needs to be compiled
 using a compiler that is c++11 compatible. This is now the case from Phenix 1.14
-and beyond. OSX users should use the command-line installer and require XCode.
+and beyond. Users of macOS should use the command-line installer and install XCode
+to get the compilers.
+
+Currently, there is an issue with using ``phenix.rosetta_refine`` and macOS High
+Sierra (10.13). The ``rosetta.run_tests`` step in the installation instructions
+is generating large files and using large amounts of memory.
 
 Proceed with the following.
 
