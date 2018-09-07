@@ -66,12 +66,12 @@ The results are subdivided into several categories listed below.
    each other. In Coot, this is shown by red dots.
  - **CaBLAM:** this is the output from `phenix.cablam <cablam_validation.html>`_,
    which looks at several measures based on the geometry of the C-|agr| atoms.
- - **C** |bgr|: this looks for any deviations in the C-|bgr| atoms.
+ - **C**\ |bgr|: this looks for any deviations in the C-|bgr| atoms.
  - **Cis/Twisted:** Cis peptides are generally rare (~5% of prolines and ~0.03%
    of other residues), so make sure that a cis conformation is really supported
    by the map. Twisted peptides are almost always incorrect.
  - **Rotamers:** this checks that the sidechains are in the expected regions
-   according to compiled distributions of the |khgr|-angles in the Top8000
+   according to compiled distributions of the |KHgr|-angles in the Top8000
    database.
  - **Ramachandran:** this checks that the dihedral angles of the protein residues
    are in the expected regions according to the Top8000 database.
@@ -82,6 +82,29 @@ The results are subdivided into several categories listed below.
 Model and Data Fit
 ==================
 
+This page shows how well the model fits into the map by calculating different
+correlation coefficients. Please check the `first reference
+<https://doi.org/10.1107/S2059798318009324>`_ for a more detailed
+description of each correlation coefficient (CC). Table 3 from the reference is
+reproduced below.
+
+================== =================================================================================================== =======================================================
+Metric             Region of the map used in the calculation                                                           Purpose
+================== =================================================================================================== =======================================================
+CC\ :sub:`box`     Whole map                                                                                           Similarity of maps
+CC\ :sub:`mask`    Jiang & Brunger mask with a fixed radius                                                            Fit of the atomic centers
+CC\ :sub:`volume`  Mask of points with the highest values in the model map                                             Fit of the molecular envelope defined by the model map
+CC\ :sub:`peaks`   Mask of points with the highest values in the model and in the target maps                          Fit of the strongest peaks in the model and target maps
+CC\ :sub:`vr_mask` Same as CC\ :sub:`mask` but atomic radii are variable and function of resolution, atom type and ADP Fit of the atomic images in the given map
+================== =================================================================================================== =======================================================
+
+Correlation coefficients per chain and per residue are also shown in plots.
+
+.. image:: ../images/validation_cryoem_mvd.png
+
+The per residue plot is shown for a single chain. To change the chain, you can
+click on the per chain plot or use the drop down menu. Clicking on the per
+residue plot will center on the residue in Coot.
 
 Data
 ====
