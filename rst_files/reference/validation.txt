@@ -117,20 +117,21 @@ The rest of the tab is divided into several sections:
   - The Ramachandran plot, sets limits on the combination of Phi (C-N-CA-C)
     and Psi (N-CA-C-N) dihedral angles for any residue.  In Phenix and
     MolProbity, the standard distribution of values is taken from the
-    Top500 database of high-resolution protein structures.  The main window
+    Top8000 database of high-resolution protein structures.  The main window
     contains a list of scored outliers (the lower the score, the worse the
     residue), and all residues are plotted graphically in a separate window.
     The scoring depends on the residue type and relative position; Gly, Pro,
     and adjacent residues depend on different distributions, all of which can
     be viewed in the plot window.
 
-  - Rotamer comparisons also use the Top500 database, and all sidechain Chi
+  - Rotamer comparisons also use the Top8000 database, and all sidechain Chi
     angles for a residue are evaluated together.  Any residue which has an
     outlying sidechain dihedral restraint is likely to be flagged by this
     analysis  too.  The distribution of Chi1-Chi2 angle combinations for each
     residue type is also plotted in a separate window, against a background
-    distribution taken from the Top500 database.  (Note that longer residues
-    may be flagged as outliers based on the value of Chi3 or Chi4, even though      they fall into the favored region of the Chi1-Chi2 plot.)
+    distribution taken from the Top8000 database.  (Note that longer residues
+    may be flagged as outliers based on the value of Chi3 or Chi4, even though
+    they fall into the favored region of the Chi1-Chi2 plot.)
 
   - C-beta atoms deviating from the proper position are flagged; these are
     caused by incompatible sidechain and mainchain positions, which
