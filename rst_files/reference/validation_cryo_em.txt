@@ -109,6 +109,26 @@ residue plot will center on the residue in Coot.
 Data
 ====
 
+This page shows the output from `phenix.mtriage`. The output is the same as if
+you were to run `phenix.mtriage` separately. More details can be found in the
+`Mtriage documemtation <mtriage.html>`_
+
+.. image:: ../images/validation_cryoem_fsc.png
+
+The results are subdivided into several categories listed below.
+
+ - **Summary:** this shows basic statistics about the maps and summarizes the
+   resolution estimates
+ - **FSC (Half-maps):** this shows a graph plotting the Fourier shell
+   coefficient curve based on the half-maps (if available) with and without
+   masking. The intersections of the curves with FSC=0.143 are shown.
+ - **FSC (Model-map):** this shows a graph plotting the Fourier shell
+   coefficent curve based on the model map with and without masking. The
+   intersections of the curves with FSC=0.5 are shown.
+
+In the pages with graphs, you can save the graph and export the data used to
+generate the graphs into a text file.
+
 References
 ==========
 

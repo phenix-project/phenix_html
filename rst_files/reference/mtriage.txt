@@ -24,17 +24,17 @@ Possible inputs to mtriage are:
   - one full map and a file with atomic model;
   - one full map, a file with atomic model and two half-maps.
 
-If only one map is provided, mtriage will calculte some basic map stitistics 
+If only one map is provided, mtriage will calculte some basic map stitistics
 (min, max, mean, standard deviation), show histogram of map values and calculate
 resolution estimate d99.
 
-If two half-maps are given in addition to the full map, then FSC curve between 
+If two half-maps are given in addition to the full map, then FSC curve between
 the two half-maps will be calculated as well as resolution estimate d_FSC(0.143).
 
-If an atomic model is provided then two sets of statistics will be calculated: 
-using original and masked maps. The soft mask is calculated using the atomic 
+If an atomic model is provided then two sets of statistics will be calculated:
+using original and masked maps. The soft mask is calculated using the atomic
 model as described in citation below. Also, some model-based resolution estimates
-will be calculated, such as d_model and d_FSC_model as well as map-model FSC 
+will be calculated, such as d_model and d_FSC_model as well as map-model FSC
 curve.
 
 Model file can be in PDB or mmCIF formats.
@@ -42,21 +42,21 @@ Map file is expected to be CCP4, mrc or other related format.
 
 Guide to resolution estimates:
 
-  - **d_FSC** - highest resolution at which the experimental data are confident. 
-    Obtained from FSC curve calculated using two half-maps and taken at 
+  - **d_FSC** - highest resolution at which the experimental data are confident.
+    Obtained from FSC curve calculated using two half-maps and taken at
     FSC=0.143.
 
-  - **d99** - resolution cutoff beyond which Fourier map coefficients are 
+  - **d99** - resolution cutoff beyond which Fourier map coefficients are
     negligeably small. Calculated form the map.
-    
-  - **d_model** - resolution cutoff at which the model map is the most similar to 
-    the target (experimental) map. Requires map and model. For d_model to be 
+
+  - **d_model** - resolution cutoff at which the model map is the most similar to
+    the target (experimental) map. Requires map and model. For d_model to be
     meaningful, model is expected to fit the map as good as possible.
-    
-  - **d_FSC_model** - resolution cutoff up to which the model and map Fourier 
+
+  - **d_FSC_model** - resolution cutoff up to which the model and map Fourier
     coefficients are similar.
-    
-  Refer to Table 2 in article below for more details about interpretation of 
+
+  Refer to Table 2 in article below for more details about interpretation of
   various resolution estimates.
 
 Examples
@@ -77,20 +77,17 @@ Running mtriage is easy. From the command-line you can type:
 Possible Problems
 -----------------
 
-All inputs maps are expected to be on the same grid, the program will stop 
+All inputs maps are expected to be on the same grid, the program will stop
 otherwise. Box information (aka unit cell CRYST1 in PDB files, for example) must
 match across all inputs.
 
 Specific limitations and problems:
 ----------------------------------
 
-Literature
+Reference
 ----------
 
-New tools for the analysis and validation of cryo-EM maps and atomic models
-Pavel V. Afonine, Bruno P. Klaholz, Nigel W. Moriarty, Billy K. Poon, 
-Oleg V. Sobolev, Thomas C. Terwilliger, Paul D. Adams and Alexandre Urzhumtsev.
-(2018). Acta Cryst. Section D.
+{{citation:phenix.validation_cryoem}}
 
 Additional information
 ----------------------
