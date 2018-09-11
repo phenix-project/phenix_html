@@ -182,6 +182,8 @@ Usage examples
          }
        }
 
+     **Note that user-supplied NCS groups will be filtered at all times.** More on this `here <simple_ncs_from_pdb.html#usage-for-validation>`_.
+
      NCS group definitions can be obtained using GUI or command line tool::
 
        phenix.simple_ncs_from_pdb model.pdb

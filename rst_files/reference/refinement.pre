@@ -1042,6 +1042,8 @@ in torsion angle space.
 
 Hydrogen atoms are excluded from NCS restraints.
 
+**Note that user-supplied NCS groups will be filtered at all times.** More on this `here <simple_ncs_from_pdb.html#usage-for-validation>`_.
+
 *Torsion NCS (default)*
 
 Torsion-based NCS restraints use a flexible target function that is smoothly

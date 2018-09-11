@@ -1,22 +1,25 @@
 Finding NCS in chains from a PDB file with simple\_ncs\_from\_pdb
 =================================================================
 
+.. contents::
+
 Author(s)
----------
+*********
 
 -  simple\_ncs\_from\_pdb : Tom Terwilliger, Youval Dar, Oleg Sobolev
 -  Phil command interpreter: Ralf W. Grosse-Kunstleve
 -  find\_domain: Peter Zwart
 
 Purpose
--------
+*******
 
-The simple\_ncs\_from\_pdb method identifies NCS in the chains in a PDB
-file and writes out the NCS operators in forms suitable for
-phenix.refine, resolve, and the AutoSol and AutoBuild Wizards.
+- The simple\_ncs\_from\_pdb method identifies NCS in the chains in a PDB
+  file and writes out the NCS operators in forms suitable for
+  phenix.refine, resolve, and the AutoSol and AutoBuild Wizards.
+- Validate NCS annotations against a model
 
-Usage
------
+Usage for searching
+*******************
 
 How simple\_ncs\_from\_pdb works:
 ---------------------------------
@@ -26,7 +29,7 @@ The basic steps that the simple\_ncs\_from\_pdb carries out are:
 1. Remove part of the structure specified in in exclude\_selection parameter.
 
 2. Identify sets of matching segments in chains in the PDB file by
-   sequences (use value of chain\_similarity\_threshold as cutoff). 
+   sequences (use value of chain\_similarity\_threshold as cutoff).
    These are potential NCS-related chains.
 
 3. Determine which matching segments have overall rms distance (RMSD) within
@@ -46,20 +49,20 @@ Additional notes on how simple\_ncs\_from\_pdb works:
 
 The chains matching is done using dynamic programming alignment of residues
 and atoms. The first pass contains restriction on minimal similarity, set by
-min/_percent (number of matching residues)/(number of residues in longer chain)
+min_percent (number of matching residues)/(number of residues in longer chain)
 
 From the matching chains list, we remove chain pairs where the matching segments
 exceed the RMSD limit.
 
 Matching segments are scanned for local residue misalignment. Residues where
-(max_atom_distance - min_atom_distance) > match/_radius are excluded from
+(max_atom_distance - min_atom_distance) > match\_radius are excluded from
 matching segment. This allow local differences in matching chains.
 
 If matching residues have different number of atoms (For example if one
 containing the side chain while the other not), only the matching atoms will
 be included.
 
-Grouping of chains is not performed. 
+Grouping of chains is not performed.
 
 Alternative conformation are excluded from matching segments.
 
@@ -96,7 +99,7 @@ The following files will be produced
     2h50_simple_ncs_from_pdb.ncs_spec
     2h50_simple_ncs_from_pdb.resolve
 
-The file that should be used for refinement is 4boz\_simple\_ncs\_from\_pdb.phil. 
+The file that should be used for refinement is 4boz\_simple\_ncs\_from\_pdb.phil.
 This file can also be modified if a particular NCS relations need to be changed. The
 content of that file is the exact selection sting of the atoms in the NCS groups
 
@@ -137,7 +140,7 @@ produced:
 
     GROUP 1
     Summary of NCS group with 2 operators:
-    ID of chain/residue where these apply: [['A', 'D'], [[[147, 150], [152, 211], 
+    ID of chain/residue where these apply: [['A', 'D'], [[[147, 150], [152, 211],
     [213, 275], [280, 305], [307, 308]], [[147, 150], [152, 211], [213, 275], [280, 305], [307, 308]]]]
     RMSD (A) from chain A:  0.0  0.72
     Number of residues matching chain A:[155, 155]
@@ -161,7 +164,7 @@ produced:
 
     GROUP 2
     Summary of NCS group with 3 operators:
-    ID of chain/residue where these apply: [['B', 'C', 'E'], [[[1, 41], [43, 71]], 
+    ID of chain/residue where these apply: [['B', 'C', 'E'], [[[1, 41], [43, 71]],
     [[1, 41], [43, 71]], [[1, 41], [43, 71]]]]
     RMSD (A) from chain B:  0.0  0.8  0.77
     Number of residues matching chain B:[70, 70, 70]
@@ -198,8 +201,8 @@ Another way to view the results is
 
     Chains in model:
     ---------------------------------------------------
-    A    B    C    D    E    
-    . . . . . . . . . . . . . . . . . . . . . . . . . . 
+    A    B    C    D    E
+    . . . . . . . . . . . . . . . . . . . . . . . . . .
 
     NCS summary:
     ---------------------------------------------------
@@ -212,7 +215,7 @@ Another way to view the results is
     Number of copies         :   3
     Chains in master         :   'B'
     Chains in copies         :   'C', 'E'
-    . . . . . . . . . . . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . . . . . . . . . . .
 
     Transforms:
     ---------------------------------------------------
@@ -223,14 +226,14 @@ Another way to view the results is
     ROTA   1    0.0000    1.0000    0.0000
     ROTA   2    0.0000    0.0000    1.0000
     TRANS       0.0000    0.0000    0.0000
-    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     Transform #              :   2
     RMSD                     :   0.720792956817
     ROTA   0    0.7964   -0.5503    0.2507
     ROTA   1   -0.5651   -0.8249   -0.0152
     ROTA   2    0.2152   -0.1295   -0.9680
     TRANS      -5.8295   14.4282  -25.8708
-    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     Group #                  :   2
     Transform #              :   1
     RMSD                     :   0
@@ -238,14 +241,14 @@ Another way to view the results is
     ROTA   1    0.0000    1.0000    0.0000
     ROTA   2    0.0000    0.0000    1.0000
     TRANS       0.0000    0.0000    0.0000
-    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     Transform #              :   2
     RMSD                     :   0.796197645664
     ROTA   0   -0.6661    0.2866   -0.6886
     ROTA   1    0.2615   -0.7749   -0.5755
     ROTA   2   -0.6986   -0.5634    0.4412
     TRANS      43.6766  -46.3175  -10.0616
-    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+    ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     Transform #              :   3
     RMSD                     :   0.772963874518
     ROTA   0    0.7539   -0.5860    0.2971
@@ -335,25 +338,25 @@ Possible Problems
 - Simple\_ncs\_from\_pdb cannot find NCS groups: try relaxing search parameters,
    e.g. set bigger chain\_max\_rmsd, smaller chain\_similarity\_threshold.
 
-- Simple\_ncs\_from\_pdb produces very complicated selections, like 
+- Simple\_ncs\_from\_pdb produces very complicated selections, like
   ::
 
-    reference = (chain 'A' and (resid 147:150 or resid 152:194 or (resid 195 and 
-    (name N or name CA or name C or name O or name CB )) or resid 196:211 or 
-    resid 213:229 or (resid 230 and (name N or name CA or name C or name O or name 
-    CB or name CG )) or resid 231:298 or (resid 299 and (name N or name CA or name 
+    reference = (chain 'A' and (resid 147:150 or resid 152:194 or (resid 195 and
+    (name N or name CA or name C or name O or name CB )) or resid 196:211 or
+    resid 213:229 or (resid 230 and (name N or name CA or name C or name O or name
+    CB or name CG )) or resid 231:298 or (resid 299 and (name N or name CA or name
     C or name O or name CB or name CG )) or resid 300:305 or resid 307:308))
 
   This indicates that procedure is trying to exclude some residues or atoms
   from the selections. This could be caused by alternative confomations of
-  residues (not supported), poor alignment of particular residues (try to 
+  residues (not supported), poor alignment of particular residues (try to
   increase residue\_match\_radius) or missing atoms in one of the chains.
 
 
 Specific limitations and problems:
 ----------------------------------
 
--  a large chain\_similarity\_threshold can prevent matching segments 
+-  a large chain\_similarity\_threshold can prevent matching segments
    in chains that are of very different size.
 
 -  The value of chain\_max\_rmsd, the RMSD limit between chains should be set with
@@ -383,14 +386,123 @@ and not:
 They are the inverse of the rotation and translation that are used in the
 implementation of the NCS relation.
 
-Literature
-----------
+Usage for validation
+********************
 
-Additional information
-----------------------
+To run simple\_ncs\_from\_pdb in validation mode one should supply NCS
+groups in form of phil file.
+The purpose of this mode is to illustrate how your NCS annotations will
+be filtered in `phenix.refine <refinement.html>`_ and
+`phenix.real_space_refine <real_space_refine.html>`_ .
 
+
+Why we filter annotations
+-------------------------
+
+We filter annotations because we need to be sure that:
+
+- number of atoms in reference and selections are the same
+- residues in reference and selections match each other
+- matched residues have the same atoms in all copies
+
+Without all these NCS restraints and constraints cannot work reliably.
+We understand that it could be tricky to manually create such selections,
+especially for poor models where some residues may be not modelled yet or
+lacking some atoms. Therefore we filter user-supplied annotations before
+refinement by default and there is no way to turn it off.
+
+How we filter annotations
+-------------------------
+
+For every NCS group supplied by a user we:
+
+1. Select part of the model containing reference atoms and all selection atoms.
+2. Then we search for NCS in this sub-model using parameters from ncs\_search
+   scope with some modifications. Precisely:
+
+   - chain\_max\_rmsd or 10, whichever is greater
+   - residue\_match\_radius or 1000, whichever is greater
+   - chain\_similarity\_threshold or 0.5 whichever is smaller.
+
+   These modifications are used to relax criteria for validation to a large extent
+   to accomodate poor matches in poor models.
+3. If found NCS relations cover all atoms selected in 1, validation passed,
+   the NCS group is used as was defined by a user
+   If found NCS relations do not cover all the initial atoms selected in 1,
+   we create new NCS selections and use them further in refinement.
+   If no NCS relations were found, the whole NCS group is discarded.
+
+Note, we only filter supplied selections. Nothing extra will be added.
+
+What you may see in the log file (example)
+------------------------------------------
+
+One may find something like this in the log-file:
+::
+
+  Validating user-supplied NCS groups...
+    Validating:
+  ncs_group {
+    reference = "(chain A and resid 11:376 and not (resid 19:31 or resid 42:67 or resid 70:123 or resid 132:145 or resid 148:184 or resid 190:249 or resid 339:357 or resid 377:396))"
+    selection = "(chain C and resid 11:376 and not (resid 19:31 or resid 42:67 or resid 70:123 or resid 132:145 or resid 148:184 or resid 190:249 or resid 339:357 or resid 377:396))"
+  }
+    MODIFIED. Some of the atoms were excluded from your selection.
+    The most common reasons are:
+      1. Missing residues in one or several copies in NCS group.
+      2. Presence of alternative conformations (they are excluded).
+      3. Residue mismatch in requested copies.
+    Please check the validated selection further down.
+
+and further down something like:
+::
+
+  Found NCS groups:
+  ncs_group {
+    reference = (chain 'A' and (resid 11 through 18 or resid 32 through 41 or resid 68 through 6 \
+  9 or resid 124 through 125 or resid 129 through 131 or resid 146 through 147 or  \
+  resid 185 through 189 or resid 250 through 338 or resid 358 through 364 or resid \
+   375 through 376))
+    selection = (chain 'C' and (resid 11 through 18 or resid 32 through 41 or resid 68 through 6 \
+  9 or resid 124 through 131 or resid 146 through 147 or resid 185 through 189 or  \
+  resid 250 through 338 or resid 358 through 376))
+  }
+
+This is how NCS selections were modified for one of the reasons listed above. In this example, they are essentially the same with slightly different syntax. Let's look at the differences.
+
+1. In chain A residues 126-128 are excluded from selection. Indeed, there were no such
+   residues in chain C.
+2. In chain A residues 365-374 are excluded. Same as #1, absent in chain C.
+
+These two are the only differences from your selection and they don't change anything! They look much different because we have to construct new selections from scratch (internal representation of selections) automatically.
+
+When one sees something like this in new selections:
+::
+
+  (resid 28 and (name N or name CA or name C or name O or name CB or name CG or name CD ))
+
+this is usually because another chain is lacking particular atom(s). Therefore we select particular atoms of the residue that present in all other copies. In this particular case,  residue 28 in chain A has NE and CZ atoms, while chain B lacks them.
+
+Other messages one can see is:
+::
+
+    REJECTED because copies don't match good enough.
+    Try to revise selections or adjust chain_similarity_threshold or
+    chain_max_rmsd parameters.
+
+    OK. All atoms were included in
+    validated selection.
+
+General recommendations when you encounter this situation in refinement
+-----------------------------------------------------------------------
+
+1. If resulting selections (Found NCS groups) looks good to you - you should be fine,
+   NCS is being applied and you can see exactly what selections are being used.
+2. Check the filtered selections. Maybe you will want to modify the model (put on
+   missing atoms or remove extras).
+3. If you want your selections to be preserved - make them such that they
+   satisfy all requirements in `Why we filter annotations`_.
 
 List of all available keywords
-------------------------------
+******************************
 
 {{phil:phenix.command_line.simple_ncs_from_pdb}}
