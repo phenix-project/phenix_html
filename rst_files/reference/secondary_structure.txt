@@ -5,6 +5,7 @@ Secondary structure restraints
 
    <br /><br />
 
+.. contents::
 
 At lower resolution (lower than ~3A) refinement of biological macromolecules may be unstable. In some cases even secondary structure (SS) elements may be distorted during coordinate refinement. SS elements include helices and sheets in protein structures, base-pairs and stacking bases in nucleic acids. This applies to refinement against both X-ray and EM data. To preserve correct geometry of SS it may be useful to use specifically designed secondary structure restraints.
 Using SS restraints in moderate-to-low resolution refinement may help to preserve correct geometry of SS elements in the structure and sometimes correct slightly distorted SS elements.
@@ -14,6 +15,23 @@ General description
 -------------------
 
 SS restraints are available in most refinement tools in Phenix package. Their behaviour is regulated by the same scope of parameters (see the bottom of the page for the full listing). They could be turned on in GUI by checking "Use secondary structure restraints" checkbox. This is equivalent to command-line option ``secondary_structure.enabled=True``. In this case SS elements will be found automatically and outputted to the resulting .pdb and log files. We recommend to check carefully automatic assignments of SS elements because incorrect assignments can lead to wrong refinement results.
+
+--------------
+Video Tutorial
+--------------
+
+.. raw:: html
+
+   <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/9dCkAdR1RDk" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" ></iframe></div>
+
+The `tutorial video <https://youtu.be/9dCkAdR1RDk>`_ is available on the
+`Phenix YouTube channel
+<https://www.youtube.com/channel/UCcdI0hfHngWAZLJWynxPQWg>`_ and covers the
+following topics:
+
+- Basic overview of secondary structure restraints
+- How to use secondary restraints in the phenix.refine and phenix.real_space_refine GUI
+- How to perform secondary structure annotation in the GUI
 
 --------
 Proteins
