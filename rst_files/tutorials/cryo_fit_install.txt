@@ -1,0 +1,48 @@
+===============================
+Install Cryo_fit
+===============================
+
+.. contents::
+
+1. Install Phenix
+-----------------------
+See the `installation notes for Phenix <../install-setup-run.html>`__
+
+
+2. Install gromacs_cryo_fit
+-------------------------------
+Download gromacs-4.5.5_cryo_fit.zip at https://github.com/cryoFIT/cryo_fit_install
+
+.. image:: ../images/cryo_fit_download_1.png
+
+.. image:: ../images/cryo_fit_download_2.png
+
+Install using a provided script. 
+ % python <use phenix>/modules/cryo_fit/steps/0_install_cryo_fit/install_cryo_fit.py <cryo_fit.zip>
+
+For example,
+ % python /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/steps/0_install_cryo_fit/install_cryo_fit.py ~/Downloads/gromacs-4.5.5_cryo_fit.zip
+
+
+3. Troubleshooting
+-------------------------------
+“-bash: libtbx.configure: command not found”
+
+ % Please run
+
+ % export PATH="/Users/doonam/bin/phenix-1.13rc1-2961/build/bin":$PATH
+
+ % source /Users/doonam/bin/phenix-1.13rc1-2961/phenix_env.sh
+
+ % in your commandline (of course, please change specific user path to your own phenix).
+
+ % and try “libtbx.configure cryo_fit” again
+
+
+“subprocess.CalledProcessError: Command '['which',
+'phenix.cryo_fit’]’”
+
+ %  Literally, it can’t find phenix.cryo_fit
+
+ % Please link (sync) cryo_fit first by “libtbx.configure cryo_fit”. 
+ % If you have followed the installation protocol, simply open a new tab in your terminal (like iterm2), then your .bash_profile should run freshly.
