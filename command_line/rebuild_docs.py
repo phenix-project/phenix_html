@@ -283,6 +283,9 @@ ignore_errors = True
 process_all_files = False
   .type = bool
   .help = If False, only process .txt files that have been modified.
+top_dir = None
+  .type = path
+  .help = Use a different directory tree for doc generation
 """
 
 create_rst_from_modules = [
@@ -329,6 +332,7 @@ def auto_generate_rst_files(out):
 
 def run (args, out=sys.stdout) :
   global HTML_PATH
+  global create_rst_from_modules
   cmdline = libtbx.phil.command_line.process(
     args=args,
     master_string=master_phil_str)
@@ -339,14 +343,19 @@ def run (args, out=sys.stdout) :
   # Checked for HTML_PATH at module load.
   # Start converting all RST .txt to .html.
   top_dir = os.path.dirname(HTML_PATH)
-  docs_dir = libtbx.env.under_root('doc')
   rst_dir = os.path.join(HTML_PATH, "rst_files")
+  if params.top_dir:
+    top_dir = os.path.abspath(params.top_dir)
+    rst_dir = os.path.join(top_dir, "rst_files")
+    create_rst_from_modules = []
+    print 'resetting top directory to %s' % top_dir
+  docs_dir = libtbx.env.under_root('doc')
   if os.path.exists(docs_dir) and params.clean:
     shutil.rmtree(docs_dir)
   if (not os.path.exists(docs_dir)):
     os.makedirs(docs_dir)
 
-  print >> out, "Building PHENIX documentation in %s"%HTML_PATH
+  print >> out, "Building PHENIX documentation in %s"%top_dir
   print >> out, "The complete documentation will be in:"
   print >> out, "  %s" % docs_dir
   print >> out, "  creating restructured text files"
