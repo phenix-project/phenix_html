@@ -344,12 +344,15 @@ def run (args, out=sys.stdout) :
   # Start converting all RST .txt to .html.
   top_dir = os.path.dirname(HTML_PATH)
   rst_dir = os.path.join(HTML_PATH, "rst_files")
+  docs_dir = libtbx.env.under_root('doc')
   if params.top_dir:
     top_dir = os.path.abspath(params.top_dir)
     rst_dir = os.path.join(top_dir, "rst_files")
     create_rst_from_modules = []
     print 'resetting top directory to %s' % top_dir
-  docs_dir = libtbx.env.under_root('doc')
+    docs_dir = os.path.join(top_dir, 'doc')
+    print 'resetting doc directory to %s' % top_dir
+    HTML_PATH = top_dir
   if os.path.exists(docs_dir) and params.clean:
     shutil.rmtree(docs_dir)
   if (not os.path.exists(docs_dir)):
@@ -360,7 +363,7 @@ def run (args, out=sys.stdout) :
   print >> out, "  %s" % docs_dir
   print >> out, "  creating restructured text files"
   os.chdir(rst_dir)
-  auto_generate_rst_files(out=out)
+  if not params.top_dir: auto_generate_rst_files(out=out)
   os.chdir(rst_dir)
 
   print >> out, "  building HTML files from restructured text files"
@@ -411,6 +414,7 @@ def run (args, out=sys.stdout) :
         with open(outfile, "w") as f:
           f.write(doc)
 
+  if params.top_dir: return
   # Write out the main page, and index page.
   os.chdir(docs_dir)
   with open("phenix_index.html", "w") as f:
