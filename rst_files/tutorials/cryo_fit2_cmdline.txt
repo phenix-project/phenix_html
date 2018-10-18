@@ -9,12 +9,6 @@ This tutorial will show you how to fit biomolecule atomic structures
 into cryo-EM maps using dynamics simulation with PHENIX commandline
 
 
-Theory
--------------------
-This program uses phenix dynamics algorithm written by Pavel. 
-
-Simulated annealing is carried out by default to effectively minimize the objection function T (=T_target_map * wx + T_geom * wc ). 
-wx and wc are weights.
 
 Input
 -------------------
@@ -61,16 +55,6 @@ cmd.color("blue","mesh1")
 
 will show map contour as mesh.
 
-
-
-Limitation
--------------------
-If wx is too small like 5, it may break starting secondary structure.
-When wx is 100, it kept starting helix structure.
-If wx is too big, angle change for each step maybe too big (~30
-degree), so pdb validation later (like molprobity) may raise a red flag.
-
-We will add real_space_refine style wx, wc auto-optimization module soon.
 
 
 Options
