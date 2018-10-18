@@ -6,8 +6,20 @@ CryoFit2: Fitting to a Cryo-EM Map using phenix.dynamics
 
 Overview
 ----------
-Unlike CryoFit1 that uses gromacs, CryoFit2 runs with phenix files
-only. Therefore it doesn't require gromacs installation and is faster to execute.
+Unlike `Cryo_fit1
+<https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_ 
+that uses gromacs, CryoFit2 runs within phenix suite. Therefore, it doesn't require gromacs installation and is faster to execute. It suits the need not only traditional "static" fitting but also "dynamic" fitting.
+
+
+Traditional “static” fitting (A) versus “dynamic” fitting (B)
+----------------------------------------------------------------------
+.. image:: ../images/cryo_fit2_static_vs_dynamic.jpg
+
+
+
+Cryo_fit 1 & 2 are recommended when the initial structure is different from map
+----------------------------------------------------------------------------------
+.. image:: ../images/cryo_fit2_recommended_programs.jpg
 
 
 
