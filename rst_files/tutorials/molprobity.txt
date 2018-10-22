@@ -12,7 +12,6 @@ This tutorial will show you how to do comprehesive model validation within the
 Setup
 -----
 
-
 The example used for this tutorial is called Protein Kinase A (3dnd). To get the requisite files open the GUI and set up the tutorial, as
 `described here <../examples.html>`_, called **Protein Kinase A (validation)**. This should setup the main/GUI window. On the right-hand side click **Validation** and then select **Comprehensive Validation (MolProbity)**.
 
@@ -35,9 +34,9 @@ Close the "POLYGON" window and return to the comprehensive validation window. Cl
 
 Now select the "MolProbity" tab. Under this tab, you will see sub-tabs for "Summary", "Basic geometry", "Protein", and "Clashes". If your model had RNA, there would also be an "RNA" tab. Under the "Summary" tab are most of the same overall statistics that you would find when running the MolProbity webserver. Notice the high percentage of rotamer outliers, and large number of C-beta deviations (those combine geometry problems around the Calpha into a single measure, as explained in Lovell 2003).
 
-  .. image:: ../images/tutorial_MP_king.png
+  .. image:: ../images/tutorial_MP_summary_tab.png
 
-Back in the "Comprehensive validation" window, click on the "Basic geometry" tab. Here you find a summary of all bond, angle, dihedral, chirality, and planarity outliers. Outliers will be listed in the associated lists, and each item is clickable, which will center in Coot. Note the bond outlier for Ile A 163 - we'll be seeing this residue again later.
+From the MolProbity tab, click on the "Basic geometry" tab. Here you find a summary of all bond, angle, dihedral, chirality, and planarity outliers. Outliers will be listed in the associated lists, and each item is clickable, which will center in Coot. Note the bond outlier for Ile A 163 - we'll be seeing this residue again later.
 
 Next, go to the "Protein" tab. This section contains validation information for Ramachandran and rotamer outliers, C-beta deviations, recommended Asn/Gln/His sidechain flips (these have NOT already been done for you, as you can tell if you click on His 39 in the flip list to see it in Coot), and non-trans peptide bonds.
 
@@ -53,9 +52,33 @@ One approach that works well to fix this type of problem is to first mutate the 
 
 The kind of sidechain fixups you've done in KiNG or Coot can mostly be accomplished using real-space refinement in phenix.refine (which includes a rotamer correction component), up to somewhere between 2 and 2.5 Å (and of course NQH flips are done automatically by Reduce in either MolProbity or Phenix). At lower resolution, however, real-space refinement with rotamer correction cannot reliably discern between correct and incorrect rotamers. That's a hard job for people as well, but can often be done if you have the interactive information on clashes and H-bonds from the non-pairwise, H-aware all-atom-contact dots.
 
+
+Fixing *Cis*-nonProlines
+------------------------
+Another type of outlier that can be very difficult for real-space refinement alone to resolve is an incorrect *cis*-peptide. The peptide bond between carbon and nitrogen joins adjacent animo acids. Due to the nearby carbonyl, the peptide bond has partial double bond character and does not rotate freely. Most peptides are *trans*, but genuine *cis* peptides occur preceding 5% of prolines and preceding about 1 in 3000 non-proline residues. Despite its rarity, a *cis* conformation can be tempting to model because it may appear to fit constricted or patchy density. Once modeled, *cis* peptides are difficult to escape, since doing do would involve rotating 180 degrees through a high energetic barrier. Fortunately, there is a tool in Coot to simplify human-directed corrections.
+
+To get the files for this demo, open a new terminal, and navigate to the pka-validate directory. In the terminal, type "phenix.fetch_pdb --mtz 2cn3". This will fetch 2cn3 and its structure factors from the pdb, then generate an mtz file from the structure factors. Back in the Phenix window, as before, go to Validation -> Comprehensive validation (MolProbity) in the Phenix GUI. Select 2cn3.pdb as the Input model and 2cn3.mtz as the Reflections file. Then Run the validations. Once validation is complete, choose Open in Coot to get a Coot window with model and map.
+
+Move to the MolProbity tab of the validation output, and then the Protein tab within MolProbity. Scroll down to the bottom of the Protein tab to find Non-*Trans* peptides validation. Note the overall model statistics and the suspiciously high percentages of non-*trans* peptides in this model.
+
+  .. image:: ../images/cispep_phenixgui.png
+
+In the list of non-*trans* peptides, click on chain A, "LYS 269 to GLY 270" to center the Coot window on this peptide bond. [Peptide bonds necessarily span two residues, so both are listed in the validation output. However, in shorthand, peptide bonds are properly associated with their following residue, due to the special relationship *cis* peptide bonds have with a following proline.  Thus, this location is a *cis*-Gly, and chain A, GLY 293 to PRO 294 would be a *cis*-Pro.]
+
+In the Coot window, observe the floating red trapezoid that marks a *cis*-nonProline. (The trapezoid would be green if this were a *cis*-Proline.) This markup makes it easy to spot *cis*-peptides at a glance.  Also note the clash between the GLY 270 CA and the LYS 247 O.
+
+  .. image:: ../images/cispep_validation_bright.png
+
+To perform the correction: Go to Calculate -> Other Modeling Tools, and select Cis <-> Trans. Click on one of the atoms in the offending peptide bond, and Coot will flip the bond. The bond conformation has now been corrected, but the atoms have moved out of the density. Select Real Space Refine Zone, and then select atoms on either side of the peptide bond. This correction involved a large change, so be sure to give Coot at least two full residues on either side of the bond to work with. Once you have obtained a satisfactory local refinement, rerun "Local probe dots", and you should see that the LYS 247 O clash to the GLY CA has been resolved into a hydrogen bond with the GLY N.
+
+("Local probe dots" can be added to the task bar with: Right click in task bar -> Manage Buttons -> Scroll to Validation -> check Local Probe dots)
+
+
 References
 ----------
 
 {{citation:lovell_geometry}}
+
 {{citation:molprobity}}
+
 {{citation:polygon}}
