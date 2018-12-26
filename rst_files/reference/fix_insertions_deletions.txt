@@ -1,0 +1,87 @@
+Fixing register errors in a model with fix_insertions_deletions
+===============================================================
+
+Author(s)
+---------
+
+-  fix_insertions_deletions: Tom Terwilliger
+
+Purpose
+-------
+
+The routine fix_insertions_deletions is a tool for fixing register errors
+in a model by comparing the density at side-chain positions to a
+sequence file.
+
+Usage
+-----
+
+How fix_insertions_deletions works:
+-----------------------------------
+
+The fix_insertions_deletions tool examines the density in the supplied map 
+at the position of each side chain in the supplied model and creates a table
+of side-chain probabilities corresponding to each segment in the model.
+
+These side-chain probabilities are used to generate a map-based sequence for
+the model and map.  This map-based sequence is then compared to the actual
+sequence to identify positions where the sequence register is likely to
+be incorrect, and what changes in register are needed to fix it.
+
+Each place a register shift is needed is used as a target for main-chain
+rebuilding.  During rebuilding the specified insertion or deletion is
+enforced so that only models with the desired changes are obtained (if
+possible).
+
+Additional rebuilding of the worst-fitting regions is also carried out.
+
+
+Using fix_insertions_deletions: 
+-------------------------------
+
+The tool fix_insertions_deletions is usually run automatically as part of
+trace_and_build. However you can run it yourself to try and fix up a model.
+
+Input map file: The map file should cover the model you supply.
+
+Resolution:  Specify the resolution of your map (usually the
+resolution defined by your half-dataset Fourier shell correlation
+
+Model:  Supply a model that you want to fix. Only the main-chain will matter.
+
+Sequence:  Supply a sequence file that covers at least the part of the 
+model that is supplied
+
+Examples
+--------
+
+Standard run of fix_insertions_deletions:
+-----------------------------------------
+
+You can use fix_insertions_deletions to fix register shifts in 
+a  model based on a cryo-EM map: 
+
+::
+
+   phenix.fix_insertions_deletions my_map.mrc resolution=3 my_model.pdb seq.dat
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.fix_insertions_deletions}}
+
