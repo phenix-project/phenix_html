@@ -1,0 +1,75 @@
+Placing CA atoms in a map with refine_ca_model
+==============================================
+
+Author(s)
+---------
+
+-  refine_ca_model: Tom Terwilliger
+
+Purpose
+-------
+
+The routine refine_ca_model is a tool for adjusting CA/CB positions in a
+preliminary model to increase its suitability for generating an all-atom model.
+
+Usage
+-----
+
+How refine_ca_model works:
+--------------------------
+
+The refine_ca_model tool takes a set of CA positions, and optionally, a
+set of CB positions. It adjusts the CA/CB positions to put the atoms in 
+density (if possible) and also to place the CB atoms in plausible positions
+relative to the CA positions and also to make the CA-CA distances as close
+to 3.8 A as possible.
+
+
+Using refine_ca_model: 
+----------------------
+
+The tool refine_ca_model is usually run automatically as part of
+trace_and_build. However you can run it yourself with a CA/CB model,
+a map, and a resolution.
+
+Input map file: The map file should cover the model you supply.
+
+Resolution:  Specify the resolution of your map (usually the
+resolution defined by your half-dataset Fourier shell correlation
+
+CA/CB model:  Supply a model that at least has CA positions. If you supply
+CB positions the new CB positions will be restrained towards the ones you
+supply.
+
+Examples
+--------
+
+Standard run of refine_ca_model:
+--------------------------------
+
+You can use refine_ca_model to adjust a CA/CB model based on a cryo-EM map: 
+
+::
+
+   phenix.refine_ca_model my_map.mrc resolution=2.8 ca_cb_model.pdb
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.refine_ca_model}}
+
