@@ -1,0 +1,166 @@
+Rapid model-building with trace_and_build
+=========================================================
+
+Author(s)
+---------
+
+-  trace_and_build: Tom Terwilliger
+
+Purpose
+-------
+
+The routine trace_and_build is a tool for rapid protein model-building.
+
+Usage
+-----
+
+How trace_and_build works:
+--------------------------
+
+The trace_and_build tool traces the path of a polypeptide chain by
+working from high to low density and following the highest density path
+that does not yield branching. It then finds CB positions and builds an
+atomic model.
+
+Using trace_and_build: 
+----------------------
+
+Normally you will run trace_and_build on the unique part of a cryo-EM map.
+Your main options are the resolution, whether to try a quick run 
+(quick=True) or a more thorough run (quick=False), and how many segments
+to try and build.
+
+Input map file: Usually you should supply trace_and_build with a 
+map that represents the
+unique part of your structure.  If your map has symmetry you can use
+phenix.map_box with extract_unique=true to extract this part of the map.
+
+Resolution:  Specify the resolution of your map (usually the
+resolution defined by your half-dataset Fourier shell correlation
+
+Sequence file:  Supply a sequence file with the sequence or sequences of
+the molecule(s) to be built.  If more than one they will simply be put
+together at this point.
+
+Segments to build: you can choose to build just one or a few of the
+longest segments that trace_and_build can find (max_segments=3), or
+everything (max_segments=None)
+
+Quick run: You can try to run quickly (quick=true) or more thoroughly
+(quick=False).  One difference is that with quick=True, the number 
+of segments to build is by default 3, while with quick=False, it is
+unlimited. The other is that with quick=False, after building the model
+an attempt to fix insertions and deletions will be made 
+(fix_insertions_deletions=True). You can set these parameters separately
+as well.
+ 
+Input model: You can supply an input fixed model and trace_and_build will
+use it as a potential interpretation of the tracing of part of the map.
+It will not be used as is, rather CA positions will be extracted and used
+in later interpretation steps.  This fixed model will take the place
+of the find_helices_strands step that is otherwise carried out.
+
+Procedure used by trace_and_build
+---------------------------------
+
+The procedure used by trace_and_build has several steps:
+
+
+If no model is supplied, an initial fixed model is created by searching 
+for regular
+secondary structure in the map.  Then the tool find_helices_strands
+is used to analyze the new map to find regular secondary structure. 
+Optionally both directions of each segment of the fixed model can 
+be kept (allow_reverse=True).
+
+The core of trace_and_build is to find, extend, and connect segments of
+high density in the map. The way this is done is a lot like the way a person
+would examine the path of a chain in a map, starting from a region of 
+clear (high) density, following the chain until it ends, then lowering the 
+contour level until a path is visible and following that one.
+
+Initial segments of density are identified using the
+model that is supplied or found with find_helices_strands. New
+segments are identified from extended regions of high density, working 
+down from high to low density in the map.  Connections and extensions are
+also made working down from high to low density. Chain tracings are only
+kept if they do not have branching.
+
+Once the path(s) of the polypeptide chain are identified, likely positions
+of CB atoms are identified from the presence of side-chain density along
+the traced path.  The positions of CA atoms are then guessed and refined
+with the tool phenix.refine_ca_model which adjusts the number of CA atoms
+and their positions to match the likely CB positions, the chain tracing,
+and expected CA-CA distances.
+
+Once a CA-only model is created, an attempt to correct the model using
+CA positions in the fixed model (input directly or from find_helices_strands).
+In this step the CA positions in segments in the fixed model are matched 
+with those of the CA-only model, and if they overlap, the CA positions from
+the fixed model are used.  
+
+
+An all-atom model is generated from each CA-only model using Pulchra .
+If allow_reverse is set, then each possible 
+direction of each segment is considered.  Each of these  possibilities
+is refined and scored based on map-model correlation (CC), agreement of
+side-chain density with the sequence, and H-bonding in the model.
+
+The highest-scoring model is written out so that it superimposes on the
+input map.
+
+
+Examples
+--------
+
+Standard run of trace_and_build:
+--------------------------------
+
+You can use trace_and_build to build a model based on a cryo-EM map: 
+
+::
+
+   phenix.trace_and_build my_map.mrc resolution=2.8 my_seq.dat
+
+Using trace_and_build to evaluate forward and reverse versions of a model:
+--------------------------------------------------------------------------
+
+You can use trace_and_build to work on one or more segments, checking both
+directions:
+
+::
+
+   phenix.trace_and_build my_map.mrc resolution=2.8 my_seq.dat my_fragment.pdb \
+   find_chains=False extend_chains=False connect_chains=False allow_reverse=True
+
+This will read in your fragment(s), create forward and reverse versions, score
+them both, and try to build the better one (but without extending it or
+building any new model).  You can set verbose=True to see more details of 
+the scoring if you like. If one direction is clearly better than the other, 
+only it will be kept. If you want to keep both, set the parameter
+convincing_delta_score to a big number or None (take everything).
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+{{citation:pulchra}}
+{{citation:resolve_seq_assign}}
+{{citation:terwilliger_find_helices}}
+{{citation:terwilliger_find_sheets}}
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.trace_and_build}}
+
