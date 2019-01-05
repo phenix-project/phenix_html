@@ -295,7 +295,7 @@ you can type:
 
 ::
 
-    phenix.map_to_model my_map.map seq.fa ncs_type=D7 resolution=3
+    phenix.map_to_model my_map.map seq.fa symmetry=D7 resolution=3
 
 Here map\_to\_model will look for D7 (7-fold symmetry along the c-axis and 
 2-fold symmetry along a or b) in the map and apply it if it is found. It will
