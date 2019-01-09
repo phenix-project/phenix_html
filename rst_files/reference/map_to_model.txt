@@ -49,20 +49,42 @@ To run map\_to\_model successfully, you'll need a map with resolution of
 about 4.5 A or better.  The higher the resolution, the more complete the
 model that you will typically get.
 
-If your map has been averaged based on reconstruction symmetry and 
-you supply a file with that symmetry information (.ncs_spec, biomtr.dat, etc),
-map\_to\_model will find the asymmetric unit of the map, build that, then
-expand to the entire map.  You can also just supply the type of symmetry
-(e.g., D7) or ask to check all plausible symmetry.
+It is easiest to supply map\_to\_model with a map that has already been
+sharpened optimally (for example with phenix.auto_sharpen). It is also easiest
+if you cut out just the unique part of your map before supplying it to
+map\_to\_model (you can use phenix.map_box to do this with 
+the extract_unique=True option).  After you are all done you can reconstruct
+the entire molecule using phenix.apply_ncs.
 
+(Alternatively you can have map\_to\_model do everything for you (auto_sharpen,
+symmetry average, cut out the unique part, reconstruct the entire molecule). 
+This is a lot slower so normally it is best to prepare just the right part
+of the map in advance.)
+
+You have a choice in map\_to\_model of running quickly (quick=True) or 
+more thoroughly. Normally quick=True should be fine, particularly
+for building protein chains. In this mode, 
+map\_to\_model runs the phenix.trace_and_build tool to trace the chain, 
+identify positions of side chains, build a model for each segment of density,
+and refine the entire model. This can be done quickly with multiple processors,
+requiring perhaps 15 minutes to build 300 residues with 4 processors.
+
+If you choose thorough building (quick=False), the map\_to\_model will
+try several different methods of building your model. 
+One method is to build in small regions of the map. 
 The map\_to\_model tool will cut the density 
 in your map into small pieces of connected density and 
 try to build model into each one. It will merge all the 
 pieces into a compact model, refine it, and superimpose 
-final model on the original map. The type of chain or chains to be
+final model on the original map.  Another method is the trace_and_build
+method used in the quick version. A third is standard resolve model-building.
+A fourth is finding helices and strands.
+
+If your structure has RNA or DNA, model-building for these chains is done
+separately from protein.  The type of chain or chains to be
 built are chosen based on your sequence file.  If multiple chain types
 are considered, the entire map is interpreted with each chain type, then
-the best-fitting non-overlapping chains are chosen.
+the best-fitting non-overlapping chains are chosen.  
 
 *Output files from map\_to\_model*
 ----------------------------------
@@ -114,8 +136,11 @@ maximum in the map.
 *Map sharpening/blurring*
 -------------------------
 
-By default (auto\_sharpen=True) the resolution dependence of the map will
-be adjusted to maximize the clarity of the map.  You can choose to use
+If requested, (auto\_sharpen=True) the resolution dependence of the map will
+be adjusted to maximize the clarity of the map.  It is generally 
+preferable to do this in advance using the phenix.auto_sharpen tool however.
+
+If you run auto_sharpen, You can choose to use
 map kurtosis or the adjusted surface area of the map (default) for this 
 purpose.  
 
@@ -192,8 +217,11 @@ boxes.
 *Finding the asymmetric unit of the map*
 ----------------------------------------
 
-If you supply symmetry matrices describing the symmetry used to average 
-the map (if any),
+Normally you should supply map\_to\_model with the unique part (asymmetric unit
+of the map.  You can get this using the phenix.map_box tool with the
+extract_unique=True command.  However if you want map\_to\_model to do this
+automatically, you can supply symmetry matrices describing the 
+symmetry used to average the map (if any),
 then map\_to\_model will try to define a region of the map that represents
 the asymmetric unit of the map.  Application of the symmetry operators to the 
 asymmetric unit will generate the entire map, and application to a model built
@@ -227,10 +255,18 @@ Coot and a region map in Coot, they should superimpose.)
 ----------------
 
 Models are built in several ways by map\_to\_model and then the best-fitting, 
-non-overlapping models are chosen.  The main methods used for model-building 
+non-overlapping models are chosen.  If the quick method for map\_to\_model is
+selected and the chain type is protein, then the default is to run just
+the trace_and_build model-building method. If quick=False, all methods are
+tried.  The main methods used for model-building 
 are: 
 
 ::
+
+  Chain tracing followed by model-building (trace_and_build).  Continuous
+  density is identified in the map, choosing the longest paths if there
+  are choices.  Then C-alpha positions are identified from the presence of
+  side chain density, an all-atom model is constructed and refined.
 
   Standard RESOLVE model-building for PROTEIN/RNA/DNA for the entire 
   asymmetric unit  (or the entire molecule if no symmetry was used ).
@@ -262,8 +298,11 @@ the original map and is written out.
 *Iterative map improvement with model-building and sharpening*
 --------------------------------------------------------------
 
-You can carry out multiple cycles of model-building and map sharpening,
-using the model from each cycle in the sharpening process. The map is 
+A procedure is available
+for carrying out multiple cycles multiple cycles of model-building 
+and map sharpening, using the model from each cycle in the sharpening process. 
+In practice this may help in borderline cases but it is not recommended for
+normal use. The map is 
 sharpened to make it as similar as possible to density calculated from
 the current model and the new map is used for the next cycle of model
 building.
@@ -279,13 +318,12 @@ Running map\_to\_model is easy. From the command-line you can type:
 
 ::
 
-    phenix.map_to_model my_map.map seq.fa ncs_file=find_ncs.ncs_spec
-       resolution=3
+    phenix.map_to_model my_map.map seq.fa resolution=3
 
 where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
-sequence file, and find_ncs.ncs_spec is an optional file specifying any
-symmetry operators used in averaging the map. This can be in the form of
-BIOMTR records from a PDB file as well.
+sequence file.  Normally you should sharpen your map with phenix.auto_sharpen
+and cut out the unique part of the map with phenix.map_box (using the 
+extract_unique=True keyword) before supplying it to map\_to\_model.
 
 Standard run of map\_to\_model, specifying symmetry type:
 ---------------------------------------------------------
@@ -423,11 +461,14 @@ If you have a very large structure it is possible that your computer may not
 have enough memory to run map\_to\_model and that one or more sub-processes 
 might crash.  
 
-One solution for this is that map\_to\_model will automatically build just
-a small part of structures with high symmetry.
+The easiest solution is to run phenix.map_box with the extract_unique=True 
+option beforehand so that you are running map\_to\_model on just the
+unique part of the structure. 
 
-A second solution for this is to build just the asymmetric
-unit of your model (if your map has symmetry).   You can also set the
+You can also just cut out boxes of density from your structure with the 
+phenix.map_box tool and work on each one individually.
+
+You can also set the
 keyword coarse_grid=True to use a coarse grid in RESOLVE and save memory.  
 You can also cut back the resolution which will save memory.  
 Otherwise, you can try on a computer with even more memory.  

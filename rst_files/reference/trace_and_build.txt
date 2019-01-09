@@ -31,8 +31,9 @@ Your main options are the resolution, whether to try a quick run
 to try and build.
 
 Input map file: Usually you should supply trace_and_build with a 
-map that represents the
-unique part of your structure.  If your map has symmetry you can use
+sharpened map that represents the
+unique part of your structure.  You can use phenix.auto_sharpen to 
+sharpen your map.  If your map has symmetry you can use
 phenix.map_box with extract_unique=true to extract this part of the map.
 
 Resolution:  Specify the resolution of your map (usually the
@@ -48,7 +49,8 @@ everything (max_segments=None)
 
 Quick run: You can try to run quickly (quick=true) or more thoroughly
 (quick=False).  One difference is that with quick=True, the number 
-of segments to build is by default 3, while with quick=False, it is
+of segments to build is normally limited to the number of residues in
+your sequence file divided by 50, while with quick=False, it is
 unlimited. The other is that with quick=False, after building the model
 an attempt to fix insertions and deletions will be made 
 (fix_insertions_deletions=True). You can set these parameters separately
