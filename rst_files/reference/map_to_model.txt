@@ -121,30 +121,6 @@ assembly and refinement.
 Then map\_to\_model will apply the symmetry, remove any pieces that overlap
 due to symmetry, and refine the entire model.
 
-*Running map\_to\_model*
-------------------------
-
-
-To run map\_to\_model you can say:
-
-::
-
-  phenix.map_to_model map_file.mrc seq.dat resolution=3
-
-and map_to_model will try to build a model into your map.  Keep in mind that
-normally you should supply the unique part of a sharpened map.  You can
-sharpen the map with auto_sharpen and you can extract the unique part of the
-sharpened map with map_box using the extract_unique option.
-
-
-
-*Output files from map\_to\_model*
-----------------------------------
-
-**map\_to\_model.pdb**: A PDB file with the resulting model, superimposed on
-   the original map (or on the magnified map if magnification is applied).
-
-
 
 *Applying magnification to the map*
 -----------------------------------
@@ -376,6 +352,14 @@ where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
 sequence file.  Normally you should sharpen your map with phenix.auto_sharpen
 and cut out the unique part of the map with phenix.map_box (using the 
 extract_unique=True keyword) before supplying it to map\_to\_model.
+
+Output files from map\_to\_model
+----------------------------------
+
+**map\_to\_model.pdb**: A PDB file with the resulting model, superimposed on
+   the original map (or on the magnified map if magnification is applied).
+
+
 
 Standard run of map\_to\_model, specifying symmetry type:
 ---------------------------------------------------------
