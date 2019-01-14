@@ -86,6 +86,58 @@ built are chosen based on your sequence file.  If multiple chain types
 are considered, the entire map is interpreted with each chain type, then
 the best-fitting non-overlapping chains are chosen.  
 
+*How to use map\_to\_model and trace\_and\_build to build and complete a model*
+-------------------------------------------------------------------------------
+
+The recommended way to build a model using phenix is first to run 
+map\_to\_model and get a starting model, and then to try and build additional
+model and fix errors using trace\_and\_build and fix_insertions_deletions.
+Note that map\_to\_model will show
+you all the chains that are built along with their density, so you can see
+even before it is done whether there are changes in chain tracing that you 
+would like to make.
+
+Once map\_to\_model is done, you can try to connect parts of the model, extend
+chains, or build new chains using trace\_and\_build.  map\_to\_model writes
+out each segment as a separate chain, so you can specify chains to be 
+connected with trace\_and\_build.  For example, if you think chains A and B
+should be connected, you can use pdbtools to create a working model
+working_AB.pdb with just chains A and B.  Then you can run 
+trace\_and\_build with  working_AB.pdb and your map, specifying 
+connect_chains and turning off extend_chains and find_chains.  Then
+trace\_and\_build will attempt to connect your chains A and B and create a
+new model with a single chain.  You can then replace chains A and B in your
+model with the new chain. 
+
+You can also try to fix insertions and deletions in your model by running
+fix_insertions_deletions with your model, your sequence file, and your map.
+
+If you want to create a model with full symmetry, you can do this with
+map\_to\_model as well.  You supply the full map, your model of the 
+unique part of the structure as the starting_model, and the symmetry 
+matrices that you can obtain from the map_symmetry tool.  You can turn 
+off all the model-building methods so that the only thing that happens is
+assembly and refinement.
+Then map\_to\_model will apply the symmetry, remove any pieces that overlap
+due to symmetry, and refine the entire model.
+
+*Running map\_to\_model*
+------------------------
+
+
+To run map\_to\_model you can say:
+
+::
+
+  phenix.map_to_model map_file.mrc seq.dat resolution=3
+
+and map_to_model will try to build a model into your map.  Keep in mind that
+normally you should supply the unique part of a sharpened map.  You can
+sharpen the map with auto_sharpen and you can extract the unique part of the
+sharpened map with map_box using the extract_unique option.
+
+
+
 *Output files from map\_to\_model*
 ----------------------------------
 
@@ -123,7 +175,7 @@ superimpose on the original map.
 *Finding the region containing the molecule*
 --------------------------------------------
 
-By default (density\_select=True), the region of the map containing density
+If requested, (density\_select=True), the region of the map containing density
 is cut out of the entire map. This is particularly useful if the original map
 is very large and the molecule only takes up a small part of the map.  This
 portion of the map is then shifted to place the origin at grid point [0,0,0].
