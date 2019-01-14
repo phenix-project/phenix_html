@@ -112,6 +112,11 @@ model with the new chain.
 You can also try to fix insertions and deletions in your model by running
 fix_insertions_deletions with your model, your sequence file, and your map.
 
+You can try to improve the sequence assignment with sequence_from_map.  This
+is run automatically at the end of map\_to\_model and trace\_and\_build
+but if you create new chains you might want to try and assign them to 
+sequence separately.
+
 If you want to create a model with full symmetry, you can do this with
 map\_to\_model as well.  You supply the full map, your model of the 
 unique part of the structure as the starting_model, and the symmetry 
