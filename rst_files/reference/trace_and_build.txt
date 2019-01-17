@@ -25,7 +25,10 @@ atomic model.
 Using trace_and_build: 
 ----------------------
 
-Normally you will run trace_and_build on the unique part of a cryo-EM map.
+Normally you will access the functionality of trace_and_build by running
+the Phenix map_to_model tool in the Phenix GUI. 
+However you can run it directly as well (there is no GUI for trace_and_build).
+Usuall you will run trace_and_build on the unique part of a cryo-EM map.
 Your main options are the resolution, whether to try a quick run 
 (quick=True) or a more thorough run (quick=False), and how many segments
 to try and build.
