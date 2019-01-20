@@ -180,6 +180,12 @@ Possible Problems
 Specific limitations and problems:
 ----------------------------------
 
+Maps produced with the extract-unique option of map_box should not be 
+sharpened with auto-sharpen.  These maps are closely masked around the 
+density of a single molecule and are set to zero in much of the map, 
+so the information about noise in the map that normally is available 
+is missing and auto-sharpen does not work properly.
+
 Literature
 ----------
 

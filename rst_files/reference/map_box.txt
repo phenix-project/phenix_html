@@ -24,9 +24,17 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
      phenix.map_box model.pdb map.ccp4 selection="resname LIG"
 
 
-  3) Extract unique part of a map:
+  3) Extract unique part of a map. You can extract just the unique part of
+     a map (unique based on map symmetry).  This map is masked around high
+     density. It will normally only have positive density and lower density 
+     parts of even the unique part are truncated. Note that if you want to 
+     sharpen the map, you must sharpen it before you extract the unique part.
+     You should not sharpen a map file created with extract_unique because 
+     the extract_unique function creates a map that has been set to zero 
+     over much of the map and this interferes with auto-sharpen.
 
-     phenix.map_box map.ccp4 extract_unique=True symmetry.ncs_spec molecular_mass=100000
+     phenix.map_box map.ccp4 extract_unique=True symmetry.ncs_spec resolution=3
+
 
 **Notes**
 
