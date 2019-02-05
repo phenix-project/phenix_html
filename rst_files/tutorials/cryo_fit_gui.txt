@@ -98,10 +98,8 @@ CC means 'correlation coefficient between atomic structure and cryo-EM map': ste
 
 
 
-Output Examples
+Output Example
 ------------------
-With tRNA
-
 .. image:: ../images/cryo_fit_result.png
 
 
@@ -110,7 +108,9 @@ Limitation
 gromacs 4.5.5 seems to not handle H2O (water) heteroatom. cryo_fit will
 remove water molecules (if any) from the input .cif/.pdb and fit to cryo EM map.
 
-cryo_fit doesn't handle non-canonical "residue"s such as 7C4, BMA, GDP, ILX, NAG, SEP, TRX. The cryo_fit will simply erase those residues.
+cryo_fit doesn't handle non-canonical "residue"s such as 7C4, BMA,
+GDP, ILX, NAG, SEP, TRX. The cryo_fit will simply exclude those residues
+and report what are excluded.
 
 
 
@@ -119,6 +119,12 @@ Reference
 S. Kirmizialtin, J. Loerke, E. Behrmann, C. MT. Spahn, K. Y Sanbonmatsu,
 Using Molecular Simulation to Model High-Resolution Cryo-EM Reconstructions, 
 Methods Enzymol., 558, 2015, 497-514
+
+
+How to generate and record movie?
+---------------------------------------
+`Generate_record_movie_by_cryo_fit1
+<cryo_fit_movie.html>`__
 
 
 List of most useful options

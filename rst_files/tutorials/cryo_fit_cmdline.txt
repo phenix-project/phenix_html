@@ -68,7 +68,8 @@ gromacs4.5.5 seems to not handle H2O (water) heteroatom. cryo_fit will
 remove water molecules (if any) from the input .cif/.pdb and fit to cryo electron microscopy map.
 
 cryo_fit doesn't handle non-canonical "residue"s such as 7C4, BMA,
-GDP, ILX, NAG, SEP, TRX. The cryo_fit will simply erase those residues.
+GDP, ILX, NAG, SEP, TRX. The cryo_fit will simply exclude those residues
+and report what are excluded.
 
 
 Reference
@@ -82,6 +83,13 @@ Options
 -------------------
 All options will be used as default if unspecified. Gromacs expert users are welcome to 
 customize those options if they wish.
+
+
+How to generate and record movie?
+---------------------------------------
+`Generate_record_movie_by_cryo_fit1
+<cryo_fit_movie.html>`__
+
 
 
 List of most useful options
