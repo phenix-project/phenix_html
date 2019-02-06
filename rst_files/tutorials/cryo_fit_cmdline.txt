@@ -45,7 +45,7 @@ Running the program
   
 example command line::
 
-  % phenix.cryo_fit tRNA.pdb tRNA.map
+  % phenix.cryo_fit model.pdb map.ccp4
 
 
 Output
@@ -57,8 +57,6 @@ Correlation coefficients (CC) between cryo_fitted structures and cryo-EM maps: s
 
 Examples
 ----------
-cryo_fit example with tRNA
-
 .. image:: ../images/cryo_fit_result.png
 
 
