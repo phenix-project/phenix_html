@@ -19,7 +19,8 @@ suits the need not only traditional "static" fitting but also
 "dynamic" fitting. According to Doonam's benchmark, cryo_fit2 better
 fits than cryo_fit1 in 6 cases out of 8 cases (cryo-EM maps have 3~24
 angstrom resolutions. They tie for 1 case,
-cryo_fit1 better fits for the last 1 case whether artifically made cryo-EM map is used).
+cryo_fit1 better fits for the last 1 case where artifically made cryo-EM map is used).
+
 
 Theory
 -------------------
@@ -51,9 +52,17 @@ See the `tutorial notes for cryo_fit2 <../tutorials/cryo_fit2_cmdline.html>`__
 
 Limitation
 -------------------
-As described in `phenix dynamics
-<https://www.phenix-online.org/documentation/reference/dynamics.html>`_,
-cryo_fit2 doesn't use electrostatic interaction. Therefore, it does
-not fully capture all physical forces. `Cryo_fit1
-<https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_
-also omitted electrostatic interaction so that md simulation runs faster.
+- Cryo_fit2 doesn't use electrostatic interaction. Therefore, it does not fully capture all physical forces.
+
+  - See `dynamics <https://www.phenix-online.org/documentation/reference/dynamics.html>`_ for detail
+ 
+  - `Cryo_fit1 <https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_ also omitted electrostatic interaction so that md simulation runs faster.
+
+
+- Please use map_weight < 0.2 for SAXS data based cryo-EM map
+  
+  - A user can transform saxs data into cryo-EM map (mrc/sit) by
+    `Situs SAXS <http://situs.biomachina.org/tutorial_saxs.html>`_
+
+  - However, this is nothing but central points by SAXS, although
+    Chimera will visualize this "cryo-EM" map (mrc/sit) as regular cryo-EM map
