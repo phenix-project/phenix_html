@@ -104,7 +104,13 @@ Secondary structure elements for nucleic acids are base-pairs and stacking pairs
 Base-pairs
 ----------
 
-Restraints to keep correct geometry of base-pairs involves hydrogen bonding, planarity and paralleltiy restraints. Hydrogen bond restraints include distance and angle restraints. Two types of restraints available to keep base-pairs planar: standard planarity restraints and parallelity restraint. We use parallelity by default. User can change it to planarity or even use both of them (not recommended) separately for each defined base-pair in parameter file.
+Restraints to keep correct geometry of base-pairs involves hydrogen bonding, planarity and paralleltiy restraints. Hydrogen bond restraints include distance and angle restraints. Two types of restraints available to keep base-pairs planar: standard planarity restraints and parallelity restraint. We use parallelity by default. User can change it to planarity or even use both of them (not recommended) separately for each defined base-pair in parameter file. User also can change type of base-pairing using Saenger classes*:
+
+|image0|
+
+The 28 possible base-pairs for A, G, U(T), and C involving at least two (cyclic) hydrogen bonds. Hydrogen and nitrogen atoms displayed as small and large filled circles, oxygen atoms as open circles, and glycosyl bonds and thick lines with R indicating ribose C1' atom. Base-pairs are boxed according to composition and symmetry, consisting of only purine, only pyrimidine, or mixed purine/pyrimidine pairs and asymmetric or symmetric base-pairs. Symmetry elements  and  are twofold rotation axes vertical to and within the plane of the paper. In the Watson-Crick base-pairs XIX and XX and in base-pairs VIII and XVIII, pseudosymmetry relating only glycosyl links but not individual base atoms is observed. Drawn after compilations in (33,457).
+
+W. Saenger (1984), *Principles of Nucliec Acid Structure*, 120-121. Springer-Verlag New York Inc., New York.
 
 Stacking pairs
 --------------
@@ -135,3 +141,6 @@ List of all available keywords
 ------------------------------
 
 {{phil:mmtbx.secondary_structure.__init__}}
+
+.. |image0| image:: ../images/saenger_classes.gif
+
