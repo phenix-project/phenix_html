@@ -27,6 +27,12 @@ I see an error message at my 1_make_gro step.
 
 I see an error message at my 8_cryo_fit step.
 -----------------------------------------------------------------------------------------------
+- If a user sees "Fatal error: A charge group moved too far between two domain decomposition steps. This usually means that your system is not well equilibrated" in his/her md.log file,
+
+  - using macOS 10.13.6 helped rather than using Ubuntu 16.04. Maybe macOS has better numerical stability.
+  - One gromacs expert suggested to try smaller time_step_for_cryo_fit. 
+  - However but for Doonam, simply using macOS solved the problem.
+
 - If a user sees "Fatal error: Number of grid cells is zero. Probably the system and box collapsed." in his/her md.log file,
 
   - step_8 may be full of stepxb_nx.pdb.
@@ -38,5 +44,4 @@ I see an error message at my 8_cryo_fit step.
 - If a user sees "step 0 correlation coefficient: nan" in his/her md.log file,
 
   - this often indicates that the initial atomic model is not placed into a cryo-EM map.
-
   - Try `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's fit in map
