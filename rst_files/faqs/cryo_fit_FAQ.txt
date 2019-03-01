@@ -5,14 +5,6 @@ Cryo_fit1 FAQ
 .. contents::
 
 
-At my last step (8_cryo_fit), I see "step 0 correlation coefficient: nan" in my md.log file
------------------------------------------------------------------------------------------------
-This message often indicates when the initial atomic model is not
-placed into a cryo-EM map.
-
-Try `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__
-or UCSF Chimera's fit in map
-
 
 How long does it take to run cryo_fit?
 ---------------------------------------
@@ -25,7 +17,26 @@ How to generate and record movie?
 `Generate_record_movie_by_cryo_fit1 <../tutorials/cryo_fit_movie.html>`__
 
 
-I see an error message at my first step (1_make_gro).
+I see an error message at my 1_make_gro step.
 -----------------------------------------------------------------------------------------------
-If you see "Fatal error: Atom xx in residue xx xxx was not found in rtp entry xx with xx atoms while sorting atoms." on your screen,
-please remove/fix wrong atoms. Running real_spaace_refine via phenix GUI will show which atoms need to be removed/fixed.
+- If a user sees "Fatal error: Atom xx in residue xx xxx was not found in rtp entry xx with xx atoms while sorting atoms." on his/her screen,
+
+  - please remove/fix wrong atoms. Running real_spaace_refine via phenix GUI will show which atoms need to be removed/fixed.
+
+
+
+I see an error message at my 8_cryo_fit step.
+-----------------------------------------------------------------------------------------------
+- If a user sees "Fatal error: Number of grid cells is zero. Probably the system and box collapsed." in his/her md.log file,
+
+  - step_8 may be full of stepxb_nx.pdb.
+  - Most likely, this means that initial cc is too low for MD simulation.
+  - When Doonam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
+  - Alternatively, UCSF Chimera's 'fit in map' or UCSF ChimeraX's isolde may improve initial cc.
+  - Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
+
+- If a user sees "step 0 correlation coefficient: nan" in his/her md.log file,
+
+  - this often indicates that the initial atomic model is not placed into a cryo-EM map.
+
+  - Try `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's fit in map
