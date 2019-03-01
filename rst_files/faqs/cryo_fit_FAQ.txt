@@ -4,12 +4,14 @@ Cryo_fit1 FAQ
 
 .. contents::
 
+
 At my last step (8_cryo_fit), I see "step 0 correlation coefficient: nan" in my md.log file
 -----------------------------------------------------------------------------------------------
 This message often indicates when the initial atomic model is not
 placed into a cryo-EM map.
 
 Try `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__
+or UCSF Chimera's fit in map
 
 
 How long does it take to run cryo_fit?
@@ -21,3 +23,9 @@ How long does it take to run cryo_fit?
 How to generate and record movie?
 ---------------------------------------
 `Generate_record_movie_by_cryo_fit1 <../tutorials/cryo_fit_movie.html>`__
+
+
+I see an error message at my first step (1_make_gro).
+-----------------------------------------------------------------------------------------------
+If you see "Fatal error: Atom xx in residue xx xxx was not found in rtp entry xx with xx atoms while sorting atoms." on your screen,
+please remove/fix wrong atoms. Running real_spaace_refine via phenix GUI will show which atoms need to be removed/fixed.
