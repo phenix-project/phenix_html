@@ -6,9 +6,9 @@ Cryo_fit2: Fitting to a Cryo-EM Map using Phenix Dynamics
 
 Note
 ----------
-cryo_fit2 is under active development. 
+cryo_fit2 is under active development. Protein modeling is good.
 
-Please consider to use `cryo_fit1 <https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_ instead.
+However, for RNA modeling, please consider to use `cryo_fit1 <cryo_fit.html>`_ instead.
 
 
 Author
@@ -18,9 +18,7 @@ Pavel Afonine, Doo Nam Kim (doonam@lanl.gov)
 
 Overview
 ----------
-Unlike `Cryo_fit1
-<https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_ 
-that uses gromacs, CryoFit2 runs within phenix suite. Therefore, it
+Unlike cryo_fit version 1 that uses gromacs, cryo_fit2 runs within phenix suite. Therefore, it
 doesn't require gromacs installation and is faster to execute. It
 suits the need not only traditional "static" fitting but also
 "dynamic" fitting. According to Doonam's benchmark, cryo_fit2 better
@@ -68,7 +66,7 @@ Limitation
 
   - See `dynamics <https://www.phenix-online.org/documentation/reference/dynamics.html>`_ for detail
  
-  - `Cryo_fit1 <https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_ also omitted electrostatic interaction so that md simulation runs faster.
+  - Cryo_fit version 1 also omitted electrostatic interaction so that md simulation runs faster.
 
 
 - Please use map_weight < 0.2 for SAXS data based cryo-EM map
