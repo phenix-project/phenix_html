@@ -24,24 +24,51 @@ I see an error message at my 1_make_gro step.
   - please remove/fix wrong atoms. Running real_spaace_refine via phenix GUI will show which atoms need to be removed/fixed.
 
 
+I see "Fatal error: A charge group moved too far between two domain decomposition steps. This usually means that your system is not well equilibrated" at my 8_cryo_fit step.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- Using macOS 10.13.6 helped rather than using Ubuntu 16.04. Maybe macOS has better numerical stability.
+- One gromacs expert suggested to try smaller time_step_for_cryo_fit. 
+- However but for Doonam, simply using macOS solved the problem.
 
-I see an error message at my 8_cryo_fit step.
+
+I see "Fatal error: Number of grid cells is zero. Probably the system and box collapsed." at my 8_cryo_fit step.
+-------------------------------------------------------------------------------------------------------------------------------
+- step_8 may be full of stepxb_nx.pdb.
+- Most likely, this means that initial cc is too low for MD simulation.
+- When Doonam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
+- Alternatively, UCSF Chimera's 'fit in map' or UCSF ChimeraX's isolde may improve initial cc.
+- Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
+
+
+
+
+I see "step 0 correlation coefficient: nan" at my 8_cryo_fit step.
 -----------------------------------------------------------------------------------------------
-- If a user sees "Fatal error: A charge group moved too far between two domain decomposition steps. This usually means that your system is not well equilibrated" in his/her md.log file,
+- This often indicates that the initial atomic model is not placed into a cryo-EM map.
+- Try `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's fit in map, and provide refitted atomic model to cryo_fit
 
-  - using macOS 10.13.6 helped rather than using Ubuntu 16.04. Maybe macOS has better numerical stability.
-  - One gromacs expert suggested to try smaller time_step_for_cryo_fit. 
-  - However but for Doonam, simply using macOS solved the problem.
 
-- If a user sees "Fatal error: Number of grid cells is zero. Probably the system and box collapsed." in his/her md.log file,
 
-  - step_8 may be full of stepxb_nx.pdb.
-  - Most likely, this means that initial cc is too low for MD simulation.
-  - When Doonam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
-  - Alternatively, UCSF Chimera's 'fit in map' or UCSF ChimeraX's isolde may improve initial cc.
-  - Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
+I see "step 0 correlation coefficient: nan" and "Range checking error: Explanation: During neighbor searching, we assign each particle to a grid based on its coordinates. If your system contains collisions or parameter errors that give particles very high velocities you might end up with some coordinates being +-Infinity or NaN (not-a-number). Obviously, we cannot put these on a grid, so this is usually where we detect those errors. Make sure your system is properly energy-minimized and that the potential energy seems reasonable before trying again." at my 8_cryo_fit step.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-- If a user sees "step 0 correlation coefficient: nan" in his/her md.log file,
+- It means that the map dimensions need to be larger.
 
-  - this often indicates that the initial atomic model is not placed into a cryo-EM map.
-  - Try `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's fit in map
+- Like other MD simulations, gromacs need enough map box size to cover the atomic model to run (ziggle and wiggle). Refer `Waters seems to be out of the box <http://www.cgmartini.nl/index.php/component/kunena/10-other/367-sa-error>`__
+
+- For example, stuck-out red oxygen atoms outside the right edge of the box are the problem.
+
+- .. image:: ../images/cryo_fit_FAQ_sticking_out.png
+
+- In order to run any MD simulation (including cryo_fit), a box should be large enough like
+
+- .. image:: ../images/cryo_fit_FAQ_not_stick_out.png
+
+- Make map box dimensions larger, and run cryo_fit again. You can check map box size by VMD.
+
+- It is rare, but when you used a partical map region ("boxed  map") by `phenix.map_box <https://www.phenix-online.org/documentation/reference/map_box.html>`__ , cryo_fit's automatic mrc to sit map format conversion may not work properly.
+
+- Therefore, please use `phenix.map_box <https://www.phenix-online.org/documentation/reference/map_box.html>`__  , cryo_fit's automatic mrc to sit map format conversion may not work properly.
+
+- Please use `situs map2map <https://situs.biomachina.org/fguide.html#map2map>`__  to convert your mrc format map to situs format map. You can convert by "map2map user.mrc user.sit" then enter 1 for "Convert to classic Situs (auto)*". Then, provide this user.sit file to your cryo_fit. For example, phenix.cryo_fit user.pdb user.sit 
+- When Doonam provided situs made sit map file, the cryo_fit ran smoothly again.
