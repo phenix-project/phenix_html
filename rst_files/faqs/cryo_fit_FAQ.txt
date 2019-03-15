@@ -72,3 +72,5 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 - .. image:: ../images/cryo_fit_FAQ_not_stick_out.png
 
 - Make map box dimensions larger, and run cryo_fit again. You can check map box size by VMD.
+
+- For protein modeling, I would use `cryo_fit2  <https://github.com/cryoFIT/cryo_fit2>`__ which is not limited by box size requirement. It better fits than cryo_fit1 in terms of fitting and geometry anyway.
