@@ -37,13 +37,29 @@ Install using a provided script.
 
 ::
    
-   python <user phenix>/modules/cryo_fit/steps/0_install_cryo_fit/install_cryo_fit.py <cryo_fit.zip>
+   python <user phenix>/modules/cryo_fit/steps/0_install_cryo_fit/install_cryo_fit.py
+   <cryo_fit.zip> <install_path>
 
-For example,
+Please use absolute path, for example,
 
 :: 
 
-   python /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/steps/0_install_cryo_fit/install_cryo_fit.py ~/Downloads/gromacs-4.5.5_cryo_fit.zip
+   python
+   /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/steps/0_install_cryo_fit/install_cryo_fit.py
+   ~/Downloads/gromacs-4.5.5_cryo_fit.zip ~/cryo_fit
+
+will work.
+
+
+Relative path like
+
+:: 
+
+   python
+   /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/steps/0_install_cryo_fit/install_cryo_fit.py
+   ~/Downloads/gromacs-4.5.5_cryo_fit.zip ..
+
+doesn't work.
 
 
 4. Troubleshooting
