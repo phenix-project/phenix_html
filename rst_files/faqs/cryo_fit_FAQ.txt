@@ -52,7 +52,7 @@ I see "step 0 correlation coefficient: nan" at my 8_cryo_fit step.
 I see "step 0 correlation coefficient: nan" and "Range checking error: Explanation: During neighbor searching, we assign each particle to a grid based on its coordinates. If your system contains collisions or parameter errors that give particles very high velocities you might end up with some coordinates being +-Infinity or NaN (not-a-number). Obviously, we cannot put these on a grid, so this is usually where we detect those errors. Make sure your system is properly energy-minimized and that the potential energy seems reasonable before trying again." at my 8_cryo_fit step.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-- When a user used a partical map region ("boxed  map") by `phenix.map_box <https://www.phenix-online.org/documentation/reference/map_box.html>`__ , cryo_fit's automatic mrc to sit map format conversion may not work properly.
+- When a user used a partical map region ("boxed  map") by `phenix.map_box <https://www.phenix-online.org/documentation/reference/map_box.html>`__ or relion_image_handler, cryo_fit's automatic mrc to sit map format conversion may not work properly.
 
 - Therefore, please use `situs map2map <https://situs.biomachina.org/fguide.html#map2map>`__  to convert your mrc format map to situs format map. You can convert by "map2map user.mrc user.sit" then enter 1 for "Convert to classic Situs (auto)*". Then, provide this user.sit file to your cryo_fit. For example, phenix.cryo_fit user.pdb user.sit
 
@@ -74,3 +74,14 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 - Make map box dimensions larger, and run cryo_fit again. You can check map box size by VMD.
 
 - For protein modeling, I would use `cryo_fit2  <https://github.com/cryoFIT/cryo_fit2>`__ which is not limited by box size requirement. It better fits than cryo_fit1 in terms of fitting and geometry anyway.
+
+
+
+I see "User's provided atomic model had 0.0 cc" in my cryo_fit.overall_log.
+---------------------------------------------------------------------------------------------------------------
+
+- When a user used a partical map region ("boxed  map") by `phenix.map_box <https://www.phenix-online.org/documentation/reference/map_box.html>`__ or relion_image_handler, cryo_fit's automatic mrc to sit map format conversion may not work properly.
+
+- Therefore, please use `situs map2map <https://situs.biomachina.org/fguide.html#map2map>`__  to convert your mrc format map to situs format map. You can convert by "map2map user.mrc user.sit" then enter 1 for "Convert to classic Situs (auto)*". Then, provide this user.sit file to your cryo_fit. For example, phenix.cryo_fit user.pdb user.sit
+
+- When Doonam provided situs made sit map file, the cryo_fit ran smoothly again.
