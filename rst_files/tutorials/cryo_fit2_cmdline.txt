@@ -17,13 +17,13 @@ This tutorial will show you how to fit biomolecule atomic structures
 into cryo-EM maps using dynamics simulation with PHENIX commandline
 
 
-Theory for Cryo_fit2
+Theory for cryo_fit2
 -----------------------------
 See the `theory notes for cryo_fit2
 <../reference/cryo_fit2.html>`__
 
 
-Install Cryo_fit2
+How to install 
 -----------------------------
 See the `installation notes for cryo_fit2
 <cryo_fit2_install.html>`__
@@ -46,7 +46,7 @@ or UCSF chimera (Tools->Volume Data->Fit in Map) to roughly place the
 model into a map.
 
 
-Running the program
+How to run
 ----------------------
 
 At command line::
@@ -63,12 +63,29 @@ Tutorial command::
     input/tutorial_cryo_fit2_map.ccp4 resolution=4)
 
 
-Output
--------------------
+Output as a static structure
+-------------------------------
 A final cryo_fitted structure: output/cryo_fit2_fitted.pdb
 
+
+
+Output as a movie
+-------------------------------
 Structures of intermediate steps that can be animated with pymol play button: output/all_states.pdb
 
+Open this pdb file with pymol, then click play button (triangle at right bottom) plays the movie.
+
+
+(below difference is observed with MacPymol ver. 2.2.2) 
+
+If a user dragged all_states.pdb into pymol after opening it, the biomolecule structure looks simplified and movie playing is fast.
+
+If a user dragged all_states.pdb into pymol icon, pymol opens along with all_states.pdb, the biomolecule structure is more detailed, and movie playing is slow.
+
+
+
+How to show map contour as mesh
+-----------------------------------
 
 In pymol commandline::
 
@@ -78,17 +95,16 @@ In pymol commandline::
 
   % cmd.color("blue","mesh1")
 
-will show map contour as mesh.
 
 
 Otherwise, use pymol GUI::
 
   % A (action) -> Mesh -> @ Level 3.0
 
-will show cryo-EM map contour as mesh.
 
 
-Movie file saving (confirmed with  MacPymol 2.2.2)
+
+How to save a movie file (confirmed with  MacPymol 2.2.2)
 -------------------------------------------------------------
 As a user is playing a movie (by clicking a bottom right triangle movie playing button),
 
