@@ -98,6 +98,14 @@ Possible Problems
 Specific limitations and problems:
 ----------------------------------
 
+If the density in some of your maps is rather poor, the rigid-body refinement
+step may not work well.  One thing to try in this case is to refine with
+rigid_body_refinement_single_unit=True. This will tend to hold everything
+together (but it won't give you an adjustment of individual chain positions).
+Another option is to refine (with rigid-body refinement only) the models before
+using combine_focused_maps. That way you have full control over the 
+refinement process. Then in combine_focused_maps 
+use rigid_body_refinement=False.
 
 Literature
 ----------
