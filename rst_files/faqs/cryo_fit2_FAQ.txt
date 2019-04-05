@@ -11,3 +11,13 @@ I see a message of "RuntimeError: cctbx Error: Miller index not in structure fac
 Please consider to enter a correct resolution.
 
 Doonam uses either EMDB reported resolution or phenix.mtriage derived resolution
+
+
+
+My input (before cryo_fit2) and output (after cryo_fit2) pdb files have different molecule sizes
+-----------------------------------------------------------------------------------------------------
+Although pdb text files show similar scales, input (before cryo_fit2)
+and output (after cryo_fit2) pdb files may show different molecule
+sizes in pymol when Doonam used map that was made from phenix.map_box
+
+Analysis is ongoing. In the mean time, please use UCSF chimera instead.
