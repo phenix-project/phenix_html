@@ -17,9 +17,6 @@ How to enlarge map box size?
 --------------------------------------------------------
 - Doo Nam uses `relion_image_handler <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__ to change map box size.
 - For example, relion_image_handler --i user.mrc --new_box 370 --o user_box_size_370.mrc
-- However, relion_image_handler derived mrc file may not go through cryo_fit's automatic mrc to sit map format conversion properly.
-- Therefore, please use `situs map2map <https://situs.biomachina.org/fguide.html#map2map>`__  to convert your mrc format map to situs format map. You can convert by "map2map user.mrc user.sit" then enter 1 for "Convert to classic Situs (auto)*". Then, provide this user.sit file to your cryo_fit. For example, phenix.cryo_fit user.pdb user.sit
-- When Doo Nam provided situs made sit map file, the cryo_fit ran smoothly again.
 
 
 How to generate and record movie?
@@ -57,17 +54,15 @@ I see "Fatal error: Number of grid cells is zero. Probably the system and box co
 
 
 
-
 I see "step 0 correlation coefficient: nan" at my 8_cryo_fit step.
 -----------------------------------------------------------------------------------------------
 - This often indicates that the initial atomic model is not placed into a cryo-EM map.
-- Improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
-
+- Please improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
 
 
 I see "step 0 correlation coefficient: nan" and "Range checking error: Explanation: During neighbor searching, we assign each particle to a grid based on its coordinates. If your system contains collisions or parameter errors that give particles very high velocities you might end up with some coordinates being +-Infinity or NaN (not-a-number). Obviously, we cannot put these on a grid, so this is usually where we detect those errors. Make sure your system is properly energy-minimized and that the potential energy seems reasonable before trying again." at my 8_cryo_fit step.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-- When a user didn't use phenix.map_box, relion_image_handler or gaussian filtering, it means that the map dimensions need to be larger. (see "When cryo_fit's automatic mrc to sit map format conversion may not work properly?" in this FAQ).
+- It means that the map dimensions need to be larger. (see "When cryo_fit's automatic mrc to sit map format conversion may not work properly?" in this FAQ).
 - Like other MD simulations, gromacs need enough map box size to cover the atomic model to run (ziggle and wiggle). Refer `Waters seems to be out of the box <http://www.cgmartini.nl/index.php/component/kunena/10-other/367-sa-error>`__
 - For example, stuck-out red oxygen atoms outside the right edge of the box are the problem.
 - .. image:: ../images/cryo_fit_FAQ_sticking_out.png
@@ -80,17 +75,6 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 
 I see "User's provided atomic model had 0.0 cc" in my cryo_fit.overall_log.
 ---------------------------------------------------------------------------------------------------------------
-- If a user didn't use phenix.map_box, relion_image_handler or gaussian filtering, it means that literally user's provided atomic model has no correlation to map to start with. 
+- It means that literally user's provided atomic model has no correlation to map to start with. 
 
 - See "How to improve initial cc?" in this FAQ, and provide initially aligned atomic model to cryo_fit.
-
-
-
-
-When cryo_fit's automatic mrc to sit map format conversion may not work properly?
--------------------------------------------------------------------------------------------------------------------------
-- As Doo Nam have been used for more than 16 MRC format maps (mostly EMDB downloaded one) so far, cryo_fit's automatic mrc to sit map format conversion works perfectly for all cases (map origins are 0,0,0 or negative values or positive values). However, when a user used a particular map region ("boxed  map") by `phenix.map_box <https://www.phenix-online.org/documentation/reference/map_box.html>`__ or changed map size by relion_image_handler, or gaussian filtered map by UCSF Chimera, cryo_fit's automatic mrc to sit map format conversion may not work properly.
-
-- Therefore, please use `situs map2map <https://situs.biomachina.org/fguide.html#map2map>`__  to convert your mrc format map to situs format map. You can convert by "map2map user.mrc user.sit" then enter 1 for "Convert to classic Situs (auto)*". Then, provide this user.sit file to your cryo_fit. For example, phenix.cryo_fit user.pdb user.sit
-
-- When Doo Nam provided situs made sit map file, the cryo_fit ran smoothly again.
