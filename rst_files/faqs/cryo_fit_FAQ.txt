@@ -30,13 +30,6 @@ How to improve initial cc?
 
 
 
-I see an error message at my 1_make_gro step.
------------------------------------------------------------------------------------------------
-- If a user sees "Fatal error: Atom xx in residue xx xxx was not found in rtp entry xx with xx atoms while sorting atoms." on his/her screen,
-
-  - please remove/fix wrong atoms. Running real_space_refine via phenix GUI will show which atoms need to be removed/fixed.
-
-
 I see "Fatal error: A charge group moved too far between two domain decomposition steps. This usually means that your system is not well equilibrated" at my 8_cryo_fit step.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - Using macOS 10.13.6 helped rather than using Ubuntu 16.04. Maybe macOS has better numerical stability.
