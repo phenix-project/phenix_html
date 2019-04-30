@@ -35,6 +35,7 @@ I see "Fatal error: A charge group moved too far between two domain decompositio
 - Using macOS 10.13.6 helped rather than using Ubuntu 16.04. Maybe macOS has better numerical stability.
 - One gromacs expert suggested to try smaller time_step_for_cryo_fit. 
 - However but for Doo Nam, simply using macOS solved the problem.
+- Less likely, but still a possible reason is that the map weight is too high. Therefore, lowering emweight_multiply_by may help.
 
 
 I see "Fatal error: Number of grid cells is zero. Probably the system and box collapsed." at my 8_cryo_fit step.
@@ -71,3 +72,12 @@ I see "User's provided atomic model had 0.0 cc" in my cryo_fit.overall_log.
 - It means that literally user's provided atomic model has no correlation to map to start with. 
 
 - See "How to improve initial cc?" in this FAQ, and provide initially aligned atomic model to cryo_fit.
+
+
+state.cpt not found, step_8 may be full of stepxb_nx.pdb
+-------------------------------------------------------------------------------------------------------------------------------
+- step_8 may be full of stepxb_nx.pdb.
+- Most likely, this means that initial cc is too low for MD simulation.
+- When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
+- Alternatively, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
+- Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
