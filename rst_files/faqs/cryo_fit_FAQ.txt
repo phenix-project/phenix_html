@@ -34,7 +34,7 @@ I see "Fatal error: A charge group moved too far between two domain decompositio
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - Using macOS 10.13.6 helped rather than using Ubuntu 16.04. Maybe macOS has better numerical stability.
 - One gromacs expert suggested to try smaller time_step_for_cryo_fit. 
-- However but for Doo Nam, simply using macOS solved the problem.
+- However for Doo Nam, simply using macOS solved the problem.
 - Less likely, but still a possible reason is that the map weight is too high. Therefore, lowering emweight_multiply_by may help.
 
 
