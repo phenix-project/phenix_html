@@ -18,16 +18,24 @@ Click salmon color play button (triangle) in right bottom to play
 (reference) https://pymolwiki.org/index.php/Load_Traj
 
 
-UCSF Chimera (confirmed with version 1.13)
-------------------------------------------
+UCSF Chimera (confirmed with version 1.13 and 1.14)
+---------------------------------------------------------------
 [menu] Tools -> MD/Ensemble analysis -> MD Movie -> Trajectory format = GROMACS
-.tpr = (output/trajectory/for_cryo_fit.tpr), .xtc = (output/trajectory/traj.xtc) -> OK
+
+Run input (.tpr) = output/trajectory/for_cryo_fit.tpr
+
+Trajectory (.xtc) = output/trajectory/traj.xtc
+
+OK
+
+(optional)
 
 [menu] Tools -> Depiction -> Rainbow -> OK
 
 [menu] File -> Open -> .../user.mrc (set opacity into 50%)
 
 [menu] Presets -> Publication 1
+
 
 (in MD Movie) click black play button to play
 
