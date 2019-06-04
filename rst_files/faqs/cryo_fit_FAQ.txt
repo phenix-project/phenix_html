@@ -29,6 +29,12 @@ How to improve initial cc?
 - `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map' or UCSF ChimeraX's isolde may improve initial cc.
 
 
+I can't run phenix.superpose_pdbs with cryo_fitted pdb file
+-----------------------------------------------------------------
+phenix.superpose_pdbs can superimpose only between pdb files that have equally/similarly aligned nucleic names.
+This applies to all pdb input files (not only cryo_fitted files).
+Consider to align both input files by "python <User Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
+
 
 I see "Fatal error: A charge group moved too far between two domain decomposition steps. This usually means that your system is not well equilibrated" at my 8_cryo_fit step.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
