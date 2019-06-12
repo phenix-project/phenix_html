@@ -6,18 +6,36 @@ Cryo_fit2 FAQ
 
 
 
-I see a message of "RuntimeError: cctbx Error: Miller index not in structure factor map"
---------------------------------------------------------------------------------------------
-Please consider to enter a correct resolution.
-
-Doonam uses either EMDB reported resolution or phenix.mtriage derived resolution
-
-
-
 My input (before cryo_fit2) and output (after cryo_fit2) pdb files have different molecule sizes
 -----------------------------------------------------------------------------------------------------
 Although pdb text files show similar scales, input (before cryo_fit2)
 and output (after cryo_fit2) pdb files may show different molecule
-sizes in pymol when Doonam used map that was made from phenix.map_box
+sizes in Pymol when Doo Nam used map that was made from phenix.map_box
 
-Analysis is ongoing. In the mean time, please use UCSF chimera instead.
+Troubleshooting is ongoing. 
+
+In the meantime, please use UCSF chimera to visualize bio-molecules instead.
+
+
+
+"RuntimeError: cctbx Error: Miller index not in structure factor map"
+--------------------------------------------------------------------------------------------
+When a user sees above message,	please consider to enter a correct resolution.
+
+Doo Nam uses either EMDB reported resolution or phenix.mtriage derived resolution to properly run cryo_fit2.
+
+
+
+"Sorry: Crystal symmetry mismatch between different files."
+--------------------------------------------------------------------------------------------
+When a user sees a message like
+
+"Sorry: Crystal symmetry mismatch between different files.
+
+(378, 378, 378, 90, 90, 90) P 1
+
+(103.95, 91.35, 89.25, 90, 90, 90) P 1"
+
+please leave correct CRYST1 header only into a input pdb file.
+
+For example, when a wrong CRYST1 header exists above a correct CRYST1 header, this message appeared.
