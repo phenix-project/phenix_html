@@ -63,6 +63,18 @@ class FormatPHIL(object):
       except Exception, e:
         pass
 
+    # try ProgramTemplate location
+    if master_params is None:
+      try:
+        module = libtbx.utils.import_python_object(
+        import_path='%s' % command,
+        error_prefix="",
+        target_must_be="",
+        where_str="").object
+        master_params = module.master_phil_str
+      except Exception:
+        pass
+
     # Check if the module attribute is a string, a scope, ...
     if isinstance(master_params, libtbx.phil.scope):
       pass
