@@ -1,0 +1,53 @@
+phenix.get_pdb_validation_report
+================================
+
+Description
+-----------
+
+This tool is for getting validation report from OneDep validation. Only mmCIF
+format is supported for models and diffraction data, CCP4 format for EM maps.
+NMR chemical shifts and restraints are not currently supported.
+If validation completed successfully, validation report in pdb and xml format will appear on hard drive.
+
+It is not possible to predict how long will it take to get the report. Therefore
+after several attempts (see parameters to control duration and frequency of the requests),
+the tool will ouput session id, which can be used later as a parameter to query RCSB again.
+
+Note, that running this tool again with files will create a new session on
+validation server, not enquire about previous job.
+
+WARNING
+-------
+
+This tool will send your model and data to RCSB servers for processing. Please
+refer to their privacy policy for details:
+
+https://www.wwpdb.org/about/privacy
+
+
+
+Command line usage examples
+---------------------------
+
+  % phenix.get_pdb_validation_report model.cif
+
+  % phenix.get_pdb_validation_report session_id=91c9cfa73036de43f744c7fa0f3b08c563bd9f9b
+
+  % phenix.get_pdb_validation_report model.cif structure_factors.cif
+
+  % phenix.get_pdb_validation_report model.cif map.ccp4
+
+
+GUI
+---
+
+Graphical user interface is currently available in "PDB deposition" section.
+Also, GUI will remember the session id, so when the job is restored, you should
+be able to query RCSB to see if the results are ready. When the results are fetched
+resulting page will change to show them.
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.get_pdb_validation_report}}
