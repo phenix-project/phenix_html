@@ -7,10 +7,10 @@ Running phenix.refine using Amber gradients
 Authors
 =======
 
-Principal authors: Nigel W. Moriarty, Pawel Janowski, Hai Nguyen & 
+Principal authors: Nigel W. Moriarty, Pawel Janowski, Hai Nguyen &
 David A. Case
 
-Contributions from: Jason Swails (Python Sander API), Romain Wolf 
+Contributions from: Jason Swails (Python Sander API), Romain Wolf
 (pdb4amber which is used in AmberPrep)
 
 Theory and Background
@@ -30,35 +30,11 @@ overfitting as compared to conventional restraints.
 Running refinement with Phenix and Amber
 ========================================
 
-The Phenix user should install the latest AmberTools. The interface in
-Phenix was updated to AmberTools17 for the 1.12 release 7 JUL 2017. 
-There is no support
-for older versions of AmberTools.  AmberTools is avaialable free of
-charge at www.ambermd.org. Follow the installation instructions in the
-Amber manual. In particular make sure to set the AMBERHOME environment
-variable. There is a file for setting your environment
-($AMBERHOME/amber.sh or $AMBERHOME/amber.csh script, depending on the
-shell) that can be used in conjunction with Amber. This is required
-for the installation using Amber and can be added to the appropriate
-login script (bashrc or cshrc) but only AMBERHOME is needed for
-use inside Phenix. This is because Phenix uses "dispatchers" which
-setup all the details of the environment from AMBERHOME.
-
-To install Amber, there are instructions on the Amber website.
-
-To create the bridge between Phenix and Amber (and setup the dispatchers), run:
+From Phenix 1.16, Amber is distributed with the standard installer for
+unix and OSX. To test the Amber interface, the user may run:
 
 ::
 
-	[~:]$ phenix.build_amber_interface
-
-This will create a link to $AMBERHOME in the Phenix installation,
-reconfigure Phenix to include Amber and build the code required to
-prepare Amber files and run them seamlessly with Phenix. Amber will remain
-linked and therefore $AMBERHOME should remain set to the Amber installation.
-
-.. To test if the interface has installed successfully the user may go to the 
-   Phenix modules/amber_adaptbx directory and run:
 	amber.run_tests
 
 To run Amber in Phenix, in addition to a PDB file, a topology and a
@@ -70,44 +46,46 @@ these files by using the provided AmberPrep utility:
   phenix.fetch_pdb 4Lzt --mtz
   phenix.AmberPrep 4Lzt.pdb
 
-which will generate three files.
+which will generate four files.
 
 ::
 
   4amber_4Lzt.prmtop
   4amber_4Lzt.rst7
+  4amber_4Lzt.order
   4phenix_4Lzt.pdb
-	
-The first two are the Amber files and the last one is the PDB file that matches
-the two Amber files for atom order and must be used in phenix.refine replacing
-4Lzt.pdb. Having created the input files, refinement can be run as follows:
+
+The first two are the Amber files and the last one is the PDB file
+that matches the two Amber files for atom order and must be used in
+phenix.refine replacing 4Lzt.pdb. Having created the input files, refinement can be run as follows:
 
 ::
 
   phenix.refine 4phenix_4Lzt.pdb 4Lzt.mtz use_amber=True topology_file_name=4amber_4Lzt.prmtop coordinate_file_name=4amber_4Lzt.rst7
+  refinement.input.xray_data.r_free_flags.generate=True
 
 Here is list of keywords:
 
   REQUIRED KEYWORDS
     use_amber - turn on refinement with Amber geometry
       restraints. ("True" or "False"; default = False)
-    topology_file_name - relative path to the Amber topology file. This is 
-      the *prmtop* file created by AmberPrep.
-    coordinate_file_name - relative path to the Amber coordinate file. 
+    topology_file_name - relative path to the Amber topology file.
+      This is the *prmtop* file created by AmberPrep.
+    coordinate_file_name - relative path to the Amber coordinate file.
       This is the *rst7* file created by AmberPrep.
   OPTIONAL KEYWORDS
-    wxc_factor - relative weight factor between the x-ray and 
-      the Amber geometry restraint terms in refinement. 
+    wxc_factor - relative weight factor between the x-ray and
+      the Amber geometry restraint terms in refinement.
       By default this is set to 0.1 which multiplies the standard wxc_scale
-      which has a default of 0.5 for the x-ray and E&H restraints. 
+      which has a default of 0.5 for the x-ray and E&H restraints.
       (Float; default=0.1)
 
 ADDITIONAL INFORMATION:
 
-1. We also provide the possibility to energetically optimize model coordinates 
-using Amber's force field rather than the set of Engh & Huber restraints. 
-This leads to models of improved quality. This minimization can be run 
-as follows:
+1. We also provide the possibility to energetically optimize model
+coordinates using Amber's force field rather than the set of
+Engh & Huber restraints. This leads to models of improved quality.
+This minimization can be run as follows:
 
 ::
 
@@ -134,12 +112,12 @@ to view all of the options. Here is a list of the optional keywords:
 
   clean - remove temporary files (True/False, default=True)
 
-  redq - use Amber's redq force field instead of the default (currently 
-      ff14SB). redq is a version of ff14SB that mitigates 
-      the partial charges on charged amino acid side chains. In theory 
-      this should account for the electrostatic screening effects of 
-      the unmodelled solvent molecules. In practice our tests have not 
-      shown any improvement in refinement when using the reduced charge 
+  redq - use Amber's redq force field instead of the default (currently
+      ff14SB). redq is a version of ff14SB that mitigates
+      the partial charges on charged amino acid side chains. In theory
+      this should account for the electrostatic screening effects of
+      the unmodelled solvent molecules. In practice our tests have not
+      shown any improvement in refinement when using the reduced charge
       (redq) force field, but users are free to experiment (True/False,
       default=False)
 
@@ -152,7 +130,7 @@ alternate conformations and AmberPrep will only retain the first
 alternate conformer of each atom. Solutions to these two limitations
 are currently in development.
 
-4. Metal-containing ligands are not supported by 
+4. Metal-containing ligands are not supported by
 Amber.
 
 5. Atoms at special positions will most often produce high energy
@@ -163,20 +141,11 @@ running AmberPrep.
 
 FOR ADVANCED USERS:
 
-1. Phenix automatically recognizes the user's environment at
-runtime. Therefore, if you have multiple versions of Amber installed
-and would like to switch between them, it is sufficient to change the
-AMBERHOME variable and source the corresponding $AMBERHOME/amber.sh
-script before running Phenix. However, if you are using MDGX for your
-gradient calculation (the default is to use Sander and MDGX use should
-only be reserved for advanced users) you will also need to change the
-soft link to Amber in your Phenix modules directory.
-
-2. To use MDGX instead of Sander for gradient calculation, use
+1. To use MDGX instead of Sander for gradient calculation, use
 md_engine=mdgx keyword for phenix.refine. The default md_engine is
 Sander.
 
-3. phenix.refine with Amber also has a hidden wxc_factor parameter. In
+2. phenix.refine with Amber also has a hidden wxc_factor parameter. In
 ordinary refinement the x-ray term is scaled by the ratio of the
 gradient norms between the x-ray and geometry terms times the
 wxc_factor (default 0.5 when using E&H; recommended 0.025 when using
@@ -185,18 +154,18 @@ ignored and the x-ray term will be scaled by wxc_factor directly. This
 is an experimental feature and has not been shown to improve
 refinement in any way.
 
-4. The advanced user may wish to change the Amber force field used to
+3. The advanced user may wish to change the Amber force field used to
 impose geometry restraints. Be default the force field used is
 ff14SB. This can easily be changed by modifing AmberPrep script,
 run_tleap() method, to source a different force field from Amber.
 
-5. phenix.AmberPrep performs several important actions to prepare
+4. phenix.AmberPrep performs several important actions to prepare
 files for refinement with Phenix and Amber. This includes:
 
   a. checks for existence of ligands and non-standard small molecules. Derives Amber parameters using eLBOW and Antechamber
 
   b. cleans and modifies PDB file for conformity with Amber
-  
+
   c. runs TLEaP to prepare Amber topology and coordinate files
 
   d. runs Amber's XtalUtilities to preapre Amber inputs that conform to the given crystallographic space group

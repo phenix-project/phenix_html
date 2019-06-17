@@ -17,12 +17,13 @@ Phenix
 - phenix.simple\_homology\_model.
 - phenix.rosetta\_refine
 
-phenix.rosetta\_refine requires a compilation of Rosetta from source as it
-requires some programs for the interface between Phenix and Rosetta that are
-not in the binary distribution. The first three programs will run with a binary
-installation of Rosetta (or the compiled installation of Rosetta). From a
-practical point-of-view, making the effort to install the compiled
-version of Rosetta means that you can run all phenix Rosetta dependent programs.
+phenix.rosetta\_refine requires a compilation of Rosetta from source
+as it requires some programs for the interface between Phenix and
+Rosetta that are not in the binary distribution. The first three
+programs will run with a binary installation of Rosetta (or the
+compiled installation of Rosetta). From a practical point-of-view,
+making the effort to install the compiled version of Rosetta means
+that you can run all phenix Rosetta dependent programs.
 
 Once you have installed Rosetta you
 need to set the environmental variable $PHENIX\_ROSETTA\_PATH.
@@ -30,14 +31,15 @@ need to set the environmental variable $PHENIX\_ROSETTA\_PATH.
 Installation - Using standard Phenix installation
 -------------------------------------------------
 
-To use the latest Rosetta version, Phenix needs to be compiled
-using a compiler that is c++11 compatible. This is now the case from Phenix 1.14
-and beyond. Users of macOS should use the command-line installer and install XCode
-to get the compilers.
+To use the latest Rosetta version, Phenix needs to be compiled using a
+compiler that is c++11 compatible. This is now the case from Phenix
+1.14 and beyond. Users of macOS should use the command-line installer
+and install XCode to get the compilers.
 
-Currently, there is an issue with using ``phenix.rosetta_refine`` and macOS High
-Sierra (10.13). The ``rosetta.run_tests`` step in the installation instructions
-is generating large files and using large amounts of memory.
+Currently, there is an issue with using ``phenix.rosetta_refine`` and
+macOS High Sierra (10.13). The ``rosetta.run_tests`` step in the
+installation instructions is generating large files and using large
+amounts of memory.
 
 Proceed with the following.
 
@@ -66,10 +68,11 @@ Proceed with the following.
 
    demos   main    tools
 
-- The directory containing "main demo tools" is to be called "PHENIX\_ROSETTA\_PATH".
-  Now you can now set a local environmental variable in your ".profile"
-  (sh or bash shell) or ".cshrc" (c-shell) to mark where rosetta is
-  located: if you are using the bash or sh shells:
+- The directory containing "main demo tools" is to be called
+  "PHENIX\_ROSETTA\_PATH".  Now you can now set a local environmental
+  variable in your ".profile" (sh or bash shell) or ".cshrc" (c-shell)
+  to mark where rosetta is located: if you are using the bash or sh
+  shells:
 
 ::
 
@@ -81,26 +84,26 @@ Proceed with the following.
 
     %  setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/
 
-- The final step is to build the interface for rosetta\_refine. This is a
-  similar step to the previous scons step so supply as many nproc as
-  available on your machine. If you installed Phenix in a location that requires
-  administrative privileges (e.g. /usr/local on linux or /Applications on macOS),
-  you will also need administrative privileges for building. NOTE: On linux,
-  if you are using GCC 5.1 or later (Ubuntu 16.04 or later), there is an
-  `ABI change
+- The final step is to build the interface for rosetta\_refine. This
+  is a similar step to the previous scons step so supply as many nproc
+  as available on your machine. If you installed Phenix in a location
+  that requires administrative privileges (e.g. /usr/local on linux or
+  /Applications on macOS), you will also need administrative
+  privileges for building. NOTE: On linux, if you are using GCC 5.1 or
+  later (Ubuntu 16.04 or later), there is an `ABI change
   <https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html>`_
-  that requires an additional flag to allow linking between our CentOS 6
-  binary build and Rosetta. To apply this flag, copy this
-  `site.settings <../extras/site.settings>`_ file
-  to ${PHENIX_ROSETTA_PATH}/main/source/tools/build/site.settings before
+  that requires an additional flag to allow linking between our CentOS
+  6 binary build and Rosetta. To apply this flag, copy this
+  `site.settings <../extras/site.settings>`_ file to
+  ${PHENIX_ROSETTA_PATH}/main/source/tools/build/site.settings before
   running this final step.
 
 ::
 
   % rosetta.build_phenix_interface nproc=2
 
-You should now be completely ready to go with Rosetta in Phenix that can be
-tested using
+You should now be completely ready to go with Rosetta in Phenix
+that can be tested using
 
 ::
 
@@ -111,13 +114,21 @@ Troubleshooting
 ---------------
 
  - See FULL INSTRUCTIONS at https://www.rosettacommons.org/support
- - Build may also be called with ./scons.py bin mode=release -j4
- - Build may fail because it is unable to find the g++ requested by build. This can be fixed in two ways
+ - Build may also be called with ./scons.py bin mode=release -j4 Build
+ - may fail because it is unable to find the g++ requested by
+ - build. This can be fixed in two ways
 
-   (1) If you have the correct version of g++ installed, but it is not called by the name expected by the build, simply set a soft link from g++ to e.g. g++-4.6
-   (2) See: http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 for how to edit to tools/build/basic.settings and tools/build/options.settings and using "scons bin mode=release cxx=gcc cxx\_ver=4.5"
+   (1) If you have the correct version of g++ installed, but it is not
+   called by the name expected by the build, simply set a soft link
+   from g++ to e.g. g++-4.6
+   (2) See:
+   http://morganbye.net/blog/2011/05/rosetta-32-ubuntu-1104 for how to
+   edit to tools/build/basic.settings and tools/build/options.settings
+   and using "scons bin mode=release cxx=gcc cxx\_ver=4.5"
 
- - Build may fail due to shallow warnings. Edit tools/build/basic.settings to comment out all "warn" flags for your operating system.
+ - Build may fail due to shallow warnings. Edit
+   tools/build/basic.settings to comment out all "warn" flags for your
+   operating system.
 
 
 Proxy Server Setup
