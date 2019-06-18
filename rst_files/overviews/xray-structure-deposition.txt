@@ -32,6 +32,12 @@ part of the wwPDB deposition process.
 
 **Related programs**
 
+-  `mmtbx.prepare_pdb_deposition <../reference/prepare_pdb_deposition.html>`__:
+   This program takes the mmCIF output from phenix.refine and adds the sequence
+   information necessary for deposition into the Proten Data Bank.
+-  `phenix.get_pdb_validation_report <../reference/get_pdb_validation_report.html>`__:
+   This program submits your model and data in CIF format to the PDB OneDep
+   server to get a validation report in PDF an XML formats.
 -  `phenix.table\_one <../reference/table_one.html>`__: This program can
    be used to generate the table of statistics that are commonly
    required in publication of a crystal structure.

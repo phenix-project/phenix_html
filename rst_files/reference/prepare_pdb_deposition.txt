@@ -1,0 +1,51 @@
+mmtbx.prepare_pdb_deposition
+============================
+
+Description
+-----------
+
+This tool is primarily for adding sequence information to the mmCIF output from
+phenix.refine to make the file suitable for deposition into the Protein Data
+Bank. The minimum inputs for this use case are the model from phenix.refine and
+a sequence file.
+
+If you are starting with a model in PDB format, we recommended that you run
+phenix.refine on your model and data to generate the necessary fields related
+to the data, then run this tool to add the sequence information. If your model
+contains ligands, additional restraints files for the ligands may be necessary.
+
+The input sequence should just be the one letter canonical sequence. For non-standard
+amino acids or residues, this tool will replace the one letter code with the
+three letter code surrounded by the parentheses. For example, if there is a
+selenomethionine, your input sequence should represent that residue as "M". This
+tool will replace the "M" with "(MSE)" in the correct field in the output
+mmCIF file.
+
+However, this feature is dependent on curated monomer libraries, so if there is
+an ambiguity in the parent residue (e.g. methionine is the parent residue for
+selenomethionine), the conversion will not be automatic. For this situation, you
+can manually specify which residues to convert from the one letter code to the
+three letter code with the "custom_residues" parameter. You just need to provide
+a space-separated sequence of residues. Two examples where this is necessary are
+SUI in PDB code 2jjj and OTY in PDB code 4jye.
+
+
+Command line usage examples
+---------------------------
+
+  % mmtbx.prepare_pdb_deposition model.cif sequence.fa
+
+  % mmtbx.prepare_pdb_deposition 2jjj.cif sequence.fa custom_residues="SUI OTY"
+
+  % mmtbx.prepare_pdb_deposition 4jye.cif sequence.fa custom_residues=OTY
+
+GUI
+---
+
+This tool is available in the Phenix GUI in the "PDB deposition" section.
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.programs.prepare_pdb_deposition.Program}}

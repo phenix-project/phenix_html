@@ -31,3 +31,9 @@ the model.
 **Related programs**
 
 -  `phenix.validation_cryoem <../reference/validation_cryo_em.html>`_: This program can be used to generate the table of statistics.
+-  `mmtbx.prepare_pdb_deposition <../reference/prepare_pdb_deposition.html>`__:
+   This program takes the mmCIF output from phenix.refine and adds the sequence
+   information necessary for deposition into the Proten Data Bank.
+-  `phenix.get_pdb_validation_report <../reference/get_pdb_validation_report.html>`__:
+   This program submits your model and data in CIF format to the PDB OneDep
+   server to get a validation report in PDF an XML formats.
