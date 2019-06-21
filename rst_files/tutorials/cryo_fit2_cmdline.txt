@@ -132,7 +132,8 @@ List of most useful options
 | cool_rate              | automatically| Rate of cooling temperature (Kelvin) for MD simulation      |
 |                        | optimized    |							      |
 +------------------------+--------------+-------------------------------------------------------------+
-| number_of_steps        | 1000         | Number of MD simulation steps at each temperature           |
+| number_of_steps        | automatically| Number of MD simulation steps at each temperature           |
+|                        | optimized    | 	       		  	   			      |
 +------------------------+--------------+-------------------------------------------------------------+
 | map_weight             | automatically| A weight toward cryo-EM map                                 |
 |                        | optimized    |                                                             |
