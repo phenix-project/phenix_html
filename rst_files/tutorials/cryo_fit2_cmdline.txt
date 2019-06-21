@@ -121,22 +121,34 @@ List of most useful options
 | Option                 | Default value| Description of inputs                                       |
 |                        |              | and uses                                                    |
 +------------------------+--------------+-------------------------------------------------------------+
-| resolution             | none         | cryo-EM map resolution (angstrom)                           |
-|                        |              | that needs to be specified by a user                        |
+| resolution             | none         | A cryo-EM map resolution (angstrom)                         |
+|                        |              | It needs to be specified by a user.                         |
 +------------------------+--------------+-------------------------------------------------------------+
-| start_temperature      | automatically| Start temperature (Kelvin) for molecular dynamics simulation|
-|                        | optimized    |                                                             |
+| explore                | False        | If True, cryo_fit2 will use maximum number of multiple cores|
+|                        |              | to explore the most optimal MD parameters.                  |
+|                        |              | However, this exploration requires a lot of computing power |
+|                        |              | (e.g. > 128 GB memory, > 20 cores).                         |
+|                        |              | Exploring at a macbook pro (16 GB memory, 2 cores) crashed  |     	     		
++------------------------+--------------+-------------------------------------------------------------+
+| start_temperature      | 300          | Start temperature (Kelvin) for molecular dynamics simulation|
+|                        |              |                                                             |
 +------------------------+--------------+-------------------------------------------------------------+
 | final_temperature      | 0            | Final temperature (Kelvin) for molecular dynamics simulation|
 +------------------------+--------------+-------------------------------------------------------------+
-| cool_rate              | automatically| Rate of cooling temperature (Kelvin) for MD simulation      |
-|                        | optimized    |							      |
+| MD_in_each_epoch       | 4            | An epoch here is different from the one in deep learning.   |
+|                        |              | Here, the epoch is each iteration of MD from                |
+|                        |              | start_temperature to final_temperature.                     |
+|                        |              |							      |
 +------------------------+--------------+-------------------------------------------------------------+
-| number_of_steps        | automatically| Number of MD simulation steps at each temperature           |
-|                        | optimized    | 	       		  	   			      |
+| number_of_steps        | 100          | Number of MD simulation steps at each temperature           |
+|                        |              | 	       		  	   			      |
 +------------------------+--------------+-------------------------------------------------------------+
 | map_weight             | automatically| A weight toward cryo-EM map                                 |
 |                        | optimized    |                                                             |
++------------------------+--------------+-------------------------------------------------------------+
+| weight_multiply        | 1            | Cryo_fit2 will multiply cryo-EM map weight by this much     |
+|                        |              | Usually a small molecule (a helix) requires only 1.         |
+|                        |              | However, a large molecule needs a larger value (e.g. 10~50).|
 +------------------------+--------------+-------------------------------------------------------------+
 | secondary_structure.en | True         | Most MD simulations tend to break secondary structure.      |
 | abled                  |              | Therefore, turning on this option is recommended.           |
