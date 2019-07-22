@@ -135,10 +135,8 @@ List of most useful options
 +------------------------+--------------+-------------------------------------------------------------+
 | final_temperature      | 0            | Final temperature (Kelvin) for molecular dynamics simulation|
 +------------------------+--------------+-------------------------------------------------------------+
-| MD_in_each_epoch       | 4            | An epoch here is different from the one in deep learning.   |
-|                        |              | Here, the epoch is each iteration of MD from                |
+| MD_in_each_cycle       | 4            | Cycle is each iteration of MD from                          |
 |                        |              | start_temperature to final_temperature.                     |
-|                        |              |							      |
 +------------------------+--------------+-------------------------------------------------------------+
 | number_of_steps        | 100          | Number of MD simulation steps at each temperature           |
 |                        |              | 	       		  	   			      |
