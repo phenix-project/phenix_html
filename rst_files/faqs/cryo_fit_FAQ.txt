@@ -36,6 +36,15 @@ This applies to all pdb input files (not only cryo_fitted files).
 Consider to align both input files by "python <User Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
 
 
+I observe cc values keep decreasing during step 8
+-------------------------------------------------------
+- Initial few steps of cryo_fit in step 8 may decrease cc values temporarily as an initial perturbation.
+- However, if it keeps decreasing continuously, it indicates two case/scenarios.
+- 1) When the initial correlation between user input pdb file and cryo-EM map is already high enough. Since cryo_fit considers physically reasonable energy conformation based on MD forcefield (amber03.ff), if the initial cc is already high, cryo_fit may decrease cc eventually. If a user deems his/her input pdb file has a reasonable geometry, then don't use cryo_fit, just run phenix.real_space_refine and deposit. Doo Nam recommends to argue/claim in a paper like "our fit is so high, even cryo_fit didn't find higher level of fit", because cryo_fit automatically increases emweight_multiply_by if it doesn't find higher cc. Therefore, if cryo_fit can't find higher cc even with its higher emweight_multiply_by, it may mean that current fitting is pretty good.
+- 2) When a user input pdb file has unreasonable structural geometry. Although the fit between atomic model and map looks good, it is a fictitious fitting without considering ideal geometry. Run cryo_fit to find decent fit to the cryo-EM map along maintaining reasonable structural geometry.
+
+
+
 I see "Fatal error: A charge group moved too far between two domain decomposition steps. This usually means that your system is not well equilibrated" at my 8_cryo_fit step.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - Using macOS 10.13.6 helped rather than using Ubuntu 16.04. Maybe macOS has better numerical stability.
@@ -69,10 +78,10 @@ I see "Fatal error: Number of grid cells is zero. Probably the system and box co
 
 I see "state.cpt not found, step_8 may be full of stepxb_nx.pdb" at my 8_cryo_fit step
 -------------------------------------------------------------------------------------------------------------------------------
-- step_8 may be full of stepxb_nx.pdb.
-- Most likely, this means that initial cc is too low for MD simulation.
-- When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
-- Alternatively, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
+- Literally, step_8 may be full of stepxb_nx.pdb.
+- Most likely, this means that a cryo_fit input pdb file is not yet stable enough for for SENSITIVE gromacs MD simulation (step 8) even after cryo_fit's ample minimization step (e.g. step 4).
+- When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved more than 2 cases.
+- If initial cc is too low, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
 - Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
 
 
