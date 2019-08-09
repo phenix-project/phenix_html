@@ -9,7 +9,7 @@ phenix.reflection_file_converter
 
 ``phenix.reflection_file_converter`` is a simple utility program that
 allows a straightforward conversion of many reflection file formats
-to ``mtz``, ``cns`` or ``scalepack`` format.  Currently, combining
+to ``mtz``, ``cns``, ``scalepack`` or ``shelx`` format.  Currently, combining
 several dataset into a single output file is not supported.
 
 **Keywords**
@@ -24,97 +24,102 @@ results in::
 
   Options:
     -h, --help            show this help message and exit
-    --unit-cell=10,10,20,90,90,120|FILENAME
+    --unit_cell=10,10,20,90,90,120|FILENAME
                           External unit cell parameters
-    --space-group=P212121|FILENAME
+    --space_group=P212121|FILENAME
                           External space group symbol
     --symmetry=FILENAME   External file with symmetry information
-    --weak-symmetry       symmetry on command line is weaker than symmetry found
+    --weak_symmetry       symmetry on command line is weaker than symmetry found
                           in files
     --resolution=FLOAT    High resolution limit (minimum d-spacing, d_min)
-    --low-resolution=FLOAT
+    --low_resolution=FLOAT
                           Low resolution limit (maximum d-spacing, d_max)
     --label=STRING        Substring of reflection data label or number
-    --non-anomalous       Averages Bijvoet mates to obtain a non-anomalous array
-    --r-free-label=STRING
+    --non_anomalous       Averages Bijvoet mates to obtain a non-anomalous array
+    --r_free_label=STRING
                           Substring of reflection data label or number
-    --r-free-test-flag-value=FLOAT
+    --r_free_test_flag_value=FLOAT
                           Value in R-free array indicating assignment to free
                           set.
-    --generate-r-free-flags
+    --generate_r_free_flags
                           Generates a new array of random R-free flags (MTZ and
                           CNS output only).
-    --use-lattice-symmetry-in-r-free-flag-generation
+    --use_lattice_symmetry_in_r_free_flag_generation
                           group twin/pseudo symmetry related reflections
                           together in r-free set (this is the default).
-    --no-lattice-symmetry-in-r-free-flag-generation
-                          opposite of --use-lattice-symmetry-in-r-free-flag-
+    --no_lattice_symmetry_in_r_free_flag_generation
+                          opposite of --use_lattice_symmetry_in_r_free_flag_
                           generation
-    --r-free-flags-fraction=FLOAT
+    --r_free_flags_fraction=FLOAT
                           Target fraction free/work reflections (default: 0.10).
-    --r-free-flags-max-free=INT
+    --r_free_flags_max_free=INT
                           Maximum number of free reflections (default: 2000).
-    --r-free-flags-format=cns|ccp4
+    --r_free_flags_format=cns|ccp4
                           Convention for generating R-free flags
-    --random-seed=INT     Seed for random number generator (affects generation
+    --random_seed=INT     Seed for random number generator (affects generation
                           of R-free flags).
-    --change-of-basis=STRING
+    --change_of_basis=STRING
                           Change-of-basis operator: h,k,l or x,y,z or
                           to_reference_setting, to_primitive_setting,
                           to_niggli_cell, to_inverse_hand
-    --eliminate-invalid-indices
+    --eliminate_invalid_indices
                           Remove indices which are invalid given the change of
                           basis desired
-    --expand-to-p1        Generates all symmetrically equivalent reflections.
+    --expand_to_p1        Generates all symmetrically equivalent reflections.
                           The space group symmetry is reset to P1. May be used
                           in combination with --change_to_space_group to lower
                           the symmetry.
-    --change-to-space-group=SYMBOL|NUMBER
+    --change_to_space_group=SYMBOL|NUMBER
                           Changes the space group and merges equivalent
                           reflections if necessary
-    --write-mtz-amplitudes
+    --write_mtz_amplitudes
                           Converts intensities to amplitudes before writing MTZ
                           format; requires --mtz_root_label
-    --write-mtz-intensities
+    --write_mtz_intensities
                           Converts amplitudes to intensities before writing MTZ
                           format; requires --mtz_root_label
-    --remove-negatives    Remove negative intensities or amplitudes from the
+    --remove_negatives    Remove negative intensities or amplitudes from the
                           data set
-    --massage-intensities
+    --massage_intensities
                           'Treat' negative intensities to get a positive
                           amplitude. |Fnew| = sqrt((Io+sqrt(Io**2
                           +2sigma**2))/2.0). Requires intensities as input and
                           the flags --mtz, --write_mtz_amplitudes and
                           --mtz_root_label.
-    --scale-max=FLOAT     Scales data such that the maximum is equal to the
-                          given value
-    --scale-factor=FLOAT  Multiplies data with the given factor
+    --scale_max=FLOAT     Scales data such that the maximum is equal to the
+                          given value (ignored for --shelx)
+    --scale_factor=FLOAT  Multiplies data with the given factor (ignored for
+                          --shelx)
     --sca=FILE            write data to Scalepack FILE ('--sca .' copies name of
                           input file)
     --mtz=FILE            write data to MTZ FILE ('--mtz .' copies name of input
                           file)
-    --mtz-root-label=STRING
+    --mtz_root_label=STRING
                           Root label for MTZ file (e.g. Fobs)
     --cns=FILE            write data to CNS FILE ('--cns .' copies name of input
                           file)
     --shelx=FILE          write data to SHELX FILE ('--shelx .' copies name of
-                          input file)
+                          input file). Data are automatically scaled if
+                          necessary to fit into 8 column format.
 
   Example: phenix.reflection_file_converter w1.sca --mtz .
 
 **Examples**
 
-- Convert scalepack into an mtz format. Specify ouput filename (w1.mtz) and label for intensities (IP -> IP,SIGIP)::
+- Convert scalepack into an mtz format. Specify output filename (w1.mtz) and label for intensities (IP -> IP,SIGIP)::
 
     phenix.reflection_file_converter w1.sca --mtz_root_label=IP --mtz=w1.mtz
 
+- Convert mtz intensities into SHELX .hkl format. Specify output filename (data.hkl)::
+
+    phenix.reflection_file_converter data.mtz --label=IOBS,SIGIOBS --shelx=data.hkl
 
 - Change basis to get data in primitive setting, merge to higher symmetry
   and bring to reference setting (three steps)::
 
-    phenix.reflection_file_converter c2.sca --change-of-basis=to_niggli_cell --sca=niggli.sca
-    phenix.reflection_file_converter niggli.sca --change-to-space_group=R32:R --sca=r32r.sca
-    phenix.reflection_file_converter r32r.sca --change-of-basis=to_reference_setting --sca=r32_hexagonal_setting.sca
+    phenix.reflection_file_converter c2.sca --change_of_basis=to_niggli_cell --sca=niggli.sca
+    phenix.reflection_file_converter niggli.sca --change_to_space_group=R32:R --sca=r32r.sca
+    phenix.reflection_file_converter r32r.sca --change_of_basis=to_reference_setting --sca=r32_hexagonal_setting.sca
 
 
 =================
@@ -137,9 +142,9 @@ results in::
 
   Options:
     -h, --help            show this help message and exit
-    --unit-cell=10,10,20,90,90,120|FILENAME
+    --unit_cell=10,10,20,90,90,120|FILENAME
                           External unit cell parameters
-    --space-group=P212121|FILENAME
+    --space_group=P212121|FILENAME
                           External space group symbol
     --symmetry=FILENAME   External file with symmetry information
     -q, --quiet           suppress output
@@ -176,10 +181,10 @@ results in::
   Options:
     -h, --help            show this help message and exit
     -v, --verbose         Enable CMTZ library messages.
-    -c, --show-column-data
-    -f KEYWORD, --column-data-format=KEYWORD
+    -c, --show_column_data
+    -f KEYWORD, --column_data_format=KEYWORD
                           Valid keywords are: human_readable, machine_readable,
                           spreadsheet. Human readable is the default. The format
                           keywords can be abbreviated (e.g. -f s).
-    -b, --show-batches
+    -b, --show_batches
     --walk=ROOT_DIR       Find and process all MTZ files under ROOT_DIR
