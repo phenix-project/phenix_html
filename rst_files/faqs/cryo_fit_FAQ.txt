@@ -36,12 +36,14 @@ This applies to all pdb input files (not only cryo_fitted files).
 Consider to align both input files by "python <User Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
 
 
-I observe cc values keep decreasing during step 8
--------------------------------------------------------
+I observe cc values keep decreasing (or do not increase that much) during step 8
+------------------------------------------------------------------------------------------
 - Initial few steps of cryo_fit in step 8 may decrease cc values temporarily as an initial perturbation.
-- However, if it keeps decreasing continuously, it indicates two case/scenarios.
-- 1) When the initial correlation between user input pdb file and cryo-EM map is already high enough. Since cryo_fit considers physically reasonable energy conformation based on MD forcefield (amber03.ff), if the initial cc is already high, cryo_fit may decrease cc eventually. If a user deems his/her input pdb file has a reasonable geometry, then don't use cryo_fit, just run phenix.real_space_refine and deposit. Doo Nam recommends to argue/claim in a paper like "our fit is so high, even cryo_fit didn't find higher level of fit", because cryo_fit automatically increases emweight_multiply_by if it doesn't find higher cc. Therefore, if cryo_fit can't find higher cc even with its higher emweight_multiply_by, it may mean that current fitting is pretty good.
-- 2) When a user input pdb file has unreasonable structural geometry. Although the fit between atomic model and map looks good, it is a fictitious fitting without considering ideal geometry. Run cryo_fit to find decent fit to the cryo-EM map along maintaining reasonable structural geometry.
+- However, if it keeps decreasing continuously (or do not increase that much), it indicates two cases/scenarios.
+
+- 1) If a user input pdb file has reasonable structural geometry. Then, probablay, the initial correlation between user input pdb file and cryo-EM map is already high enough. Since cryo_fit considers physically reasonable energy conformation based on MD forcefield (amber03.ff), if the initial cc is already high, cryo_fit may decrease cc eventually. If a user deems his/her input pdb file has a reasonable geometry yet cryo_fit can't find better(higher) cc, then cryo_fit may not be necessary. Just run phenix.real_space_refine only and deposit. Doo Nam recommends to argue/claim in a paper like "our fit is so high, even cryo_fit didn't find higher level of fit", because cryo_fit automatically increases emweight_multiply_by if it doesn't find higher cc. Therefore, if cryo_fit can't find higher cc even with its higher emweight_multiply_by, it may mean that current fitting is pretty good.
+
+- 2) If a user input pdb file has unreasonable structural geometry. Although the fit between atomic model and map looks good, it is a fictitious fitting without considering ideal geometry. Run cryo_fit to find decent fit to the cryo-EM map along maintaining reasonable structural geometry.
 
 
 
@@ -94,7 +96,9 @@ I see "step 0 correlation coefficient: nan" at my 8_cryo_fit step.
 
 I see "step 0 correlation coefficient: nan" and "Range checking error: Explanation: During neighbor searching, we assign each particle to a grid based on its coordinates. If your system contains collisions or parameter errors that give particles very high velocities you might end up with some coordinates being +-Infinity or NaN (not-a-number). Obviously, we cannot put these on a grid, so this is usually where we detect those errors. Make sure your system is properly energy-minimized and that the potential energy seems reasonable before trying again." at my 8_cryo_fit step.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-- It means that the map dimensions need to be larger. (see "When cryo_fit's automatic mrc to sit map format conversion may not work properly?" in this FAQ).
+- Based on Doo Nam's experiences, this erro message may mean two cases/scenarios
+- (The 1st case) It means that atomic model is not stable enough. When Doo Nam ran phenix.real_space_refine and provided real_space_refined pdb file into cryo_fit, the problem was solved.
+- (The 2nd case) It means that the map dimensions need to be larger. Therefore, check map size and solve a problem with VMD/EMAN2/relion like followings.
 - Like other MD simulations, gromacs need enough map box size to cover the atomic model to run (ziggle and wiggle). Refer `Waters seems to be out of the box <http://www.cgmartini.nl/index.php/component/kunena/10-other/367-sa-error>`__
 - For example, stuck-out red oxygen atoms outside the right edge of the box are the problem.
 - .. image:: ../images/cryo_fit_FAQ_sticking_out.png
@@ -102,6 +106,7 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 - .. image:: ../images/cryo_fit_FAQ_not_stick_out.png
 - Make map box size larger (see "How to enlarge map box size?" in this FAQ), and run cryo_fit again. You can check map box size by VMD. Alternatively, remove sticking out atoms if these are unnecessary, then run cryo_fit again.
 - For protein modeling, I would use `cryo_fit2  <https://github.com/cryoFIT/cryo_fit2>`__ which is not limited by box size requirement. Most of the time, it better fits than cryo_fit1 in terms of fitting and geometry preservation anyway.
+
 
 
 I see "The initial cell size (xxx) is smaller than the cell size limit (xxx), change options -dd, -rdd or -rcon, see the log file for details" at my 8_cryo_fit step
