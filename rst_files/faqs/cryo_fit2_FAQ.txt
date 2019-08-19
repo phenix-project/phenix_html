@@ -6,6 +6,15 @@ Cryo_fit2 FAQ
 
 
 
+Is there a command line option for cryo_fit2 processing on multiple cores?
+--------------------------------------------------------------------------------
+Like other Phenix applications, specify nproc
+
+For example, phenix.cryo_fit2 nproc=40 model.pdb model.map resolution=3
+
+If nproc is not specified, cryo_fit2 will use available number of cores/3
+
+
 My input (before cryo_fit2) and output (after cryo_fit2) pdb files have different molecule sizes
 -----------------------------------------------------------------------------------------------------
 Although pdb text files show similar scales, input (before cryo_fit2)
