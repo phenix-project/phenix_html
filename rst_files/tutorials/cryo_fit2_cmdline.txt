@@ -48,6 +48,10 @@ At command line::
 
   % phenix.cryo_fit2 <initial_model> <target_map> <map resolution in Angstrom>
   
+For example::
+
+  % phenix.cryo_fit2 model.pdb map.ccp4 3.5
+
 Tutorial command::
 
   % Go to <user phenix>/modules/cryo_fit2/tutorial
@@ -57,6 +61,22 @@ Tutorial command::
   % (run_me.sh is phenix.cryo_fit2 input/tutorial_cryo_fit2_model.pdb
     input/tutorial_cryo_fit2_map.ccp4 resolution=4)
 
+
+How to add user specified geometry
+---------------------------------------------
+
+Copy/modify <user
+phenix>/modules/cryo_fit2/tutorial/eff_file_template/user_custom_geom.eff
+as you wish (the lower sigma value, the user specified geometry will
+be stronger).
+
+Then, provide it to cryo_fit2 like::
+
+  % phenix.cryo_fit2 <initial_model> <target_map> <map resolution in Angstrom> <eff file>
+
+For example::
+
+  % phenix.cryo_fit2 model.pdb map.ccp4 3.5 user_custom_geom.eff
 
 Output as a static structure
 -------------------------------
