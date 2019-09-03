@@ -111,7 +111,7 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 
 I see "The initial cell size (xxx) is smaller than the cell size limit (xxx), change options -dd, -rdd or -rcon, see the log file for details" at my 8_cryo_fit step
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-- Doo Nam observed this error when he unspecified/deleted a certain region of a molecule in input pdb file
+- Doo Nam observed this error when he unspecified/deleted a certain region of a molecule in input pdb file. Even when vmd assisted map box/cell dimension is larger than initial molecule space, this error appeared.
 
 
 
