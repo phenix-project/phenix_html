@@ -59,13 +59,16 @@ I see "Fatal error: Incomplete ring in HIS50" at my 8_cryo_fit step
 ------------------------------------------------------------------------
 - Doo Nam observed this error when he tried to run cryo_fit with 3jch.pdb that has incomplete Histidine ring atoms.
 - He solved with UCSF Chimera
-- Open pdb file
-- [menu]
-- Select -> Residue -> HIS
-- Tools -> Structure Editing -> Rotamers -> OK
-- (select the most probable rotamer each)
-- File -> Save PDB
+
+ 1. Open pdb file
+ 2. [menu]
+ 3. Select -> Residue -> HIS
+ 4. Tools -> Structure Editing -> Rotamers -> OK
+ 5. (select the most probable rotamer each)
+ 6. File -> Save PDB
+
 - Pymol and Swisspdb viewer have similar residue fixing functions
+- Alternatively, a user may identify residues manually by running <phenix-xxxx>/modules/cryo_fit/steps/0_prepare_cryo_fit/count_number_of_atoms_in_each_residue/
 
 
 
