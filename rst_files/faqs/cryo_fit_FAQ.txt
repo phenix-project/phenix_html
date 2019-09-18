@@ -118,23 +118,33 @@ I see "state.cpt not found, step_8 may be full of stepxb_nx.pdb" at my 8_cryo_fi
 
 I see "step 0 correlation coefficient: nan" at my 8_cryo_fit step.
 -----------------------------------------------------------------------------------------------
-- This often indicates that the initial atomic model is not placed into a cryo-EM map.
-- Please improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
+- Doo Nam observed this message with 2 cases.
+
+ 1. This often indicates that the initial atomic model is not placed into a cryo-EM map.
+
+  - Therefore, please improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
+
+ 2. Sometimes, when he ran step 8 without MD-based minimization, this message appear.
+
+  - Therefore, run cryo_fit with enough number_of_steps_for_minimization. As of 9/18/2019, default value of number_of_steps_for_minimization=20000.
 
 
 
 I see "step 0 correlation coefficient: nan" and "Range checking error: Explanation: During neighbor searching, we assign each particle to a grid based on its coordinates. If your system contains collisions or parameter errors that give particles very high velocities you might end up with some coordinates being +-Infinity or NaN (not-a-number). Obviously, we cannot put these on a grid, so this is usually where we detect those errors. Make sure your system is properly energy-minimized and that the potential energy seems reasonable before trying again." at my 8_cryo_fit step.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - Based on Doo Nam's experiences, this error message may indicate between two cases/scenarios.
-- (The 1st case) It means that atomic model is not stable enough. When Doo Nam ran phenix.real_space_refine and provided real_space_refined pdb file into cryo_fit, the problem was solved.
-- (The 2nd case) It means that the map dimensions need to be larger. Therefore, check map size and solve a problem with VMD/EMAN2/relion like followings.
-- Like other MD simulations, gromacs need enough map box size to cover the atomic model to run (ziggle and wiggle). Refer `Waters seems to be out of the box <http://www.cgmartini.nl/index.php/component/kunena/10-other/367-sa-error>`__
-- For example, stuck-out red oxygen atoms outside the right edge of the box are the problem.
-- .. image:: ../images/cryo_fit_FAQ_sticking_out.png
-- In order to run any MD simulation (including cryo_fit), a box should be large enough like
-- .. image:: ../images/cryo_fit_FAQ_not_stick_out.png
-- Make map box size larger (see "How to enlarge map box size?" in this FAQ), and run cryo_fit again. You can check map box size by VMD. Alternatively, remove sticking out atoms if these are unnecessary, then run cryo_fit again.
-- For protein modeling, I would use `cryo_fit2  <https://github.com/cryoFIT/cryo_fit2>`__ which is not limited by box size requirement. Most of the time, it better fits than cryo_fit1 in terms of fitting and geometry preservation anyway.
+
+ 1. It means that atomic model is not stable enough. When Doo Nam ran phenix.real_space_refine and provided real_space_refined pdb file into cryo_fit, the problem was solved.
+
+ 2. It means that the map dimensions need to be larger. Therefore, check map size and solve a problem with VMD/EMAN2/relion like followings.
+
+  - Like other MD simulations, gromacs need enough map box size to cover the atomic model to run (ziggle and wiggle). Refer `Waters seems to be out of the box <http://www.cgmartini.nl/index.php/component/kunena/10-other/367-sa-error>`__
+  - For example, stuck-out red oxygen atoms outside the right edge of the box are the problem.
+  - .. image:: ../images/cryo_fit_FAQ_sticking_out.png
+  - In order to run any MD simulation (including cryo_fit), a box should be large enough like
+  - .. image:: ../images/cryo_fit_FAQ_not_stick_out.png
+  - Make map box size larger (see "How to enlarge map box size?" in this FAQ), and run cryo_fit again. You can check map box size by VMD. Alternatively, remove sticking out atoms if these are unnecessary, then run cryo_fit again.
+  - For protein modeling, I would use `cryo_fit2  <https://github.com/cryoFIT/cryo_fit2>`__ which is not limited by box size requirement. Most of the time, it better fits than cryo_fit1 in terms of fitting and geometry preservation anyway.
 
 
 
