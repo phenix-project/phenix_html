@@ -159,7 +159,7 @@ I see "Too many LINCS warnings" at my 8_cryo_fit step
 
  1. Run phenix.real_space_refine before cryo_fit. Then, provide real_space_refined molecule into cryo_fit. Then, most problems were solved.
 
- 2. Run phenix.cryo_fit with even higher number_of_steps_for_minimization. As of 9/18/2019, default value of number_of_steps_for_minimization=20000.
+ 2. When Doo Nam skipped minimization, this error occured. Since most users minimize starting structure by default (cryo_fit default), most users do not need care about this. Besides, as of 9/18/2019, the default value of number_of_steps_for_minimization=20000 (which is a lot).
 
  3. If starting molecule has non-standard chemical geometry that is too extreme that are not stabilized neither by real_space_refine nor by cryo_fit minimization, then a user needs to fix those non-standard geometry manually.
 
