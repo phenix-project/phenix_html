@@ -118,15 +118,11 @@ I see "state.cpt not found, step_8 may be full of stepxb_nx.pdb" at my 8_cryo_fi
 
 I see "step 0 correlation coefficient: nan" at my 8_cryo_fit step.
 -----------------------------------------------------------------------------------------------
-- Doo Nam observed this message with 2 cases.
+- This often indicates that the initial atomic model is not placed into a cryo-EM map.
 
- 1. This often indicates that the initial atomic model is not placed into a cryo-EM map.
+ - Therefore, please improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
 
-  - Therefore, please improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
-
- 2. Sometimes, when he ran step 8 without MD-based minimization, this message appear.
-
-  - Therefore, run cryo_fit with enough number_of_steps_for_minimization. As of 9/18/2019, default value of number_of_steps_for_minimization=20000.
+- If a user observed "Range checking error: Explanation:" error message at 8_cryo_fit step, please refer <I see "step 0 correlation coefficient: nan" and "Range checking error: Explanation:"> part in this FAQ
 
 
 
