@@ -31,9 +31,7 @@ How to improve initial cc?
 
 I can't run phenix.superpose_pdbs with cryo_fitted pdb file
 -----------------------------------------------------------------
-phenix.superpose_pdbs can superimpose only between pdb files that have equally/similarly aligned nucleic names.
-This applies to all pdb input files (not only cryo_fitted files).
-Consider to align both input files by "python <User Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
+- phenix.superpose_pdbs can superimpose only between pdb files that have equally/similarly aligned nucleic names. This applies to all pdb input files (not only cryo_fitted files). Consider to align both input files by "python <Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
 
 
 I observe cc values keep decreasing (or do not increase that much) during step 8
