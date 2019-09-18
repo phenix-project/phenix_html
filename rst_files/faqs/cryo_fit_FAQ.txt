@@ -128,7 +128,12 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - Based on Doo Nam's experiences, this error message may indicate between two cases/scenarios.
 
- 1. It means that atomic model is not stable enough. When Doo Nam ran phenix.real_space_refine and provided real_space_refined pdb file into cryo_fit, the problem was solved.
+ 1. Doo Nam observed this error when starting molecule is not stabilized structurally. There are two possible solutions.
+ 
+  - Run phenix.real_space_refine before cryo_fit. Then, provide real_space_refined molecule into cryo_fit. Then, most problems were solved.
+
+  - When Doo Nam skipped minimization, this error occured. Since most users minimize starting structure by default (cryo_fit default), most users do not need care about this. Besides, as of 9/18/2019, the default value of number_of_steps_for_minimization=20000 (which is a lot).
+
 
  2. It means that the map dimensions need to be larger. Therefore, check map size and solve a problem with VMD/EMAN2/relion like followings.
 
