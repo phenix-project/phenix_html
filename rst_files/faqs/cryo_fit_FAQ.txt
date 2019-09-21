@@ -6,6 +6,11 @@ Cryo_fit1 FAQ
 
 
 
+How can I provide gaussian filtered maps?
+----------------------------------------------------
+- See 'How can I provide gaussian filtered maps?' in `cryo_fit2_FAQ <cryo_fit2_FAQ.html>`__
+
+
 How long does it take to run cryo_fit?
 ---------------------------------------
 .. image:: ../images/cryo_fit_FAQ_how_long1.png
@@ -87,10 +92,14 @@ I see "Fatal error: Incomplete ring in HIS50" at my 8_cryo_fit step
 I see "Fatal error: Number of grid cells is zero. Probably the system and box collapsed." at my 8_cryo_fit step.
 -------------------------------------------------------------------------------------------------------------------------------
 - step_8 may be full of stepxb_nx.pdb.
-- Most likely, this means that initial cc is too low for MD simulation.
-- When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
-- Alternatively, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
-- Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
+
+ - Most likely, this means that initial cc is too low for MD simulation.
+
+  - When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
+
+  - Alternatively, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
+
+ - Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
 
 
 
