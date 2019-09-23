@@ -51,9 +51,53 @@ example command line::
 
 Output
 -------------------
-A final cryo_fitted structure: steps/8_cryo_fit/cryo_fitted.pdb (and cryo_fitted.gro for vmd visualization)
+- "Output" folder has all useful output files
 
-Correlation coefficients (CC) between cryo_fitted structures and cryo-EM maps: steps/8_cryo_fit/cc_record
+- By default, cryo_fit reports the 3 highest cc files:
+
+ - cryo_fitted_chain_recovered_cleaned_for_real_space_refine_molprobity.pdb
+
+ - extracted_<x>_ps.pdb
+
+ - extracted_<y>_ps.pdb
+
+
+- A final cryo_fitted structure (The highest cc file): 
+
+ - cryo_fitted_chain_recovered_cleaned_for_real_space_refine_molprobity.pdb
+
+
+- <x>.gro file is for vmd visualization.
+
+
+
+- Geometry extracted files at certain (x) pico second during MD simualtion: 
+
+ - extracted_<x>_ps.pdb
+
+
+- The user provided file: 
+
+ - user_provided.pdb (when cryo_fit doesn't find higher cc than a user provided.pdb, this file exists in output folder)
+
+
+- Correlation coefficients (CC) between cryo_fitted structures and cryo-EM maps: 
+
+ - cc_record
+
+- If a user wants the highest cc file, then use either
+
+ - cryo_fitted_chain_recovered_cleaned_for_real_space_refine_molprobity.pdb
+
+ - or 
+
+ - user_provided.pdb
+
+
+- If a user wants other files among the highest cc valued files, then use
+
+ - extracted_<x>_ps.pdb
+
 
 
 Example
