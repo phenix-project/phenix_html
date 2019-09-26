@@ -160,9 +160,9 @@ I see "The initial cell size (xxx) is smaller than the cell size limit (xxx), ch
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - Doo Nam observed this error for 2 cases
 
- - 1) When he provided a pdb file that has unspecified/deleted region of a molecule. Even when vmd assisted map box/cell dimension is larger than initial molecule space, this error appeared.
+ 1. When he provided a pdb file that has unspecified/deleted region of a molecule. Even when vmd assisted map box/cell dimension is larger than initial molecule space, this error appeared.
 
- - 2) When he provided a pdb file that has small number of residues (e.g. 16 amino acids). Even when vmd assisted map box/cell dimension is larger than initial molecule space, this error appeared. This error appeared regardless of the existence of CRYST1 and SCALE header.
+ 2. When he provided a pdb file that has small number of residues (e.g. 16 amino acids). Even when vmd assisted map box/cell dimension is larger than initial molecule space, this error appeared. This error appeared regardless of the existence of CRYST1 and SCALE header.
 
 
 I see "Too many LINCS warnings" at my 8_cryo_fit step
