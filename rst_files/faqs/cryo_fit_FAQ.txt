@@ -20,11 +20,25 @@ How long does it take to run cryo_fit?
 
 How to enlarge map box size?
 --------------------------------------------------------
-- Doo Nam uses `e2iminfo <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__ to know current box size. As in this FAQ, VMD can visualize current map size as well.
+- One can know map size by
 
- - For example, e2iminfo.py <user>.mrc
+ 1. cryo_fit which reports map size after step 6 before step 7 with codes of
+ 
+  - from iotbx import ccp4_map
+  
+  - ccp4_map = ccp4_map.map_reader(user_input_map)
+  
+  - target_map_data = ccp4_map.map_data()
 
- - (note) As of EMAN2.2, the file extension should be mrc, not ccp4
+
+ 2. EMAN2's `e2iminfo <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__
+
+  - For example, e2iminfo.py <user>.mrc
+
+  - (note) As of EMAN2.2, the file extension should be mrc, not ccp4
+
+ 3. VMD which can visualize current map size as in this FAQ.
+
 
 - Then, `relion_image_handler <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__ can enlarge map box size.
 
