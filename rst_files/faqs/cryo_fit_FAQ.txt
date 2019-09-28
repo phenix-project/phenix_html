@@ -24,6 +24,8 @@ How to enlarge map box size?
 
  - For example, e2iminfo.py <user>.mrc
 
+ - (note) As of EMAN2.2, the file extension should be mrc, not ccp4
+
 - Then, `relion_image_handler <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__ can enlarge map box size.
 
  - For example, relion_image_handler --i <user>.mrc --new_box 370 --o <user_box_size_370>.mrc
