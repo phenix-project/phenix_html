@@ -20,8 +20,13 @@ How long does it take to run cryo_fit?
 
 How to enlarge map box size?
 --------------------------------------------------------
-- Doo Nam uses `relion_image_handler <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__ to change map box size.
-- For example, relion_image_handler --i user.mrc --new_box 370 --o user_box_size_370.mrc
+- Doo Nam uses `e2iminfo <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__ to know current box size. As in this FAQ, VMD can visualize current map size as well.
+
+ - For example, e2iminfo.py <user>.mrc
+
+- Then, `relion_image_handler <http://molecularart.dk/2015/11/cryo-em-how-to-change-box-size-and-pixel-size/>`__ can enlarge map box size.
+
+ - For example, relion_image_handler --i <user>.mrc --new_box 370 --o <user_box_size_370>.mrc
 
 
 How to generate and record movie?
