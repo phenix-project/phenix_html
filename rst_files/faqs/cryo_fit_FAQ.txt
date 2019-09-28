@@ -38,7 +38,7 @@ How to generate and record movie?
 
 How to improve initial cc?
 ---------------------------------------
-- `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map' or UCSF ChimeraX's isolde may improve initial cc.
+- `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__, UCSF Chimera's 'fit in map', UCSF Chimera's manual fitting, UCSF ChimeraX's isolde may improve initial cc.
 
 
 I can't run phenix.superpose_pdbs with cryo_fitted pdb file
@@ -63,7 +63,8 @@ I observe cc values keep decreasing (or do not increase that much) during step 8
         Then, the cryo_fit calculates the gradient of CC because of the large empty space not filled. The constraint forces for the model are not helping as they are very small.
 	
   3-1. Re-run cryo_fit with an atomic model that fits the majority of the map.
-          Fit multiple atomic models into a symmetric map or sequential fitting into a non-symmetric map.  Watch https://www.youtube.com/watch?v=6VGYo1pRRZ8&t=0s&list=PLVetO1F9gm_oa--j37yrjzJ4yVJYzPVN5&index=12
+          Fit multiple atomic models into a symmetric map or sequential fitting into a non-symmetric map. Watch  `Tom Goddard's lecture (2013) <https://www.youtube.com/watch?v=6VGYo1pRRZ8&t=0s&list=PLVetO1F9gm_oa--j37yrjzJ4yVJYzPVN5&index=12>`__
+
 	 
   3-2. Re-run cryo_fit with only relevant map region. A user can extract relevant map region by phenix.map_box (preferred) or phenix.map_to_model
   
