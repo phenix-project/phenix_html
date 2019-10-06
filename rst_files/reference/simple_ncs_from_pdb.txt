@@ -277,7 +277,7 @@ rotation and translation are:
 
     Master = ROT x Copy + TRANS
 
-While in the summery and in the CCBTX implementation the coomon use is:
+While in the CCBTX implementation the common use is:
 
 ::
 
@@ -285,6 +285,7 @@ While in the summery and in the CCBTX implementation the coomon use is:
 
 
 So the rotation/Translation are the inverse of each other in the two formats.
+Both formats are displayed in the summary.
 
 A portion of the contents of the 4boz\_simple\_ncs\_from\_pdb.ncs\_spec file,
 which you can edit if you want and which you can use in the AutoBuild Wizard,

@@ -68,6 +68,30 @@ ncs_parameters.force_ncs=True
 
 You still need to supply a map coefficients file (the map itself will be ignored though).
 
+Format of NCS operators
+-----------------------
+
+The NCS operators look like this::
+
+    rota_matrix    0.7955   -0.5660    0.2164
+    rota_matrix   -0.5511   -0.8242   -0.1300
+    rota_matrix    0.2520   -0.0159   -0.9676
+    tran_orth    18.4021    5.3569  -23.3621
+
+    center_orth   15.9430   11.8822    0.6609
+
+
+rota_matrix and tran_orth are the rotation and translation information, and
+center_orth is (approximately) the center of the region where the operator
+applies.
+
+The standard in the .ncs_spec files is that the NCS operator is applied to copy
+j to map copy j on to copy 1.   If you want the inverse operators you can 
+specify invert_matrices=True and then you will get operators that map copy 1
+on to copy j.
+
+
+
 Examples
 --------
 
