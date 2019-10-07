@@ -8,7 +8,9 @@ Note
 ----------
 cryo_fit2 is under active development.
 
-Please consider to use `cryo_fit1 <https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_ instead.
+Therefore, please consider to use `cryo_fit1
+<https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_
+instead (especially for RNA modeling).
 
 
 Overview
@@ -21,7 +23,6 @@ Theory for cryo_fit2
 -----------------------------
 See the `theory notes for cryo_fit2
 <../reference/cryo_fit2.html>`__
-
 
 
 Input
@@ -65,18 +66,41 @@ Tutorial command::
 How to add user specified geometry
 ---------------------------------------------
 
-Copy/modify <user
-phenix>/modules/cryo_fit2/tutorial/eff_file_template/user_custom_geom.eff
-as you wish (the lower sigma value, the user specified geometry will
-be stronger).
+- Two options when generating a user specified geometry
 
-Then, provide it to cryo_fit2 like::
+ - sigma_for_auto_geom 
+ 
+  - (default value = 0.05). The lower this value, the stronger the custom made secondary structure restraints will be. Oleg once recommended 0.021 which is the sigma value for covalent bond. According to a small benchmark with a RNA molecule (e.g. L1 stalk), 0.05 best preserves the number of base-pairs.
+
+ - slack_for_auto_geom 
+ 
+  - (default value = 0). As Doo Nam understands /modules/cctbx_project/mmtbx/monomer_library/pdb_interpretation.py, default value is 0. Indeed, Oleg confirmed that slack should be always 0 for proper geometry restraints. (~Sep, 2019). However, 3.5 Angstrom is a usual width with Go-model. Therefore, Doo Nam may need to try 1.7 slack to allow more flexible equilibrium.
+
+
+- There are two methods of generating a user specified geometry file (.eff file).
+
+ 1. If a user specified geometry file is small, then simply copy/modify <user phenix>/modules/cryo_fit2/tutorial/eff_file_template/user_custom_geom.eff  as you wish.
+
+ 2. If a user specified geometry file is large, then run::
+
+    % phenix.cryo_fit2 <initial_model> <target_map> <map resolution in Angstrom> <write_custom_geom_only=True> <sigma> <slack>
+
+  For example::
+
+   % phenix.cryo_fit2 model.pdb map.ccp4 3.5 write_custom_geom_only=True 0.04 0.2
+
+  Sigma and slack are optional (if a user didn't specify these, cryo_fit2 will use default values).
+  Then, automatically generated geometry file should be generated at the same folder. Modify it for a user's need.
+
+
+- Once a user generated an eff file (by any method), then provide it to cryo_fit2 like::
 
   % phenix.cryo_fit2 <initial_model> <target_map> <map resolution in Angstrom> <eff file>
 
-For example::
+ - For example::
 
-  % phenix.cryo_fit2 model.pdb map.ccp4 3.5 user_custom_geom.eff
+   % phenix.cryo_fit2 model.pdb map.ccp4 3.5 user_custom_geom.eff
+
 
 Output as a static structure
 -------------------------------
@@ -137,52 +161,52 @@ All options will be used as default if unspecified. e.g. `secondary_structure_en
 List of most useful options
 ---------------------------------
 
-+------------------------+--------------+-------------------------------------------------------------+
-| Option                 | Default value| Description of inputs                                       |
-|                        |              | and uses                                                    |
-+------------------------+--------------+-------------------------------------------------------------+
-| resolution             | none         | A cryo-EM map resolution (angstrom)                         |
-|                        |              | It needs to be specified by a user.                         |
-+------------------------+--------------+-------------------------------------------------------------+
-| explore                | False        | If True, cryo_fit2 will use maximum number of multiple cores|
-|                        |              | to explore the most optimal MD parameters.                  |
-|                        |              | However, this exploration requires a lot of computing power |
-|                        |              | (e.g. > 128 GB memory, > 20 cores).                         |
-|                        |              | Exploring at a macbook pro (16 GB memory, 2 cores) crashed  |     	     		
-+------------------------+--------------+-------------------------------------------------------------+
-| start_temperature      | 300          | Start temperature (Kelvin) for molecular dynamics simulation|
-|                        |              |                                                             |
-+------------------------+--------------+-------------------------------------------------------------+
-| final_temperature      | 0            | Final temperature (Kelvin) for molecular dynamics simulation|
-+------------------------+--------------+-------------------------------------------------------------+
-| MD_in_each_cycle       | 4            | Cycle is each iteration of MD from                          |
-|                        |              | start_temperature to final_temperature.                     |
-+------------------------+--------------+-------------------------------------------------------------+
-| number_of_steps        | 100          | Number of MD simulation steps at each temperature           |
-|                        |              | 	       		  	   			      |
-+------------------------+--------------+-------------------------------------------------------------+
-| map_weight             | automatically| A weight toward cryo-EM map                                 |
-|                        | optimized    |                                                             |
-+------------------------+--------------+-------------------------------------------------------------+
-| weight_multiply        | 1            | Cryo_fit2 will multiply cryo-EM map weight by this much     |
-|                        |              | Usually a small molecule (a helix) requires only 1.         |
-|                        |              | However, a large molecule needs a larger value (e.g. 10~50).|
-+------------------------+--------------+-------------------------------------------------------------+
-| secondary_structure.en | True         | Most MD simulations tend to break secondary structure.      |
-| abled                  |              | Therefore, turning on this option is recommended.           |
-|                        |              | If HELIX/SHEET records are present in supplied .pdb file,   |
-|                        |              | automatic search of the existing secondary structures in the|
-|                        |              | given input pdb file will not be executed.                  |
-+------------------------+--------------+-------------------------------------------------------------+
-| secondary_structure.pr | True         | False may be useful for very poor low-resolution structures |
-| otein.remove_outliers  |              | by ignoring some hydrogen "bond" if it exceed certain       |
-|                        |              | distance threshold                                          |
-+------------------------+--------------+-------------------------------------------------------------+
-| output_dir             | output       | Output folder name prefix                                   |
-+------------------------+--------------+-------------------------------------------------------------+
-| keep_progress_on_screen| True         | If True, temp=xx dist_moved=xx angles=xx bonds=xx is shown  |
-|                        |              | on screen rather than cryo_fit2.log                         |
-+------------------------+--------------+-------------------------------------------------------------+
-| keep_origin            | True         | If True, write out model with origin in original location.  |
-|                        |              | If False, shift map origin to (0,0,0)                       |
-+------------------------+--------------+-------------------------------------------------------------+
++------------------------+---------------+-------------------------------------------------------------+
+| Option                 | Default value | Description of inputs                                       |
+|                        |               | and uses                                                    |
++------------------------+---------------+-------------------------------------------------------------+
+| resolution             | none          | A cryo-EM map resolution (angstrom)                         |
+|                        |               | It needs to be specified by a user.                         |
++------------------------+---------------+-------------------------------------------------------------+
+| explore                | False         | If True, cryo_fit2 will use maximum number of multiple cores|
+|                        |               | to explore the most optimal MD parameters.                  |
+|                        |               | However, this exploration requires a lot of computing power |
+|                        |               | (e.g. > 128 GB memory, > 20 cores).                         |
+|                        |               | Exploring at a macbook pro (16 GB memory, 2 cores) crashed  |     	     		
++------------------------+---------------+-------------------------------------------------------------+
+| start_temperature      | 300           | Start temperature (Kelvin) for molecular dynamics simulation|
+|                        |               |                                                             |
++------------------------+---------------+-------------------------------------------------------------+
+| final_temperature      | 0             | Final temperature (Kelvin) for molecular dynamics simulation|
++------------------------+---------------+-------------------------------------------------------------+
+| MD_in_each_cycle       | 4             | Cycle is each iteration of MD from                          |
+|                        |               | start_temperature to final_temperature.                     |
++------------------------+---------------+-------------------------------------------------------------+
+| number_of_steps        | 100           | Number of MD simulation steps at each temperature           |
+|                        |               | 	       		  	   			       |
++------------------------+---------------+-------------------------------------------------------------+
+| map_weight             | (automatically| A weight toward cryo-EM map                                 |
+|                        | optimized)    |                                                             |
++------------------------+---------------+-------------------------------------------------------------+
+| weight_multiply        | 1             | Cryo_fit2 will multiply cryo-EM map weight by this much     |
+|                        |               | Usually a small molecule (a helix) requires only 1.         |
+|                        |               | However, a large molecule needs a larger value (e.g. 10~50).|
++------------------------+---------------+-------------------------------------------------------------+
+| secondary_structure.en | True          | Most MD simulations tend to break secondary structure.      |
+| abled                  |               | Therefore, turning on this option is recommended.           |
+|                        |               | If HELIX/SHEET records are present in supplied .pdb file,   |
+|                        |               | automatic search of the existing secondary structures in the|
+|                        |               | given input pdb file will not be executed.                  |
++------------------------+---------------+-------------------------------------------------------------+
+| secondary_structure.pr | True          | False may be useful for very poor low-resolution structures |
+| otein.remove_outliers  |               | by ignoring some hydrogen "bond" if it exceed certain       |
+|                        |               | distance threshold                                          |
++------------------------+---------------+-------------------------------------------------------------+
+| output_dir             | output        | Output folder name prefix                                   |
++------------------------+---------------+-------------------------------------------------------------+
+| keep_progress_on_screen| True          | If True, temp=xx dist_moved=xx angles=xx bonds=xx is shown  |
+|                        |               | on screen rather than cryo_fit2.log                         |
++------------------------+---------------+-------------------------------------------------------------+
+| keep_origin            | True          | If True, write out model with origin in original location.  |
+|                        |               | If False, shift map origin to (0,0,0)                       |
++------------------------+---------------+-------------------------------------------------------------+
