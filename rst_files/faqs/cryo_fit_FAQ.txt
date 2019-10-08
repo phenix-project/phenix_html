@@ -137,11 +137,15 @@ I see "pdb file cleaning is not done" at my step 1 (Make gro and topology file b
 
 I see "state.cpt not found, step_8 may be full of stepxb_nx.pdb" at my 8_cryo_fit step
 -------------------------------------------------------------------------------------------------------------------------------
-- Literally, step_8 may be full of stepxb_nx.pdb.
-- Most likely, this means that a cryo_fit input pdb file is not yet stable enough for for SENSITIVE gromacs MD simulation (step 8) even after cryo_fit's ample minimization step (e.g. step 4).
-- When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved more than 2 cases.
-- If initial cc is too low, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
-- Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
+- Literally, steps/8_cryo_fit fold may be full of stepxb_nx.pdb files.
+
+ - Most likely, this means that a cryo_fit input pdb file is not yet stable enough for sensitive Gromacs MD simulation (step 8) even after cryo_fit's ample minimization step (e.g. step 4).
+
+  - When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved more than 2 cases.
+  
+  - If initial cc is too low, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
+  
+  - Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
 
 
 
