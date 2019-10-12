@@ -22,7 +22,7 @@ How to enlarge map box size?
 --------------------------------------------------------
 - One can know map size by
 
- 1. cryo_fit which reports map size after step 6 before step 7 with codes of
+ 1. cryo_fit which reports a map size between step 6 and step 7 with codes of
  
   - from iotbx import ccp4_map
   
@@ -45,6 +45,15 @@ How to enlarge map box size?
  - For example, relion_image_handler --i <user>.mrc --new_box 370 --o <user_box_size_370>.mrc
 
 
+How to extract a relevant map region?
+----------------------------------------------
+- Question: I only want to fit the monomer because only one monomer of the trimer map is the best. Do you have any idea of how to generate the monomer map that cryo_fit can use?
+
+- Answer: Please use `phenix.map_box <http://www.phenix-online.org/documentation/reference/map_box.html>`__ to extract local map.
+
+ - Alternatively, you can try `phenix.map_to_model <http://www.phenix-online.org/documentation/reference/map_to_model.html>`__.
+
+
 How to generate and record movie?
 ---------------------------------------
 - `Generate_record_movie_by_cryo_fit1 <../tutorials/cryo_fit_movie.html>`__
@@ -52,7 +61,7 @@ How to generate and record movie?
 
 How to improve initial cc?
 ---------------------------------------
-- `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__, UCSF Chimera's 'fit in map', UCSF Chimera's manual fitting, UCSF ChimeraX's isolde may improve initial cc.
+- `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__, UCSF Chimera's 'Fit in Map (Tools -> Volume Data -> Fit in Map)', UCSF Chimera's manual fitting (using a mouse) often improve initial cross-correlation (cc) between map and model. UCSF ChimeraX's isolde may improve initial cc as well.
 
 
 I can't run phenix.superpose_pdbs with cryo_fitted pdb file
@@ -63,26 +72,24 @@ I can't run phenix.superpose_pdbs with cryo_fitted pdb file
 I observe cc values keep decreasing (or do not increase that much) during step 8
 ------------------------------------------------------------------------------------------
 - Initial few steps of cryo_fit in step 8 may decrease cc values temporarily as an initial perturbation.
-- However, if it keeps decreasing continuously (or do not increase that much), it may  indicate two possible reasons.
+- However, if it keeps decreasing continuously (or do not increase that much), it may indicate two possible cases.
 
-  1. If a user input pdb file has reasonable structural geometry. Then, probablay, the initial correlation between user input pdb file and cryo-EM map is already high enough. Since cryo_fit considers physically reasonable energy conformation based on MD forcefield (amber03.ff), if the initial cc is already high, cryo_fit may decrease cc eventually. If a user deems his/her input pdb file has a reasonable geometry yet cryo_fit can't find better(higher) cc, then cryo_fit may not be necessary. Just run phenix.real_space_refine only and deposit. Doo Nam recommends to argue/claim in a paper like "our fit is so high, even cryo_fit didn't find higher level of fit", because cryo_fit automatically increases emweight_multiply_by if it doesn't find higher cc. Therefore, if cryo_fit can't find higher cc even with its higher emweight_multiply_by, it may mean that current fitting is pretty good.
+ - Case 1 <A user input pdb file has reasonable structural geometry> For this case, try below possible solutions. If cryo_fit still can't find better (higher) cc, then the initial correlation between user input pdb file and cryo-EM map is already high enough. Just run phenix.real_space_refine only and deposit. Doo Nam recommends to argue/claim in a paper like "Our fit is so high, even cryo_fit did not find higher level of fit than our initial fit".
 
- 2. If a user input pdb file has unreasonable structural geometry. Although the fit between atomic model and map looks good, it is a fictitious fitting without considering ideal geometry. Run cryo_fit to find decent fit to the cryo-EM map along maintaining reasonable structural geometry.
+ - Case 2 <A  user input pdb file has unreasonable structural geometry> For this case, although the initial fit between user's atomic model and map looks good, it is a fictitious fitting without consideration of ideal atomistic model geometry. Run cryo_fit to find decent fit to the cryo-EM map that restores/maintains reasonable structural geometry based on molecular dynamics forcefield (amber03.ff).
 
-- There are four possible solutions
+- There are possible solutions
 
- 1. Providing higher (better) resolution map tends to help this problem.
- 2. Enforcing stronger map weight tends to help this problem.
- 3. If cryo_fit is provided a giant cryoem map with a tiny atomic model.
-        Then, the cryo_fit calculates the gradient of CC because of the large empty space not filled. The constraint forces for the model are not helping as they are very small.
+ 1. Provide a higher resolution map (like better than 4.5 Angstrom) tends to find higher cc since there is a more chance of finding fittable regions.
+ 2. Cryo_fit calculates the gradient of cc. If cryo_fit is provided a giant cryo-em map with a tiny atomic model, then there is a large empty space (not filled). Therefore, the constraint forces for the model are very small. Consequently, these small forces are not helpful.
 	
-  3-1. Re-run cryo_fit with an atomic model that fits the majority of the map.
-          Fit multiple atomic models into a symmetric map or sequential fitting into a non-symmetric map. Watch  `Tom Goddard's lecture (2013) <https://www.youtube.com/watch?v=6VGYo1pRRZ8&t=0s&list=PLVetO1F9gm_oa--j37yrjzJ4yVJYzPVN5&index=12>`__
+  2-1. Re-run cryo_fit with an atomic model that fits the majority of the map. If you fit multiple atomic models into a symmetric map or do sequential fitting into a non-symmetric map, watch `Tom Goddard's lecture (2013) <https://www.youtube.com/watch?v=6VGYo1pRRZ8&t=0s&list=PLVetO1F9gm_oa--j37yrjzJ4yVJYzPVN5&index=12>`__
 
-	 
-  3-2. Re-run cryo_fit with only relevant map region. A user can extract relevant map region by phenix.map_box (preferred) or phenix.map_to_model
+  2-2. Re-run cryo_fit with only a relevant map region. See 'How to extract a relevant map region?' in this FAQ.
   
- 4. If the initial model is not properly aligned to a map, fit using UCSF Chimera -> Tools -> Volume Data -> Fit in Map
+ 3. If the initial model is not properly aligned to a map, see 'How to improve initial cc?' in this FAQ.
+
+ 4. A user may enforce a stronger initial map weight (e.g. emweight_multiply_by) manually. However, since cryo_fit automatically increases emweight_multiply_by if it doesn't find higher cc anyway, manual increase in map weight may not necessarily find higher cc.
 
 
 
@@ -143,7 +150,12 @@ I see "state.cpt not found, step_8 may be full of stepxb_nx.pdb" at my 8_cryo_fi
 
   - When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved more than 2 cases.
   
-  - If initial cc is too low, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
+  - If initial cc is too low, improve initial cc by fitting initial atomic model into a map,
+  
+   - either by following "How to improve initial cc?" in this FAQ
+   - or adding/copying more atoms.
+   
+    - For example, when Doo Nam tried to fit a monomer into a trimer map, this error occured. However, simply adding dimer atomic models into an input pdb file and running cryo_fit again removed the error.
   
   - Less likely, but still a possible case is when the map weight is too high, lowering emweight_multiply_by may help.
 
