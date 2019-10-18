@@ -6,6 +6,31 @@ Cryo_fit1 FAQ
 
 
 
+cc values have kept decreased (or have not increased that much) during step 8
+------------------------------------------------------------------------------------------
+- Initial few steps of cryo_fit in step 8 may decrease cc values temporarily as an initial perturbation.
+- However, if it keeps decreasing continuously (or do not increase that much), it may indicate two possible cases.
+
+ - Case 1 <A user input pdb file has reasonable structural geometry> For this case, try below possible solutions. If cryo_fit still can't find better (higher) cc, then the initial correlation between user input pdb file and cryo-EM map is already high enough. Just run phenix.real_space_refine only and deposit. Doo Nam recommends to argue/claim in a paper like "Our fit is so high, even cryo_fit did not find higher level of fit than our initial fit". This bold recommendation is based on his limited observations so far. Therefore, if you have a better cc model (from manual fit?) than cryo_fitted model, I would appreciate if you can email me (doonam.kim@gmail.com).
+
+
+ - Case 2 <A  user input pdb file has unreasonable structural geometry> For this case, although the initial fit between user's atomic model and map looks good, it is a fictitious fitting without consideration of ideal atomistic model geometry. Run cryo_fit to find decent fit to the cryo-EM map that restores/maintains reasonable structural geometry based on molecular dynamics forcefield (amber03.ff).
+
+- There are possible solutions
+
+ 1. Provide a higher resolution map (like better than 4.5 Angstrom) tends to find higher cc since there is a more chance of finding fittable regions.
+ 2. Cryo_fit calculates the gradient of cc. If cryo_fit is provided a giant cryo-em map with a tiny atomic model, then there is a large empty space (not filled). Therefore, the constraint forces for the model are very small. Consequently, these small forces are not helpful.
+
+  2-1. Re-run cryo_fit with an atomic model that fits the majority of the map. If you fit multiple atomic models into a symmetric map or do sequential fitting into a non-symmetric map, watch `Tom Goddard's lecture (2013) <https://www.youtube.com/watch?v=6VGYo1pRRZ8&t=0s&list=PLVetO1F9gm_oa--j37yrjzJ4yVJYzPVN5&index=12>`__
+
+  2-2. Re-run cryo_fit with only a relevant map region. See 'How to extract a relevant map region?' in this FAQ.
+
+ 3. If the initial model is not properly aligned to a map, see 'How to improve initial cc?' in this FAQ.
+
+ 4. A user may enforce a stronger initial map weight (e.g. emweight_multiply_by) manually. However, since cryo_fit automatically increases emweight_multiply_by if it doesn't find higher cc anyway, manual increase in map weight may not necessarily find higher cc.
+
+
+
 How can I provide gaussian filtered maps?
 ----------------------------------------------------
 - See 'How can I provide gaussian filtered maps?' in `cryo_fit2_FAQ <cryo_fit2_FAQ.html>`__
@@ -66,30 +91,11 @@ How to improve initial cc?
 
 I can't run phenix.superpose_pdbs with cryo_fitted pdb file
 -----------------------------------------------------------------
-- phenix.superpose_pdbs can superimpose only between pdb files that have equally/similarly aligned nucleic names. This applies to all pdb input files (not only cryo_fitted files). Consider to align both input files by "python <Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
+- phenix.superpose_pdbs can superimpose only between pdb files that have equally/similarly aligned nucleic names. 
 
+ - This applies to all pdb input files (not only cryo_fitted files). 
 
-I observe cc values keep decreasing (or do not increase that much) during step 8
-------------------------------------------------------------------------------------------
-- Initial few steps of cryo_fit in step 8 may decrease cc values temporarily as an initial perturbation.
-- However, if it keeps decreasing continuously (or do not increase that much), it may indicate two possible cases.
-
- - Case 1 <A user input pdb file has reasonable structural geometry> For this case, try below possible solutions. If cryo_fit still can't find better (higher) cc, then the initial correlation between user input pdb file and cryo-EM map is already high enough. Just run phenix.real_space_refine only and deposit. Doo Nam recommends to argue/claim in a paper like "Our fit is so high, even cryo_fit did not find higher level of fit than our initial fit".
-
- - Case 2 <A  user input pdb file has unreasonable structural geometry> For this case, although the initial fit between user's atomic model and map looks good, it is a fictitious fitting without consideration of ideal atomistic model geometry. Run cryo_fit to find decent fit to the cryo-EM map that restores/maintains reasonable structural geometry based on molecular dynamics forcefield (amber03.ff).
-
-- There are possible solutions
-
- 1. Provide a higher resolution map (like better than 4.5 Angstrom) tends to find higher cc since there is a more chance of finding fittable regions.
- 2. Cryo_fit calculates the gradient of cc. If cryo_fit is provided a giant cryo-em map with a tiny atomic model, then there is a large empty space (not filled). Therefore, the constraint forces for the model are very small. Consequently, these small forces are not helpful.
-	
-  2-1. Re-run cryo_fit with an atomic model that fits the majority of the map. If you fit multiple atomic models into a symmetric map or do sequential fitting into a non-symmetric map, watch `Tom Goddard's lecture (2013) <https://www.youtube.com/watch?v=6VGYo1pRRZ8&t=0s&list=PLVetO1F9gm_oa--j37yrjzJ4yVJYzPVN5&index=12>`__
-
-  2-2. Re-run cryo_fit with only a relevant map region. See 'How to extract a relevant map region?' in this FAQ.
-  
- 3. If the initial model is not properly aligned to a map, see 'How to improve initial cc?' in this FAQ.
-
- 4. A user may enforce a stronger initial map weight (e.g. emweight_multiply_by) manually. However, since cryo_fit automatically increases emweight_multiply_by if it doesn't find higher cc anyway, manual increase in map weight may not necessarily find higher cc.
+- Therefore, consider to align both input files by "python <Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
 
 
 
