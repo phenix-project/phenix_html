@@ -222,6 +222,12 @@ I see "Too many LINCS warnings" at my 8_cryo_fit step
 
 
 I see "User's provided atomic model had 0.0 cc" in my cryo_fit.overall_log.
----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 - It means that literally user's provided atomic model has no correlation to map to start with. 
 - See "How to improve initial cc?" in this FAQ, and provide initially aligned atomic model to cryo_fit.
+
+
+When cryo_fit is useful?
+----------------------------------------------------------------------------------------
+- To model dynamic conformational change, cryo_fit is useful.
+- To simply fit to cryo-EM map, cryo_fit is useful when `required RMSD > 7 Angstrom  <https://www.sciencedirect.com/science/article/pii/S1047847719301285?via%3Dihub>`__. When required RMSD <= 7 Angstrom, phenix.real_space_refine tends to do similar fitting with faster speed. 

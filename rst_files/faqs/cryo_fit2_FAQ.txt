@@ -76,3 +76,9 @@ In the meantime, please use UCSF chimera to visualize bio-molecules instead.
  
   - For example, when a wrong CRYST1 header exists above a correct
     CRYST1 header, above error message appeared.
+
+
+When cryo_fit2 is useful?
+----------------------------------------------------------------------------------------
+- To model dynamic conformational change, cryo_fit2 is useful.
+- To simply fit to cryo-EM map, cryo_fit seems to be useful when initial cc_mask and cc_box < 0.6. When initial cc_mask and cc_box >= 0.6, phenix.real_space_refine tends to do similar fitting with faster speed. 
