@@ -36,6 +36,17 @@ How can I provide gaussian filtered maps?
 - See 'How can I provide gaussian filtered maps?' in `cryo_fit2_FAQ <cryo_fit2_FAQ.html>`__
 
 
+
+How can I use double digit/character ID pdb file?
+----------------------------------------------------
+- For a large molecule (like ribosome), it is typical to put a prefix to chain ID so that the ID is double digits/characters. Since gromacs cannot deal with this, cryo_fit automatically removes the prefix.
+
+- If a user sees an error with single chain ID for phenix.real_space_refine, Doo Nam recommends to use
+
+ - python <User Phenix>/modules/cryo_fit/files_for_steps/9_after_cryo_fit/solve_duplicate_atoms_by_adding_a_prefix_to_chain_ID/add_more_chain_for_no_more_duplicate_atoms.py
+
+
+
 How long does it take to run cryo_fit?
 ---------------------------------------
 .. image:: ../images/cryo_fit_FAQ_how_long1.png
