@@ -153,7 +153,7 @@ I see "pdb file cleaning is not done" at my step 1 (Make gro and topology file b
 --------------------------------------------------------------------------------------------------------------
 "I edited out lipids, HEM and other hetero atoms and I verified that they are all gone. However, still my pdb file is not clean enough for gromacs_cryo_fit".
 
-- If your lipids, HEM and other hetero atoms are not necessary for now, you may take out as you did. You may add those atoms after flexible fit (cryo_fit). Please send Doo Nam (doonam@lanl.gov) your pdb input file only (no map). He will take a look. gromacs_cryo_fit uses amber03 which may not have forcefield parameters for your less-usual atoms/residues.
+- If your lipids, HEM and other hetero atoms are not necessary for now, you may take out as you did. You may add those atoms after flexible fit (cryo_fit). Please send Doo Nam (doonam.kim@gmail.com) your pdb input file only (no map). He will take a look. gromacs_cryo_fit uses amber03 which may not have forcefield parameters for your less-usual atoms/residues.
 
 - If your lipids, HEM and other hetero atoms are necessary for now and your target is protein, Doo Nam would recommend `cryo_fit2 <https://phenix-online.org/documentation/reference/cryo_fit2.html>`__ since it supports phenix.eLBOW derived ligand parameters.
 
