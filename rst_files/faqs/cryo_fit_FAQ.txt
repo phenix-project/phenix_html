@@ -159,6 +159,14 @@ I see "pdb file cleaning is not done" at my step 1 (Make gro and topology file b
 
 
 
+I see "Software inconsistency error" at my 8_cryo_fit step
+-----------------------------------------------------------------------
+- Doo Nam observed "Software inconsistency error: Inconsistent DD boundary staggering limits!" when he tried to run cryo_fit on Ubuntu 16.0.
+
+- Same data set (map and model) didn't cause any error on his macOS 10.13.6.
+
+
+
 I see "state.cpt not found, step_8 may be full of stepxb_nx.pdb" at my 8_cryo_fit step
 -------------------------------------------------------------------------------------------------------------------------------
 - Literally, steps/8_cryo_fit fold may be full of stepxb_nx.pdb files.
