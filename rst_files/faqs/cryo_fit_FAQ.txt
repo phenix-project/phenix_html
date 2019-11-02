@@ -228,6 +228,15 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 
 
 
+I see "The domain decomposition grid has shifted too much" at my 8_cryo_fit step
+----------------------------------------------------------------------------------------
+- Doo Nam observed "Source code file: domdec.c, line: 2633 Fatal error: Step 48520: The domain decomposition grid has shifted too much in the Y-direction around cell 0 1 0", when he used 4 numbers of cores in macOS.
+
+- Inspired by `gromacs email list <https://www.mail-archive.com/gromacs.org_gmx-users@maillist.sys.kth.se/msg15136.html>`__, when he specified a lower number_of_cores_to_use, the problem was solved.
+
+ - For example, phenix.cryo_fit <input.pdb> <input.ccp4> number_of_cores_to_use=2
+
+
 I see "The initial cell size (xxx) is smaller than the cell size limit (xxx), change options -dd, -rdd or -rcon, see the log file for details" at my 8_cryo_fit step
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - Doo Nam observed this error for 2 cases
