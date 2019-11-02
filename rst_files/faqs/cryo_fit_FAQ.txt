@@ -37,8 +37,8 @@ How can I provide gaussian filtered maps?
 
 
 
-How can I use double digit/character ID pdb file?
-----------------------------------------------------
+How can I use double digit/character chain ID pdb file?
+---------------------------------------------------------
 - For a large molecule (like ribosome), it is typical to put a prefix to chain ID so that the ID is double digits/characters. Since gromacs cannot deal with this, cryo_fit automatically removes the prefix.
 
 - If a user sees an error with single chain ID for phenix.real_space_refine, Doo Nam recommends to use
