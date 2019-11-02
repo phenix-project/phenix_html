@@ -53,6 +53,15 @@ How long does it take to run cryo_fit?
 .. image:: ../images/cryo_fit_FAQ_how_long2.png
 
 
+How to draw a figure with cc values?
+----------------------------------------------
+- python <phenix_path>/modules/cryo_fit/files_for_steps/9_after_cryo_fit/draw_cc/draw_cc.py cc_record
+
+ - If a user is using ssh linked linux, run 'set DISPLAY' to avoid the message of "Unable to access the X Display, is $DISPLAY set properly?".
+
+- PHENIX GUI for cryo_fit shows this figure automatically.
+
+
 
 How to enlarge map box size?
 --------------------------------------------------------
