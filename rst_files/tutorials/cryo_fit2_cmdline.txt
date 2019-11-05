@@ -59,23 +59,11 @@ Tutorial command::
 
   % source run_me.sh
 
-  % (run_me.sh is phenix.cryo_fit2 input/tutorial_cryo_fit2_model.pdb
-    input/tutorial_cryo_fit2_map.ccp4 resolution=4)
+  %% (run_me.sh is phenix.cryo_fit2 input/tutorial_cryo_fit2_model.pdb input/tutorial_cryo_fit2_map.ccp4 resolution=4)
 
 
 How to add user specified geometries
 ---------------------------------------------
-
-- There are two options to generate a user specified geometry.
-
- - sigma_for_auto_geom 
- 
-  - (default value = 0.05). The lower this value, the stronger the custom made secondary structure restraints will be. Oleg once recommended 0.021 which is the sigma value for covalent bond. According to a small benchmark with a RNA molecule (e.g. L1 stalk), 0.05 best preserves the number of base-pairs.
-
- - slack_for_auto_geom 
- 
-  - (default value = 0). As Doo Nam understands /modules/cctbx_project/mmtbx/monomer_library/pdb_interpretation.py, default value is 0. Indeed, Oleg confirmed that slack should be always 0 for proper geometry restraints. (~Sep, 2019). However, 3.5 Angstrom is a usual width with Go-model. Therefore, Doo Nam may need to try 1.7 slack to allow more flexible equilibrium.
-
 
 - There are two methods of generating a user specified geometry file (.eff file).
 
@@ -110,16 +98,15 @@ A final cryo_fitted structure: output/cryo_fit2_fitted.pdb
 
 Output as a movie
 -------------------------------
-Structures of intermediate steps that can be animated with pymol play button: output/all_states.pdb
+- Structures of intermediate steps that can be animated with pymol play button: output/all_states.pdb
 
-Open this pdb file with pymol, then click play button (triangle at right bottom) plays the movie.
+- Open this pdb file with pymol, then click play button (triangle at right bottom) plays the movie.
 
+ - (below difference is observed with MacPymol ver. 2.2.2)
 
-(below difference is observed with MacPymol ver. 2.2.2) 
+  - If a user dragged all_states.pdb into pymol after opening it, the biomolecule structure looks simplified and movie playing is fast.
 
-If a user dragged all_states.pdb into pymol after opening it, the biomolecule structure looks simplified and movie playing is fast.
-
-If a user dragged all_states.pdb into pymol icon, pymol opens along with all_states.pdb, the biomolecule structure is more detailed, and movie playing is slow.
+  - If a user dragged all_states.pdb into pymol icon, pymol opens along with all_states.pdb, the biomolecule structure is more detailed, and movie playing is slow.
 
 
 
