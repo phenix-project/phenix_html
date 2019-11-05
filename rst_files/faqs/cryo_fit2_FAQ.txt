@@ -10,7 +10,11 @@ How can I provide gaussian filtered maps?
 ----------------------------------------------------
 - Many people in flexible fitting field know that often providing gaussian filtered maps results in better fitting.
 
- - For example, flexibily fit with a 4 Angstrom filtered map. Then with the resultant atomic model and a 2 Angstrom filtered map, do flexible fitting. Then with the resultant atomic model and a non-filtered map, do final flexible fitting.
+ - For example, flexibily fit with a 4 angstrom filtered map. 
+ 
+ - Then with the resultant atomic model and a 2 angstrom filtered map, do flexible fitting. 
+
+ - Then with the resultant atomic model and a non-filtered map, do final flexible fitting.
 
 - UCSF Chimera can generate these filtered maps.
 
@@ -24,7 +28,7 @@ Is there a command line option for cryo_fit2 processing on multiple cores?
 --------------------------------------------------------------------------------
 - Note that using multiple cores for cryo_fit2 is only useful when explore=True
 
-- Like other Phenix applications, specify nproc
+- Like other PHENIX applications, specify nproc
 
  - For example, phenix.cryo_fit2 nproc=40 model.pdb model.map resolution=3
 
