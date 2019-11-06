@@ -23,6 +23,16 @@ How can I provide gaussian filtered maps?
  - File -> Save map as -> (name a filtered map) -> Save
 
 
+I have a little less ideal helix to fit.
+----------------------------------------------------
+- Doo Nam observed that when he provided a little less ideal helix (i.g. one H-bond length within helix is rather long), then cryo_fit2 tends to "loosen/unwind" that "kink" area.
+
+- When he provided a longer distance_cut_n_o (i.g. 4~4.5), the geometry of helix was kept well (it maintained the helical kink spot).
+
+ - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<reso> secondary_structure.protein.distance_cut_n_o=4.5
+
+  - For more detail, see `secondary_structure_restraints <https://www.phenix-online.org/documentation/reference/secondary_structure_restraints.html>`__
+
 
 Is there a command line option for cryo_fit2 processing on multiple cores?
 --------------------------------------------------------------------------------
