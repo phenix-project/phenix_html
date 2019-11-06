@@ -6,6 +6,28 @@ Cryo_fit2 FAQ
 
 
 
+Cryo_fit2 cannot fit my molecule to a map.
+--------------------------------------------------------------
+- Sometimes, Doo Nam cannot fit his challenging protein molecule (that requires a significant conformational change to be fitted) to a map.
+ 
+ - When he enforced stronger map_weight_multiply, he could fit the molecule.
+
+  - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=15
+ 
+  - At this high map_weight_multiply, the secondary structure (helix) looked broken right after cryo_fit2 running.
+
+  - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
+
+- Sometimes, Doo Nam cannot fit his challenging molecule (half of the molecule is already fitted, the other half is not fitted) to a map.
+
+ - It appears as if the molecule needs to pass through a local minimum energetically for a perferct fit.
+
+ - Therefore, he solved this problem by running `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ which is followed by cryo_fit2
+
+
+
+
+
 How can I provide gaussian filtered maps?
 ----------------------------------------------------
 - Many people in flexible fitting field know that often providing gaussian filtered maps results in better fitting.
