@@ -71,12 +71,3 @@ Limitation
   - See `dynamics <https://www.phenix-online.org/documentation/reference/dynamics.html>`_ for detail
  
   - Cryo_fit version 1 also omitted electrostatic interaction so that md simulation runs faster.
-
-
-- Please use map_weight < 0.2 for SAXS data based cryo-EM map
-  
-  - A user can transform saxs data into cryo-EM map (mrc/sit) by
-    `Situs SAXS <http://situs.biomachina.org/tutorial_saxs.html>`_
-
-  - However, this is nothing but central points by SAXS, although
-    UCSF Chimera will visualize this "cryo-EM" map (mrc/sit) as regular cryo-EM map
