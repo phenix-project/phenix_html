@@ -67,18 +67,23 @@ How to add user specified geometries
 
 - There are two methods of generating a user specified geometry file (.eff file).
 
- 1. If a user specified geometry file is small, then simply copy/modify <user phenix>/modules/cryo_fit2/tutorial/eff_file_template/user_custom_geom.eff  as you wish.
+ 1. If a user specified geometry file is small, then simply copy/modify <user phenix>/modules/cryo_fit2/tutorial/eff_file_template/user_custom_geom.eff, and modify it for a user's need.
 
  2. If a user specified geometry file is large, then run::
 
-    % phenix.cryo_fit2 <initial_model> <target_map> <map resolution in Angstrom> <write_custom_geom_only=True> <sigma> <slack>
+    % phenix.cryo_fit2 <initial_model> <target_map> <map resolution in Angstrom> <write_custom_geom_only=True> <HE_angle_sigma_scale> <HE_sigma> <parallelity_sigma>
 
   For example::
 
-   % phenix.cryo_fit2 model.pdb map.ccp4 3.5 write_custom_geom_only=True 0.04 0.2
+   % phenix.cryo_fit2 model.pdb map.ccp4 3.5 write_custom_geom_only=True HE_angle_sigma_scale=0.04 HE_sigma=0.2 parallelity_sigma=0.02
 
-  Sigma and slack are optional (if a user didn't specify these, cryo_fit2 will use default values).
-  Then, automatically generated geometry file should be generated at the same folder. Modify it for a user's need.
+  Then, automatically generated geometry file should be generated at
+  the same folder.
+
+  Modify it for a user's need.
+
+  Other than write_custom_geom_only, all parameters are optional (if a user didn't specify these, cryo_fit2 will use default values).
+
 
 
 - Once a user generated an eff file (by any method), then provide it to cryo_fit2 like::
