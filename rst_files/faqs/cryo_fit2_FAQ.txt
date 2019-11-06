@@ -34,9 +34,16 @@ I have a little less ideal helix to fit.
   - For more detail, see `secondary_structure_restraints <https://www.phenix-online.org/documentation/reference/secondary_structure_restraints.html>`__
 
 
+I have a very small molecule to fit.
+----------------------------------------------------
+- When Doo Nam tried to fit a very small molecule (i.e. 11 residues long), both real_space_refine and cryo_fit2 couldn't fit to cryo-EM map.
+- The reason could be that effect of sidechains is too large (in this kind of small molecule), so that global fitting is hindered.
+- Doo Nam confirmed that `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ fits globally much better for this case.
+
+
 Is there a command line option for cryo_fit2 processing on multiple cores?
 --------------------------------------------------------------------------------
-- Note that using multiple cores for cryo_fit2 is only useful when explore=True
+- (Please be advised that using multiple cores for cryo_fit2 is only useful when explore=True)
 
 - Like other PHENIX applications, specify nproc
 
