@@ -285,6 +285,13 @@ I see "User's provided atomic model had 0.0 cc" in my cryo_fit.overall_log.
 - See "How to improve initial cc?" in this FAQ, and provide initially aligned atomic model to cryo_fit.
 
 
+My model is shifted after `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- To prevent this, it is recommended to add map as well.
+
+ - For example, phenix.model_idealization <user.pdb> <user.map that was used for cryo_fit2> (resolution information is not required)
+
+
 When cryo_fit is useful?
 ----------------------------------------------------------------------------------------
 - To `model dynamic conformational change <../tutorials/cryo_fit_movie.html>`__, cryo_fit is useful.
