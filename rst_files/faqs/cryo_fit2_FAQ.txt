@@ -6,6 +6,25 @@ Cryo_fit2 FAQ
 
 
 
+After cryo_fit2, secondary structures of my input molecule tend to be broken.
+------------------------------------------------------------------------------------------
+- Doo Nam observed that when he provided a little less ideal helix (i.g. one H-bond length within helix is rather long), then cryo_fit2 tends to "loosen/unwind" that "kink" area.
+
+- When he provided a longer distance_cut_n_o (i.g. 4~4.5), the geometry of helix was kept well (it maintained the helical kink spot).
+
+ - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<reso> secondary_structure.protein.distance_cut_n_o=4.5
+
+  - For more detail, see `secondary_structure_restraints <https://www.phenix-online.org/documentation/reference/secondary_structure_restraints.html>`__
+
+- Alternatively, a user can specify a lower map_weight_multiply.
+
+ - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=0.2.
+
+- Alternatively, a user can use `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ after cryo_fit2 to restore broken secondary structures (if any).
+
+
+
+
 Cryo_fit2 cannot fit my molecule to a map.
 --------------------------------------------------------------
 - Sometimes, Doo Nam cannot fit his challenging protein molecule (that requires a significant conformational change to be fitted) to a map.
@@ -22,9 +41,7 @@ Cryo_fit2 cannot fit my molecule to a map.
 
  - It appears as if the molecule needs to pass through a local minimum energetically for a perferct fit.
 
- - Therefore, he solved this problem by running `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ which is followed by cryo_fit2
-
-
+ - Therefore, he solved this problem by running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ which is followed by cryo_fit2.
 
 
 
@@ -32,7 +49,7 @@ How can I provide gaussian filtered maps?
 ----------------------------------------------------
 - Many people in flexible fitting field know that often providing gaussian filtered maps results in better fitting.
 
- - For example, flexibily fit with a 4 angstrom filtered map. 
+ - For example, flexibly fit with a 4 angstrom filtered map. 
  
  - Then with the resultant atomic model and a 2 angstrom filtered map, do flexible fitting. 
 
@@ -43,6 +60,26 @@ How can I provide gaussian filtered maps?
  - Tools -> Volume Data -> Volume Viewer -> Tools -> Volume Filter -> (Set Width, e.g. 4,2) -> Filter
 
  - File -> Save map as -> (name a filtered map) -> Save
+
+
+
+
+How to maximize cc?
+----------------------------------------------------------------------------------------
+- Generally, cryo_fit2 which is followed by phenix.real_space_refine tends to maximize cc.
+
+- If there is a room/chance to idealize secondary structure further even after cryo_fit2, then cryo_fit2 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
+
+- When the fitting needs to pass through a local minimum energetically for a perferct fit (half of the molecule is already fitted, the other half is not fitted), running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map' before cryo_fit2 is recommended.
+
+- When the fitting protein molecule to a map requires a significant conformational change, enforcing stronger map_weight_multiply tends to fit better (obviously).
+
+  - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=15
+
+  - At this high map_weight_multiply, the secondary structures may be broken (slightly or seriously) right after cryo_fit2 running.
+
+  - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
+
 
 
 I have a little less ideal helix to fit.
@@ -78,7 +115,7 @@ Is there a command line option for cryo_fit2 processing on multiple cores?
 --------------------------------------------------------------------------------
 - (Please be advised that using multiple cores for cryo_fit2 is only useful when explore=True)
 
-- Like other PHENIX applications, specify nproc
+- Like other PHENIX applications, specify nproc.
 
  - For example, phenix.cryo_fit2 nproc=40 model.pdb model.map resolution=3
 
@@ -94,7 +131,7 @@ sizes in Pymol when Doo Nam used map that was made from phenix.map_box
 
 Troubleshooting is ongoing. 
 
-In the meantime, please use UCSF chimera to visualize bio-molecules instead.
+In the meantime, please use UCSF Chimera to visualize bio-molecules instead.
 
 
 
@@ -135,4 +172,11 @@ In the meantime, please use UCSF chimera to visualize bio-molecules instead.
 When cryo_fit2 is useful?
 ----------------------------------------------------------------------------------------
 - To model dynamic conformational change, cryo_fit2 is useful.
-- To simply fit to cryo-EM map, cryo_fit seems to be useful when initial cc_mask and cc_box < 0.6. When initial cc_mask and cc_box >= 0.6, phenix.real_space_refine tends to do similar fitting with faster speed. 
+- To simply fit to cryo-EM map, cryo_fit seems to be useful when initial cc_mask and cc_box < 0.6. When initial cc_mask and cc_box >= 0.6, `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to do similar fitting with faster speed. 
+
+
+What to do after cryo_fit2?
+----------------------------------------------------------------------------------------
+- If there is a room/chance to idealize secondary structure further even after cryo_fit2, then run `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__.
+
+- Otherwise, just run `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ to improve overall geometry (such as rotamers).
