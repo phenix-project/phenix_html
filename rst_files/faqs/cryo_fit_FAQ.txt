@@ -11,7 +11,7 @@ cc values have kept decreased (or have not increased that much) during step 8
 - Initial few steps of cryo_fit in step 8 may decrease cc values temporarily as an initial perturbation.
 - However, if it keeps decreasing continuously (or do not increase that much), it may indicate two possible cases.
 
- - Case 1 <A user input pdb file has reasonable structural geometry> For this case, try below possible solutions. If cryo_fit still can't find better (higher) cc, then the initial correlation between user input pdb file and cryo-EM map is already high enough. Just run phenix.real_space_refine only and deposit. Doo Nam recommends to argue/claim in a paper like "Our fit is so high, even cryo_fit did not find higher level of fit than our initial fit". This bold recommendation is based on his limited observations so far. Therefore, if you have a better cc model (from manual fit?) than cryo_fitted model, I would appreciate if you can email me (doonam.kim@gmail.com).
+ - Case 1 <A user input pdb file has reasonable structural geometry> For this case, try below possible solutions. If cryo_fit still can't find better (higher) cc, then the initial correlation between user input pdb file and cryo-EM map is already high enough. Just run `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ only and deposit. Doo Nam recommends to argue/claim in a paper like "Our fit is so high, even cryo_fit did not find higher level of fit than our initial fit". This bold recommendation is based on his limited observations so far. Therefore, if you have a better cc model (from manual fit?) than cryo_fitted model, I would appreciate if you can email me (doonam.kim@gmail.com).
 
 
  - Case 2 <A  user input pdb file has unreasonable structural geometry> For this case, although the initial fit between user's atomic model and map looks good, it is a fictitious fitting without consideration of ideal atomistic model geometry. Run cryo_fit to find decent fit to the cryo-EM map that restores/maintains reasonable structural geometry based on molecular dynamics forcefield (amber03.ff).
@@ -41,7 +41,7 @@ How can I use double digit/character chain ID pdb file?
 ---------------------------------------------------------
 - For a large molecule (like ribosome), it is typical to put a prefix to chain ID so that the ID is double digits/characters. Since gromacs cannot deal with this, cryo_fit automatically removes the prefix.
 
-- If a user sees an error with single chain ID for phenix.real_space_refine, Doo Nam recommends to use
+- If a user sees an error with single chain ID for `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__, Doo Nam recommends to use
 
  - python <User Phenix>/modules/cryo_fit/files_for_steps/9_after_cryo_fit/solve_duplicate_atoms_issue/add_all_prefix.py
 
@@ -111,11 +111,11 @@ How to improve initial cc?
 
 How to maximize cc?
 ----------------------------------------------------------------------------------------
-- Generally, as seen in `Cryo_fit: Democratization of flexible fitting for cryo-EM, 2019 <https://www.sciencedirect.com/science/article/pii/S1047847719301285?via%3Dihub>`__, cryo_fit1 which is followed by phenix.real_space_refine tends to maximize cc.
+- Generally, as seen in `Cryo_fit: Democratization of flexible fitting for cryo-EM, 2019 <https://www.sciencedirect.com/science/article/pii/S1047847719301285?via%3Dihub>`__, cryo_fit1 which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to maximize cc.
 
-- If there is a room/chance to idealize secondary structure further even after cryo_fit1, then cryo_fit1 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + phenix.real_space_refine combination resulted in the maximum cc.
+- If there is a room/chance to idealize secondary structure further even after cryo_fit1, then cryo_fit1 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
 
-- When the fitting needs to pass through a local minimum energetically for a perferct fit (half of the molecule is already fitted, the other half is not fitted), running `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ before cryo_fit2 is recommended.
+- When the fitting needs to pass through a local minimum energetically for a perferct fit (half of the molecule is already fitted, the other half is not fitted), running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ before cryo_fit1 is recommended.
 
 - When the fitting protein molecule to a map requires a significant conformational change, enforcing stronger map_weight_multiply tends to fit better (obviously).
 
@@ -168,7 +168,7 @@ I see "Fatal error: Number of grid cells is zero. Probably the system and box co
 
  - Most likely, this means that initial cc is too low for MD simulation.
 
-  - When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved.
+  - When Doo Nam ran `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ first, then run real_space_refined atomic model in cryo_fit, it was solved.
 
   - Alternatively, improve initial cc by fitting initial atomic model into a map (see "How to improve initial cc?" in this FAQ)
 
@@ -200,7 +200,7 @@ I see "state.cpt not found, step_8 may be full of stepxb_nx.pdb" at my 8_cryo_fi
 
  - Most likely, this means that a cryo_fit input pdb file is not yet stable enough for sensitive Gromacs MD simulation (step 8) even after cryo_fit's ample minimization step (e.g. step 4).
 
-  - When Doo Nam ran real_space_refine first, then run real_space_refined atomic model in cryo_fit, it was solved more than 2 cases.
+  - When Doo Nam ran `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ first, then run real_space_refined atomic model in cryo_fit, it was solved more than 2 cases.
   
   - If initial cc is too low, improve initial cc by fitting initial atomic model into a map,
   
@@ -229,7 +229,7 @@ I see "step 0 correlation coefficient: nan" and "Range checking error: Explanati
 
  1. Doo Nam observed this error when starting molecule is not stabilized structurally. There are two possible solutions.
  
-  - Run phenix.real_space_refine before cryo_fit. Then, provide real_space_refined molecule into cryo_fit. Then, most problems were solved.
+  - Run `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ before cryo_fit. Then, provide real_space_refined molecule into cryo_fit. Then, most problems were solved.
 
   - When Doo Nam skipped minimization, this error occured. Since most users minimize the starting structure by default (cryo_fit default), most users do not need care about this. Besides, as of 9/18/2019, the default value of number_of_steps_for_minimization=20000 (which is a lot).
 
@@ -268,11 +268,11 @@ I see "Too many LINCS warnings" at my 8_cryo_fit step
 ----------------------------------------------------------------------------------
 - Doo Nam observed this error when starting molecule is not stabilized structurally. There are 3 possible solutions.
 
- 1. Run phenix.real_space_refine before cryo_fit. Then, provide real_space_refined molecule into cryo_fit. Then, most problems were solved.
+ 1. Run `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ before cryo_fit. Then, provide real_space_refined molecule into cryo_fit. Then, most problems were solved.
 
  2. When Doo Nam skipped minimization, this error occured. Since most users minimize the starting structure by default (cryo_fit default), most users do not need care about this. Besides, as of 9/18/2019, the default value of number_of_steps_for_minimization=20000 (which is a lot).
 
- 3. If starting molecule has non-standard chemical geometry that is too extreme that are not stabilized neither by real_space_refine nor by cryo_fit minimization, then a user needs to fix those non-standard geometry manually.
+ 3. If starting molecule has non-standard chemical geometry that is too extreme that are not stabilized neither by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ nor by cryo_fit minimization, then a user needs to fix those non-standard geometry manually.
 
 
 
@@ -286,4 +286,4 @@ When cryo_fit is useful?
 ----------------------------------------------------------------------------------------
 - To `model dynamic conformational change <../tutorials/cryo_fit_movie.html>`__, cryo_fit is useful.
 
-- To simply fit to cryo-EM map, cryo_fit is useful when `required RMSD > 7 Angstrom  <https://www.sciencedirect.com/science/article/pii/S1047847719301285?via%3Dihub>`__. When required RMSD <= 7 Angstrom, phenix.real_space_refine tends to do similar fitting with faster speed. 
+- To simply fit to cryo-EM map, cryo_fit is useful when `required RMSD > 7 Angstrom  <https://www.sciencedirect.com/science/article/pii/S1047847719301285?via%3Dihub>`__. When required RMSD <= 7 Angstrom, `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to do similar fitting with faster speed. 
