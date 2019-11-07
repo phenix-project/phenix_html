@@ -10,11 +10,9 @@ After cryo_fit2, secondary structures of my input molecule tend to be broken.
 ------------------------------------------------------------------------------------------
 - Doo Nam observed that when he provided a little less ideal helix (i.g. one H-bond length within helix is rather long), then cryo_fit2 tends to "loosen/unwind" that "kink" area.
 
-- When he provided a longer distance_cut_n_o (i.g. 4~4.5), the geometry of helix was kept well (it maintained the helical kink spot).
+- When he provided a longer `distance_cut_n_o <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ (i.g. 4~4.5), the geometry of helix was kept well (it maintained the helical kink spot).
 
  - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<reso> secondary_structure.protein.distance_cut_n_o=4.5
-
-  - For more detail, see `secondary_structure_restraints <https://www.phenix-online.org/documentation/reference/secondary_structure_restraints.html>`__
 
 - Alternatively, a user can specify a lower map_weight_multiply.
 
@@ -61,6 +59,11 @@ How can I provide gaussian filtered maps?
 
  - File -> Save map as -> (name a filtered map) -> Save
 
+
+
+How to improve initial cc?
+---------------------------------------
+- `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__, UCSF Chimera's 'Fit in Map (Tools -> Volume Data -> Fit in Map)', UCSF Chimera's manual fitting (using a mouse) often improve initial cross-correlation (cc) between map and model. UCSF ChimeraX's isolde may improve initial cc as well.
 
 
 

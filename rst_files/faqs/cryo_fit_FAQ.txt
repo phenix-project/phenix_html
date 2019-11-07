@@ -287,3 +287,10 @@ When cryo_fit is useful?
 - To `model dynamic conformational change <../tutorials/cryo_fit_movie.html>`__, cryo_fit is useful.
 
 - To simply fit to cryo-EM map, cryo_fit is useful when `required RMSD > 7 Angstrom  <https://www.sciencedirect.com/science/article/pii/S1047847719301285?via%3Dihub>`__. When required RMSD <= 7 Angstrom, `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to do similar fitting with faster speed. 
+
+
+What to do after cryo_fit?
+----------------------------------------------------------------------
+- If there is a room/chance to idealize secondary structure further even after cryo_fit, then run `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__.
+
+- Otherwise, just run `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ to improve overall geometry (such as rotamers).
