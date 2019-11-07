@@ -138,6 +138,14 @@ In the meantime, please use UCSF Chimera to visualize bio-molecules instead.
 
 
 
+My model is shifted after `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- To prevent this, it is recommended to add map as well.
+
+ - For example, phenix.model_idealization <user.pdb> <user.map that was used for cryo_fit2> (resolution information is not required)
+
+
+
 "RuntimeError: cctbx Error: Miller index not in structure factor map"
 --------------------------------------------------------------------------------------------
 - When a user sees above message, consider to enter a correct resolution.
