@@ -124,7 +124,11 @@ My model is shifted after `phenix.model_idealization <https://www.phenix-online.
 --------------------------------------------------------------------------------------------
 - When a user sees above message, consider to enter a correct resolution.
 
- - For example, Doo Nam uses either EMDB reported resolution or phenix.mtriage derived resolution to properly run cryo_fit2.
+ - For example, Doo Nam uses either EMDB reported resolution or `phenix.mtriage <//www.phenix-online.org/documentation/reference/mtriage.html>`__ derived resolution to properly run cryo_fit2.
+
+- When a user is not sure about correct resolution, often using a lower resolution works.
+
+ - For example, when Doo Nam saw an error with resolution=3, then using resolution=5 often solved the problem.
 
 
 
