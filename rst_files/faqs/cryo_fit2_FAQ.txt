@@ -21,28 +21,6 @@ After cryo_fit2, secondary structures of my input molecule tend to be broken.
 - Alternatively, a user can use `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ after cryo_fit2 to restore broken secondary structures (if any).
 
 
-
-
-Cryo_fit2 cannot fit my molecule to a map.
---------------------------------------------------------------
-- Sometimes, Doo Nam cannot fit his challenging protein molecule (that requires a significant conformational change to be fitted) to a map.
- 
- - When he enforced stronger map_weight_multiply, he could fit the molecule.
-
-  - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=15
- 
-  - At this high map_weight_multiply, the secondary structure (helix) looked broken right after cryo_fit2 running.
-
-  - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
-
-- Sometimes, Doo Nam cannot fit his challenging molecule (half of the molecule is already fitted, the other half is not fitted) to a map.
-
- - It appears as if the molecule needs to pass through a local minimum energetically for a perferct fit.
-
- - Therefore, he solved this problem by running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ which is followed by cryo_fit2.
-
-
-
 How can I provide gaussian filtered maps?
 ----------------------------------------------------
 - Many people in flexible fitting field know that often providing gaussian filtered maps results in better fitting.
@@ -69,31 +47,27 @@ How to improve initial cc?
 
 How to maximize cc?
 ----------------------------------------------------------------------------------------
-- Generally, cryo_fit2 which is followed by phenix.real_space_refine tends to maximize cc.
+- Generally, cryo_fit2 which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to maximize cc.
 
 - If there is a room/chance to idealize secondary structure further even after cryo_fit2, then cryo_fit2 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
 
 - When the fitting needs to pass through a local minimum energetically for a perferct fit (half of the molecule is already fitted, the other half is not fitted), running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map' before cryo_fit2 is recommended.
 
-- When the fitting protein molecule to a map requires a significant conformational change, enforcing stronger map_weight_multiply tends to fit better (obviously).
+- When fitting protein molecule to a map requires a significant conformational change, 
+  
+  - enforcing stronger map_weight (higher map_weight_multiply) tends to fit better (obviously).
 
-  - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=15
+   - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=15
 
-  - At this high map_weight_multiply, the secondary structures may be broken (slightly or seriously) right after cryo_fit2 running.
+   - At this high map_weight_multiply, the secondary structures may be broken (slightly or seriously) right after cryo_fit2 running.
 
-  - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
+   - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
 
+  - Alternatively, HE_top_out=True sometimes (not always) boosts cc well even with moderately high map weight (confirmed with 6 benchmark cases).
 
-
-I have a little less ideal helix to fit.
-----------------------------------------------------
-- Doo Nam observed that when he provided a little less ideal helix (i.g. one H-bond length within helix is rather long), then cryo_fit2 tends to "loosen/unwind" that "kink" area.
-
-- When he provided a longer distance_cut_n_o (i.g. 4~4.5), the geometry of helix was kept well (it maintained the helical kink spot).
-
- - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<reso> secondary_structure.protein.distance_cut_n_o=4.5
-
-  - For more detail, see `secondary_structure_restraints <https://www.phenix-online.org/documentation/reference/secondary_structure_restraints.html>`__
+   - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=10 HE_top_out=True
+  
+   - HE_top_out=True uses `top_out potential (rather than harmonic potential) <https://www.ncbi.nlm.nih.gov/pubmed/22505258>`__ to helix (H) and sheet (E) for more flexible fitting.
 
 
 I have a SAXS based cryo-EM map.
@@ -111,7 +85,7 @@ I have a very small molecule to fit.
 ----------------------------------------------------
 - When Doo Nam tried to fit a very small molecule (i.e. 11 residues long), both real_space_refine and cryo_fit2 couldn't fit to cryo-EM map.
 - The reason could be that effect of sidechains is too large (in this kind of small molecule), so that global fitting is hindered.
-- Doo Nam confirmed that `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ fits globally much better for this case.
+- Doo Nam confirmed that `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ fits globally much better for this case.
 
 
 Is there a command line option for cryo_fit2 processing on multiple cores?
