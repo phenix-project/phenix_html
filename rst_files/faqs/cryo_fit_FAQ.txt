@@ -92,32 +92,30 @@ How to enlarge map box size?
 
 How to extract a relevant map region?
 ----------------------------------------------
-- Question: I only want to fit the monomer because only one monomer of the trimer map is the best. Do you have any idea of how to generate the monomer map that cryo_fit can use?
-
-- Answer: Please use `phenix.map_box <http://www.phenix-online.org/documentation/reference/map_box.html>`__ to extract local map.
-
- - Alternatively, you can try `phenix.map_to_model <http://www.phenix-online.org/documentation/reference/map_to_model.html>`__.
+- See 'How to extract a relevant map region?' in `cryo_fit2_FAQ <cryo_fit2_FAQ.html>`__
 
 
 How to generate and record movie?
 ---------------------------------------
-- `Generate_record_movie_by_cryo_fit1 <../tutorials/cryo_fit_movie.html>`__
+- See `Generate_record_movie_by_cryo_fit1 <../tutorials/cryo_fit_movie.html>`__
 
 
 How to improve initial cc?
 ---------------------------------------
-- `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__, UCSF Chimera's 'Fit in Map (Tools -> Volume Data -> Fit in Map)', UCSF Chimera's manual fitting (using a mouse) often improve initial cross-correlation (cc) between map and model. UCSF ChimeraX's isolde may improve initial cc as well.
+- See 'How to improve initial cc?' in `cryo_fit2_FAQ <cryo_fit2_FAQ.html>`__
 
 
 How to maximize cc?
 ----------------------------------------------------------------------------------------
 - Generally, as seen in `Cryo_fit: Democratization of flexible fitting for cryo-EM, 2019 <https://www.sciencedirect.com/science/article/pii/S1047847719301285?via%3Dihub>`__, cryo_fit1 which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to maximize cc.
 
-- If there is a room/chance to idealize secondary structure further even after cryo_fit1, then cryo_fit1 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
+- However, if there is a room/chance to idealize secondary structure further even after cryo_fit1, then cryo_fit1 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
 
 - When the fitting needs to pass through a local minimum energetically for a perferct fit (half of the molecule is already fitted, the other half is not fitted), running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ before cryo_fit1 is recommended.
 
-- When the fitting protein molecule to a map requires a significant conformational change, enforcing stronger map_weight_multiply tends to fit better (obviously).
+ - Note that these options do rigid-body fitting only. Therefore, it is useful for global fitting before cryo_fit2. When overall orientation is	already	well fitted, these often are not that useful for cryo_fit1.
+
+- When the fitting protein molecule to a map requires a significant conformational change, enforcing stronger emweight_multiply_by tends to fit better (obviously).
 
   - For example, phenix.cryo_fit <user.pdb> <user.map> emweight_multiply_by=50
 
@@ -133,7 +131,7 @@ I can't run phenix.superpose_pdbs with cryo_fitted pdb file
 
  - This applies to all pdb input files (not only cryo_fitted files). 
 
-- Therefore, consider to align both input files by "python <Phenix Path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
+- Therefore, consider to align both input files by "python <PHENIX path>/modules/cryo_fit/steps/9_after_cryo_fit/align_nucleic_acid_name_into_middle/align_nucleic_acid_name_into_middle.py"
 
 
 
@@ -287,9 +285,8 @@ I see "User's provided atomic model had 0.0 cc" in my cryo_fit.overall_log.
 
 My model is shifted after `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__.
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-- To prevent this, it is recommended to add map as well.
+- See 'My model is shifted after phenix.model_idealization' in `cryo_fit2_FAQ <cryo_fit2_FAQ.html>`__
 
- - For example, phenix.model_idealization <user.pdb> <user.map that was used for cryo_fit2> (resolution information is not required)
 
 
 When cryo_fit is useful?
@@ -301,6 +298,4 @@ When cryo_fit is useful?
 
 What to do after cryo_fit?
 ----------------------------------------------------------------------
-- If there is a room/chance to idealize secondary structure further even after cryo_fit, then run `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__.
-
-- Otherwise, just run `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ to improve overall geometry (such as rotamers).
+- See 'What to do after cryo_fit?' in `cryo_fit2_FAQ <cryo_fit2_FAQ.html>`__

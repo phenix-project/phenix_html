@@ -39,9 +39,24 @@ How can I provide gaussian filtered maps?
 
 
 
+
+How to extract a relevant map region?
+----------------------------------------------
+- Question: I only want to fit the monomer because only one monomer of the trimer map is the best. Do you have any idea of how to generate the monomer map that cryo_fit can use?
+
+- Answer: Please use `phenix.map_box <http://www.phenix-online.org/documentation/reference/map_box.html>`__ to extract a local map near entered atomistic model.
+
+ - Alternatively, a user can try `phenix.map_to_model <http://www.phenix-online.org/documentation/reference/map_to_model.html>`__ instead.
+
+
+
 How to improve initial cc?
 ---------------------------------------
-- `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__, UCSF Chimera's 'Fit in Map (Tools -> Volume Data -> Fit in Map)', UCSF Chimera's manual fitting (using a mouse) often improve initial cross-correlation (cc) between map and model. UCSF ChimeraX's isolde may improve initial cc as well.
+- `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__, UCSF Chimera's 'Fit in Map (Tools -> Volume Data -> Fit in Map)', UCSF Chimera's manual fitting (using a mouse) often improve initial cross-correlation (cc) between map and model. 
+
+ - Note that these options do rigid-body fitting only. Therefore, it is useful for global fitting before cryo_fit2. When overall orientation is already well fitted, these often are not that useful for cryo_fit2.
+
+- UCSF ChimeraX's isolde may improve initial cc as well.
 
 
 
@@ -49,9 +64,11 @@ How to maximize cc?
 ----------------------------------------------------------------------------------------
 - Generally, cryo_fit2 which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to maximize cc.
 
-- If there is a room/chance to idealize secondary structure further even after cryo_fit2, then cryo_fit2 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
+- However, if there is a room/chance to idealize secondary structure further even after cryo_fit2, then cryo_fit2 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
 
 - When the fitting needs to pass through a local minimum energetically for a perferct fit (half of the molecule is already fitted, the other half is not fitted), running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map' before cryo_fit2 is recommended.
+
+ - Note that these options do rigid-body fitting only. Therefore, it is useful for global fitting before cryo_fit2. When overall orientation is already well fitted, these often are not that useful for cryo_fit2.
 
 - When fitting protein molecule to a map requires a significant conformational change, 
   
@@ -124,7 +141,7 @@ My model is shifted after `phenix.model_idealization <https://www.phenix-online.
 --------------------------------------------------------------------------------------------
 - When a user sees above message, consider to enter a correct resolution.
 
- - For example, Doo Nam uses either EMDB reported resolution or `phenix.mtriage <//www.phenix-online.org/documentation/reference/mtriage.html>`__ derived resolution to properly run cryo_fit2.
+ - For example, Doo Nam uses either EMDB reported resolution (preferred) or `phenix.mtriage <//www.phenix-online.org/documentation/reference/mtriage.html>`__ derived resolution to properly run cryo_fit2.
 
 - When a user is not sure about correct resolution, often using a lower resolution works.
 
@@ -164,8 +181,8 @@ When cryo_fit2 is useful?
 - To simply fit to cryo-EM map, cryo_fit seems to be useful when initial cc_mask and cc_box < 0.6. When initial cc_mask and cc_box >= 0.6, `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to do similar fitting with faster speed. 
 
 
-What to do after cryo_fit2?
+What to do after cryo_fit?
 ----------------------------------------------------------------------------------------
-- If there is a room/chance to idealize secondary structure further even after cryo_fit2, then run `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__.
+- If there is a room/chance to idealize secondary structure further even after cryo_fit, then run `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__.
 
 - Otherwise, just run `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ to improve overall geometry (such as rotamers).
