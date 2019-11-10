@@ -151,7 +151,7 @@ List of most useful options
 |                        |              | faster, higher number of emweight_multiply_by is      |
 |                        |              | recommended.                                          |
 +------------------------+--------------+-------------------------------------------------------+
-| number_of_cores_to_use | max cores    | Specify number of cores for minimization and cryo_fit.|
+| nproc                  | max cores    | Specify number of cores for minimization and cryo_fit.|
 |                        |              | If it is not specified, or max is chosen, the cryo_fit|
 |                        |              | will try to use most cores automatically (up to 16)   |
 +------------------------+--------------+-------------------------------------------------------+
