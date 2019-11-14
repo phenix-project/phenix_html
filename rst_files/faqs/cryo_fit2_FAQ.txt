@@ -112,8 +112,15 @@ I have a SAXS based cryo-EM map.
 
 I have a very small molecule to fit.
 ----------------------------------------------------
-- When Doo Nam tried to fit a very small molecule (i.e. 11 residues long), both real_space_refine and cryo_fit2 couldn't fit to cryo-EM map.
-- The reason could be that effect of sidechains is too large (in this kind of small molecule), so that global fitting is hindered.
+- When Doo Nam tried to fit a very small molecule (i.e. 11 residues long like
+
+.. image:: ../images/cryo_fit2_example_11_res_helix.png
+
+), both `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ and cryo_fit2 couldn't fit to cryo-EM map.
+
+
+
+- The reason of these failures is that effect of sidechains is too large (in this kind of small molecule), so that global fitting is hindered.
 - Doo Nam confirmed that `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ fits globally much better for this case.
 
 
