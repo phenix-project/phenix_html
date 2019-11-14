@@ -115,13 +115,17 @@ How to maximize cc?
 
  - Note that these options (`phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map') do rigid-body fitting only. Therefore, these are useful as global fitting before cryo_fit1. However, when overall orientation is already well fitted, often these are not that needed before cryo_fit1.
 
-- When the fitting protein molecule to a map requires a significant conformational change, enforcing stronger emweight_multiply_by tends to fit better (obviously).
+- When fitting protein molecule to a map requires a significant conformational change (for example, half of the molecule is already fitted and the other half is not fitted like
+
+.. image:: ../images/cryo_fit2_example_1.png
+
+), enforcing stronger emweight_multiply_by tends to fit better (obviously).
 
   - For example, phenix.cryo_fit <user.pdb> <user.map> emweight_multiply_by=50
 
-  - At this high emweight_multiply_by, the secondary structures may be broken (slightly or seriously) right after cryo_fit running.
+   - At this high emweight_multiply_by, the secondary structures may be broken (slightly or seriously) right after cryo_fit running.
 
-  - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
+   - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
 
 
 
