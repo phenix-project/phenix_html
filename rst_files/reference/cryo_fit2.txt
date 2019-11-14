@@ -16,41 +16,25 @@ Author
 Pavel Afonine, Doo Nam Kim (doonam.kim@gmail.com)
 
 
-Overview
-----------
-Unlike cryo_fit version 1 that uses gromacs, cryo_fit2 runs within phenix suite. Therefore, it
-doesn't require gromacs installation and is faster to execute. It
-suits the need not only traditional "static" fitting but also
-"dynamic" fitting. According to Doonam's benchmark, cryo_fit2 better
-fits than cryo_fit1 in 6 cases out of 8 cases (cryo-EM maps have 3~24
-angstrom resolutions. They tie for 1 case,
-cryo_fit1 better fits for the last 1 case where artifically made cryo-EM map is used).
+
+When cryo_fit2 is more useful than cryo_fit1?
+--------------------------------------------------
+See the `When cryo_fit2 is more useful than cryo_fit1? in FAQ <../faqs/cryo_fit2_FAQ.html#when-cryo-fit2-is-more-useful-than-cryo-fit1>`__
+
 
 
 Theory
 -------------------
-This program uses `phenix dynamics
-<https://www.phenix-online.org/documentation/reference/dynamics.html>`_
-written by Pavel. 
+- This program uses `phenix.dynamics <https://www.phenix-online.org/documentation/reference/dynamics.html>`_. 
 
-Simulated annealing is carried out by default to minimize the objection function T (=T_target_map * wx + T_geom * wc ). 
-wx is cryo-EM map weight and wc is geometry keeping weight.
+- Simulated annealing is carried out by default to minimize the object function T ( = T_target_map*map_weight + T_geom*wc ). 
+
+ - map_weight is cryo-EM map weight and wc is a geometry keeping weight.
 
 
 How to install
 -----------------------------
 See the `installation notes for cryo_fit2 <../tutorials/cryo_fit2_install.html>`__
-
-
-Traditional “static” fitting (A) versus “dynamic” fitting (B)
-----------------------------------------------------------------------
-.. image:: ../images/cryo_fit2_static_vs_dynamic.jpg
-
-
-
-Cryo_fit 1 & 2 are recommended when the initial structure is different from map
-----------------------------------------------------------------------------------
-.. image:: ../images/cryo_fit2_recommended_programs.jpg
 
 
 
@@ -66,8 +50,8 @@ See the `cryo_fit2 FAQ <../faqs/cryo_fit2_FAQ.html>`__
 
 Limitation
 -------------------
-- Cryo_fit2 doesn't use electrostatic interaction. Therefore, it does not fully capture all physical forces.
+- Cryo_fit2 does not use electrostatic interaction. Therefore, it does not fully capture all physical forces.
 
-  - See `dynamics <https://www.phenix-online.org/documentation/reference/dynamics.html>`_ for detail
+  - See `phenix.dynamics <https://www.phenix-online.org/documentation/reference/dynamics.html>`_ for detail.
  
-  - Cryo_fit version 1 also omitted electrostatic interaction so that md simulation runs faster.
+  - Cryo_fit version 1 also omits electrostatic interaction so that molecular dynamics simulation runs faster.
