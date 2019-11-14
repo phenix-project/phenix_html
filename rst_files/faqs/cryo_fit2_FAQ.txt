@@ -185,13 +185,11 @@ My model is shifted after `phenix.model_idealization <https://www.phenix-online.
 
  1. Just erase CRYST1 header information from an input pdb file. Then, provide that input file into cryo_fit2.
 
-  - Cryo_fit2 will automatically extract CRYST1 header from map (both
-    from original map and phenix.map_box derived map), and prepend (write at the first line) to the pdb file.
+  - Cryo_fit2 will automatically extract CRYST1 header from map (both from original map and phenix.map_box derived map), and prepend (write at the first line) to the pdb file.
 
  2. (Alternatively) Just leave correct CRYST1 header only in an input pdb file.
  
-  - For example, when a wrong CRYST1 header exists above a correct
-    CRYST1 header, above error message appeared.
+  - For example, when a wrong CRYST1 header exists above a correct CRYST1 header, above error message appeared.
 
 
 
@@ -203,7 +201,7 @@ What is the theory behind cryo_fit2?
 
 When cryo_fit1 and cryo_fit2 are useful?
 ---------------------------------------------------
-- When to model dynamic conformational change.
+- When a user needs to model dynamic conformational change.
 
  - For example, cryo_fit can model transition between map conformation 1 and 2.
 
