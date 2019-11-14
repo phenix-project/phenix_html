@@ -193,6 +193,17 @@ When cryo_fit2 is useful?
 - To simply fit to cryo-EM map, cryo_fit seems to be useful when initial cc_mask and cc_box < 0.6. When initial cc_mask and cc_box >= 0.6, `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to do similar fitting with faster speed. 
 
 
+When cryo_fit2 is more useful than cryo_fit1?
+----------------------------------------------------------------------------------------
+- To fit that requires a larger movement.
+
+ - For example,
+
+.. image:: ../images/cryo_fit_1_vs_2.png
+
+- To use non-canonical chemical entities using `phenix.eLBOW <https://www.phenix-online.org/documentation/reference/elbow.html>`__.
+
+
 What to do after cryo_fit?
 ----------------------------------------------------------------------------------------
 - If there is a room/chance to idealize secondary structure further even after cryo_fit, then run `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__.
