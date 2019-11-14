@@ -113,7 +113,7 @@ How to maximize cc?
 
 - When the fitting needs to pass through a local minimum energetically for a perferct fit (half of the molecule is already fitted, the other half is not fitted), running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ before cryo_fit1 is recommended.
 
- - Note that these options do rigid-body fitting only. Therefore, it is useful for global fitting before cryo_fit2. When overall orientation is	already	well fitted, these often are not that useful for cryo_fit1.
+ - Note that these options (`phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map') do rigid-body fitting only. Therefore, these are useful as global fitting before cryo_fit1. However, when overall orientation is already well fitted, often these are not that needed before cryo_fit1.
 
 - When the fitting protein molecule to a map requires a significant conformational change, enforcing stronger emweight_multiply_by tends to fit better (obviously).
 
