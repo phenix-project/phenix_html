@@ -91,19 +91,6 @@ A final cryo_fitted structure: output/cryo_fit2_fitted.pdb
 
 
 
-Output as a movie
--------------------------------
-- Structures of intermediate steps that can be animated with pymol play button: output/all_states.pdb
-
-- Open this pdb file with pymol, then click play button (triangle at right bottom) plays the movie.
-
- - (note. below difference is observed with MacPymol ver. 2.2.2)
-
-  - If a user dragged all_states.pdb into pymol after opening it, the biomolecule structure looks simplified and movie playing is fast.
-
-  - If a user dragged all_states.pdb into pymol icon, pymol opens along with all_states.pdb, the biomolecule structure is more detailed, and movie playing is slow.
-
-
 
 How to show map contour as mesh
 -----------------------------------
@@ -123,13 +110,9 @@ Otherwise, use pymol GUI::
   % A (action) -> Mesh -> @ Level 3.0
 
 
-
-
-How to save a movie file (confirmed with  MacPymol 2.2.2)
--------------------------------------------------------------
-As a user is playing a movie (by clicking a bottom right triangle movie playing button),
-
-File -> Export Movie As -> MPEG
+How to generate and record movie?
+---------------------------------------
+`Generate_record_movie_by_cryo_fit2 <cryo_fit2_movie.html>`__
 
 
 FAQ
