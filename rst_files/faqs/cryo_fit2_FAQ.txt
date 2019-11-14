@@ -103,7 +103,7 @@ I have a SAXS based cryo-EM map.
 ------------------------------------------
 - Please use map_weight < 0.2 for SAXS (small angle x-ray scattering) data based cryo-EM map
 
-  - A user can transform saxs data into cryo-EM map (mrc/sit) by
+  - A user can transform SAXS data into cryo-EM map (mrc/sit) by
     `Situs SAXS <http://situs.biomachina.org/tutorial_saxs.html>`_
 
   - However, this is nothing but central points by SAXS, although
@@ -187,21 +187,47 @@ My model is shifted after `phenix.model_idealization <https://www.phenix-online.
     CRYST1 header, above error message appeared.
 
 
+
+What is the theory behind cryo_fit2?
+---------------------------------------------------
+- See the `cryo_fit2 theory <../reference/cryo_fit2.html>`__
+
+
+
+When cryo_fit1 and cryo_fit2 are useful?
+---------------------------------------------------
+- When to model dynamic conformational change.
+
+ - For example, cryo_fit can model transition between map conformation 1 and 2.
+
+.. image:: ../images/cryo_fit2_static_vs_dynamic.jpg
+
+- When the initial atomistic model is different from map.
+
+.. image:: ../images/cryo_fit2_recommended_programs.jpg
+
+
+
 When cryo_fit2 is useful?
 ----------------------------------------------------------------------------------------
-- To model dynamic conformational change, cryo_fit2 is useful.
-- To simply fit to cryo-EM map, cryo_fit seems to be useful when initial cc_mask and cc_box < 0.6. When initial cc_mask and cc_box >= 0.6, `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to do similar fitting with faster speed. 
+- To simply fit to cryo-EM map, cryo_fit2 seems to be useful when initial cc_mask and cc_box < 0.6. When initial cc_mask and cc_box >= 0.6, `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ tends to do similar fitting with faster speed. 
 
 
 When cryo_fit2 is more useful than cryo_fit1?
 ----------------------------------------------------------------------------------------
-- To fit that requires a larger movement.
+- When fitting requires a larger movement.
 
  - For example,
 
 .. image:: ../images/cryo_fit_1_vs_2.png
 
 - To use non-canonical chemical entities using `phenix.eLBOW <https://www.phenix-online.org/documentation/reference/elbow.html>`__.
+
+- When `gromacs <http://www.gromacs.org>`_ is not installed.
+
+ - Unlike cryo_fit1 that uses gromacs, cryo_fit2 runs within PHENIX suite. Therefore, it does not require gromacs installation and is faster to execute. 
+
+- cryo_fit2 better fits than cryo_fit1 in 7 cases out of 10 cases (cryo-EM maps have 3~24 angstrom resolutions. They tie for 2 case, cryo_fit1 better fits for 1 case where artifically made cryo-EM map is used).
 
 
 What to do after cryo_fit?
