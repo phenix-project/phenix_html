@@ -8,38 +8,28 @@ Note
 ----------
 cryo_fit2 is under active development.
 
-Therefore, please consider to use `cryo_fit1
-<https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_
-instead (especially for RNA modeling).
+Therefore, consider to use `cryo_fit1 <https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_ instead (especially for RNA modeling).
 
 
 Overview
-----------
-This tutorial will show you how to fit biomolecule atomic structures
-into cryo-EM maps using dynamics simulation with PHENIX commandline
+------------------
+This tutorial will show you how to fit biomolecule atomic structures into cryo-EM maps using dynamics simulation with PHENIX commandline
 
 
 Theory for cryo_fit2
 -----------------------------
-See the `theory notes for cryo_fit2
-<../reference/cryo_fit2.html>`__
+See the `theory notes for cryo_fit2 <../reference/cryo_fit2.html>`__
 
 
 Input
 -------------------
-<initial_model>, <target_map> and <map resolution>
+- <initial_model>, <target_map> and <map resolution>
 
-The <initial_model> is a guide or template structure (.cif/mmCIF/.pdb) that is close to a
-<target_map> (.ccp4/.map) structurally.
+- The <initial_model> is a guide or template structure (.cif/mmCIF/.pdb) that is close to a <target_map> (.ccp4/.map) structurally.
 
-A user can use `map_to_model
-<https://www.phenix-online.org/documentation/reference/map_to_model.html>`_
-to build the atomic model.
+ - A user can use `map_to_model <https://www.phenix-online.org/documentation/reference/map_to_model.html>`_ to build the atomic model.
 
-A user can use either `dock_in_map
-<https://www.phenix-online.org/documentation/reference/dock_in_map.html>`_
-or UCSF chimera (Tools->Volume Data->Fit in Map) to roughly place the
-model into a map.
+ - A user can use either `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`_ or UCSF chimera (Tools->Volume Data->Fit in Map) to roughly place the model into a map.
 
 
 How to run
@@ -107,7 +97,7 @@ Output as a movie
 
 - Open this pdb file with pymol, then click play button (triangle at right bottom) plays the movie.
 
- - (below difference is observed with MacPymol ver. 2.2.2)
+ - (note. below difference is observed with MacPymol ver. 2.2.2)
 
   - If a user dragged all_states.pdb into pymol after opening it, the biomolecule structure looks simplified and movie playing is fast.
 
@@ -185,9 +175,12 @@ List of most useful options
 | map_weight             | (automatically| A weight toward cryo-EM map                                 |
 |                        | optimized)    |                                                             |
 +------------------------+---------------+-------------------------------------------------------------+
-| weight_multiply        | 1             | Cryo_fit2 will multiply cryo-EM map weight by this much     |
-|                        |               | Usually a small molecule (a helix) requires only 1.         |
-|                        |               | However, a large molecule needs a larger value (e.g. 10~50).|
+| map_weight_multiply    | 1             | Cryo_fit2 will multiply cryo-EM map weight by this much.    |
+|                        |               | Usually when the initial atomistic model has evenly         |
+|                        |               | distributed map fitting need, 1 is enough.                  |
+|                        |               | On the other hand, when the initial atomistic model has     |
+|                        |               | un-even distribution of map fitting need, high value (~15)  |
+|                        |               | is required.                                                |
 +------------------------+---------------+-------------------------------------------------------------+
 | secondary_structure.en | True          | Most MD simulations tend to break secondary structure.      |
 | abled                  |               | Therefore, turning on this option is recommended.           |
