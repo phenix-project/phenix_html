@@ -52,7 +52,7 @@ the Phenix map_to_model tool in the Phenix GUI.
 However you can run it directly as well (there is no GUI for resolve_cryo_em).
 
 Half-maps: Supply two unmasked half maps. They can be sharpened but it does
-not make much of any difference.
+not make much of a difference.
 
 Sequence file:  Supply a sequence file with the sequence of the molecule. Be
 sure to put in all copies of the molecule (i.e. a 24-mer needs 24 chains).
@@ -135,6 +135,8 @@ may interfere with density modification (for example, lipid density).
 
 Specific limitations and problems:
 ----------------------------------
+
+The density modification procedure works best in the resolution range of about 4.5 A or better.
 
 Literature
 ----------
