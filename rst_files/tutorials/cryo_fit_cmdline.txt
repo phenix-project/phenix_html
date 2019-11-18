@@ -9,11 +9,11 @@ Overview
 This tutorial will show you how to fit biomolecule atomic structures
 into cryo-EM maps using molecular dynamics simulation with PHENIX commandline
 
-For GUI execution, please see the `cryo_fit_gui_tutorial <cryo_fit_gui.html>`__
+For GUI execution, please see the `cryo_fit_gui_tutorial <cryo_fit_gui.html>`__.
 
-Theoretical explanation of cryo_fit is `here <https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_
+Theoretical explanation of cryo_fit is `here <../reference/cryo_fit.html>`_.
 
-For installation of cryo_fit, please see the `installation notes for cryo_fit <cryo_fit_install.html>`__
+For installation of cryo_fit, please see the `installation notes for cryo_fit <cryo_fit_install.html>`__.
 
 
 Input files
@@ -28,8 +28,7 @@ Available format: .cif and .pdb
 The initial model is a guide or template structure (CIF/mmCIF/pdb) that is close to a
 target cryo EM map structurally.
 
-A user can use either `map_to_model
-<https://www.phenix-online.org/documentation/reference/map_to_model.html>`_
+A user can use either `map_to_model <https://www.phenix-online.org/documentation/reference/map_to_model.html>`_
 or UCSF chimera (Tools -> Volume Data -> Fit in Map) to prepare the initial model.
 
 
@@ -102,7 +101,7 @@ Output
 
 Example
 ----------
-.. image:: ../images/cryo_fit_result.png
+.. image:: ../images/cryo_fit_result.jpg
 
 
 Limitation
@@ -116,17 +115,16 @@ and report what are excluded.
 
 
 
-Options
--------------------
-All options will be used as default if unspecified. Gromacs expert users are welcome to 
-customize those options if they wish.
-
 
 How to generate and record movie?
 ---------------------------------------
-`Generate_record_movie_by_cryo_fit1
-<cryo_fit_movie.html>`__
+`Generate_record_movie_by_cryo_fit1 <cryo_fit_movie.html>`__
 
+
+Options
+-------------------
+All options will be used as default if unspecified. Gromacs expert users are welcome to
+customize those options if they wish.
 
 
 List of most useful options

@@ -66,15 +66,21 @@ How to maximize cc?
 
 - However, if there is a room/chance to idealize secondary structure further even after cryo_fit2, then cryo_fit2 + `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ + `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ combination resulted in the maximum cc.
 
-- When the fitting needs to pass through a local minimum energetically for a perferct fit (for example, when local sidechain fitting hinders global backbone fitting like
+- When the fitting needs to pass through a local minimum energetically for a perferct fit (for example, when hydrophobic interaction between helices hinders loop conformation change like
 
-.. image:: ../images/cryo_fit2_example_11_res_helix.png
+.. image:: ../images/cryo_fit2_example_2_helices.png
 
 or
 
-when hydrophobic interaction between helices hinders loop conformation change like
+when initial cc is too low (e.g < 0.2) like
 
-.. image:: ../images/cryo_fit2_example_2_helices.png
+.. image:: ../images/cryo_fit2_example_low_cc.png
+
+or
+
+when local sidechain fitting hinders global backbone fitting like
+
+.. image:: ../images/cryo_fit2_example_11_res_helix.png
 
 ), running `phenix.dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`__ or UCSF Chimera's 'fit in map' before cryo_fit2 is recommended.
 
@@ -229,7 +235,7 @@ When cryo_fit2 is more useful than cryo_fit1?
 
  - For example,
 
-.. image:: ../images/cryo_fit_1_vs_2.png
+.. image:: ../images/cryo_fit_1_vs_2.jpg
 
 - To use non-canonical chemical entities using `phenix.eLBOW <https://www.phenix-online.org/documentation/reference/elbow.html>`__.
 
