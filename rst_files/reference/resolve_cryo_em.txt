@@ -1,0 +1,152 @@
+Density modification of cryo EM maps with resolve_cryo_em
+=========================================================
+
+Author(s)
+---------
+
+-  resolve_cryo_em: Tom Terwilliger
+
+Purpose
+-------
+
+The routine resolve_cryo_em is a tool for carrying out density modification
+of cryo-EM maps
+
+Usage
+-----
+
+How resolve_cryo_em works:
+--------------------------
+
+Density modification with resolve_cryo_em is based on two ideas.  
+One is that the errors in Fourier coefficients representing a cryo-EM map are
+(to some extent) uncorrelated. This means that one Fourier coefficient does
+not know about the errors in another one. (Note that this is not including
+errors that are correlated simply because the molecule is small and is 
+placed in a large map. Correlated errors in this context are those where one
+Fourier coefficient has been adjusted to compensate for errors in another one.)
+
+The other is that some features in a map are known in advance.  This could 
+include features such as the flatness of the solvent region, distributions
+of map values in the solvent and macromolecule region, similarities of
+symmetry-related regions.
+
+Then the way density modification works is that Fourier coefficients for 
+the map are adjusted to agree both with the original map and with
+the expected features. This improves the Fourier coefficients,
+and the key result is that the map improves everywhere, not just where
+the information about expected features was available.
+
+Unique features of density modification for cryo-EM are that two half-maps with
+independent errors are available in cryo-EM (allowing estimation of 
+errors), and that the errors in Fourier coefficients are (more or less)
+distributed as two-dimensional Gaussians (i.e both phase and amplitude
+errors).  This leads to many differences in implementation density
+modification in crystallography though core elements are identical.
+
+Using resolve_cryo_em: 
+----------------------
+
+Normally you will access the functionality of resolve_cryo_em by running
+the Phenix map_to_model tool in the Phenix GUI. 
+However you can run it directly as well (there is no GUI for resolve_cryo_em).
+
+Half-maps: Supply two unmasked half maps. They can be sharpened but it does
+not make much of any difference.
+
+Sequence file:  Supply a sequence file with the sequence of the molecule. Be
+sure to put in all copies of the molecule (i.e. a 24-mer needs 24 chains).
+
+Procedure used by resolve_cryo_em
+---------------------------------
+
+The inputs to resolve_cryo_em are:
+
+::
+
+  Two unmasked half-maps
+  sequence file or molecular mass or solvent fraction
+
+The procedure used by resolve_cryo_em has several steps:
+
+::
+
+  Boxing of maps:  If the supplied maps are much larger than the molecule,
+  the maps are trimmed down to about 5 A bigger than the largest dimension
+  of the molecule (estimated from a low-res mask and the molecular 
+  volume based on sequence or as specified) in each direction.
+
+  Resolution estimate and half-map sharpening of maps: The half-maps are
+  compared as a function of resolution and the resolution (FSC=0.143)
+  is estimated and the maps are sharpened based on the estimated map quality
+  of the full (averaged) map.  A full map is calculated.
+
+  Generation of map-value (density) histograms:  The full map is analyzed
+  to identify the distribution of map values in the solvent and 
+  macromolecule region.  These histograms are to be used in density 
+  modification.
+
+  Density modification of half-maps:  Each half map is density-modified
+  using maximum-likelihood density modification. The histograms of map 
+  values from the preceding step are used as targets indicating what the
+  distribution should be in the density modified maps.
+
+  Estimation of errors:  Fourier coefficients for the two starting 
+  half-maps and the two density-modified maps are compared to give FSC
+  values as a function of resolution.  These FSC values are used to estimate
+  correlated and uncorrelated errors in the four maps and to identify
+  optimal weighting between original and density-modified maps.
+
+  Optional real-space and sigma weighting:  The smoothed local rms differences
+  between original half maps and between density-modified half maps are 
+  used (optionally) to identify location-specific weighting for the
+  original and density-modified maps.  The variance of Fourier coefficients
+  among the four maps are used (optionally) to weight individual final
+  Fourier coefficients.
+
+  Optional spectral scaling and local sharpening.  The final
+  map is optionally scaled with a resolution-dependent scale factor 
+  representing the radial part of a typical Fourier transform of a 
+  macromolecule.  The final map is optionally locally resolution-filtered
+  (local sharpening).  The final map is also optionally blurred slightly
+  with a blurring dependent on the overall resolution of the map.
+
+
+Examples
+--------
+
+Standard run of resolve_cryo_em:
+--------------------------------
+
+You can use resolve_cryo_em to density-modify a cryo-EM map: 
+
+::
+
+   phenix.resolve_cryo_em half_map_A.mrc half_map_B.mrc seq_file=seq.dat
+
+Possible Problems
+-----------------
+
+If the half-maps have been masked the procedure may not work well.
+If the maps have very prominent density away from the macromolecule this
+may interfere with density modification.
+If there is non-macromolecule but real density in the maps this 
+may interfere with density modification (for example, lipid density).
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+{{citation:resolve_cryo_em}}
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.resolve_cryo_em}}
+
