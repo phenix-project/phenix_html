@@ -40,12 +40,16 @@ Available format: .ccp4 and .map (MRC style in binary file) and .sit (Situs styl
 
 Running the program
 -------------------
+- phenix.cryo_fit <initial_model> <target_map>
 
-  % phenix.cryo_fit <initial_model> <target_map>
-  
-example command line::
+ - For example, phenix.cryo_fit model.pdb map.ccp4
 
-  % phenix.cryo_fit model.pdb map.ccp4
+
+Running the tutorial
+----------------------------
+- Use files in <user phenix>/modules/cryo_fit/tutorial_input_files
+
+ - For example, phenix.cryo_fit GTPase_activation_center_tutorial.pdb GTPase_activation_center_tutorial_gaussian_1p5.mrc
 
 
 Output

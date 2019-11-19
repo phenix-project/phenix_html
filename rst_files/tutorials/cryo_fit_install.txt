@@ -25,47 +25,46 @@ At any folder,
     libtbx.configure cryo_fit
 
 
-3. Install gromacs_cryo_fit
--------------------------------
+3. Download cryo_fit install file
+-------------------------------------------
 Download gromacs-4.5.5_cryo_fit.zip from `here <https://github.com/cryoFIT/cryo_fit_install>`__
 
 .. image:: ../images/cryo_fit_download_1.png
 
 .. image:: ../images/cryo_fit_download_2.png
 
-Install using a provided script. 
 
-::
-   
-   python <user phenix>/modules/cryo_fit/files_for_steps/0_install_cryo_fit/install_cryo_fit.py
+4. Install cryo_fit
+-------------------------------------------
+- If a user's OS is either macOS or linux, install using a provided script. 
+
+ - python <user phenix>/modules/cryo_fit/files_for_steps/0_install_cryo_fit/install_cryo_fit.py
    <cryo_fit.zip> <install_path>
 
-If install_path doesn't exist when a user specified it, new folder with that name will be created (confirmed at macOS 10.13.6)
+  - If <install_path> doesn't exist when a user specifies it, a new folder with that name will be created (confirmed at macOS 10.13.6).
+
+  - Please use an absolute path. For example,
+
+   - python  /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/files_for_steps/0_install_cryo_fit/install_cryo_fit.py ~/Downloads/gromacs-4.5.5_cryo_fit.zip ~/cryo_fit
+
+   - will work.
+
+  - However, a relative path like, 
+
+   - python /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/files_for_steps/0_install_cryo_fit/install_cryo_fit.py ~/Downloads/gromacs-4.5.5_cryo_fit.zip ..
+
+   - doesn't work.
+
+- If a user has windows OS, install_cryo_fit.py may not work. 
+
+ - Doo Nam recommends either macOS or linux OS. 
+
+ - If a user needs to use Windows OS, a user may analyze install_cryo_fit.py code, and run commandline commands by him/herself. 
+
+ - Alternatively, a user may use `cryo_fit2 <../reference/cryo_fit2.html>`__.
 
 
-Please use absolute path, for example,
-
-:: 
-
-   python
-   /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/files_for_steps/0_install_cryo_fit/install_cryo_fit.py
-   ~/Downloads/gromacs-4.5.5_cryo_fit.zip ~/cryo_fit
-
-will work.
-
-
-Relative path like
-
-:: 
-
-   python
-   /Users/doonam/bin/phenix-dev-2906/modules/cryo_fit/files_for_steps/0_install_cryo_fit/install_cryo_fit.py
-   ~/Downloads/gromacs-4.5.5_cryo_fit.zip ..
-
-doesn't work.
-
-
-4. Troubleshooting
+5. Troubleshooting
 -------------------------------
 - If user's OS doesn't have git 
 
@@ -92,3 +91,8 @@ doesn't work.
   - source /Users/.../phenix-xxxx/phenix_env.sh
   
   - libtbx.configure cryo_fit
+
+
+6. Test run
+----------------------------
+See the `cryo_fit1 tutorial <cryo_fit_cmdline.html>`__
