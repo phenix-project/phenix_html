@@ -25,11 +25,24 @@ Input
 -------------------
 - <initial_model>, <target_map> and <map resolution>
 
-- The <initial_model> is a guide or template structure (.cif/mmCIF/.pdb) that is close to a <target_map> (.ccp4/.map) structurally.
+ - The <initial_model> is a guide or template structure (.cif/mmCIF/.pdb) that is close to a <target_map> (.ccp4/.map) structurally.
 
- - A user can use `map_to_model <https://www.phenix-online.org/documentation/reference/map_to_model.html>`_ to build the atomic model.
+  - A user can use `map_to_model <https://www.phenix-online.org/documentation/reference/map_to_model.html>`_ to build the atomic model.
 
- - A user can use either `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`_ or UCSF chimera (Tools->Volume Data->Fit in Map) to roughly place the model into a map.
+  - A user can use either `dock_in_map <https://www.phenix-online.org/documentation/reference/dock_in_map.html>`_ or UCSF chimera (Tools->Volume Data->Fit in Map) to roughly place the model into a map.
+
+ - The <target_map> should have decent density.
+ 
+  - Most mrc type cryo-EM maps have decent density. 
+
+  - However, some maps (like from UCSF Chimera's map segmentation) have low density. Therefore, cryo_fit2 will have just little incentive to fit to it.
+
+   - For example, left yellow maps ares fine. However, right gray/white maps lack enough density to run.
+
+      .. image:: ../images/cryo_fit2_example_map.jpg
+      .. image:: ../images/cryo_fit2_example_map2.jpg
+
+  - To fit into these low density maps, Doo Nam tried very high map_weights (like 10^8). However, these efforts either broke atomistic model geometries or did not budge the atomistic model.
 
 
 How to run
