@@ -10,7 +10,9 @@ After cryo_fit2, secondary structures of my input molecule tend to be broken.
 ------------------------------------------------------------------------------------------
 - Doo Nam observed that when he provided a little less ideal helix (i.g. one H-bond length within helix is rather long), then cryo_fit2 tends to "loosen/unwind" that "kink" area.
 
-- When he provided a longer `distance_cut_n_o <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ (i.g. 4~4.5), the geometry of helix was kept well (it maintained the helical kink spot).
+- When he provided a longer `distance_cut_n_o <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ (i.g. 4~4.5, the default value is 3.5), the geometry of helix was kept well (it maintained the helical kink spot) like
+
+     .. image:: ../images/cryo_fit2_example_1_helix_result.jpg
 
  - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<reso> secondary_structure.protein.distance_cut_n_o=4.5
 
