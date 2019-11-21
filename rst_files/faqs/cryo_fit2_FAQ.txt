@@ -190,6 +190,10 @@ My model is shifted after `phenix.model_idealization <https://www.phenix-online.
 
    - For example, Doo Nam observed this message when he provided XXX in residue names instead of ALA, TYR, PHE etc.
 
+    - To prevent this situation, he needed to provide sequence information when he ran `phenix.fit_loops <https://www.phenix-online.org/documentation/reference/fit_loops.html>`__,
+
+     - For example, phenix.fit_loops <pdb file> <mrc file> <fasta file> start=<> end=<>
+
 
 
 
