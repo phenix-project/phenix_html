@@ -86,13 +86,30 @@ How to maximize cc?
 
     .. image:: ../images/cryo_fit2_example_1.png
 
-    ), enforcing stronger map_weight (higher map_weight_multiply) tends to fit better (obviously).
+    ),
+
+ - enforcing stronger map_weight (higher map_weight_multiply) tends to fit better (obviously).
 
   - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=15
 
-  - At this high map_weight_multiply, the secondary structures may be broken (slightly or seriously) right after cryo_fit2 running.
+   - At this high map_weight_multiply, the secondary structures may be broken (slightly or seriously) right after cryo_fit2 running.
 
-  - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well.
+   - However, `phenix.model_idealization <https://www.phenix-online.org/documentation/reference/model_idealization.html>`__ which is followed by `phenix.real_space_refine <https://www.phenix-online.org/documentation/reference/real_space_refine.html>`__ perfectly restored ideal secondary structures and fitted very well like
+
+    .. image:: ../images/cryo_fit2_example_1_result.jpg
+
+    (cc_box: 0.96).
+
+  - However, too high map_weight_multiply tends to misfit totally.
+
+   - For example, phenix.cryo_fit2 <user.pdb> <user.map> resolution=<x> map_weight_multiply=1000 misfitted like
+
+    .. image:: ../images/cryo_fit2_example_1_1k_map_wt_multiply_result.jpg
+
+    (yellow: after cryo_fit2, green: after cryo_fit2 which is followed by model_idealization).
+
+    - Lowering many sigma values was expected to prevent this situation. However, lowering many sigma values prolongs cryo_fit2 running time too much.
+
 
  - Alternatively, HE_top_out=True sometimes (not always) boosts cc well even with moderately high map weight (confirmed with 6 benchmark cases).
 
@@ -162,7 +179,7 @@ My model is shifted after `phenix.model_idealization <https://www.phenix-online.
 --------------------------------------------------------------------------------------------
 - When a user sees above message, consider to enter a correct resolution.
 
- - For example, Doo Nam uses either EMDB reported resolution (preferred) or `phenix.mtriage <//www.phenix-online.org/documentation/reference/mtriage.html>`__ derived resolution to properly run cryo_fit2.
+ - For example, Doo Nam uses either `EMDB <https://www.ebi.ac.uk/pdbe/emdb>`__ reported resolution (preferred) or `phenix.mtriage <https://www.phenix-online.org/documentation/reference/mtriage.html>`__ derived resolution to properly run cryo_fit2.
 
 - When a user is not sure about correct resolution, often using a lower resolution works.
 
