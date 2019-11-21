@@ -176,6 +176,22 @@ My model is shifted after `phenix.model_idealization <https://www.phenix-online.
  - For example, phenix.model_idealization <user.pdb> <user.map that was used for cryo_fit2> (resolution information is not required)
 
 
+"Number of atoms with unknown nonbonded energy type symbols"
+--------------------------------------------------------------------------------------
+- When a user sees a message like
+
+  - "Sorry: Fatal problems interpreting model file:  Number of atoms with unknown nonbonded energy type symbols: 40
+    Please edit the model file to resolve the problems and/or supply a
+    CIF file with matching restraint definitions, along with
+    apply_cif_modification and apply_cif_link parameter definitions
+    if necessary.",
+
+  - please check proper namings in a pdb file.
+
+   - For example, Doo Nam observed this message when he provided XXX in residue names instead of ALA, TYR, PHE etc.
+
+
+
 
 "RuntimeError: cctbx Error: Miller index not in structure factor map"
 --------------------------------------------------------------------------------------------
