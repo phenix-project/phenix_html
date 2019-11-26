@@ -565,7 +565,10 @@ done using phenix.tls tool.
 When performing TLS refinement along with individual isotropic refinement the
 restraints are applied to Ulocal only and not to the total ADP.
 
-Group isotropic ADP or TLS refinement do not use any restraints.
+Group isotropic ADP refinement uses harmonic restraints on group B values to make 
+overall B factors of adjacent residues less dissimilar.
+
+TLS refinement alone does not use any restraints.
 
 When ADP refinement is run without using selections then ADP of all atoms are
 refined. If selections are used, only ADP of selected atoms are refined.
