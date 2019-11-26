@@ -112,6 +112,19 @@ How to maximize cc?
 
     - Lowering many sigma values was expected to prevent this situation. However, lowering many sigma values prolongs cryo_fit2 running time too much.
 
+ - Alternatively, remodel loop with `phenix.fit_loops <https://www.phenix-online.org/documentation/reference/fit_loops.html>`__ helps cc boost.
+
+    .. image:: ../images/cryo_fit2_fit_loops.jpg
+
+    (yellow: user input, cc_mask: 0.43, cc_box: 0.58; pink: after fit_loops, cc_mask: 0.47, cc_box: 0.58)
+
+    .. image:: ../images/cryo_fit2_fit_loops_cryo_fit2.jpg
+
+    (green: after fit_loops & cryo_fit2, cc_mask: 0.83, cc_box: 0.90)
+
+    .. image:: ../images/cryo_fit2_fit_loops_cryo_fit2_ideal_RSR.jpg
+
+    (green: after fit_loops, cryo_fit2, model_idealization & real_space_refine, cc_mask: 0.92, cc_box: 0.97)
 
  - Alternatively, HE_top_out=True sometimes (not always) boosts cc well even with moderately high map weight (confirmed with 6 benchmark cases).
 
