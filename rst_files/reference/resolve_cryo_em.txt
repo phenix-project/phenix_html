@@ -128,13 +128,28 @@ Possible Problems
 -----------------
 
 If the half-maps have been masked the procedure may not work well.
+
 If the maps have very prominent density away from the macromolecule this
 may interfere with density modification.
+
 If there is non-macromolecule but real density in the maps this 
 may interfere with density modification (for example, lipid density).
 
 Specific limitations and problems:
 ----------------------------------
+
+Density modification introduces some correlations between half-maps
+due to solvent flattening. This can have a small effect on the resolution
+estimates obtained with half-map FSC.  The resolution estimates provided
+by the program are corrected for this effect.
+
+If you use the real_space_weighting or sigma_weighting or 
+sharpening_type=local_final_half_map options there may be some 
+extra correlations between half-maps introduced.  Calculating resolution
+using FSC between these density-modified maps can lead to overstating the
+resolution. The resolution estimates provided by the program are before 
+applying these weighting schemes (unless you specify local_methods_final_cycle = False and run multiple cycles) so they are not normally affected by this.
+
 
 The density modification procedure works best in the resolution range of about 4.5 A or better.
 
