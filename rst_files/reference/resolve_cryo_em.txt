@@ -204,6 +204,14 @@ applying these weighting schemes (unless you specify local_methods_final_cycle =
 
 The density modification procedure works best in the resolution range of about 4.5 A or better.
 
+Model-based density modification necessarily biases the map towards the models
+that are built.  By building multiple models, the effect of this bias is
+reduced but not eliminated.  For example if the starting map has an error that
+causes models to be built with a side chain the wrong place, the new model-
+based density will show even more density in that location.  It is essential
+that the original or non-model-based maps be consulted to evaluate any specific
+density in the map.
+
 Literature
 ----------
 
