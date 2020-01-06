@@ -57,8 +57,11 @@ Using resolve_cryo_em:
 ----------------------
 
 Normally you will access the functionality of resolve_cryo_em by running
-the Phenix map_to_model tool in the Phenix GUI. 
-However you can run it directly as well (there is no GUI for resolve_cryo_em).
+the ResolveCryoEM tool in the Phenix GUI.  You can also run it from the 
+command line. (You may wish to run it from the command line in background 
+with multiprocessing if you are running with denmod_with_models=True as this
+can take a long time (1 day x 16 processors for 250 residues in the unique
+part of the model for example).
 
 Half-maps: Supply two unmasked half maps. They can be sharpened but it does
 not make much of a difference.
