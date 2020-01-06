@@ -15,6 +15,15 @@ of cryo-EM maps
 Usage
 -----
 
+Density modification with resolve_cryo_em can be carried out based on two 
+half-maps, along with the FSC-based resolution and a sequence file specifying
+the contents of the map.
+
+Density modification can also be carried out by using the initial 
+density-modified map as a basis for generating multiple models, then averaging
+the model-based maps with the density-modified map to yield a model-based
+density modified map.
+
 How resolve_cryo_em works:
 --------------------------
 
@@ -111,6 +120,44 @@ The procedure used by resolve_cryo_em has several steps:
   (local sharpening).  The final map is also optionally blurred slightly
   with a blurring dependent on the overall resolution of the map.
 
+Procedure used by resolve_cryo_em for density modification with model-building
+------------------------------------------------------------------------------
+
+Density modification with model-building adds additional cycles to the
+density modification procedure in which multiple models are built using
+map_to_model and the averaged density and uncertainty in the average density
+is used to combine the model density with the initial density-modified map.
+
+The procedure includes:
+
+::
+
+  Create initial density-modified half-maps and full map
+
+  Create N (typically 16) variants of the full map by changing the resolution
+  cutoff, spectral_scaling, and blurring of the map.
+
+  Build a model into each modified full map
+ 
+  Refine some of the models against half-map 1 and some against half-map 2
+
+  Create one composite model based on all models
+
+  Create model density for each half-map based on the models refined againt
+  that map.  This model density will have a mean value and variance for each
+  point in the map near to at least 3 models.
+
+  Create composite density for each half-maps by combining the model density 
+  with the density-modified half-map, weighting the model density according to 
+  its consistency among models.
+
+  Density-modify each composite half-map, and create a new set of density 
+  modified half-maps and full map, as in the procedure for standard 
+  density modification.
+
+  Sharpen the resulting maps using model-based sharpening with the composite
+  model.
+
 
 Examples
 --------
@@ -128,6 +175,11 @@ Possible Problems
 -----------------
 
 If the half-maps have been masked the procedure may not work well.
+
+If the solvent noise is very non-uniform the procedure may work poorly.
+By default a rectangular solid region enclosing the molecule is cut out 
+and used in density modification.  You can supply a boxed map and 
+set the keyword box_before_analysis=False to avoid this.
 
 If the maps have very prominent density away from the macromolecule this
 may interfere with density modification.
@@ -149,7 +201,6 @@ extra correlations between half-maps introduced.  Calculating resolution
 using FSC between these density-modified maps can lead to overstating the
 resolution. The resolution estimates provided by the program are before 
 applying these weighting schemes (unless you specify local_methods_final_cycle = False and run multiple cycles) so they are not normally affected by this.
-
 
 The density modification procedure works best in the resolution range of about 4.5 A or better.
 
