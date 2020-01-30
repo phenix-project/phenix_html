@@ -16,10 +16,16 @@
 # Typically you want to prepend to one of the settings listed to expand your
 # paths, but you can also append, override, or remove settings.
 
-#import os
+import os
 settings = {
     "site" : {
         "prepends" : {
+# Allows detection of the default compiler on your normal path
+            "program_path" : os.environ["PATH"].split(":") if "PATH" in os.environ else [],
+# Allows finding system libraries in non-standard locations
+            "library_path" : os.environ["LD_LIBRARY_PATH"].split(":") if "LD_LIBRARY_PATH" in os.environ else [],
+# Allows finding system library includes if those includes are in non-standard locations
+            "include_path" : os.environ["INCLUDE"].split(":") if "INCLUDE" in os.environ else [],
         },
         "appends" : {
             "flags" : {
@@ -27,6 +33,12 @@ settings = {
             },
         },
         "overrides" : {
+## Uncomment the following line if your compiler need additional environment variables to function (e.g. license key locations)
+#            "ENV" : os.environ,
+
+## Uncomment (and adjust) the following lines if you wish to explicitly specify the path to a compiler which isn't the default compiler
+#            "cxx" : "~/path/to/compiler/bin/g++", # or clang++ or mpiCC or icpc, etc. -- The C++ compiler.
+#            "cc"  : "~/path/to/compiler/bin/gcc", # or clang or mpicc or icc, etc. -- The plain C compiler.
         },
         "removes" : {
         },
