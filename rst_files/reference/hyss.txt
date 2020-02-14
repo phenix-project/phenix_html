@@ -40,7 +40,7 @@ or *externally* preprocessed difference data.
 A new powerful and parallel Hybrid Substructure Search (HySS)
 =============================================================
 
-HySS has many new features in 2014.  The first thing you might notice in
+HySS has many new features since 2014.  The first thing you might notice in
 HySS is that it can use as many processors as you have on your computer.
 This can make for a really quick direct methods search for your
 anomalously-scattering substructure.
@@ -168,6 +168,13 @@ suboptimal resolution cutoffs and also provides more discrimination with noisy
 data. Switching on the ``phaser-map`` extrapolation protocol is also worthwhile,
 since it increases success rate and is only a small runtime overhead compared
 to phaser-based rescoring.
+
+Searches for heavy-atom cluster compounds
+=========================================
+
+You can search for cluster compounds with HySS.
+Normally you should supply a PDB file with an example of the cluster using the keyword cluster_compound_structure=my_cluster_compound.pdb and scattering_type=XX  (yes, really the two letters XX, not XX replaced by some other name). 
+If your cluster is Ta6Br12 then you can simply put scattering_type=TX and skip the PDB file. 
 
 Notes
 =====
