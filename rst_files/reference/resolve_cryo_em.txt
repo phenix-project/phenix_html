@@ -67,7 +67,7 @@ Half-maps: Supply two unmasked half maps. They can be sharpened but it does
 not make much of a difference.
 
 Sequence file:  Supply a sequence file with the sequence of the molecule. Be
-sure to put in all copies of the molecule (i.e. a 24-mer needs 24 chains).
+sure to put in all copies of the molecule (i.e. a 24-mer needs 24 chains). (You can also supply one copy of the molecule and specify copies=24 if you want.)
 
 Procedure used by resolve_cryo_em
 ---------------------------------
@@ -98,16 +98,31 @@ The procedure used by resolve_cryo_em has several steps:
   macromolecule region.  These histograms are to be used in density 
   modification.
 
-  Density modification of half-maps:  Each half map is density-modified
-  using maximum-likelihood density modification. The histograms of map 
-  values from the preceding step are used as targets indicating what the
-  distribution should be in the density modified maps.
+  Map-phasing of half-maps:  Each half map is used in a process of
+  map-based estimation of new Fourier coefficients using a  
+  maximum-likelihood procedure. In essence, one Fourier coefficient is
+  removed from the map at a time. Then a new value of that Fourier coefficient
+  is found that maximizes the likelihood of the map given all the other
+  Fourier coefficients. The likelihood is calculated from the agreement of
+  the histograms of the (new) map with expected histograms.  For example,
+  if the solvent region is expected to be flat, then the new map has a
+  high likelihood if it is flat in the solvent region.  By varying the one
+  Fourier coefficient the flatness of the solvent region will change. Similarly
+  the histograms of density in the region of the macromolecule will change
+  depending on the value of the one Fourier coefficient. The best value for
+  each Fourier coefficient is then used to calculated a map-phasing map.
 
   Estimation of errors:  Fourier coefficients for the two starting 
   half-maps and the two density-modified maps are compared to give FSC
   values as a function of resolution.  These FSC values are used to estimate
   correlated and uncorrelated errors in the four maps and to identify
   optimal weighting between original and density-modified maps.
+
+  Recombination of original and map-phasing half-maps:  Based on the
+  estimated errors in original and map-phasing half-maps, all four maps
+  are recombined to create a new density-modified map.  Additionally,
+  each half-map and associated map-phasing half map are recombined to
+  create two new density-modified half-maps.
 
   Optional real-space and sigma weighting:  The smoothed local rms differences
   between original half maps and between density-modified half maps are 
@@ -136,6 +151,12 @@ The procedure used by resolve_cryo_em has several steps:
   macromolecule.  The final map is optionally locally resolution-filtered
   (local sharpening).  The final map is also optionally blurred slightly
   with a blurring dependent on the overall resolution of the map.
+
+  Optional use of an input full map.  If you supply a full map in addition
+  to the half-maps then the full map will be recombined with the two
+  map-phasing half-maps instead of the average of the two original 
+  half-maps being recombined.  This could improve the final map if your
+  full map has been filtered in some special way.
 
 Procedure used by resolve_cryo_em for density modification with model-building
 ------------------------------------------------------------------------------
@@ -175,6 +196,7 @@ The procedure includes:
   Sharpen the resulting maps using model-based sharpening with the composite
   model.
 
+  Note that this procedure takes a lot of computation.
 
 Examples
 --------
