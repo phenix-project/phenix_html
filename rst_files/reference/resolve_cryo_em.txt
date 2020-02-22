@@ -116,6 +116,20 @@ The procedure used by resolve_cryo_em has several steps:
   among the four maps are used (optionally) to weight individual final
   Fourier coefficients.
 
+  Optional starting with unsharpened maps.  The input half maps are used in the
+  density modification step without auto-sharpening. (Normally these maps are
+  auto-sharpened based on half-map sharpening first).  This can be useful 
+  for high-resolution maps.
+
+  Optional alternative final sharpening of maps.  The final sharpening normally
+  consists of two parts.  One is scaling the map in shells of resolution 
+  based on the estimated correlation of the map coefficients at each 
+  resolution with the true ones.  This is controlled by the
+  keyword final_scale_with_fsc_ref.   The second part of final scaling is
+  scaling Fourier coefficients in each shell of resolution either to match
+  the low-resolution shell or to match the scaled half-maps, or to 
+  be part-way between these (controlled by the keyword geometric_scaling).
+
   Optional spectral scaling and local sharpening.  The final
   map is optionally scaled with a resolution-dependent scale factor 
   representing the radial part of a typical Fourier transform of a 
@@ -174,6 +188,40 @@ You can use resolve_cryo_em to density-modify a cryo-EM map:
 
    phenix.resolve_cryo_em half_map_A.mrc half_map_B.mrc seq_file=seq.dat
 
+How to tell how well density modification is working
+----------------------------------------------------
+
+Density modification changes the sharpening of your map, so just because the
+map looks better or worse doesn't necessarily mean that anything important 
+has happened.
+
+If you have two maps and you want to know which is the better one, here
+are some things you can do:
+
+::
+
+  1. Create a matched version of your maps that have the same 
+  resolution-dependence using phenix.auto_sharpen. Run it like this:
+
+  phenix.auto_sharpen n_bins=100 auto_sharpen_methods=external_map_sharpening 
+       external_map_file=target_map.map map_to_change.map resolution=4.1 
+       sharpened_map_file=map_to_change_matched.map
+
+  Now you can look at target_map.map and map_to_change_matched.map and 
+  differences you see are due to intrinsic properties of the maps, not just
+  sharpening.
+
+  2. If you have a good model, refine the model against each map.  Then use
+  phenix.mtriage to estimate the resolution where the FSC(map,model)==0.5
+  for each map. The map with a lower value of this resolution may be better.
+
+  3. As in #2, once you have a pair of maps and a model refined against 
+  each map, you can run phenix.auto_sharpen with each map and model and
+  it will print out the average FSC for each.  The one with the higher
+  overall FSC may be better.
+
+  
+
 Possible Problems
 -----------------
 
@@ -185,7 +233,8 @@ and used in density modification.  You can supply a boxed map and
 set the keyword box_before_analysis=False to avoid this.
 
 If the maps have very prominent density away from the macromolecule this
-may interfere with density modification.
+may interfere with density modification. You can get around this by supplying
+a mask (as a map, 1=inside the molecule).
 
 If there is non-macromolecule but real density in the maps this 
 may interfere with density modification (for example, lipid density).
