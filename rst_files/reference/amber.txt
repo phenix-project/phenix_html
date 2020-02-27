@@ -38,8 +38,11 @@ unix and OSX. To test the Amber interface, the user may run:
 	amber.run_tests
 
 To run Amber in Phenix, in addition to a PDB file, a topology and a
-coordinate file must be provided for Amber. You can easily create
-these files by using the provided AmberPrep utility:
+coordinate file must be provided for Amber. From Phenix 1.18,
+you can allow the phenix.refine
+GUI to run AmberPrep, automatically creating the files needed. You
+can also easily create these files by using the provided AmberPrep utility via
+the AmberPrep GUI or via the commandline:
 
 ::
 
