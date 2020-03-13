@@ -15,13 +15,14 @@ of cryo-EM maps
 Usage
 -----
 
-Density modification with resolve_cryo_em can be carried out based on two 
+Density modification with resolve_cryo_em is carried out using two 
 half-maps, along with the FSC-based resolution and a sequence file specifying
 the contents of the map.
 
 Density modification can also be carried out by using the initial 
-density-modified map as a basis for generating multiple models, then averaging
-the model-based maps with the density-modified map to yield a model-based
+density-modified map or a single supplied model
+as a basis for generating multiple models, then using model-based density
+as part of the density modification target to yield a model-based
 density modified map.
 
 How resolve_cryo_em works:
@@ -58,26 +59,49 @@ Using resolve_cryo_em:
 
 Normally you will access the functionality of resolve_cryo_em by running
 the ResolveCryoEM tool in the Phenix GUI.  You can also run it from the 
-command line. (You may wish to run it from the command line in background 
+command line. You may wish to run it from the command line in background 
 with multiprocessing if you are running with denmod_with_models=True as this
-can take a long time (1 day x 16 processors for 250 residues in the unique
-part of the model for example).
+can take a long time (perhaps 1 day x 16 processors if you have 250 
+residues in the unique part of your model).
 
 Half-maps: Supply two unmasked half maps. They can be sharpened but it does
-not make much of a difference.
+not make much of a difference. They must be unmasked and they must still have
+noise in the solvent region.  They can be boxed with a soft boundary (if they
+are boxed specify box_before_analysis=False so it isn't done again)
 
 Sequence file:  Supply a sequence file with the sequence of the molecule. Be
 sure to put in all copies of the molecule (i.e. a 24-mer needs 24 chains). (You can also supply one copy of the molecule and specify copies=24 if you want.)
 
+Model file:  You can supply a model; if you do then the model will be randomized
+and refined against the half-maps to yield 8 models for each half map. These
+will be used in model-based density modification.
+
+Automatically-generated models:  You can specify density_modify_with_model=True
+and not supply any model. In this case 8 models will be automatically 
+generated for each half-map and used in model-based density modification.
+
 Procedure used by resolve_cryo_em
 ---------------------------------
 
-The inputs to resolve_cryo_em are:
+The basic inputs to resolve_cryo_em are:
 
 ::
 
   Two unmasked half-maps
   sequence file or molecular mass or solvent fraction
+
+Optional inputs are:
+
+::
+
+  Full map (Recombined with density-modified half maps)
+  Model (Used to generate multi-model representation for density modification)
+  Symmetry file (Supply with model or if automatic model generation is
+     used to limit the modeling to the unique part of the map. Alternatively,
+     used in density modification in cases where the symmetry is not part
+     of the reconstruction process).
+  Mask file (Used to identify the region where the macromolecule is present)
+
 
 The procedure used by resolve_cryo_em has several steps:
 
@@ -86,7 +110,8 @@ The procedure used by resolve_cryo_em has several steps:
   Boxing of maps:  If the supplied maps are much larger than the molecule,
   the maps are trimmed down to about 5 A bigger than the largest dimension
   of the molecule (estimated from a low-res mask and the molecular 
-  volume based on sequence or as specified) in each direction.
+  volume based on sequence or as specified) in each direction, using
+  a soft mask at the edges of the box.
 
   Resolution estimate and half-map sharpening of maps: The half-maps are
   compared as a function of resolution and the resolution (FSC=0.143)
@@ -95,7 +120,7 @@ The procedure used by resolve_cryo_em has several steps:
 
   Generation of map-value (density) histograms:  The full map is analyzed
   to identify the distribution of map values in the solvent and 
-  macromolecule region.  These histograms are to be used in density 
+  macromolecule region.  These histograms are optionally used in density 
   modification.
 
   Map-phasing of half-maps:  Each half map is used in a process of
@@ -158,6 +183,27 @@ The procedure used by resolve_cryo_em has several steps:
   half-maps being recombined.  This could improve the final map if your
   full map has been filtered in some special way.
 
+  Optional density modification with multiple models.  You can generate
+  multiple-model representations of each of your two half maps either
+  by supplying a single model (it will be randomized and refined against
+  each half-map) or by specifying density_modify_with_model=True (models
+  will be generated automatically).  The multiple models will be used to
+  estimate the density at each point near the models along with a guess of
+  the uncertainty of that density.  These are used to create a target map
+  for density modification that is based on model density and the
+  map from standard density modification, weighted according to their
+  uncertainty estimates.  This target map is then used in density modification
+  (as a target for the region containing the model), where Fourier coefficients   that lead to a map that is more similar to the target density are considered
+  more likely thatn those that do not.  This procedure necessarily can
+  introduce model bias, but this is greatly reduced by the use of multiple
+  models, uncertainty estimates, and the likelihood-based density modification.
+
+  Density modification including symmetry that is not part of reconstruction
+  symmetry.  If your molecule has symmetry that was not used in the
+  reconstruction process, it can be used in density modification. Supply a
+  symmetry_file (.ncs_spec file) that you can obtain with the find_ncs tool 
+  in phenix (uses a model or density) and it will be included.
+
 Procedure used by resolve_cryo_em for density modification with model-building
 ------------------------------------------------------------------------------
 
@@ -175,7 +221,8 @@ The procedure includes:
   Create N (typically 16) variants of the full map by changing the resolution
   cutoff, spectral_scaling, and blurring of the map.
 
-  Build a model into each modified full map
+  Build a model into each modified full map. If symmetry file supplied,
+    build only the unique part of the model.
  
   Refine some of the models against half-map 1 and some against half-map 2
 
@@ -209,6 +256,77 @@ You can use resolve_cryo_em to density-modify a cryo-EM map:
 ::
 
    phenix.resolve_cryo_em half_map_A.mrc half_map_B.mrc seq_file=seq.dat
+
+What to expect with density modification
+----------------------------------------
+
+If density modification is working well, you should see:
+
+::
+
+  An improvement in reported resolution. Typically this is small..from 0.05 A
+  to 0.5 A.  If it is zero...it probably did not work.
+
+  More fine detail. Density modification mostly changes
+  the high-resolution part of your map. (The low-resolution part of your map
+  is generally already very good, and usually if it is not then density
+  modification can't fix it. Occasionally low and high-resolution aspects
+  of a map can improve.)  Compare your original (auto-sharpened) map with
+  your density-modified map and see if side chains and carbonyl oxygens are more
+  clear and if the connectivity of the chain improves.
+
+What to try to improve your map
+-------------------------------
+
+Usually you should first just run with all defaults, supplying two half-maps 
+and a sequence file and nominal resolution. See how the map looks and use it
+as a baseline. Then some things to try to improve the map are:
+
+::
+
+  Add a full map file to recombine it with density-modified half-maps. This
+  can be helpful if your full map has been processed in a way that makes it
+  much better than an average of your half-maps.
+
+  Add a mask file to exclude part of the map. If your map has some huge noise
+  peaks or just density that is not part of your molecule, you can try to
+  exclude it by supplying a mask file (a map file with 1 where your molecule is
+  located and 0 elsewhere).
+
+  If you have a model, you can supply the model and it will be used to generate
+  a multi-model representation of your molecule. This multi-model representation
+  will be used in density modification. Note that you should supply a
+  symmetry file if there is symmetry in your reconstruction so that only
+  the unique part needs to be analyzed.
+
+  If you don't have a model but your resolution is high (about 3.5 A or better),
+  you can improve your map by automatically generating a multi-model
+  representation of your structure. This is used in the same way as the
+  multi-model representation starting with a supplied model, and a symmetry
+  file is helpful to identify just the unique part of the molecule.
+
+  You can try changing  
+  the resolution (overall) and the density-modification resolution.  Normally
+  the resolution is the gold-standard resolution from comparing your half-maps.
+  However varying this may help.  The density-modification resolution is 
+  normally set automatically to be somewhat finer than the overall resolution,
+  but its exact value does have an effect so you could try different values.
+
+  You can try changing some of the defaults that occasionally help. One is
+  setting density_modify_unsharpened_maps=True (density modifies the original
+  half-maps without auto-sharpening them). Another is setting
+  final_scale_with_fsc_ref=False (applies final resolution-dependent scaling 
+  that is part-way between standard half-map FSC-based sharpening and
+  constant amplitudes over all resolutions).
+  These usually are best for high_resolution maps (< 3 A).
+
+  Real_space_weighting, sigma_weighting, and spectral_scaling may improve the
+  final map.  Real-space weighting weights original and density-modified maps
+  based on their local uncertainties.  Sigma-weighting weights them by 
+  uncertainties in individual Fourier coefficients.  Spectral scaling scales the
+  final map by resolution to match the resolution-dependence of a typical
+  protein.
+  
 
 How to tell how well density modification is working
 ----------------------------------------------------
@@ -276,15 +394,23 @@ using FSC between these density-modified maps can lead to overstating the
 resolution. The resolution estimates provided by the program are before 
 applying these weighting schemes (unless you specify local_methods_final_cycle = False and run multiple cycles) so they are not normally affected by this.
 
-The density modification procedure works best in the resolution range of about 4.5 A or better.
+The density modification procedure works best in the resolution range of about 4.5 A or better, but occasionally works very well at lower resolutions (not
+tested beyond 9 A).  The procedure does not work in every case (we do not
+have a great metric for success but about half of cases appear to be 
+improved according to the metrics described above).
+Varying the parameters can have a substantial effect on the outcome.
 
 Model-based density modification necessarily biases the map towards the models
 that are built.  By building multiple models, the effect of this bias is
 reduced but not eliminated.  For example if the starting map has an error that
 causes models to be built with a side chain the wrong place, the new model-
-based density will show even more density in that location.  It is essential
-that the original or non-model-based maps be consulted to evaluate any specific
-density in the map.
+based density will show even more density in that location.  That is,
+this process can accentuate errors in the original maps if they match
+plausible locations of atoms in a model.  Balancing this, the procedure 
+generally does not appear to yield density at positions where there is no
+density in the original map even if atoms are located there in a model.
+It is important that the original or non-model-based maps be consulted to 
+evaluate any specific density in the map.
 
 Literature
 ----------
