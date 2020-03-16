@@ -114,7 +114,31 @@ You can also use it to try and pick out which sequence file matches your map:
 where the directory sequences has a set of fasta or similar files representing
 possible sequences that might match your map.
 
+Re-sequencing and filling in a gap with run_assign_sequence=True:
+-----------------------------------------------------------------
 
+You can use the special keyword run_assign_sequence=True in sequence_from_map
+to carry out a two-step process to try and fix a mistraced part of your
+model.  If residues 154-162 of your model look bad and perhaps the sequence
+register is wrong after residue 162, you can try something like this:
+
+First remove the bad residues:
+
+phenix.pdbtools bad_model.pdb \
+   remove="resseq 154:162" \
+   output.file_name=bad_model_del.pdb
+
+Then run sequence_from_map to reassign the sequence and fill in the gap 
+(you can supply a map_file or an mtz_file; either will be fine):
+
+phenix.sequence_from_map run_assign_sequence=True \
+  model_file=bad_model_del.pdb \
+  seq_file=sequence.dat \
+  map_file=map_file.ccp4 \
+  pdb_out=bad_model_fixed.pdb \
+  resolution=2
+
+This will produce bad_model_fixed.pdb
 
 Possible Problems
 -----------------
