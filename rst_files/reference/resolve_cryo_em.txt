@@ -275,6 +275,15 @@ If density modification is working well, you should see:
   your density-modified map and see if side chains and carbonyl oxygens are more
   clear and if the connectivity of the chain improves.
 
+  If you supply or generate models, you should see improved high-resolution
+  detail in the region of the model.  You are not likely to see improvement
+  away from the model as you would in crystallography.  The multiple models
+  generated are basically identifying what locations in your map are
+  compatible with being the location of an atom, based on the density already
+  there and the geometrical restrictions on a model. That information then
+  is included in density modification and improves density in the region of
+  the model but is not strong enough to improve density elsewhere.
+
 What to try to improve your map
 -------------------------------
 

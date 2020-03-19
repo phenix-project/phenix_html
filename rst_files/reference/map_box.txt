@@ -13,16 +13,19 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
 
 **Usage examples**
 
-  1) Using map defined in MTZ file as Fourier map coefficients. Box is defined by
+  1) Using a map defined in MTZ file as Fourier map coefficients. Box is defined by
      selected atoms in residues from 1 to 10 in chain A
 
      phenix.map_box model.pdb map_coefficients.mtz selection="chain A and resseq 1:10"
 
 
-  2) Using CCP4 formatted map
+  2) Using a CCP4/mrc formatted map.
 
      phenix.map_box model.pdb map.ccp4 selection="resname LIG"
 
+     Note that by default map_box chooses a rectangular box that is a little 
+     bigger than your model.  If you want the map to be zeroed out away from
+     your model you can use the keyword mask_atoms=True.
 
   3) Extract unique part of a map. You can extract just the unique part of
      a map (unique based on map symmetry).  This map is masked around high
@@ -34,6 +37,35 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
      over much of the map and this interferes with auto-sharpen.
 
      phenix.map_box map.ccp4 extract_unique=True symmetry.ncs_spec resolution=3
+
+  4) Shift origin of a map.  You can shift the origin of a map (redefine where
+     in the unit_cell box the map goes).  Normally you need to also specify
+     the the map size should remain the same.
+
+     You can specify the origin directly:
+
+     phenix.map_box map.ccp4 keep_map_size=True prefix=map_origin_shifted \
+       output_origin_grid_units=3,5,7
+
+     You can also specify the origin to be (0,0,0) with keep_origin=False:
+
+     phenix.map_box map.ccp4 keep_map_size=True prefix=map_origin_shifted \
+       keep_origin=False
+
+     You can also specify that the origin should match the origin of some
+     other file. If you do this you have to use the keyword ccp4_map_file
+     for the map to be shifted and output_origin_match_this_file for the
+     one to match:
+
+     phenix.map_box ccp4_map_file=map.ccp4 keep_map_size=True \
+       prefix=map_origin_shifted \
+       output_origin_match_this_file=map_with_origin_to_match.ccp4
+
+  5) Cut out a part of a map to match some other map.  You can say:
+
+     phenix.map_box ccp4_map_file=map.ccp4 \
+       prefix=map_boxed \
+       bounds_match_this_file=map_with_bounds_to_match.ccp4
 
 
 **Notes**
@@ -53,6 +85,55 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
       cell was (200,200,200) then be output map will have a unit cell of
       (100,100,100).
 
+  3)  Some maps may have a special tag called external_origin. In the map
+      file it is called ORIGIN.  This is different than the origin of 
+      the map, which specifies the grid point that corresponds to the
+      first element in the map.  The external_origin
+      tells display programs how to shift a model in order to match the map.
+      Phenix ignores the external_origin tag.  If you want to see what its
+      value is, you can use phenix.show_map_info to display characteristics
+      of our map.  If you want to remove the external_origin tag from your
+      map, you can run map_box with "keep_map_size=True" and it will write
+      out the same map but without the external_origin tag.  If you want
+      to shift a model to match your map, and the map has an external_origin
+      tag, you can use the tool phenix.shift_model_to_match_map (command-line
+      only).
+
+  4)  How map gridding is described in mrc/ccp4 format. 
+
+      Map specifications. A full map is defined for a full box or 
+      unit cell, however in many cases only a part of that map is present.  
+      The full map is on a grid of 'unit cell grid' which corresponds to 
+      one unit cell (box) with dimensions of 'unit cell parameters'.
+      
+      The map that is present is on part of the 'unit cell grid'.  It starts
+      at the grid point called the 'origin' and goes to one grid point in each
+      direction before the grid point called 'last'.  The map that is present
+      has 'all' grid points in each direction.  The map that is present has a
+      'map unit cell' and 'map grid' that correspond to the dimensions 'all'.
+      
+      Example: a full map with a unit cell grid of (10, 10, 10) goes from
+      (0, 0, 0) to (9, 9, 9) and has dimensions of (10, 10, 10).
+      
+      Example: a partial map with a unit cell grid of (10,10,10) and an origin
+      of (0, 0, 2) and a map grid or 'all' of (6, 6, 6), would go
+      from (0, 0, 2) to (5, 5, 7).
+
+  5)  Ignoring symmetry conflicts. If you cut out a part of a map, then the
+      new map will have a box size that is different from the orginal one.
+      If that box size does not match the box size for your PDB file or other
+      map, then you may get an error message that says the symmetry of the
+      maps or map and model is not the same.  You can ignore this with the
+      keyword ignore_symmetry_conflicts=True.
+
+  6)  Running map_box with bounds that are outside the map.  You can specify
+      any lower and upper bounds for your output map, but if the bounds are
+      outside the map you supply the values may not make any sense.  By 
+      default the map you supply is wrapped so that the value for a point 
+      outside the map is taken from the grid point that would be in this place
+      if another copy of the map were placed right next to your map.  You can
+      turn this off and instead supply zeroes outside the map with the
+      keyword restrict_map_size=True. 
 
 **List of all parameters**
 
