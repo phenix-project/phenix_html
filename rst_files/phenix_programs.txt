@@ -13,6 +13,8 @@ General
 - phenix.doc: Phenix documentation
 - phenix.help: Load Phenix documentation (same as phenix.doc)
 - phenix.version: Print version of Phenix
+- phenix.list: Print list of Phenix commands 
+- phenix_regression.list: Print list of Phenix regression commands 
 
 Assessing data quality
 ----------------------
@@ -148,6 +150,7 @@ Map tools
 - phenix.maximum_entropy_map: Compute maximum entropy map from map coefficients
 - phenix.polder: Compute omit map which excludes the bulk solvent around the omitted region
 - phenix.remove_free_from_map: Set all map coeffs of free reflections to zero
+- phenix.resolve_cryo_em: Density modify a cryo-EM map 
 - phenix.superpose_maps: Superimpose PDB files and transform map to match
 - phenix.mtriage: Tool to analyse cryo-EM map (resolution, etc)
 
