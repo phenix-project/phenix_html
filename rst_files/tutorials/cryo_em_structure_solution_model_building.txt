@@ -1,0 +1,119 @@
+This example is density modification of a cryo-EM map, followed by
+structure determination by automatic model-building, fixing a mis-traced
+segment, sequence assignment and refinement
+
+The data are half-maps for apoferritin (EMD entry 20026, 1.8 A)
+
+The files are:
+
+  - emd_20026_half_map_1_box.ccp4 emd_20026_half_map_2_box.ccp4 -- half maps
+  - seq.dat -- sequence file
+  - run_denmod_model_building.csh  -- script to run all these commands
+
+The maps are all cut out (boxed) from the deposited maps (just to make the
+files smaller for this demo).
+
+A. DENSITY MODIFICATION OF HALF-MAPS
+
+To run one cycle of density modification from the command line you can paste
+this in to a terminal window. From the GUI just set all the same parameters
+and no need to set the output_directory (it will go in resolve_cryo_em_0 or
+a similar directory name):
+
+phenix.resolve_cryo_em emd_20026_half_map_1_box.ccp4 \
+    emd_20026_half_map_2_box.ccp4 \
+    resolution=2.2 dm_resolution=1.8 \
+    seq_file=seq.dat \
+    cycles=1 \
+    nproc=4 \
+    box_before_analysis=False \
+    density_modify_unsharpened_maps=True\
+    output_directory=denmod \
+    output_files.denmod_map_file_name=denmod_map.ccp4 \
+    initial_map_file_name=initial_map.ccp4
+   
+In about 15 minutes this will produce (in a denmod/ or 
+  resolve_cryo_em_xx directory) the file: denmod_map.ccp4
+
+B. STRUCTURE SOLUTION BY AUTOMATED MODEL-BUILDING 
+
+We are going to build a model into our density-modified map, 
+ refine it, fix the sequence and refine again.
+
+1. Getting map symmetry
+We will want a symmetry file describing the symmetry operators that have been
+used in our map.  We can get them automatically in about 30 seconds with:
+
+phenix.map_symmetry denmod/denmod_map.ccp4 resolution=2 \
+   symmetry_out=denmod_map.ncs_spec
+
+Now denmod_map.ncs_spec has the 24 symmetry operators for octahedral symmetry
+in the appropriate location of this map.
+
+
+2. Automated model-building using a density-modified map
+
+We can build a model into our map with map_to_model:
+
+phenix.map_to_model denmod/denmod_map.ccp4 resolution=2 nproc=4 \
+    ncs_file=denmod_map.ncs_spec \
+    pdb_out=map_to_model.pdb  \
+    seq_file=seq.dat
+
+In a half hour or so you should get the model 1aew_A_built_in_denmod_map.pdb.
+
+3.  Cut out a piece of density-modified map and compare to build_in model
+You can cut out a piece of your density modified map and look at it along with
+your model this way:
+
+phenix.map_box denmod/denmod_map.ccp4 map_to_model.pdb \
+     ignore_symmetry_conflicts=true prefix=denmod_map_A
+
+This will produce denmod_map_A.ccp4 and denmod_map_A.pdb which you can look 
+at in Coot or Chimera.  The model is mostly pretty good but may need
+some fixing, depending on your version of Phenix
+
+4.  Refine the model against the density-modified map
+
+We can refine the build_in model either against the original or cut-out map. 
+ Let's use the cut-out map.  We can also refine just chain A or the 
+ whole 24-mer. The difference is if you use the whole 24-mer you are 
+going to include inter-chain contacts and if you use a single chain you 
+ will ignore them. Let's use just one chain for now:
+
+phenix.real_space_refine map_to_model.pdb denmod_map_A.ccp4 resolution=2 \
+     ignore_symmetry_conflicts=True
+
+After a couple minutes we have the output model: 
+map_to_model_real_space_refined.pdb.  If you look at this model
+in Coot or Chimera you'll see it has moved some side chains into density, but
+that the model still doesn't match the density for residues 154-162.
+
+5.  If your model has parts that do not fit, try something like the 
+following. First remove the bad part (here the bad part is residues 154
+through 162):
+
+phenix.pdbtools map_to_model_real_space_refined.pdb \
+   remove="resseq 154:162" \
+   output.file_name=map_to_model_real_space_refined_del.pdb
+
+6. Redo the sequence assignment and see if we can fill in the gap. 
+Here the keyword run_assign_sequence=True is used to reassign the
+sequence and then fill in the gap:
+
+phenix.sequence_from_map run_assign_sequence=True \
+  model_file=map_to_model_real_space_refined_del.pdb \
+  seq_file=seq_unique.dat \
+  map_file=denmod_map_A.ccp4 \
+  resolution=2
+
+This should produce the file sequence_from_map.pdb in a couple minutes.
+
+7. Let's refine one more time:
+
+phenix.real_space_refine sequence_from_map.pdb denmod_map_A.ccp4 \
+    resolution=2 ignore_symmetry_conflicts=True
+
+Now have a look at sequence_from_map_real_space_refined.pdb and 
+denmod_model_A.ccp4 in Coot or Chimera.  The model should fit
+the map quite well.

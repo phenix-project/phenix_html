@@ -1,0 +1,161 @@
+
+This example is density modification of a cryo-EM map, followed by
+optional structure determination by docking a homologous structure
+
+The data are half-maps for apoferritin (EMD entry 20026, 1.8 A)
+
+The files are:
+
+  - emd_20026_half_map_1_box.ccp4 emd_20026_half_map_2_box.ccp4 -- half maps
+  - seq.dat -- sequence file
+  - 20026_auto_sharpen_A.ccp4 -- deposited map, half-map sharpened
+  - apoferritin_chainA_rsr.pdb -- model refined against sharpened map
+  - 1aew_A.pdb -- chain A from X-ray structure of horse apoferritin (53% identical to human apoferritin)
+  - run_denmod_dock.csh  -- command file that will run all these things for you if you want
+
+The maps are all cut out (boxed) from the deposited maps (just to make the
+files smaller for this demo).
+
+
+A. DENSITY MODIFICATION OF HALF-MAPS
+
+To run one cycle of density modification from the command line you can paste
+this in to a terminal window. From the GUI just set all the same parameters
+and no need to set the output_directory (it will go in resolve_cryo_em_0 or
+a similar directory name):
+
+phenix.resolve_cryo_em emd_20026_half_map_1_box.ccp4 \
+    emd_20026_half_map_2_box.ccp4 \
+    resolution=2.2 dm_resolution=1.8 \
+    seq_file=seq.dat \
+    cycles=1 \
+    nproc=4 \
+    box_before_analysis=False \
+    output_directory=denmod \
+    density_modify_unsharpened_maps=True\
+    initial_map_file_name=initial_map.ccp4
+
+   
+In about 15 minutes this will produce (in a resolve_cryo_em_xx directory)
+the file:
+
+denmod/denmod_map.ccp4  -- density-modified map
+
+You may want to cut out the parts of your map that match apoferritin_chainA_rsr.pdb:
+
+phenix.map_box ignore_symmetry_conflicts=true \
+     apoferritin_chainA_rsr.pdb denmod/denmod_map.ccp4 prefix=denmod_map_A
+
+We are saying "ignore_symmetry_conflicts=True" because the map in 
+denmod/denmod_map.ccp4 may have a different "unit cell" than 
+apoferritin_chainA_rsr.pdb.  Here the "unit cell" is just a description of
+the box of points that are in the map. It can sometimes refer to the size
+of the original map and sometimes to the size of the working part of the
+map and this command says to ignore these differences.
+
+In Coot or Chimera you can load in the model (apoferritin_chainA_rsr.pdb) 
+and compare the sharpened deposited map (20026_auto_sharpen_A.ccp4) 
+with the density modified map (denmod_map_A.ccp4). Look at residues 13 
+and 81 and the main chain near residue 161 for examples of substantial 
+improvement in the map.
+
+B. STRUCTURE SOLUTION BY DOCKING HOMOLOGOUS MODEL 
+   (horse apoferritin, 53% identical)
+
+The file 1aew_A.pdb contains the X-ray structure of 1aew, a homologous protein 
+from horse (53% identical, rmsd 0.5 A).  We are going to dock this structure 
+into our density-modified map, refine it, fix the sequence, refine again,
+and density modify using the model to get a final map.
+
+1. Getting map symmetry
+We will want a symmetry file describing the symmetry operators that have been
+used in our map.  We can get them automatically in about 30 seconds with:
+
+phenix.map_symmetry denmod/denmod_map.ccp4 resolution=2 \
+   symmetry_out=denmod_map.ncs_spec
+
+Now denmod_map.ncs_spec has the 24 symmetry operators for octahedral symmetry
+in the appropriate location of this map.
+
+
+2. Docking into density-modified map
+
+We can find where 1aew_A.pdb fits in our map with dock_in_map:
+
+phenix.dock_in_map denmod/denmod_map.ccp4 1aew_A.pdb resolution=2 nproc=4 \
+    symmetry_file=denmod_map.ncs_spec pdb_out=1aew_A_docked_in_denmod_map.pdb 
+
+In a minute or two you should get the model 1aew_A_docked_in_denmod_map.pdb.
+
+3.  Cut out a piece of density-modified map and compare to docked model
+
+You can cut out a piece of your density modified map and look at it along with 
+this model this way:
+
+phenix.map_box denmod/denmod_map.ccp4 1aew_A_docked_in_denmod_map.pdb ignore_symmetry_conflicts=true
+
+This will produce 1aew_A_docked_in_denmod_map_box.ccp4 and 1aew_A_docked_in_denmod_map_box.pdb which you can look at in Coot or Chimera.  Notice that a lot of the side chains do not match the density because the model is from a homologous
+structure.
+
+4.  Refine the model against the density-modified map
+
+We can refine the docked model either against the original or cut-out map. Let's
+use the cut-out map.  We can also refine just chain A or the whole 24-mer. 
+The difference is if you use the whole 24-mer you are going to include
+inter-chain contacts and if you use a single chain you will ignore them. Let's
+use just one chain for now:
+
+phenix.real_space_refine 1aew_A_docked_in_denmod_map.pdb 1aew_A_docked_in_denmod_map_box.ccp4 resolution=2 ignore_symmetry_conflicts=True
+
+After a couple minutes we have the output model: 
+1aew_A_docked_in_denmod_map_real_space_refined.pdb.  If you look at this model
+in Coot or Chimera you'll see it has moved some side chains into density, but
+that they still don't match the density because the sequence of this docked
+model is not the sequence of human apoferritin (look at R29 for example which
+should be a tyrosine).
+
+5. Fix the sequence 
+
+We can redo the sequence of our docked model with sequence_from_map:
+
+phenix.sequence_from_map 1aew_A_docked_in_denmod_map_real_space_refined.pdb \
+ 1aew_A_docked_in_denmod_map_box.ccp4 resolution=2 seq_unique.dat nproc=4 \
+  pdb_out=1aew_A_docked_rsr_seq.pdb
+
+In a couple minutes you should get the file: 1aew_A_docked_rsr_seq.pdb with
+the sequence of human apoferritin mapped onto the real-space-refined model.
+Have a look at this with the map now in Coot or Chimera. You can see that
+some of the side chains need refinement and that a loop by P157 needs to be
+moved. Let's first just refine our new model.
+
+6. Refine model with new sequence
+
+We can refine just the same as before but with our new sequence:
+
+phenix.real_space_refine 1aew_A_docked_rsr_seq.pdb 1aew_A_docked_in_denmod_map_box.ccp4 resolution=2 ignore_symmetry_conflicts=True
+
+In a couple minutes we have the refined model: 1aew_A_docked_rsr_seq_real_space_refined.pdb.  This model fits the map pretty well, but the loop at P157 is
+still way off.  We need to re-fit this loop.
+
+7. Fit a loop that is not in density
+
+We can fix this loop using the fit_loops tool. We can look at the model and map
+and notice that the part of the model that doesn't fit is residues 155-159.
+Let's fix these with:
+
+phenix.fit_loops 1aew_A_docked_rsr_seq_real_space_refined.pdb \
+   map_in=1aew_A_docked_in_denmod_map_box.ccp4 resolution=2 seq_unique.dat \
+   remove_loops=True start=155 end=159 \
+   pdb_out=1aew_A_docked_rsr_seq_rsr_loop157.pdb
+
+In a minute this should fit this part of the chain into the density.
+
+8. Refine model with fitted loop
+
+We can refine one more time after fitting our loop at P157:
+
+phenix.real_space_refine 1aew_A_docked_rsr_seq_rsr_loop157.pdb  1aew_A_docked_in_denmod_map_box.ccp4 resolution=2 ignore_symmetry_conflicts=True
+
+Now we have 1aew_A_docked_rsr_seq_rsr_loop157_real_space_refined.pdb.  Have
+a look at it in Coot or Chimera.
+
