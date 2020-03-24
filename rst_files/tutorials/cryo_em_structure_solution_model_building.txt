@@ -108,15 +108,34 @@ phenix.sequence_from_map run_assign_sequence=True \
   model_file=map_to_model_real_space_refined_del.pdb \
   seq_file=seq_unique.dat \
   map_file=denmod_map_A.ccp4 \
+  pdb_out=sequence_from_map.pdb\
   resolution=2
 
 This should produce the file sequence_from_map.pdb in a couple minutes.
 
-7. Let's refine one more time:
+7. We can fix one other part of the model that does not fit well (residues
+ 6-9):
 
-phenix.real_space_refine sequence_from_map.pdb denmod_map_A.ccp4 \
+phenix.pdbtools sequence_from_map.pdb \
+   remove="resseq 6:9" \
+   output.file_name=sequence_from_map_del_6-9.pdb
+
+8. Redo the sequence assignment and see if we can fill in the gap as in 6 above:
+
+phenix.sequence_from_map run_assign_sequence=True \
+  model_file=sequence_from_map_del_6-9.pdb \
+  seq_file=seq_unique.dat \
+  map_file=denmod_map_A.ccp4 \
+  pdb_out=sequence_from_map_2.pdb \
+  resolution=2
+
+This should produce the file sequence_from_map_2.pdb in a couple minutes.
+
+9. Let's refine one more time:
+
+phenix.real_space_refine sequence_from_map_2.pdb denmod_map_A.ccp4 \
     resolution=2 ignore_symmetry_conflicts=True
 
-Now have a look at sequence_from_map_real_space_refined.pdb and 
+Now have a look at sequence_from_map_2_real_space_refined.pdb and 
 denmod_model_A.ccp4 in Coot or Chimera.  The model should fit
 the map quite well.
