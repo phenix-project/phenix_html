@@ -113,8 +113,7 @@ phenix.sequence_from_map run_assign_sequence=True \
 
 This should produce the file sequence_from_map.pdb in a couple minutes.
 
-7. We can fix one other part of the model that does not fit well (residues
- 6-9):
+7. We can fix one other part of the model that does not fit well (residues 6-9):
 
 phenix.pdbtools sequence_from_map.pdb \
    remove="resseq 6:9" \

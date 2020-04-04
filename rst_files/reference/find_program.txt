@@ -1,0 +1,120 @@
+Finding a program or test using find_program
+============================================
+
+Author(s)
+---------
+
+-  find_program: Tom Terwilliger
+
+Purpose
+-------
+
+The routine find_program will show all the programs that match
+supplied text (either in program name or in program descriptions).
+The locations of the programs (which tab in the GUI or command-line
+name) are shown.
+
+Alternatively, find_program can search for a regression test based on
+words in the name of the test or based on the name of a module that
+is tested by that regression test.
+
+Usage
+-----
+
+How find_program works:
+-----------------------
+
+Searches for programs:
+----------------------
+
+Find_program uses the list of programs and short descriptions in
+the file $PHENIX/modules/phenix/phenix/utilities/phenix_list_help.py
+as a list of program names. Additionally it compiles program names
+and descriptions from $PHENIX/modules/phenix/wxGUI2/Programs/__init__.params
+and $PHENIX/modules/phenix/wxGUI2/Home/Tools.py.
+
+Find_program then makes a list of all programs, descriptions, and locations.
+ This list is then searched with the search_text values provided.
+
+Searches for regression tests:
+------------------------------
+
+Find_program can also look for and display regression tests.  A
+database (test_and_module_info.pkl) of regression tests and all the
+modules called by each test is created using the tool 
+phenix_regression.get_test_and_module_info.  This database is read
+by find_program and can be searched either by words from the name of 
+a regression test (providing the full path of the regression test), or
+by words from the name of a module (providing the full path of 
+regression tests that use that module).
+
+The search for regression tests by module is a way to find a test that
+will run a module that you are interested in.
+
+
+Standard run of find_program:
+----------------------------------
+
+You can use find_program to find a program like this:
+
+::
+
+   phenix.find_program search_text=autosol
+
+You can also use it to try and find a regression test that exercises
+a routine with the word anomalous in it (anywhere) and also the
+word signal (anywhere):
+
+::
+
+  phenix.find_program search_type=tests search_tests_by=function_called search_text=anomalous search_text=signal
+
+Setting up the database for find_program:
+-----------------------------------------
+
+You can update the database for find_program by running the tool
+
+::
+
+   phenix_regression.get_test_and_module_info nproc=64
+
+in an empty directory. This will take a while (perhaps an hour or so 
+with nproc=64) and produce a file called:
+
+::
+
+  test_and_module_info.pkl
+
+You can copy this file to its official location at:
+
+::
+
+  $PHENIX/modules/phenix_regression/misc/test_and_module_info.pkl
+
+and then find_program will use this new version. You can also
+specify where this .pkl file is located with the keyword:
+
+::
+
+  phenix_test_database_file=xxx.pkl
+
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.find_program}}
+
