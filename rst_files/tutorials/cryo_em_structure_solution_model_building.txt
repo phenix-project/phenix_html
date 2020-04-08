@@ -5,9 +5,13 @@ This example is density modification of a cryo-EM map, followed by
 structure determination by automatic model-building, fixing a mis-traced
 segment, sequence assignment and refinement
 
+NOTE: the details of what needs to be fixed after automatic model-building
+(steps 5-9) may change with platform, number of processors or version
+of Phenix used
+
 The data are half-maps for apoferritin (EMD entry 20026, 1.8 A)
 
-The files are:
+The files are (NOTE: the map files are in the apoferritin_denmod directory):
 
   - emd_20026_half_map_1_box.ccp4 emd_20026_half_map_2_box.ccp4 -- half maps
   - seq.dat -- sequence file
@@ -92,9 +96,14 @@ map_to_model_real_space_refined.pdb.  If you look at this model
 in Coot or Chimera you'll see it has moved some side chains into density, but
 that the model still doesn't match the density for residues 154-162.
 
-5.  If your model has parts that do not fit, try something like the 
-following. First remove the bad part (here the bad part is residues 154
-through 162):
+5.  If your model has parts that do not fit, try something like the
+following.
+
+NOTE: the results for these steps may depend on platform, version,
+and number of processors so you may have to adjust them based on what your
+model looks like.
+
+First remove the bad part (here the bad part is residues 154 through 162):
 
 phenix.pdbtools map_to_model_real_space_refined.pdb \
    remove="resseq 154:162" \
