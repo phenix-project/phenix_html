@@ -6,7 +6,7 @@ structure determination by automatic model-building, fixing a mis-traced
 segment, sequence assignment and refinement
 
 NOTE: the details of what needs to be fixed after automatic model-building
-(steps 5-9) may change with platform, number of processors or version
+(steps 5-11) may change with platform, number of processors or version
 of Phenix used
 
 The data are half-maps for apoferritin (EMD entry 20026, 1.8 A)
@@ -146,4 +146,23 @@ phenix.real_space_refine sequence_from_map_2.pdb denmod_map_A.ccp4 \
 
 Now have a look at sequence_from_map_2_real_space_refined.pdb and 
 denmod_model_A.ccp4 in Coot or Chimera.  The model should fit
-the map quite well.
+the map quite well.  If there are missing side chains, you can fill them in with:
+
+10. Run sequence_from_map
+
+phenix.sequence_from_map sequence_from_map_2_real_space_refined.pdb \
+    denmod_model_A.ccp4 seq_file=seq_unique.dat resolution=2 \
+    pdb_out=sequence_from_map_3.pdb
+
+and now sequence_from_map_3.pdb should have more side chains built.  You could
+refine once more too:
+
+11. Final refinement:
+
+phenix.real_space_refine sequence_from_map_3.pdb denmod_map_A.ccp4 \
+    resolution=2 ignore_symmetry_conflicts=True
+
+and sequence_from_map_3_real_space_refined.pdb is the refined model.
+Next you would go over the model carefully using validation tools and
+remove any parts that are not ok and fix parts that are not quite right.
+You can also create the full 24-mer using your map symmetry and the model
