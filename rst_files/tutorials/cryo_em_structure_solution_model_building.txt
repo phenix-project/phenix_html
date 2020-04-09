@@ -145,13 +145,13 @@ phenix.real_space_refine sequence_from_map_2.pdb denmod_map_A.ccp4 \
     resolution=2 ignore_symmetry_conflicts=True
 
 Now have a look at sequence_from_map_2_real_space_refined.pdb and 
-denmod_model_A.ccp4 in Coot or Chimera.  The model should fit
+denmod_map_A.ccp4 in Coot or Chimera.  The model should fit
 the map quite well.  If there are missing side chains, you can fill them in with:
 
 10. Run sequence_from_map
 
 phenix.sequence_from_map sequence_from_map_2_real_space_refined.pdb \
-    denmod_model_A.ccp4 seq_file=seq_unique.dat resolution=2 \
+    denmod_map_A.ccp4 seq_file=seq_unique.dat resolution=2 \
     pdb_out=sequence_from_map_3.pdb
 
 and now sequence_from_map_3.pdb should have more side chains built.  You could
