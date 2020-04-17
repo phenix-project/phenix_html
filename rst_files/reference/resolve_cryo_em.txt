@@ -15,53 +15,68 @@ of cryo-EM maps
 Usage
 -----
 
-Density modification with resolve_cryo_em is carried out using two 
+Density modification with resolve_cryo_em is carried out using two
 half-maps, along with the FSC-based resolution and a sequence file specifying
 the contents of the map.
 
-Density modification can also be carried out by using the initial 
+Density modification can also be carried out by using the initial
 density-modified map or a single supplied model
 as a basis for generating multiple models, then using model-based density
 as part of the density modification target to yield a model-based
 density modified map.
 
+Video Tutorial
+--------------
+
+.. raw:: html
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/4axYwCn2VWI" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" ></iframe></div>
+
+
+The `tutorial video <https://youtu.be/4axYwCn2VWI>`_ is available on the
+`Phenix YouTube channel <https://www.youtube.com/channel/UCcdI0hfHngWAZLJWynxPQWg>`_ and covers the
+following topics:
+
+- basic overview
+- how to run resolve_cryo_em via the GUI
+
 How resolve_cryo_em works:
 --------------------------
 
-Density modification with resolve_cryo_em is based on two ideas.  
+Density modification with resolve_cryo_em is based on two ideas.
 One is that the errors in Fourier coefficients representing a cryo-EM map are
 (to some extent) uncorrelated. This means that one Fourier coefficient does
 not know about the errors in another one. (Note that this is not including
-errors that are correlated simply because the molecule is small and is 
+errors that are correlated simply because the molecule is small and is
 placed in a large map. Correlated errors in this context are those where one
 Fourier coefficient has been adjusted to compensate for errors in another one.)
 
-The other is that some features in a map are known in advance.  This could 
+The other is that some features in a map are known in advance.  This could
 include features such as the flatness of the solvent region, distributions
 of map values in the solvent and macromolecule region, similarities of
 symmetry-related regions.
 
-Then the way density modification works is that Fourier coefficients for 
+Then the way density modification works is that Fourier coefficients for
 the map are adjusted to agree both with the original map and with
 the expected features. This improves the Fourier coefficients,
 and the key result is that the map improves everywhere, not just where
 the information about expected features was available.
 
 Unique features of density modification for cryo-EM are that two half-maps with
-independent errors are available in cryo-EM (allowing estimation of 
+independent errors are available in cryo-EM (allowing estimation of
 errors), and that the errors in Fourier coefficients are (more or less)
 distributed as two-dimensional Gaussians (i.e both phase and amplitude
 errors).  This leads to many differences in implementation density
 modification in crystallography though core elements are identical.
 
-Using resolve_cryo_em: 
+Using resolve_cryo_em:
 ----------------------
 
 Normally you will access the functionality of resolve_cryo_em by running
-the ResolveCryoEM tool in the Phenix GUI.  You can also run it from the 
-command line. You may wish to run it from the command line in background 
+the ResolveCryoEM tool in the Phenix GUI.  You can also run it from the
+command line. You may wish to run it from the command line in background
 with multiprocessing if you are running with denmod_with_models=True as this
-can take a long time (perhaps 1 day x 16 processors if you have 250 
+can take a long time (perhaps 1 day x 16 processors if you have 250
 residues in the unique part of your model).
 
 Half-maps: Supply two unmasked half maps. They can be sharpened but it does
@@ -77,7 +92,7 @@ and refined against the half-maps to yield 8 models for each half map. These
 will be used in model-based density modification.
 
 Automatically-generated models:  You can specify density_modify_with_model=True
-and not supply any model. In this case 8 models will be automatically 
+and not supply any model. In this case 8 models will be automatically
 generated for each half-map and used in model-based density modification.
 
 Procedure used by resolve_cryo_em
@@ -109,7 +124,7 @@ The procedure used by resolve_cryo_em has several steps:
 
   Boxing of maps:  If the supplied maps are much larger than the molecule,
   the maps are trimmed down to about 5 A bigger than the largest dimension
-  of the molecule (estimated from a low-res mask and the molecular 
+  of the molecule (estimated from a low-res mask and the molecular
   volume based on sequence or as specified) in each direction, using
   a soft mask at the edges of the box.
 
@@ -119,12 +134,12 @@ The procedure used by resolve_cryo_em has several steps:
   of the full (averaged) map.  A full map is calculated.
 
   Generation of map-value (density) histograms:  The full map is analyzed
-  to identify the distribution of map values in the solvent and 
-  macromolecule region.  These histograms are optionally used in density 
+  to identify the distribution of map values in the solvent and
+  macromolecule region.  These histograms are optionally used in density
   modification.
 
   Map-phasing of half-maps:  Each half map is used in a process of
-  map-based estimation of new Fourier coefficients using a  
+  map-based estimation of new Fourier coefficients using a
   maximum-likelihood procedure. In essence, one Fourier coefficient is
   removed from the map at a time. Then a new value of that Fourier coefficient
   is found that maximizes the likelihood of the map given all the other
@@ -137,7 +152,7 @@ The procedure used by resolve_cryo_em has several steps:
   depending on the value of the one Fourier coefficient. The best value for
   each Fourier coefficient is then used to calculated a map-phasing map.
 
-  Estimation of errors:  Fourier coefficients for the two starting 
+  Estimation of errors:  Fourier coefficients for the two starting
   half-maps and the two density-modified maps are compared to give FSC
   values as a function of resolution.  These FSC values are used to estimate
   correlated and uncorrelated errors in the four maps and to identify
@@ -150,7 +165,7 @@ The procedure used by resolve_cryo_em has several steps:
   create two new density-modified half-maps.
 
   Optional real-space and sigma weighting:  The smoothed local rms differences
-  between original half maps and between density-modified half maps are 
+  between original half maps and between density-modified half maps are
   used (optionally) to identify location-specific weighting for the
   original and density-modified maps.  The variance of Fourier coefficients
   among the four maps are used (optionally) to weight individual final
@@ -158,28 +173,28 @@ The procedure used by resolve_cryo_em has several steps:
 
   Optional starting with unsharpened maps.  The input half maps are used in the
   density modification step without auto-sharpening. (Normally these maps are
-  auto-sharpened based on half-map sharpening first).  This can be useful 
+  auto-sharpened based on half-map sharpening first).  This can be useful
   for high-resolution maps.
 
   Optional alternative final sharpening of maps.  The final sharpening normally
-  consists of two parts.  One is scaling the map in shells of resolution 
-  based on the estimated correlation of the map coefficients at each 
+  consists of two parts.  One is scaling the map in shells of resolution
+  based on the estimated correlation of the map coefficients at each
   resolution with the true ones.  This is controlled by the
   keyword final_scale_with_fsc_ref.   The second part of final scaling is
   scaling Fourier coefficients in each shell of resolution either to match
-  the low-resolution shell or to match the scaled half-maps, or to 
+  the low-resolution shell or to match the scaled half-maps, or to
   be part-way between these (controlled by the keyword geometric_scaling).
 
   Optional spectral scaling and local sharpening.  The final
-  map is optionally scaled with a resolution-dependent scale factor 
-  representing the radial part of a typical Fourier transform of a 
+  map is optionally scaled with a resolution-dependent scale factor
+  representing the radial part of a typical Fourier transform of a
   macromolecule.  The final map is optionally locally resolution-filtered
   (local sharpening).  The final map is also optionally blurred slightly
   with a blurring dependent on the overall resolution of the map.
 
   Optional use of an input full map.  If you supply a full map in addition
   to the half-maps then the full map will be recombined with the two
-  map-phasing half-maps instead of the average of the two original 
+  map-phasing half-maps instead of the average of the two original
   half-maps being recombined.  This could improve the final map if your
   full map has been filtered in some special way.
 
@@ -201,7 +216,7 @@ The procedure used by resolve_cryo_em has several steps:
   Density modification including symmetry that is not part of reconstruction
   symmetry.  If your molecule has symmetry that was not used in the
   reconstruction process, it can be used in density modification. Supply a
-  symmetry_file (.ncs_spec file) that you can obtain with the find_ncs tool 
+  symmetry_file (.ncs_spec file) that you can obtain with the find_ncs tool
   in phenix (uses a model or density) and it will be included.
 
 Procedure used by resolve_cryo_em for density modification with model-building
@@ -223,7 +238,7 @@ The procedure includes:
 
   Build a model into each modified full map. If symmetry file supplied,
     build only the unique part of the model.
- 
+
   Refine some of the models against half-map 1 and some against half-map 2
 
   Create one composite model based on all models
@@ -232,12 +247,12 @@ The procedure includes:
   that map.  This model density will have a mean value and variance for each
   point in the map near to at least 3 models.
 
-  Create composite density for each half-maps by combining the model density 
-  with the density-modified half-map, weighting the model density according to 
+  Create composite density for each half-maps by combining the model density
+  with the density-modified half-map, weighting the model density according to
   its consistency among models.
 
-  Density-modify each composite half-map, and create a new set of density 
-  modified half-maps and full map, as in the procedure for standard 
+  Density-modify each composite half-map, and create a new set of density
+  modified half-maps and full map, as in the procedure for standard
   density modification.
 
   Sharpen the resulting maps using model-based sharpening with the composite
@@ -251,7 +266,7 @@ Examples
 Standard run of resolve_cryo_em:
 --------------------------------
 
-You can use resolve_cryo_em to density-modify a cryo-EM map: 
+You can use resolve_cryo_em to density-modify a cryo-EM map:
 
 ::
 
@@ -287,7 +302,7 @@ If density modification is working well, you should see:
 What to try to improve your map
 -------------------------------
 
-Usually you should first just run with all defaults, supplying two half-maps 
+Usually you should first just run with all defaults, supplying two half-maps
 and a sequence file and nominal resolution. See how the map looks and use it
 as a baseline. Then some things to try to improve the map are:
 
@@ -314,34 +329,34 @@ as a baseline. Then some things to try to improve the map are:
   multi-model representation starting with a supplied model, and a symmetry
   file is helpful to identify just the unique part of the molecule.
 
-  You can try changing  
+  You can try changing
   the resolution (overall) and the density-modification resolution.  Normally
   the resolution is the gold-standard resolution from comparing your half-maps.
-  However varying this may help.  The density-modification resolution is 
+  However varying this may help.  The density-modification resolution is
   normally set automatically to be somewhat finer than the overall resolution,
   but its exact value does have an effect so you could try different values.
 
   You can try changing some of the defaults that occasionally help. One is
   setting density_modify_unsharpened_maps=True (density modifies the original
   half-maps without auto-sharpening them). Another is setting
-  final_scale_with_fsc_ref=False (applies final resolution-dependent scaling 
+  final_scale_with_fsc_ref=False (applies final resolution-dependent scaling
   that is part-way between standard half-map FSC-based sharpening and
   constant amplitudes over all resolutions).
   These usually are best for high_resolution maps (< 3 A).
 
   Real_space_weighting, sigma_weighting, and spectral_scaling may improve the
   final map.  Real-space weighting weights original and density-modified maps
-  based on their local uncertainties.  Sigma-weighting weights them by 
+  based on their local uncertainties.  Sigma-weighting weights them by
   uncertainties in individual Fourier coefficients.  Spectral scaling scales the
   final map by resolution to match the resolution-dependence of a typical
   protein.
-  
+
 
 How to tell how well density modification is working
 ----------------------------------------------------
 
 Density modification changes the sharpening of your map, so just because the
-map looks better or worse doesn't necessarily mean that anything important 
+map looks better or worse doesn't necessarily mean that anything important
 has happened.
 
 If you have two maps and you want to know which is the better one, here
@@ -349,14 +364,14 @@ are some things you can do:
 
 ::
 
-  1. Create a matched version of your maps that have the same 
+  1. Create a matched version of your maps that have the same
   resolution-dependence using phenix.auto_sharpen. Run it like this:
 
-  phenix.auto_sharpen n_bins=100 auto_sharpen_methods=external_map_sharpening 
-       external_map_file=target_map.map map_to_change.map resolution=4.1 
+  phenix.auto_sharpen n_bins=100 auto_sharpen_methods=external_map_sharpening
+       external_map_file=target_map.map map_to_change.map resolution=4.1
        sharpened_map_file=map_to_change_matched.map
 
-  Now you can look at target_map.map and map_to_change_matched.map and 
+  Now you can look at target_map.map and map_to_change_matched.map and
   differences you see are due to intrinsic properties of the maps, not just
   sharpening.
 
@@ -364,12 +379,12 @@ are some things you can do:
   phenix.mtriage to estimate the resolution where the FSC(map,model)==0.5
   for each map. The map with a lower value of this resolution may be better.
 
-  3. As in #2, once you have a pair of maps and a model refined against 
+  3. As in #2, once you have a pair of maps and a model refined against
   each map, you can run phenix.auto_sharpen with each map and model and
   it will print out the average FSC for each.  The one with the higher
   overall FSC may be better.
 
-  
+
 
 Possible Problems
 -----------------
@@ -377,15 +392,15 @@ Possible Problems
 If the half-maps have been masked the procedure may not work well.
 
 If the solvent noise is very non-uniform the procedure may work poorly.
-By default a rectangular solid region enclosing the molecule is cut out 
-and used in density modification.  You can supply a boxed map and 
+By default a rectangular solid region enclosing the molecule is cut out
+and used in density modification.  You can supply a boxed map and
 set the keyword box_before_analysis=False to avoid this.
 
 If the maps have very prominent density away from the macromolecule this
 may interfere with density modification. You can get around this by supplying
 a mask (as a map, 1=inside the molecule).
 
-If there is non-macromolecule but real density in the maps this 
+If there is non-macromolecule but real density in the maps this
 may interfere with density modification (for example, lipid density).
 
 Specific limitations and problems:
@@ -396,16 +411,16 @@ due to solvent flattening. This can have a small effect on the resolution
 estimates obtained with half-map FSC.  The resolution estimates provided
 by the program are corrected for this effect.
 
-If you use the real_space_weighting or sigma_weighting or 
-sharpening_type=local_final_half_map options there may be some 
+If you use the real_space_weighting or sigma_weighting or
+sharpening_type=local_final_half_map options there may be some
 extra correlations between half-maps introduced.  Calculating resolution
 using FSC between these density-modified maps can lead to overstating the
-resolution. The resolution estimates provided by the program are before 
+resolution. The resolution estimates provided by the program are before
 applying these weighting schemes (unless you specify local_methods_final_cycle = False and run multiple cycles) so they are not normally affected by this.
 
 The density modification procedure works best in the resolution range of about 4.5 A or better, but occasionally works very well at lower resolutions (not
 tested beyond 9 A).  The procedure does not work in every case (we do not
-have a great metric for success but about half of cases appear to be 
+have a great metric for success but about half of cases appear to be
 improved according to the metrics described above).
 Varying the parameters can have a substantial effect on the outcome.
 
@@ -415,10 +430,10 @@ reduced but not eliminated.  For example if the starting map has an error that
 causes models to be built with a side chain the wrong place, the new model-
 based density will show even more density in that location.  That is,
 this process can accentuate errors in the original maps if they match
-plausible locations of atoms in a model.  Balancing this, the procedure 
+plausible locations of atoms in a model.  Balancing this, the procedure
 generally does not appear to yield density at positions where there is no
 density in the original map even if atoms are located there in a model.
-It is important that the original or non-model-based maps be consulted to 
+It is important that the original or non-model-based maps be consulted to
 evaluate any specific density in the map.
 
 Literature
