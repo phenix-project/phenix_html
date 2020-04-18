@@ -406,6 +406,10 @@ may interfere with density modification (for example, lipid density).
 Specific limitations and problems:
 ----------------------------------
 
+If your computer does not have a lot of memory and you use multiple
+processors (nproc bigger than 1) then resolve_cryo_em can crash.  If this
+happens try nproc=1.
+
 Density modification introduces some correlations between half-maps
 due to solvent flattening. This can have a small effect on the resolution
 estimates obtained with half-map FSC.  The resolution estimates provided
