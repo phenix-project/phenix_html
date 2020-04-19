@@ -212,6 +212,9 @@ The procedure used by resolve_cryo_em has several steps:
   more likely thatn those that do not.  This procedure necessarily can
   introduce model bias, but this is greatly reduced by the use of multiple
   models, uncertainty estimates, and the likelihood-based density modification.
+  You may with to use a finer resolution for density modification 
+  (dm_resolution) if you include model information because the model can
+  provide higher-resolution information that simple density modification.
 
   Density modification including symmetry that is not part of reconstruction
   symmetry.  If your molecule has symmetry that was not used in the
