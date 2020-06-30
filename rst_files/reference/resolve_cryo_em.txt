@@ -172,9 +172,20 @@ The procedure used by resolve_cryo_em has several steps:
   Fourier coefficients.
 
   Optional starting with unsharpened maps.  The input half maps are used in the
-  density modification step without auto-sharpening. (Normally these maps are
-  auto-sharpened based on half-map sharpening first).  This can be useful
-  for high-resolution maps.
+  density modification step without adjusting the resolution dependence
+  of the maps with half-map sharpening.  This can be useful
+  for high-resolution maps.  Note that whether or not this option is
+  selected, normally an overall B-factor is still applied to the input maps 
+  based on the nominal resolution.  The difference therefore is in the 
+  details of the resolution dependence which is adjusted in the default 
+  case based on a comparison of half-maps, but not with density 
+  modify unsharpened maps.  The overall B-factor 
+  applied before density modification is controlled by the "remove_aniso" 
+  and "b_iso" keywords.  By default remove_aniso=True and b_iso is 
+  target_b_ratio*resolution (target_b_ratio=10), so before density 
+  modification whatever resolution dependence and anisotropy is present in 
+  the each map is adjusted to yield an overall B of b_iso and no anisotropy.
+
 
   Optional alternative final sharpening of maps.  The final sharpening normally
   consists of two parts.  One is scaling the map in shells of resolution
