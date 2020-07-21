@@ -51,9 +51,18 @@ map will both have correlations of 1, but with a B-value of zero the
 high-resolution map will have a higher correlation.)
 
 For each chain in the model, the map-model correlations for each map are 
-then used to identify the weighting on that map.   An empirical weighting
-scheme is used.  The relative weights of two maps (for this one chain) with
-a difference in map_model_cc of delta_cc are given by:
+then used to identify the weighting on that map.   
+
+Alternatively, you can specify what parts of the model are to be grouped
+together for identifying which map to use in what region.  You specify any
+number of region_selection selections (in Phenix atom selection syntax, 
+like (chain A and resseq 250:360) ).  Each one is used to define a region
+in space and within that region the maps are weighted according to their
+correlations to the atoms selected with that selection.
+
+An empirical weighting
+scheme is used.  The relative weights of two maps (for this one chain 
+or retion ) with a difference in map_model_cc of delta_cc are given by:
 
 ::
 
@@ -106,6 +115,8 @@ Another option is to refine (with rigid-body refinement only) the models before
 using combine_focused_maps. That way you have full control over the 
 refinement process. Then in combine_focused_maps 
 use rigid_body_refinement=False.
+
+You cannot use region_selection with use_model_symmetry.
 
 Literature
 ----------
