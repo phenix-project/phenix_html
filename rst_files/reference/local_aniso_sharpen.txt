@@ -1,0 +1,128 @@
+Optimizing a map with an local anisotropy correction using local_aniso_sharpen 
+==============================================================================
+
+Author(s)
+---------
+
+-  local_aniso_sharpen: Tom Terwilliger
+
+Purpose
+-------
+
+The routine local_aniso_sharpen is a tool for optimizing a map by
+applying a local, anisotropic, resolution-dependent scaling factor.
+
+How local_aniso_sharpen works:
+------------------------------
+
+Local anisotropic sharpening can be carried out locally, as the name suggests,
+or on a map as a whole.  
+
+The basis for sharpening is an analysis of the resolution-dependent fall-off
+of amplitudes of Fourier coefficients for the map, along with an analysis
+of the resolution-dependent fall-off of correlation between two half-maps,
+or between a map and a model-based map. 
+
+When carried out locally, a full map is divided into small boxes.
+The density near the edges of each box is masked so that it gradually 
+diminishes to zero at the edges.  Each small box is treated as a full map
+to identify its optimal sharpening.  Then the optimal sharpening parameters
+from the small boxes are applied to the full map in a way that has no edge
+effects and smoothly varies from one place to another in the map.
+
+To identify the optimal anisotropic sharpening of a map based on the 
+information in two half-maps, two analyses are done. The first is an 
+analysis of the resolution-dependent fall-off of rms amplitudes of 
+Fourier coefficients representing the map. This is examined as a function of
+direction in reciprocal space, and is similar to the calculation normally done
+to apply an anisotropy correction to a map. This analysis shows the anisotropy
+of the map itself.
+
+The second is an analysis of the correlation between Fourier coefficients 
+for the two half-maps.  This is also done as a function of resolution and
+direction in reciprocal space.  This analysis shows the anisotropy of the
+errors in the map.
+
+For purposes of this analysis, the optimal map is the one that has the
+maximal expected correlation to an idealized version of the true map. This
+idealized map is a map that would be obtained from a model where all the atoms
+are point atoms (B values of about zero).
+
+For a map with zero error (all correlations at all resolutions and directions
+equal to 1), the optimal map will be one that has no anisotropy and 
+the same resolution dependence as the idealized map.  For such a map, first
+the anisotropy in the map is removed, then an overall resolution-dependence 
+matching that of the idealized map is imposed by simple multiplication with a
+resolution_dependent scale factor.
+
+For a map with errors, the map coefficients obtained from the previous step 
+are modified by a local scale factor that reflects the expected signal-to-noise
+in that map coefficient.  The scale factor for a particular map coefficient
+is given by 1/(1 + E**2), where E is the normalized expected error in that
+map coefficient.  This scale factor will ordinarily be anisotropic and
+resolution-dependent.
+
+
+Examples
+--------
+
+You can use local_aniso_sharpen with either two half-maps or a map and
+a model.  
+
+
+
+Standard run of local_aniso_sharpen with two half-maps:
+-------------------------------------------------------
+
+To run local_aniso_sharpen with two half maps, you can say:
+
+
+::
+
+   phenix.local_aniso_sharpen half_map_A.mrc half_map_B.mrc
+
+If you wish, you can specify a nominal resolution.
+
+
+To run local_aniso_sharpen with a map and model, you can say:
+
+::
+
+   phenix.local_aniso_sharpen map.mrc model.pdb resolution=3
+
+The resolution is again optional.
+
+You can specify whether anisotropy or local sharpening are to be applied:
+
+::
+
+   local_sharpen=True
+   anisotropic_sharpen=True
+
+Possible Problems
+-----------------
+
+If the half-maps are not actually independent the procedure will not work well
+
+If the model is very poor the procedure will not work well
+
+For model-based sharpening, if local sharpening is used, the sharpening is only
+applied in the region of the model
+
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.local_aniso_sharpen}}
+

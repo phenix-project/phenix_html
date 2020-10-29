@@ -1,0 +1,80 @@
+Creating a local resolution map with local_resolution 
+=====================================================
+
+Author(s)
+---------
+
+-  local_resolution: Tom Terwilliger
+
+Purpose
+-------
+
+The routine local_resolution is a tool for creating a local resolution
+map showing the local resolution of a cryo-EM map and having the same
+gridding as the cryo-EM map
+
+Usage and how local_resolution works:
+-------------------------------------
+
+Local resolution is calculated in small boxes cut out from the cryo-EM map,
+where the density near the edges of each box is masked so that it gradually
+diminishes to zero at the edges.  Then the values of local resolution are
+smoothed and placed at grid points of a full-size map matching the original
+map.
+
+The local resolution map can be used to color a map in display programs 
+such as ChimeraX.  In ChimeraX you can simply load in your original map and the
+local resolution map and then specify:
+
+color sample #1  map #2  palette rainbow
+
+to color map #1 based on the resolution values in map #2.
+
+Procedure used by local_resolution 
+----------------------------------
+
+The basic inputs to local_resolution are:
+
+::
+
+  Two unmasked half-maps
+
+Optional inputs are:
+
+::
+
+  nominal resolution
+
+Examples
+--------
+
+Standard run of local_resolution:
+---------------------------------
+
+You can use local_resolution to get the local resolution in a cryo-EM map:
+
+::
+
+   phenix.local_resolution half_map_A.mrc half_map_B.mrc
+
+Possible Problems
+-----------------
+
+If the half-maps are not actually independent the procedure will not work well
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.local_resolution}}
+
