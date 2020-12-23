@@ -129,8 +129,8 @@ Usage examples
        phenix.real_space_refine model.pdb map.mtz ligands.cif
 
   7) Group ADP (B-factor) refinement. Currently only one option available:
-     restrained group ADP refinement with one isotropic B-factor per residue. 
-     This is enabled by default. The command below will do B factor refinement 
+     restrained group ADP refinement with one isotropic B-factor per residue.
+     This is enabled by default. The command below will do B factor refinement
      only::
 
        phenix.real_space_refine model.pdb map.mtz run=adp
@@ -300,19 +300,17 @@ Usage examples
       model, and chain C from the second file serves as a reference for
       residued 123-321 in chain B of refining model::
 
-        refinement {
-          reference_model {
-            enabled = True
-            reference_group {
-              reference = chain A
-              selection = chain Z
-              file_name = reference_model_1.pdb
-            }
-            reference_group {
-              reference = chain B and resseq 123:321
-              selection = chain C
-              file_name = reference_model_2.pdb
-            }
+        reference_model {
+          enabled = True
+          reference_group {
+            reference = chain Z
+            selection = chain A
+            file_name = reference_model_1.pdb
+          }
+          reference_group {
+            reference = chain C
+            selection = chain B and resseq 123:321
+            file_name = reference_model_2.pdb
           }
         }
 
@@ -372,4 +370,4 @@ References
 Full set of parameters
 ----------------------
 
-{{phil:phenix.command_line.real_space_refine}}
+{{phil:phenix.refinement.rsr.parameters}}
