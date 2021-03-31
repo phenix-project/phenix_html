@@ -543,5 +543,19 @@ Additional information
 
 List of all available keywords
 ------------------------------
+Note: To use LigandFit parameters in ligand_identification, the parameter group (i.e. the bold text above the desired keyword) should be added to the keywords. For example,
+
+\*to specify search center:
+
+::
+
+	search_target.search_center="10 10 10"
+
+\*to specify number of copies of the ligand in the asymmetric unit:
+
+::
+
+	search_parameters.number_of_ligands=2
+  
 
 {{phil:phenix.command_line.ligand_identification}}
