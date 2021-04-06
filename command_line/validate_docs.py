@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys
 import libtbx.load_env
 
@@ -98,19 +99,19 @@ def run():
   html_files = get_html_filenames()
   errors = check_for_eroneous_links(html_files)
   for filename in errors:
-    print "\n  Filename %s has erroneous links to" % filename
+    print("\n  Filename %s has erroneous links to" % filename)
     for link in errors[filename]:
-      print "    %s" % link
+      print("    %s" % link)
   #
   image_files = get_image_filenames()
   image_files = get_unused_files(image_files)
-  print "\n\nImages files not used"
+  print("\n\nImages files not used")
   for i, image_file in enumerate(image_files):
-    print "  %2d : %s" % (i+1, image_file)
+    print("  %2d : %s" % (i+1, image_file))
   html_files = get_unused_files(html_files)
-  print "\n\nHTML files not used"
+  print("\n\nHTML files not used")
   for i, html_file in enumerate(html_files):
-    print "  %2d : %s" % (i+1, html_file)
+    print("  %2d : %s" % (i+1, html_file))
 
 if __name__=="__main__":
   args = sys.argv[1:]

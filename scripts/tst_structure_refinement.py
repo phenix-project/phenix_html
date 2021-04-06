@@ -1,3 +1,4 @@
+from __future__ import print_function
 from libtbx import easy_run
 import libtbx.load_env
 import sys, os
@@ -24,7 +25,7 @@ def get_full_path(x):
                    relative_path = "phenix_html/phenix_refine_files/%s"%x,
                    test          = os.path.isfile)
   if(x is None):
-    print "File not found: ", x
+    print("File not found: ", x)
     assert cmd_i is not None
   return x_full
 
@@ -112,8 +113,8 @@ def exercise(args):
               final_cmd += " > zlog"
           if(final_cmd.count("phenix.pdbtools")):
             final_cmd = final_cmd
-          print separator
-          print final_cmd
+          print(separator)
+          print(final_cmd)
           if (not dry_run):
             os.environ["PHENIX_REGRESSION_DIR"]=libtbx.env.find_in_repositories(
                                              relative_path = "phenix_regression",
@@ -122,13 +123,13 @@ def exercise(args):
             try: easy_run.call(command=final_cmd)
             except KeyboardInterrupt: raise
             except:
-              print "Error: Cannot run the command:"
-              print final_cmd
-              print
+              print("Error: Cannot run the command:")
+              print(final_cmd)
+              print()
               sys.stdout.flush()
 
   assert amp_counter == cmd_counter
-  print "\nNumber of commands exercised: ", cmd_counter
+  print("\nNumber of commands exercised: ", cmd_counter)
 
 if (__name__ == "__main__"):
   exercise(sys.argv[1:])

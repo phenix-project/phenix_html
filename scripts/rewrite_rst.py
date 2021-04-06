@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 # XXX utility script for batch alteration of RST files on a per-line basis;
 # originally written for adding headers above phil directives but can be
@@ -21,9 +22,9 @@ def run () :
 #            print >> out, "List of all available keywords"
 #            print >> out, "------------------------------"
 #            print >> out, ""
-            print >> out, line
+            print(line, file=out)
           else :
-            print >> out, line
+            print(line, file=out)
         out.close()
 
 if (__name__ == "__main__") :

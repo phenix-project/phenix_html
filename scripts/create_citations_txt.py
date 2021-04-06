@@ -1,5 +1,6 @@
 
 from __future__ import division
+from __future__ import print_function
 from phenix.utilities import citations
 import libtbx.load_env
 import os.path as op
@@ -32,8 +33,8 @@ Phenix (and elsewhere).
   for citation in all_articles :
     if (citation.article_id != "phenix") :
       # TODO toggle-able article_id fields
-      print >> f, "{{citation:%s}}" % citation.article_id
-      print >> f, ""
+      print("{{citation:%s}}" % citation.article_id, file=f)
+      print("", file=f)
   f.close()
 
 if (__name__ == "__main__") :

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import libtbx.load_env
 import os.path as op
 import sys, os
@@ -15,7 +16,7 @@ def get_params_file(file_name):
     relative_path=phenix_refine_files+"%s"%file_name,
     test=os.path.isfile)
   if(result is None):
-    print "File %s is not found in %s."%(file_name, phenix_refine_files)
+    print("File %s is not found in %s."%(file_name, phenix_refine_files))
   return result
 
 def inject_file_content(parameter_file_name, ofn, indentation):
@@ -23,7 +24,7 @@ def inject_file_content(parameter_file_name, ofn, indentation):
   lines = open(file_name).read().splitlines()
   for line in lines:
     if(line.strip() != ""):
-      print >> ofn, " "*indentation, line
+      print(" "*indentation, line, file=ofn)
 
 def find_indentation(line):
   i = 0
@@ -32,7 +33,7 @@ def find_indentation(line):
 
 def run():
   if(structure_refinement_raw is None):
-    print "No refinement.pre file found."
+    print("No refinement.pre file found.")
   ofn = open(dest_path, "w")
   for line in open(structure_refinement_raw).read().splitlines():
     if(line.count("#include_params")):
@@ -43,7 +44,7 @@ def run():
                           ofn                 = ofn,
                           indentation         = start_position)
     else:
-      print >> ofn, line
+      print(line, file=ofn)
 
 if (__name__ == "__main__"):
   run()

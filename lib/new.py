@@ -1,3 +1,4 @@
+from __future__ import print_function
 #cat ../phenix_index.htm | grep '<li>' | grep -v '<li><A' > list1.dat
 all_lines=[]
 txt=open('../../../doc/phenix_index.html').read()
@@ -16,4 +17,4 @@ f=open('all_list','w')
 for line in all_lines:
   f.write(line+"\n")
   if line and line.replace(" ","") and not line in good_lines:
-     print line
+     print(line)

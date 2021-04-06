@@ -4,6 +4,7 @@ This includes PHIL documentaiton and citations.
 
 """
 from __future__ import division
+from __future__ import print_function
 import os
 import os.path as op
 import sys
@@ -160,7 +161,7 @@ class Publish(object):
         elif tag == 'anchor' :
           result = """<a name="%s"/>""" % command
       except Exception, e:
-        print "Error with tag:", e
+        print("Error with tag:", e)
       else:
         # print "...result:", result
         doc = re.sub(sub, result, doc)
@@ -193,7 +194,7 @@ class PublishRST(Publish):
     try:
       dom = ET.fromstring(self.doc)
     except Exception, e:
-      print "Couldn't index: %s"%e
+      print("Couldn't index: %s"%e)
       return index
 
     # xml.ElementTree uses XML-style namespaced tags.
@@ -334,7 +335,7 @@ def auto_generate_rst_files(out):
   create_model_vs_data_txt.run()
   create_citations_txt.run()
   for module_name, rst_file in create_rst_from_modules :
-    print >> out, "    %s" % rst_file
+    print("    %s" % rst_file, file=out)
     legend = libtbx.utils.import_python_object(
       import_path=module_name+".legend",
       error_prefix="",
@@ -361,24 +362,24 @@ def run (args, out=sys.stdout) :
     top_dir = os.path.abspath(params.top_dir)
     rst_dir = os.path.join(top_dir, "rst_files")
     create_rst_from_modules = []
-    print 'resetting top directory to %s' % top_dir
+    print('resetting top directory to %s' % top_dir)
     docs_dir = os.path.join(top_dir, 'doc')
-    print 'resetting doc directory to %s' % top_dir
+    print('resetting doc directory to %s' % top_dir)
     HTML_PATH = top_dir
   if os.path.exists(docs_dir) and params.clean:
     shutil.rmtree(docs_dir)
   if (not os.path.exists(docs_dir)):
     os.makedirs(docs_dir)
 
-  print >> out, "Building PHENIX documentation in %s"%top_dir
-  print >> out, "The complete documentation will be in:"
-  print >> out, "  %s" % docs_dir
-  print >> out, "  creating restructured text files"
+  print("Building PHENIX documentation in %s"%top_dir, file=out)
+  print("The complete documentation will be in:", file=out)
+  print("  %s" % docs_dir, file=out)
+  print("  creating restructured text files", file=out)
   os.chdir(rst_dir)
   if not params.top_dir: auto_generate_rst_files(out=out)
   os.chdir(rst_dir)
 
-  print >> out, "  building HTML files from restructured text files"
+  print("  building HTML files from restructured text files", file=out)
   indexes = {}
   for dirname, dirnames, filenames in os.walk(rst_dir):
     for filename in filter(lambda x:x.endswith('.txt'), filenames):
@@ -408,7 +409,7 @@ def run (args, out=sys.stdout) :
         if os.path.exists(outfile):
           if os.stat(infile).st_mtime<os.stat(outfile).st_mtime: continue
 
-      print >> out, "    converting %s to %s" % (infile, outfile)
+      print("    converting %s to %s" % (infile, outfile), file=out)
       try:
         publish = PublishRST(infile)
         doc = publish.render(root=root)
@@ -417,7 +418,7 @@ def run (args, out=sys.stdout) :
       except Exception, e:
         if (not params.ignore_errors):
           raise
-        print "      error: %s" % e
+        print("      error: %s" % e)
       else :
         if doc.find('system-messages')!=-1:
           raise libtbx.utils.Sorry('''
@@ -435,13 +436,13 @@ def run (args, out=sys.stdout) :
     f.write(FormatOverview().render())
 
   # Copy images, CSS, etc.
-  print >> out, "  copying images"
+  print("  copying images", file=out)
   replace_tree(op.join(HTML_PATH, "icons"), op.join(docs_dir, "icons"))
   replace_tree(op.join(HTML_PATH, "images"), op.join(docs_dir, "images"))
   replace_tree(op.join(HTML_PATH, "css"), op.join(docs_dir, "css"))
 
   # Copy extras
-  print >> out, "  copying extras"
+  print("  copying extras", file=out)
   replace_tree(op.join(HTML_PATH, 'extras'), op.join(docs_dir, 'extras'))
 
 if (__name__ == "__main__") :

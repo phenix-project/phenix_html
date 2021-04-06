@@ -1,3 +1,4 @@
+from __future__ import print_function
 from libtbx.test_utils import show_diff
 from libtbx import easy_run
 from libtbx import smart_open
@@ -48,18 +49,18 @@ def exercise():
         commands.append(cmd)
         cmd = ""
   assert amp_counter == cmd_counter
-  print "Commands found:"
+  print("Commands found:")
   for cmd in commands:
-    print
-    print cmd
+    print()
+    print(cmd)
   # exercise extracted commands (make sure they all run, do not check output)
   for cmd in commands:
-    print
+    print()
     cmd = cmd.replace("model.pdb", pdb)
     cmd = cmd.replace("%", "")
-    print cmd
+    print(cmd)
     easy_run.call(command = cmd)
-  print "OK time %.2f" % (time.time() - time0)
+  print("OK time %.2f" % (time.time() - time0))
 
 if (__name__ == "__main__"):
   exercise()

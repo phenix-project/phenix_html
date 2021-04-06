@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 
 def run(args):
@@ -5,7 +6,7 @@ def run(args):
     lines = inp.read().splitlines()
     lines.sort()
     for line in lines:
-      print line
+      print(line)
   if (len(args) == 0):
     sort_it(inp=sys.stdin)
   else:
