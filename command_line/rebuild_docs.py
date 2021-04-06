@@ -175,7 +175,7 @@ class PublishRST(Publish):
     self.filename = filename
     self.doc = None
     self.data = None
-    with codecs.open(self.filename, 'r', 'utf-8') as f:
+    with codecs.open(self.filename, 'r', encoding='utf-8') as f:
       self.data = f.read()
 
   def render(self, root=''):
