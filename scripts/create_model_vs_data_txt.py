@@ -1,7 +1,7 @@
 from __future__ import print_function
 import mmtbx.model_vs_data
 import libtbx.load_env
-from cStringIO import StringIO
+from io import StringIO
 import os.path as op
 import os
 import sys

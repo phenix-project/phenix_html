@@ -1,5 +1,5 @@
 import libtbx.load_env
-from cStringIO import StringIO
+from io import StringIO
 import mmtbx.command_line.maps
 import os.path as op
 import os
