@@ -1,8 +1,8 @@
 
 from __future__ import division
 from __future__ import print_function
-from libtbx.math_utils import cmp
 from phenix.utilities import citations
+from operator import attrgetter
 import libtbx.load_env
 import os.path as op
 
@@ -30,7 +30,7 @@ Phenix (and elsewhere).
 """
   f.write(txt_header)
   all_articles = sorted(citations.citations_params.citation,
-    lambda a,b: cmp(b.year, a.year))
+                        key=attrgetter('year'), reverse=True)
   for citation in all_articles :
     if (citation.article_id != "phenix") :
       # TODO toggle-able article_id fields
