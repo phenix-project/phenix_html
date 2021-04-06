@@ -61,7 +61,7 @@ class FormatPHIL(object):
           target_must_be="",
           where_str="").object
         break
-      except Exception, e:
+      except Exception as e:
         pass
 
     # try ProgramTemplate location
@@ -103,7 +103,7 @@ class FormatPHIL(object):
       param.words
       words = ET.SubElement(elem, 'span', attrib={'class':'phil-words'})
       words.text = " = " + " ".join([str(i) for i in param.words]) + " "
-    except Exception, e:
+    except Exception as e:
       pass
     if param.help:
       help = ET.SubElement(elem, 'span', attrib={'class':'phil-help'})
@@ -123,7 +123,7 @@ class FormatPHIL(object):
       try:
         x, y = i.name, i.type
         values.append(i)
-      except Exception, e:
+      except Exception as e:
         objects.append(i)
     # Leaf elements for params.
     for i in values:
@@ -160,7 +160,7 @@ class Publish(object):
           result = root
         elif tag == 'anchor' :
           result = """<a name="%s"/>""" % command
-      except Exception, e:
+      except Exception as e:
         print("Error with tag:", e)
       else:
         # print "...result:", result
@@ -193,7 +193,7 @@ class PublishRST(Publish):
     # Parse with ElementTree so we can find all text nodes.
     try:
       dom = ET.fromstring(self.doc)
-    except Exception, e:
+    except Exception as e:
       print("Couldn't index: %s"%e)
       return index
 
@@ -415,7 +415,7 @@ def run (args, out=sys.stdout) :
         doc = publish.render(root=root)
         # Make sure we index using relative path!
         indexes[os.path.join(relpath, outname)] = publish.index()
-      except Exception, e:
+      except Exception as e:
         if (not params.ignore_errors):
           raise
         print("      error: %s" % e)
