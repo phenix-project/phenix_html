@@ -382,7 +382,7 @@ def run (args, out=sys.stdout) :
   print("  building HTML files from restructured text files", file=out)
   indexes = {}
   for dirname, dirnames, filenames in os.walk(rst_dir):
-    for filename in filter(lambda x:x.endswith('.txt'), filenames):
+    for filename in [x for x in filenames if x.endswith('.txt')]:
       # Some complicated directory relationships.
       # relpath is the directory relative to rst_dir root (for output)
       # root is the inverse (for linking between pages)
