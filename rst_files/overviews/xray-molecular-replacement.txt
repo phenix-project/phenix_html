@@ -4,27 +4,36 @@ Molecular Replacement
 **Why**
 
 One of the biggest problems in crystallography is the phase problem,
-hence the use of experimental phasing. An alternative approach, which is
-increasingly popular, is the use of known structures to solve the
-phase problem. This approach is called molecular replacement - a model,
-very similar in structure to the one crystallized, is computationally
-placed in the crystallographic unit cell. From this model, phases can be
-calculated and used to start the process of interpreting the electron
-density map.
+hence the use of experimental phasing. An increasingly popular alternative 
+approach, called molecular replacement (MR), uses known structures to 
+solve the phase problem. When a structurally similar model (e.g., homologue) 
+is available, this model is computationally placed in the unit cell 
+containing the unknown structure. An initial electron density map is 
+then calculated with the phases from the homologue and the observed 
+structure factors.
+
+The success of MR calculations depends on how much signal can be
+extracted from the data using the particular model, which in turn 
+depends on a combination of the model quality and completeness, 
+data resolution, and number of diffraction observations. For crystals 
+of medium-sized proteins diffracting to moderate resolution, for 
+example, the sequence identity between the molecule and homologue 
+should be >25-30% and the r.m.s. deviation between C⍺ atoms should 
+be <2.0 Å.
+
 
 **How**
 
-In Phenix the primary program for performing molecular replacement is
-Phaser. This requires experimental diffraction data, an atomic model(s),
-the sequence of the molecule in the crystal and typically some estimate
-of the number of molecules in the crystal. Phaser uses maximum
-likelihood algorithms to determine the rotation of the model(s) with
-respect to the unit cell, and then the translation of the rotated
-model(s) within the unit cell. The output of this process, if
-successful, is a PDB file containing the placed model(s) and an MTZ file
-containing coefficients for the electron density made using the placed
-model(s) and the observed experimental amplitudes. For an introduction
-to molecular replacement in Phenix, `click
+In Phenix, the primary program for performing molecular replacement is
+Phaser. This requires experimental diffraction data, atomic model(s),
+the sequence of the molecule in the crystal, and typically some estimate
+of the number of molecules in the crystal. Phaser uses maximum-likelihood 
+algorithms to determine the rotation of the model(s) with respect to the 
+unit cell, and then the translation of the rotated model(s) within the unit 
+cell. The output of this process, if successful, is a PDB file containing 
+the placed model(s) and an MTZ file containing coefficients for the electron 
+density made using the placed model(s) and the observed experimental amplitudes. 
+For an introduction to molecular replacement in Phenix, `click
 here <../reference/mr_overview.html>`__.
 
 **How to use the Phaser GUI in Phenix:** `Click
@@ -32,50 +41,43 @@ here <../reference/phaser_mr.html>`__
 
 **Common issues**
 
--  No solutions were found even with a good search model: There are
-   multiple causes, but one not uncommon reason is that a multiple
-   domain protein has undergone a conformational change. In this case
-   the molecular should be divided into the individual domains and the
-   molecular replacement performed with each domain as a separate search
-   model. An alternative cause, thankfully less common, is that the
-   crystallized molecule is not the intended one. For this reason it is
-   always prudent to use the "Search PDB Symmetry" tool in the Phenix
-   GUI to check cell dimensions and space group against the PDB.
-   A third possibility is that the space group is incorrect, for instance
-   if twinning increases the apparent symmetry of the diffraction pattern.
-   For this reason it is always good to run Xtriage in the "Data analysis"
-   section of the Phenix GUI.
--  `Frequently asked questions about molecular
-   replacement <../faqs/mr.html>`__
+-  No solutions were found even with a good search model: There are multiple 
+   causes, but a common one is that a multiple domain protein has undergone 
+   a conformational change. In this case, you should split the structure and 
+   perform molecular replacement on the individual domains using separate 
+   search models. An alternative cause, thankfully less common, is that the 
+   crystallized molecule is not the intended one. For this reason, it is always 
+   prudent to use the "Search PDB Symmetry" tool in the Phenix GUI to check 
+   the cell dimensions and space group against the PDB. A third possibility is 
+   that the space group is incorrect (e.g., if twinning increases the apparent 
+   symmetry of the diffraction pattern), thus it is always good to run Xtriage 
+   in the "Data analysis" section of the Phenix GUI.
+-  `Frequently asked questions about molecular replacement <../faqs/mr.html>`__
 
 **Related programs**
 
 -  `phenix.MRage <../reference/MRage.html>`__: This program uses Phaser to
-   perform highly automated molecular replacement. In its simplest form
-   it can take experimental diffraction data and a sequence to solve a
+   perform highly automated molecular replacement. In its simplest form,
+   it uses experimental diffraction data and a sequence to solve a
    molecular replacement problem.
--  `phenix.sculptor <../reference/sculptor.html>`__: This program can be
-   used to prepare models for molecular replacement, by trimming loops
-   where there are expected to be insertions of deletions based on
-   sequence alignment. It can also trim side chains and modify other
-   properties of the model such as atomic displacement parameters.
--  `phenix.ensembler <../reference/ensembler.html>`__: This program can be
-   used to prepare ensembles for molecular replacement. An ensemble is a
-   set of structurally related models that have been superimposed with
-   respect to each other, typically using a conserved structural core.
+-  `phenix.sculptor <../reference/sculptor.html>`__: This program can improve 
+   models for molecular replacement, by trimming off parts of the model that 
+   are unlikely to be preserved in the target structure.
+-  `phenix.ensembler <../reference/ensembler.html>`__: This program prepares 
+   ensembles for molecular replacement. An ensemble is a set of structurally 
+   related models that have been superimposed with respect to each other, 
+   typically using a conserved structural core.
    Phenix.ensembler automates the process of superimposing models.
 -  `phenix.morph\_model <../reference/morph_model.html>`__: This program
-   can be used to improve an initial model after molecular replacement
-   by locally moving the structure to better fit the electron density
-   map. This is especially powerful in those cases where the molecular
-   replacement solution is structurally too different to provide phases
-   for map interpretation or automated model building.
+   can improve an initial model after molecular replacement by locally moving 
+   the structure to better fit the electron density map. This is especially 
+   powerful when the molecular replacement solution is structurally too different 
+   to provide phases for map interpretation or automated model building.
 -  `phenix.mr\_rosetta <../reference/mr_rosetta.html>`__: This program can
-   be used to improve an initial model after molecular replacement by
-   using the Rosetta program to modify the model such that it moves
-   closer to the true structure, while also improving the fit to
-   electron density map. This is especially powerful in those cases
-   where the molecular replacement solution is structurally too
+   improve an initial model after molecular replacement by using the Rosetta 
+   program to modify the model such that it moves closer to the true structure, 
+   while also improving the fit to electron density map. This is especially 
+   powerful when the molecular replacement solution is structurally too
    different to provide phases for map interpretation or automated model
    building.
 
