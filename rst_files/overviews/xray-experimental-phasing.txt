@@ -6,26 +6,36 @@ Experimental Phasing
 One of the biggest problems in crystallography is the phase problem.
 We measure amplitudes for structure factors, but cannot directly measure
 the phases. Unfortunately, these phases are necessary to generate the
-electron density of the molecules in the crystal. Experimental phasing
-solves the phase problem by using the differences in amplitudes from
+electron density of the molecules in the crystal. 
+
+Phases can be determined by experimental phasing, which relies on a few 
+atoms in the macromolecule with known special properties, such as a 
+large number of electrons and/or anomalous scattering. These properties 
+are exploited to determine the location of the special atoms (substructure), 
+and then knowledge of the substructure in one or more crystals is used to 
+deduce phase information for the entire macromolecule. Thus, experimental 
+phasing solves the phase problem by using the differences in amplitudes from
 different diffraction experiments to determine the structure factor
-phases. In modern crystallography it is most common to use single or
+phases. In modern crystallography, it is most common to use single or
 multiple anomalous diffraction experiments (SAD/MAD).
 
 **How**
 
-In Phenix the primary program for performing experimental phasing is
-phenix.autosol. This is a powerful tool that goes through the steps of
-anomalous substructure location, phasing, phase improvement, and initial
-model building. To run phenix.autosol you will need to provide
-diffraction data, typically one or more anomalous data sets, or a native
-data set plus one or more derivative data sets (if you are performing
-SIR/MIR phasing). You will also need to provide the sequence of your
-macromolecule, and information about the anomalous scatterers and/or
-heavy atoms. The results from phenix.autosol will include a PDB
-containing the anomalous scatterers, an MTZ file containing the
+In Phenix, the primary program for performing experimental phasing is
+phenix.autosol. This is a comprehensive, automatic tool that performs 
+experimental phasing with the MAD, MIR, SIR, or SAD methods. The program 
+locates the substructure, estimates phases, performs density modification, 
+identifies noncrystallographic symmetry, and builds and refines a preliminary 
+model. 
+
+To run phenix.autosol, you need to provide diffraction data, typically 
+one or more anomalous data sets, or a native data set plus one or more 
+derivative data sets (if you are performing SIR/MIR phasing). You also 
+need to provide the sequence of your macromolecule, and information about 
+the anomalous scatterers and/or heavy atoms. The results from phenix.autosol 
+include a PDB containing the anomalous scatterers, an MTZ file containing the
 experimentally determined phases, and the optimized phases from density
-modification, and, if the maps are of sufficient quality a PDB file with
+modification, and, if the maps are of sufficient quality, a PDB file with
 an atomic model.
 
 **How to use the phenix.autosol GUI:** `Click
@@ -33,16 +43,16 @@ here <../reference/autosol_gui.html>`__
 
 **Common issues**
 
--  Anomalous substructure not determined: there can be several reasons
-   for this. Likely candidates are a lack of anomalous signal, or
-   incorrect space group assignment. Use phenix.xtriage to estimate the
+-  Anomalous substructure not determined: There can be several reasons
+   for this. Likely candidates are a lack of anomalous signal or
+   an incorrect space group assignment. Use phenix.xtriage to estimate the
    resolution of the data for anomalous substructure determination. If
-   this is very low resolution it might not be possible to locate the
-   substructure (note that the experimental sigmas are used in this
+   this resolution is very low, it might not be possible to locate the
+   substructure (note, the experimental sigmas are used in this
    calculation so it is important that these are well estimated). If
-   there is uncertainty about the space group it might be necessary to
+   there is uncertainty about the space group, it might be necessary to
    try the alternatives.
--  An interpretable model isn't built: the most likely reason is that
+-  An interpretable model isn't built: The most likely reason is that
    the electron density map is of insufficient quality to be
    automatically interpreted.
 -  `Frequently asked questions about experimental
@@ -51,43 +61,40 @@ here <../reference/autosol_gui.html>`__
 **Related programs**
 
 -  `phenix.plan\_sad\_experiment <../reference/plan_sad_experiment.html>`__: 
-   This
-   tool (available in the GUI) allows you to plan your SAD data
-   collection strategy by estimating the anomalous
-   signal and the probability of solving your structure by SAD based on
-   the anomalously-scattering atoms, the wavelength, the size of your
-   molecule, and the overall I/sigI for your dataset.
+   This tool (available in the GUI) allows you to plan your SAD data
+   collection strategy by estimating the anomalous signal and the probability 
+   of solving your structure by SAD based on the anomalously-scattering atoms, 
+   wavelength, size of your molecule, and overall I/sigI for your dataset.
 -  `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__: This 
-   tool allows you to scale any number of datasets together to
+   tool scales any number of datasets together to
    obtain a merged, scaled anomalous dataset.  It also produces two
-   half-dataset scaled datasets that can be used by 
+   scaled half-datasets that can be used by 
    `phenix.anomalous\_signal <../reference/anomalous_signal.html>`__
    to accurately evaluate the anomalous signal in your data.
 -  `phenix.anomalous\_signal <../reference/anomalous_signal.html>`__: 
    This tool is like
    `phenix.plan\_sad\_experiment <../reference/plan_sad_experiment.html>`__
    except that it uses your measured data to give much more accurate
-   estimates.  It uses your scaled data and two half-dataset scaled datasets
-   from your data that can be created with
-   `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__
-   to give an estimate of the anomalous signal in your data and the
-   probability of solving your structure by SAD, taking into account the
-   number of sites in the substructure.
--  `phenix.hyss <../reference/hyss.html>`__: This program is used by
-   phenix.autosol to locate the anomalous substructure or heavy atoms.
-   It is possible to run this program separately (for anomalous data
-   only) if you want to only find the substructure. In general it is
+   estimates. Specifically, it uses your scaled data, two half-dataset files 
+   of your scaled data, the name of the anomalously-scattering atom, and the 
+   number of sites in the substructure in order to give an estimate of the 
+   anomalous signal in your data and the probability of solving your structure 
+   by SAD. You can create the necessary scaled half-datasets using 
+   `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__.
+-  `phenix.hyss <../reference/hyss.html>`__: This hybrid substructure search 
+   program is used by phenix.autosol to locate the anomalous substructure or 
+   heavy atoms. It is possible to run this program separately (for anomalous data
+   only) if you want to only find the substructure. In general, it is
    recommended to use phenix.autosol for this as it makes optimal use
    of phenix.hyss to locate sites.
--  `Phaser EP <../reference/phaser_ep.html>`__: Phaser can be used
-   directly to perform SAD phasing, given an initial anomalous
-   substructure. Phases can be calculated for the given substructure
-   hand or boths hands. Phaser will attempt to complete the
-   substructure automatically. Note that Phaser can also combine
-   information from a molecular replacement solution in the phase
-   calculation process (in MR-SAD mode).
--  `phenix.emma <../reference/emma.html>`__: This program can be used
-   to compare different substructure solution, by superimposing sites
+-  `Phaser EP <../reference/phaser_ep.html>`__: Phaser can directly perform SAD 
+   phasing, given an initial anomalous substructure. Phases can be calculated 
+   for the substructure's given hand (enantiomer) or both hands. Phaser attempts 
+   to complete the substructure automatically. Note, Phaser can also combine 
+   information from a molecular replacement solution in the phase calculation 
+   process (in MR-SAD mode).
+-  `phenix.emma <../reference/emma.html>`__: This Euclidian model matching 
+   program can compare different substructure solutions, by superimposing sites
    taking into account crystallographic symmetry, possible origin
    shifts, and polar axes. This can be useful if comparing solutions
    from different programs.
