@@ -4,27 +4,31 @@ Density Modification
 **Why**
 
 The crystallographic phase problem can be solved using experimental
-phasing or molecular replacement. In both cases the initial phases may
-be inaccurate because of experimental errors, low signal-to-noise, or
+phasing or molecular replacement. In both cases, these initial phases may
+be inaccurate due to experimental errors, low signal-to-noise, or
 model bias. Therefore, it is usually necessary to improve the phases
 by exploiting our prior knowledge about electron density distributions
-in crystals. In the case of single wavelength (SAD) or single
-derivative (SIR) data this step in essential for resolving the
-inherent phase ambiguity in these experiments. The phase improvement
-procedure is usually referred to as density modification because new
-phase estimates are obtained by modification of the electron density
-to conform to prior expectations. The result of this procedure should
-be a better set of phases, that can be used to make a map for
-interpretation (i.e. model building).
+in the crystal. In the case of single wavelength (SAD) or single derivative 
+(SIR) data, this step in essential for resolving the inherent phase 
+ambiguity in these experiments. 
+
+The phase improvement procedure is usually referred to as density modification 
+because new phase estimates are obtained by modifying the electron 
+density to conform to prior expectations. For example, methods to improve
+phases include solvent flattening, histogram matching, and non-crystallographic
+symmetry averaging (if NCS is present). The result of the procedure 
+should be a better set of phases, which can be used to make a map for 
+interpretation (i.e., model building).
+ 
 
 **How**
 
-Density modification can be performed using either a set of
-experimental phases (i.e. Hendrickson-Lattmann coefficients), or
-experimental amplitudes and an atomic model (from which the phases are
-calculated). The density modification program will try to
-automatically determine solvent content and non-crystallographic
-relationships between regions of density.
+In Phenix, several programs carry out density modification (see Related programs 
+below). Density modification can be performed using either a set of experimental 
+phases (i.e., Hendrickson-Lattmann coefficients), or experimental amplitudes 
+and an atomic model (from which the phases are calculated). The density 
+modification program will try to automatically determine solvent content 
+and non-crystallographic relationships between regions of density. 
 
 **Tutorial on density modification :** `Click
 here <../reference/autobuild_gui.html#density-modification-video-tutorial>`__
@@ -38,21 +42,15 @@ here <../reference/autobuild_gui.html#standalone-density-modification>`__
 
 **Related programs**
 
-- `phenix.density\_modification <../reference/density_modification.html>`__: This program performs
-  iterative phase improvement with Resolve density modification,
-  including the use of NCS symmetry and electron-density
-  distributions.
-
-- `phenix.multi\_crystal\_average <../reference/multi_crystal_average.html>`__: This program performs
-  iterative phase improvement by density modification, including
-  averaging electron density, both within a crystal and between
-  crystals. This is a very powerful technique that can generate high
-  quality phases in some circumstances.
-
-- `phenix.ncs\_average <../reference/ncs_average.html>`__: This program can 
-  be used to average the electron density for molecules
-  related by non-crystallographic symmetry (i.e. when multiple copies
-  of the same molecule are present in the asymmetric unit). No
+- `phenix.density\_modification <../reference/density_modification.html>`__: This 
+  program performs iterative phase improvement with Resolve density modification,
+  including the use of non-crystallographic symmetry and electron-density distributions.
+- `phenix.multi\_crystal\_average <../reference/multi_crystal_average.html>`__: This 
+  program improves phases interactively and averages electron density, both 
+  within a crystal and between crystals. This very powerful technique can 
+  generate high quality phases in some circumstances.
+- `phenix.ncs\_average <../reference/ncs_average.html>`__: This program averages 
+  the electron density for molecules related by non-crystallographic symmetry. No
   iterative phase improvement is performed, just a single round of
   averaging.  This is useful for improving signal-to-noise in maps for
   model building.
