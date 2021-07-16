@@ -163,7 +163,8 @@ Model utilities
 ---------------
 
 - `Idealize model geometry with phenix.geometry\_minimization <geometry_minimization.html>`__
-- `Superimposing PDB files with phenix.superpose\_pdbs <superpose_pdbs.html>`__
+- `LSQ-Superimpose models with phenix.superpose\_pdbs <superpose_pdbs.html>`__
+- `SSM-Superimpose and morph models <superpose_and_morph.html>`__
 - `Generating NCS copies with apply\_ncs <apply_ncs.html>`__
 - `PDB model: statistics, manipulations and more with phenix.pdbtools <pdbtools.html>`__
 - `phenix.fmodel: structure factors from a PDB file <fmodel.html>`__
@@ -174,7 +175,9 @@ Model utilities
 - `Find symmetry equivalent molecular replacement solution on alternative origin with phenix.find\_alt\_orig\_sym\_mate <find_alt_orig_sym_mate.html>`__
 - `Building biological assembly and crystallographic asymmetric unit <multimer_reconstruction.html>`__
 - `Calculating Fragment Antigen-Binding (Fab) elbow angle <fab_elbow_angle.html>`__
-- `Find Similar Structures in PDB <structure_search.html>`__
+- `Find Similar Structures in PDB using phi-psi angles and sequence <structure_search.html>`__
+- `Find Structures in PDB using SSM matching and morphing <search_and_morph.html>`__
+
 - `Shaking a structure with simple dynamcs <dynamics.html>`__
 - `Sorting ligands and waters to group with polymer chains <sort_hetatms.html>`__
 

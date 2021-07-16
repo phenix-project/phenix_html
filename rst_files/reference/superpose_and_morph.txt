@@ -1,0 +1,80 @@
+Model superposition and morphing using secondary structure matching (SSM)
+=========================================================================
+
+Author(s)
+---------
+
+-  superpose_and_morph: Tom Terwilliger
+
+Purpose
+-------
+
+Superpose moving model on fixed model, then optionally morph the moving
+model to be similar to the fixed model and trim it back to the parts that
+match.
+
+Usage
+-----
+
+How superpose_and_morph works:
+------------------------------
+
+superpose_and_morph uses a combination of sequence-based and SSM-based 
+(secondary structure matching) to superimpose two models.  The sequence-based
+matching is the same as in phenix.superpose_pdbs.  The SSM matching is the
+same as in phenix.search_and_morph.  The SSM matching consists
+of identifying secondary structure in the two models, indexing all pairs of
+secondary structure elements, and finding sets of matching pairs in the
+two structures.  Normally the basic unit of a match is a set of three pairs
+of secondary structure elements (they can be overlapping) with the same
+spatial arrangement in the two structures.  Such a match is called a triple
+in superpose_and_morph. 
+
+A matching triples yields a unique orientation of the moving model.  Matching
+triples are grouped into sets in which all the triples yield nearly the same
+orientation. Then the transformations suggested by the largest groups are 
+each tested by using them to superimpose the moving model on the fixed model
+and noting the number of residues that superimpose.
+
+The best-fitting superimposed moving models are then (optionally) morphed by
+calculation of a real-space distortion field that changes over a typical 
+distance of about 10 A (set by the parameter distortion_field_length).
+
+Finally (optionally) the moving models are trimmed to remove 
+segments that are very different from the fixed model.
+
+Examples
+--------
+
+Standard run of superpose_and_morph:
+------------------------------------
+
+Running superpose_and_morph is easy. From the command-line you can type:
+
+::
+
+    phenix.superpose_and_morph fixed_model=fixed_model.pdb \
+       moving_model=moving_model.pdb
+
+
+This will superimpose moving_model.pdb on fixed_model.pdb, morph it (gradual
+adjustment of atomic positions with location along the chain and in space),
+and trim moving_model back to the region where they are similar.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.superpose_and_morph}}

@@ -1,0 +1,90 @@
+Model searching and morphing using secondary structure matching (SSM)
+=========================================================================
+
+Author(s)
+---------
+
+-  search_and_morph: Tom Terwilliger
+
+Purpose
+-------
+
+Search for structures in the PDB similar to a supplied model using SSM
+matching, superimpose the matching structures, then optionally morph 
+them to be similar to the target model and trim back to the parts that match.
+
+Usage
+-----
+
+How search_and_morph works:
+------------------------------
+
+search_and_morph uses SSM-based (secondary structure matching) to find 
+structures in the PDB that are similar to a supplied model. The SSM 
+matching is the same as in phenix.superpose_and_morph.  The SSM 
+matching starts with identifying secondary structure in the supplied model,
+indexing all pairs of secondary structure elements.  These pairs of
+secondary structure elements are compared with indexed pairs from all
+structures in a curated subset of the PDB, leading to sets of 
+matching pairs in the target and structures in the PDB.
+
+The curated subset of the PDB consist of non-redundant (<90% identity),
+high-resolution structures (< 2 A) that have very good geometry. The main-chain
+coordinates of these structures are supplied in a database as part of Phenix.
+
+Normally the basic unit of a match is a set of three pairs
+of secondary structure elements (they can be overlapping) with the same
+spatial arrangement in the two structures.  Such a match is called a triple
+in search_and_morph. 
+
+A matching triples yields a unique orientation of the moving model.  Matching
+triples are grouped into sets in which all the triples yield nearly the same
+orientation. The PDB entries representing the largest groups are then tested
+for match to the target structure.
+
+Optionally sequence neighbors of these PDB entries are identified and added
+to the structures tested for matching the target structure
+
+The structures to be examined are either loaded from the Phenix database or
+downloaded from the PDB. They are then superimposed on the target structure
+and (optionally) morphed and trimmed to match the target structure in the
+same way as in phenix.superimpose_and_morph. In this procedure the  
+best-fitting superimposed structures are morphed by
+calculation of a real-space distortion field that changes over a typical 
+distance of about 10 A (set by the parameter distortion_field_length).
+Finally (optionally) the moving models are trimmed to remove 
+segments that are very different from the fixed model.
+
+Examples
+--------
+
+Standard run of search_and_morph:
+------------------------------------
+
+Running search_and_morph is easy. From the command-line you can type:
+
+::
+
+    phenix.search_and_morph model.pdb nproc=8
+
+
+This will find structures in the PDB similar to model.pdb, superimpose them,
+morph them to match, and trim back to the matching region.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.search_and_morph}}
