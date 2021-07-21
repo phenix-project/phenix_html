@@ -5,16 +5,16 @@ Description
 -----------
 
 This tool is for getting validation report from OneDep validation. Only mmCIF
-format is supported for models and diffraction data, CCP4 format for EM maps.
+format is supported for models and diffraction data, and CCP4 format for EM maps.
 NMR chemical shifts and restraints are not currently supported.
-If validation completed successfully, validation report in pdb and xml format will appear on hard drive.
+If validation completed successfully, a validation report in pdf and xml format will appear on hard drive.
 
 It is not possible to predict how long will it take to get the report. Therefore
 after several attempts (see parameters to control duration and frequency of the requests),
-the tool will ouput session id, which can be used later as a parameter to query RCSB again.
+the tool will output a session id, which can be used later as a parameter to query RCSB again.
 
-Note, that running this tool again with files will create a new session on
-validation server, not enquire about previous job.
+Note, running this tool again with files will create a new session on the
+validation server, not inquire about a previous job.
 
 WARNING
 -------
@@ -41,9 +41,9 @@ Command line usage examples
 GUI
 ---
 
-Graphical user interface is currently available in "PDB deposition" section.
-Also, GUI will remember the session id, so when the job is restored, you should
-be able to query RCSB to see if the results are ready. When the results are fetched
+The graphical user interface is currently available in the "PDB deposition" section.
+Also, the GUI will remember the session id; so when the job is restored, you should
+be able to query RCSB to see if the results are ready. When the results are fetched, the
 resulting page will change to show them.
 
 
