@@ -4,21 +4,31 @@ Structure Refinement
 **Why**
 
 Once an atomic model has been built into an electron density map, or
-obtained by molecular replacement, it needs to be optimized to best fit
+obtained by molecular replacement, you need to optimize it to best fit
 the experimental data while also preserving good agreement with prior
-chemical knowledge. This process is typically iterated with manual model
-rebuilding, making use of improved electron density maps, created by
-including phase information from the current atomic model.
+chemical knowledge.
+
+For x-ray crystallographic data, this refinement process is usually done
+in reciprocal space. Using a least-squares or maximum-likelihood target,
+the model parameters are changed so the model-driven structure factors 
+match the amplitudes or intensities of the experimental structure factors. 
+For example, these model parameters include (a) atomic parameters, such as 
+coordinates, atomic displacement parameters, occupancies, and scattering 
+fractions, and (b) non-atomic parameters that describe contributions from 
+bulk solvent, twinning, and crystal anisotropy. 
+
 
 **How**
 
-The primary program for refinement of atomic models in Phenix is
+In Phenix, the primary program for refining atomic models is
 phenix.refine. This applies optimization algorithms (minimization or
-simulated annealing) to change the parameters of the model, typically
-coordinates and atomic displacement parameters, to improve the fit of
-the model to the data. At the same time restraints to prior chemical
-information, e.g. bond lengths, angles, torsions, are also applied in
-order to maintain good stereochemistry.
+simulated annealing) to change the model parameters (typically
+coordinates and atomic displacement parameters) to improve the fit of
+the model to the data. At the same time, it applies restraints to prior 
+chemical information (such as bond lengths, angles, and torsions) to 
+maintain good stereochemistry. This customizable program allows multiple 
+refinement strategies to be combined and applied to any selected part of 
+the model in a single run. 
 
 **How to use the phenix.refine GUI:** `Click
 here <../reference/refine_gui.html>`__
@@ -33,17 +43,16 @@ here <../reference/refine_gui.html>`__
 -  `phenix.rosetta\_refine <../reference/rosetta_refine.html>`__: This
    program combines crystallographic structure refinement algorithms
    from Phenix with physically realistic potentials for model
-   optimization from Rosetta. This is intended for use in difficult
-   cases, especially at low resolution where it combines a wide radius
-   of convergence to the correct structure with excellent geometry.
+   optimization from Rosetta. The tool is useful at low resolution, 
+   where it combines a wide radius of convergence across distinct local minima 
+   with realistic geometry.
 -  `phenix.ensemble\_refinement <../reference/ensemble_refinement.html>`__: This
-   program uses molecular dynamics as a mechanism to generate
-   conformations of molecules in the crystal. A time averaging method is
-   used to generate ensemble models fitted to diffraction data. These
-   ensemble models can contain ~50-500 individual structures and
+   program combines crystallographic refinement with molecular dynamics to
+   produce  ensemble models fitted to diffraction data. These
+   ensemble models can contain ~50-500 individual structures, and can
    simultaneously account for anisotopic and anharmonic atomic
    distributions.
--  `ERRASER <../reference/erraser.html>`__: Another Rosetta method that
+-  `ERRASER <../reference/erraser.html>`__: This is another Rosetta method that
    performs real-space rebuilding of RNA structures for improved geometry and
    fit to data.
 
