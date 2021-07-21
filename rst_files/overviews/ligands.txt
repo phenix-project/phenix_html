@@ -5,28 +5,30 @@ Ligands
 
 The goal of a crystallographic study is often to visualize the
 interaction of a small molecule or ligand with a macromolecule. This is
-core process in the development of new therapeutics. It is also not
-uncommon to discover density for an unanticipated small molecule in
-complex with a protein during the process of solving a structure. In
-both cases it is necessary to fit the small molecule into density to
-complete the atomic model. As part of this process it is often necessary
-to generate appropriate stereochemical restraints for new ligands for
+a core process in the development of new therapeutics. It is also 
+common to discover density for an unanticipated small molecule in
+complex with a protein while solving a structure. In both cases, 
+you need to fit the small molecule into the electron density
+to complete the atomic model. As part of this process, you frequently
+need to generate appropriate stereochemical restraints for new ligands for
 use in structure refinement.
 
 **How**
 
-The principal tool for fitting ligands into density in Phenix is
+In Phenix, the principal tool for fitting ligands into electron density is
 phenix.ligand\_fit. This identifies unfilled electron density in a map
-and attempts to place the user defined ligand in the density by rotation
+and attempts to place the user-defined ligand in the density by rotating
 around any torsional degrees of freedom. The process requires an
 electron density map, coordinates for the macromolecule, and information
-about the ligand, either as coordinates or a chemical description which
-can be used to generate coordinates. The output are the coordinates of
-the fit ligand. After ligand(s) are fit, subsequent refinement steps
-will require stereochemical restraints. In some cases these may be
-present in the default restraint libraries, however, in many cases new
-restraints may need to be generated. In Phenix, the phenix.elbow program
-can be used to do this, starting from a variety of different formats.
+about the ligand (either as coordinates or as a chemical description that
+can be used to generate coordinates). The program outputs the coordinates of
+the fit ligand. 
+
+After ligand(s) are fit, subsequent refinement steps will require stereochemical 
+restraints. In some cases, these may be present in the default restraint libraries. 
+However, you often need to generate new restraints. The phenix.elbow (eLBOW) program
+automatically generates geometry restraints for novel ligands or improves 
+restraints for standard ligands, starting from a variety of different formats.
 
 **How to use the ligand fitting GUI:** `Click here <../reference/ligandfit_gui.html>`__
 
@@ -44,16 +46,24 @@ can be used to do this, starting from a variety of different formats.
    This is very useful when studying a series of compounds for the same
    or related macromolecular targets.
 -  `phenix.ligand\_identification <../reference/ligand_identification.html>`__: This
-   program can be used to determine the identity of an unknown ligand by
-   performing ligand fitting with a library of small molecules and then
-   ranking each molecule by density fit and chemical interaction with
-   the macromolecule.
+   program determines the identity of an unknown ligand by analyzing difference 
+   density peaks to reveal which ligand is likely to be present. Using a 
+   library of the 180 most frequently observed ligands in the PDB, the tool ranks 
+   each molecule by density fit and chemical interaction with the macromolecule.
 -  `phenix.ligand\_pipeline <../reference/ligand_pipeline.html>`__: This
-   program can be used to generate a near-finished structure of a
-   protein-ligand complex starting from a current protein model,
+   program generates a near-finished structure of a protein-ligand 
+   complex starting from a current protein model,
    diffraction data, and information about ligands. It combines Xtriage,
-   Phaser, eLBOW, phenix.refine, AutoBuild, and LigandFit, with optional
+   Phaser, eLBOW, phenix.refine, AutoBuild, and LigandFit with optional
    interaction with Coot. It can significantly reduce the manual effort
    required for more difficult structures.
+-  `phenix.ready\_set <../reference/ready_set.html>`__: This program prepares a 
+   model for refinement by generating all necessary ligand restraints with eLBOW and 
+   then updating the model file to reflect atom name changes from the new restraints.
+-  `phenix.reel <../reference/reel.html>`__: This Restraints Editor Especially Ligands (REEL)
+   tool includes a 3D view of the ligand and a tabular view of the restraints, allowing
+   target values and standard deviations to be easily edited. 
 
-`Phenix reference manual for phenix.ligand\_fit <../reference/ligandfit.html>`__ `Phenix reference manual for phenix.elbow <../reference/elbow.html>`__
+`Phenix reference manual for phenix.ligand\_fit <../reference/ligandfit.html>`__  
+
+`Phenix reference manual for phenix.elbow <../reference/elbow.html>`__
