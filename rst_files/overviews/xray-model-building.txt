@@ -13,13 +13,13 @@ both proteins and nucleic acids.
 The accuracy and completeness of the model
 building is a function of the quality of the starting electron density
 map, and less critically the resolution of the data. At low resolution
-(3.0Å or worse), partial models are usually built, which require manual
+(3.0 Å or worse), partial models are usually built, which require manual
 completion.
 
 **How**
 
 In Phenix, several programs aid in automated model building; the main one 
-is phenix.autobuild. The model building process integrates phase improvement 
+is *phenix.autobuild*. The model building process integrates phase improvement 
 using density modification methods with automated map interpretation in order 
 to build and refine models. This minimally requires an experimental density map, 
 experimental diffraction data, and the sequence of the molecule(s) in the crystal.
@@ -40,7 +40,7 @@ here <../reference/autobuild_gui.html>`__
 -  `phenix.find\_helices\_strands <../reference/find_helices_strands.html>`__: This
    program very rapidly locates protein secondary structure elements in an electron 
    density map. This is extremely useful for quickly confirming that a map contains 
-   macromolecular features, or for interpreting low-resolution (4Å or worse) maps. 
+   macromolecular features, or for interpreting low-resolution (4 Å or worse) maps. 
    Optionally, you can provide the amino acid sequence and the program will fit residues
    where density permits.
 -  `phenix.fit\_loops <../reference/fit_loops.html>`__: This program docks missing
@@ -48,7 +48,7 @@ here <../reference/autobuild_gui.html>`__
    sequence, and an electron density map. Model building procedures are
    sometimes unable to fit models to poor density in loop regions,
    especially in the initial stages of map interpretation. As the model
-   becomes more complete and maps improve, phenix.fit\_loops can perform
+   becomes more complete and maps improve, *phenix.fit\_loops* can perform
    simple real-space refinement to clean up the structure. 
 -  `phenix.map\_to\_model <../reference/map_to_model.html>`__: This program is 
    designed for lower-resolution model building. It is suitable for
@@ -56,10 +56,10 @@ here <../reference/autobuild_gui.html>`__
    symmetry used to create a map, it builds only the unique
    part of the model and expands to the remaining NCS-related copies.
 -  `phenix.erraser <../reference/erraser.html>`__: This program uses
-   ERRASER (Enumerative Real-space Refinment ASsisted by
+   *ERRASER* (Enumerative Real-space Refinement ASsisted by
    Electron-density under Rosetta) to rebuild RNA structures by
    combining Rosetta and Phenix. By supplementing the Rosetta RNA
-   scoring function with electron-density restraint, ERRASER can
+   scoring function with electron-density restraint, *ERRASER* can
    confidently reduce the errors in RNA crystallographic models while
    retaining a good fit to the diffraction data.
 

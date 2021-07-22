@@ -25,9 +25,9 @@ be <2.0 Å.
 **How**
 
 In Phenix, the primary program for performing molecular replacement is
-Phaser. This requires experimental diffraction data, atomic model(s),
+*Phaser*. This requires experimental diffraction data, atomic model(s),
 the sequence of the molecule in the crystal, and typically some estimate
-of the number of molecules in the crystal. Phaser uses maximum-likelihood 
+of the number of molecules in the crystal. *Phaser* uses maximum-likelihood 
 algorithms to determine the rotation of the model(s) with respect to the 
 unit cell, and then the translation of the rotated model(s) within the unit 
 cell. The output of this process, if successful, is a PDB file containing 
@@ -50,24 +50,24 @@ here <../reference/phaser_mr.html>`__
    prudent to use the "Search PDB Symmetry" tool in the Phenix GUI to check 
    the cell dimensions and space group against the PDB. A third possibility is 
    that the space group is incorrect (e.g., if twinning increases the apparent 
-   symmetry of the diffraction pattern), thus it is always good to run Xtriage 
+   symmetry of the diffraction pattern), thus it is always good to run *Xtriage* 
    in the "Data analysis" section of the Phenix GUI.
 -  `Frequently asked questions about molecular replacement <../faqs/mr.html>`__
 
 **Related programs**
 
--  `phenix.MRage <../reference/MRage.html>`__: This program uses Phaser to
+-  `phenix.MRage <../reference/MRage.html>`__: This program uses *Phaser* to
    perform highly automated molecular replacement. In its simplest form,
    it uses experimental diffraction data and a sequence to solve a
    molecular replacement problem.
 -  `phenix.sculptor <../reference/sculptor.html>`__: This program can improve 
-   models for molecular replacement, by trimming off parts of the model that 
+   models for molecular replacement by trimming off parts of the model that 
    are unlikely to be preserved in the target structure.
 -  `phenix.ensembler <../reference/ensembler.html>`__: This program prepares 
    ensembles for molecular replacement. An ensemble is a set of structurally 
    related models that have been superimposed with respect to each other, 
    typically using a conserved structural core.
-   Phenix.ensembler automates the process of superimposing models.
+   *Phenix.ensembler* automates the process of superimposing models.
 -  `phenix.morph\_model <../reference/morph_model.html>`__: This program
    can improve an initial model after molecular replacement by locally moving 
    the structure to better fit the electron density map. This is especially 

@@ -12,7 +12,7 @@ For x-ray crystallographic data, this refinement process is usually done
 in reciprocal space. Using a least-squares or maximum-likelihood target,
 the model parameters are changed so the model-driven structure factors 
 match the amplitudes or intensities of the experimental structure factors. 
-For example, these model parameters include (a) atomic parameters, such as 
+For example, these model parameters can include (a) atomic parameters, such as 
 coordinates, atomic displacement parameters, occupancies, and scattering 
 fractions, and (b) non-atomic parameters that describe contributions from 
 bulk solvent, twinning, and crystal anisotropy. 
@@ -21,7 +21,7 @@ bulk solvent, twinning, and crystal anisotropy.
 **How**
 
 In Phenix, the primary program for refining atomic models is
-phenix.refine. This applies optimization algorithms (minimization or
+*phenix.refine*. This applies optimization algorithms (minimization or
 simulated annealing) to change the model parameters (typically
 coordinates and atomic displacement parameters) to improve the fit of
 the model to the data. At the same time, it applies restraints to prior 

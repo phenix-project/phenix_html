@@ -19,10 +19,10 @@ or assembly have a similar orientation in the asymmetric unit of the crystal.
 
 **How**
 
-In Phenix, the phenix.xtriage program analyzes data to assess quality and 
+In Phenix, the *phenix.xtriage* program analyzes data to assess quality and 
 detect possible problems. For most uses, the program only requires a 
 reflection file containing the data set you wish to analyze. Running 
-phenix.xtriage generates information about the data set, which is best 
+*phenix.xtriage* generates information about the data set, which is best 
 viewed in the GUI as graphs and tables. The first section of the output
 provides an overall assessment of the data.
 
@@ -37,14 +37,14 @@ provides an overall assessment of the data.
    twinned. In some cases, the tests of specific twinning operations return 
    a high twin fraction but the overall intensity statistics look normal; 
    this should not be interpreted as twinning. More likely, a symmetry element
-   is missing, and phenix.xtriage might suggest a higher symmetry.
+   is missing, and *phenix.xtriage* might suggest a higher symmetry.
 
 **Related programs and Documentation**
 
 -  `phenix.plan\_sad\_experiment <../reference/plan_sad_experiment.html>`__: 
    This tool allows you to plan your SAD data collection strategy by 
    estimating the anomalous signal and the probability of solving your 
-   structure by SAD based on the anomalously-scattering atoms, wavelength, size 
+   structure with SAD based on the anomalously-scattering atoms, wavelength, size 
    of your molecule, and overall I/sigI for your dataset.
 
 
@@ -76,7 +76,7 @@ provides an overall assessment of the data.
 -  `Using unmerged data in Phenix <../reference/unmerged_data.html>`__:
    You can analyze unmerged data in Phenix to provide useful
    information, including the new CC1/2 and CC\* statistics. The
-   program phenix.merging\_statistics calculates these and
+   program *phenix.merging\_statistics* calculates these and
    a number of other statistics. The program 
    `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__  
    scales unmerged data for you.
