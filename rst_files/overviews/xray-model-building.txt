@@ -11,19 +11,19 @@ For many cases, automated methods can be used to build models for
 both proteins and nucleic acids. 
 
 The accuracy and completeness of the model
-building is a function of the quality of the starting electron density
-map, and less critically the resolution of the data. At low resolution
-(3.0Å or worse), partial models are usually built, which require manual
-completion.
+building depends on the quality of the starting electron density
+map and - less critically - the resolution of the data. At low resolution
+(3.0Å or worse), automated model building produces usually a partial model, which needs to be completed manually.
+
 
 **How**
 
 In Phenix, several programs aid in automated model building; the main one 
-is phenix.autobuild. The model building process integrates phase improvement 
+is *phenix.autobuild*. The model building process integrates phase improvement
 using density modification methods with automated map interpretation in order 
 to build and refine models. This minimally requires an experimental density map, 
 experimental diffraction data, and the sequence of the molecule(s) in the crystal.
-The program outputs a PDB file with the automatically built model and the map
+The program outputs a model file with the automatically built model and the map
 coefficients for the best electron density map created during the
 model building process.
 
