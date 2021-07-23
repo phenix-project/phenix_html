@@ -19,7 +19,7 @@ or assembly have a similar orientation in the asymmetric unit of the crystal.
 
 **How**
 
-In Phenix, the *phenix.xtriage* program analyzes data to assess quality and 
+The *phenix.xtriage* program analyzes data to assess quality and
 detect possible problems. For most uses, the program only requires a 
 reflection file containing the data set you wish to analyze. Running 
 *phenix.xtriage* generates information about the data set, which is best 
@@ -28,16 +28,19 @@ provides an overall assessment of the data.
 
 **How to use the phenix.xtriage GUI:** `Click here <../reference/xtriage_gui.html>`__
 
+`Phenix reference manual for
+phenix.xtriage <../reference/xtriage.html>`__
+
 **Common issues**
 
--  Interpretation of twinning results: There are two parts to testing for
-   twinning — determining whether the overall intensity statistics look 
-   normal, and testing for specific twinning operations. Both kinds of
-   tests need to indicate twinning for the data set to be considered
-   twinned. In some cases, the tests of specific twinning operations return 
-   a high twin fraction but the overall intensity statistics look normal; 
-   this should not be interpreted as twinning. More likely, a symmetry element
-   is missing, and *phenix.xtriage* might suggest a higher symmetry.
+*Interpretation of twinning results*: There are two parts to testing for
+twinning — determining whether the overall intensity statistics look
+normal, and testing for specific twinning operations. Both kinds of
+tests need to indicate twinning for the data set to be considered
+twinned. In some cases, the tests of specific twinning operations return
+a high twin fraction but the overall intensity statistics look normal;
+this should not be interpreted as twinning. More likely, a symmetry element
+is missing, and *phenix.xtriage* might suggest a higher symmetry.
 
 **Related programs and Documentation**
 
@@ -60,11 +63,10 @@ provides an overall assessment of the data.
    `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__.
 
 
--  `phenix.data\_viewer <../reference/data_viewer.html>`__: 
-   This program visualizes reciprocal space data either in
-   3-dimensions or 2-dimensions. This can be very useful for detecting
-   systematic problems with data completeness (e.g., missing cones,
-   wedges).
+-  `HKLviewer <http://cci.lbl.gov/docs/cctbx/doc_hklviewer/>`__:
+   This program visualizes reciprocal space data. This can be very useful for detecting
+   systematic problems, such as incompleteness (e.g., missing cones or wedges),
+   TNCS or twinning.
 
 
 -  `phenix.explore\_metric\_symmetry <../reference/explore_metric_symmetry.html>`__:
@@ -80,6 +82,3 @@ provides an overall assessment of the data.
    a number of other statistics. The program 
    `phenix.scale\_and\_merge <../reference/scale_and_merge.html>`__  
    scales unmerged data for you.
-
-`Phenix reference manual for
-phenix.xtriage <../reference/xtriage.html>`__
