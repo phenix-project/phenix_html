@@ -8,13 +8,13 @@ obtained by molecular replacement, you need to optimize it to best fit
 the experimental data while also preserving good agreement with prior
 chemical knowledge.
 
-For x-ray crystallographic data, this refinement process is usually done
+For crystallographic data, this refinement process is usually done
 in reciprocal space. Using a least-squares or maximum-likelihood target,
-the model parameters are changed so the model-driven structure factors 
+the model parameters are changed so the model-derived structure factors
 match the amplitudes or intensities of the experimental structure factors. 
 For example, these model parameters can include (a) atomic parameters, such as 
 coordinates, atomic displacement parameters, occupancies, and scattering 
-fractions, and (b) non-atomic parameters that describe contributions from 
+factors, and (b) non-atomic parameters that describe contributions from
 bulk solvent, twinning, and crystal anisotropy. 
 
 
@@ -32,6 +32,9 @@ the model in a single run.
 
 **How to use the phenix.refine GUI:** `Click
 here <../reference/refine_gui.html>`__
+
+`Phenix reference manual for
+phenix.refine <../reference/refinement.html>`__
 
 **Common issues**
 
@@ -56,5 +59,4 @@ here <../reference/refine_gui.html>`__
    performs real-space rebuilding of RNA structures for improved geometry and
    fit to data.
 
-`Phenix reference manual for
-phenix.refine <../reference/refinement.html>`__
+
