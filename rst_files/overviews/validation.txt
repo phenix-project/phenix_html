@@ -10,7 +10,8 @@ known distributions of side chain and main chain conformations in both
 proteins and nucleic acids. This validation should also extend beyond purely geometric 
 measures to include local fit to electron density.
 
-The process typically consists of cycles of validation, manual or automated
+Validation is performed throughout the structure solution process, which
+consists of cycles of validation, manual or automated
 rebuilding, and automated refinement until a satisfactory model is obtained.
 Useful validation criteria depend on the resolution of the data. 
 
@@ -20,19 +21,22 @@ In Phenix, model validation is provided in the comprehensive validation
 GUI based on the *MolProbity* tool. This software can be run as a standalone 
 program or automatically as part of *phenix.refine*. Overall model statistics 
 are presented in a summary chart with local scores reported as plots and as tables 
-listing the outliers on each criterion. The model validation tasks are essentially identical to the *MolProbity* web service. The validation results are seamlessly integrated with the graphics programs
-*Coot* and *PyMOL*.
+listing the outliers on each criterion. The model validation tasks are
+essentially identical to the *MolProbity* web service. The validation results
+are seamlessly integrated with the graphics programs *Coot* and *PyMOL*.
 
 
 **How to use the validation tools in the Phenix GUI:** `Click here <../reference/validation.html>`__
 
+`More information about MolProbity <../reference/molprobity_tool.html>`__
+
 **Common issues**
 
--  Outliers versus errors: In most structures, there will Ramachandran 
-   and side chain rotamer outliers. If the electron density and surrounding 
-   chemistry supports the outlier conformation, then it is most likely an 
-   outlier from prior expectations. In the absence of supporting density and/or  
-   conflicting local chemistry, it is probably an error that needs correction.
+*Outliers versus errors*: In most structures, there will Ramachandran
+and side chain rotamer outliers. If the electron density and surrounding
+chemistry supports the outlier conformation, then it is most likely an
+outlier from prior expectations. In the absence of supporting density and/or
+conflicting local chemistry, it is probably an error that needs correction.
 
 **Related programs**
 
@@ -40,4 +44,3 @@ listing the outliers on each criterion. The model validation tasks are essential
    program assesses the overall quality of an atomic model with respect
    to the experimental data.
 
-`More information about MolProbity <../reference/molprobity_tool.html>`__
