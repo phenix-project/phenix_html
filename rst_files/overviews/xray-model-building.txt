@@ -23,12 +23,15 @@ is *phenix.autobuild*. The model building process integrates phase improvement
 using density modification methods with automated map interpretation in order 
 to build and refine models. This minimally requires an experimental density map, 
 experimental diffraction data, and the sequence of the molecule(s) in the crystal.
-The program outputs a PDB file with the automatically built model and the map
+The program outputs a model file with the automatically built model and the map
 coefficients for the best electron density map created during the
 model building process.
 
 **How to use the phenix.autobuild GUI:** `Click
 here <../reference/autobuild_gui.html>`__
+
+`Phenix reference manual for
+phenix.autobuild <../reference/autobuild.html>`__
 
 **Common issues**
 
@@ -63,5 +66,3 @@ here <../reference/autobuild_gui.html>`__
    confidently reduce the errors in RNA crystallographic models while
    retaining a good fit to the diffraction data.
 
-`Phenix reference manual for
-phenix.autobuild <../reference/autobuild.html>`__
