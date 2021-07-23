@@ -5,7 +5,7 @@ Crystallographic Structure Deposition
 
 Once a crystallographic structure is solved, it is usually deposited
 in the Worldwide Protein Data Bank (wwPDB). This is necessary for
-publication as most journals require a PDBID to be included in any
+publication as most journals require a PDB ID to be included in any
 manuscript that describes a new crystallographic structure.
 The wwPDB is an invaluable resource that contains over 190,000 structures
 (as of July 2021).
@@ -28,11 +28,10 @@ To generate a model file suitable for deposition, we recommend a two-stage proce
    This program requires the full sequence for the macromolecule to be provided.
    In the GUI, this program is in the "PDB Deposition" section of tools.
 
+**How to use *mmtbx.prepare\_pdb\_deposition*:** `Click here <../reference/prepare_pdb_deposition.html>`__
+
 **Related programs**
 
--  `mmtbx.prepare_pdb_deposition <../reference/prepare_pdb_deposition.html>`__:
-   This program takes the mmCIF output from *phenix.refine* and adds the sequence
-   information necessary for deposition into the Protein Data Bank.
 -  `phenix.get_pdb_validation_report <../reference/get_pdb_validation_report.html>`__:
    This program submits your model and data in CIF format to the PDB OneDep
    server to get a validation report in PDF and XML formats.
