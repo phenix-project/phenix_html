@@ -16,13 +16,13 @@ use in structure refinement.
 **How**
 
 In Phenix, the principal tool for fitting ligands into electron density is
-*phenix.ligand\_fit*. This identifies unfilled electron density in a map
+*phenix.ligand\_fit*. This program identifies unfilled electron density in a map
 and attempts to place the user-defined ligand in the density by rotating
 around any torsional degrees of freedom. The process requires an
 electron density map, coordinates for the macromolecule, and information
 about the ligand (either as coordinates or as a chemical description that
 can be used to generate coordinates). The program outputs the coordinates of
-the fit ligand. 
+the ligand fitted into the density.
 
 After ligand(s) are fit, subsequent refinement steps will require stereochemical 
 restraints. In some cases, these may be present in the default restraint libraries. 
@@ -32,7 +32,11 @@ restraints for standard ligands, starting from a variety of different formats.
 
 **How to use the ligand fitting GUI:** `Click here <../reference/ligandfit_gui.html>`__
 
+`Phenix reference manual for phenix.ligand\_fit <../reference/ligandfit.html>`__
+
 **How to use the phenix.elbow GUI:** `Click here <../reference/elbow_gui.html>`__
+
+`Phenix reference manual for phenix.elbow <../reference/elbow.html>`__
 
 **Common issues**
 
@@ -50,13 +54,6 @@ restraints for standard ligands, starting from a variety of different formats.
    density peaks to reveal which ligand is likely to be present. Using a 
    library of the 180 most frequently observed ligands in the PDB, the tool ranks 
    each molecule by density fit and chemical interaction with the macromolecule.
--  `phenix.ligand\_pipeline <../reference/ligand_pipeline.html>`__: This
-   program generates a near-finished structure of a protein-ligand 
-   complex starting from a current protein model,
-   diffraction data, and information about ligands. It combines *Xtriage,
-   Phaser, eLBOW, phenix.refine, AutoBuild,* and *LigandFit* with optional
-   interaction with *Coot*. It can significantly reduce the manual effort
-   required for more difficult structures.
 -  `phenix.ready\_set <../reference/ready_set.html>`__: This program prepares a 
    model for refinement by generating all necessary ligand restraints with *eLBOW* and 
    then updating the model file to reflect atom name changes from the new restraints.
@@ -64,6 +61,6 @@ restraints for standard ligands, starting from a variety of different formats.
    tool includes a 3D view of the ligand and a tabular view of the restraints, allowing
    target values and standard deviations to be easily edited. 
 
-`Phenix reference manual for phenix.ligand\_fit <../reference/ligandfit.html>`__  
 
-`Phenix reference manual for phenix.elbow <../reference/elbow.html>`__
+
+
