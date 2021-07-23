@@ -3,7 +3,7 @@ Experimental Phasing
 
 **Why**
 
-One of the biggest problems in crystallography is the phase problem.
+One of the biggest challenges in crystallography is the phase problem.
 We measure amplitudes for structure factors, but cannot directly measure
 the phases. Unfortunately, these phases are necessary to generate the
 electron density of the molecules in the crystal. 
@@ -33,21 +33,25 @@ one or more anomalous data sets, or a native data set plus one or more
 derivative data sets (if you are performing SIR/MIR phasing). You also 
 need to provide the sequence of your macromolecule, and information about 
 the anomalous scatterers and/or heavy atoms. The *phenix.autosol* results
-include a PDB file containing the anomalous scatterers, an MTZ file containing the
-experimentally determined phases, the optimized phases from density
-modification, and, if the maps are of sufficient quality, a PDB file with
-an atomic model.
+include a model file containing the anomalous scatterers, an MTZ file containing
+the experimentally determined phases, the optimized phases from density
+modification, and, if the maps are of sufficient quality, an atomic model.
 
 **How to use the phenix.autosol GUI:** `Click
 here <../reference/autosol_gui.html>`__
+
+`Phenix reference manual for
+phenix.autosol <../reference/autosol.html>`__
 
 **Common issues**
 
 -  Anomalous substructure not determined: There can be several reasons
    for this. Likely candidates are a lack of anomalous signal or
    an incorrect space group assignment. Use 
-   `phenix.xtriage <../reference/xtriage.html>`__ to estimate the
-   resolution of the data for anomalous substructure determination. If
+   `phenix.xtriage <../reference/xtriage.html>`__ or
+   `phenix.anomalous\_signal <../reference/anomalous_signal.html>`__
+   to estimate the resolution of the data for anomalous substructure
+   determination. If
    this resolution is very low, it might not be possible to locate the
    substructure (note, the experimental sigmas are used in this
    calculation so it is important that these are well estimated). If
@@ -100,5 +104,3 @@ here <../reference/autosol_gui.html>`__
    shifts, and polar axes. This can be useful if comparing solutions
    from different programs.
 
-`Phenix reference manual for
-phenix.autosol <../reference/autosol.html>`__
