@@ -1,0 +1,109 @@
+Rebuild a model using fragments from the PDB
+============================================
+
+Author(s)
+---------
+
+-  replace_with_fragments_from_pdb: Tom Terwilliger
+
+Purpose
+-------
+
+Create a composite model similar to a supplied model using fragments 
+from the PDB.
+
+This tool can be used in early stages of model-building to try and
+improve parts of a preliminary model by replacing them with similar
+fragments from a deposited structure.
+
+Note that the composite model may not actually have good geometry because
+the fragments from the PDB are morphed (distorted) to match the supplied
+model and also because the junctions between fragments taken from the PDB
+are not refined.
+
+Usage
+-----
+
+replace_with_fragments_from_pdb can create composite models for protein chains
+
+You can adjust the maximum number of insertions/deletions in each replacement
+fragment and whether to morph structures obtained by SSM matching.  
+
+You can supply a map file for refinement or calculation of map-model
+correlations.
+
+You can also choose to exclude or include specific PDB entries in SSM 
+matching and fragment searching, or exclude all PDB entries with sequences 
+similar to a particular PDB entry.
+
+
+How replace_with_fragments_from_pdb works:
+------------------------------------------
+
+Search structures in the PDB (using SSM matching and fragment searching) for 
+fragments similar to segments in a supplied model. Then choose the best
+matching segments for each part of the supplied model and create a composite
+model using the fragments from the PDB.
+
+replace_with_fragments_from_pdb uses SSM-based (secondary structure matching)
+to find structures in the PDB that are similar to a supplied model. The SSM 
+matching is the same as in phenix.superpose_and_morph.  
+
+replace_with_fragments_from_pdb also uses fragment searching to find shorter
+fragments matching each loop (segment between two helices or strands)
+in the supplied model.
+
+The fragments obtained with fragment searching are always morphed (distorted)
+to make the distance between starting and ending residues match the distance
+in the supplied structure.
+
+Fragments obtained from SSM matching are optionally morphed to match the
+target structure as well. The distance over which morphing occurs (the
+shift-field distance) is adjustable (typically 10 A), where structure is
+largely preserved over shorter distances and may be changed over longer
+distances.
+
+The supplied model is then used as a template and matching parts of structures
+from the PDB are superimposed on the template. The best-matching segments
+(smallest rmsd and longest length) are chosen and connected.  Gaps are filled
+if possible by a targeted fragment search of the PDB.
+
+
+Examples
+--------
+
+Standard run of replace_with_fragments_from_pdb:
+------------------------------------------------
+
+Running replace_with_fragments_from_pdb is easy. From the command-line you can type:
+
+::
+
+    phenix.replace_with_fragments_from_pdb model.pdb nproc=8
+
+
+This will find fragments in the PDB similar to model.pdb, put them together
+and write out a new model using these fragments.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+The final model may have poor geometry at connections between fragments, so
+further refinement is normally required.  Additionally the final model may
+have poor geometry within segments because morphing is carried out to
+match the target structure.
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.replace_with_fragments_from_pdb}}
