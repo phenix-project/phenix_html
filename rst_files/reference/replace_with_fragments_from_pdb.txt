@@ -36,6 +36,9 @@ You can also choose to exclude or include specific PDB entries in SSM
 matching and fragment searching, or exclude all PDB entries with sequences 
 similar to a particular PDB entry.
 
+You can choose to create a replacement for just a selected part of your
+model (by supplying a selection string that specifies what to select).
+
 
 How replace_with_fragments_from_pdb works:
 ------------------------------------------
