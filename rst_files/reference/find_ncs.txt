@@ -15,7 +15,7 @@ Authors:
 Purpose
 -------
 
-The find_ncs method identifies NCS in (a) the chains in a PDB file or (b) a set of heavy-atom sites, or (c) from the density in a map and writes out the NCS operators in forms suitable for phenix.refine, resolve, and the AutoSol and AutoBuild Wizards.
+The find_ncs method identifies NCS in (a) the chains in a PDB file or (b) a set of heavy-atom sites, or (c) from the density in a map and writes out the NCS operators in forms suitable for phenix.refine, resolve, and the AutoSol and AutoBuild Wizards, or (d) from an existing symmetry file (.ncs_spec), or (e) it can generate NCS for a helical array from helical parameters.
 
 
 How find_ncs works
@@ -190,6 +190,39 @@ This will produce the following output::
   ROTA 3:    0.2549    0.1548   -0.9545
   TRANS:     1.7147   -0.6936    7.2172
 
+
+
+Creating a model containing unique set of chains and nearby NCS-related chains
+------------------------------------------------------------------------------
+
+If you want to create a model that surrounds a unique set of chains with all the NCS-related ones, for now you need to carry out a few extra steps.  In this example the symmetry is helical with 5 unique chains; a similar approach can be used for point-group symmetry.
+
+For helical assemblies, NCS is not always simple to apply. The general idea is to generate more than enough copies, pare them down to the ones you want, get the NCS file for these copies, and apply it to your original 5 unique copes
+
+- Make a PDB file with one set of the unique 5 copies
+
+- Make a PDB file with a single monomer from these 5
+
+- use apply_ncs on the file with one chain to generate more copies
+
+- if you didn't get enough copies to cover all the locations you want,  extend your NCS operators:
+
+::
+
+  phenix.find_ncs my_helical_ncs.ncs_spec helix_extend_range=30
+
+
+This will extend the operators +/-30 A and write out a new .ncs_spec file
+
+- Once you get enough copies from step 2, edit that PDB file to remove all the chains that you don't want.
+
+- Run find_ncs on the PDB file with your desired chains to get the NCS relationships
+
+6.  Now (finally) run apply_ncs with the new .ncs_spec file and your PDB file with one set of 5 copies
+
+
+Additional information
+----------------------
 
 References
 ----------
