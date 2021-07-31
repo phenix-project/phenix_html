@@ -1,0 +1,102 @@
+Find matching fragments in the PDB (fragment_search)
+====================================================
+
+Author(s)
+---------
+
+-  fragment_search: Tom Terwilliger
+
+Purpose
+-------
+
+Extract a segment from the PDB that is similar to a segment in a supplied model.
+
+This tool can be used in early stages of model-building to try and
+improve a segment in a preliminary model by replacing it with a similar
+fragment from a deposited structure.
+
+Note that the fragment from the PDB may not actually have good geometry because
+it is morphed (distorted) to match the supplied model.
+
+Fragment search differs from replace_with_fragments_from_pdb in that 
+fragment_search is looking for a single fragment from the PDB that matches
+a target segment in your model, while replace_with_fragments_from_pdb is
+trying to completely replace your model with a set of fragments.
+
+Usage
+-----
+
+fragment_search can find a fragment in the PDB similar to a supplied fragment
+(protein chains only)
+
+You can adjust the maximum number of insertions/deletions in the replacement
+fragment and whether to morph the fragment.
+
+You can also choose to exclude or include specific PDB entries 
+or exclude all PDB entries with sequences similar to a particular PDB entry.
+
+You can choose to create a replacement for just a selected part of your
+model (by supplying a selection string that specifies what to select).
+
+
+How fragment_search works:
+------------------------------------------
+
+Fragment searching is done using a quality-filtered set of chains from the PDB,
+filtered at 90% sequence identity (pdb2018_90). 
+The curated subset of the PDB consist of non-redundant (<90% identity),
+high-resolution structures (< 2 A) that have very good geometry. The main-chain
+coordinates of these structures are supplied in a database as part of Phenix.
+
+Potential matching fragments are found by comparing end-to-end distances for 
+the target with all fragments of the desired length in structures in the 
+database. Fragments with the desired end-to-end distance are then examined
+for matching of distances from end to several internal positions in the
+target fragment. Finally those that match all these are superimposed on
+the target fragment, morphed to match the target fragment,
+and the rmsd of CA positions are used to evaluate the match.
+
+Morphing includes two steps.  In the first, the fragment is distorted
+with an offset that changes linearly for each residue along the chain and that
+allows the first and last CA positions of the matching fragment to
+superimpose on those of the target fragment.
+
+In the second step, a distortion field is applied to the matching fragment
+to make it more similar to the target fragment.  This morphing consists of
+calculation of a real-space distortion field that changes over a typical
+distance of about 10 A (set by the parameter distortion_field_length), and
+applying this distortion field to all the atoms in the matching fragment.
+
+
+Examples
+--------
+
+Standard run of fragment_search:
+------------------------------------------------
+
+Running fragment_search is easy. From the command-line you can type:
+
+::
+
+    phenix.fragment_search model.pdb nproc=8 selection="chain A and resseq 1:20"
+
+
+This will find fragments in the PDB similar to residues 1-20 of model.pdb.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.fragment_search}}

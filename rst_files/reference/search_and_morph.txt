@@ -42,7 +42,8 @@ triples are grouped into sets in which all the triples yield nearly the same
 orientation. The PDB entries representing the largest groups are then tested
 for match to the target structure.
 
-Optionally sequence neighbors of these PDB entries are identified and added
+Optionally (if database is set to "pdb100"), sequence neighbors of these 
+PDB entries are identified and added
 to the structures tested for matching the target structure
 
 The structures to be examined are either loaded from the Phenix database or
@@ -52,6 +53,7 @@ same way as in phenix.superimpose_and_morph. In this procedure the
 best-fitting superimposed structures are morphed by
 calculation of a real-space distortion field that changes over a typical 
 distance of about 10 A (set by the parameter distortion_field_length).
+
 Finally (optionally) the moving models are trimmed to remove 
 segments that are very different from the fixed model.
 
