@@ -1,0 +1,94 @@
+Model completion by extraction of secondary structure and reassembly
+====================================================================
+
+Author(s)
+---------
+
+-  model_completion: Tom Terwilliger
+
+Purpose
+-------
+
+Try to complete a model by extracting all the secondary structure elements
+(helices and strands), rearranging and reconnecting them into a new model.
+
+How Model Completion works:
+---------------------------
+
+Model completion is based on the idea that the helices and strands in 
+protein model are generally correct, while the loops connecting them may be
+inaccurate or even connect the wrong helices and strands.
+
+Model completion first identifies secondary structure in a model. Then it
+examines all the loops connecting these helices and strands in the model
+and keeps the best-fitting and most plausible loops intact.  All the other loops
+are removed from the model, resulting in a set of fragments representing part
+of the structure.  The sequence assignments and connectivities of these 
+fragments are then removed so that any fragment can potentially be connected
+to any other fragment.
+
+The core step in model completion is identification of all plausible connections
+between ends of fragments in this partial model.  Connections that were present
+in the supplied model are considered in this step along with potential
+connections that are found by tracing from one fragment to another through high
+density in the density map. Each possible connection is scored based on 
+a set of criteria including (1) the lowest density at or between main-chain 
+atom positions, (2) the maximum difference in density between adjacent
+main-chain atom positions and (3) length of the connection (and other criteria
+as well).
+
+All possible arrangements of the available fragments and connections that
+use all the availble fragments (in either forward or reverse directions) are
+then considered using an iterative connection algorithm. Pairs
+of fragments are listed, then all pairs of pairs (triples). Then larger
+groupings are assembled using the higher scoring sets of smaller groupings
+(typically the top half are considered at each stage), until a set of
+potential complete chains are obtained.  At this stage a chain is a CA-only
+model.  All the CA-only models are then converted to full chains using
+PULCHRA (Rotkiewicz & Skolnick 2008) followed by adding side-chains
+with phenix.sequence_from_map.
+
+The potential complete chains obtained typically have many duplicate parts but
+differ in connectivity.  Complete chains are scored in manner similar to
+that used above for fragments, with an additional contribution to the
+score based on the match between the supplied sequence and side-chain 
+density along a chain.
+
+The highest-scoring complete chains are then optimized by recombination among
+these chains followed by real-space refinement.  The optimized chains are
+rescored and the top resulting chains are provided.
+
+Examples
+--------
+
+Standard run of model_completion:
+------------------------------------
+
+Running model_completion is easy. From the command-line you can type:
+
+::
+
+    phenix.model_completion my_model.pdb my_map.mrc resolution=3 nproc=8
+
+
+This will attempt to complete my_model.pdb based on the map my_map.mrc at 
+a resolution of 3 A using 8 processors.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+{{citation:pulchra}}
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.model_completion}}

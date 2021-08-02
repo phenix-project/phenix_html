@@ -1,0 +1,70 @@
+Model rebuilding keeping connectivity and allowing insertions and deletions
+===========================================================================
+
+Author(s)
+---------
+
+-  rebuild_model: Tom Terwilliger
+
+Purpose
+-------
+
+Rebuild a model, keeping all connectivity the same but allowing insertions
+and deletions.
+
+How rebuild_model works:
+------------------------
+
+Rebuild model rebuilds your model in segments of about 15-20 residues and
+reassembles these into a new model with the same connectivity as the original.
+
+Each segment is rebuilt with several different base methods (default 
+base methods are refinement, fixing insertions and deletions, and 
+rebuilding from CA positions).
+
+For each base method, a sequence of optimization steps is carried out (typically
+refinement, the base method, replacement of side chains, regularization,
+and another replacement of side chains).
+
+Rebuilt segments are scored based on map correlation.  The highest-scoring 
+segments are used to replace the corresponding segment in the original model.
+
+If there are multiple chains in your model, each is rebuilt separately.
+
+The quick option is used to speed up the process. It sets the number of 
+refinement cycles to 1 (otherwise there are 3 carried out) and skips all the
+optimization steps except the base method.
+
+Examples
+--------
+
+Standard run of rebuild_model:
+------------------------------------
+
+Running rebuild_model is easy. From the command-line you can type:
+
+::
+
+    phenix.rebuild_model my_model.pdb my_map.mrc resolution=3 nproc=8
+
+
+This will rebuild my_model.pdb based on the map my_map.mrc at a resolution
+of 3 A using 8 processors.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.rebuild_model}}
