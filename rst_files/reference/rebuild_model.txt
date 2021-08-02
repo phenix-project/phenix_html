@@ -15,8 +15,7 @@ and deletions.
 How rebuild_model works:
 ------------------------
 
-Rebuild model rebuilds your model in segments of about 15-20 residues and
-reassembles these into a new model with the same connectivity as the original.
+Rebuild model rebuilds each chain in your model (optionally in segments of about 15-20 residues) and reassembles these into a new model with the same connectivity as the original.
 
 Each segment is rebuilt with several different base methods (default 
 base methods are refinement, fixing insertions and deletions, and 
