@@ -31,7 +31,7 @@ segments are used to replace the corresponding segment in the original model.
 
 If there are multiple chains in your model, each is rebuilt separately.
 
-The quick option is used to speed up the process. It sets the number of 
+The quick option can be used to speed up the process. It sets the number of 
 refinement cycles to 1 (otherwise there are 3 carried out) and skips all the
 optimization steps except the base method.
 
