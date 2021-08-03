@@ -1,0 +1,67 @@
+Assessing Map Quality (cryo-EM)
+===============================
+
+**Why**
+
+The first step after data processing is analysis to assess data 
+quality and detect any pathologies that might thwart structure solution.
+The quality of the reconstruction, and therefore the interpretability
+of a cryo-EM map, can deteriorate from many causes including structural
+heterogeneity, radiation damage, and beam-induced sample movement. 
+
+Data quality is typically expressed by the resolution, but this term
+has a different meaning for cryo-EM than crystallographic experiments. 
+For a crystallographic data set, resolution depends on the largest
+angle to which diffracted beams were measured (or equivalently, the shortest
+distance between reciprocal-lattice planes). For a cryo-EM map, the overall
+resolution (d\ :sub:`FSC`) is usually defined as the maximum spatial 
+resolution at which the information content of the map is reliable.
+
+The cryo-EM resolution is obtained by analyzing the Fourier shell correlation 
+(FSC) for two cryo-EM half-maps binned in resolution shells. If the macromolecule 
+is structurally heterogeneous, a single resolution value is adequate. 
+'Local resolutions' are also assigned to different map regions. 
+ 
+
+**How**
+
+The *phenix.mtriage* program estimates the resolution of cryo-EM maps
+using several different approaches and then provides a summary of the map 
+statistics. The tool requires only a full cryo-EM map (CCP4, mrc, or 
+other related format). However, you can obtain additional information by 
+inputting a file of two half-maps, an atomic model (PDB or mmCIF format), 
+or an atomic model and two-half maps.
+
+**How to use the phenix.mtriage:** `Click here <../reference/mtriage.html>`__
+
+
+**Common issues**
+
+*Program stops*: All input maps are expected to be on the same grid. Also,
+box information (e.g., unit cell of CRYST1 record in PDB files) must match 
+across all the inputs. 
+
+
+**Related programs and Documentation**
+
+-  `phenix.show\_map\_info <../reference/map_show_info.html>`__: 
+   *(No file or webpage for this program?)* 
+   This program lists the properties of a map, including the origin, grid points, 
+   unit cell, and map size. 
+
+-  `phenix.map\_box <../reference/map_box.html>`__: 
+   This program cuts out a box around selected atoms from a larger map 
+   (MTZ, CCP4, or X-plor format).
+
+-  `phenix.symmetry\_from\_map <../reference/map_box.html>`__: 
+   *(No file or webpage for this program? Is map_symmetry an older program?)* 
+   Some molecules (e.g., viruses) have high internal symmetry, so you can
+   reduce the map to the repeating unit. This program finds such symmetries, and
+   *phenix.map_box* can extract the unique part of the map (using the extract-unique
+   option). 
+
+-  `phenix.combine\_focused\_maps <../reference/combine_focused_maps.html>`__:
+   This program creates a weighted composite map from a set of locally focused maps 
+   and associated models, where each part of each map is weighted by its 
+   correlation with the corresponding model. 
+
