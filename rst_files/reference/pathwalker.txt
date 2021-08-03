@@ -1,0 +1,49 @@
+Model building with Pathwalker
+==============================
+
+Author(s)
+---------
+
+-  pathwalker: Matthew Baker 
+
+Purpose
+-------
+
+Build a model with path walking
+
+How pathwalker works:
+---------------------
+
+Examples
+--------
+
+Standard run of pathwalker:
+------------------------------------
+
+Running pathwalker is easy. From the command-line you can type:
+
+::
+
+    phenix.pathwalker my_map.mrc resolution=3 threshold=0.2 nres=150
+
+
+This will build a model based on the map my_map.mrc at a resolution
+of 3 A using a threshold of 0.2 and looking for 150 CA atoms
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix_pathwalker.programs.pathwalker}}
