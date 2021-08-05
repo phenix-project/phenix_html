@@ -1,0 +1,124 @@
+Showing information about a map file with show_map_info
+=======================================================
+
+Author(s)
+---------
+
+-  show_map_info: Tom Terwilliger
+
+Purpose
+-------
+
+The routine show_map_info will show a summary of the data in a 
+map file (ccp4/mrc/map).
+
+Definitions of map specifications
+---------------------------------
+
+A map file contains a box of data on a grid.  This box of data may be
+the original box of data or it might be a smaller box cut out of the 
+original box of data.
+
+The map file also contains meta-data including a 'unit cell' and gridding 
+for a unit cell.  The unit cell usually corresponds to the full original box of
+data. The 'unit cell grid' is the grid corresponding to the unit cell. The
+unit cell has dimensions defined by 'unit cell parameters'.
+
+The map that is present is represented on part or all of the 
+unit cell grid.  It starts at the grid point called the 
+'origin' and goes to one grid point in each
+direction before the grid point called 'last'.  The map that is present
+has 'all' grid points in each direction.  The map that is present has a
+'map unit cell' and 'map grid' that correspond to the dimensions 'all'.
+
+Example: a full map with a unit cell grid of (10, 10, 10) goes from
+(0, 0, 0) to (9, 9, 9) and has dimensions of (10, 10, 10).
+
+Example: a partial map with a unit cell grid of (10,10,10) and an origin
+of (0, 0, 2) and a map grid or 'all' of (6, 6, 6), would go
+from (0, 0, 2) to (5, 5, 7).
+
+
+A map file has a 'pixel size' in each direction (usually they are all the same).
+The pixel size is the dimension along x, y, or z divided by the number of
+grid points along that direction.
+
+A map file has a 'map unit cell' which corresponds to the dimensions of the
+box of data that is present in the map.  This will be the same as the
+unit cell of the full map if the entire map is present.
+
+External origin (ORIGIN record in map file)
+-------------------------------------------
+
+A map file can have an 'external_origin' defined.  The external origin is 
+an offset that is intended to be applied to a model file to superimpose the
+model on the map.  If a map has an external origin defined, show_map_info
+will print out this value.
+
+Phenix does not generally support the external_origin
+values.  You can however shift a model file (PDB/mmCIF) based on 
+a value of the external_origin with the tool phenix.shift_model_to_match_map
+
+::
+
+  phenix.shift_model_to_match_map map_file.mrc model_file.pdb
+
+Wrapping of a map
+-----------------
+
+Maps can be periodic (wrapping = True) or non-periodic (wrapping = False).
+If you cut out a box from a periodic map, the new map is non-periodic.
+
+If a map is periodic, then values at coordinates (x,y,z) outside the map 
+are defined and can be obtained simply by translating (x,y,z) by integral
+numbers of the unit cell translations a,b,c (N * a, M * b, O * c) where
+N,M and O are integers.  If a map is not periodic, values outside the supplied
+map are not defined.
+
+In most Phenix methods, it is assumed that cryo-EM maps are non-periodic and
+X-ray (crystal) maps are periodic. You can specify in many cases whether your
+map is periodic or not, however, using the 'wrapping' keyword.
+
+When you run show_map_info it will tell you whether the map supports wrapping.
+
+
+Standard run of show_map_info:
+----------------------------------
+
+You can use show_map_info to summarize a map file like this:
+
+::
+
+   phenix.show_map_info my_map_file.mrc
+
+
+You can get the value of the map at a particular grid point with:
+
+::
+
+   phenix.show_map_info my_map_file.mrc grid_point_to_show=6,2,5
+
+
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+The MRC (ccp4/mrc/map) file format is defined at 
+`MRC/CCP4 file format for images and volumes <https://www.ccpem.ac.uk/mrc_format/mrc2014.php>`_
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.show_map_info}}
+
