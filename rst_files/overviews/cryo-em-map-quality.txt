@@ -44,8 +44,7 @@ across all the inputs.
 
 **Related programs and Documentation**
 
--  `phenix.show\_map\_info <../reference/map_show_info.html>`__: 
-   *(No file or webpage for this program?)* 
+-  `phenix.show\_map\_info <../reference/show_map_info.html>`__: 
    This program lists the properties of a map, including the origin, grid points, 
    unit cell, and map size. 
 
@@ -53,8 +52,7 @@ across all the inputs.
    This program cuts out a box around selected atoms from a larger map 
    (MTZ, CCP4, or X-plor format).
 
--  `phenix.symmetry\_from\_map <../reference/map_box.html>`__: 
-   *(No file or webpage for this program? Is map_symmetry an older program?)* 
+-  `phenix.map\_symmetry <../reference/map_symmetry.html>`__: 
    Some molecules (e.g., viruses) have high internal symmetry, so you can
    reduce the map to the repeating unit. This program finds such symmetries, and
    *phenix.map_box* can extract the unique part of the map (using the extract-unique

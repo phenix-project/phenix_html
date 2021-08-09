@@ -2,3 +2,46 @@ Real-space refinement (cryo-EM)
 ===============================
 
 **Why**
+
+Once an atomic model has been built, you need to optimize it to best fit
+the experimental data while also preserving good agreement with prior
+chemical knowledge. This process alternates between automated refinement,
+validation, and either manual or automated model corrections. 
+
+A target function guides the refinement by linking the model parameters 
+to the experimental data and by scoring the model-versus-data fit. 
+For cryo-EM data, refinement of the model is done in real space and the
+target function is formulated in terms of a three-dimensional map. 
+Because there are generally too many model parameters, refinement 
+requires additional restraints that modify the target function by 
+creating relationships between independent parameters. 
+
+
+**How**
+
+The program use to refine atomic models in real space is 
+*phenix.real_space_refine*. The algorithm uses a simplified refinement
+target function that speeds up calculations, so optimal data-restraint 
+weights can be identified with little runtime cost. The procedure is
+robust, working at resolutions from 1 to 6 Å. The input and output models
+can be in PDB or mmCIF formats. The input map can be in CCP4 or MTZ format. 
+
+This program makes use of restraints on covalent geometry, secondary 
+structure, Ramachandran plots, rotamer outliers, and internal molecular
+symmetry. The default mode performs gradient-driven minimization of the 
+entire model. However, optimization can also be performed using simulated 
+annealing, morphing, rigid-body refinement, and systematic side-chain 
+improvement —- at the potential expense of longer runtimes. 
+
+
+**How to use phenix.real_space_refine:** `Click
+here <../reference/real_space_refine.html>`__
+
+
+**Common issues**
+
+- Poorly refined model: If using secondary structure restraints, an incorrectly
+  refined model is likely if there are errors in the secondary structure 
+  annotation (e.g., incorrect SHEET and HELIX records in the PDB file header).
+  Secondary structure annotation strongly depends on the quality of the input 
+  model. 
