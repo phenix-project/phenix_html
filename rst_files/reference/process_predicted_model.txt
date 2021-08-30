@@ -115,7 +115,7 @@ useful.
 After trimming low-confidence residues, you will usually be left with a 
 model that has some complete parts of various sizes and some small pieces.
 
-Splitting a trimmed model into compact domains
+Splitting a trimmed model into domains
 ----------------------------------------------
 
 It can be helpful to group the pieces from your trimmed model into
@@ -124,12 +124,34 @@ The process_predicted_model tool allows you to choose a typical domain
 size, and if you want, a maximum number of domains, and then it will
 try to split your model into compact domains.
 
+There are two methods available.  One is based finding compact domains, the
+other is based on using the predicted alignment error matrix (AlphaFold2 only).
+
+Finding domains from a low-resolution model representation
+----------------------------------------------------------
+
 The method used is to calculate a low-resolution map based on the input model,
 then to identify large blobs corresponding to domains.  All the residues in 
 the structure are assigned to an initial domain.Then the residues are
 regrouped in order to have as few cases where small parts of the model are 
 part of one domain but neighboring parts are part of another as possible.
 
+When using this method, you can easily adjust the number of domains you get
+by adjusting the target domain size (in A). You can also just restrict the
+number using the maximum_domains keyword (less good).
+
+
+Finding domains using the predicted alignment error matrix
+------------------------------------------------------------
+
+This method analyzes the predicted alignment error matrix (PAE) provided by
+AlphaFold2 and finds groupings of residues that have small mutual alignment
+error. This often corresponds to domains.
+
+When using this method you can adjust the number of domains by changing the
+value of pae_power (the exponent applied to pae before using it in finding
+domains).  You can also just restrict the number using the maximum_domains 
+keyword (less good).
 
 Examples
 --------
