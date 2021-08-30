@@ -162,6 +162,7 @@ Model tools
 - phenix.apply_ncs: Apply NCS (.ncs_spec file) to a chain to create molecule
 - phenix.dynamics: Shake up structure with simple molecular dynamics
 - phenix.form_factor_query: f' and f'' table lookup given element and wavelength
+- phenix.fragment_search: Find fragments in PDB matching a target fragment
 - phenix.get_cc_mtz_pdb: Offset PDB to match map using allowed origin shifts and get residue correlation
 - phenix.get_ligand_pdb: Create PDB file for a 3-letter ligand in the PDB
 - phenix.ksdssp: Identify secondary structure in a model
@@ -175,11 +176,16 @@ Model tools
 - phenix.pdbtools: Manipulate PDB files
 - phenix.perigee: Interaction finder
 - phenix.print_sequence: Print sequence from PDB file
+- phenix.process_predicted_model: Process AlphaFold2 and other predicted models
 - phenix.pulchra: PULCHRA conversion from CA to full chain
+- phenix.replace_with_fragments_from_pdb: Replace model with fragments from the PDB
+- phenix.search_and_morph: Find Structures in PDB using SSM matching and morphing 
 - phenix.simple_ncs_from_pdb: NCS from a PDB file (use instead phenix.find_ncs)
+- phenix.structure_search: Find Similar Structures in PDB using phi-psi angles and sequence 
 - phenix.superpose_ligands: Superimpose two ligands
 - phenix.superpose_pdbs: Superimpose PDB files using aligned sequences
 - phenix.trim_pdb: Remove hydrogen atoms from a PDB file
+
 
 Miscellaneous
 -------------
