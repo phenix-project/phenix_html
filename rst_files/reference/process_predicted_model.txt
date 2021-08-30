@@ -1,0 +1,167 @@
+Processing AlphaFold2, RoseTTAFold and othe predicted models
+============================================================
+
+Author(s)
+---------
+
+-  process_predicted_model: Tom Terwilliger, Claudia Millan Nebot, Tristan Croll
+
+Purpose
+-------
+
+Process model files produced by AlphaFold, RoseTTAFold and other prediction
+software, replacing information these programs put in the B-factor field
+with pseudo-B values and optionally breaking the model into compact domains.
+
+Background
+----------
+
+Structure prediction software is now capable of generating models that are
+highly accurate over some or all parts of the models.  Importantly,
+these predictions often come with reliable residue-by-residue estimates of 
+uncertainty.  
+
+Compact domains in these predicted models in which all 
+the residues have high confidence often will be very accurate over the 
+entire domains. However, separate domains that each have high confidence 
+but are connected by lower confidence residues sometimes have relative 
+positions and orientations that differ between predicted and 
+experimentally-determined structures.
+
+When using predicted models as a starting point for experimental structure
+determination, it can be helpful to:
+
+::
+    Remove low-confidence residues entirely
+
+    Break up the model into domains and allow the domains to have 
+    different orientations
+
+For a high-confidence predicted model, you might try using the predicted model 
+as-is first.  For most predicted models, you may want to also try removing
+low-confidence residues, then additionally try breaking the model into 
+domains and placing the domains one at a time.
+
+How process_predicted_model works:
+----------------------------------
+
+The process_predicted_model tool uses estimates of uncertainty supplied
+by structure prediction tools in the B-value (atomic displacement parameters)
+field of a model to create new pseudo-B values, to remove uncertain parts 
+of the model, and to break up the model into domains.
+
+The B-value field in most predicted models represents one of three possible
+values:
+
+::
+
+    An actual B-value (atomic displacement parameter)
+
+    An estimate of error in A (rmsd)
+
+    A confidence (LDDT) on a scale of either 0 to 1 or 0 to 100. 
+
+In process_predicted_model, error estimates in A or confidence values are
+first converted to B-values. Then residues with high B-values are removed. Then
+the remaining residues are grouped (optionally) into domains.
+
+Conversion of error estimates to B-values
+-----------------------------------------
+
+Error estimates in A are converted to B-values using the standard formula
+for the relationshiop between rms positional variation and B-values:
+
+::
+
+   B = rmsd**2  * ((8 * (pi**2)) / 3.0)
+
+Conversion of LDDT values to error estimates
+--------------------------------------------
+
+LDDT values are first converted to a scale of 0 to 1.  You can specify
+whether the LDDT values in your model are from 0 to 1 (fractional) or 
+from 0 to 100.  If you don't specify, a model with all LDDT values between
+0 and 1 is assumed to contain fractional LDDT values.
+
+Then LDDT values on a scale of 0 to 1 are converted to error estimates using
+an empirical formula from
+
+::
+     Hiranuma, N., Park, H., Baek, M. et al. Improved protein structure
+       refinement guided by deep learning based accuracy estimation.
+       Nat Commun 12, 1340 (2021).
+       https://doi.org/10.1038/s41467-021-21511-x
+
+This empirical formula is:
+
+::
+
+    RMSD = 1.5 * exp(4*(0.7-LDDT))
+
+
+Trimming away low-confidence regions from predicted models
+----------------------------------------------------------
+
+Normally it is a good idea to remove low-confidence regions from a predicted
+model before using them as a starting point for experimental
+structure determination.  For AlphaFold2 models, low-confidence corresponds
+approximately to an LDDT value of about 0.7 (on a scale of 0 to 1, or
+70 on a scale of 0 to 100), or to an RMSD value of about 1.5, or to 
+a B-value of about 60.  For other types of models these values might vary,
+so you might need to experiment or use values that others have found
+useful.
+
+After trimming low-confidence residues, you will usually be left with a 
+model that has some complete parts of various sizes and some small pieces.
+
+Splitting a trimmed model into compact domains
+----------------------------------------------
+
+It can be helpful to group the pieces from your trimmed model into
+compact domains, or even to split some pieces into compact domains.
+The process_predicted_model tool allows you to choose a typical domain
+size, and if you want, a maximum number of domains, and then it will
+try to split your model into compact domains.
+
+The method used is to calculate a low-resolution map based on the input model,
+then to identify large blobs corresponding to domains.  All the residues in 
+the structure are assigned to an initial domain.Then the residues are
+regrouped in order to have as few cases where small parts of the model are 
+part of one domain but neighboring parts are part of another as possible.
+
+
+Examples
+--------
+
+Standard run of process_predicted_model:
+----------------------------------------
+
+Running rebuild_model is easy. From the command-line you can type:
+
+::
+
+    phenix.process_predicted_model my_model.pdb b_value_field_is=lddt
+
+
+This will convert the B-value field in my_model.pdb based from LDDT to B-values,
+trim residues with LDDT less than 0.7, and write out a new model with 
+individual chains (separate chain ID values) corresponding to 
+compact domains.
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.process_predicted_model}}
