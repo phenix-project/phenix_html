@@ -1,0 +1,58 @@
+Trimming overlapping parts of a model
+=====================================
+
+Author(s)
+---------
+
+-  trim_overlapping: Tom Terwilliger
+
+Purpose
+-------
+
+Remove parts of a model that overlap with another model.  Useful if you have
+a good model for part of the your structure and you want to add in only the new
+parts from another model. This can be the case if you have a good 
+AlphaFold2 model for most of your structure and a possibly overlapping model
+from another source.
+
+How trim_overlapping works:
+---------------------------
+
+The trim_overlapping tool identifies all the residues in your model that have
+a CA (or P for nucleic acids) atom close to one in the model to avoid. The
+cutoff distance is typically 3 A for proteins and is adjustable.  If the 
+remaining residues lead to short segments, those segments are removed too. The
+shortest segment to keep is also adjustable.
+
+Examples
+--------
+
+Standard run of trim_overlapping:
+---------------------------------
+
+Running trim_overlapping is easy. From the command-line you can type:
+
+::
+
+    phenix.trim_overlapping my_model.pdb model_to_avoid.pdb
+
+This will trim my_model.pdb to avoid model_to_avoid and write out
+my_model_trimmed.pdb
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.trim_overlapping}}
