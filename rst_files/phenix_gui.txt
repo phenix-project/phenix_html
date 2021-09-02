@@ -443,18 +443,19 @@ Modification, minimization and dynamics
 - PDB editor:  graphical tool for editing PDB files
 
 
-- `Apply NCS <reference/apply_ncs.html>`_: apply NCS operators to a PDB file to generate
-  the complete asymmetric unit.
+- `Apply NCS <reference/apply_ncs.html>`_: apply NCS operators to a PDB file 
+  to generate the complete asymmetric unit.  Note that a simpler NCS GUI 
+  is also available as a plugin to the ``phenix.refine`` GUI, and does 
+  not necessarily need to be run separately.
 
-Note that a simpler NCS GUI is also available as a plugin
-to the ``phenix.refine`` GUI, and does not necessarily need to be run
-separately.
+- `Model Reconstruction <reference/multimer_reconstruction.html>`_: Get 
+  asymmetric unit or biological unit with BIOMT or MTRX
 
-- Model Reconstruction: Get asymmetric unit or biological unit with BIOMT or MTRX
+- `Geometry minimization <reference/geometry_minimization.html>`_: Regularize 
+  geometry for a model (without data)
 
-- Geometry minimization: Regularize geometry for a model (without data)
-
-- Simple dynamics: Shake a model using crude molecular dynamics
+- `Simple dynamics <reference/dynamics.html>`_: Shake a model using 
+  crude molecular dynamics
 
 - Combine PDB files: simple utility for merging models split over several
   PDB files (such as massive complexes like the ribosome).  Chain IDs will
@@ -463,22 +464,24 @@ separately.
 - Add conformations:  Add alternate conformations in bulk, for an entire model 
   or user-defined atom selection
 
-- Perturb model with normal mode analysis: Uses NMA in Phaser to generate perturbed 
-  models along the direction of the normal modes
+- Perturb model with normal mode analysis: Uses NMA in Phaser to generate 
+  perturbed models along the direction of the normal modes
 
-- SCEDS - identify domains with normal mode analysis: Uses NMA in Phaser to identify 
-  approximate rigid domains
+- `Identify domains with normal mode analysis (SCEDS) <reference/sceds.html>`_:
+  Uses NMA in Phaser to identify approximate rigid domains
 
-- Sort heteroatom groups: Rearranges the non-polymer heteroatom groups in a model 
-  to group with the nearest macromolecule chain, similar to the protocol 
-  used by the PDB
+- `Sort heteroatom groups <reference/sort_hetatms.html>`_: Rearrange the 
+  non-polymer heteroatom groups in a model to group with the nearest 
+  macromolecule chain, similar to the protocol used by the PDB
 
-- Prepare model for PDB deposition: Finalize mmCIF files for deposition to the PDB
+- `Prepare model for PDB deposition <reference/prepare_pdb_deposition.html>`_:
+  Finalize mmCIF files for deposition to the PDB
 
-- Get PDB validation report: Retrieve a validation report from the PDB
+- `Get PDB validation report <reference/get_pdb_validation_report.html>`_:
+  Retrieve a validation report from the PDB
 
-- `Generate Table 1 <reference/table_one.html>`_: utility for extracting statistics from
-  PDB, reflection, and log files required for publication.
+- `Generate Table 1 <reference/table_one.html>`_: utility for extracting 
+  statistics from PDB, reflection, and log files required for publication.
 
 - `Find a Program <reference/find_program.html>`_: Search for a program or test
 
@@ -690,7 +693,10 @@ permission to redistribute the code:
     Protein Secondary Structure: Pattern Recognition of Hydrogen-Bonded and
     Geometrical Features" Biopolymers 22:2577 (1983).
 
+  - PULCHRA (Rotkiewicz & Skolnick 2008)
+
 References
 ----------
 
 {{citation:phenix_gui}}
+{{citation:pulchra}}
