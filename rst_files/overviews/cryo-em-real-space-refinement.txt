@@ -19,7 +19,7 @@ creating relationships between independent parameters.
 
 **How**
 
-The program use to refine atomic models in real space is 
+The program used to refine atomic models in real space is 
 *phenix.real_space_refine*. The algorithm uses a simplified refinement
 target function that speeds up calculations, so optimal data-restraint 
 weights can be identified with little runtime cost. The procedure is
@@ -30,7 +30,7 @@ This program makes use of restraints on covalent geometry, secondary
 structure, Ramachandran plots, rotamer outliers, and internal molecular
 symmetry. The default mode performs gradient-driven minimization of the 
 entire model. However, optimization can also be performed using simulated 
-annealing, morphing, rigid-body refinement, and systematic side-chain 
+annealing, morphing, rigid-body refinement, and/or systematic side-chain 
 improvement —- at the potential expense of longer runtimes. 
 
 
