@@ -1,32 +1,32 @@
-Validation (cry-EM)
-==================
+Validation (cryo-EM)
+====================
 
 **Why**
 
-The path from the initial idea about the molecule being studied to a final
-  atomic model and its interpretation is long. It includes many steps stretched
-  over time, including obtaining samples, acquiring data, analyzing the data,
-  building an atomic model, and refining the model to better represent the data. 
-  Errors can occur in each of these steps, so validation procedures should be 
-  implemented at each of the steps. 
+There is a long path from the initial idea about a molecule to 
+the final atomic model and its interpretation. This path comprises many steps stretched
+over time, including obtaining samples, acquiring data, analyzing the data,
+building an atomic model, and refining the model to better represent the data. 
+Errors can occur in each of these steps, so validation procedures should be 
+implemented in each of them. 
 
-  In particular, validation addresses data, model, and model-versus-data quality:
+In particular, validation addresses data, model, and model-versus-data quality:
 
-  - *Data.* The quality of experimental data, such as the resolution or amount 
+- Data. The quality of experimental data, such as the resolution or amount 
   of noise, defines the quality of the derived models. Therefore, it is vital to 
   understand the data quality so that you use the correct model building and 
   refinement procedures appropriate for the data at hand.
   (See the `Assessing Map Quality (cryo-EM) <../overviews/cryo-em-map-quality.html>`__ 
   overview for more details.)
-  
-  - *Model.* The underlying principles behind model validation are the same for 
+
+- Model. The underlying principles behind model validation are the same for 
   any experimental method: a good model should make chemical sense and be consistent 
   with empirical statistics for high-quality prior structures. Thus, atomic models 
   derived from cryo-EM reconstructions should conform to prior knowledge about  
   covalent geometry, non-bonded interactions, and known distributions of 
   side-chain and main-chain conformations in both proteins and nucleic acids. 
 
-  - *Model-versus-data fit.* Model-verses-data validation criteria depend on the type
+- Model-versus-data fit. Model-verses-data validation criteria depend on the type
   of experimental data and require the model to describe its own data well. A 
   perfectly good model from a stereochemistry perspective may not fit the 3D 
   reconstruction sufficiently or at all. Generally, the goal is to have as few 
@@ -38,18 +38,18 @@ The path from the initial idea about the molecule being studied to a final
 
 `Comprehensive validation (cryo-EM)` is a one-stop program in Phenix that
 validates model, data, and model-versus-data fit. The minimal input is a 
-map (MRC, CCP4, or related format) and an atomic model in PDB or mmCIF format. 
+map (in MRC, CCP4, or related format) and an atomic model (in PDB or mmCIF format). 
 However, providing a map, model, and two half-maps is desirable.
 
 For geometric validation, Phenix uses *MolProbity*, which is fully integrated into
-into the `Comprehensive validation (cryo-EM)` package. The graphics programs *Coot* and 
-*PyMOL* are also fully integrated, enabling communicate of the validation results.
+the `Comprehensive validation (cryo-EM)` package. The graphics programs *Coot* and 
+*PyMOL* are also fully integrated, enabling communication of the validation results.
 
 **How to use the validation tools in the Phenix GUI:** `Click here <../reference/validation_cryo_em.html>`__
 
 **Common issues**
 
--  Outliers versus errors*: In most structures, there will be Ramachandran and 
+- Outliers versus errors: In most structures, there will be Ramachandran and 
   side-chain rotamer outliers. If the data (the map) and surrounding chemistry 
   supports the outlier conformation, then it is most likely an outlier from prior 
   expectations. In the absence of supporting density and/or conflicting local chemistry, 
@@ -59,31 +59,31 @@ into the `Comprehensive validation (cryo-EM)` package. The graphics programs *Co
 
 **Related programs**
 
-- `phenix.cablam\_validation <../reference/calbam_validation.html>`__ The C-Alpha 
-Based Low-Resolution Annotation Method (CaBLAM) validates protein backbone 
-conformations in models determined at low resolution (2.5-4 Å), where it is difficult
-to determine peptide orientations because carbonyl O atoms cannot be discerned in 
-density maps. The program uses protein C-alpha geometry to evaluate the main-chain 
-geometry and identify areas of probable secondary structure. 
+- `phenix.cablam\_validation <../reference/cablam_validation.html>`__: The C-Alpha 
+  Based Low-Resolution Annotation Method (CaBLAM) validates protein backbone 
+  conformations in models determined at low resolution (2.5-4 Å), where it is difficult
+  to determine peptide orientations because carbonyl O atoms cannot be discerned in 
+  the density maps. The program uses protein C-alpha geometry to evaluate the main-chain 
+  geometry and identify areas of probable secondary structure.
+ 
+- `phenix.emringer <../reference/emringer.html>`__: This program provides an EMRinger score, 
+  which quantifies how well the model backbone places side chains in density peaks that are consistent 
+  with rotameric conformations. 
+  ** I don't see this in the rst reference folder**
 
-- `phenix.emringer <../reference/emringer.html>`__ This program provides an EMRinger
-   score, which quantifies how well the model backbone places side chains in density
-   peaks that are consistent with rotameric conformations. 
-   ** I don't see this in the rst reference folder**
-
-- `phenix.mtriage <../reference/mtriage.html>`__ This program computes various 
+- `phenix.mtriage <../reference/mtriage.html>`__: This program computes various 
   cryo-EM map statistics, including resolution estimates, Fourier shell correlation 
   curves, and more. 
 
 ** Cut these last two? They were listed as 2 of 3 command line programs that were 
 main drivers of the comprehensive validation tool. But I don't see the files/pages. **
 
-- **phenix.model_statistics** This program computes covalent model geometry statistics, 
-  as well as various MolProbity scores (Clashscore, rotamer and Ramachandran plot,
-  C-beta deviations and much more), ADP (B-factor) and occupancy statistics.
+- **phenix.model_statistics:** This program computes covalent model geometry statistics, 
+  as well as various *MolProbity* scores (Clashscore, rotamer and Ramachandran plot,
+  C-beta deviation, and much more), ADP (B-factor), and occupancy statistics.
   ** Does this program still exist? Still relevant? **
 
-- **phenix.map_model_cc** (or phenix.model_map_cc) computes various model-map
-  correlation coefficients, such as overall CC, CC per each chain, and CC per each
+- **phenix.map_model_cc:** This program computes various model-map
+  correlation coefficients, such as the overall CC, CC per each chain, and CC per each
   residue.
   ** Is this supposed to be map_to_model? **

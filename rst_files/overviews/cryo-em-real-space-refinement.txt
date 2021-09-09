@@ -31,7 +31,7 @@ structure, Ramachandran plots, rotamer outliers, and internal molecular
 symmetry. The default mode performs gradient-driven minimization of the 
 entire model. However, optimization can also be performed using simulated 
 annealing, morphing, rigid-body refinement, and/or systematic side-chain 
-improvement —- at the potential expense of longer runtimes. 
+improvement — at the potential expense of longer runtimes. 
 
 
 **How to use phenix.real_space_refine:** `Click
@@ -40,7 +40,7 @@ here <../reference/real_space_refine.html>`__
 
 **Common issues**
 
-- Poorly refined model: If using secondary structure restraints, an incorrectly
+- Poorly refined model: If you use secondary structure restraints, an incorrectly
   refined model is likely if there are errors in the secondary structure 
   annotation (e.g., incorrect SHEET and HELIX records in the PDB file header).
   Secondary structure annotation strongly depends on the quality of the input 
