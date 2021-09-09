@@ -26,10 +26,10 @@ is structurally heterogeneous, a single resolution value is adequate.
 **How**
 
 The *phenix.mtriage* program estimates the resolution of cryo-EM maps
-using several different approaches and then provides a summary of the map 
-statistics. The tool requires only a full cryo-EM map (CCP4, mrc, or 
+using several approaches, and then provides a summary of the map 
+statistics. The tool requires only a full cryo-EM map (in CCP4, MRC, or 
 other related format). However, you can obtain additional information by 
-inputting a file of two half-maps, an atomic model (PDB or mmCIF format), 
+inputting a file of two half-maps, an atomic model (in PDB or mmCIF format), 
 or an atomic model and two-half maps.
 
 **How to use the phenix.mtriage:** `Click here <../reference/mtriage.html>`__
@@ -37,9 +37,9 @@ or an atomic model and two-half maps.
 
 **Common issues**
 
-*Program stops*: All input maps are expected to be on the same grid. Also,
+Program stops: All input maps are expected to be on the same grid. Also,
 box information (e.g., unit cell of CRYST1 record in PDB files) must match 
-across all the inputs. 
+across all of the inputs. 
 
 
 **Related programs and Documentation**
