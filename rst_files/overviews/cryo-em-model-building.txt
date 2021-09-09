@@ -2,3 +2,71 @@ Automated model building (cryo-EM)
 ==================================
 
 **Why**
+
+Determining the structure of a macromolecule typically requires 
+building an atomic model that fits the cryo-EM map. If the structure 
+of the molecule or its components are unknown, the model has to 
+be built from scratch into the cryo-EM map. This task is challenging 
+because molecules are typically very large and chain tracing is difficult
+at low resolution. Therefore, manual interpretation of cryo-EM maps is 
+time-consuming and error-prone. For many cases, however, automated methods 
+can be used to build models for both proteins and nucleic acids.
+
+After an atomic model is generated, it is real-space refined using 
+secondary-structure restraints (e.g., see *phenix.real_space_refine*). 
+
+**How**
+
+The program *phenix.map_to_model* interprets a cryo-EM map and automatically 
+builds an atomic model. First, the map is sharpened using *phenix.auto_sharpen.*
+The unique parts of the structure are then identified by taking the 
+reconstruction symmetry into account. In addition, the procedure identifies 
+which parts of the map correspond to protein or RNA/DNA. To save runtime, you
+can use *phenix.auto_sharpen* to sharpen the map and *phenix.map_box* to cut out
+the unique part before you run *phenix.map_to_model.* 
+
+The *phenix.map_to_model* tool requires you to input a cryo-EM map with CCP4-style 
+(MRC, etc) or MTZ map coefficients and a sequence file. For optimal model-building 
+results, the resolution of the map should be 4.5 Å or better. The program outputs
+a PDB file with the resulting PDB map that is superimposed on the original map. 
+
+**How to use the phenix.autobuild GUI:** `Click
+here <../reference/autobuild_gui.html>`__
+
+`Phenix reference manual for
+phenix.map\_to\_model <../reference/map_to_model.html>`__
+
+**Common issues**
+
+- One or more sub-processes crash: If you have a very large structure, your
+  computer may not have enough memory to run *phenix.map_to_model*. The easiest
+  solution is to run the tool on just the unique part of the structure. You can
+  also cut out boxes and work on each section individually. Or your can cut back 
+  on the resolution to save memory.
+
+- Want to re-run without all the steps: Partially-completed jobs can occur when 
+  your queueing system crashes during a run or one or more sub-processes crash. 
+  If you have a partially-completed or completed run, you can carry on from where 
+  you left off by using the keyword carry_on=True. You can also use this keyword 
+  to build up your model in pieces or to run many jobs in parallel. 
+
+
+**Related programs**
+
+-  `phenix.auto\_sharpen <../reference/auto_sharpen.html>`__: This
+   program performs map sharpening by optimizing the detail and connectivity
+   of a cryo-EM map. 
+
+-  `phenix.map\_box <../reference/map_box.html>`__: 
+   This program cuts out a box around selected atoms from a larger map 
+   (MTZ, CCP4, or X-plor format).
+
+-  `phenix.fix\_insertions\_deletions <../reference/fix_insertions_deletions.html>`__: 
+   This program fixes register errors in the model by comparing the density of 
+   side-chain positions to a sequence file. 
+
+-  `phenix.trace\_and\_build <../reference/trace_and_build.html>`__: This tool 
+   rapidly builds protein models by tracing the path of a polypeptide chain, finding
+   the CB positions, and building the atomic model. Normally, this is done by running
+   *phenix.map_to_model,* but you can also run *phenix.trace_and_build* directly.
+
