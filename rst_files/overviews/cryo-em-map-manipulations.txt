@@ -2,3 +2,87 @@ Map manipulations (cryo-EM)
 ===========================
 
 **Why**
+
+For crystallography, maps are improved by manipulating the phase information,
+while the diffraction intensities (or amplitudes) remain unchanged. In contrast,
+cryo-EM maps are improved by methods such as sharpening and blurring, which
+typically modify the amplitudes of Fourier coefficients and leave the phases
+unchanged. 
+
+Cryo-EM maps can appear smooth and can lack a high level of detail (contrast) 
+because high-resolution amplitudes of corresponding Fourier map coefficients
+decay from causes such as radiation damage, sample movement, sample heterogeneity,
+and errors in the reconstruction procedure. However, sharpening can reveal the 
+high-resolution details concealed in the cryo-EM map.
+
+Density modification can also be used to adjust the Fourier coefficients
+to better agree with both the original map and the expected features. This
+improvement relies on two ideas: (1) the Fourier coefficients representing the
+map are uncorrelated, and (2) some features in a map region are known in advance.
+
+
+**How**
+
+The program *phenix.auto_sharpen* performs map sharpening by optimizing the detail and 
+connectivity of a cryo-EM map. It tests several resolution-dependent functions 
+and outputs the one with maximal clarity, based on kurtosis (default) or adjusted 
+surface area criteria. The program works best on maps with 4.5 Å or better resolution. 
+At lower resolutions, it may be unable to distinguish variations in the quality of 
+the map as the sharpening is varied. Typically, optimal sharpening is determined by 
+examining a box cut out of the map, and then applied to the entire map; however, 
+other options are available. 
+
+The program *phenix.combine_focused_maps* creates a weighted composition map from a set 
+of locally focused maps and associated models, where each part of each map is weighted 
+by its correlation with the corresponding model. The maps do not have to be
+superimposed or even have the same gridding or size. 
+
+The program *phenix.resolve_cryo_em* performs density modification of cryo-EM
+map using two unmasked half-maps, the FSC-based resolution, and a sequence file specifying the
+contents of the map. You can also supply a model, which will be randomized, refined, and
+used in model-based density modification. You normally access the program's functionality 
+by running the ResolveCryoEM tool in the Phenix GUI. 
+
+**How to use phenix.auto_sharpen:** `Click
+here <../reference/auto_sharpen.html>`__
+
+**How to use phenix.combine_focused_maps:** `Click
+here <../reference/combine_focused_maps.html>`__
+
+**How to use phenix.resolve_cryo_em:** `Click
+here <../reference/resolve_cryo_em.html>`__
+
+
+**Common issues**
+
+- *phenix.auto_sharpen* doesn't work for *map_box*-produced maps: *auto_sharpen* should 
+  not be used on maps produced with the exact-unique option of *map_box*. These maps are 
+  closely masked around the density of a single molecular, so much of the map is 
+  set to zero. Therefore, the map is missing noise information and *auto-sharpen*
+  doesn't work properly. 
+
+- *phenix.combine_focused_maps* doesn't work well: If the density of some of your maps is poor, 
+  the rigid-body refinement step used to place a model in the maps may not work well.
+  In this case, try refining the models (e.g., using *phenix.real_space_refine*??) 
+  before using *combine_focused_maps*.  
+
+- *phenix.resolve_cryo_em* doesn't work well: Poor results could be due to using 
+  masked half-maps, having non-uniform solvent noise, or getting interference from
+  having very prominent density away from the macromolecule. The program can also
+  crash if you have limited memory and are using multiple processors. See 
+  `phenix.resolve\_cryo\_em <../reference/resolve_cryo_em.html>`__ for ways to 
+  address these issues. 
+
+
+**Related programs** 
+
+- `phenix.map\_symmetry <../reference/map_symmetry.html>`__: This tool finds internal symmetries 
+  in a map, allowing the map to be reduced to the repeating unit.  
+
+- `phenix.map\_box <../reference/map_box.html>`__: This tool cuts out a box from a 
+  larger map. It is used to extract the unique part of a map. 
+
+- `phenix.real\_space\_refine <../reference/real_space_refine.html>`__: This algorithm uses a 
+  simplified refinement target function that speeds up calculations, so optimal data-restraint 
+  weights can be identified with little runtime cost. The procedure is robust, working at 
+  resolutions from 1 to 6 Å. 
