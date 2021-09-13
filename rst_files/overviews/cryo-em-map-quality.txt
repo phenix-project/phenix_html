@@ -11,16 +11,14 @@ heterogeneity, radiation damage, and beam-induced sample movement.
 
 Data quality is typically expressed by the resolution, but this term
 has a different meaning for cryo-EM than crystallographic experiments. 
-For a crystallographic data set, resolution depends on the largest
-angle to which diffracted beams were measured (or equivalently, the shortest
-distance between reciprocal-lattice planes). For a cryo-EM map, the overall
-resolution (d\ :sub:`FSC`) is usually defined as the maximum spatial 
-resolution at which the information content of the map is reliable.
+For a cryo-EM map, the overall resolution (d\ :sub:`FSC`) is usually defined
+as the maximum spatial resolution at which the information content of the map
+is reliable.
 
-The cryo-EM resolution is obtained by analyzing the Fourier shell correlation 
+The cryo-EM resolution is typically obtained by analyzing the Fourier shell correlation
 (FSC) for two cryo-EM half-maps binned in resolution shells. If the macromolecule 
 is structurally heterogeneous, a single resolution value is adequate. 
-'Local resolutions' are also assigned to different map regions. 
+'Local resolutions' can be also assigned to different map regions.
  
 
 **How**
@@ -29,8 +27,7 @@ The *phenix.mtriage* program estimates the resolution of cryo-EM maps
 using several approaches, and then provides a summary of the map 
 statistics. The tool requires only a full cryo-EM map (in CCP4, MRC, or 
 other related format). However, you can obtain additional information by 
-inputting a file of two half-maps, an atomic model (in PDB or mmCIF format), 
-or an atomic model and two-half maps.
+inputting two half-maps and/or an atomic model (in PDB or mmCIF format).
 
 **How to use the phenix.mtriage:** `Click here <../reference/mtriage.html>`__
 
