@@ -3,12 +3,10 @@ Validation (cryo-EM)
 
 **Why**
 
-There is a long path from the initial idea about a molecule to 
-the final atomic model and its interpretation. This path comprises many steps stretched
-over time, including obtaining samples, acquiring data, analyzing the data,
-building an atomic model, and refining the model to better represent the data. 
-Errors can occur in each of these steps, so validation procedures should be 
-implemented in each of them. 
+Many steps are involved to get from the initial idea about a molecule to
+the final atomic model and its interpretation. Errors can occur in each of
+these steps, so validation procedures are necessary to ensure that the
+atomic models are sensical and fit the experimental data.
 
 In particular, validation addresses data, model, and model-versus-data quality:
 
@@ -25,14 +23,16 @@ In particular, validation addresses data, model, and model-versus-data quality:
   derived from cryo-EM reconstructions should conform to prior knowledge about  
   covalent geometry, non-bonded interactions, and known distributions of 
   side-chain and main-chain conformations in both proteins and nucleic acids. 
-
-- Model-versus-data fit. Model-verses-data validation criteria depend on the type
-  of experimental data and require the model to describe its own data well. A 
-  perfectly good model from a stereochemistry perspective may not fit the 3D 
-  reconstruction sufficiently or at all. Generally, the goal is to have as few 
+  Generally, the goal is to have as few
   outliers as is feasible, where outliers can be explained by their environment
-  and/or experimental data. In reciprocal space, model-versus-data agreement is 
-  assessed by curves of the Fourier shell correlation (FSC) as a function of resolution. 
+  and/or experimental data.
+
+- Model-versus-data fit. Model-verses-data validation criteria require the model
+  to describe its own data well. A perfectly good model from a stereochemistry
+  perspective may not fit the 3D
+  reconstruction sufficiently or at all.  In reciprocal space, model-versus-data agreement is
+  assessed by curves of the Fourier shell correlation (FSC) as a function of resolution. In
+  real space, the agreement is measured by correlation coefficients (CCs).
 
 **How**
 
@@ -65,25 +65,8 @@ the `Comprehensive validation (cryo-EM)` package. The graphics programs *Coot* a
   to determine peptide orientations because carbonyl O atoms cannot be discerned in 
   the density maps. The program uses protein C-alpha geometry to evaluate the main-chain 
   geometry and identify areas of probable secondary structure.
- 
-- `phenix.emringer <../reference/emringer.html>`__: This program provides an EMRinger score, 
-  which quantifies how well the model backbone places side chains in density peaks that are consistent 
-  with rotameric conformations. 
-  ** I don't see this in the rst reference folder**
 
 - `phenix.mtriage <../reference/mtriage.html>`__: This program computes various 
   cryo-EM map statistics, including resolution estimates, Fourier shell correlation 
   curves, and more. 
 
-** Cut these last two? They were listed as 2 of 3 command line programs that were 
-main drivers of the comprehensive validation tool. But I don't see the files/pages. **
-
-- **phenix.model_statistics:** This program computes covalent model geometry statistics, 
-  as well as various *MolProbity* scores (Clashscore, rotamer and Ramachandran plot,
-  C-beta deviation, and much more), ADP (B-factor), and occupancy statistics.
-  ** Does this program still exist? Still relevant? **
-
-- **phenix.map_model_cc:** This program computes various model-map
-  correlation coefficients, such as the overall CC, CC per each chain, and CC per each
-  residue.
-  ** Is this supposed to be map_to_model? **
