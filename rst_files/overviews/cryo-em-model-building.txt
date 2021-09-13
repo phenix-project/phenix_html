@@ -6,35 +6,29 @@ Automated model building (cryo-EM)
 Determining the structure of a macromolecule typically requires 
 building an atomic model that fits the cryo-EM map. If the structure 
 of the molecule or its components are unknown, the model has to 
-be built from scratch into the cryo-EM map. This task is challenging 
-because molecules are typically very large and chain tracing is difficult
+be built from scratch. This task is challenging
+because molecules are typically very large and map interpretation is difficult
 at low resolution. Therefore, manual interpretation of cryo-EM maps is 
 time-consuming and error-prone. For many cases, however, automated methods 
 can be used to build models for both proteins and nucleic acids.
 
-After an atomic model is generated, it is real-space refined using 
-secondary-structure restraints (e.g., see *phenix.real_space_refine*). 
-
 **How**
 
 The program *phenix.map_to_model* interprets a cryo-EM map and automatically 
-builds an atomic model. First, the map is sharpened using *phenix.auto_sharpen.*
+builds an atomic model. If desired, the map is sharpened using *phenix.auto_sharpen.*
 The unique parts of the structure are then identified by taking the 
-reconstruction symmetry into account. In addition, the procedure identifies 
+reconstruction symmetry into account. The procedure identifies
 which parts of the map correspond to protein or RNA/DNA. To save runtime, you
 can use *phenix.auto_sharpen* to sharpen the map and *phenix.map_box* to cut out
 the unique part before you run *phenix.map_to_model.* 
 
-The *phenix.map_to_model* tool requires you to input a cryo-EM map with CCP4-style 
-(MRC, etc) or MTZ map coefficients and a sequence file. For optimal model-building 
+The *phenix.map_to_model* tool requires you to input a CCP4-style
+(MRC, etc) cryo-EM map or MTZ map coefficients and a sequence file. For optimal model-building
 results, the resolution of the map should be 4.5 Å or better. The program outputs
-a PDB file with the resulting PDB map that is superimposed on the original map. 
+a PDB file with a model that is superimposed on the original map.
 
-**How to use the phenix.autobuild GUI:** `Click
-here <../reference/autobuild_gui.html>`__
-
-`Phenix reference manual for
-phenix.map\_to\_model <../reference/map_to_model.html>`__
+**How to use the phenix.map_to_model GUI:** `Click
+here <../reference/map_to_model.html>`__
 
 **Common issues**
 
