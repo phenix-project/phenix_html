@@ -4,7 +4,7 @@ Map improvement (cryo-EM)
 **Why**
 
 Cryo-EM maps can be improved by methods such as sharpening/blurring and density
-modficiation.
+modification.
 
 Sharpening can reveal the high-resolution details concealed in the cryo-EM map.
 Often, cryo-EM maps can appear smooth and can lack a high level of detail (contrast)
@@ -24,14 +24,14 @@ map are uncorrelated, and (2) some features in a map region are known in advance
 
 The program *phenix.auto_sharpen* performs map sharpening by optimizing the detail and 
 connectivity of a cryo-EM map. It tests several resolution-dependent functions 
-and outputs the one with maximal clarity, based adjusted surface area (default)
+and outputs the one with maximal clarity, based on adjusted surface area (default)
 or kurtosis. The program works best on maps with 4.5 Å or better resolution.
 At lower resolutions, it may be unable to distinguish variations in the quality of 
 the map as the sharpening is varied. Typically, optimal sharpening is determined by 
-examining a box cut out of the map, and then applied to the entire map; however, 
+examining a box cut out of the map, and then applying this to the entire map; however, 
 other options are available. 
 
-The program *phenix.resolve_cryo_em* performs density modification of cryo-EM
+The program *phenix.resolve_cryo_em* performs density modification of a cryo-EM
 map using two unmasked half-maps, the FSC-based resolution, and a sequence file specifying the
 contents of the map. You can also supply a model, which will be randomized, refined, and
 used in model-based density modification. You normally access the program's functionality 
@@ -68,7 +68,7 @@ here <../reference/resolve_cryo_em.html>`__
 - `phenix.map\_box <../reference/map_box.html>`__: This tool cuts out a box from a 
   larger map. It is used to extract the unique part of a map. 
 
-- `phenix.combine\_focused\_maps <../reference/combine_focused_maps.html>`__: creates a weighted composition map from a set
-  of locally focused maps and associated models, where each part of each map is weighted
-  by its correlation with the corresponding model. The maps do not have to be
-  superimposed or even have the same gridding or size.
+- `phenix.combine\_focused\_maps <../reference/combine_focused_maps.html>`__: This tool  
+  creates a weighted composition map from a set of locally focused maps and associated models, 
+  where each part of each map is weighted by its correlation with the corresponding model. 
+  The maps do not have to be superimposed or even have the same gridding or size.
