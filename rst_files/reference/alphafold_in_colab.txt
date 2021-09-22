@@ -10,8 +10,8 @@ How to run AlphaFold on Colab
 
 You will need the 1-letter sequence of your protein (that's all).
 
-To access the site, you can use the AlphaFold button in the Phenix GUI 
-or you can go directly to the Phenix AlphaFold 
+To access the site, you can use the "AlphaFold2 in CoLab" button 
+in the Phenix GUI or you can go directly to the Phenix AlphaFold 
 `Colab notebook <https://colab.research.google.com/github/phenix-project/Colabs/blob/main/alphafold2/AlphaFold2.ipynb>`_ .
 
 Then you paste your sequence into the form, go to the pull-down menu item 
@@ -24,6 +24,10 @@ This version of AlphaFold automatically scans the PDB for templates that
 are similar in sequence to your sequence and includes them in the prediction.
 This is in addition to finding all the sequence homologues as part of
 the core prediction method in AlphaFold.
+
+Note: There is a second button in the GUI labelled "AlphaFold2 with template in CoLab". That is the button you want to use if you already have a model
+and want to improve it.
+
 
 About Google Colab
 ------------------
