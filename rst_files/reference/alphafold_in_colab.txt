@@ -1,0 +1,99 @@
+Running AlphaFold2 in Google CoLab
+==================================
+
+You can create a new AlphaFold model using cloud computing and a simple
+web interface available from the Phenix GUI.
+
+
+How to run AlphaFold on Colab
+-----------------------------
+
+You will need the 1-letter sequence of your protein (that's all).
+
+To access the site, you can use the AlphaFold button in the Phenix GUI 
+or you can go directly to the Phenix AlphaFold 
+`Colab notebook <https://colab.research.google.com/github/phenix-project/Colabs/blob/main/alphafold2/AlphaFold2.ipynb>`_ .
+
+Then you paste your sequence into the form, go to the pull-down menu item 
+"Runtime" and select "Run all".  That's it.
+
+You wait a few minutes and your AlphaFold model is downloaded automatically
+along with some informational files as a zip file.
+
+This version of AlphaFold automatically scans the PDB for templates that
+are similar in sequence to your sequence and includes them in the prediction.
+This is in addition to finding all the sequence homologues as part of
+the core prediction method in AlphaFold.
+
+About Google Colab
+------------------
+
+`Google Colab <https://colab.research.google.com/notebooks/intro.ipynb?utm_source=scs-index>`_  
+is a really nice system for sharing and running software.  Anyone
+with a Google login can run, share and create notebooks on Colab.  
+
+Colab notebooks have one or more 'cells' that do something and set up 
+for the next cell.  You can run an individual cell with a Run button
+next to the cell, or you can run all the cells in order with a 
+pull-down menu item called "Run all" under the heading "Runtime".
+
+Notebooks can have inputs like numbers or sequences or places to upload
+files.  The inputs can be available at the beginning or may appear
+during execution.
+
+If something goes wrong, you can (sometimes) fix an input and re-run the
+cell where the problem occurred, or all cells starting there.
+
+You do have to pay a little attention to exactly what notebook you are
+running.  As notebooks can be easily changed and shared, there can be
+many versions of a notebook (as for AlphaFold).
+
+Possible problems
+-----------------
+
+If something goes wrong with the run, you can just load the site over
+again and start from the beginning.
+
+
+Background
+----------
+
+The Google DeepMind software AlphaFold2 can be run with a Google login
+on Google's cloud computing software with Google's Colab notebook service.
+The AlphaFold team created an `AlphaFold Colab notebook <https://colab.research.google.com/github/deepmind/alphafold/blob/main/notebooks/AlphaFold.ipynb>`_
+and the ColabFold team created a simpler version called `ColabFold: AlphaFold2 w/ MMseqs2 <https://colab.research.google.com/github/sokrypton/ColabFold/blob/main/AlphaFold2.ipynb>`_ .
+
+The notebook for Phenix is a further simplified version of the ColabFold 
+notebook suitable for use with Phenix.
+
+
+Non-commercial use only
+-----------------------
+
+Google DeepMind has made the code for AlphaFold2 open source and available to 
+anyone.  Note however that the AlphaFold2 database of parameters (required 
+for use of AlphaFold2) is licensed only for non-commercial use. That means
+that use of this notebook is limited to non-commercial purposes (NonCommercial 
+means not primarily intended for or directed towards commercial advantage 
+or monetary compensation)
+
+Required citations for using the AlphaFold Colab notebook
+---------------------------------------------------------
+
+If you use a model from the AlphaFold CoLab notebook you should be sure
+to cite the following two publications:
+
+1. The AlphaFold2 paper:
+
+     `Jumper, J., Evans, R., Pritzel, A. et al. Highly accurate protein 
+     structure prediction with AlphaFold. Nature 596, 583–589 (2021). 
+     <https://doi.org/10.1038/s41586-021-03819-2>`_
+
+2. The ColabFold notebook on which the Phenix AlphaFold notebook is based:
+
+     `Mirdita, M., Ovchinnikov, S.,  Steinegger, M.  ColabFold - Making 
+     protein folding accessible to all bioRxiv 2021.08.15.456425.
+     <https://doi.org/10.1101/2021.08.15.456425>`_
+
+
+
