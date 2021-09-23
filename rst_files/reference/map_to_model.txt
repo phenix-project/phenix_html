@@ -393,7 +393,7 @@ Using carry\_on to break up your run into small pieces
 You can use carry\_on=True to progressively build up your model 
 from pieces or to run many jobs in parallel.
 
-First you run map_to_model with segment_and_split_only=True
+First you run map_to_model with stop_after_segment_and_split=True
 to split up your
 map and write a file (the info_pickle_file) that has all the 
 necessary information to put everything together.
