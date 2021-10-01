@@ -14,10 +14,16 @@ To access the site, you can use the "AlphaFold2 in CoLab" button
 in the Phenix GUI or you can go directly to the Phenix AlphaFold 
 `Colab notebook <https://colab.research.google.com/github/phenix-project/Colabs/blob/main/alphafold2/AlphaFold2.ipynb>`_ .
 
-Then you paste your sequence into the form, go to the pull-down menu item 
-"Runtime" and select "Run all".  That's it.
+Then you paste your sequence into the form and type in a job name. You
+enter that information by hitting the Run button (a circle with a right-arrow
+in it) next to the form.
 
-You wait a few minutes and your AlphaFold model is downloaded automatically
+Then you load up AlphaFold by hitting the next Run button, and finally you
+run AlphaFold by hitting the third Run button.  That's it.  The loading of 
+AlphaFold can take a coupl minutes and usually running it takes 10-15 minutes 
+for a moderately-sized protein (350 residues or so).
+
+Your AlphaFold model is downloaded automatically
 along with some informational files as a zip file.
 
 This version of AlphaFold automatically scans the PDB for templates that
@@ -27,6 +33,14 @@ the core prediction method in AlphaFold.
 
 Note: There is a second button in the GUI labelled "AlphaFold2 with template in CoLab". That is the button you want to use if you already have a model
 and want to improve it.
+
+Advanced use of the AlphaFold notebook
+--------------------------------------
+
+You can run multiple sequences sequentially with this AlphaFold notebook.  You
+supply a file that has one job name and one sequence on each line.  These are
+then used as input to AlphaFold, one at a time.  You get back one zip file
+for each sequence you submit.
 
 
 About Google Colab
@@ -38,8 +52,10 @@ with a Google login can run, share and create notebooks on Colab.
 
 Colab notebooks have one or more 'cells' that do something and set up 
 for the next cell.  You can run an individual cell with a Run button
-next to the cell, or you can run all the cells in order with a 
-pull-down menu item called "Run all" under the heading "Runtime".
+next to the cell. You can run all the cells in order with a 
+pull-down menu item called "Run all" under the heading "Runtime" if you
+want as well (you can run this notebook in that way too, just put in
+your sequence and job name and hit "Run all".)
 
 Notebooks can have inputs like numbers or sequences or places to upload
 files.  The inputs can be available at the beginning or may appear
@@ -58,6 +74,13 @@ Possible problems
 If something goes wrong with the run, you can just load the site over
 again and start from the beginning.
 
+The Colab notebook can crash or time out at any time...that means if you are
+running multiple predictions you could lose a lot of work.  You can mitigate
+this problem by manually downloading results as the appear (using the
+folder icon on the left side of the notebook, selecting a .zip file to
+show a download menu, and downloading the file).
+
+See the notes at the bottom of the Colab notebook for more hints
 
 Background
 ----------
