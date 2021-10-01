@@ -20,7 +20,7 @@ in it) next to the form.
 
 Then you load up AlphaFold by hitting the next Run button, and finally you
 run AlphaFold by hitting the third Run button.  That's it.  The loading of 
-AlphaFold can take a coupl minutes and usually running it takes 10-15 minutes 
+AlphaFold can take a couple minutes and usually running it takes 10-15 minutes 
 for a moderately-sized protein (350 residues or so).
 
 Your AlphaFold model is downloaded automatically
@@ -41,6 +41,10 @@ You can run multiple sequences sequentially with this AlphaFold notebook.  You
 supply a file that has one job name and one sequence on each line.  These are
 then used as input to AlphaFold, one at a time.  You get back one zip file
 for each sequence you submit.
+
+You can also run multiple sequences by simply entering another sequence and
+job name after you hit the Run button to load your first sequence and job
+name.  You can do this as many times as you want.
 
 
 About Google Colab
