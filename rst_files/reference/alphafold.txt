@@ -32,8 +32,20 @@ model-building.  You can do this
 with `phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_
 for cryo-EM and `phenix.autobuild <autobuild.html>`_ for crystallography.
 
+5. Refine the rebuilt predicted models that you obtain.  You can use
+`phenix.real_space_refine <real_space_refine.html>`_ for cryo-EM models and
+`phenix.refine <refinement.html>`_ for crytstallographic models.
+
+6. Examine your resulting model in detail, using the validation tools 
+that are part of 
+`phenix.real_space_refine <real_space_refine.html>`_  and
+`phenix.refine <refinement.html>`_ 
+to help you
+identify problem areas and using manual model-building tools to fix them.
+
+
 For a cryo-EM structure, you can carry out steps 2-4 in one step with
-`phenix.dock_and_rebuild <dock_and_rebuild.html>`. This just links the
+`phenix.dock_and_rebuild <dock_and_rebuild.html>`_. This just links the
 processing, docking, and rebuilding steps together.
 
 
@@ -75,6 +87,24 @@ can make a very big difference in completion of the remainder of the structure
 exactly what residues go in the gaps.  This means that model-building of
 the remainder of the structure can often be completed with loop-fitting
 tools instead of trying to rebuild everything.
+
+What do do after applying Phenix tools to predicted models
+----------------------------------------------------------
+
+While AlphaFold and other predicted models can be quite accurate overall, some
+details in otherwise-accurate regions and some whole regions can be 
+incompatible with your experimental data.  The Phenix procedures for
+producing models based on your experimental data and using predicted models
+as starting points are designed to try and keep the accurate parts of the
+predicted models and to replace the inaccurate parts.  Depending on the
+resolution of your data, the automatically-produced models may be quite
+accurate or may themselves need a lot of trimming and rebuilding.
+
+Once you have used Phenix tools to modify a predicted model based on
+experimental data you will want to carefully analyze the resulting model,
+comparing every detail to the experimental map or data.  You will 
+generally want to use manual model-building tools such as Coot or Isolde
+to fix small and large errors in the models that remain.
 
 Literature
 ----------
