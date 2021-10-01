@@ -41,7 +41,9 @@ is assumed to generally be quite accurate and to have a chain with all the
 right residues, but in which some parts of the model are not useful.  Further,
 it is assumed that the predicted model was supplied with a measure of residue
 accuracy (as AlphaFold models are) so that poorly-predicted residues can
-be identified and fixed.
+be identified and fixed.  Note that you will normally work with a single
+chain at a time in this procedure even if your map has multiple chains
+in it.
 
 The second piece of information is a docked set of domains from this predicted
 model. These domains can be any parts of the model and they are assumed to

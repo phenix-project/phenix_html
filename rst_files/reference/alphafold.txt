@@ -44,9 +44,38 @@ to help you
 identify problem areas and using manual model-building tools to fix them.
 
 
+Advanced steps
+--------------
+
+If your structure has more than one chain, you will need to carry out some
+additional steps.  For a crystal structure, you'll want to generate a
+processed AlphaFold (or other) model for each chain and supply all of them
+to phenix.phaser for molecular replacement, usually all at once. 
+
+For a cryo-EM structure, you can work with one chain at a time.  You can 
+use the whole map for each chain, or if you have some idea of what chain
+goes where, you can mask out or box the map so that it shows only one
+chain and use that as your map.  Boxing or masking the map can speed up
+the process and improve the result considerably.
+
+For complex structures with many chains or with chains that contain domains
+with long linkers, docking can be very complicated and take a long
+time. In these cases it may be especially helpful to box or mask the map
+if you can do that.  If you cannot, you might want to run the docking step
+individually with each domain that you get from 
+`phenix.process_predicted_model <process_predicted_model.html>`_ 
+and then examine where they went in the map. If the domains seem to correspond
+to different molecules, you might want to mask out the part of the density
+that corresponds to the molecule you don't want to fit and re-try.  You can
+also try running 
+`phenix.dock_in_map <dock_in_map.html>`_ with one domain at a time and ask
+to find multiple copies; then you can choose the one that matches up with
+the other domains you have placed.
+
 For a cryo-EM structure, you can carry out steps 2-4 in one step with
 `phenix.dock_and_rebuild <dock_and_rebuild.html>`_. This just links the
 processing, docking, and rebuilding steps together.
+
 
 
 Background
