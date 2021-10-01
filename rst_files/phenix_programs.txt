@@ -54,18 +54,28 @@ Molecular Replacement
 - phenix.ensembler: Superpose PDB files to create ensemble for MR
 - phenix.sculpt_ensemble: Combined sculptor and ensembler
 
+AlphaFold and other predicted models
+------------------------------------
+- phenix.process_predicted_model: Process AlphaFold2 and other predicted models
+- phenix.dock_predicted_model: Dock processed AlphaFold2 models into cryo-EM map
+- phenix.rebuild_predicted_model: Rebuild AlphaFold2 models into cryo-EM map based on docked domains
+- phenix.dock_and_rebuild: Process, dock and rebuild AlphaFold2 model into cryo-EM map
+
 Model Building
 --------------
 - phenix.assign_sequence: Assign sequence to a chain using a map and seq file
 - phenix.autobuild: Iterative model-building density modification and refinement
 - phenix.build_one_model: Build one model using a map and data file
-- phenix.trace_and_build : Build a model by chain tracing using a cryo-EM map
-- phenix.map_to_model: Build a model using a low-resolution map or cryo-EM map
 - phenix.build_rna_helices: Build RNA helices into a map
 - phenix.combine_models: Take best parts of two models
+- phenix.dock_and_rebuild: Process, dock and rebuild AlphaFold2 model into cryo-EM map
+- phenix.dock_predicted_model: Dock processed AlphaFold2 models into cryo-EM map
 - phenix.erraser: Run ERRASER
 - phenix.find_helices_strands: Build helices and strands into a map
 - phenix.fit_loops: Fit missing loops in a model
+- phenix.map_to_model: Build a model using a low-resolution map or cryo-EM map
+- phenix.rebuild_predicted_model: Rebuild AlphaFold2 models into cryo-EM map based on docked domains
+- phenix.trace_and_build : Build a model by chain tracing using a cryo-EM map
 
 Structure Refinement
 --------------------

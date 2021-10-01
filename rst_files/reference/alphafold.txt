@@ -23,12 +23,18 @@ Phenix GUI to do this using the Google Colab notebook system.
 
 3. Dock your models (cryo-EM) or carry out molecular replacement 
 (crystallography) to place your models in the right places in your map 
-or unit cell. You can use `phenix.dock_in_map <dock_in_map.html>`_ (cryo-EM)
+or unit cell. You can use 
+`phenix.dock_predicted_model <dock_predicted_model.html>`_ (cryo-EM)
 or `phenix.phaser <phaser_mr.html>`_ (crystallography) to do this.
   
 4. Fill in the missing parts of your models with loop fitting or iterative 
-model-building.  You can do this with `phenix.fit_loops <fit_loops.html>`_
+model-building.  You can do this 
+with `phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_
 for cryo-EM and `phenix.autobuild <autobuild.html>`_ for crystallography.
+
+For a cryo-EM structure, you can carry out steps 2-4 in one step with
+`phenix.dock_and_rebuild <dock_and_rebuild.html>`. This just links the
+processing, docking, and rebuilding steps together.
 
 
 Background
