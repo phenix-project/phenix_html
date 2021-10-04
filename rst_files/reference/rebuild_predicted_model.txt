@@ -13,7 +13,7 @@ Rebuild predicted model morphs and rebuilds a model produced by AlphaFold,
 RoseTTAFold and other prediction software into a cryo EM map, using a 
 set of docked domains from the predicted model as a template.
 
-The rebuild_predicted_model program is normally the second step in working on
+The rebuild_predicted_model program is normally the third step in working on
 an AlphaFold or other predicted model with a cryo-EM structure.
 
 The first step is to process the predicted model
@@ -30,6 +30,10 @@ The third step is to morph the predicted model onto the docked domains and then
 to rebuild all the parts of the predicted model using the density in the map.
 This is done with 
 `phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_ .
+
+Note that you can run all three steps sequentially with
+`phenix.dock_and_rebuild <dock_and_rebuild.html>`_ .
+
 
 How rebuild_predicted_model works:
 ----------------------------------
