@@ -45,7 +45,19 @@ identify problem areas and using manual model-building tools to fix them.
 
 
 Advanced steps
---------------
+==============
+
+Iteration of AlphaFold and model-building with experimental data
+----------------------------------------------------------------
+
+You may be able to improve your rebuilt AlphaFold model by iterating the
+AlphaFold step and including your rebuilt model as a template (and skipping
+any other templates).  You can do this with the the "AlphaFold in Colab" 
+button in the Phenix GUI to do this using the Google Colab notebook system.
+(See also the `documentation for running AlphaFold <alphafold_in_colab.html>`_).
+
+Structures with multiple chains
+-------------------------------
 
 If your structure has more than one chain, you will need to carry out some
 additional steps.  For a crystal structure, you'll want to generate a
@@ -57,6 +69,9 @@ use the whole map for each chain, or if you have some idea of what chain
 goes where, you can mask out or box the map so that it shows only one
 chain and use that as your map.  Boxing or masking the map can speed up
 the process and improve the result considerably.
+
+Boxing maps before rebuilding
+-----------------------------
 
 For complex structures with many chains or with chains that contain domains
 with long linkers, docking can be very complicated and take a long
@@ -134,6 +149,11 @@ experimental data you will want to carefully analyze the resulting model,
 comparing every detail to the experimental map or data.  You will 
 generally want to use manual model-building tools such as Coot or Isolde
 to fix small and large errors in the models that remain.
+
+You can also iterate the AlphaFold prediction using your rebuilt model as
+an input to a new round of AlphaFold
+(See also the `documentation for running AlphaFold <alphafold_in_colab.html>`_).
+
 
 Literature
 ----------

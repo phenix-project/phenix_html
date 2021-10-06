@@ -11,8 +11,7 @@ How to run AlphaFold on Colab
 You will need the 1-letter sequence of your protein (that's all).
 
 To access the site, you can use the "AlphaFold2 in CoLab" button 
-in the Phenix GUI or you can go directly to the Phenix AlphaFold 
-`Colab notebook <https://colab.research.google.com/github/phenix-project/Colabs/blob/main/alphafold2/AlphaFold2.ipynb>`_ .
+in the Phenix GUI.
 
 Then you paste your sequence into the form and type in a job name. You
 enter that information by hitting the Run button (a circle with a right-arrow
@@ -46,6 +45,18 @@ You can also run multiple sequences by simply entering another sequence and
 job name after you hit the Run button to load your first sequence and job
 name.  You can do this as many times as you want.
 
+Using the Phenix AlphaFold Colab notebook to run AlphaFold with a template and iterate modeling
+===============================================================================================
+
+You can run AlphaFold with a template that you supply if you want. You can
+do this with the Phenix Colab notebook that you access through the
+Phenix GUI.
+
+The purpose of running AlphaFold with a template is to improve a model 
+that you already have by using it as a template in an AlphaFold prediction.
+  This allows you to
+iterate the process of AlphaFold prediction and model rebuilding and can 
+further improve a model beyond what you can achieve with a single cycle.
 
 About Google Colab
 ------------------
