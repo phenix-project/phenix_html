@@ -1,0 +1,44 @@
+Map Symmetry (cryo-EM)
+===============================
+
+**Why**
+
+Some molecules, such as viruses, have high internal symmetry so you
+can reduce the cryo-EM map to the repeating unit. This can decrease the 
+required computational resources and enable better averaging for improved 
+signal to noise. 
+ 
+
+**How**
+
+The *phenix.map_symmetry* program uses the density at a set of randomly-chosen
+points in a cryo-EM map to identify symmetries, which are selected from a set of 
+pre-defined symmetry types (e.g., point-group symmetry and helical symmetry). 
+The tool then creates a file with the symmetry operations. 
+
+By default, *phenix.map_symmetry* assumes the principle axes of symmetry in a 
+map are along x, y, and z and that the helical symmetry is along z. The user can
+specify a specific symmetry type or look for all elements in the database of
+45 common symmetry elements and point groups. 
+
+
+**How to use the phenix.map_symmetry:** `Click here <../reference/map_symmetry.html>`__
+
+
+**Common issues**
+
+None. 
+
+
+**Related programs and Documentation**
+
+-  `phenix.map\_box <../reference/map_box.html>`__: 
+   This program cuts out a box around selected atoms from a larger map 
+   (MTZ, CCP4, or X-plor format). It can be used to extract the unique
+   part of the map (using the extract-unique option). 
+
+-  `phenix.combine\_focused\_maps <../reference/combine_focused_maps.html>`__:
+   This program creates a weighted composite map from a set of locally focused maps 
+   and associated models, where each part of each map is weighted by its 
+   correlation with the corresponding model. 
+
