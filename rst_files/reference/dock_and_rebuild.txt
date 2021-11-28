@@ -86,6 +86,9 @@ to yield my_model_rebuilt.pdb
 Possible Problems
 -----------------
 
+If your map has pseudo-symmetry (like a proteasome) you might need to box
+one subunit or try ssm_search=False to use a more thorough search in docking.
+
 Specific limitations and problems:
 ----------------------------------
 
