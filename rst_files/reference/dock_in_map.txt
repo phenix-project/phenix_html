@@ -17,14 +17,23 @@ Usage
 How dock_in_map works:
 ----------------------
 
-Dock-in-map uses a convolution-based shape search to find a part of a map
-that is similar to the model.  The key elements of the search are:
+Dock-in-map uses both SSM and  convolution-based shape searches to find a 
+part of a map that is similar to a model.  The key elements of the search are:
 
 ::
 
-  Initial search at lower resolution that focuses on overall shape of the
-  molecule.  This allows a quick search but is less effective if the
-  map contains more than one molecule
+  An SSM search is carried out first (protein only).  This search is 
+  identical to the ssm_match_to_map option in superpose_and_morph. Helices
+  and strands are found in the map to create a target model, then a brute 
+  force superposition of helices and strands in the search model to those in
+  the target model is carried out. Potential superpositions are evaluated
+  by map-model correlation. 
+
+  If the SSM search fails to find a satisfactory superposition,
+  an initial search at lower resolution that focuses on overall shape of the
+  molecule is carried out.  This allows a quick search but is less 
+  effective if the map contains more than one molecule. If this fails, the
+  next methods are tried.
 
   Initial search without rotation.  This allows a fast search that can place
   a molecule that is just shifted by a translation

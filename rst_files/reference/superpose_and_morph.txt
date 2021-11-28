@@ -43,6 +43,24 @@ distance of about 10 A (set by the parameter distortion_field_length).
 Finally (optionally) the moving models are trimmed to remove 
 segments that are very different from the fixed model.
 
+Options
+-------
+
+  SSM match to map.  You can supply a map and specify ssm_match_to_map=True.
+  The tool will search for helices and strands in the map and generate a
+  target helices_strands model.  Then a brute force SSM matching of your
+  moving model to the helices_strands model is carried out and matches are
+  scored with map-model correlation. This option can also be carried out
+  with the dock_in_map tool.
+  Note this option does not support trimming or morphing.
+
+  Brute force SSM.  You can supply a target model that has helices and strands.
+  Helices and strands in your moving model will be matched to those in the
+  target model to superpose it.  You can also supply a map_file and specify
+  score_superpose_brute_force_with_cc if you wish.
+  Note this option does not support trimming or morphing.
+
+
 Examples
 --------
 
@@ -60,6 +78,15 @@ Running superpose_and_morph is easy. From the command-line you can type:
 This will superimpose moving_model.pdb on fixed_model.pdb, morph it (gradual
 adjustment of atomic positions with location along the chain and in space),
 and trim moving_model back to the region where they are similar.
+
+To superpose a model on a map you can say:
+
+::
+
+    phenix.superpose_and_morph map_file=map.ccp4 moving_model=moving_model.pdb
+
+This will find helices and strands in map.ccp4 and superpose moving_model.pdb
+on those secondary structure elements.
 
 Possible Problems
 -----------------
