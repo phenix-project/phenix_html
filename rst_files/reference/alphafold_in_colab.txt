@@ -25,13 +25,10 @@ for a moderately-sized protein (350 residues or so).
 Your AlphaFold model is downloaded automatically
 along with some informational files as a zip file.
 
-This version of AlphaFold automatically scans the PDB for templates that
-are similar in sequence to your sequence and includes them in the prediction.
+This version of AlphaFold allows you to use templates from the PDB
+are similar in sequence to your sequence and include them in the prediction.
 This is in addition to finding all the sequence homologues as part of
 the core prediction method in AlphaFold.
-
-Note: There is a second button in the GUI labelled "AlphaFold2 with template in CoLab". That is the button you want to use if you already have a model
-and want to improve it.
 
 Advanced use of the AlphaFold notebook
 --------------------------------------
@@ -95,7 +92,7 @@ this problem by manually downloading results as the appear (using the
 folder icon on the left side of the notebook, selecting a .zip file to
 show a download menu, and downloading the file).
 
-See the notes at the bottom of the Colab notebook 
+See the notes at the bottom of the 
 `Colab notebook <https://colab.research.google.com/github/phenix-project/Colabs/blob/main/alphafold2/AlphaFold2.ipynb>`_ 
 for more hints
 
