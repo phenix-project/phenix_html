@@ -1,0 +1,65 @@
+Build water into cryo-EM map using phenix.douse
+===============================================
+
+`phenix.douse` is a tool to build water into cryo-EM maps.
+
+Availability
+------------
+
+Command line, GUI.
+
+Required inputs
+---------------
+
+Atomic model (PDB or mmCIF format) and map (MRC format).
+
+Optional inputs
+---------------
+
+`mode = whole` or `per_chain`: work on the whole model or per chain. Working on 
+the whole model may require a lot of memory.
+
+`sphericity_filter = True`: use peak sphericity criteria. Disable to add more water.
+
+`keep_input_water = False`: keep or remove existing water.
+
+`dist_min = 2.0`: minimal peak-peak or peak-atom distance. Decrease to add more water.
+
+`dist_max = 3.2`: maximal peak-peak or peak-atom distance. Increase to add more water.
+
+`step = 0.3`: map re-sampling step.
+
+`map_threshold = 1.0`: scale factor for automatically determined map threshold.
+Decrease to add more water.
+
+`scc05 = 0.97` and `scc1 = 0.9`: sphericity characteristics. Decrease to add more water.
+
+Limitations
+-----------
+
+P1 symmetry is the only supported symmetry.
+
+Assumptions
+-----------
+
+Macromolecular part of the atomic model is as compltete as possible (no missing
+chains or other unmodelled parts present).
+
+Map resolution is sufficently high to expect water oxygens be visible in the map.
+
+Example
+-------
+
+   phenix.douse model.pdb map.mrc
+
+More information
+----------------
+
+`<https://phenix-online.org/phenixwebsite_static/mainsite/files/presentations/water.pdf>`_
+
+Author
+------
+
+Pavel Afonine (PAfonine@lbl.gov)
+
+
