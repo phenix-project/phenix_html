@@ -21,6 +21,9 @@ models than simple AlphaFold modeling in many cases.  For a moderate sized
 protein chain the process takes a couple hours.  The general procedure below
 more or less consists of carrying out this same process in individual steps.
 
+Note that this procedure only works if the map is pretty clear.  Generally
+a map with resolution of about 4 A or better is likely to be useful.
+
 General procedure for using AlphaFold models in Phenix
 ------------------------------------------------------
 
