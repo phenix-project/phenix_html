@@ -7,6 +7,20 @@ determination because the models can be very accurate over much of their
 length and the models come with accuracy estimates that allow removal
 of poorly-predicted regions.
 
+One-step procedure for creating an AlphaFold model with information from a map
+------------------------------------------------------------------------------
+
+You can generate an AlphaFold model that includes information from a density
+map using the "AlphaFold with density map" button in the Phenix GUI.  This
+button will open a Google Colab notebook where you can upload a density map
+and paste in a sequence and specify a resolution. The notebook will 
+iteratively generate AlphaFold models of your sequence, rebuild them using
+the map, and then use the rebuilt model as a template in a new cycle of 
+AlphaFold modeling.  This process can yield much more accurate AlphaFold
+models than simple AlphaFold modeling in many cases.  For a moderate sized
+protein chain the process takes a couple hours.  The general procedure below
+more or less consists of carrying out this same process in individual steps.
+
 General procedure for using AlphaFold models in Phenix
 ------------------------------------------------------
 
@@ -52,9 +66,12 @@ Iteration of AlphaFold and model-building with experimental data
 
 You may be able to improve your rebuilt AlphaFold model by iterating the
 AlphaFold step and including your rebuilt model as a template (and skipping
-any other templates).  You can do this with the the "AlphaFold in Colab" 
+any other templates).  You can do this with the the "AlphaFold" 
 button in the Phenix GUI to do this using the Google Colab notebook system.
 (See also the `documentation for running AlphaFold <alphafold_in_colab.html>`_).
+
+This process is what the "AlphaFold with density map" button on the Phenix
+GUI does for you automatically.
 
 Structures with multiple chains
 -------------------------------
@@ -169,3 +186,7 @@ Literature
        refinement guided by deep learning based accuracy estimation.
        Nat Commun 12, 1340 (2021).
        https://doi.org/10.1038/s41467-021-21511-x
+
+     Terwilliger, T.C. et al., Improved AlphaFold modeling with implicit 
+       experimental information. bioRxiv 2022.01.07.475350.
+       doi: https://doi.org/10.1101/2022.01.07.475350
