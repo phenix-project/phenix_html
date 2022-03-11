@@ -78,6 +78,22 @@ the chain that each is to represent.
 
 Finally all the weighted average maps are combined to form a composite map.
 
+Additional output files
+-----------------------
+
+If you specify get_contribution_maps=True (this is the default), at the end
+of the procedure you will get one map written out for each input map file,
+called something like "contribution_map_1.ccp4". This map has values from 0
+to 1 showing the contribution of this input map file to the final map. You
+can use it to color your final composite map, showing how much of the 
+information at each point came from this input map file.
+
+If you specify get_cc_map=True (also default) you will get a map file
+called cc_map.ccp4 that shows the map correlation between the model and the
+final composite map. The correlation map will be calculated over whatever
+regions in the model were used in forming the composite map (i.e. if you 
+used individual chains, then the correlations will be calculated over each
+chain).
 
 Examples
 --------
@@ -138,6 +154,13 @@ target model with chains ABCD, an one focused map and a model for the focused
 map that contains just chain A. Then you add the keyword 
 "use_model_symmetry=True"  and the focused map from chain A is 
 applied to A B C and D in the target map.
+
+If you supply half-maps corresponding to each full map, the half-maps will
+be processed in the same way as the full map, yielding one pair of half-maps
+at the end of the procedure.  You can use these half-maps to estimate the
+local resolution of the final composite map (using phenix.local_resolution)
+or for other procedures requiring half maps. Note that the half maps could
+have discontinuities so they may not be appropriate for all uses of half maps.
 
 List of all available keywords
 ------------------------------
