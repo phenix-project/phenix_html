@@ -344,6 +344,24 @@ can specify this with test\_flag\_value.
 Possible Problems
 -----------------
 
+In some cases ligand fitting results in an incomplete ligand (some atoms
+are missing).  Here is a procedure you can try to complete the ligand:
+
+
+- Add the following commands to in the GUI in the field 
+  called "Resolve commands" (use the search function to 
+  find the input field).  Include the quotes just as in the example below:
+
+- "dist_min_offset 1" "density_off_final 1000" "acceptable_offset 2"
+
+- You may wish to set:  nbatch=20  conformers=0 (these may not affect the
+  results in many cases) 
+
+- Run ligandfit and make sure the ligand contains all the input atoms.
+
+- If not, take the complete ligand and superimpose it on the partial ligand
+  that was fitted.
+
 Specific limitations and problems
 ---------------------------------
 
