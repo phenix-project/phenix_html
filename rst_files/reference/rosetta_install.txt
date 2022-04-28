@@ -81,8 +81,8 @@ Proceed with the following.
 
     %  setenv PHENIX_ROSETTA_PATH /your-path-to-rosetta-here/
 
-- The final step is to build the interface for rosetta\_refine. This
-  is a similar step to the previous scons step so supply as many nproc
+- The final step is to build the interface for rosetta\_refine. It will
+  also build Rosetta itself if it is not done yet. Supply as many nproc
   as available on your machine. If you installed Phenix in a location
   that requires administrative privileges (e.g. /usr/local on linux or
   /Applications on macOS), you will also need administrative
