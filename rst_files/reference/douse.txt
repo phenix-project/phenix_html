@@ -13,6 +13,8 @@ Required inputs
 
 Atomic model (PDB or mmCIF format) and map (MRC format).
 
+`resolution` is required if `cc_mask_filter` is set to True.
+
 Optional inputs
 ---------------
 
@@ -20,6 +22,8 @@ Optional inputs
 the whole model may require a lot of memory.
 
 `sphericity_filter = True`: use peak sphericity criteria. Disable to add more water.
+
+`scc = 0.5`: map peak sphericity characteristic. Decrease to add more water.
 
 `keep_input_water = False`: keep or remove existing water.
 
@@ -29,10 +33,13 @@ the whole model may require a lot of memory.
 
 `step = 0.3`: map re-sampling step.
 
-`map_threshold = 1.0`: scale factor for automatically determined map threshold.
+`map_threshold_scale = 0.5`: map threshold for peak selection = (mean map value 
+at atom centers) * map_threshold_scale
 Decrease to add more water.
 
-`scc05 = 0.97` and `scc1 = 0.9`: sphericity characteristics. Decrease to add more water.
+`cc_mask_filter = True`: Reject water with CC_mask < cc_mask_filter_threshold.
+
+`cc_mask_filter_threshold = 0.5`: CC_mask threshold for rejecting water.
 
 Limitations
 -----------
@@ -50,7 +57,9 @@ Map resolution is sufficently high to expect water oxygens be visible in the map
 Example
 -------
 
-   phenix.douse model.pdb map.mrc
+   phenix.douse model.pdb map.mrc resolution=2.5
+   
+`resolution` is required if `cc_mask_filter` is set to True.
 
 More information
 ----------------
