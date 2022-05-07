@@ -298,9 +298,7 @@ Twinning and AutoBuild
 AutoBuild does not know about twinning, but you can incorporate a twin
 law into the refinement steps in the AutoBuild procedure if your crystal
 is twinned. Use phenix.xtriage to identify twinning and the twin law.
-Then specify the twin law in a parameters file (see next section) and
-provide that to AutoBuild with the keyword such as
-"refine\_eff\_file=twin\_law.eff"
+Then just paste the twin law in the twin_law field in the GUI.
 
 You may also want to try using the keyword "two\_fofc\_in\_rebuild"
 which will use the 2Fo-Fc map from phenix.refine in model-building.
