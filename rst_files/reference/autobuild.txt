@@ -300,7 +300,8 @@ law into the refinement steps in the AutoBuild procedure if your crystal
 is twinned. Use phenix.xtriage to identify twinning and the twin law.
 Then just paste the twin law in the twin_law field in the GUI.
 
-You may also want to try using the keyword "two\_fofc\_in\_rebuild"
+You may also want to try turning on the parameter two_fofc_in_rebuild
+("Use 2Fo-Fc map in rebuilding")
 which will use the 2Fo-Fc map from phenix.refine in model-building.
 
 R-free flags and test set
