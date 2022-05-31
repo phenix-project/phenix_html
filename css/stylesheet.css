@@ -108,7 +108,123 @@ li.phil-param {
 }
 
 
+.wrimagecard{
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  /* text-align: left;*/
+  position: relative;
+  background: #fff;
+  box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
 
+.wrimagecard-topimage_header{
+padding: 20px;
+}
+a.wrimagecard:hover, .wrimagecard-topimage:hover {
+    box-shadow: 2px 4px 8px 0px rgba(46,61,73,0.2);
+}
+.wrimagecard-topimage a {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.wrimagecard-topimage_title {
+  padding: 10px;
+  font-weight: bold;
+    /*padding: 20px 24px;*/
+    /*height: 40px;*/
+    /*padding-bottom: 0.75rem;*/
+    position: relative;
+}
+.wrimagecard-topimage a {
+    border-bottom: none;
+    text-decoration: none;
+    color: #525c65;
+    transition: color 0.3s ease;
+}
+
+.CardTitle {
+  font-size: 14pt;
+}
+
+/* definitions for image highlights */
+.area {
+    background:#fff;
+    display:block;
+    opacity:0;
+    position:absolute;
+}
+#area1 {
+    left:6px; top:47px; width:146px; height:66px;
+}
+#area2 {
+    left:200px; top:4px; width:164px; height:65px;
+}
+#area3 {
+    left:200px; top:93px; width:164px; height:68px;
+}
+#area4 {
+    left:421px; top:47px; width:162px; height:68px;
+}
+#area5 {
+    left:421px; top:160px; width:162px; height:67px;
+}
+#area6 {
+    left:409px; top:292px; width:184px; height:43px;
+}
+#area7 {
+    left:409px;top:356px;width:184px;height:44px;
+}
+#area8 {
+    left:197px;  top:324px;  width:156px;  height:45px;
+}
+#area9 {
+    left:653px; top:324px; width:142px; height:45px;
+}
+
+#area1cryo {
+    left:100px; top:19px; width:142px; height:65px;
+}
+#area2cryo {
+    left:93px; top:123px; width:156px; height:65px;
+}
+#area3cryo {
+    left:107px; top:229px; width:130px; height:65px;
+}
+#area4cryo {
+    left:280px; top:209px; width:179px; height:44px;
+}
+#area5cryo {
+    left:280px; top:271px; width:179px; height:44px;
+}
+#area6cryo {
+    left:510px; top:209px; width:178px; height:44px;
+}
+#area7cryo {
+    left:510px; top:271px; width:178px; height:44px;
+}
+#area8cryo {
+    left:510px; top:391px; width:178px; height:44px;
+}
+
+#area1:hover, #area2:hover, #area3:hover, #area4:hover,
+#area5:hover, #area6:hover, #area7:hover, #area8:hover,
+#area9:hover {
+    opacity:0.4;
+}
+
+#area1cryo:hover, #area2cryo:hover, #area3cryo:hover, #area4cryo:hover,
+#area5cryo:hover, #area6cryo:hover, #area7cryo:hover, #area8cryo:hover {
+    opacity:0.4;
+}
+
+
+
+
+
+/* to be removed */
 .tutorial_td {
   padding-left: 15px;
   padding-right: 15px;
