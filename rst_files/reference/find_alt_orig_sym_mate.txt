@@ -53,8 +53,8 @@ In the case illustrated above the chains A, B, C in the file 1tfx.pdb all have u
 good matches with chains H, A, I in the file test42.pdb. This is stated in the log file as
 well as printed with green text on the GUI. One pair of chains does not make a good match.
 A warning is then printed with red text.
-The second column in the table in the end of the log file contains the RMSDs of the pairs of 
-matched chains. 
+The second column in the table in the end of the log file contains the RMSDs of the pairs of
+matched chains.
 From the results tab the superposed structure can be visually inspected in Coot or Pymol.
 Matches with low MLAD scores will have correspondingly good superpositions.
 
@@ -80,28 +80,28 @@ or::
 The PHIL input scopes, ``moving`` and ``fixed``, specifies the MR solutions.
 Both scopes
 are programmatically equivalent and must be non-empty. This means that a
-scope should either specify the parameter ``xyzfname`` or the sub-scope 
-``mrsolution`` or the sub-scope ``pickle.solution``. 
+scope should either specify the parameter ``xyzfname`` or the sub-scope
+``mrsolution`` or the sub-scope ``pickle.solution``.
 
 Examples:
 
 
--  Use the pdb file from one of the MR solutions in a scope. 
+-  Use the pdb file from one of the MR solutions in a scope.
    This is useful for simple
-   cases such as when the solution comes from the PHENIX MRage GUI or 
+   cases such as when the solution comes from the PHENIX MRage GUI or
    when it is obtained from another MR program than Phaser.
 -  Specify a Phaser MR solution by assigning the .sol file name of the
    solution to the ``mrsolution.solfname`` parameter of the sub-scope
    as well as assigning the IDs of
    the ensembles and the corresponding MR models to the parameters
-   ``mrsolution.ensembles.name`` and ``mrsolution.ensembles.xyzfname``. 
+   ``mrsolution.ensembles.name`` and ``mrsolution.ensembles.xyzfname``.
    Multiple search
    components are specified as multiple ensembles. This way of
    specifying solutions is useful for solution files produced when
    Phaser is run from the command line and it produces several
    solutions of which one is the correct solution.
 -  Use a solution from the Phaser-MR GUI in PHENIX. In that case the
-   parameter ``pickle.solution.pklfname`` in the sub-scope should be 
+   parameter ``pickle.solution.pklfname`` in the sub-scope should be
    assigned to the solution file
    that is produced by PHENIX after an MR calculation. The
    ``pickle.solution.philfname`` should then be assigned to the input file
@@ -110,8 +110,8 @@ Examples:
    PHENIX interface.
 -  If space group and the unit cell dimensions is not available from
    any of the input files then these need to be specified by assigning
-   the parameter, ``spacegroupfname``,  either to a PDB file with a 
-   CRYST1 record or to an MTZ file with that information. This should be 
+   the parameter, ``spacegroupfname``,  either to a PDB file with a
+   CRYST1 record or to an MTZ file with that information. This should be
    the data file used for the molecular replacement calculation.
 
 
@@ -217,9 +217,9 @@ Do the MR solutions match?
 
 A good match between two chains usually have a MLAD value below 1.5
 whereas a bad match usually have a value above 2.0. The RMSD value for each match is
-also computed using the sequence alignment that the SSM superpose program 
+also computed using the sequence alignment that the SSM superpose program
 uses. But without superposing the chains. If a match is good the RMSD will be small
-just like the MLAD value. It is advisable to visually inspect that the chains of 
+just like the MLAD value. It is advisable to visually inspect that the chains of
 structures have been transformed to the same origins in a molecular graphics viewing
 program.
 
@@ -336,4 +336,4 @@ alignment in three dimensions.** E. Krissinel and K. Henrick
 List of all available keywords
 ------------------------------
 
-{{phil:phaser.command_line.find_alt_orig_sym_mate}}
+{{phil:phaser.AlterOriginSymmate}}
