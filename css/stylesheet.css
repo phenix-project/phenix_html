@@ -108,48 +108,40 @@ li.phil-param {
 }
 
 
-.wrimagecard{
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  /* text-align: left;*/
-  position: relative;
-  background: #fff;
-  box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);
-  border-radius: 4px;
-  transition: all 0.3s ease;
+/* styling for buttons on index page */
+.indexcard{
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    position: relative;
+    background: #fff;
+    box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
-
-.wrimagecard-topimage_header{
-padding: 20px;
+.indexcard-topimage_header{
+  padding: 20px;
 }
-a.wrimagecard:hover, .wrimagecard-topimage:hover {
+a.indexcard:hover, .indexcard-topimage:hover {
     box-shadow: 2px 4px 8px 0px rgba(46,61,73,0.2);
 }
-.wrimagecard-topimage a {
+.indexcard-topimage a {
     width: 100%;
     height: 100%;
     display: block;
-}
-.wrimagecard-topimage_title {
-  padding: 10px;
-  font-weight: bold;
-    /*padding: 20px 24px;*/
-    /*height: 40px;*/
-    /*padding-bottom: 0.75rem;*/
-    position: relative;
-}
-.wrimagecard-topimage a {
     border-bottom: none;
     text-decoration: none;
     color: #525c65;
     transition: color 0.3s ease;
 }
-
-.CardTitle {
-  font-size: 14pt;
+.indexcard-topimage_title {
+    padding: 10px;
+    font-weight: bold;
+    position: relative;
+    font-size: 14pt;
 }
 
-/* definitions for image highlights */
+
+/* definitions for overview images hover */
 .area {
     background:#fff;
     display:block;
@@ -219,8 +211,6 @@ a.wrimagecard:hover, .wrimagecard-topimage:hover {
 #area5cryo:hover, #area6cryo:hover, #area7cryo:hover, #area8cryo:hover {
     opacity:0.4;
 }
-
-
 
 
 
