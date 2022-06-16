@@ -274,6 +274,25 @@ The procedure includes:
 
   Note that this procedure takes a lot of computation.
 
+Note on R-values in density modification
+----------------------------------------
+
+The R-value for density modification is quite different from a refinement R.  
+Basically the statistical (maximum-likelihood) density modification 
+procedure allows calculation of each structure factor based on the values of 
+all the other structure factors and the expectations about the map 
+(i.e, flat solvent, distribution of density values in protein, ncs, etc.)  
+These "map-phasing" structure factors are (at least in the first cycle) 
+independent of the starting structure factors and can be compared with the 
+measured data and an R-value obtained.  The values of these R-values range 
+from about 0.25 to 0.5 in most cases, and when the map is very good usually 
+the R values are smaller.  These R values do not involve any atomic model 
+so they are quite unlike a refinement R.
+
+For discussion of how map-likelihood structure factors are calculated in 
+Resolve, see  the Map-likelihood phasing reference below.
+
+
 Examples
 --------
 
@@ -458,6 +477,7 @@ Literature
 ----------
 
 {{citation:resolve_cryo_em}}
+{{citation:map_ml_phase}}
 
 Additional information
 ----------------------
