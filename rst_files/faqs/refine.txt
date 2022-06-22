@@ -380,7 +380,7 @@ you can enter atom selections manually by selecting "Detect NCS groups" from
 the Utilities menu.  If you have identified a structure where manual group
 assignment is necessary for refinement to behave properly at low resolution,
 this may indicate a bug in phenix.refine; please contact us directly by
-emailing "bugs@phenix-online.org".
+emailing "help@phenix-online.org".
 
 For the global/Cartesian NCS restraints, manual selections often **are**
 necessary, and the same menu item will open a different selection window if
@@ -637,7 +637,7 @@ target functions, restraints, and minimizers may be significant.  In some cases
 the explanation is as simple as running too few cycles of refinement for one
 or the other program.  In general, if you find a case where phenix.refine
 performs significantly worse than another program, we encourage you to contact
-us at bugs@phenix-online.org.
+us at help@phenix-online.org.
 
 **Are R-free flagged reflections included in the maps used for real-space
 refinement?**
@@ -666,7 +666,7 @@ voids?**
 In previous versions of Phenix, the bulk solvent mask was often being extended
 to include these regions.  This should no longer be a problem as of July 2013,
 but if you continue to see this effect, please contact us at
-bugs@phenix-online.org.
+help@phenix-online.org.
 
 **After coordinate and B-factor refinement the heavy atoms in my structure have
 negative mFo-DFc peaks.  How do I get rid of these?**
