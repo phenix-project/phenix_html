@@ -7,44 +7,82 @@ determination because the models can be very accurate over much of their
 length and the models come with accuracy estimates that allow removal
 of poorly-predicted regions.
 
-One-step procedure for creating an AlphaFold model with information from a map
-------------------------------------------------------------------------------
-
-You can generate an AlphaFold model that includes information from a density
-map using the "AlphaFold with density map" button in the Phenix GUI.  This
-button will open a Google Colab notebook where you can upload a density map
-and paste in a sequence and specify a resolution. The notebook will 
-iteratively generate AlphaFold models of your sequence, rebuild them using
-the map, and then use the rebuilt model as a template in a new cycle of 
-AlphaFold modeling.  This process can yield much more accurate AlphaFold
-models than simple AlphaFold modeling in many cases.  For a moderate sized
-protein chain the process takes a couple hours.  The general procedure below
-more or less consists of carrying out this same process in individual steps.
-
-Note that this procedure only works if the map is pretty clear.  Generally
-a map with resolution of about 4 A or better is likely to be useful.
-
-General procedure for using AlphaFold models in Phenix
+Overall procedure for using AlphaFold models in Phenix
 ------------------------------------------------------
 
-To use AlphaFold models in Phenix you can follow this overall procedure:
+A typical procedure for structure determination with AlphaFold models is:
+
+::
+
+  Analyze your data (xtriage for X-ray data or mtriage for cryo-EM)
+
+  Identify whether most parts of most of your structure can be predicted or modeled
+
+  Use Predict and build to automatically generate an interpretation of your data
+
+Analyzing your data
+-------------------
+
+It is a good idea to evaluate your data to have an idea of its resolution 
+and overall quality before working with it. You can use
+`phenix.xtriage <xtriage.html>`_ to do this for X-ray data and
+`phenix.mtriage <mtriage.html>`_ for cryo-EM data.
+For X-ray data in particular you will need to know the space group of your
+structure (or its enantiomer, as in P61 or P65).
+
+Identify whether most parts of most of your structure can be predicted or modeled
+---------------------------------------------------------------------------------
+
+You might want to go ahead and predict models for all the chains in your
+structure (even before getting the data) to get an idea of how much information
+you are going to get from structure prediction. You can use
+`phenix.predict_model <predict_model.html>`_
+to do this for protein chains.  For nucleic acid chains, normally you are going
+to have to either use an external procedure to predict their structures or to
+build them separately (i.e., with 
+`phenix.autobuild <autobuild.html>`_ .
+
+In general terms, if most parts of most of the components of your structure can 
+be predicted with high confidence (i.e., a value of the plDDT metric of  70
+or higher), then predicted models are likely to be very useful.
+
+Use Predict and build to automatically generate an interpretation of your data
+------------------------------------------------------------------------------
+
+If you have either cryo-EM or X-ray data with a resolution of about 4.5 A
+or better, and if you have useful predicted models for most of the components
+of your structure, you may be able to use Predict and build to
+automatically generate an initial interpretation of your data.
+
+The Predict and build procedure 
+(`phenix.predict_and_build <predict_and_build.html>`_) just requires a
+sequence file (one sequence for each chain in the model to be built) and
+either X-ray data (an mtz file) or cryo-EM data (two half-maps).  This
+procedure carries out iterative prediction and structure determination, yielding
+a final rebuilt model as well as a final morphed model that contains the 
+final set of predicted models.
+
+
+Other procedures for using AlphaFold models in Phenix
+-----------------------------------------------------
 
 
 1. Get an AlphaFold model (or a model from the PDB) for each chain in your
-structure.  You can use the "AlphaFold in Colab" button in the 
-Phenix GUI to do this using the Google Colab notebook system.
-(See also the `documentation for running AlphaFold <alphafold_in_colab.html>`_).
+structure.  You can use the `phenix.predict_model <predict_model.html>`_
+method in the
+Phenix GUI to do this using the Google Colab notebook system or the Phenix
+server.
 
-2. Trim the model and break into rigid domains.  You can use 
+2. Trim a model and break into rigid domains.  You can use 
 `phenix.process_predicted_model <process_predicted_model.html>`_ to do this.
 
-3. Dock your models (cryo-EM) or carry out molecular replacement 
+3. Dock models (cryo-EM) or carry out molecular replacement 
 (crystallography) to place your models in the right places in your map 
 or unit cell. You can use 
 `phenix.dock_predicted_model <dock_predicted_model.html>`_ (cryo-EM)
 or `phenix.phaser <phaser_mr.html>`_ (crystallography) to do this.
   
-4. Fill in the missing parts of your models with loop fitting or iterative 
+4. Fill in missing parts of your models with loop fitting or iterative 
 model-building.  You can do this 
 with `phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_
 for cryo-EM and `phenix.autobuild <autobuild.html>`_ for crystallography.
@@ -69,20 +107,17 @@ Iteration of AlphaFold and model-building with experimental data
 
 You may be able to improve your rebuilt AlphaFold model by iterating the
 AlphaFold step and including your rebuilt model as a template (and skipping
-any other templates).  You can do this with the the "AlphaFold" 
-button in the Phenix GUI to do this using the Google Colab notebook system.
-(See also the `documentation for running AlphaFold <alphafold_in_colab.html>`_).
-
-This process is what the "AlphaFold with density map" button on the Phenix
-GUI does for you automatically.
+any other templates).
+This process is what the `phenix.predict_and_build <predict_and_build.html>`_
+Phenix tool in the GUI does for you automatically.
 
 Structures with multiple chains
 -------------------------------
 
-If your structure has more than one chain, you will need to carry out some
-additional steps.  For a crystal structure, you'll want to generate a
-processed AlphaFold (or other) model for each chain and supply all of them
-to phenix.phaser for molecular replacement, usually all at once. 
+The `phenix.predict_and_build <predict_and_build.html>`_ tool can work with
+a structure with multiple chains, but the
+`phenix.dock_and_rebuild <dock_and_rebuild.html>`_ tool only works on one 
+chain at a time.
 
 For a cryo-EM structure, you can work with one chain at a time.  You can 
 use the whole map for each chain, or if you have some idea of what chain
@@ -106,15 +141,6 @@ also try running
 `phenix.dock_in_map <dock_in_map.html>`_ with one domain at a time and ask
 to find multiple copies; then you can choose the one that matches up with
 the other domains you have placed.
-
-Running rebuilding in a single step
------------------------------------
-
-For a cryo-EM structure, you can carry out steps 2-4 in one step with
-`phenix.dock_and_rebuild <dock_and_rebuild.html>`_. This just links the
-processing, docking, and rebuilding steps together.
-
-
 
 Background
 ----------
@@ -175,7 +201,8 @@ to fix small and large errors in the models that remain.
 
 You can also iterate the AlphaFold prediction using your rebuilt model as
 an input to a new round of AlphaFold
-(See also the `documentation for running AlphaFold <alphafold_in_colab.html>`_).
+(See also the `documentation for running AlphaFold predictions 
+<predict_model.html>`_).
 
 
 Literature

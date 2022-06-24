@@ -1,0 +1,95 @@
+PredictModel: Predict structures of chains in a sequence file
+=============================================================
+
+Author(s)
+---------
+
+-  predict_model: Tom Terwilliger
+
+Purpose
+-------
+
+Predict model can be used to generate predicted models from a sequence file.
+One predicted model is generated for each unique sequence.
+
+Sequence file
+-------------
+
+The sequence file that you supply specifies what is going to be predicted and
+how many copies of each chain are present in the structure (one for every copy
+in the sequence file).  All models that are created and input will be associated
+with one or more of the chains in your sequence file based on sequence 
+identity (normally every model should match a chain in the sequence file
+exactly).
+
+Model prediction
+----------------
+
+Predict model normally uses either a Phenix server or a Google Colab
+notebook to carry out AlphaFold prediction of one chain at a time. 
+
+The general procedure is to create a set of files that specify all the
+necessary inputs for model prediction (a sequence file, optional multiple
+sequence alignment file, optional templates, keywords for model prediction
+such as the number of models to generate, random seed, whether to use a
+multiple sequence alignment) and to package all these files in a single
+zipped tar (.tgz) file.  
+
+If Colab is specified, the Phenix GUI will provide a
+button that opens Google Colab in a browser, then you start the Colab 
+notebook and upload the zipped tar file. The notebook runs the prediction
+and downloads a .zip file with the results.  The Phenix GUI recognizes this
+file, opens it and puts the new prediction in the working directory. This
+directory is specified by the unique jobname that you provide for your work.
+You will need to be logged in to a Google account for this to work.
+
+If the Phenix server is specified, the Phenix GUI will use the Phenix server
+to carry out the prediction and put it in the working directory. You will
+need to have the address of the Phenix server for this to work.
+
+When prediction is being carried out, the Phenix GUI waits for the predicted
+models to appear in the working directory, then it writes out the resulting
+models.
+
+Examples
+--------
+
+Standard run of predict_model
+---------------------------------
+
+Running predict_model is easy. From the command-line you can type:
+
+::
+
+    phenix.predict_and_build jobname=myjob seq_file=seq.dat \
+      prediction_server=PhenixServer \
+      stop_after_predict=True rest_server.url=http://my_rest_server:2320/
+
+Server problems
+---------------
+
+The most common problem in running Predict model is that either the Phenix
+server or the Colab server is not working as expected.  Normally the first thing
+to try is just let the program retry (it will do this for a while normally).
+If that is not working, you can stop the program (abort in the GUI), and 
+run again with the same parameters (i.e., the same jobname) except changing 
+the server from PhenixServer to Colab or vice-versa.  That will give you another
+chance.  If neither server is working, you can take the files in the packaged
+.tgz file (listed in the GUI output), use them to get your own prediction with
+any server, and put the resulting predicted models in the place specified in 
+the GUI or program output.
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.predict_and_build}}

@@ -56,6 +56,7 @@ Molecular Replacement
 
 AlphaFold and other predicted models
 ------------------------------------
+- phenix.predict_and_build: Solve X-ray structure or interpret cryo-EM map with iterative prediction and rebuilding
 - phenix.process_predicted_model: Process AlphaFold2 and other predicted models
 - phenix.dock_predicted_model: Dock processed AlphaFold2 models into cryo-EM map
 - phenix.rebuild_predicted_model: Rebuild AlphaFold2 models into cryo-EM map based on docked domains

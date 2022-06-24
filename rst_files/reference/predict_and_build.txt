@@ -11,7 +11,14 @@ Purpose
 
 Predict and build can be used to generate predicted models and to use them
 to solve an X-ray structure by molecular replacement or to interpret a cryo-EM map. Predict and build then carries out iterative model rebuilding and
-prediction to improve the models.
+prediction to improve the models. The iterative procedure allows creation of
+more accurate predicted models than can be obtained with a simple prediction.
+
+Normally Predict and build is used as a way to automatically generate a 
+fairly accurate model starting from just a sequence file and either
+cryo-EM half-maps or X-ray data. Additionally Predict and build provides
+morphed versions of unrefined predicted models that can be useful as
+reference models for refinement.
 
 Steps in predict_and_build
 --------------------------
