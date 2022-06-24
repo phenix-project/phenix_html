@@ -1,0 +1,281 @@
+PredictAndBuild: Solving an X-ray structure or interpreting a cryo-EM map using predicted models
+================================================================================================
+
+Author(s)
+---------
+
+-  predict_and_build: Tom Terwilliger
+
+Purpose
+-------
+
+Predict and build can be used to generate predicted models and to use them
+to solve an X-ray structure by molecular replacement or to interpret a cryo-EM map. Predict and build then carries out iterative model rebuilding and
+prediction to improve the models.
+
+Steps in predict_and_build
+--------------------------
+
+The principal steps in predict_and_build are:
+
+::
+
+  Model prediction (e.g., with AlphaFold)
+
+  Model trimming
+
+  Structure solution by molecular replacement (X-ray)  or map interpretation
+  by docking (cryo-EM) to create a scaffold model
+
+  Morphing of original predicted models onto the scaffold model
+
+  Model refinement and rebuilding
+
+  Iteration of model prediction using the rebuilt models as templates
+
+Sequence file
+-------------
+
+The sequence file that you supply specifies what is going to be predicted and
+how many copies of each chain are present in the structure (one for every copy
+in the sequence file).  All models that are created and input will be associated
+with one or more of the chains in your sequence file based on sequence 
+identity (normally every model should match a chain in the sequence file
+exactly).
+
+Input data (cryo-EM)
+--------------------
+
+For cryo-EM maps, normally you will supply two full-size half-maps. These will
+be used in density modification to create a single full-size map. This map
+will then be boxed to extract just the part that contains the molecule (the
+part with high density).  Alternatively, you can supply a single full-size or 
+boxed map if you wish. 
+
+Input data (X-ray)
+------------------
+
+For a crystal structure, you will supply an mtz-style file containing data
+for Fobs and sigFobs.  Optionally this file can contain a test set 
+(FreeR_flags).  The space group specified in this data file 
+and its enantiomer, if any, will be used in structure determination.  This
+means you should run `phenix.xtriage <xtriage.html>`_ first so that you have
+a good idea of the space group.
+
+
+Model prediction
+----------------
+
+Predict and build normally uses either a Phenix server or a Google Colab
+notebook to carry out AlphaFold prediction of one chain at a time.  It can
+also use predictions that you supply or that you generate on demand and put
+in the same place on your computer as those that are created by one of 
+the servers.
+
+The general procedure is to create a set of files that specify all the
+necessary inputs for model prediction (a sequence file, optional multiple
+sequence alignment file, optional templates, keywords for model prediction
+such as the number of models to generate, random seed, whether to use a
+multiple sequence alignment) and to package all these files in a single
+zipped tar (.tgz) file.  
+
+If Colab is specified, the Phenix GUI will provide a
+button that opens Google Colab in a browser, then you start the Colab 
+notebook and upload the zipped tar file. The notebook runs the prediction
+and downloads a .zip file with the results.  The Phenix GUI recognizes this
+file, opens it and puts the new prediction in the working directory. This
+directory is specified by the unique jobname that you provide for your work.
+You will need to be logged in to a Google account for this to work.
+
+If the Phenix server is specified, the Phenix GUI will use the Phenix server
+to carry out the prediction and put it in the working directory. You will
+need to have the address of the Phenix server for this to work.
+
+When prediction is being carried out, the Phenix GUI waits for the predicted
+models to appear in the working directory, then it goes on to the next steps.
+If you want to create these models in some other way, you can just put them
+in the working directory (the expected file names are listed in the GUI when
+prediction starts) and they will be used.  Note that all prediction files
+must have all the residues in the sequence file present.
+
+Model trimming
+--------------
+
+The predicted models are trimmed to remove low-confidence sections and to
+split into compact domains using 
+`phenix.process_predicted_model <process_predicted_model.html>`_ . This
+allows the molecular replacement (X-ray) or docking (cryo-EM) procedures
+to use the most accurate parts of the models, increasing the chance of finding
+the correct solution.  Splitting into compact domains increases the chance
+of correctly placing parts of chains that have different orientations in the
+predicted model compared to the actual structure.
+
+Structure determination by molecular replacement (X-ray data)
+-------------------------------------------------------------
+
+Predict and build uses `phenix.phaser <phaser.html>`_ with all default
+parameters to solve a structure by molecular replacement. If your structure
+cannot be solved automatically in this way, then you will want to take your
+trimmed predicted models, solve your structure separately by molecular 
+replacement (e.g., by using `phenix.phaser <phaser.html>`_ but 
+changing some parameters), then supplying the molecular replacement model
+to Predict and build as a "docked model". After molecular replacement,
+domains are rearranged if necessary to allow sequential parts to be connected,
+creating a scaffold model for use in the morphing step to follow.
+
+The molecular replacement model is refined using the X-ray data, yielding 
+an m2Fo-DFc map. This map is density-modified as well, and the map that has
+the higher correlation with the refined model is used as the working map.
+
+Structure determination by docking (cryo-EM data)
+-------------------------------------------------
+
+Predict and build first carries out density modification based on the two
+half-maps that you provide. This creates an optimized map for interpretation.
+
+Predict and build then sequentially docks all the domains from all the 
+predicted models into the map.  After docking, the domains are rearranged
+if necessary to allow sequential parts to be connected.  This docking is
+carried out by `phenix.dock_and_rebuild <dock_and_rebuild.html>`_ . The
+rearranged docked model is the scaffold model that will be used in the next step.
+
+Morphing of original predicted models onto the scaffold model
+-------------------------------------------------------------
+
+The scaffold model obtained from predicted models and X-ray or cryo-EM maps
+usually contains one chain for each sequence in your sequence file.  Your
+predicted models normally include one model matching each unique sequence in
+the sequence file.  For each chain in the scaffold model, the predicted model
+that is most similar is then morphed (adjusted) to superimpose on the
+scaffold model.  
+
+In the simplest case, your predicted models all yielded
+a single domain in the trimming step. In this case the chains in your scaffold 
+model will match your predicted models exactly and morphing consistes of
+simple superposition of the full predicted model on the docked chain.  In a
+more complicated case, your trimmed model may have consisted of multiple
+domains for one chain, so that your scaffold model may have separately-placed
+domains for a particular chain. In this case, the morphing consists of 
+superimposing the parts of the full predicted model that match the scaffold,
+and smoothly deforming the connecting segments.
+
+Model refinement and rebuilding
+-------------------------------
+
+Model refinement and rebuilding is done by 
+`phenix.dock_and_rebuild <dock_and_rebuild.html>`_ .  This procedure consists
+of identifying all the parts of each chain that are either predicted with 
+low confidence or that do not match the density, rebuilding them in 
+several different ways, and picking the one that matches the density the best.
+Then the individual chains are refined with real-space refinement. 
+
+For X-ray data, the full model is refined using the X-ray data, yielding a
+new working map (2mFo-DFc or density modified, as in the molecular
+replacement step).
+
+
+Iteration of model prediction using the rebuilt models as templates
+-------------------------------------------------------------------
+
+A key element of the Predict and build procedure is iteration of model
+prediction using chains from the rebuilt model as templates. This 
+improves model prediction compared to a single prediction step.  Normally
+the entire procedure is repeated until the change in predicted models between
+subsequent cycles is small.
+
+Output models
+-------------
+
+The results of the Predict and build procedure are:
+
+::
+
+  A final morphed model.  This model is the last scaffold model and is 
+  normally suitable for use as a reference model in further refinement.
+  In cases where all residues are predicted with high confidence in 
+  the final cycle this model will consist of pure predicted models, 
+  placed appropriately to match the map.  In cases where some residues 
+  are not predicted with high confidence, the low-confidence regions 
+  will be morphed in a way that connects the high-confidence regions. 
+
+  A final rebuilt model. This model is obtained by rebuilding and refining
+  the final morphed model.  It is normally suitable for use as a 
+  starting point for further model rebuilding, refinement, and addition of
+  ligands and covalent modifications.
+
+The jobname and restarting or re-running jobs
+---------------------------------------------
+
+Predict and build uses a jobname to keep track of all the work associated
+with a particular job.  This jobname can be used in multiple runs in the
+Phenix GUI or from command line.  If you specify a jobname for a run that
+matches one that has already been run (and if you leave the carry_on keyword
+set at True), then running the job will result in reading all the results 
+that had been accumulated by the previous job, then continuing from where it
+left off.
+
+The jobname lets you restart after stopping or crashing. It also lets you
+change some parameters and carry on from where you left off.
+
+Examples
+--------
+
+Standard run of predict_and_build
+---------------------------------
+
+Running predict_and_build is easy. From the command-line you can type:
+
+::
+
+    phenix.predict_and_build jobname=myjob xray_data=my_xray_data.mtz seq_file=seq.dat
+
+This will carry out all the steps of prediction, molecular replacement and
+iterative rebuilding and prediction to yield my_model_rebuilt.pdb
+
+If you run again with the same command, Predict and build will read all the previous files and just give you the results.
+
+Server problems
+---------------
+
+The most common problem in running Predict and build is that either the Phenix
+server or the Colab server is not working as expected.  Normally the first thing
+to try is just let the program retry (it will do this for a while normally).
+If that is not working, you can stop the program (abort in the GUI), and 
+run again with the same parameters (i.e., the same jobname) except changing 
+the server from PhenixServer to Colab or vice-versa.  That will give you another
+chance.  If neither server is working, you can take the files in the packaged
+.tgz file (listed in the GUI output), use them to get your own prediction with
+any server, and put the resulting predicted models in the place specified in 
+the GUI or program output.
+
+
+Problems with low-confidence models
+-----------------------------------
+
+If your predicted models have low confidence, the entire procedure may not work.
+
+If the resolution of your data is about 4.5 A or better, and most of most of 
+your predicted models have high confidence (plDDT > 70), then
+the procedure has a good chance of working. Otherwise, the chances are lower.
+
+Symmetry problems
+-----------------
+
+If your cryo-EM map has pseudo-symmetry (like a proteasome) you might need 
+to box one subunit or try ssm_search=False to use a more thorough search 
+in docking.
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.predict_and_build}}
