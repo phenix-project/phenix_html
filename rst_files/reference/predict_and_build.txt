@@ -103,7 +103,7 @@ models to appear in the working directory, then it goes on to the next steps.
 If you want to create these models in some other way, you can just put them
 in the working directory (the expected file names are listed in the GUI when
 prediction starts) and they will be used.  Note that all prediction files
-must have all the residues in the sequence file present.
+must have all the residues in the corresponding sequence present.
 
 Model trimming
 --------------
@@ -131,7 +131,7 @@ domains are rearranged if necessary to allow sequential parts to be connected,
 creating a scaffold model for use in the morphing step to follow.
 
 The molecular replacement model is refined using the X-ray data, yielding 
-an m2Fo-DFc map. This map is density-modified as well, and the map that has
+a 2mFo-DFc map. This map is density-modified as well, and the map that has
 the higher correlation with the refined model is used as the working map.
 
 Structure determination by docking (cryo-EM data)
