@@ -119,8 +119,8 @@ a structure with multiple chains, but the
 `phenix.dock_and_rebuild <dock_and_rebuild.html>`_ tool only works on one 
 chain at a time.
 
-For a cryo-EM structure, you can work with one chain at a time.  You can 
-use the whole map for each chain, or if you have some idea of what chain
+For a cryo-EM structure, you can work with one chain at a time if you want.  
+You can use the whole map for each chain, or if you have some idea of what chain
 goes where, you can mask out or box the map so that it shows only one
 chain and use that as your map.  Boxing or masking the map can speed up
 the process and improve the result considerably.
