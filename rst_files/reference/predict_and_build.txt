@@ -224,6 +224,16 @@ left off.
 The jobname lets you restart after stopping or crashing. It also lets you
 change some parameters and carry on from where you left off.
 
+The jobname also lets you move a project to another computer if you want. You
+can copy the jobname_PredictAndBuild directory and put it in any
+directory on any computer. Then if you run PredictAndBuild in that directory
+on that computer with that jobname it will carry on from where you left off.
+
+Note that the file names inside the jobname_PredictAndBuild directory contain
+the jobname, so if you want to make a new jobname from these files and
+go on with them using the new jobname, both the directory and the file names 
+would have to be changed.
+
 Examples
 --------
 
