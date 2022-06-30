@@ -166,8 +166,8 @@ domains for a particular chain. In this case, the morphing consists of
 superimposing the parts of the full predicted model that match the scaffold,
 and smoothly deforming the connecting segments.
 
-Model refinement and rebuilding
--------------------------------
+Model refinement, rebuilding, and trimming
+------------------------------------------
 
 Model refinement and rebuilding is done by 
 `phenix.dock_and_rebuild <dock_and_rebuild.html>`_ .  This procedure consists
@@ -176,7 +176,11 @@ low confidence or that do not match the density, rebuilding them in
 several different ways, and picking the one that matches the density the best.
 Then the individual chains are refined with real-space refinement. 
 
-For X-ray data, the full model is refined using the X-ray data, yielding a
+At the end of rebuilding, residues in the model that are in poor density
+are identified and marked with zero occupancies.  A new trimmed final model
+lacking these residues is also created
+
+For X-ray data, the trimmed model is refined using the X-ray data, yielding a
 new working map (2mFo-DFc or density modified, as in the molecular
 replacement step).
 
@@ -197,18 +201,18 @@ The results of the Predict and build procedure are:
 
 ::
 
-  A final morphed model.  This model is the last scaffold model and is 
+  A final docked model.  This model is the last scaffold model and is 
   normally suitable for use as a reference model in further refinement.
   In cases where all residues are predicted with high confidence in 
   the final cycle this model will consist of pure predicted models, 
-  placed appropriately to match the map.  In cases where some residues 
-  are not predicted with high confidence, the low-confidence regions 
-  will be morphed in a way that connects the high-confidence regions. 
+  placed appropriately to match the map.
 
-  A final rebuilt model. This model is obtained by rebuilding and refining
-  the final morphed model.  It is normally suitable for use as a 
+  A final trimmed rebuilt model. This model is obtained by rebuilding and 
+  refinement, followed by trimming residues that are in poor density.
+  It is normally suitable for use as a 
   starting point for further model rebuilding, refinement, and addition of
-  ligands and covalent modifications.
+  ligands and covalent modifications.  A final untrimmed model is also
+  provided. This can be used as a hypothesis for the poorly-fitting regions.
 
 The jobname and restarting or re-running jobs
 ---------------------------------------------
@@ -233,6 +237,19 @@ Note that the file names inside the jobname_PredictAndBuild directory contain
 the jobname, so if you want to make a new jobname from these files and
 go on with them using the new jobname, both the directory and the file names 
 would have to be changed.
+
+The universal solution for problems in PredictAndBuild
+------------------------------------------------------
+
+The solution to many problems that you may have with PredictAndBuild is simply
+to completely stop running your job, then restart, using the same jobname as
+before. This will pick up where you left off.  It is suitable for cases
+where something crashed, where you accidentally stopped a job, where you lost
+connections to the server, or where something else went wrong.
+
+In some cases to stop running your job you might have to stop all python 
+processes on your computer and quit the GUI, but in most cases you can 
+just hit Abort in the GUI and wait a little.
 
 Examples
 --------
