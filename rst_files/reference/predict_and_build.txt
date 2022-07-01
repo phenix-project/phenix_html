@@ -203,8 +203,7 @@ The results of the Predict and build procedure are:
 
   A final docked model.  This model is the last scaffold model and is 
   normally suitable for use as a reference model in further refinement.
-  In cases where all residues are predicted with high confidence in 
-  the final cycle this model will consist of pure predicted models, 
+  Normally this model will consist of pure predicted models, 
   placed appropriately to match the map.
 
   A final trimmed rebuilt model. This model is obtained by rebuilding and 
@@ -213,6 +212,11 @@ The results of the Predict and build procedure are:
   starting point for further model rebuilding, refinement, and addition of
   ligands and covalent modifications.  A final untrimmed model is also
   provided. This can be used as a hypothesis for the poorly-fitting regions.
+
+  In some cases (low-resolution data), the trimmed rebuilt model may have very
+  poor geometry and you might want to use the final docked model as the
+  starting point for refinement and continuation of building of your structure.
+
 
 The jobname and restarting or re-running jobs
 ---------------------------------------------
