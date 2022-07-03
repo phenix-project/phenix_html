@@ -47,11 +47,7 @@ Using DEN
 
 How to run the command line version:
 
-  % phenix.den_refine model.pdb data.mtz
-
-To include a reference model, run:
-
-  % phenix.den_refine model.pdb data.mtz den.reference_file=reference.pdb
+  % phenix.refine model.pdb data.mtz strategy=den
 
 See the full list of options below.
 
