@@ -22,6 +22,8 @@ import iotbx.phil
 import libtbx.load_env
 import libtbx.utils
 
+from libtbx.utils import to_str
+
 # XXX it would be better not to set this globally if possible...
 HTML_PATH = libtbx.env.find_in_repositories(relative_path="phenix_html")
 if HTML_PATH is None:
@@ -77,6 +79,8 @@ class FormatPHIL(object):
         pass
 
     # Check if the module attribute is a string, a scope, ...
+    if sys.version_info[0] == 3:
+      unicode = str
     if isinstance(master_params, libtbx.phil.scope):
       pass
     elif isinstance(master_params, (str, unicode)):
@@ -92,7 +96,7 @@ class FormatPHIL(object):
 
   def format(self):
     """Return PHIL scope as HTML."""
-    return ET.tostring(self._walk())
+    return to_str(ET.tostring(self._walk()))
 
   def _walk_elem(self, param, depth=0, parent=None, cls='phil-param'):
     """Create element from PHIL param. cls are the CSS classes."""
@@ -137,14 +141,15 @@ class FormatPHIL(object):
 
 class Publish(object):
   # Regular expressions for parsing {{tags}} and keywords.
-  TAG_RE = re.compile("""({{(?P<tag>\w*)(:)?(?P<command>.+?)?}})""")
-  KEYWORDS_RE = re.compile("""([a-zA-Z]{3,})""")
+  TAG_RE = re.compile(r"""({{(?P<tag>\w*)(:)?(?P<command>.+?)?}})""")
+  KEYWORDS_RE = re.compile(r"""([a-zA-Z]{3,})""")
 
   # Render interface, tags
   def render(self, root=''):
     return ''
 
   def _render_tags(self, doc, root=''):
+    doc = to_str(doc)
     for match in self.TAG_RE.finditer(doc):
       sub = match.groups()[0]
       tag = match.group('tag')
@@ -175,8 +180,12 @@ class PublishRST(Publish):
     self.filename = filename
     self.doc = None
     self.data = None
-    with codecs.open(self.filename, 'r', encoding='utf-8') as f:
-      self.data = f.read()
+    if sys.version_info[0] == 2:
+      with codecs.open(self.filename, 'r', encoding='utf-8') as f:
+        self.data = f.read()
+    else:
+      with open(self.filename, 'r') as f:
+        self.data = f.read()
 
   def render(self, root=''):
     """Return RST as HTML and process {{tags}}."""
@@ -185,6 +194,7 @@ class PublishRST(Publish):
     # Process tags.
     doc = self._render_tags(doc, root=root)
     self.doc = replace_phenix_version(doc)
+    self.doc = to_str(self.doc)
     return self.doc
 
   def index(self):
@@ -208,7 +218,7 @@ class PublishRST(Publish):
     """Parse keywords from string."""
     if text is None:
       return set()
-    return set(self.KEYWORDS_RE.findall(text))
+    return set(self.KEYWORDS_RE.findall(to_str(text)))
 
 class FormatIndex(Publish):
   """Index page."""
@@ -243,7 +253,7 @@ class FormatIndex(Publish):
     parent = ET.Element('ul', attrib={'class':'phenix-index'})
     for keyword, references in sorted(merged.items()):
       elem = ET.SubElement(parent, 'li')
-      elem.text = str(keyword).encode('utf-8')
+      elem.text = to_str(keyword)
       child = ET.SubElement(elem, 'ul')
       for reference in sorted(references):
         ref = ET.SubElement(child, 'li')
@@ -261,7 +271,7 @@ class FormatIndex(Publish):
     # Filter result.
     for word in set(merged.keys()) & self.reject:
       del merged[word]
-    for word in merged.keys():
+    for word in list(merged.keys()):
       if len(merged[word]) > cutoff:
         del merged[word]
     return merged
