@@ -77,7 +77,7 @@ Running dock_and_rebuild is easy. From the command-line you can type:
 ::
 
     phenix.dock_and_rebuild model=my_model.pdb \
-       map_file=my_map.ccp4 \
+       full_map=my_map.ccp4 \
        resolution=3
 
 This will carry out all the steps of processing, docking and rebuilding
