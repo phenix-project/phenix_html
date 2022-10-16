@@ -93,8 +93,8 @@ and downloads a .zip file with the results.  The Phenix GUI recognizes this
 file, opens it and puts the new prediction in the Carry-on directory. This
 directory is contained inside your working directory. In the GUI it is 
 normally a directory with the
-same number as the job and ending in "PredictAndBuild":  for
-PredictAndBuild_30 it is PredictAndBuild_30_PredictAndBuild.
+same number as the job and ending in "CarryOn":  for
+PredictAndBuild_30 it is PredictAndBuild_30_CarryOn.
 You will need to be logged in to a Google account for this to work.
 
 If the Phenix server is specified, the Phenix GUI will use the Phenix server
@@ -227,8 +227,8 @@ The Carry-on directory and restarting or re-running jobs
 Predict and build saves the working files in a carry_on_directory.
 At the end of the log file (and in the GUI at the end of a run) the
 carry-on directory is listed.  In the GUI it is normally a directory with the
-same number as the job and ending in "PredictAndBuild":  for 
-PredictAndBuild_30 it is PredictAndBuild_30_PredictAndBuild.
+same number as the job and ending in "CarryOn":  for 
+PredictAndBuild_30 it is PredictAndBuild_30_CarryOn.
 If you have a previous run that you want to restart or continue, specify
 the name of this file in the GUI as the Carry-on directory, make sure
 the flag "carry_on=True" is set, and rerun the
