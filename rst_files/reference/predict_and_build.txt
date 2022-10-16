@@ -90,8 +90,11 @@ If Colab is specified, the Phenix GUI will provide a
 button that opens Google Colab in a browser, then you start the Colab 
 notebook and upload the zipped tar file. The notebook runs the prediction
 and downloads a .zip file with the results.  The Phenix GUI recognizes this
-file, opens it and puts the new prediction in the working directory. This
-directory is specified by the unique jobname that you provide for your work.
+file, opens it and puts the new prediction in the Carry-on directory. This
+directory is contained inside your working directory. In the GUI it is 
+normally a directory with the
+same number as the job and ending in "PredictAndBuild":  for
+PredictAndBuild_30 it is PredictAndBuild_30_PredictAndBuild.
 You will need to be logged in to a Google account for this to work.
 
 If the Phenix server is specified, the Phenix GUI will use the Phenix server
@@ -218,36 +221,43 @@ The results of the Predict and build procedure are:
   starting point for refinement and continuation of building of your structure.
 
 
-The jobname and restarting or re-running jobs
----------------------------------------------
+The Carry-on directory and restarting or re-running jobs
+--------------------------------------------------------
 
-Predict and build uses a jobname to keep track of all the work associated
-with a particular job.  This jobname can be used in multiple runs in the
-Phenix GUI or from command line.  If you specify a jobname for a run that
-matches one that has already been run (and if you leave the carry_on keyword
-set at True), then running the job will result in reading all the results 
+Predict and build saves the working files in a carry_on_directory.
+At the end of the log file (and in the GUI at the end of a run) the
+carry-on directory is listed.  In the GUI it is normally a directory with the
+same number as the job and ending in "PredictAndBuild":  for 
+PredictAndBuild_30 it is PredictAndBuild_30_PredictAndBuild.
+If you have a previous run that you want to restart or continue, specify
+the name of this file in the GUI as the Carry-on directory, make sure
+the flag "carry_on=True" is set, and rerun the
+job with the same inputs (otherwise) as before.
+Then running the job will result in reading all the results 
 that had been accumulated by the previous job, then continuing from where it
 left off.
 
-The jobname lets you restart after stopping or crashing. It also lets you
+The carry-on directory lets you restart after stopping or crashing. 
+It also lets you
 change some parameters and carry on from where you left off.
 
 The jobname also lets you move a project to another computer if you want. You
-can copy the jobname_PredictAndBuild directory and put it in any
-directory on any computer. Then if you run PredictAndBuild in that directory
-on that computer with that jobname it will carry on from where you left off.
+can copy the carry-on directory and put it in any
+directory on any computer. Then you can specify that directory as the
+Carry-on directory on that computer and it will carry on from 
+where you left off.
 
-Note that the file names inside the jobname_PredictAndBuild directory contain
-the jobname, so if you want to make a new jobname from these files and
-go on with them using the new jobname, both the directory and the file names 
-would have to be changed.
+Note that the file names inside the Carry-on directory contain
+the jobname, so if you want to move individual files around, you might have
+to change their names.
 
-The universal solution for problems in PredictAndBuild
-------------------------------------------------------
+The universal solution for (most) problems in PredictAndBuild
+-------------------------------------------------------------
 
 The solution to many problems that you may have with PredictAndBuild is simply
-to completely stop running your job, then restart, using the same jobname as
-before. This will pick up where you left off.  It is suitable for cases
+to completely stop running your job, then restart, specifying the
+Carry-on directory from the job that stopped.
+This will pick up where you left off.  It is suitable for cases
 where something crashed, where you accidentally stopped a job, where you lost
 connections to the server, or where something else went wrong.
 
