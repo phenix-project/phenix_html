@@ -79,16 +79,12 @@ class FormatPHIL(object):
         pass
 
     # Check if the module attribute is a string, a scope, ...
-    if sys.version_info[0] == 3:
-      unicode = str
-    if isinstance(master_params, libtbx.phil.scope):
-      pass
-    elif isinstance(master_params, (str, unicode)):
+    if (sys.version_info.major == 2 and isinstance(master_params, (str, unicode))) \
+      or isinstance(master_params, str):
       master_params = iotbx.phil.parse(master_params, process_includes=True)
     elif hasattr(master_params, '__call__'):
       master_params = master_params()
-    else:
-      pass
+    assert isinstance(master_params, libtbx.phil.scope)
 
     if not master_params:
       raise Exception("No PHIL command found for %s." % command)
