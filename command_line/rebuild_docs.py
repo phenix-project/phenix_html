@@ -368,6 +368,8 @@ def run (args, out=sys.stdout) :
   top_dir = os.path.dirname(HTML_PATH)
   rst_dir = os.path.join(HTML_PATH, "rst_files")
   docs_dir = libtbx.env.under_root('doc')
+  if libtbx.env.installed:
+    docs_dir = os.path.join(libtbx.env.under_root('phenix'), 'doc')
   if params.top_dir:
     top_dir = os.path.abspath(params.top_dir)
     rst_dir = os.path.join(top_dir, "rst_files")
