@@ -1,4 +1,4 @@
-"""Convert PHENIX reStructuredText files to HTML
+"""Convert Phenix reStructuredText files to HTML
 
 This includes PHIL documentaiton and citations.
 
@@ -51,7 +51,7 @@ class FormatPHIL(object):
   """Format PHIL as HTML."""
 
   def __init__(self, command):
-    """Command is a PHENIX command, e.g. phenix.refine"""
+    """Command is a Phenix command, e.g. phenix.refine"""
     # Search the module for the following attributes:
     search = ["master_params", "master_phil", "master_params_str", "master_phil_str", "get_master_phil"]
     master_params = None
@@ -273,7 +273,7 @@ class FormatIndex(Publish):
     return merged
 
 class FormatOverview(Publish):
-  """Format PHENIX Overview page."""
+  """Format Phenix Overview page."""
   def render(self, root=''):
     """Return HTML formatted overview page."""
     with open(os.path.join(HTML_PATH, 'phenix_documentation.html')) as f:
@@ -282,7 +282,7 @@ class FormatOverview(Publish):
     with open(os.path.join(HTML_PATH, 'template.html')) as f:
       template = f.read()
     doc = template%{
-      'head': """<title>PHENIX Documentation</title>""",
+      'head': """<title>Phenix Documentation</title>""",
       'html_body': doc,
       'root': ''
     }
@@ -379,7 +379,7 @@ def run (args, out=sys.stdout) :
   if (not os.path.exists(docs_dir)):
     os.makedirs(docs_dir)
 
-  print("Building PHENIX documentation in %s"%top_dir, file=out)
+  print("Building Phenix documentation in %s"%top_dir, file=out)
   print("The complete documentation will be in:", file=out)
   print("  %s" % docs_dir, file=out)
   print("  creating restructured text files", file=out)
