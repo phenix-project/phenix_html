@@ -88,10 +88,7 @@ The program has several restrictions compared to phenix.refine:
     afterwards.  **You must still supply and necessary CIFs to the program,
     as these will be used later when running the final phenix.refine step.**
 
-  - RNA is not supported; however, the separate program `ERRASER
-    <erraser.html>`_ (Chou et al. 2012) which also employs both Rosetta and
-    Phenix may be used to optimize the RNA components of the model in real
-    space.
+  - RNA is not supported.
 
   - Alternate conformations are not supported.
 

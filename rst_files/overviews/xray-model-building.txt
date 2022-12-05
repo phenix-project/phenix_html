@@ -58,11 +58,4 @@ phenix.autobuild <../reference/autobuild.html>`__
    both crystallographic maps and cryo-EM maps.  Taking into account
    symmetry used to create a map, it builds only the unique
    part of the model and expands to the remaining NCS-related copies.
--  `phenix.erraser <../reference/erraser.html>`__: This program uses
-   *ERRASER* (Enumerative Real-space Refinement ASsisted by
-   Electron-density under Rosetta) to rebuild RNA structures by
-   combining Rosetta and Phenix. By supplementing the Rosetta RNA
-   scoring function with electron-density restraint, *ERRASER* can
-   confidently reduce the errors in RNA crystallographic models while
-   retaining a good fit to the diffraction data.
 
