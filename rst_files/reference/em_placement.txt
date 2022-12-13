@@ -1,0 +1,90 @@
+Docking a model into a cryo-EM map with em_placement
+====================================================
+
+Authors
+-------
+
+- Randy J Read, Claudia Millán, Airlie J McCoy, Thomas C Terwilliger
+
+Purpose
+-------
+
+The em_placement tool docks the input model in a cryo-EM reconstruction, using
+the full map and half-maps in an adaptive search strategy.
+
+How em_placement works
+----------------------
+
+The half-maps are compared and analysed to determine signal and noise power as
+smooth functions in Fourier space. This information is used to predict whether
+or not a rotation search with a structural model is likely to succeed. If not,
+the maps are divided into sub-volumes small enough that the noise will be reduced
+to a level where signal from the rotation search can be detected. Following this,
+translation searches in the full map or the sub-volumes are carried out. Finally,
+rigid-body refinement is carried out using spherical sub-volumes centered on
+potential solutions to give the final solutions and confidence indicators.
+
+A log-likelihood-gain (LLG) score greater than 60 suggests that a solution is
+significantly better than random.
+
+Running em_placement
+--------------------
+
+There is not yet a GUI to run em_placement, which should instead be controlled by
+an input script using the phil syntax. A basic phil script would look like
+the following, in which a model derived from the membrane domain of PDB entry
+4cof is docked into the reconstruction of the GABA receptor in EMDB entry 11657.
+
+::
+
+  voyager
+  {
+    remove_phasertng_folder = True
+
+    map_model
+    {
+      full_map = emd_11657.map
+      half_map = emd_11657_half_map_1.map
+      half_map = emd_11657_half_map_2.map
+      best_resolution = 1.7
+      point_group_symmetry = C5
+      sequence_composition = 7a5v.fa
+    }
+
+    biological_unit {
+      molecule
+      {
+        molecule_name = 4cofA_membrane
+        map_or_model_file = 4cofA_membrane.pdb
+        starting_model_vrms = 0.8
+      }
+    }
+
+  }
+
+If the phil script is in a file named docking_script.phil, the search would
+be run from the command-line as follows.
+
+::
+
+  phenix.voyager.em_placement docking_script.phil
+
+Most parameters specified in this script have been named in a way intended to
+convey the purpose of that parameter.
+
+The remove_phasertng_folder parameter is activated to clean up the graph
+database produced by phasertng, which could be used in other circumstances as
+part of a larger automation framework or for debugging.
+
+The point_group_symmetry feature is only used at the moment to optionally
+generate a full assembly from a single copy.
+
+The sequence_composition parameter specifies the name of a file containing the
+sequences of all the components in the reconstruction.
+
+Literature
+----------
+
+Millán C, McCoy AJ, Terwilliger TC and Read RJ. Likelihood-based docking of
+models into cryo-EM maps. To be published.
+

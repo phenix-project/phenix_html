@@ -42,15 +42,11 @@ Standard run of emplace_local
 
 ::
 
-  phenix.voyager.emplace_local map=full.map map1=half1.map map2=half2.map d_min=3.3 model_file=model.pdb sphere_center=100,140,170
+  phenix.voyager.emplace_local map=full.map map1=half1.map map2=half2.map
+      d_min=3.3 model_file=model.pdb sphere_center=100,140,170
 
 Literature
 ----------
 
-Millán C, McCoy AJ, Terwilliger TC and Read RJ. Fast and effective
-likelihood-based docking of models into cryo-EM maps. To be published.
-
-List of all available keywords
-------------------------------
-
-{{phil:phaser_voyager.src.New_Voyager.programs.emplace_local}}
+Millán C, McCoy AJ, Terwilliger TC and Read RJ. Likelihood-based docking of
+models into cryo-EM maps. To be published.
