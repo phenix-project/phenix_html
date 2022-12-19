@@ -10,19 +10,20 @@ Purpose
 -------
 
 The em_placement tool docks the input model in a cryo-EM reconstruction, using
-the full map and half-maps in an adaptive search strategy.
+the half-maps in an adaptive search strategy.
 
 How em_placement works
 ----------------------
 
 The half-maps are compared and analysed to determine signal and noise power as
 smooth functions in Fourier space. This information is used to predict whether
-or not a rotation search with a structural model is likely to succeed. If not,
-the maps are divided into sub-volumes small enough that the noise will be reduced
-to a level where signal from the rotation search can be detected. Following this,
-translation searches in the full map or the sub-volumes are carried out. Finally,
-rigid-body refinement is carried out using spherical sub-volumes centered on
-potential solutions to give the final solutions and confidence indicators.
+or not a rotation search with a structural model over the full map volume is
+likely to succeed. If not, the maps are divided into sub-volumes small enough that
+the noise will be reduced to a level where signal from the rotation search can be
+detected. Following this, translation searches in the full map volume or the
+sub-volumes are carried out. Finally, rigid-body refinement is carried out using
+spherical sub-volumes centered on potential solutions to give the final solutions
+and confidence indicators.
 
 A log-likelihood-gain (LLG) score greater than 60 suggests that a solution is
 significantly better than random.
@@ -43,7 +44,6 @@ the following, in which a model derived from the membrane domain of PDB entry
 
     map_model
     {
-      full_map = emd_11657.map
       half_map = emd_11657_half_map_1.map
       half_map = emd_11657_half_map_2.map
       best_resolution = 1.7
@@ -84,6 +84,9 @@ sequences of all the components in the reconstruction.
 
 Literature
 ----------
+
+Read RJ, Millán C, McCoy AJ and Terwilliger TC. Likelihood-based signal and
+noise analysis for docking of models into cryo-EM maps. To be published.
 
 Millán C, McCoy AJ, Terwilliger TC and Read RJ. Likelihood-based docking of
 models into cryo-EM maps. To be published.
