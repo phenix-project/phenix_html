@@ -40,7 +40,7 @@ you are going to get from structure prediction. You can use
 to do this for protein chains.  For nucleic acid chains, normally you are going
 to have to either use an external procedure to predict their structures or to
 build them separately (i.e., with 
-`phenix.autobuild <autobuild.html>`_ .
+`phenix.autobuild <autobuild.html>`_ ).
 
 In general terms, if most parts of most of the components of your structure can 
 be predicted with high confidence (i.e., a value of the plDDT metric of  70
@@ -70,22 +70,31 @@ Other procedures for using AlphaFold models in Phenix
 1. Get an AlphaFold model (or a model from the PDB) for each chain in your
 structure.  You can use the `phenix.predict_model <predict_model.html>`_
 method in the
-Phenix GUI to do this using the Google Colab notebook system or the Phenix
-server.
+Phenix GUI to do this using the Phenix server (or the Google Colab notebook 
+system if you wish).
 
-2. Trim a model and break into rigid domains.  You can use 
+2. Trim your model and break it into rigid domains.  You can use 
 `phenix.process_predicted_model <process_predicted_model.html>`_ to do this.
 
 3. Dock models (cryo-EM) or carry out molecular replacement 
 (crystallography) to place your models in the right places in your map 
-or unit cell. You can use 
-`phenix.dock_predicted_model <dock_predicted_model.html>`_ (cryo-EM)
-or `phenix.phaser <phaser_mr.html>`_ (crystallography) to do this.
+or unit cell. For cryo-EM structures, you can supply models directly to
+`phenix.predict_and_build <predict_and_build.html>`_ if you want.
+Alternatively you can dock your models with
+`phenix.dock_predicted_model <dock_predicted_model.html>`_ or
+`phenix.em_placement <em_placement.html>`_.  For X-ray structures you 
+can also use `phenix.predict_and_build <predict_and_build.html>`_
+or you can
+use `phenix.phaser <phaser_mr.html>`_ (crystallography) to find the locations
+of your models in the crystal.
   
 4. Fill in missing parts of your models with loop fitting or iterative 
-model-building.  You can do this 
-with `phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_
-for cryo-EM and `phenix.autobuild <autobuild.html>`_ for crystallography.
+model-building.  
+You can do this with `phenix.predict_and_build <predict_and_build.html>`_ 
+if you want.
+Alternatively you can use
+`phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_
+for cryo-EM or `phenix.autobuild <autobuild.html>`_ for crystallography.
 
 5. Refine the rebuilt predicted models that you obtain.  You can use
 `phenix.real_space_refine <real_space_refine.html>`_ for cryo-EM models and
@@ -115,11 +124,8 @@ Structures with multiple chains
 -------------------------------
 
 The `phenix.predict_and_build <predict_and_build.html>`_ tool can work with
-a structure with multiple chains, but the
-`phenix.dock_and_rebuild <dock_and_rebuild.html>`_ tool only works on one 
-chain at a time.
-
-For a cryo-EM structure, you can work with one chain at a time if you want.  
+a structure with multiple chains, but you may wish to run one chain at a time
+for a cryo-EM structure.
 You can use the whole map for each chain, or if you have some idea of what chain
 goes where, you can mask out or box the map so that it shows only one
 chain and use that as your map.  Boxing or masking the map can speed up
@@ -131,7 +137,8 @@ Boxing maps before rebuilding
 For complex structures with many chains or with chains that contain domains
 with long linkers, docking can be very complicated and take a long
 time. In these cases it may be especially helpful to box or mask the map
-if you can do that.  If you cannot, you might want to run the docking step
+if you have an idea where each chain is located.
+If you cannot, you might want to run the docking step
 individually with each domain that you get from 
 `phenix.process_predicted_model <process_predicted_model.html>`_ 
 and then examine where they went in the map. If the domains seem to correspond
