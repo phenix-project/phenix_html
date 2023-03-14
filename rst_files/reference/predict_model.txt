@@ -35,6 +35,10 @@ such as the number of models to generate, random seed, whether to use a
 multiple sequence alignment) and to package all these files in a single
 zipped tar (.tgz) file.  
 
+If the Phenix server is specified, the Phenix GUI will use the Phenix server
+to carry out the prediction and put it in the working directory. This is the
+normal way to use this tool.
+
 If Colab is specified, the Phenix GUI will provide a
 button that opens Google Colab in a browser, then you start the Colab 
 notebook and upload the zipped tar file. The notebook runs the prediction
@@ -43,13 +47,69 @@ file, opens it and puts the new prediction in the working directory. This
 directory is specified by the unique jobname that you provide for your work.
 You will need to be logged in to a Google account for this to work.
 
-If the Phenix server is specified, the Phenix GUI will use the Phenix server
-to carry out the prediction and put it in the working directory. You will
-need to have the address of the Phenix server for this to work.
-
 When prediction is being carried out, the Phenix GUI waits for the predicted
 models to appear in the working directory, then it writes out the resulting
 models.
+
+MSA calculation vs model prediction
+-----------------------------------
+
+If you use the Phenix server, the calculation of multiple sequence alignments
+(MSAs) is a separate step from model prediction.  The Phenix GUI
+on your computer sends a request to the mmseqs2 server, which creates an MSA
+and sends it back to your computer. Then your computer uploads the MSA to
+the Phenix server, which uses it in an AlphaFold prediction.
+
+If you want, you can supply your own MSAs. The key requirement is that the
+sequence of the first entry in your MSA must exactly match the sequence to be
+predicted.
+
+You can also skip the use of MSAs. This can be useful if you supply a template
+and you want AlphaFold to rebuild your template instead of doing a new
+prediction.
+
+Number of models
+----------------
+
+AlphaFold can carry out multiple predictions for a sequence.  You can specify
+how many of these to carry out.  The PredictModel tool will choose the one with
+the highest value of pLDDT (predicted local difference distance test).
+
+Using templates from the PDB
+----------------------------
+
+You can request that templates from the PDB be used in prediction. If you use
+this feature, models will be predicted both with and without the templates, and
+the model with the highest pLDDT will be saved.
+
+Using supplied templates
+------------------------
+
+You can supply your own templates. As for templates from the PDB, if you use
+this feature, models will be predicted both with and without the templates, and
+the model with the highest pLDDT will be saved.
+
+
+Precalculated MSAs and models save time if you rerun with the same sequence
+---------------------------------------------------------------------------
+
+When you run a prediction on the Phenix server, it saves the MSA and the
+predicted model.  Then if you run the same request again (same number of
+AlphaFold models, same sequence, same choice of including templates from the
+PDB, no supplied template), the server will return the result from the
+original run.  You can turn this off with the precalculated results and
+precalculated MSA keywords if you want.  Note that the server does not save
+your sequence or parameters. It just makes a hash string from them so that
+if the same request is made again it can detect it. The results are simply saved
+in a file that has the hash string as a name.
+
+Precalculated MSAs and models allow you go get your result even if disconnected 
+-------------------------------------------------------------------------------
+
+If you get disconnected from the server during a prediction job, you can just 
+wait for the job to finish, then submit a new request with the same parameters.
+As the server saves the predictions, it will return the result to you right
+away (if it is finished).
 
 Examples
 --------

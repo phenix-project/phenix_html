@@ -86,6 +86,9 @@ such as the number of models to generate, random seed, whether to use a
 multiple sequence alignment) and to package all these files in a single
 zipped tar (.tgz) file.  
 
+If the Phenix server is specified, the Phenix GUI will use the Phenix server
+to carry out the prediction and put it in the working directory.
+
 If Colab is specified, the Phenix GUI will provide a
 button that opens Google Colab in a browser, then you start the Colab 
 notebook and upload the zipped tar file. The notebook runs the prediction
@@ -97,9 +100,6 @@ same number as the job and ending in "CarryOn":  for
 PredictAndBuild_30 it is PredictAndBuild_30_CarryOn.
 You will need to be logged in to a Google account for this to work.
 
-If the Phenix server is specified, the Phenix GUI will use the Phenix server
-to carry out the prediction and put it in the working directory. You will
-need to have the address of the Phenix server for this to work.
 
 When prediction is being carried out, the Phenix GUI waits for the predicted
 models to appear in the working directory, then it goes on to the next steps.
@@ -265,6 +265,43 @@ In some cases to stop running your job you might have to stop all python
 processes on your computer and quit the GUI, but in most cases you can 
 just hit Abort in the GUI and wait a little.
 
+MSA calculation vs model prediction
+-----------------------------------
+
+If you use the Phenix server, the calculation of multiple sequence alignments
+(MSAs) is a separate step from model prediction.  The Phenix GUI
+on your computer sends a request to the mmseqs2 server, which creates an MSA
+and sends it back to your computer. Then your computer uploads the MSA to
+the Phenix server, which uses it in an AlphaFold prediction.
+
+If you want, you can supply your own MSAs. The key requirement is that the
+sequence of the first entry in your MSA must exactly match the sequence to be
+predicted.
+
+You can also skip the use of MSAs. This can be useful if you supply a template
+and you want AlphaFold to rebuild your template instead of doing a new
+prediction.
+
+Number of models
+----------------
+
+AlphaFold can carry out multiple predictions for a sequence.  You can specify
+how many of these to carry out.  The PredictModel tool will choose the one with
+the highest value of pLDDT (predicted local difference distance test).
+
+Using templates from the PDB
+----------------------------
+
+You can request that templates from the PDB be used in prediction. If you use
+this feature, models will be predicted both with and without the templates, and
+the model with the highest pLDDT will be saved.
+
+Using supplied templates
+------------------------
+
+You can supply your own templates. As for templates from the PDB, if you use
+this feature, models will be predicted both with and without the templates, and
+the model with the highest pLDDT will be saved.
 Examples
 --------
 
