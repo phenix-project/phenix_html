@@ -29,8 +29,6 @@ the map, keeping plausible connectivity. This is done with
 
 The third step is to morph the predicted model onto the docked domains and then
 to rebuild all the parts of the predicted model using the density in the map.
-This is done with 
-`phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_ .
 
 How dock_and_rebuild works:
 ----------------------------------
@@ -62,8 +60,7 @@ of the model (`phenix.process_predicted_model <process_predicted_model.html>`_),
 docking the domains 
 (`phenix.dock_predicted_model <dock_predicted_model.html>`_),
 and morphing and rebuilding the predicted model
-(`phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_) to 
-yield a rebuilt version of the predicted model.
+to yield a rebuilt version of the predicted model.
 
 
 Examples

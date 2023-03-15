@@ -92,9 +92,8 @@ of your models in the crystal.
 model-building.  
 You can do this with `phenix.predict_and_build <predict_and_build.html>`_ 
 if you want.
-Alternatively you can use
-`phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_
-for cryo-EM or `phenix.autobuild <autobuild.html>`_ for crystallography.
+Alternatively for crystallography you can use
+`phenix.autobuild <autobuild.html>`_ .
 
 5. Refine the rebuilt predicted models that you obtain.  You can use
 `phenix.real_space_refine <real_space_refine.html>`_ for cryo-EM models and

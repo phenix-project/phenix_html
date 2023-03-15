@@ -30,8 +30,6 @@ the map, keeping plausible connectivity. This is done with
 
 The third step is to morph the predicted model onto the docked domains and then
 to rebuild all the parts of the predicted model using the density in the map.
-This is done with 
-`phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_ .
 
 Note that you can run all three steps sequentially with
 `phenix.dock_and_rebuild <dock_and_rebuild.html>`_ .
@@ -118,7 +116,7 @@ try to choose which domains go together.  You can then create one
 PDB file with one copy of each domain (you will need to create a PDB file
 that has just one chain ID and all residues arranged sequentially, but 
 with gaps allowed) and go on to 
-`phenix.rebuild_predicted_model <rebuild_predicted_model.html>`_
+`phenix.dock_and_rebuild <dock_and_rebuild.html>`_
 with that as your docked model.
 
 Specific limitations and problems:
