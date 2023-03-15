@@ -1,0 +1,50 @@
+Map comparison: Identify matching contour levels in two maps
+============================================================
+
+Author(s)
+---------
+
+-  map_comparison: Pavel Afonine 
+
+Purpose
+-------
+
+Identify matching contour levels in two maps
+
+How map_comparison works:
+-------------------------
+
+Examples
+--------
+
+Standard run of map_comparison:
+------------------------------------
+
+Running map_comparison is easy. From the command-line you can type:
+
+::
+
+    phenix.map_comparison map_1.mrc map_2.mrc
+
+
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+Literature
+----------
+
+{{citation:map_comparison}}
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.command_line.map_comparison}}
