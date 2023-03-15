@@ -302,6 +302,7 @@ Using supplied templates
 You can supply your own templates. As for templates from the PDB, if you use
 this feature, models will be predicted both with and without the templates, and
 the model with the highest pLDDT will be saved.
+
 Examples
 --------
 
@@ -318,6 +319,9 @@ This will carry out all the steps of prediction, molecular replacement and
 iterative rebuilding and prediction to yield my_model_rebuilt.pdb
 
 If you run again with the same command, Predict and build will read all the previous files and just give you the results.
+
+Common problems
+---------------
 
 Server problems
 ---------------
