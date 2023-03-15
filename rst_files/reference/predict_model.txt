@@ -123,7 +123,28 @@ Running predict_model is easy. From the command-line you can type:
 
     phenix.predict_and_build jobname=myjob seq_file=seq.dat \
       prediction_server=PhenixServer \
-      stop_after_predict=True rest_server.url=http://my_rest_server:2320/
+      stop_after_predict=True
+
+
+Common questions
+----------------
+
+How long will it take?
+----------------------
+
+A typical protein chain with 200 residues will take about 5-10 minutes to run,
+once it has started on the Phenix server.
+
+Timing is more or less proportional to chain length.  If you specify that
+more than 5 models are to be built, it will typically take longer.
+
+If your chain has already been predicted for you or for someone else, you
+normally should get a result (a copy of that prediction) in about 30 seconds
+or less.
+
+If the Phenix server is full (typically 6 jobs can run at once), you can use
+the Server button on the Phenix GUI to see the expected wait time to
+start a job.
 
 Server problems
 ---------------

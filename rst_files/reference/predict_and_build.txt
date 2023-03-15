@@ -320,8 +320,18 @@ iterative rebuilding and prediction to yield my_model_rebuilt.pdb
 
 If you run again with the same command, Predict and build will read all the previous files and just give you the results.
 
-Common problems
----------------
+Common questions
+----------------
+
+How long will it take to run?
+-----------------------------
+
+Running predict_and_build can take anywhere from an hour to several days,
+depending largely on the size of the chains to be placed and the number of
+chains.  Increasing the number of processors used (default of 4) will speed
+it up. If you are unsure if the program is running, have a look at the log
+file, where the status and current time are printed out periodically. Also
+you can just see if any Python processes are running on your machine.
 
 Server problems
 ---------------
