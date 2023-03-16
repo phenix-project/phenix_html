@@ -155,10 +155,9 @@ Here the replace_residues=True command is required to tell fit\_loops to
 remove residues 35 and 36 and residues 40 and 41 before trying to fit
 residues 35-41.
 
-Tip: starting and ending residues (optional) are the first and last residues in the gap to be fitted")
-    self.end_box()
-    self.start_box()
-    self.set_text("Tip: if no loop found, try turning on 'Replace residues', then set starting and ending residues a couple residues before and after the gap"
+You can also accomplish this by leaving the parameter trim_ends_if_needed=True,
+which will do this automatically (trying several possible trimmings of the 
+ends).
 
 Specific limitations and problems:
 ----------------------------------
