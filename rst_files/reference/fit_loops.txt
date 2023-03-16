@@ -126,7 +126,7 @@ segments that are close in sequence.
 Specifying a gap to fill in
 ---------------------------
 
-To specify a particular gap for loop fittin, you can say
+To specify a particular gap for loop fitting, you can say
 
 ::
 
@@ -134,10 +134,31 @@ To specify a particular gap for loop fittin, you can say
      seq_file=nsf.seq start=37 end=39 chain_id=A
 
 Note the residue number for start and end are the first and last in the
-gap, not the residues flanking the gap that are already present.
+gap, not the residues flanking the gap that are already present. This 
+command fits a gap present at residues 37-39. Note: if any of the residues 
+from 37-39 are still present in your model, specify remove_loop=True and
+fit\_loops will remove them (otherwise it will just fit the existing gap).
 
 Possible Problems
 -----------------
+
+One of the most common problems is that the residues just before and after a
+gap are themselves poorly fitted.  A solution is to remove the last couple residues before a loop and the first couple residues after the loop and to try and 
+fit the resulting larger gap.  To do this you can say something like:
+
+::
+
+    phenix.fit_loops pdb_in=nsf_gap.pdb mtz_in=map_coeffs.mtz \
+     seq_file=nsf.seq start=35 end=41 chain_id=A replace_residues=True
+
+Here the replace_residues=True command is required to tell fit\_loops to
+remove residues 35 and 36 and residues 40 and 41 before trying to fit
+residues 35-41.
+
+Tip: starting and ending residues (optional) are the first and last residues in the gap to be fitted")
+    self.end_box()
+    self.start_box()
+    self.set_text("Tip: if no loop found, try turning on 'Replace residues', then set starting and ending residues a couple residues before and after the gap"
 
 Specific limitations and problems:
 ----------------------------------
