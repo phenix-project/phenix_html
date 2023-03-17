@@ -67,6 +67,12 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
        prefix=map_boxed \
        bounds_match_this_file=map_with_bounds_to_match.ccp4
 
+  6) Invert the hand of a map:
+
+     phenix.map_box ccp4_map_file=map.ccp4 \
+       keep_map_size=True \
+       invert_hand = True
+
 
 **Notes**
 
