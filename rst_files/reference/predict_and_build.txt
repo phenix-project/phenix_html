@@ -377,6 +377,31 @@ If your cryo-EM map has pseudo-symmetry (like a proteasome) you might need
 to box one subunit or try ssm_search=False to use a more thorough search 
 in docking.
 
+Working on individual chains in large cryo-EM structures
+--------------------------------------------------------
+
+If you are working with a large cryo-EM structure (or even a small one),
+you may find it
+most efficient to break up the work into small pieces.  If you can identify
+where individual chains are in your map, you can box around each chain, 
+creating individual boxes for each chain to work on. One way to create
+a box around a chain is to put a dummy molecule in the density you are 
+interested (anything that more or less covers the region you want), then
+use the `MapBox <map_box.html>`_ tool to create a little map surrounding 
+that dummy molecule.  
+
+When you use the `MapBox <map_box.html>`_ tool be
+sure to use the defaults and do not shift the origin (if you shift the origin
+then the models you get will not superimpose on the original map).
+
+Then of course you have to guess which sequence goes with that density. You
+could try a few possibilites and run PredictAndBuild on your small map with
+each likely sequence.
+
+When you are done with each box, you can just combine all the models because
+they will stay in their correct locations.
+
+
 Specific limitations and problems:
 ----------------------------------
 
