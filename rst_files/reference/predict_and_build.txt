@@ -316,6 +316,46 @@ predicted model (note the difference between a template -- a model to guide
 AlphaFold prediction, and a predicted model -- the prediction or an alternative
 to a prediction.)
 
+Using PredictAndBuild to change the sequences in a model
+--------------------------------------------------------
+
+If you have docked (cryo-EM) or placed (X-ray) chains for a structure from
+one species using data from another species, you can use PredictAndBuild to
+fix all the sequences and create a plausible model for each chain.  
+
+There are several ways you can do this.  If you first run AlphaFold to get
+a predicted model for each unique chain, you can
+use a command like this:
+
+::
+
+  phenix.predict_and_build predicted_model=replacements.pdb \
+ input_files.b_value_field_is=b_value scaffold_model=existing.pdb \
+ seq_file=seq.dat cycles=1 refine_only=True refine_cycles=0 \
+ resolution=3 full_map=full_map.ccp4
+
+Here existing.pdb is the model you have already created (wrong sequences).
+The model replacements.pdb contains your predicted models for each unique
+chain, where each predicted model has the right sequence, but can be
+in any orientation or position.  The
+sequence file seq.dat has all the correct sequences.  The map is required
+as it is used to adjust the predicted models. 
+The keyword b_value_field_is=b_value tells PredictAndBuild that the predicted
+models contain B-values (atomic displacement parameters), not pLDDT values
+(predicted Local Difference Distance Test).
+
+If you actually have no map,
+you can create a model-based map from your existing.pdb structure with
+the `phenix.fmodel <fmodel.html>`_ tool. The map type you want is called
+complex (structure factors) and you would want to make it a low-resolution
+map (like 10 A).
+
+If you don't want to generate the predicted models yourself, you can skip
+that input and just let PredictAndBuild do the predictions.  Of course if you
+have RNA or DNA chains, you will need to supply predicted models for those
+chains.
+
+
 Examples
 --------
 
