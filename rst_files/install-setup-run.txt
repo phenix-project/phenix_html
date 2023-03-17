@@ -40,9 +40,13 @@ Graphical installer - Mac
 -------------------------
 
 Installation by this method uses familiar interfaces provided by the operating
-systems.  Destination directory is fixed to  the folder
-**/Applications**.  You will need administrative privileges to run the
-installer.
+system. 
+
+You will need administrative privileges to run the installer.
+
+Note: after downloading the phenix-xxxx.pkg file use Open with and choose installer.app and say OK when asked about unknown applications (if you just double-click on the file it will say that it is not approved by Apple and it will not give you the option to approve it yourself).
+
+The destination directory is always in the **/Applications** folder. The application will be an app with a name like: **/Applications/phenix-1.21rc1-4907/phenix-1.21.1-4907.app**
 
 Graphical installer - Windows
 -----------------------------
