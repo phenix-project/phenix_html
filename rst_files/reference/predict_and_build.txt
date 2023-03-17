@@ -79,19 +79,22 @@ also use predictions that you supply or that you generate on demand and put
 in the same place on your computer as those that are created by one of 
 the servers.
 
-The general procedure is to create a set of files that specify all the
-necessary inputs for model prediction (a sequence file, optional multiple
+Prediction (`phenix.predict_model <predict_model.html>`_)
+is fully automated with the Phenix server through the Phenix GUI,
+so all you have to do is let it run.  The Phenix GUI will use the Phenix 
+server to carry out the prediction and put it in the working directory.
+
+You can specify what inputs the AlphaFold prediction should use.  These
+always include a sequence file, but it can include an optional multiple
 sequence alignment file, optional templates, keywords for model prediction
-such as the number of models to generate, random seed, whether to use a
-multiple sequence alignment) and to package all these files in a single
-zipped tar (.tgz) file.  
+such as the number of models to generate, random seed, and whether to use 
+multiple sequence alignment.
 
-If the Phenix server is specified, the Phenix GUI will use the Phenix server
-to carry out the prediction and put it in the working directory.
-
-If Colab is specified, the Phenix GUI will provide a
+If you want to use Colab instead of the Phenix server, the procedure has
+slightly more steps. The Phenix GUI will provide a
 button that opens Google Colab in a browser, then you start the Colab 
-notebook and upload the zipped tar file. The notebook runs the prediction
+notebook and upload a zipped tar file that the GUI will write out to your
+Downloads directory. The notebook runs the prediction
 and downloads a .zip file with the results.  The Phenix GUI recognizes this
 file, opens it and puts the new prediction in the Carry-on directory. This
 directory is contained inside your working directory. In the GUI it is 
@@ -99,7 +102,6 @@ normally a directory with the
 same number as the job and ending in "CarryOn":  for
 PredictAndBuild_30 it is PredictAndBuild_30_CarryOn.
 You will need to be logged in to a Google account for this to work.
-
 
 When prediction is being carried out, the Phenix GUI waits for the predicted
 models to appear in the working directory, then it goes on to the next steps.
@@ -303,6 +305,17 @@ You can supply your own templates. As for templates from the PDB, if you use
 this feature, models will be predicted both with and without the templates, and
 the model with the highest pLDDT will be saved.
 
+Using supplied predictions or RNA/DNA models
+--------------------------------------------
+
+You can supply homology models or models that you have built yourself for any
+of the chains in your structure.  If you are woking with RNA or DNA, you have
+to do this.  You just supply a model (does not have to be perfect) for each
+chain that you do not want to have AlphaFold predict, and you call it a 
+predicted model (note the difference between a template -- a model to guide
+AlphaFold prediction, and a predicted model -- the prediction or an alternative
+to a prediction.)
+
 Examples
 --------
 
@@ -366,6 +379,12 @@ in docking.
 
 Specific limitations and problems:
 ----------------------------------
+
+AlphaFold only predicts protein structures, not RNA or DNA, so you will have to
+either build those chains separately or supply predicted models (homology 
+models, for example) for those chains. If you supply predicted models for some 
+chains and not others, predict_and_build will try to predict the missing
+chains and build with all the available models. 
 
 Literature
 ----------

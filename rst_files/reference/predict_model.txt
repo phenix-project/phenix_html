@@ -12,6 +12,10 @@ Purpose
 Predict model can be used to generate predicted models from a sequence file.
 One predicted model is generated for each unique sequence.
 
+You can choose whether to use a multiple sequence alignment (MSA), whether
+go use templates from the PDB, and whether to supply your own template to be
+used as a guide in prediction.
+
 Sequence file
 -------------
 
@@ -28,24 +32,24 @@ Model prediction
 Predict model normally uses either a Phenix server or a Google Colab
 notebook to carry out AlphaFold prediction of one chain at a time. 
 
-The general procedure is to create a set of files that specify all the
-necessary inputs for model prediction (a sequence file, optional multiple
+Prediction is fully automated with the Phenix server through the Phenix GUI,
+so all you have to do is let it run.  The Phenix GUI will use the Phenix
+server to carry out the prediction and put it in the working directory.
+
+You can specify what inputs the AlphaFold prediction should use.  These
+always include a sequence file, but it can include an optional multiple
 sequence alignment file, optional templates, keywords for model prediction
-such as the number of models to generate, random seed, whether to use a
-multiple sequence alignment) and to package all these files in a single
-zipped tar (.tgz) file.  
+such as the number of models to generate, random seed, and whether to use
+multiple sequence alignment.
 
-If the Phenix server is specified, the Phenix GUI will use the Phenix server
-to carry out the prediction and put it in the working directory. This is the
-normal way to use this tool.
-
-If Colab is specified, the Phenix GUI will provide a
-button that opens Google Colab in a browser, then you start the Colab 
-notebook and upload the zipped tar file. The notebook runs the prediction
+If you want to use Colab instead of the Phenix server, the procedure has
+slightly more steps. The Phenix GUI will provide a
+button that opens Google Colab in a browser, then you start the Colab
+notebook and upload a zipped tar file that the GUI will write out to your
+Downloads directory. The notebook runs the prediction
 and downloads a .zip file with the results.  The Phenix GUI recognizes this
-file, opens it and puts the new prediction in the working directory. This
-directory is specified by the unique jobname that you provide for your work.
-You will need to be logged in to a Google account for this to work.
+file and opens it.  You will need to be logged in to a Google account for 
+this to work.
 
 When prediction is being carried out, the Phenix GUI waits for the predicted
 models to appear in the working directory, then it writes out the resulting
@@ -110,6 +114,26 @@ If you get disconnected from the server during a prediction job, you can just
 wait for the job to finish, then submit a new request with the same parameters.
 As the server saves the predictions, it will return the result to you right
 away (if it is finished).
+
+Using AlphaFold to improve a model you already have
+---------------------------------------------------
+
+As AlphaFold often produces models with quite good geometry, you can use it
+as a procedure for geometry optimization.  You supply your working model and
+your sequence, and you turn off the use of MSAs and the use of templates from
+the PDB. Of course AlphaFold does not know about your density map, so it could
+move the model away from the density.  Normally you would use refinement
+to help with this.
+
+Using AlphaFold to build parts of a model that are missing
+----------------------------------------------------------
+
+If you want AlphaFold to try and build the missing parts of a chain that
+you have partially built, supply your working partial model and your sequence,
+and allow the use of MSAs (and optionally, the use of templates from the PDB).
+Your working model will be used as a template for the part of the structure
+that you have already built.  Note that you have to have the correct sequence
+for your partially-built model.
 
 Examples
 --------

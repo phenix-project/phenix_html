@@ -340,6 +340,23 @@ sharpened to make it as similar as possible to density calculated from
 the current model and the new map is used for the next cycle of model
 building.
 
+Using  map\_to\_model to just build parts of the model that are missing
+-----------------------------------------------------------------------
+
+You can use  map\_to\_model to build missing parts of your model in two
+steps:
+
+::
+
+  Use map_box to mask your map around your partial model.  Use the keywords
+  mask_atoms=True and invert_mask=True to remove the density near your model.
+
+  Take your masked map and supply a sequence file corresponding to the part
+  that remains, and run map_to_model to try and build the remaining parts
+  of your model
+
+Note that this is appropriate for cases where an entire chain or domain is 
+missing, usually not for fitting loops (those are best handled with fit\_loops).
 
 Examples
 --------
