@@ -31,7 +31,7 @@ significantly better than random.
 Running em_placement
 --------------------
 
-There is not yet a GUI to run em_placement, which should instead be controlled by
+There is an EMplacement GUI to run em_placement, but it can also be controlled by
 an input script using the phil syntax. A basic phil script would look like
 the following, in which a model derived from the membrane domain of PDB entry
 4cof is docked into the reconstruction of the GABA receptor in EMDB entry 11657.
@@ -82,12 +82,18 @@ generate a full assembly from a single copy.
 The sequence_composition parameter specifies the name of a file containing the
 sequences of all the components in the reconstruction.
 
+By default, em_placement carries out an adaptive search, which is normally
+recommended. Aspects of this search can be over-ridden with expert user keywords
+specified below, for example to force a full 6D search or to force only a single
+rotation search over the whole ordered volume regardless of the estimated signal.
+
 Literature
 ----------
 
-Read RJ, Millán C, McCoy AJ and Terwilliger TC. Likelihood-based signal and
-noise analysis for docking of models into cryo-EM maps. To be published.
+{{citation:emplacement_theory}}
+{{citation:emplacement_program}}
 
-Millán C, McCoy AJ, Terwilliger TC and Read RJ. Likelihood-based docking of
-models into cryo-EM maps. To be published.
+List of all available keywords
+------------------------------
 
+{{phil:phaser_voyager.src.New_Voyager.programs.em_placement_program}}
