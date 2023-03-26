@@ -84,7 +84,8 @@ Number of models
 
 AlphaFold can carry out multiple predictions for a sequence.  You can specify
 how many of these to carry out.  The PredictModel tool will choose the one with
-the highest value of pLDDT (predicted local difference distance test). Normally
+the highest value of pLDDT (predicted local difference distance test,
+Mariani et al., 2013). Normally
 the default (5 models) is a reasonable compromise between optimal prediction and
 the length of time needed to carry out the prediction.  Note that the Phenix
 server and the Phenix Colab will both stop carrying out predictions if it appears
@@ -197,7 +198,8 @@ The pLDDT confidence measure
 ----------------------------
 
 AlphaFold provides residue-level estimates of model accuracy in the form of
-predicted values of the LDDT (Local Difference Distance Test). These predicted
+predicted values of the LDDT (Local Difference Distance Test, Mariani et al., 2013).
+These predicted
 values are referred to as pLDDT values (predicted Local Difference Distance Test).
 The LDDT measure is a number from zero to one that reflects the similarity of
 CA positions in two structures.
@@ -205,13 +207,13 @@ CA positions in two structures.
 The LDDT is not a simple measure of accuracy, but rather a composite that is based on
 the CA distances between all pairs of CA atoms in one model and how similar these
 inter-atomic distances are to those in the other model. It is a local test, where
-only inter-atomic distances that are less than 15 A are considered.
+only inter-atomic distances that are less than 15 Å are considered.
 
 The LDDT is a composite that is generated from
-the fraction of CA-CA distances that are very accurate (less than 0.5 A off), the fraction
-that are quite accurate (less than 1 A off), moderately accurate (less than 2 A off),
-and somewhat accurate (less than 4 A off).  If all CA-CA distances are within 0.5 A,
-the resulting score will be 1, if all are more than 4 A off, the score is zero.  
+the fraction of CA-CA distances that are very accurate (less than 0.5 Å off), the fraction
+that are quite accurate (less than 1 Å off), moderately accurate (less than 2 Å off),
+and somewhat accurate (less than 4 Å off).  If all CA-CA distances are within 0.5 Å,
+the resulting score will be 1, if all are more than 4 Å off, the score is zero.  
 Note that the LDDT is related to RMSD, but not in a simple way.
 
 The pLDDT values (predicted Local Difference Distance Test) provided by AlphaFold are
@@ -272,18 +274,41 @@ Relationship between the pLDDT values and the PAE matrix
 --------------------------------------------------------
 
 The PAE matrix is related to the pLDDT values, but not in a simple way.
-The value of the PAE matrix for one pair of residues 
-is the estimated error in the position of the CA atom for the second
-residue if the model is superposed on the true structure using CA atoms
-near the first CA atom.
 
 The pLDDT value for a residue
 describes the expected errors in the distances between that CA atom 
-and nearby CA atoms (compared to the true structure).
+and nearby CA atoms (compared to the true structure) on a scale of 0 to
+1, where 1 means all CA-CA distances are expected to match within 0.5 Å.
+
+The value of the PAE matrix for a pair of residues 
+is the estimated error in Å in the position of the CA atom for the second
+residue if the model is superposed on the true structure using CA atoms
+near the first CA atom.
 
 Both measures tell you something about the uncertainties in your model,
 but neither tells you exactly how well the model would superpose on the
 true structure.
+
+Rough guide as to expected RMSD for a residue if you have the pLDDT
+-------------------------------------------------------------------
+
+Here is a table that gives you an idea of the RMSD of CA atoms in an AlphaFold
+prediction to a superposed deposited model (see Terwilliger et al., 2023):
+
+::
+
+    pLDDT         Median prediction error     % with error over 2 Å
+  
+  pLDDT > 90               0.6 Å                    10%
+  pLDDT > 80-90            1.1 Å                    22%
+  pLDDT > 70-80            1.5 Å                    33%
+  pLDDT < 70               3.5 Å                    77%
+
+This table shows that high-confidence residues (pLDDT >90) are generally 
+incredibly accurate, but a few (10%) still are off by more than 2 Å. 
+Low-confidence residues (pLDDT < 70) are usually pretty far off 
+(median of 3.5 Å) but still almost a quarter are better than 2 Å.
+
 
 Examples
 --------
@@ -342,8 +367,10 @@ Literature
 
 {{citation:predict_and_build_xray}}
 {{citation:predict_and_build_cryo_em}}
+{{citation:alphafold_hypothesis}}
 {{citation:colabfold}}
 {{citation:alphafold}}
+{{citation:lddt}}
 
 Additional information
 ----------------------
