@@ -32,15 +32,25 @@ Model prediction
 Predict model normally uses either a Phenix server or a Google Colab
 notebook to carry out AlphaFold prediction of one chain at a time. 
 
-Prediction is fully automated with the Phenix server through the Phenix GUI,
-so all you have to do is let it run.  The Phenix GUI will use the Phenix
-server to carry out the prediction and put it in the working directory.
-
 You can specify what inputs the AlphaFold prediction should use.  These
 always include a sequence file, but it can include an optional multiple
 sequence alignment file, optional templates, keywords for model prediction
 such as the number of models to generate, random seed, and whether to use
 multiple sequence alignment.
+
+When prediction is being carried out, the Phenix GUI waits for the predicted
+models to appear in the working directory, then it writes out the resulting
+models.
+
+Using the Phenix server for model prediction
+--------------------------------------------
+
+Prediction is fully automated with the Phenix server through the Phenix GUI,
+so all you have to do is let it run.  The Phenix GUI will use the Phenix
+server to carry out the prediction and put it in the working directory.
+
+Using AlphaFold through Google Colab for model prediction
+---------------------------------------------------------
 
 If you want to use Colab instead of the Phenix server, the procedure has
 slightly more steps. The Phenix GUI will provide a
@@ -51,9 +61,6 @@ and downloads a .zip file with the results.  The Phenix GUI recognizes this
 file and opens it.  You will need to be logged in to a Google account for 
 this to work.
 
-When prediction is being carried out, the Phenix GUI waits for the predicted
-models to appear in the working directory, then it writes out the resulting
-models.
 
 MSA calculation vs model prediction
 -----------------------------------
@@ -77,7 +84,12 @@ Number of models
 
 AlphaFold can carry out multiple predictions for a sequence.  You can specify
 how many of these to carry out.  The PredictModel tool will choose the one with
-the highest value of pLDDT (predicted local difference distance test).
+the highest value of pLDDT (predicted local difference distance test). Normally
+the default (5 models) is a reasonable compromise between optimal prediction and
+the length of time needed to carry out the prediction.  Note that the Phenix
+server and the Phenix Colab will both stop carrying out predictions if it appears
+unlikely that further predictions will significantly improve the pLDDT (the
+estimate is based on the variability of pLDDT values so far.)
 
 Using templates from the PDB
 ----------------------------
@@ -134,6 +146,111 @@ and allow the use of MSAs (and optionally, the use of templates from the PDB).
 Your working model will be used as a template for the part of the structure
 that you have already built.  Note that you have to have the correct sequence
 for your partially-built model.
+
+Notes on using the Phenix server from the Phenix GUI for model prediction
+-------------------------------------------------------------------------
+
+The Phenix GUI can automatically send a request to the Phenix server for an
+AlphaFold prediction.  This requires an internet connection, the Phenix server
+to be up, and a token that is supplied with Phenix. 
+
+If the Phenix GUI 
+successfully communicates with the server, it will wait for the server to 
+carry out the prediction, showing the status of the prediction while it is
+being carried out. The status will usually start out as waiting in the queue for
+a place on the GPU. If this status lasts more than a few seconds, an estimated
+waiting time (before starting processing) is displayed in the Phenix GUI.
+The waiting time is very approximate. It is based on how long previous jobs
+waited to start and how many jobs are ahead of yours.  If the currently-running
+jobs happen to take a very short or long time, the estimate could be off in
+either direction. If you submit more than one job at a time, the first job you
+submit will get higher priority and may move nearer the front of the queue than
+the others.
+
+Once your job starts, the status in the Phenix GUI will change to reflect that is
+is running.  There won't be an estimated run time shown, but most of the time
+jobs with a few hundred residues take 10-20 min, and longer sequences take more or
+less proportionally longer.  If you include templates from the PDB, it takes
+longer to run. If you specify that the number of AlphaFold models to use is more
+than the default (5), it will also take longer.
+
+If your prediction is successful, the Phenix GUI will list the 
+estimated confidence (pLDDT) and the output data files.  The output files include
+the AlphaFold model (named something like PredictAndBuild_10_ALPHAFOLD_A.pdb), the
+multiple sequence alignment used (PredictAndBuild_10_ALPHAFOLD_A_MSA.a3m),
+and the Predicted Aligned Error (PAE) file (PredictAndBuild_10_ALPHAFOLD_A_PAE.jsn).
+
+The output predicted model
+--------------------------
+
+The predicted model produced by AlphaFold with Phenix will consist of a single 
+chain with exactly the sequence that is supplied. It will be in the
+standard PDB (version 3.2) format.  It will contain all (non-hydrogen)
+atoms for all the residues.  The coordinates of the atoms have the usual meaning
+(locations of atoms in 3D space), but the orientation and position of the chain
+are arbitrary.  The B-value field (normally atomic displacement parameters) will
+contain the values of pLDDT (confidence), with one value per residue.  This means
+that some processing of this model is necessary before use (this is normally done by
+`phenix.process_predicted_model <process_predicted_model.html>`_).
+
+The pLDDT confidence measure
+----------------------------
+
+AlphaFold provides residue-level estimates of model accuracy in the form of
+predicted values of the LDDT (Local Difference Distance Test). These predicted
+values are referred to as pLDDT values (predicted Local Difference Distance Test).
+The LDDT measure is a number from zero to one that reflects the similarity of
+CA positions in two structures.
+
+The LDDT is not a simple measure of accuracy, but rather a composite that is based on
+the CA distances between all pairs of CA atoms in one model and how similar these
+inter-atomic distances are to those in the other model.
+
+The LDDT is a composite that is generated from
+the fraction of CA-CA distances that are very accurate (less than 0.5 A off), the fraction
+that are quite accurate (less than 1 A off), moderately accurate (less than 2 A off),
+and somewhat accurate (less than 4 A off).  If all CA-CA distances are within 0.5 A,
+the resulting score will be 1, if all are more than 4 A off, the score is zero.  
+Note that the LDDT is related to RMSD, but not in a simple way.
+
+The pLDDT values (predicted Local Difference Distance Test) provided by AlphaFold are
+estimates of the LDDT values.  The pLDDT values are essentially unbiased (just as likely
+to be too low as too high), and reasonably accurate. The correlation between pLDDT values
+and actual LDDT values calculated using AlphaFold models and models in the PDB 
+is about 0.7 - 0.75, which means that the values of pLDDT you get are useful indicators
+of model quality but also that sometimes AlphaFold will have high confidence in 
+an incorrect prediction or low confidence in a correct prediction.
+
+
+The output MSA file
+-------------------
+
+The MSA file that was used in AlphaFold prediction is available if the Phenix
+server is used. This MSA file can be used in subsequent predictions (if the sequence
+is identical).  Normally there is no need to supply an MSA file because the MSA
+is saved by the Phenix server and it will just be re-used if the same sequence is
+supplied.  However if you want to edit this MSA file before running an AlphaFold
+prediction, you can do that.
+
+The output PAE file
+-------------------
+
+AlphaFold provides a Predicted Aligned Error matrix in the form of a PAE file. 
+The error that it is describing reflects the estimated error in CA positions
+in the predicted model compared to the (unknown) true structure.  
+
+Suppose we had both the prediction and the true structure.  Then suppose we
+superpose the predicted model on the true structure, basing the superposition
+on the residues near residue i.  Using that superposition, we can now look
+at the location of the CA atom of residue j in the predicted model and in
+the true structure.  We could in particular note the distance between the
+predicted and actual position of the CA atom of residue j, when the structures
+are superposed using residues near residue i.  We could do this for every
+residue pair (i,j), and the result would be the Aligned Error matrix.
+
+The Predicted Aligned Error matrix is an estimate of the Aligned Error matrix
+It is generated by AlphaFold. Basically, AlphaFold predicts the model and
+also it generates an error estimate in the prediction.
 
 Examples
 --------
@@ -193,6 +310,7 @@ Literature
 {{citation:predict_and_build_xray}}
 {{citation:predict_and_build_cryo_em}}
 {{citation:colabfold}}
+{{citation:alphafold}}
 
 Additional information
 ----------------------
