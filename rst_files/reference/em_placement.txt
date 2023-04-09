@@ -28,6 +28,9 @@ and confidence indicators.
 A log-likelihood-gain (LLG) score greater than 60 suggests that a solution is
 significantly better than random.
 
+NB: the statistical analysis requires the half-maps to correspond to the
+full volume of the cryo-EM reconstruction, so cut-out boxes cannot be used.
+
 Running em_placement
 --------------------
 
