@@ -357,12 +357,15 @@ This file might contain a twin-law for refinement:
 
 ::
 
-    refinement {
-      twinning {
-        twin_law = "-k, -h, -l"
+  data_manager {
+    fmodel {
+      xray_data {
+        twin_law="l,-k,h"
       }
     }
-
+  }
+  
+  
 You can put any phenix.refine parameters in this file, but a few
 parameters that are set directly by AutoBuild override your inputs from
 the refine\_eff\_file. These parameters are listed below.
