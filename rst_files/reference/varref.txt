@@ -1,0 +1,97 @@
+==================================================================
+phenix.varref: a tool for refinement a model against multiple maps
+==================================================================
+
+.. contents::
+
+Description
+-----------
+
+phenix.varref stands for 'variability refinement'. The program refines a model 
+into an ensemble of maps derived from cryo-EM. The ensemble of maps represents 
+the sample's heterogenicity captured during the experiement. The result of 
+refinement with phenix.varref is an ensemble of real-space refined models that 
+adequately represent the ensemble of input maps. For more details refer to:
+http://dx.doi.org/10.1016/j.bbamem.2023.184133.
+
+Availability
+------------
+
+The program is availalble in the command line and in the GUI.
+
+Contact
+-------
+
+For questions, bug reports, feature requests: help@phenix-online.org
+
+IMPORTANT: any problem report should be sent after trying the latest
+nightly build of Phenix::
+
+  https://www.phenix-online.org/download/nightly_builds.cgi
+
+Bug or problem reports should include at least 1) all input files used to run
+the program, 2) list of parameters that were customized, 3) error message and 4)
+a brief description of steps that lead to the problem. Please use file sharing 
+tools (such as Dropbox, Google Drive, etc) to send large files.
+
+Command line examples
+---------------------
+
+  1) A typical run::
+
+       phenix.varref model.pdb map1.mrc map2.mrc... mapN.mrc resolution=4.2 nproc=10
+
+     The program takes one model and list of maps in any order. The resolution 
+     is a mandatory parameter. nproc specifies the number of processors 
+     available to the program to use. A run using a single processor can take a 
+     very long time! Use as many CPU as possible!
+
+  2) The model contains an unknown to Phenix ligand::
+
+       phenix.varref model.pdb ligand.cif map1.mrc map2.mrc... mapN.mrc \
+       resolution=4.2 nproc=10
+       
+     The ligand dictionary CIF file can be obtained using ReadySet! or eLBOW 
+     programs of Phenix and supplied to phenix.varref as an additional file.
+     
+  3) Anchoring solvent, ligands and other small molecules to the macromolecule::
+  
+      phenix.varref model.pdb map1.mrc map2.mrc... mapN.mrc resolution=4.2 
+        nproc=10 parameters.eff
+        
+     phenix.varref uses a rather aggressive refinement technieques such as 
+     morphing, simulated annealing and perturbing initial model by means of MD.
+     This means that small molecule (non-macromolecules) entities of the model
+     may drift away from their original position or binding sites. To prevent 
+     this from heppening they can be anchored to the macromolecule using custom
+     bonds (as well as angles and so on). Refer to phenix.refine documentation
+     for more details. In the example above this is done by providing a parameter
+     file containing the following lines::
+     
+       geometry_restraints {
+         edits {
+           bond {
+             atom_selection_1 = chain B and resseq 87 and name N
+             atom_selection_2 = chain S and resseq 1 and resname HOH and name O
+             distance_ideal = 2.0
+             sigma = 0.01
+           }
+         }
+       }
+     
+     Here the water oxygen in chain S (residue number 1) is linked to the 
+     Nitrogen of residue 87 in chain B with the bond length of 2A. Any number of 
+     bonds can be specified.
+     
+Notes
+-----
+  - The program can use multiple CPU. The program does not use GPU. Running on
+    single processor can be very slow. Use as many CPUs as possible.
+
+References
+----------
+
+  - Afonine PV, Gobet A, Moissonnier L, Martin J, Poon BK, Chaptal V. 
+    Conformational space exploration of cryo-EM structures by variability 
+    refinement. Biochim Biophys Acta Biomembr. 2023 Apr;1865(4):184133. 
+    doi: 10.1016/j.bbamem.2023.184133. Epub 2023 Feb 3. PMID: 36738875.
