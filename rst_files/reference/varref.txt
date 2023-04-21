@@ -1,6 +1,6 @@
-==================================================================
-phenix.varref: a tool for refinement a model against multiple maps
-==================================================================
+=====================================================================
+phenix.varref: a tool for refinement of a model against multiple maps
+=====================================================================
 
 .. contents::
 
@@ -9,15 +9,17 @@ Description
 
 phenix.varref stands for 'variability refinement'. The program refines a model 
 into an ensemble of maps derived from cryo-EM. The ensemble of maps represents 
-the sample's heterogenicity captured during the experiement. The result of 
-refinement with phenix.varref is an ensemble of real-space refined models that 
-adequately represent the ensemble of input maps. For more details refer to:
-http://dx.doi.org/10.1016/j.bbamem.2023.184133.
+the sample's heterogenicity captured during the experiment. The inputs are 
+typically the refined model against the consensus high-resolution map, and the 
+map series derived from 3DVA (cryosparc), or multibody refinement (Relion) or 
+equivalent. The result of refinement with phenix.varref is an ensemble of 
+real-space refined models that adequately represents the ensemble of input maps. 
+For more details refer to: http://dx.doi.org/10.1016/j.bbamem.2023.184133.
 
 Availability
 ------------
 
-The program is availalble in the command line and in the GUI.
+The program is available in the command line and in the GUI.
 
 Contact
 -------
@@ -32,41 +34,47 @@ nightly build of Phenix::
 Bug or problem reports should include at least 1) all input files used to run
 the program, 2) list of parameters that were customized, 3) error message and 4)
 a brief description of steps that lead to the problem. Please use file sharing 
-tools (such as Dropbox, Google Drive, etc) to send large files.
+tools (such as Dropbox, Google Drive, etc) to send large files. All files sent 
+to us are handled confidentially and only used to solve the reported issue, and
+discarded afterwards.
 
 Command line examples
 ---------------------
 
   1) A typical run::
 
-       phenix.varref model.pdb map1.mrc map2.mrc... mapN.mrc resolution=4.2 nproc=10
+       phenix.varref model.pdb map1.mrc map2.mrc... mapN.mrc resolution=4.2 \
+       nproc=10 models_per_map=50
 
      The program takes one model and list of maps in any order. The resolution 
      is a mandatory parameter. nproc specifies the number of processors 
      available to the program to use. A run using a single processor can take a 
-     very long time! Use as many CPU as possible!
+     very long time! Use as many CPU as possible! models_per_map specifies the 
+     size of the ensemble to be refined against each individual map. The output 
+     ensemble accumulates overall best refined models taken from ensembles of 
+     models refined against each individual map.
 
   2) The model contains an unknown to Phenix ligand::
 
        phenix.varref model.pdb ligand.cif map1.mrc map2.mrc... mapN.mrc \
-       resolution=4.2 nproc=10
+       resolution=4.2 nproc=10 models_per_map=50
        
      The ligand dictionary CIF file can be obtained using ReadySet! or eLBOW 
      programs of Phenix and supplied to phenix.varref as an additional file.
      
   3) Anchoring solvent, ligands and other small molecules to the macromolecule::
   
-      phenix.varref model.pdb map1.mrc map2.mrc... mapN.mrc resolution=4.2 
-        nproc=10 parameters.eff
+       phenix.varref model.pdb map1.mrc map2.mrc... mapN.mrc resolution=4.2 \
+       nproc=10 models_per_map=50 parameters.eff
         
-     phenix.varref uses a rather aggressive refinement technieques such as 
+     phenix.varref uses a rather aggressive refinement technique such as 
      morphing, simulated annealing and perturbing initial model by means of MD.
      This means that small molecule (non-macromolecules) entities of the model
      may drift away from their original position or binding sites. To prevent 
-     this from heppening they can be anchored to the macromolecule using custom
+     this from happening they can be anchored to the macromolecule using custom
      bonds (as well as angles and so on). Refer to phenix.refine documentation
-     for more details. In the example above this is done by providing a parameter
-     file containing the following lines::
+     for more details. In the example above this is done by providing a 
+     parameter file containing the following lines::
      
        geometry_restraints {
          edits {
