@@ -10,27 +10,36 @@ Purpose
 -------
 
 The emplace_local tool docks the input model within a sphere of density centered on
-a defined point in the half-maps, returning the docked model, a local weighted map,
+a defined point in the reconstruction, returning the docked model, a local weighted map,
 and quality of fit statistics.
 
 How emplace_local works
 -----------------------
 
-The chosen region of density is analysed for local signal and noise (both of
-which are resolution and direction-dependent) to define a likelihood target for
-rotation and translation searches, followed by rigid-body refinement. The quality
-of fit can be judged by three factors:
-1) whether there is a unique solution;
-2) the log-likelihood-gain (LLG) score, which should preferably be greater than 60;
-3) the map correlation coefficient to the weighted map used for docking.
+Ideally, half-maps are provided, then the chosen region of density is analysed for
+local signal and noise (both of which are resolution and direction-dependent) to
+define a likelihood target for rotation and translation searches, followed by
+rigid-body refinement.
+
+If half-maps are unavailable, just a full map can be provided and then the
+likelihood target is defined by assuming that signal-to-noise drops off isotropically
+to the stated resolution limit.
+
+The quality of fit can be judged by three factors:
+
+::
+
+  1) whether there is a unique solution;
+  2) the log-likelihood-gain (LLG) score, which should preferably be greater than 60;
+  3) the map correlation coefficient to the weighted map used for docking.
 
 The basic inputs are:
 
 ::
 
   model file
-  two unmasked half-map files
-  nominal resolution
+  two unmasked half-map files (preferred) or full-map file
+  nominal resolution (optional if half-maps provided, but recommended)
   specification of center of search region
 
 Note that the search center can be specified explicitly with the sphere_center
