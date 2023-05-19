@@ -29,7 +29,7 @@ exactly).
 Model prediction
 ----------------
 
-Predict model normally uses either a Phenix server or a Google Colab
+Predict model normally uses the Phenix server
 notebook to carry out AlphaFold prediction of one chain at a time. 
 
 You can specify what inputs the AlphaFold prediction should use.  These
@@ -49,23 +49,11 @@ Prediction is fully automated with the Phenix server through the Phenix GUI,
 so all you have to do is let it run.  The Phenix GUI will use the Phenix
 server to carry out the prediction and put it in the working directory.
 
-Using AlphaFold through Google Colab for model prediction
----------------------------------------------------------
-
-If you want to use Colab instead of the Phenix server, the procedure has
-slightly more steps. The Phenix GUI will provide a
-button that opens Google Colab in a browser, then you start the Colab
-notebook and upload a zipped tar file that the GUI will write out to your
-Downloads directory. The notebook runs the prediction
-and downloads a .zip file with the results.  The Phenix GUI recognizes this
-file and opens it.  You will need to be logged in to a Google account for 
-this to work.
-
 
 MSA calculation vs model prediction
 -----------------------------------
 
-If you use the Phenix server, the calculation of multiple sequence alignments
+The calculation of multiple sequence alignments
 (MSAs) is a separate step from model prediction.  The Phenix GUI
 on your computer sends a request to the mmseqs2 server, which creates an MSA
 and sends it back to your computer. Then your computer uploads the MSA to
@@ -88,7 +76,7 @@ the highest value of pLDDT (predicted local difference distance test,
 Mariani et al., 2013). Normally
 the default (5 models) is a reasonable compromise between optimal prediction and
 the length of time needed to carry out the prediction.  Note that the Phenix
-server and the Phenix Colab will both stop carrying out predictions if it appears
+server will stop carrying out predictions if it appears
 unlikely that further predictions will significantly improve the pLDDT (the
 estimate is based on the variability of pLDDT values so far.)
 
@@ -348,13 +336,10 @@ start a job.
 Server problems
 ---------------
 
-The most common problem in running Predict model is that either the Phenix
-server or the Colab server is not working as expected.  Normally the first thing
+The most common problem in running Predict model is that the Phenix
+server is not working as expected.  Normally the first thing
 to try is just let the program retry (it will do this for a while normally).
-If that is not working, you can stop the program (abort in the GUI), and 
-run again with the same parameters (i.e., the same jobname) except changing 
-the server from PhenixServer to Colab or vice-versa.  That will give you another
-chance.  If neither server is working, you can take the files in the packaged
+If that does not work, you can take the files in the packaged
 .tgz file (listed in the GUI output), use them to get your own prediction with
 any server, and put the resulting predicted models in the place specified in 
 the GUI or program output.

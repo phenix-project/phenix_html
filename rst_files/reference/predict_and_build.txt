@@ -80,8 +80,8 @@ a good idea of the space group.
 Model prediction
 ----------------
 
-Predict and build normally uses either a Phenix server or a Google Colab
-notebook to carry out AlphaFold prediction of one chain at a time.  It can
+Predict and build normally uses the Phenix server 
+to carry out AlphaFold prediction of one chain at a time.  It can
 also use predictions that you supply or that you generate on demand and put
 in the same place on your computer as those that are created by one of 
 the servers.
@@ -96,19 +96,6 @@ always include a sequence file, but it can include an optional multiple
 sequence alignment file, optional templates, keywords for model prediction
 such as the number of models to generate, random seed, and whether to use 
 multiple sequence alignment.
-
-If you want to use Colab instead of the Phenix server, the procedure has
-slightly more steps. The Phenix GUI will provide a
-button that opens Google Colab in a browser, then you start the Colab 
-notebook and upload a zipped tar file that the GUI will write out to your
-Downloads directory. The notebook runs the prediction
-and downloads a .zip file with the results.  The Phenix GUI recognizes this
-file, opens it and puts the new prediction in the Carry-on directory. This
-directory is contained inside your working directory. In the GUI it is 
-normally a directory with the
-same number as the job and ending in "CarryOn":  for
-PredictAndBuild_30 it is PredictAndBuild_30_CarryOn.
-You will need to be logged in to a Google account for this to work.
 
 When prediction is being carried out, the Phenix GUI waits for the predicted
 models to appear in the working directory, then it goes on to the next steps.
@@ -396,13 +383,11 @@ you can just see if any Python processes are running on your machine.
 Server problems
 ---------------
 
-The most common problem in running Predict and build is that either the Phenix
-server or the Colab server is not working as expected.  Normally the first thing
+The most common problem in running Predict and build is that
+the Phenix server is not working as expected.  Normally the first thing
 to try is just let the program retry (it will do this for a while normally).
-If that is not working, you can stop the program (abort in the GUI), and 
-run again with the same parameters (i.e., the same jobname) except changing 
-the server from PhenixServer to Colab or vice-versa.  That will give you another
-chance.  If neither server is working, you can take the files in the packaged
+
+If the server is working, you can take the files in the packaged
 .tgz file (listed in the GUI output), use them to get your own prediction with
 any server, and put the resulting predicted models in the place specified in 
 the GUI or program output.

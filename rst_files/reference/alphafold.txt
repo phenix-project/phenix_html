@@ -70,8 +70,7 @@ Other procedures for using AlphaFold models in Phenix
 1. Get an AlphaFold model (or a model from the PDB) for each chain in your
 structure.  You can use the `phenix.predict_model <predict_model.html>`_
 method in the
-Phenix GUI to do this using the Phenix server (or the Google Colab notebook 
-system if you wish).
+Phenix GUI to do this using the Phenix server.
 
 2. Trim your model and break it into rigid domains.  You can use 
 `phenix.process_predicted_model <process_predicted_model.html>`_ to do this.
