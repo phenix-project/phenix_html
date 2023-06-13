@@ -12,16 +12,15 @@ Overall procedure for using AlphaFold models in Phenix
 
 A typical procedure for structure determination with AlphaFold models is:
 
-::
 
-  Analyze your data (xtriage for X-ray data or mtriage for cryo-EM)
+1. Analyze your data (Xtriage for X-ray data or Mtriage for cryo-EM)
 
-  Identify whether most parts of most of your structure can be predicted or modeled
+2. Identify whether most parts of most of your structure can be predicted or modeled (PredictModel)
 
-  Use Predict and build to automatically generate an interpretation of your data
+3. Automatically generate an interpretation of your data (PredictAndBuild)
 
-Analyzing your data
--------------------
+1. Analyzing your data
+----------------------
 
 It is a good idea to evaluate your data to have an idea of its resolution 
 and overall quality before working with it. You can use
@@ -30,8 +29,8 @@ and overall quality before working with it. You can use
 For X-ray data in particular you will need to know the space group of your
 structure (or its enantiomer, as in P61 or P65).
 
-Identify whether most parts of most of your structure can be predicted or modeled
----------------------------------------------------------------------------------
+2. Identify whether most parts of most of your structure can be predicted
+-------------------------------------------------------------------------
 
 You might want to go ahead and predict models for all the chains in your
 structure (even before getting the data) to get an idea of how much information
@@ -46,8 +45,8 @@ In general terms, if most parts of most of the components of your structure can
 be predicted with high confidence (i.e., a value of the plDDT metric of  70
 or higher), then predicted models are likely to be very useful.
 
-Use Predict and build to automatically generate an interpretation of your data
-------------------------------------------------------------------------------
+3. Automatically generate an interpretation of your data
+--------------------------------------------------------
 
 If you have either cryo-EM or X-ray data with a resolution of about 4.5 A
 or better, and if you have useful predicted models for most of the components
