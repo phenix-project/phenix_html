@@ -19,6 +19,15 @@ A typical procedure for structure determination with AlphaFold models is:
 
 3. Automatically generate an interpretation of your data (PredictAndBuild)
 
+
+.. raw:: html
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/q3PemBu8RB0" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" ></iframe></div>
+
+This `tutorial video <https://youtu.be/q3PemBu8RB0>`_ is
+available on the `Phenix YouTube channel
+<https://www.youtube.com/c/phenixtutorials>`_ and explains how to determine your structure with AlphaFold in Phenix.
+
 1. Analyzing your data
 ----------------------
 
@@ -60,6 +69,22 @@ either X-ray data (an mtz file) or cryo-EM data (two half-maps).  This
 procedure carries out iterative prediction and structure determination, yielding
 a final rebuilt model as well as a final morphed model that contains the 
 final set of predicted models.
+
+.. raw:: html
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/4LL7pQ60lc8" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" ></iframe></div>
+
+The `tutorial video PredictAndBuild X-ray <https://youtu.be/4LL7pQ60lc8>`_ is
+available on the `Phenix YouTube channel
+<https://www.youtube.com/c/phenixtutorials>`_ and explains how run PredictAndBuild with X-ray diffraction data.
+
+.. raw:: html
+
+  <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/lrpB_GtpIkU" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" ></iframe></div>
+
+The `tutorial video PredictAndBuild cryo-EM <https://youtu.be/lrpB_GtpIkU>`_ is
+available on the `Phenix YouTube channel
+<https://www.youtube.com/c/phenixtutorials>`_ and explains how run PredictAndBuild with cryo-EM data.
 
 
 Other procedures for using AlphaFold models in Phenix
