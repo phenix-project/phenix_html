@@ -94,14 +94,23 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
   3)  Some maps may have a special tag called external_origin. In the map
       file it is called ORIGIN.  This is different than the origin of 
       the map, which specifies the grid point that corresponds to the
-      first element in the map.  The external_origin
-      tells display programs how to shift a model in order to match the map.
-      Phenix ignores the external_origin tag.  If you want to see what its
-      value is, you can use phenix.show_map_info to display characteristics
-      of our map.  If you want to remove the external_origin tag from your
-      map, you can run map_box with "keep_map_size=True" and it will write
-      out the same map but without the external_origin tag.  If you want
-      to shift a model to match your map, and the map has an external_origin
+      first element in the map.  The external_origin is a coordinate shift
+      that may correspond to this grid point, but that does not have to fall
+      right on a grid point.
+
+      If a (1) map has an external_origin tag and (2) the external_origin
+      falls on a grid point in the map, and (3) the map does not have an origin
+      specified in the usual way, then the external_origin, converted
+      to grid units,  will be used as the origin of the map in Phenix.
+
+      You can use phenix.show_map_info to display characteristics
+      of your map.  If you want to remove the external_origin tag from your
+      map, you can run map_box with "keep_map_size=True" "keep_origin=False"
+      and it will write out the same map but without the external_origin tag and
+      without an origin shift.  If you want to convert your external_origin
+      tag to an origin shift, you can run map_box with "keep_map_size=True" and
+      "keep_origin=True".  
+      Also, if you want to shift a model to match a map with an external_origin
       tag, you can use the tool phenix.shift_model_to_match_map (command-line
       only).
 
