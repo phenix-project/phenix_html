@@ -1,20 +1,25 @@
 
-<p>You can use the predicted models from AlphaFold and other prediction software in Phenix. Using these models can be very helpful in structure determination because the models can be very accurate over much of their length and the models come with accuracy estimates that allow removal of poorly-predicted regions.</p>
+<p>You can use the predicted models from AlphaFold and other prediction software in Phenix. These models can be very helpful in structure determination because the models can be very accurate over much of their length and the models come with accuracy estimates that allow removal of poorly-predicted regions.</p>
 
 <h3>How to use predicted models in Phenix</h3>
-<p>Use <a href="../reference/predict_and_build.html">Predict_and_build</a> to incorporate predicted models in the structure solution workflow.</p>
-<p>Predict_and_build generates predicted models and uses them to solve an X-ray structure by MR or to interpret a cryo-EM map. The tool then carries out iterative model rebuilding and prediction to improve the models. The iterative procedure allows creating more accurate predicted models than can be obtained with a simple prediction.<br></p>
+<p>Phenix has tools for carrying out AlphaFold structure prediction, processing the
+resulting models, and for using these models in X-ray or cryo-EM structure determination.</p>
 
-<p>Predict and build can automatically generate a fairly accurate model starting from just a sequence file and either cryo-EM half-maps or X-ray data. Additionally, it provides morphed versions of unrefined predicted models that can be useful as reference models for refinement.
+<p>You can use <a href="../reference/predict_model.html">PredictModel</a> to access the Phenix AlphaFold server and predict the structure of a protein chain.</p>
+
+<p>To process predicted models, removing low-confidence regions and converting confidence estimates to B-values, you can use <a href="../reference/process_predicted_model.html">ProcessPredictedModel</a> . </p>
+
+
+<p>The <a href="../reference/predict_and_build.html">PredictAndBuild</a> tool will allow you to incorporate predicted models in the structure solution workflow.
+PredictAndBuild generates predicted models and uses them to solve an X-ray structure by MR or to interpret a cryo-EM map. The tool then carries out iterative model rebuilding and prediction to improve the models. The iterative procedure allows creating more accurate predicted models than can be obtained with a simple prediction. PredictAndBuild can automatically generate a fairly accurate model starting from just a sequence file and either cryo-EM half-maps or X-ray data. Additionally, it provides morphed versions of unrefined predicted models that can be useful as reference models for refinement.
 </p>
-<p>Use <a href="../reference/predict_model.html">Predict_model</a> to use the Phenix AlphaFold server to predict the structure of a protein chain.</p>
 
-<h3>Other tools for using predicted models:</h3>
+<h3>Phenix resources for using predicted models:</h3>
 <ul>
-  <li><a href="../reference/alphafold.html">Overview: </a>AlphaFold and Phenix</li>
-  <!-- <li>Running AlphaFold2 in <a href="../reference/alphafold_in_colab.html">Google CoLab</a></li> -->
+  <li><a href="../reference/alphafold.html">Overview and video tutorials: </a>AlphaFold and Phenix</li>
   <li><a href="../reference/predict_model.html">Predict </a> a structure with AlphaFold</li>
   <li><a href="../reference/process_predicted_model.html">Processing</a> a predicted model</li>
+  <li><a href="../reference/predict_and_build.html">Solve an X-ray or cryo-EM structure</a> with PredictAndBuild</li> 
   <li><a href="../reference/dock_predicted_model.html">Docking</a> a processed predicted model in a cryo-EM map</li>
   <li><a href="../reference/rebuild_predicted_model.html">Rebuilding</a> a docked predicted model in a cryo-EM map</li>
   <li><a href="../reference/dock_and_rebuild.html">Processing, docking and rebuilding</a> a predicted model in a cryo-EM map</li>

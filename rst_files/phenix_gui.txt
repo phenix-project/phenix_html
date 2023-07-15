@@ -66,6 +66,18 @@ command-line version should be the primary reference for understanding
 program behavior and inputs.  Additional GUI documentation is available
 for some programs.
 
+----------------------------------------------------
+Using AlphaFold and other predicted models in Phenix
+----------------------------------------------------
+
+- `Overview <reference/alphafold.html>`_: Overview and video tutorials.
+- `PredictAndBuild <reference/predict_and_build.html>`_: Solve an X-ray or cryo-EM structure using AlphaFold models.
+- `PredictModel <reference/predict_model.html>`_: Predict a structure with AlphaFold.
+
+- `ProcessPredictedModel <reference/process_predicted_model.html>`_: Process a predicted model.
+
+
+
 ---------------
 Crystallography
 ---------------
@@ -251,6 +263,8 @@ Enhanced maps (Polder, FEM, density-modified...)
 Model building
 --------------
 
+- `PredictAndBuild <reference/predict_and_build.html>`_: Solve an X-ray structure using AlphaFold models.
+
 - `AutoBuild <reference/autobuild_gui.html>`_: automated model-building and refinement
   with RESOLVE and phenix.refine.  This GUI only encapsulates the building
   functions; a separate GUI is available for omit-map calculations.
@@ -357,6 +371,8 @@ Map improvement
 
 Docking, model building and rebuilding
 --------------------------------------
+
+- `PredictAndBuild <reference/predict_and_build.html>`_: Interpret a cryo-EM map using AlphaFold models.
 
 - `Dock in map <reference/dock_in_map.html>`_: Dock a model into map
 
