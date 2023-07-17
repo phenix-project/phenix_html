@@ -1,15 +1,88 @@
------------------------------
 Phenix Examples and Tutorials
------------------------------
+=============================
+
+
+`Video tutorials <https://www.youtube.com/c/phenixtutorials>`__ with data
+=========================================================================
+
+The data for each of these tutorials are available in the GUI by selecting 'New Project'
+and then 'Set up Tutorial Data' and selecting a tutorial.  Each video tutorial provides some background and then carries out a demonstration using the tutorial data.
+
+AlphaFold video tutorials
+-------------------------
+
+- `Overview of structure determination with AlphaFold in Phenix <https://www.youtube.com/watch?v=q3PemBu8RB0>`__  (Introduction to the AlphaFold video tutorials)
+
+- `How to run AlphaFold prediction in Phenix <https://www.youtube.com/watch?v=D6y-wXnwZYM>`__  (Uses sequence from Fab heavy chain tutorial)
+
+- `X-ray structure determination with AlphaFold using PredictAndBuild <https://www.youtube.com/watch?v=4LL7pQ60lc8>`__  (Bromodomain tutorial)
+
+- `Cryo-EM structure determination with AlphaFold using PredictAndBuild <https://www.youtube.com/watch?v=lrpB_GtpIkU>`__ (Fab heavy chain tutorial)
+
+
+Crystallography video tutorials
+-------------------------------
+- `How to run Phaser-MR <https://youtu.be/lJ7t8dgfFjk>`__
+- `Using an AlphaFold model for molecular replacement  <https://www.youtube.com/watch?v=NeGk5D9GYRk>`__
+- `Scaling and merging anomalous data <https://www.youtube.com/watch?v=j-mZGA5uLb0>`__
+- `Automated model building with Phenix AutoBuild <https://youtu.be/og3TM9Cwve0>`__
+- `SAD phasing using AutoSol <https://youtu.be/_Olb8_hYn4U>`__
+- `Fitting ligands into density with phenix.ligandfit <https://www.youtube.com/watch?v=hLr4owC1pTA>`__
+- `Calculating polder maps <https://youtu.be/TcTuMJayh5c>`__
+- `Simulate a SAD experiment with phenix.plan_sad_experiment <https://youtu.be/w8sl_BEwuEU>`__
+- `Using Xtricorder and Xtriage from HKLviewer for inspecting TNCS, anisotropy and twinning. <https://youtu.be/bFysucR0HTU>`__
+- `HKLViewer demonstration <https://www.youtube.com/watch?v=saoqJYpuVz8>`__
+- `Checking data quality with phenix.xtriage <https://www.youtube.com/watch?v=lWBDjfVN9D4>`__
+- `Advanced Tutorial phenix.xtriage - Space Group Identification, Ice rings & Wilson Plot <https://www.youtube.com/watch?v=QlWahDGBTbE>`__
+- `Advanced Tutorial phenix.xtriage - translational NCS (tNCS) <https://www.youtube.com/watch?v=7QbPvVA-wRQ>`__
+- `Advanced Tutorial phenix.xtriage - Checking for twinning <https://www.youtube.com/watch?v=36mc80lrSVU>`__
+
+Validation video tutorials
+--------------------------
+
+- `How to run MolProbity (web interface and Phenix GUI) <https://youtu.be/VMfHGfQpQ8s>`__
+- `MolProbity: All atom contacts tutorial <https://youtu.be/5ceIMxKbB-A>`__
+
+Refinement video tutorials
+--------------------------
+
+- `How to run real-space-refine <https://www.youtube.com/watch?v=SNDB6H2puGM>`__
+- `Phenix tutorial: phenix.refine using default values (GUI) <https://youtu.be/6m9dX8gA5o0>`__
+- `Changing custom parameters in phenix.refine <https://youtu.be/qB8W_6yuw5k>`__
+- `How to use secondary structure restraints <https://youtu.be/9dCkAdR1RDk>`__
+- `How to use multiple refinement strategies and apply them to selected parts of a model <https://youtu.be/sQeTcs4kM4k>`__
+
+Model manipulation and restraints video tutorials
+-------------------------------------------------
+
+- `Basic Phenix eLBOW tutorial <https://youtu.be/8qVYTUVKlbQ>`__
+- `How to run PDB tools via the GUI <https://youtu.be/uJs6ah27PKE>`__
+- `Explaining the atom selection syntax <https://youtu.be/K28q378F39s>`__
+- `How to run Structure Comparison <https://youtu.be/lrCLzJGR6Y0>`__
+
+
+Cryo-EM video tutorials
+-----------------------
+
+- `Automated map sharpening with phenix.autosharpen <https://www.youtube.com/watch?v=S56rYoZWxnM>`__
+- `Density modification for cryo-EM maps <https://youtu.be/4axYwCn2VWI>`__
+- `Automatic map interpretation with map_to_model <https://youtu.be/ZYcG8dlmc18>`__
+
+
+ChimeraX/Isolde with Phenix 
+---------------------------
+
+- `Running Phenix via ChimeraX: setup <https://www.youtube.com/watch?v=DlVgrQTZ5t8>`__
+- `Running Emplace_local via ChimeraX <https://www.youtube.com/watch?v=nRiumhKA6BM>`__
+- `Introduction to interactive low-resolution model building with ISOLDE <https://youtu.be/limaUsNAVL8>`__
+
 
 `Sample data <examples.html>`__ and instructions supplied with the GUI
-----------------------------------------------------------------------
+======================================================================
 
-Video `tutorials <https://www.youtube.com/c/phenixtutorials>`__
----------------------------------------------------------------
 
 Step-by-step Tutorials
-----------------------
+======================
 
 - `Tutorial 1: Solving a structure using SAD data <tutorials/sad_phasing.html>`__
 - `Tutorial 2: Solving a structure using MAD data <tutorials/mad_phasing.html>`__
