@@ -65,6 +65,11 @@ If the half-maps are not actually independent the procedure will not work well
 Specific limitations and problems:
 ----------------------------------
 
+If you have a very large map, this procedure can be really slow.  If your map 
+is large but is mostly empty,  it may be helpful to run map_box to select just
+the region of your two half-maps where your molecule is located before running
+local_resolution.
+
 Literature
 ----------
 
