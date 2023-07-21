@@ -198,6 +198,13 @@ this:
 Possible Problems
 -----------------
 
+If you are supplying a very big map, running combine_models can require a lot
+of memory.  In this case, you may want to run map_box 
+with your map and a model file that contains all your models.  This will box 
+the map around the region where your models
+are located and make a much smaller map that will require less memory.
+
+
 Specific limitations and problems:
 ----------------------------------
 
