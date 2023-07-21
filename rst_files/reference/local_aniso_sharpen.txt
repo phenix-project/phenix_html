@@ -99,6 +99,62 @@ You can specify whether anisotropy or local sharpening are to be applied:
    local_sharpen=True
    anisotropic_sharpen=True
 
+Output
+------
+
+Local_aniso_sharpen will provide a summary of the anisotropy of your map if 
+you leave anisotropic_sharpen=True.  Here are some of the values that are
+calculated for a test case, with annotations:
+
+::
+
+  NOTE: All values apply after removal of overall U of:
+     (0.81, 0.84, 0.78, -0.03, -0.01, 0.04)
+ 
+  >>  This overall U value has large and similar values for the first 3 
+  >>    numbers, and small values for the last 3.  This indicates that this
+  >>    map is relatively isotropic.
+  >>  In this output, the overall U listed above is removed from all other 
+  >>    U values  before printing them out.  
+
+  >>  All values are reported in normalized units (U values).  See
+  >>    https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_U_iso_or_equiv.html
+  
+   Estimated anisotropic fall-off of the data relative to ideal
+  (Positive means amplitudes fall off more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (0.002, 0.089, 0.037, 0.031, 0.042, -0.002) 
+ 
+  >> This is the fall-off of the data, after removal of the overall U values,
+  >>   relative to a standard of values calculated from a beta-galactosidase 
+  >>   model without a bulk solvent correction (available from the phenix 
+  >>   python module cctbx.development.approx_amplitude_vs_resolution) 
+
+   Anisotropy of the data
+  (Positive means amplitudes fall off more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (-0.119, 0.167, -0.133, -0.013, 0.031, 0.064) 
+ 
+  >> This is the anisotropy of the data, after removal of overall U values
+ 
+   Anisotropy of the uncertainties
+  (Positive means uncertainties decrease more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (0.160, -0.032, -0.035, 0.031, 0.054, -0.010) 
+
+  >> This is the anisotropy of the uncertainties in scale factors, 
+  >>    after removal of overall U values
+  
+   Anisotropy of the scale factors
+  (Positive means scale factors increase more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (-0.022, -0.121, -0.088, -0.050, -0.040, -0.019) 
+  
+  >> This is the anisotropy of the scale factors, 
+  >>    after removal of overall U values
+
+
+
 Possible Problems
 -----------------
 
