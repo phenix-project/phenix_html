@@ -79,16 +79,17 @@ To run local_aniso_sharpen with two half maps, you can say:
 
 ::
 
-   phenix.local_aniso_sharpen half_map_A.mrc half_map_B.mrc
+   phenix.local_aniso_sharpen half_map_A.mrc half_map_B.mrc seq_file=seq.fa
 
-If you wish, you can specify a nominal resolution.
+If you wish, you can specify a nominal resolution. The sequence file is
+to let the program figure out the volume of the molecule that is present.
 
 
 To run local_aniso_sharpen with a map and model, you can say:
 
 ::
 
-   phenix.local_aniso_sharpen map.mrc model.pdb resolution=3
+   phenix.local_aniso_sharpen map.mrc model.pdb resolution=3 seq_file=seq.fa
 
 The resolution is again optional.
 
