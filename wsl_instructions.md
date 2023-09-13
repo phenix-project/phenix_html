@@ -5,7 +5,7 @@ Start by launching a new Command Prompt with administraive access. This can be d
 
 Type
 ```
-wsl –install -d ubuntu-22.04
+wsl --install -d ubuntu-22.04
 ```
 This will install Ubuntu 22.04 as an available linux distribution. You will be prompted for a username and password. After the process completes, you should be inside a bash shell.
 
