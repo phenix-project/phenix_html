@@ -524,7 +524,12 @@ option beforehand so that you are running map\_to\_model on just the
 unique part of the structure. 
 
 You can also just cut out boxes of density from your structure with the 
-phenix.map_box tool and work on each one individually.
+phenix.map_box tool and work on each one individually. An easy way to do this
+is to make a dummy model (any model) that kind of fills the space that you 
+are interested in (doesn’t have to really fill it, it just has to have 
+atoms that show how big a box would have to be to hold them all). Then
+run the “map_box” function in the Phenix GUI with your map and 
+this dummy model.  You get a boxed map that you can work with.
 
 You can also set the
 keyword coarse_grid=True to use a coarse grid in RESOLVE and save memory.  
