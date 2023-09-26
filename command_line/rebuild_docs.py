@@ -309,7 +309,7 @@ top_dir = None
 
 create_rst_from_modules = [
   ("mmtbx.command_line.reciprocal_space_arrays","reciprocal_space_arrays.txt"),
-  ("mmtbx.command_line.map_value_at_point", "map_value_at_point.txt"),
+  ("phenix.programs.map_value_at_point", "map_value_at_point.txt"),
   ("mmtbx.command_line.fmodel", "fmodel.txt"),
 ]
 
