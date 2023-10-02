@@ -108,6 +108,24 @@ You can supply your own templates. As for templates from the PDB, if you use
 this feature, models will be predicted both with and without the templates, and
 the model with the highest pLDDT will be saved.
 
+Predicting very long sequences in chunks and reassembling
+---------------------------------------------------------
+
+Sequences longer than about 1500 residues take quite a long time to run. By
+default if your sequence is more than 1500 residues it will be split into
+overlapping chunks of length 600 with an overlap of 200.  These chunks will
+be run individually, then reassembled at the end.  To improve the contacts
+between domains in different chunks, a contact map is created and domains that
+are in contact but in different chunks are re-predicted together. During
+assembly the domain pairs are used to adjust the positions of domains, and also
+positions of domains are adjusted to minimize overlaps.  The repositioned
+domains are then used as a template to morph the full reassembled prediction. 
+The result of this procedure is to assemble a full-length prediction from
+overlapping chunk predictions and to distort this assembled prediction to
+minimize overlaps and make domain-domain contacts present between chunks.
+
+Note that if you have a sequence longer than the threshold for breaking into
+chunks then you can only include one sequence in a PredictModel run. 
 
 Precalculated MSAs and models save time if you rerun with the same sequence
 ---------------------------------------------------------------------------
