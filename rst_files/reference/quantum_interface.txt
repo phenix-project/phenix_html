@@ -1,5 +1,5 @@
 =========================================
-Quantum Mechanical Restraints (QMR) usage
+Quantum Interface (QI)
 =========================================
 
 .. contents::
@@ -9,253 +9,50 @@ Authors
 
 Nigel W. Moriarty
 
-Theory and Background
+Various uses
 =====================
 
-In macromolecular crystallographic structure refinement, ligands present
-challenges for the generation of geometric restraints due to their large chemical
-variability, their possible novel nature and their specific interaction with the
-binding pocket of the protein. Quantum-mechanical approaches are useful for
-providing accurate ligand geometries, but can be plagued by the number of
-minima in flexible molecules. In an effort to avoid these issues, the Quantum
-Mechanical Restraints (QMR) procedure optimizes the ligand geometry in situ,
-thus accounting for the influence of the macromolecule on the local energy
-minima of the ligand. The optimized ligand geometry is used to generate target
-values for geometric restraints during the crystallographic refinement. As
-demonstrated using a sample of >2330 ligand instances in >1700 protein–ligand
-models, QMR restraints generally result in lower deviations from the target
-stereochemistry compared with conventionally generated restraints. In particular,
-the QMR approach provides accurate torsion restraints for ligands and
-other entities.
+Calculate ligand restraints *in situ* using `Quantum Mechanical Restraints
+(QMR) <quantum_mechanical_restraints.html>`_
 
-QMR is part of the Quantum Interface (QI) module that covers the interaction of
-Phenix with QM packages.
+Calculate ligand strain energies using `Quantum Interface energies
+<qi_energies.html>`_
 
-Running an example
-==================
+`Determination of best Histidine tautamer <qi_histidine.html>`_
 
-There are two major ways to interact with the QMR modules in Phenix.
+Tips and Tricks
+===============
 
-1. Run directly in phenix.refine by supplying a PHIL scope to specify
-   the ligand details. This will modify the restraints in memory.
+Model completeness
+------------------
 
-2. Run a command line program (mmtbx.quantum_interface) that creates the
-   QMR PHIL scope (which also works for the phenix.refine option) and
-   then using the same program run the QM step to
-   write the restraints file for refinement.
+One of the most important points about Quantum Chemistry is that it is an
+all-electron_ method. This means that **all** atoms (and electrons) need to
+be specified in order to perform the correct calculation. This is a case where
+GIGO_ will really bite you. In standard refinement, missing atoms are not
+critical but in QM missing atoms are catastrophic.
 
-Note: Using the python2 installer requires the setting of the
-PHENIX_MOPAC environmental variable to point to the MOPAC executable.
-The python3 installer is shipped with the MOPAC executables.
+The QI module
+calculates the charge based on the atoms in the input model (and the
+selection) but care must be taken to ensure that the input model is correct
+down to the protonation. Besides calculating the incorrect result, the QM
+calculation can have difficulty converging thus resulting in excessive run
+times.
 
-mmtbx.quantum_interface
------------------------
+Timings
+-------
 
-For a number of reasons, we will cover the latter first. Using the
-example of PDB:**227L**, download from the PDB website using::
+QM calculations scale as a power of the number of atoms. This means that
+increasing the buffer can greatly affect the timings.
 
-   phenix.fetch_pdb 227L --mtz
-
-Command to produce PHIL scope for QM minimisation using
-mmtbx.quantum_interface is::
-
-   mmtbx.quantum_interface 227L.pdb format=qi write_qmr_phil=True
-
-which will fail because of the bulk test for hydrogen atoms.
-
-::
-
-   Sorry: Model must have Hydrogen atoms
-
-Also note that the
-write_qmr_phil=True option writes a PHIL file. In this example, the format of
-the PHIL file works for QI interface but the default works for phenix.refine.Add Hydrogen atoms to the model using::
-
-   phenix.ready_set 227L.pdb
-
-which produces a file with hydrogens atoms – 227L.updated.pdb. It also may
-produce a restraints file that needs to be used next but in this case
-because the restraints for BNZ (benzene) are shipped with Phenix it is not
-necessary to supply to the program unless you want a different list of restraints
-(not ideal values).
-This file can be created cheaply but is needed as the skeleton for the QMR
-values to be inserted in the bond, angle and torsion restraints. So, we
-can repeat the quantum interface command with the new files.::
-
-  mmtbx.quantum_interface 227L.updated.pdb format=qi write_qmr_phil=True
-
-This will prompt for the selection of the ligand which in this case is “5”.
-
-::
-
-   1 : "chain A and resid  173  and resname  CL"
-   2 : "chain A and resid  178  and resname  CL"
-   3 : "chain A and resid  901  and resname BME"
-   4 : "chain A and resid  902  and resname BME"
-   5 : "chain A and resid  169  and resname BNZ"
-
-  Enter selection by choosing number or typing a new one ~>
-
-The result is a PHIL scope for BNZ QMR restraints::
-
-  227L.updated_A_401_BNZ.phil.
-
-Alternatively, a selection can be supplied directly.::
-
-  mmtbx.quantum_interface 227L.updated.pdb format=qi write_qmr_phil=True qi.selection="chain A and resid 169 and resname BNZ"
-
-A quick tour of the PHIL scope is helpful. The complete scope for the QMR module
-is shown at the end of this page. A reduced scope is shown here.
-
-::
-
-  qi.qm_restraints {
-   selection = "chain A and resid 169 and resname BNZ"
-   buffer = 3.5
-   write_restraints = True
-   restraints_filename = Auto
-   run_in_macro_cycles = \*first_only all test
-   package {
-      program = \*mopac orca
-      charge = Auto
-      multiplicity = Auto
-      method = Auto
-      basis_set = Auto
-      solvent_model = None
-      nproc = 1
-      read_output_to_skip_opt_if_available = True
-      view_output = None
-   }
-  }
-
-The key items are the `selection`, `buffer` and `package` items. The `selection`
-is the active part of the QM minimisation. The `buffer` is the radius from
-the selection to include in the QM environment. The `package` scope
-defines the 3rd party QM package details.
-
-The program will also suggest the next command line for running the QM
-part of the restraints calculation. The skeleton restraints file may need
-to be included.
-
-::
-
-  mmtbx.quantum_interface 227L.updated.pdb run_qmr=True 227L.updated_A_169_BNZ.phil
-
-The result is a set of QMR restraints::
-
-   227L.updated_A_169_BNZ_3.5_C_PM6-D3H4.cif
-
-Provide this to the desired refinements. The final QM calculation upon
-which the restraints are based are in::
-
-   227L.updated_cluster_final_A_169_BNZ_3.5_C_PM6-D3H4.pdb
-
-The input and output files for the MOPAC calculations are in the
-directory for inspection.
-
-::
-
-  mopac_227L.updated_A_169_BNZ_3.5_C_PM6-D3H4.out
-  mopac_227L.updated_A_169_BNZ_3.5_C_PM6-D3H4.arc
-  mopac_227L.updated_A_169_BNZ_3.5_C_PM6-D3H4.mop
-
-phenix.refine
--------------
-
-The restraints file *227L.updated_A_169_BNZ_3.5_C_PM6-D3H4.cif* can be used in
-a refinement or the restraints can be calculated on the fly in the refinement run.
-
-To get a PHIL scope for *phenix.refine*, remove the format=qi parameter from the
-write_qmr command.::
-
-  mmtbx.quantum_interface 227L.updated.pdb write_qmr_phil=True qi.selection="chain A and resid 169 and resname BNZ"
-
-The refinement command can then be run.::
-
-  phenix.refine 227L.updated.pdb 227L.mtz 227L.updated_A_169_BNZ.phil xray_data.r_free_flags.generate=True
-
-The major output is below including the name of the restraints file.
-
-::
-
-========================== Update restraints from QM ==========================
-
-  QM restraints calculations for macro cycle 1
-
-  Time for calculation of "chain A and resid 169 and resname BNZ" using PM6-D3H4  None: -
-
-  Updating QM restraints: "chain A and resid 169 and resname BNZ"
-    Core atoms
-      " C1  BNZ A 169 " ( 2624)
-      " C2  BNZ A 169 " ( 2625)
-      " C3  BNZ A 169 " ( 2626)
-      " C4  BNZ A 169 " ( 2627)
-      " C5  BNZ A 169 " ( 2628)
-      " C6  BNZ A 169 " ( 2629)
-      " H1  BNZ A 169 " ( 2630)
-      " H2  BNZ A 169 " ( 2631)
-      " H3  BNZ A 169 " ( 2632)
-      " H4  BNZ A 169 " ( 2633)
-      " H5  BNZ A 169 " ( 2634)
-      " H6  BNZ A 169 " ( 2635)
-    Buffer residues
-       LEU A   7
-       ILE A  29
-       GLY A  30
-       PHE A  67
-       ASP A  70
-       VAL A  71
-       ALA A  74
-       ALA A 104
-       BNZ A 169
-       HOH A 266
-       HOH A 274
-       HOH A 404
-
-  Starting stats: bond:  0.024 angle:   0.80 dihedral:   0.00
-    RMS difference in entire QM model :     0.518
-  Interim stats : bond:  0.009 angle:   0.07 dihedral:   0.00
-    Writing PDB : qmr_cluster_final_01_A_169_BNZ_3.5_C_PM6-D3H4.pdb
-
-  Checking
-
-  Transfer
-    30 " C1  BNZ A 169 " - " C2  BNZ A 169 " 1.389 ~> 1.399
-    34 " C5  BNZ A 169 " - " C6  BNZ A 169 " 1.389 ~> 1.399
-    37 " C1  BNZ A 169 " - " C6  BNZ A 169 " 1.390 ~> 1.399
-    38 " C2  BNZ A 169 " - " C3  BNZ A 169 " 1.390 ~> 1.399
-    39 " C3  BNZ A 169 " - " C4  BNZ A 169 " 1.390 ~> 1.399
-    40 " C4  BNZ A 169 " - " C5  BNZ A 169 " 1.390 ~> 1.398
-    1  " C2  BNZ A 169 " - " C1  BNZ A 169 " - " H1  BNZ A 169 " 120.0 ~> 120.7
-    2  " C6  BNZ A 169 " - " C1  BNZ A 169 " - " H1  BNZ A 169 " 120.0 ~> 119.4
-    3  " C4  BNZ A 169 " - " C3  BNZ A 169 " - " H3  BNZ A 169 " 120.0 ~> 119.6
-    4  " C2  BNZ A 169 " - " C3  BNZ A 169 " - " H3  BNZ A 169 " 120.0 ~> 120.4
-    5  " C3  BNZ A 169 " - " C2  BNZ A 169 " - " H2  BNZ A 169 " 120.0 ~> 119.7
-    6  " C1  BNZ A 169 " - " C2  BNZ A 169 " - " H2  BNZ A 169 " 120.0 ~> 120.2
-    7  " C4  BNZ A 169 " - " C5  BNZ A 169 " - " H5  BNZ A 169 " 120.0 ~> 120.2
-    8  " C5  BNZ A 169 " - " C6  BNZ A 169 " - " H6  BNZ A 169 " 120.0 ~> 119.8
-    9  " C6  BNZ A 169 " - " C5  BNZ A 169 " - " H5  BNZ A 169 " 120.0 ~> 119.9
-    10 " C2  BNZ A 169 " - " C1  BNZ A 169 " - " C6  BNZ A 169 " 120.0 ~> 119.9
-    11 " C1  BNZ A 169 " - " C6  BNZ A 169 " - " C5  BNZ A 169 " 120.0 ~> 120.1
-    12 " C4  BNZ A 169 " - " C5  BNZ A 169 " - " C6  BNZ A 169 " 120.0 ~> 120.0
-    13 " C1  BNZ A 169 " - " C6  BNZ A 169 " - " H6  BNZ A 169 " 120.0 ~> 120.0
-    14 " C3  BNZ A 169 " - " C4  BNZ A 169 " - " H4  BNZ A 169 " 120.0 ~> 120.0
-    15 " C1  BNZ A 169 " - " C2  BNZ A 169 " - " C3  BNZ A 169 " 120.0 ~> 120.1
-    16 " C3  BNZ A 169 " - " C4  BNZ A 169 " - " C5  BNZ A 169 " 120.0 ~> 120.0
-    17 " C5  BNZ A 169 " - " C4  BNZ A 169 " - " H4  BNZ A 169 " 120.0 ~> 120.0
-    18 " C2  BNZ A 169 " - " C3  BNZ A 169 " - " C4  BNZ A 169 " 120.0 ~> 120.0
-
-  Finished stats : bond:  0.000 angle:   0.00 dihedral:   0.00
-                   planarity (n=1) mean:  0.006 min:   0.006 max:   0.006
-
-  Writing restraints : qmr_01_A_169_BNZ_3.5_C_PM6-D3H4.cif
-
-Parameters
-==========
-
-{{phil:mmtbx.geometry_restraints.quantum_interface}}
+Using the parallel features in MOPAC and Orca are generally not linear so
+the QI module has a feature to prefer simple parallelism on based on jobs
+that can be useful for some situations.
 
 Literature
 ==========
 
 {{citation:qmr_ligand}}
+
+.. _all-electron : https://en.wikipedia.org/wiki/Electronic_structure
+.. _GIGO : https://en.wikipedia.org/wiki/Garbage_in,_garbage_out
