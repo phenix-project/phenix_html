@@ -1,0 +1,335 @@
+=========================================
+Quantum Mechanical Restraints (QMR) usage
+=========================================
+
+.. contents::
+
+Authors
+=======
+
+Nigel W. Moriarty
+
+Theory and Background
+=====================
+
+In macromolecular crystallographic structure refinement, ligands present
+challenges for the generation of geometric restraints due to their large chemical
+variability, their possible novel nature and their specific interaction with the
+binding pocket of the protein. Quantum-mechanical approaches are useful for
+providing accurate ligand geometries, but can be plagued by the number of
+minima in flexible molecules. In an effort to avoid these issues, the Quantum
+Mechanical Restraints (QMR) procedure optimizes the ligand geometry in situ,
+thus accounting for the influence of the macromolecule on the local energy
+minima of the ligand. The optimized ligand geometry is used to generate target
+values for geometric restraints during the crystallographic refinement. As
+demonstrated using a sample of >2330 ligand instances in >1700 protein–ligand
+models, QMR restraints generally result in lower deviations from the target
+stereochemistry compared with conventionally generated restraints. In particular,
+the QMR approach provides accurate torsion restraints for ligands and
+other entities.
+
+QMR is part of the Quantum Interface (QI) module that covers the interaction of
+Phenix with QM packages.
+
+Running an example
+==================
+
+There are two major ways to interact with the QMR modules in Phenix.
+
+1. Run directly in phenix.refine by supplying a PHIL scope to specify
+   the ligand details. This will modify the restraints in memory.
+
+2. Run a command line program (mmtbx.quantum_interface) that creates the
+   QMR PHIL scope (which also works for the phenix.refine option) and
+   then using the same program run the QM step to
+   write the restraints file for refinement.
+
+Note: Using the python2 installer requires the setting of the
+PHENIX_MOPAC environmental variable to point to the MOPAC executable.
+The python3 installer is shipped with the MOPAC executables.
+
+mmtbx.quantum_interface
+-----------------------
+
+For a number of reasons, we will cover the latter first. Using the
+example of PDB:**4w53**, download from the PDB website using::
+
+  ~> phenix.fetch_pdb 4w53 --mtz
+
+Command to produce PHIL scope for QM minimisation using
+mmtbx.quantum_interface is::
+
+  ~> mmtbx.quantum_interface 4w53.pdb format=qi write_qmr_phil=True
+
+which will fail because of the bulk test for hydrogen atoms.
+
+::
+
+   Sorry: Model must have Hydrogen atoms
+
+Also note that the
+write_qmr_phil=True option writes a PHIL file. In this example, the format of
+the PHIL file works for QI interface but the default works for phenix.refine.Add Hydrogen atoms to the model using::
+
+  ~> phenix.ready_set 4w53.pdb
+
+which produces a file with hydrogens atoms – 4w53.updated.pdb. It also may
+produce a restraints file that needs to be used next but in this case
+because the restraints for BNZ (benzene) are shipped with Phenix it is not
+necessary to supply to the program unless you want a different list of restraints
+(not ideal values).
+This file can be created cheaply but is needed as the skeleton for the QMR
+values to be inserted in the bond, angle and torsion restraints. So, we
+can repeat the quantum interface command with the new files.::
+
+  ~> mmtbx.quantum_interface 4w53.updated.pdb format=qi write_qmr_phil=True
+
+This will prompt for the selection of the ligand which in this case is “1”.
+
+::
+
+
+     1 : "chain A and resid  200  and resname MBN"
+     2 : "chain A and resid  201  and resname EPE"
+
+  Enter selection by choosing number or typing a new one ~>
+
+The result is a PHIL scope for MBN QMR restraints::
+
+  4w53.updated_A_200_MBN.phil.
+
+Alternatively, a selection can be supplied directly.::
+
+  mmtbx.quantum_interface 4w53.updated.pdb format=qi write_qmr_phil=True qi.selection="chain A and resid 200 and resname MBN"
+
+A quick tour of the PHIL scope is helpful. The complete scope for the QMR module
+is shown at the end of this page. A reduced scope is shown here.
+
+::
+
+
+  qi.qm_restraints {
+    selection = "chain A and resid  200  and resname MBN"
+    run_in_macro_cycles = *first_only first_and_last all last_only test
+    buffer = 3.5
+    calculate = *in_situ_opt starting_energy final_energy starting_strain final_strain starting_bound final_bound starting_higher_single_point final_higher_single_point
+    write_files = *restraints pdb_core pdb_buffer pdb_final_core *pdb_final_buffer
+    restraints_filename = Auto
+    package {
+      program = *mopac test
+      charge = Auto
+      multiplicity = Auto
+      method = Auto
+      basis_set = Auto
+      solvent_model = None
+      nproc = 1
+      read_output_to_skip_opt_if_available = True
+      ignore_input_differences = False
+      view_output = None
+    }
+  }
+
+The key items are the `selection`, `buffer` and `package` items. The `selection`
+is the active part of the QM minimisation. The `buffer` is the radius from
+the selection to include in the QM environment. The `package` scope
+defines the 3rd party QM package details.
+
+The program will also suggest the next command line for running the QM
+part of the restraints calculation. The skeleton restraints file may need
+to be included.
+
+::
+
+  ~> mmtbx.quantum_interface 4w53.updated.pdb run_qmr=True 4w53.updated_A_200_MBN.phil
+
+The result is a set of QMR restraints::
+
+   4w53.updated_A_200_MBN_3.5_C_PM6-D3H4.cif
+
+Provide this to the desired refinements. The final QM calculation upon
+which the restraints are based are in::
+
+   4w53.updated_cluster_final_A_200_MBN_3.5_C_PM6-D3H4.pdb
+
+The input and output files for the MOPAC calculations are in the
+directory for inspection.
+
+::
+
+  mopac_4w53.updated_A_200_MBN_3.5_C_PM6-D3H4.out
+  mopac_4w53.updated_A_200_MBN_3.5_C_PM6-D3H4.arc
+  mopac_4w53.updated_A_200_MBN_3.5_C_PM6-D3H4.mop
+
+phenix.refine
+-------------
+
+The restraints file *4w53.updated_A_200_MBN_3.5_C_PM6-D3H4.cif* can be used in
+a refinement or the restraints can be calculated on the fly in the refinement run.
+
+To get a PHIL scope for *phenix.refine*, remove the format=qi parameter from the
+write_qmr command.::
+
+  ~> mmtbx.quantum_interface 4w53.updated.pdb write_qmr_phil=True qi.selection="chain A and resid 200 and resname MBN"
+
+The refinement command can then be run.::
+
+  ~> phenix.refine 4w53.updated.pdb 4w53.mtz 4w53.updated_A_200_MBN.phil
+
+The major output is below including the name of the restraints file.
+
+::
+
+========================== Update restraints from QM ==========================
+
+  QM restraints calculations for macro cycle 1
+
+  Time for calculation of "chain A and resid 200 and resname MBN" using PM6-D3H4  None: -
+
+  Updating QM restraints: "chain A and resid 200 and resname MBN"
+    Core atoms
+      " C   MBN A 200 " ( 2721)
+
+      " C1  MBN A 200 " ( 2722)
+
+      " C2  MBN A 200 " ( 2723)
+
+      " C3  MBN A 200 " ( 2724)
+
+      " C4  MBN A 200 " ( 2725)
+
+      " C5  MBN A 200 " ( 2726)
+
+      " C6  MBN A 200 " ( 2727)
+
+      " H1  MBN A 200 " ( 2728)
+
+      " H2  MBN A 200 " ( 2729)
+
+      " H3  MBN A 200 " ( 2730)
+
+      " H2A MBN A 200 " ( 2731)
+
+      " H3A MBN A 200 " ( 2732)
+
+      " H4  MBN A 200 " ( 2733)
+
+      " H5  MBN A 200 " ( 2734)
+
+      " H6  MBN A 200 " ( 2735)
+
+    Buffer residues
+       ILE A  78
+
+       LEU A  84
+
+       VAL A  87
+
+       TYR A  88
+
+       LEU A  91
+
+       ALA A  99
+
+       MET A 102
+
+       VAL A 103
+
+       VAL A 111
+
+       LEU A 118
+
+       LEU A 121
+
+       PHE A 153
+
+       MBN A 200
+
+  Starting stats: bond:  0.011 angle:   1.42 dihedral:   0.00
+    RMS difference in entire QM model :     0.108
+  Interim stats : bond:  0.009 angle:   0.59 dihedral:   0.00
+    Writing PDB : qmr_cluster_final_01_A_200_MBN_3.5_C_PM6-D3H4.pdb
+
+  Checking
+
+  Transfer
+    29 " C1  MBN A 200 " - " C2  MBN A 200 " 1.394 ~> 1.405
+
+    30 " C1  MBN A 200 " - " C6  MBN A 200 " 1.394 ~> 1.405
+
+    33 " C4  MBN A 200 " - " C5  MBN A 200 " 1.388 ~> 1.398
+
+    45 " C3  MBN A 200 " - " C4  MBN A 200 " 1.389 ~> 1.398
+
+    47 " C   MBN A 200 " - " C1  MBN A 200 " 1.502 ~> 1.493
+
+    51 " C2  MBN A 200 " - " C3  MBN A 200 " 1.388 ~> 1.396
+
+    52 " C5  MBN A 200 " - " C6  MBN A 200 " 1.389 ~> 1.397
+
+    1  " C1  MBN A 200 " - " C   MBN A 200 " - " H1  MBN A 200 " 111.6 ~> 108.9
+
+    2  " H2A MBN A 200 " - " C   MBN A 200 " - " H3A MBN A 200 " 107.3 ~> 108.4
+
+    3  " H1  MBN A 200 " - " C   MBN A 200 " - " H2A MBN A 200 " 107.2 ~> 108.2
+
+    4  " C2  MBN A 200 " - " C1  MBN A 200 " - " C6  MBN A 200 " 118.3 ~> 119.2
+
+    5  " C1  MBN A 200 " - " C   MBN A 200 " - " H2A MBN A 200 " 110.9 ~> 111.7
+
+    6  " C1  MBN A 200 " - " C6  MBN A 200 " - " C5  MBN A 200 " 121.0 ~> 120.2
+
+    7  " C1  MBN A 200 " - " C2  MBN A 200 " - " C3  MBN A 200 " 121.0 ~> 120.2
+
+    8  " C   MBN A 200 " - " C1  MBN A 200 " - " C2  MBN A 200 " 120.8 ~> 120.1
+
+    9  " C1  MBN A 200 " - " C2  MBN A 200 " - " H2  MBN A 200 " 119.4 ~> 120.1
+
+    10 " C1  MBN A 200 " - " C6  MBN A 200 " - " H6  MBN A 200 " 119.4 ~> 120.0
+
+    11 " C2  MBN A 200 " - " C3  MBN A 200 " - " H3  MBN A 200 " 119.8 ~> 119.5
+
+    12 " C4  MBN A 200 " - " C5  MBN A 200 " - " H5  MBN A 200 " 120.1 ~> 119.8
+
+    13 " H1  MBN A 200 " - " C   MBN A 200 " - " H3A MBN A 200 " 108.1 ~> 107.8
+
+    14 " C3  MBN A 200 " - " C4  MBN A 200 " - " C5  MBN A 200 " 119.4 ~> 119.6
+
+    15 " C   MBN A 200 " - " C1  MBN A 200 " - " C6  MBN A 200 " 120.9 ~> 120.7
+
+    16 " C4  MBN A 200 " - " C3  MBN A 200 " - " H3  MBN A 200 " 120.0 ~> 120.2
+
+    17 " C5  MBN A 200 " - " C4  MBN A 200 " - " H4  MBN A 200 " 120.3 ~> 120.1
+
+    18 " C6  MBN A 200 " - " C5  MBN A 200 " - " H5  MBN A 200 " 119.8 ~> 119.9
+
+    19 " C5  MBN A 200 " - " C6  MBN A 200 " - " H6  MBN A 200 " 119.6 ~> 119.7
+
+    20 " C2  MBN A 200 " - " C3  MBN A 200 " - " C4  MBN A 200 " 120.2 ~> 120.3
+
+    21 " C4  MBN A 200 " - " C5  MBN A 200 " - " C6  MBN A 200 " 120.2 ~> 120.3
+
+    22 " C3  MBN A 200 " - " C2  MBN A 200 " - " H2  MBN A 200 " 119.6 ~> 119.6
+
+    23 " C1  MBN A 200 " - " C   MBN A 200 " - " H3A MBN A 200 " 111.6 ~> 111.6
+
+    24 " C3  MBN A 200 " - " C4  MBN A 200 " - " H4  MBN A 200 " 120.3 ~> 120.2
+
+    1  " C2  MBN A 200 " - " C   MBN A 200 " - " C1  MBN A 200 " - " H1  MBN A 200 "  31.7 ~>  87.0
+
+  Finished stats : bond:  0.000 angle:   0.00 dihedral:   0.00
+                   planarity (n=1) mean:  0.034 min:   0.034 max:   0.034
+
+  Writing restraints : qmr_01_A_200_MBN_3.5_C_PM6-D3H4.cif
+
+The PHIL scope can be used for all subsequent refinements to recalculate the QM
+restraints.
+
+Parameters
+==========
+
+{{phil:mmtbx.geometry_restraints.quantum_interface}}
+
+Literature
+==========
+
+{{citation:qmr_ligand}}

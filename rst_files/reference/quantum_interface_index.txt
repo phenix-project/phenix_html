@@ -1,0 +1,58 @@
+=========================================
+Quantum Interface (QI)
+=========================================
+
+.. contents::
+
+Authors
+=======
+
+Nigel W. Moriarty
+
+Various uses
+=====================
+
+Calculate ligand restraints *in situ* using `Quantum Mechanical Restraints
+(QMR) <quantum_mechanical_restraints.html>`_
+
+Calculate ligand strain energies using `Quantum Mechanical Energies
+<quantum_mechanical_energies.html>`_
+
+`Determination of best Histidine tautamer <qi_histidine.html>`_
+
+Tips and Tricks
+===============
+
+Model completeness
+------------------
+
+One of the most important points about Quantum Chemistry is that it is an
+all-electron_ method. This means that **all** atoms (and electrons) need to
+be specified in order to perform the correct calculation. This is a case where
+GIGO_ will really bite you. In refinement, missing atoms are not critical but
+QM missing atoms are catastrophic.
+
+The QI module
+calculates the charge based on the atoms in the input model (and the
+selection) but care must be taken to ensure that the input model is correct
+down to the protonation. Besides calculating the incorrect result, the QM
+calculation can have difficulty converging thus resulting in excessive run
+times.
+
+Timings
+-------
+
+QM calculations scale as a power of the number of atoms. This means that
+increasing the buffer can greatly affect the timings.
+
+Using the parallel features in MOPAC and Orca are generally not linear so
+the QI module has a feature to prefer simple parallelism on based on jobs
+that can be useful for some situations.
+
+Literature
+==========
+
+{{citation:qmr_ligand}}
+
+.. _all-electron : https://en.wikipedia.org/wiki/Electronic_structure
+.. _GIGO : https://en.wikipedia.org/wiki/Garbage_in,_garbage_out
