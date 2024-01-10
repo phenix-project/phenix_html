@@ -31,13 +31,7 @@ Running refinement with Phenix and Amber
 ========================================
 
 From Phenix 1.16, Amber is distributed with the standard installer for
-unix and OSX. To test the Amber interface, the user may run:
-
-::
-
-	amber.run_tests
-
-To run Amber in Phenix, in addition to a PDB file, a topology and a
+unix and OSX. To run Amber in Phenix, in addition to a PDB file, a topology and a
 coordinate file must be provided for Amber. From Phenix 1.18,
 you can allow the phenix.refine
 GUI to run AmberPrep, automatically creating the files needed. You
@@ -65,7 +59,7 @@ phenix.refine replacing 4Lzt.pdb. Having created the input files, refinement can
 ::
 
   phenix.refine 4phenix_4Lzt.pdb 4Lzt.mtz use_amber=True topology_file_name=4amber_4Lzt.prmtop coordinate_file_name=4amber_4Lzt.rst7
-  refinement.input.xray_data.r_free_flags.generate=True
+  xray_data.r_free_flags.generate=True
 
 Here is list of keywords:
 
