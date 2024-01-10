@@ -18,7 +18,7 @@ Graphical interface
 A `complete graphical interface for phenix.refine <refine_gui.html>`_ is
 available; it includes integration with several refinement-related utilities
 such as `phenix.ready_set <ready_set.html>`_, `phenix.simple_ncs_from_pdb
-<simple_ncs_from_pdb.html>`_, and phenix.find_tls_groups.  Essentially all of
+<simple_ncs_from_pdb.html>`_, phenix.find_tls_groups and more. All of
 the program details described in this document should apply to the GUI as well.
 
 Citation reference and comprehensive methodology details
@@ -75,7 +75,7 @@ Available features at a glance
 - Refinement at subatomic resolution (approx. < 1.0 A) with IAS model
 - Refinement using twinned data
 - Local and global real-space refinement of coordinates including rotamer fitting
-- Optional omit map generation
+- Refinement using electron diffraction data
 
 Current limitations
 -------------------
@@ -202,15 +202,22 @@ possible options is provided.
 To rerun a job that was previously run::
 
   % phenix.refine --overwrite lysozyme_refine_001.def
+  
+or::
+  
+  % phenix.refine lysozyme_refine_001.def overwrite=true
+  
+The order of commands is not important.
 
-The --overwrite option allows the program to overwrite existing files.
+The --overwrite (or overwrite=True) option allows the program to overwrite 
+existing files.
 By default the program will not overwrite existing files - just in case
 this would remove the results of a refinement job that took a long time to
 finish.
 
 To see all default parameters::
 
-  % phenix.refine --show-defaults=all
+  % phenix.refine --show-defaults
 
 To see difference between default settings and a parameter file::
 
@@ -252,7 +259,7 @@ and the refinement run will be::
 
 The easiest way to create a file like the ``custom_par_2.params`` file is to
 generate a template file containing all parameters by using the command
-``phenix.refine --show-defaults=all`` and then keep the parameters that you
+``phenix.refine --show-defaults`` and then keep the parameters that you
 want to use and remove the rest.
 
 *Comments in parameter files*
@@ -382,7 +389,7 @@ rigid body group selection containing no atoms on special positions.
          rigid_body_selections.params
 
      Files like this can be created, for example, by copy-and-paste from
-     the complete list of parameters (phenix.refine --show-defaults=all).
+     the complete list of parameters (phenix.refine --show-defaults).
 
   4. To switch from MZ protocol to traditional way of doing rigid body
      refinement (not recommended!)::
@@ -1467,7 +1474,7 @@ phenix.refine can handle the refinement of hemihedrally twinned data (two twin
 domains). Least square twin refinement can be carried out using the following
 commands line instructions::
 
-  % phenix.refine data.hkl model.pdb twin_law="-k,-h,-l"
+  % phenix.refine data.hkl model.pdb xray_data.twin_law="-k,-h,-l"
 
 The twin law (in this case -k,-h,-l) can be obtained from phenix.xtriage. If
 more than a single twin law is possible for the given unit cell and space group,
@@ -1476,7 +1483,7 @@ candidate to be used in refinement.
 
 Correcting maps for anisotropy might be useful::
 
-  % phenix.refine data.hkl model.pdb twin_law="-k,-h,-l" \
+  % phenix.refine data.hkl model.pdb xray_data.twin_law="-k,-h,-l" \
     detwin.map_types.aniso_correct=true
 
 The detwinning mode is auto by default: it will perform algebraic detwinning
@@ -1488,6 +1495,10 @@ with twinning that involves two twin domains.
 
 Neutron and joint X-ray and neutron refinement
 ----------------------------------------------
+
+The paradigm and implementation of the joint X-ray and neutron refinement were 
+changed in the fall of 2023, as documented here: 
+https://pubmed.ncbi.nlm.nih.gov/37942718/
 
 Refinement using neutron data requires having H or/and D atoms added to the
 model. Use ReadySet! program to add all H, D or H/D atoms. See
@@ -1502,19 +1513,29 @@ model. Use ReadySet! program to add all H, D or H/D atoms. See
    used in all calculations. All the examples and phenix.refine functionality
    presented in this document are valid and compatible with using neutron data.
 
-2. Using X-ray and neutron data simultaneously (joint X/N refinement).
+2. Using X-ray and neutron data simultaneously (joint XN refinement).
 
    phenix.refine allows simultaneous use of both data sets, X-ray and neutron.
-   The data sets are allowed to have different number of reflections and be
-   collected at different resolutions.
+   The data sets are allowed to have different number of reflections, be
+   collected at different resolutions and temperatures from crystalls having 
+   different space groups and unit cell parameters.
 
-   The only requirement (that is not enforced by the program but is the user's
-   responsibility) is that both data sets have to be collected at the same
-   temperature from same crystals (or grown in identical conditions, having
-   identical space groups and unit cell parameters)::
+   Running a joint XN refinement requires a parameter file::
 
-       phenix.refine model.pdb data_xray.hkl neutron_data.file_name=data_neutron.hkl
-       input.xray_data.labels=FOBSx input.neutron_data.labels=FOBSn
+     % phenix.refine joint_xn.eff
+      
+   where the ``joint_xn.eff`` file contains the following lines::
+
+     #include_params joint_xn.eff 
+   
+   Parameters within the ``data_manager {...}`` scope define input data files, 
+   labels for X-ray and neutron data arrays, as well as labels for corresponding 
+   free-r flags. Note, two models are input: one is X-ray and another one is 
+   neutron model. 
+   
+   Additionally, refinement strategies for X-ray and neutron models can be 
+   customized independently as illistrated in ``xray {...}`` and 
+   ``neutron {...}`` scopes of parameters.
 
 Optimizing target weights
 -------------------------
@@ -1822,6 +1843,19 @@ Specify the name for output files
 ::
 
   % phenix.refine data.hkl model.pdb output.prefix=lysozyme
+  
+Choosing data arrays from input file
+------------------------------------
+
+If input file(s) contains multiple sets of reflection data and/or free-r flags 
+so that the program cannot unambiguously choose them for refinement, it will stop
+and ask to selected the desired arays. Example below shows how to specify labels 
+for the data and flags:
+
+::
+
+  % phenix.refine data.hkl model.pdb miller_array.labels.name="IOBS" \
+    miller_array.labels.name="R-free-flags"
 
 Reflection output
 -----------------

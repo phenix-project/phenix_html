@@ -1,0 +1,53 @@
+data_manager {
+  miller_array {
+    file = data.mtz
+    labels {
+      name = "F-obs,SIGF-obs"
+      type = x_ray
+    }
+    labels {
+      name = "R-free-flags"
+      type = x_ray
+    }
+    labels {
+      name = "F-obs-neutron,SIGF-obs-neutron"
+      type = neutron
+    }
+    labels {
+      name = "R-free-flags-neutron"
+      type = neutron
+    }
+  }
+  model {
+    file = model_xray.pdb
+    type = x_ray
+  }
+  model {
+    file = model_neutron.pdb
+    type = neutron
+  }
+}
+xray {
+  refinement {
+    refine {
+      strategy = *individual_sites *rigid_body
+    }
+    main {
+      simulated_annealing = True
+      ordered_solvent = True
+      number_of_macro_cycles = 3
+    }
+  }
+}
+neutron {
+  refinement {
+    refine {
+      strategy = *individual_sites *individual_adp
+    }
+    main {
+      simulated_annealing = False
+      ordered_solvent = False
+      number_of_macro_cycles = 5
+    }
+  }
+}

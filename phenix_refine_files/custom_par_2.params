@@ -1,7 +1,7 @@
 refinement.main {
    number_of_macro_cycles=4
 }
-refinement.input.xray_data.high_resolution=2.5
+data_manager.fmodel.xray_data.high_resolution=2.5
 refinement.refine {
   strategy = *individual_sites \
               rigid_body \
