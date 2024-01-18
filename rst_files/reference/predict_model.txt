@@ -201,6 +201,59 @@ the AlphaFold model (named something like PredictAndBuild_10_ALPHAFOLD_A.pdb), t
 multiple sequence alignment used (PredictAndBuild_10_ALPHAFOLD_A_MSA.a3m),
 and the Predicted Aligned Error (PAE) file (PredictAndBuild_10_ALPHAFOLD_A_PAE.jsn).
 
+Privacy of your data when using the Phenix server
+-------------------------------------------------
+
+When you run the Phenix server to get an AlphaFold prediction, your data are
+uploaded by the Phenix GUI to the Phenix server, the prediction is carried out,
+and then the results are downloaded. 
+
+Normally your sequence is also 
+sent to the mmseqs2 MSA server to obtain a multiple sequence alignment. You
+can also supply your own MSA and then the mmseqs2 server is not used. The
+MSA and the hashed sequence are sent to the Phenix server and are saved
+unless you specify allow_precalculated_msa_file=False.
+
+When the job is completed and Phenix downloads the data, all data is
+deleted if you specify allow_precalculated_result_file=False.
+If you specify allow_precalculated_result_file=True (default),
+a hashed version of the
+inputs (sequence, number of models, etc) is saved along with the result
+(the AlphaFold model). In this way it is not possible to see the inputs, 
+but if you run the exact same job again, the server will see that the
+hash of the inputs matches and it will return the model directly.
+
+Here are some details on the privacy of your data when using the
+Phenix server:
+
+::
+
+   Accessible only from Phenix
+
+   Password-protected (password supplied by Phenix)
+
+   Server provides Phenix with a passkey when data are uploaded.  
+   That passkey allows download of the data. All this is done within Phenix.
+
+   Server is accessible in two modes (user can choose, default is Mode 1 
+   (save hashed inputs and results).
+
+   A. Mode 1: hashed inputs and results saved on server
+     a. in this mode if anyone submits the identical job (identical 
+        sequence, identical parameters) later, they get back the 
+        result model from this job
+     b. result model does not contain any information about the user
+     c. inputs and log files are deleted after data are downloaded
+   B. Mode 2: nothing saved.  Inputs results deleted from server 
+        after data are downloaded
+
+   Server can only carry out pre-specified commands (i.e., model prediction),
+   and only allows json text to be uploaded.
+
+   Data is accessible to the Phenix developers while running.
+   The developers will only access this data to debug the system.
+
+
 The output predicted model
 --------------------------
 
