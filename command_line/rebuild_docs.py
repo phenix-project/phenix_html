@@ -310,7 +310,7 @@ top_dir = None
 create_rst_from_modules = [
   ("mmtbx.command_line.reciprocal_space_arrays","reciprocal_space_arrays.txt"),
   ("phenix.programs.map_value_at_point", "map_value_at_point.txt"),
-  ("mmtbx.command_line.fmodel", "fmodel.txt"),
+#  ("mmtbx.command_line.fmodel", "fmodel.txt"),
 ]
 
 def replace_tree (src_path, dest_path):
