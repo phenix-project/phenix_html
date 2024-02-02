@@ -235,6 +235,10 @@ Phenix server:
    Server provides Phenix with a passkey when data are uploaded.  
    That passkey allows download of the data. All this is done within Phenix.
 
+   Phenix sends your IP address to the server. This is used as a unique
+   identifier in the queueing system.  The IP address is deleted when the
+   data are downloaded.
+
    Server is accessible in two modes (user can choose, default is Mode 1 
    (save hashed inputs and results).
 
