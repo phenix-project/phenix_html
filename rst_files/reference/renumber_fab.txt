@@ -1,0 +1,33 @@
+phenix.renumber_fab
+===================
+
+Description
+-----------
+
+This tool is for renumbering residues in FAB chaings according to appropriate
+scheme. Supported schemes are Kabat, Chothia and Martin.
+
+Requirements: model and sequence.
+
+Sequence should contain the full sequence of the FAB and it  should at
+least cover whole chains in the model.
+
+
+Command line usage examples
+---------------------------
+
+  % phenix.renumber_fab model.pdb sequence.fa
+
+  % phenix.renumber_fab 2jjj.cif sequence.fa scheme=chothia
+
+
+GUI
+---
+
+This tool is available in the Phenix GUI in the "PDB deposition" section.
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.renumber_fab.Program}}
