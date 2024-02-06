@@ -1,0 +1,138 @@
+Setting up tests that can run automatically in the Phenix GUI
+=============================================================
+
+Author(s)
+---------
+
+-  Automatic GUI tests: Tom Terwilliger
+
+Purpose
+-------
+
+These tests can be used to make sure that programs in the GUI
+can run properly. They can also be used as an introduction to 
+running in the GUI as they are all preset to run.
+
+
+Framework
+---------
+
+The GUI_TESTS directory has a set of subdirectories (CRYSTALS_A...)
+that can be imported as projects into the Phenix GUI. Once in the GUI, all the
+unique jobs in a project can be run sequentially with the 
+"Auto-run all unique jobs" function.
+
+Updating the GUI tests
+----------------------
+
+New projects can be added to the GUI_TESTS directory by creating them
+in the Phenix GUI in an installation of GUI_TESTS.  The existing and new 
+projects can then be packaged into a new version of GUI_TESTS automatically.
+Additionally, new jobs can be run in an existing GUI_TESTS module and existing
+jobs can be deleted. On repackaging, the GUI_TESTS will reflect the state of
+these tests in the GUI that was worked on.
+
+How to set up the tests
+-----------------------
+
+The tests are supplied with Phenix, but you have to install them and
+import them into the GUI to use them. Here is how:
+
+
+Install the tests
+-----------------
+
+Decide where you want to put the GUI_TESTS (in this example, ~/Downloads)
+
+Go to the phenix_regression directory with GUI_TESTS  (i.e., 
+     $PHENIX/modules/phenix_regression/gui/auto_run). If $PHENIX is not defined,
+     you will need to type in the full path.
+
+::
+
+  cd $PHENIX/modules/phenix_regression/gui/auto_run
+
+To install in ~/Downloads, type:
+
+::
+
+  ./install_gui_tests.sh ~/Downloads
+
+This will install the GUI_TESTS directory with the right path names in 
+ ~/Downloads.
+
+Start the Phenix GUI. You might want to do this from the 
+command line instead of clicking an icon so that the log goes to the
+terminal window.
+
+  - In the Phenix GUI:  select "Import Project".
+  - Navigate to your new GUI_TESTS directory, then to each subdirectory
+      (CRYSTALS_A CRYSTALS_B, etc) and import each one individually.
+
+
+Run a test
+----------
+
+You are now ready to run one or all the tests.  To run just one test:
+
+  - In the Phenix GUI, select one of these projects (MODEL_A) and go 
+    to Job History.
+  - Select any job and hit "restore" or double click it
+  - The job will be restored and you can run it with "Run"
+
+
+Run a group of tests
+--------------------
+
+  - In the Phenix GUI, select one of these projects (MODEL_A) and go 
+    to Job History.
+  - Hit "Auto-run all unique jobs"
+
+  - The jobs will be run sequentially.  Look for any errors.
+     A few jobs will require clicking "OK" to go on. (It will stop and wait for
+     your OK). It will also stop on most errors.  Tests that cannot be
+     run this way are in the ONE_BY_ONE project. For these, just reload the
+     job and run it.
+
+
+
+
+Modifying the GUI_TESTS jobs
+----------------------------
+
+You can modify the GUI_TESTS jobs in any way and save the new version in
+phenix_regression.  Details below.  Basically: install the GUI_TESTS, 
+create new jobs, delete any jobs that you do not want saved, 
+create new projects (must be subdirectories of the directory GUI_TESTS),
+whatever.  Then package up the new version you have created with the 
+instructions below, and commit it to the repository.
+
+Details of modifying the GUI_TESTS jobs by creating a new set of tests
+----------------------------------------------------------------------
+
+When you have a new installation that you would like to save, you can use the
+create_new_gui_tests_package.csh script in your GUI_TESTS directory.
+NOTE: Script is c-shell so it won't work on bash for now.
+
+1. Get into your GUI_TESTS directory:
+
+::
+
+  cd GUI_TESTS  
+
+2. Decide where your new installation package goes. The instructions here
+will put it in your ~/Downloads directory and you can copy it 
+to your regression phenix_regression/gui/auto_run directory:
+
+3. Create a new installation package:
+
+::
+
+  ./create_new_gui_tests_package.csh ~/Downloads
+
+  cp ~/Downloads/GUI_TESTS.tgz $PHENIX/modules/phenix_regression/gui/auto_run/
+
+This will overwrite the GUI_TESTS.tgz package in Downloads, and if you copy it,
+the one in you regression directory.  You can put your new installation 
+package anywhere you like.
+
