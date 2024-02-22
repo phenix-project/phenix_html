@@ -4,13 +4,25 @@ phenix.renumber_fab
 Description
 -----------
 
-This tool is for renumbering residues in FAB chaings according to appropriate
-scheme. Supported schemes are Kabat, Chothia and Martin.
+The *renumber_fab* tool is designed to streamline the renumbering process
+for FAB chains. It performs a search among a set of supplied sequences to
+find the most similar sequence. Once identified, this sequence is sent
+to the server to retrieve the appropriate numbering. The tool supports
+various renumbering schemes, such as Kabat, Chothia, and Martin.
 
-Requirements: model and sequence.
+Requirements: A model and its corresponding sequence.
 
-Sequence should contain the full sequence of the FAB and it  should at
-least cover whole chains in the model.
+Ensure that the sequence encompasses the entire FAB structure and adequately
+covers the entire chains in the model.
+
+Additionally, the tool will update HELIX/SHEET records describing secondary
+structure. However, it will neither renumber nor output SSBOND, LINK, and
+certain other records.
+
+You can customize the similarity threshold by adjusting the
+'identity' parameter in case the sequences are not closely matched.
+The tool generates detailed logs,
+giving insights into similarity and matched chains.
 
 !!! WARNING !!! This program sends supplied sequence to AbNum server at
 http://www.bioinf.org.uk/abs/abnum/
@@ -24,7 +36,7 @@ Command line usage examples
 
   % phenix.renumber_fab model.pdb sequence.fa
 
-  % phenix.renumber_fab 2jjj.cif sequence.fa scheme=chothia
+  % phenix.renumber_fab 2jjj.cif sequence.fa scheme=chothia identity=0.4
 
 
 GUI
