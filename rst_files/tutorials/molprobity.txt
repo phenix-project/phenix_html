@@ -1,5 +1,6 @@
+====================================
 Tutorial: Validation with MolProbity
-------------------------------------
+====================================
 
 * `Overview <Overview_>`_
 * `Setup <Setup_>`_
@@ -45,6 +46,9 @@ File inputs
 
 In the "Comprehensive Validation"  window, browse to the tutorial directory that you specified above, and select 3dnd.pdb as the "Input model", 3dnd.mtz as the "Reflections file", and 3dnd.ligands.cif as the "Restraints (CIF)" file.
 This CIF file defines restraints for ligands in input PDB file.
+
+For this model, adding certain validations to the Polygon representation is useful. Scroll down to find the button labeled "Polygon options" and click it. In the window that pops up, turn on the checkboxes for "Ramachandran favored" and "Rotamer outliers". Then hit OK.
+
 Now you are ready to run the program, select **Run** from the top menu bar.
 
   .. _Validation tools:
@@ -61,7 +65,13 @@ When validation has run, click on the "Compare statistics" button.
 This will launch a tool called "Polygon" (it may take several seconds), which is used to simultaneously compare R-work, R-free, RMSD-bonds, RMSD-angles, Clashscore, and Average B factor.
 Well-built models will usually have a small, fairly equilateral polygon, whereas larger or significantly asymmetric deviations are indicative of model problems.
 
-As you can see for 3dnd, both RMSD-bonds and RMSD-angles are a bit large, beyond the expected peaks for structures of similar resolution. This could indicate that misfit areas of the structure are causing geometric strain. We will visit some of these areas in the next sections.
+As you can see for 3dnd, both RMSD-bonds and RMSD-angles are a bit large, beyond the expected peaks for structures of similar resolution.
+This could indicate that misfit areas of the structure are causing geometric strain. We will visit some of these areas in the next sections.
+
+From the measures we added, you can also see that Rotamer outliers are quite high.
+Ramachandran favored *looks* unusual, but this measure should have a high value, unlike the others.
+More importantly, this structure's Ramachandran favored score falls around the peak of Polygon's histogram for structures of similar resolution.
+This is important context for choosing which validations to focus on.
 
   .. image:: ../images/tutorial_MP_polygon.png
 
@@ -87,6 +97,9 @@ Under the "Summary" tab are most of the same overall statistics that you would f
 These statistics are colored stoplight-style (green, yellow, and red) as a rough guide the severity of a given result.
 
 Notice the high percentage of rotamer outliers, and large number of C-beta deviations (those combine geometry problems around the C-alpha into a single measure, as explained in `Lovell 2003 <References_>`_).
+The Ramachandran favored percent appears a little low, and is colored yellow.
+However, as we saw in the Polygon above, this value is typical of structures around 2.26Å.
+The Ramachandran statistics might be improvable, but other validations take higher priority in this context.
 
 This tab also displays Rama-Z score validation.
 This is a whole-model assessment of how realistic the Ramachandran distribution is and guards against overfitting to Ramachandran criteria.
