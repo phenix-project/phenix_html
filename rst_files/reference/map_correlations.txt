@@ -1,0 +1,93 @@
+Map correlations (map-model, map-map, optional origin shifts)
+=============================================================
+
+Author(s)
+---------
+
+-  map_correlations: Pavel Afonine, Tom Terwilliger
+
+Purpose
+-------
+
+Map correlations is a GUI and command-line tool for evaluating the fit of
+models to maps and the correlation between maps.  It has the feature that
+the model or second map can be offset (translated) to maximize the 
+correlation.  This offset can be restricted to shifts allowed by
+space-group symmetry (translational_offsets=Allowed_by_symmetry)  or it 
+can be any shifts (translational_offsets=Any).
+
+Maps can be supplied as map files or as map coefficients. Maps and 
+map coefficients may not be both used at the same time.
+
+If a model is supplied, the local correlation for each residue is calculated
+
+The total number of files supplied must be exactly two.  
+
+Usage
+-----
+
+How map_correlations works:
+----------------------------
+
+If an optimized translation is requested, map correlations finds the
+optimal translation using RESOLVE.  The translation is calculated
+based on an FFT-based correlation search.
+If two maps (or map coefficients files) are supplied, the second map is
+shifted. If a model is supplied, a model-based map is calculated, and the
+optimal translation for that model-based map is applied to the model
+
+If you supply a model file, by default model density is calculated 
+using the atom types, occupancies and isotropic thermal factors 
+(B-values) supplied in that PDB file. 
+
+If you specify b_values=Zero then
+all the B-values are set to zero before calculation of correlations. This
+is useful if you want to compare the clarities of a series of maps, all
+representing the same model. You calculate the map-model correlation of
+each map to your reference model in which all B-values in the reference
+model have been set to zero (Terwilliger et al., 2018):
+
+Output files from map_correlations
+-----------------------------------
+
+**xxx_offset.pdb**: A PDB file offset to match the origin in the mtz file.
+Produced if translational_offsets are requested and a model is supplied.
+**xxx_offset.mtz**: A translated version of the second MTZ file supplied 
+(if any),
+offset so that the map calculated from it optimally matches the map from the
+first MTZ file.
+**xxx_offset.ccp4**: A translated version of the second map file supplied,
+(if any) offset so that the map calculated from it optimally matches the map from the
+first map file.
+
+Examples
+--------
+
+Standard run of map_correlations:
+---------------------------------
+
+Running map_correlations is easy. From the command-line you can
+type:
+
+::
+
+    phenix.map_correlations map_coeffs.mtz coords.pdb
+
+Possible Problems
+-----------------
+
+Specific limitations and problems:
+----------------------------------
+
+References
+----------
+
+{{citation:autosharpen}}
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.map_correlations}}
+
+
