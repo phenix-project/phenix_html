@@ -97,6 +97,7 @@ Validation
 - phenix.clashscore: Evaluate model based on all-atom contacts
 - phenix.kinemage: Generates a multi-criterion validation kinemage file, for viewing in KiNG
 - phenix.king: Run KiNG molecular graphics
+- phenix.map_correlations: Compare maps or map and model, optionally allowing translational offsets
 - phenix.model_vs_data: Evaluate model using experimental data
 - phenix.model_vs_sequence: Detect residue mismatches in a PDB file
 - phenix.molprobity: Run molprobity
@@ -153,7 +154,7 @@ Map tools
 - phenix.dock_in_map: Dock a model into a map
 - phenix.map_symmetry: Identify symmetry in a map
 - phenix.resolve_cryo_em: Density modify a cryo-EM map
-- phenix.get_cc_mtz_mtz: Offset maps using allowed origin shifts and get correlation
+- phenix.map_model_correlations: Map and map-model correlation allowing translations 
 - phenix.guess_molecular_centers: Guess molecular centers from local RMS density
 - phenix.map_box: Simple cut out map around a PDB file
 - phenix.map_to_model_histogram: Compute averaged radial density distribution
@@ -174,7 +175,6 @@ Model tools
 - phenix.dynamics: Shake up structure with simple molecular dynamics
 - phenix.form_factor_query: f' and f'' table lookup given element and wavelength
 - phenix.fragment_search: Find fragments in PDB matching a target fragment
-- phenix.get_cc_mtz_pdb: Offset PDB to match map using allowed origin shifts and get residue correlation
 - phenix.get_ligand_pdb: Create PDB file for a 3-letter ligand in the PDB
 - phenix.ksdssp: Identify secondary structure in a model
 - phenix.model_model_distances: Distance between two PDB files: per atom, residue, chain, model and overall
