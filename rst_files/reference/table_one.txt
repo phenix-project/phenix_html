@@ -32,7 +32,7 @@ residues, but this is frequently less accurate when only the model is
 available.  If you have multiple CIF files in a single directory you may
 specify the directory path instead of the individual files.
 
-.. image:: ../images/table1_structure.png
+.. image:: ../images/Table1_01.png
 
 If you have the scaled-but-unmerged intensities (for instance, processed
 using the "no merge original index" macro in HKL2000/Scalepack), you can also
@@ -58,7 +58,7 @@ that are several percent lower.  In these cases it is better to use the values
 reported in the header, to avoid discrepancy between the article and the PDB
 deposition.
 
-.. image:: ../images/table1_config.png
+.. image:: ../images/Table1_02.png
 
 Output files
 ------------
@@ -71,10 +71,10 @@ formatting.  For data-related statistics (including the R-factors), values
 for the highest-resolution 10% of reflections will be displayed in parentheses
 next to the overall value.
 
-.. image:: ../images/table1_rtf.png
+.. image:: ../images/Table1_03.png
 
 
 List of all available keywords
 ------------------------------
 
-{{phil:mmtbx.command_line.table_one}}
+{{phil:phenix.table_one}}
