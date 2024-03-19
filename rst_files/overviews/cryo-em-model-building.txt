@@ -15,11 +15,11 @@ can be used to build models for both proteins and nucleic acids.
 **How**
 
 The program *phenix.map_to_model* interprets a cryo-EM map and automatically 
-builds an atomic model. If desired, the map is sharpened using *phenix.auto_sharpen.*
+builds an atomic model. If desired, the map is sharpened using *phenix.map_sharpening.*
 The unique parts of the structure are then identified by taking the 
 reconstruction symmetry into account. The procedure identifies
 which parts of the map correspond to protein or RNA/DNA. To save runtime, you
-can use *phenix.auto_sharpen* to sharpen the map and *phenix.map_box* to cut out
+can use *phenix.map_sharpening* to sharpen the map and *phenix.map_box* to cut out
 the unique part before you run *phenix.map_to_model.* 
 
 The *phenix.map_to_model* tool requires you to input a CCP4-style
@@ -47,7 +47,7 @@ here <../reference/map_to_model.html>`__
 
 **Related programs**
 
--  `phenix.auto\_sharpen <../reference/auto_sharpen.html>`__: This
+-  `phenix.map_sharpening <../reference/map_sharpening.html>`__: This
    program performs map sharpening by optimizing the detail and connectivity
    of a cryo-EM map. 
 

@@ -148,8 +148,7 @@ Map tools
 - phenix.density_outside_model: Remove density near a model from a map
 - phenix.cut_out_density: Create MTZ coeffs with density cut out from a map
 - phenix.segment_and_split_map: Split a map into regions of density
-- phenix.auto_sharpen: Auto-sharpen/blur a map
-- phenix.local_aniso_sharpen: Optimize a map with local anisotropic sharpening
+- phenix.map_sharpening: Optimize a map by sharpening
 - phenix.local_resolution: Calculate a local resolution map
 - phenix.dock_in_map: Dock a model into a map
 - phenix.map_symmetry: Identify symmetry in a map

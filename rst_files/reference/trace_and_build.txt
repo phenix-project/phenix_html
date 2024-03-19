@@ -35,7 +35,7 @@ to try and build.
 
 Input map file: Usually you should supply trace_and_build with a 
 sharpened map that represents the
-unique part of your structure.  You can use phenix.auto_sharpen to 
+unique part of your structure.  You can use phenix.map_sharpening to 
 sharpen your map.  If your map has symmetry you can use
 phenix.map_box with extract_unique=true to extract this part of the map.
 

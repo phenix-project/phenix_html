@@ -50,13 +50,13 @@ about 4.5 A or better.  The higher the resolution, the more complete the
 model that you will typically get.
 
 It is easiest to supply map\_to\_model with a map that has already been
-sharpened optimally (for example with phenix.auto_sharpen). It is also easiest
+sharpened optimally (for example with phenix.map_sharpening). It is also easiest
 if you cut out just the unique part of your map before supplying it to
 map\_to\_model (you can use phenix.map_box to do this with 
 the extract_unique=True option).  After you are all done you can reconstruct
 the entire molecule using phenix.apply_ncs.
 
-(Alternatively you can have map\_to\_model do everything for you (auto_sharpen,
+(Alternatively you can have map\_to\_model do everything for you (map_sharpening,
 symmetry average, cut out the unique part, reconstruct the entire molecule). 
 This is a lot slower so normally it is best to prepare just the right part
 of the map in advance.)
@@ -171,9 +171,9 @@ maximum in the map.
 
 If requested, (auto\_sharpen=True) the resolution dependence of the map will
 be adjusted to maximize the clarity of the map.  It is generally 
-preferable to do this in advance using the phenix.auto_sharpen tool however.
+preferable to do this in advance using the phenix.map_sharpening tool however.
 
-If you run auto_sharpen, You can choose to use
+If you run phenix.map_sharpening, You can choose to use
 map kurtosis or the adjusted surface area of the map (default) for this 
 purpose.  
 
@@ -371,7 +371,7 @@ Running map\_to\_model is easy. From the command-line you can type:
     phenix.map_to_model my_map.map seq.fa resolution=3
 
 where my_map.map is a CCP4, mrc or other related map format, seq.fa is a
-sequence file.  Normally you should sharpen your map with phenix.auto_sharpen
+sequence file.  Normally you should sharpen your map with phenix.map_sharpening
 and cut out the unique part of the map with phenix.map_box (using the 
 extract_unique=True keyword) before supplying it to map\_to\_model.
 

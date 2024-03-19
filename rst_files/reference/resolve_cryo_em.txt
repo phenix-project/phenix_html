@@ -398,9 +398,9 @@ are some things you can do:
 ::
 
   1. Create a matched version of your maps that have the same
-  resolution-dependence using phenix.auto_sharpen. Run it like this:
+  resolution-dependence using phenix.map_sharpening. Run it like this:
 
-  phenix.auto_sharpen n_bins=100 auto_sharpen_methods=external_map_sharpening
+  phenix.map_sharpening n_bins=100 auto_sharpen_methods=external_map_sharpening
        external_map_file=target_map.map map_to_change.map resolution=4.1
        sharpened_map_file=map_to_change_matched.map
 
@@ -413,7 +413,7 @@ are some things you can do:
   for each map. The map with a lower value of this resolution may be better.
 
   3. As in #2, once you have a pair of maps and a model refined against
-  each map, you can run phenix.auto_sharpen with each map and model and
+  each map, you can run phenix.map_sharpening with each map and model and
   it will print out the average FSC for each.  The one with the higher
   overall FSC may be better.
 

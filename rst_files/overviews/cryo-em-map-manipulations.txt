@@ -22,7 +22,7 @@ map are uncorrelated, and (2) some features in a map region are known in advance
 
 **How**
 
-The program *phenix.auto_sharpen* performs map sharpening by optimizing the detail and 
+The program *phenix.map_sharpening* performs map sharpening by optimizing the detail and 
 connectivity of a cryo-EM map. It tests several resolution-dependent functions 
 and outputs the one with maximal clarity, based on adjusted surface area (default)
 or kurtosis. The program works best on maps with 4.5 Å or better resolution.
@@ -37,8 +37,8 @@ contents of the map. You can also supply a model, which will be randomized, refi
 used in model-based density modification. You normally access the program's functionality 
 by running the ResolveCryoEM tool in the Phenix GUI. 
 
-**How to use phenix.auto_sharpen:** `Click
-here <../reference/auto_sharpen.html>`__
+**How to use phenix.map_sharpening:** `Click
+here <../reference/map_sharpening.html>`__
 
 **How to use phenix.resolve_cryo_em:** `Click
 here <../reference/resolve_cryo_em.html>`__
@@ -46,7 +46,7 @@ here <../reference/resolve_cryo_em.html>`__
 
 **Common issues**
 
-- *phenix.auto_sharpen* doesn't work for *map_box*-produced maps: *auto_sharpen* should 
+- *phenix.map_sharpening* doesn't work for *map_box*-produced maps: *map_sharpening* should 
   not be used on maps produced with the exact-unique option of *map_box*. These maps are 
   closely masked around the density of a single molecular, so much of the map is 
   set to zero. Therefore, the map is missing noise information and *auto-sharpen*
