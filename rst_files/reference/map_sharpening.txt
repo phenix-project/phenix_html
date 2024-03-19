@@ -1,0 +1,395 @@
+Optimizing a map with using map_sharpening 
+==============================================================================
+
+Author(s)
+---------
+
+-  map_sharpening: Tom Terwilliger
+
+Purpose
+-------
+
+The routine map_sharpening is a tool for optimizing a map by
+applying a resolution-dependent scaling factor. The scaling can be isotropic
+or anisotropic and can be local or over the entire map.  Scaling can
+be carried out be smoothed shell-scaling or by B-factor sharpening,
+applying an overall B-factor, optionally downweighting all data past 
+a resolution cutoff.
+
+Should I use shell-sharpening or B-factor sharpening?
+-----------------------------------------------------
+
+If you have two half-maps (cryo-EM data), normally you should use 
+shell-sharpening with an anisotropic correction (the default procedure).
+
+If you have a single map (cryo-EM) or map coefficients (X-ray) then you should
+use B-factor sharpening, as the shell-sharpening procedure cannot run on a 
+single map.  In some cases B-factor sharpening starting with a 
+single (full) map can give a more interpretable map than shell 
+sharpening with half-maps, so it is fine to try this procedure as well.
+
+If you have a map and model, either method is fine. Normally shell-sharpening
+(the default) is recommended.
+
+If you want to supply a sharpening B-factor and apply it to your map, or if
+you want to obtain a target B-value, use B-factor sharpening.
+
+If you want to match the resolution fall-off of your map to a target map,
+use B-factor sharpening.
+
+Shell sharpening
+----------------
+
+Shell sharpening can be carried out locally or on a map as a whole.  
+
+The basis for shell sharpening is an analysis of the 
+resolution-dependent fall-off
+of amplitudes of Fourier coefficients for the map, along with an analysis
+of the resolution-dependent fall-off of correlation between two half-maps,
+or between a map and a model-based map.  The analysis is carried out in
+shells of resolution.
+
+When carried out locally, a full map is divided into small boxes.
+The density near the edges of each box is masked so that it gradually 
+diminishes to zero at the edges.  Each small box is treated as a full map
+to identify its optimal sharpening.  Then the optimal sharpening parameters
+from the small boxes are applied to the full map in a way that has no edge
+effects and smoothly varies from one place to another in the map.
+
+To identify the optimal anisotropic sharpening of a map based on the 
+information in two half-maps, two analyses are done. The first is an 
+analysis of the resolution-dependent fall-off of rms amplitudes of 
+Fourier coefficients representing the map. This is examined as a function of
+direction in reciprocal space, and is similar to the calculation normally done
+to apply an anisotropy correction to a map. This analysis shows the anisotropy
+of the map itself.
+
+The second is an analysis of the correlation between Fourier coefficients 
+for the two half-maps.  This is also done as a function of resolution and
+direction in reciprocal space.  This analysis shows the anisotropy of the
+errors in the map.
+
+For purposes of this analysis, the optimal map is the one that has the
+maximal expected correlation to an idealized version of the true map. This
+idealized map is a map that would be obtained from a model where all the atoms
+are point atoms (B values of about zero).
+
+For a map with zero error (all correlations at all resolutions and directions
+equal to 1), the optimal map will be one that has no anisotropy and 
+the same resolution dependence as the idealized map.  For such a map, first
+the anisotropy in the map is removed, then an overall resolution-dependence 
+matching that of the idealized map is imposed by simple multiplication with a
+resolution_dependent scale factor.
+
+For a map with errors, the map coefficients obtained from the previous step 
+are modified by a local scale factor that reflects the expected signal-to-noise
+in that map coefficient.  The scale factor for a particular map coefficient
+is given by 1/(1 + E**2), where E is the normalized expected error in that
+map coefficient.  This scale factor will ordinarily be anisotropic and
+resolution-dependent.
+
+Output from anisotropic shell sharpening
+----------------------------------------
+
+The map_sharpening tool will provide a summary of the anisotropy of your map if 
+you use shell scaling and leave anisotropic_sharpen=True.  Here are some 
+of the values that are calculated for a test case, with annotations indicated
+by >>:
+
+::
+
+  NOTE: All values apply after removal of overall U of:
+     (0.81, 0.84, 0.78, -0.03, -0.01, 0.04)
+ 
+  >>  This overall U value has large and similar values for the first 3 
+  >>    numbers, and small values for the last 3.  This indicates that this
+  >>    map is relatively isotropic.
+  >>  In this output, the overall U listed above is removed from all other 
+  >>    U values  before printing them out.  
+
+  >>  All values are reported in normalized units (U values).  See
+  >>    https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Iatom_site_U_iso_or_equiv.html
+  
+   Estimated anisotropic fall-off of the data relative to ideal
+  (Positive means amplitudes fall off more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (0.002, 0.089, 0.037, 0.031, 0.042, -0.002) 
+ 
+  >> This is the fall-off of the data, after removal of the overall U values,
+  >>   relative to a standard of values calculated from a beta-galactosidase 
+  >>   model without a bulk solvent correction (available from the phenix 
+  >>   python module cctbx.development.approx_amplitude_vs_resolution) 
+
+   Anisotropy of the data
+  (Positive means amplitudes fall off more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (-0.119, 0.167, -0.133, -0.013, 0.031, 0.064) 
+ 
+  >> This is the anisotropy of the data, after removal of overall U values
+ 
+   Anisotropy of the uncertainties
+  (Positive means uncertainties decrease more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (0.160, -0.032, -0.035, 0.031, 0.054, -0.010) 
+
+  >> This is the anisotropy of the uncertainties in scale factors, 
+  >>    after removal of overall U values
+  
+   Anisotropy of the scale factors
+  (Positive means scale factors increase more in this direction)
+   (  X,      Y,      Z,    XY,    XZ,    YZ)
+  (-0.022, -0.121, -0.088, -0.050, -0.040, -0.019) 
+  
+  >> This is the anisotropy of the scale factors, 
+  >>    after removal of overall U values
+
+B-factor sharpening
+-------------------
+
+In contrast to the shell-scaling approach above, B-factor sharpening will
+identify an overall B-factor (exponential function) to apply to the Fourier
+coefficients representing a map.  This overall scale factor can optionally
+be modified to strongly down-weight data beyond a resolution cutoff.
+
+Normally in B-factor sharpening, the optimization is carried out to
+identify sharpening or blurring that maximizes the clarity of the map,
+as represented by the adjusted surface area.  This adjusted surface are is
+based on the surface area of a contour map obtained by setting a 
+contour level that encloses the expected volume of the molecule. 
+That area is then reduced proportionally to the number of distinct regions
+enclosed in that contour map. 
+
+Optionally B-factor sharpening can instead be carried out by half-map 
+sharpening, maximizing the expected quality of the average of the two 
+half maps in each range of resolution.
+
+B-factor sharpening was known as auto_sharpen in previous versions of Phenix.
+The tutorial below refers to auto-sharpening but it is the same as B-factor
+sharpening with the map sharpening tool.
+
+
+Kurtosis is a standard statistical measure that reflects the peakiness of 
+the map.  
+
+The adjusted surface area is a combination of the surface area of
+contours in the map at a particular threshold
+and of the number of distinct regions enclosed by the top 30% (default) of
+those contours.  The threshold is chosen by default to be one where the 
+volume enclosed by the contours is 20% of the non-solvent volume in the map. 
+The weighting between the surface area (to be maximized) and number of regions
+enclosed (to be minimized) is chosen empirically (default region_weight=20).
+
+Several resolution-dependent functions are tested, and the one
+that gives the best adjusted surface area (or kurtosis) is chosen.  
+In each case the map is transformed to obtain Fourier coefficients. The
+amplitudes of these coefficients are then adjusted, keeping the phases
+constant. The available functions for modifying the amplitudes are:
+
+::
+
+  No sharpening (map is left as is)
+
+  Sharpening b-factor applied over entire resolution range (b_sharpen
+  applied to achieve an effective isotropic overall b-value of b_iso).
+
+  Sharpening b-factor applied up to resolution specified with the
+  resolution=xxx keyword, then blurred beyond this resolution (with
+  transition specified by the keyword k_sharpen, b_iso_to_d_cut).  If 
+  the sharpening b_sharpen is negative (blurring the map),
+  the blurring is applied over the entire resolution range.
+
+  Resolution-dependent sharpening factor with three parameters.
+  First the resolution-dependence of the map is removed by normalizing the
+  amplitudes.  Then a scale factor S is to the data, where  
+  log10(S) is determined by coefficients b[0],b[1],b[2] and a resolution 
+  d_cut (typically d_cut is the nominal resolution of the map).
+  The value of log10(S) varies smoothly from 0 at resolution=infinity, to b[0]
+  at d_cut/2, to b[1] at d_cut, and to b[1]+b[2] at the highest resolution
+  in the map.  The value of b[1] is limited to being no larger than b[0] and the
+  value of b[1]+b[2] is limited to be no larger than b[1]. 
+
+
+You can also choose to specify the sharpening/blurring parameters for your
+map and they will simply be applied to the map. For example you can apply
+a sharpening B-value (b_sharpen) to sharpen the map, or you can specify a
+target overall B-value (b_iso) to obtain after sharpening.
+
+*Box of density in sharpening in B-factor sharpening*
+-----------------------------------------------------
+
+Normally phenix.auto_sharpen will determine the optimal sharpening by 
+examining the density in a box cut out of your map, then apply this to
+the entire map.
+
+*Local sharpening in B-factor sharpening*
+-----------------------------------------
+
+You can choose to apply autosharpening locally if you want.  In this case
+the auto-sharpening parameters are determined in many boxes cut out of
+the map, and corresponding sharpened maps are calculated.  The map that
+is produced is a weighted map where the density at a particular point 
+comes most from the sharpened map based on a box near that point.
+
+*Half-map-based sharpening in B-factor sharpening*
+--------------------------------------------------
+
+You can identify the sharpening parameters using two half-maps if you 
+want.  The resolution-dependent correlation of density in the two half-maps
+is used to identify the optimal resolution-dependent weighting of 
+the map.  This approach requires a target resolution which is used
+to set the overall fall-off with resolution for an ideal map.  That
+fall-off for an ideal map is then multiplied by an estimated 
+resolution-dependent correlation of density in the map with the true
+map (the estimation comes from the half-map correlations).
+
+
+*Model-based sharpening in B-factor sharpening*
+-----------------------------------------------
+
+You can identify instead the sharpening parameters using your map and a
+model.  This approach requires a guess of the RMSD between the model and
+the true model.  The resolution-dependent correlation of model and map
+density is used as in the half-map approach above to identify the
+weighting of Fourier coefficients.
+
+*Using crystallographic maps in B-factor sharpening*
+----------------------------------------------------
+
+You can use phenix.auto_sharpen with a crystallographic map (represented 
+as map coefficients).
+
+*Shifting the map to the origin in B-factor sharpening*
+-------------------------------------------------------
+
+Most crystallographic maps have the origin at the corner of the map (
+grid point [0,0,0]), while most cryo-EM maps have the orgin in the 
+middle of the map.  An output map with the origin shifted to the
+corner of the map is optionally written out.
+
+GUI
+---
+
+A Graphical User Interface is available. The Coot and ChimeraX buttons load
+the input map and sharpened map, along with the model if supplied.
+
+If you run shell sharpening in the GUI, by default a local resolution map
+is calculated at the end.  The ChimeraX button will then load the sharpened
+map and color it according to the local resolution.
+
+
+Output files from map_sharpening
+--------------------------------
+
+**sharpened_map.ccp4**: Sharpened map.
+
+**sharpened_map_coeffs.mtz**: Sharpened map, shifted to place the origin on grid point (0,0,0) and sharpened, represented as map coefficients.
+
+
+
+Examples
+--------
+
+You can use map_sharpening with either two half-maps or a map and
+a model.  
+
+
+
+Standard run of map_sharpening with two half-maps and using shell scaling:
+--------------------------------------------------------------------------
+
+To run shell sharpening using map_sharpening with two half maps, you can say:
+
+
+::
+
+   phenix.map_sharpening half_map_A.mrc half_map_B.mrc seq_file=seq.fa
+
+If you wish, you can specify a nominal resolution. The sequence file is
+to let the program figure out the volume of the molecule that is present.
+
+
+Standard run of map_sharpening with map and model and using shell scaling:
+--------------------------------------------------------------------------
+To run shell map_sharpening with a map and model, you can say:
+
+::
+
+   phenix.map_sharpening map.mrc model.pdb resolution=3 seq_file=seq.fa
+
+The resolution is again optional.
+
+You can specify whether anisotropy or local sharpening are to be applied:
+
+::
+
+   local_sharpen=True
+   anisotropic_sharpen=True
+
+Run of map_sharpening with map alone and using B-factor sharpening:
+-------------------------------------------------------------------
+To run B-factor sharpening with a single map, you can say:
+
+::
+
+   phenix.map_sharpening sharpening_method=b-factor map.mrc \
+     resolution=3 seq_file=seq.fa
+
+The resolution is required here as the resolution of the map is not
+well-defined. 
+
+
+
+
+
+
+Possible Problems
+-----------------
+
+If half-maps are not actually independent half-map sharpening
+will not work well
+
+If the model is very poor model-sharpening will not work well
+
+For model-based shell sharpening, if local sharpening is used,
+the sharpening is only applied in the region of the model
+
+
+Specific limitations and problems:
+----------------------------------
+
+Maps produced with the extract-unique option of map_box should not be 
+sharpened with map_sharpening.  These maps are closely masked around the 
+density of a single molecule and are set to zero in much of the map, 
+so the information about noise in the map that normally is available 
+is missing and auto-sharpen does not work properly.
+
+Literature
+----------
+
+{{citation:autosharpen}}
+
+
+Video Tutorial for B-factor sharpening (called auto_sharpen in this video)
+--------------------------------------------------------------------------
+
+.. raw:: html
+
+   <div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/S56rYoZWxnM" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" ></iframe></div>
+
+The `tutorial video <https://www.youtube.com/watch?v=S56rYoZWxnM>`_ is available on the
+`Phenix YouTube channel <https://www.youtube.com/channel/UCcdI0hfHngWAZLJWynxPQWg>`_ and covers the
+following topics:
+
+- basic overview
+- how to run phenix.auto_sharpen (now phenix.map_sharpening) via the GUI
+
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.map_sharpening}}
+

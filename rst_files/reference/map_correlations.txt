@@ -23,8 +23,11 @@ If a model is supplied, the local correlation for each residue is calculated
 
 The total number of files supplied must be exactly two.  
 
-Usage
+Notes
 -----
+
+The map_correlations tool replaces phenix.map_model_cc, phenix.model_map_cc,
+phenix.get_cc_mtz_mtz, phenix.get_cc_mtz_pdb, and phenix.get_cc_map_map.
 
 How map_correlations works:
 ----------------------------
