@@ -23,7 +23,7 @@ part of a map that is similar to a model.  The key elements of the search are:
 ::
 
   An SSM search is carried out first (protein only).  This search is 
-  identical to the ssm_match_to_map option in superpose_and_morph. Helices
+  identical to the ssm_match_to_map option in superpose_models. Helices
   and strands are found in the map to create a target model, then a brute 
   force superposition of helices and strands in the search model to those in
   the target model is carried out. Potential superpositions are evaluated

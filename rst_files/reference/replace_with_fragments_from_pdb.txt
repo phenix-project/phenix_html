@@ -50,7 +50,7 @@ model using the fragments from the PDB.
 
 replace_with_fragments_from_pdb uses SSM-based (secondary structure matching)
 to find structures in the PDB that are similar to a supplied model. The SSM 
-matching is the same as in phenix.superpose_and_morph.  
+matching is the same as in phenix.superpose_models.
 
 replace_with_fragments_from_pdb also uses fragment searching to find shorter
 fragments matching each loop (segment between two helices or strands)

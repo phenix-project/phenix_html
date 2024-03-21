@@ -193,7 +193,7 @@ Model tools
 - phenix.simple_ncs_from_pdb: NCS from a PDB file (use instead phenix.find_ncs)
 - phenix.structure_search: Find Similar Structures in PDB using phi-psi angles and sequence 
 - phenix.superpose_ligands: Superimpose two ligands
-- phenix.superpose_pdbs: Superimpose PDB files using aligned sequences
+- phenix.superpose_models: Superimpose models using aligned sequences or SSM
 - phenix.trim_overlapping: Remove residues in a PDB file overlapping another
 - phenix.trim_pdb: Remove hydrogen atoms from a PDB file
 
