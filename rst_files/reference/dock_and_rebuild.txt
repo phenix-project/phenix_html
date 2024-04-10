@@ -86,6 +86,13 @@ Possible Problems
 If your map has pseudo-symmetry (like a proteasome) you might need to box
 one subunit or try ssm_search=False to use a more thorough search in docking.
 
+If your map is inverted (left-handed), docking and model-building will not 
+work properly. You can often tell if your map is inverted because any 
+helices will be left-handed.  If you are unsure, you can run MapBox with 
+invert_hand=True to invert the map and then see if docking works.  Note that 
+if your map is inverted, you will want to invert all your maps and start 
+everything from the beginning.
+
 Specific limitations and problems:
 ----------------------------------
 

@@ -457,6 +457,15 @@ each likely sequence.
 When you are done with each box, you can just combine all the models because
 they will stay in their correct locations.
 
+Inverted map:
+-------------
+
+If your map is inverted (left-handed), docking and model-building will not 
+work properly. You can often tell if your map is inverted because any 
+helices will be left-handed.  If you are unsure, you can run MapBox with 
+invert_hand=True to invert the map and then see if docking works.  Note that 
+if your map is inverted, you will want to invert all your maps and start 
+everything from the beginning.
 
 Specific limitations and problems:
 ----------------------------------
