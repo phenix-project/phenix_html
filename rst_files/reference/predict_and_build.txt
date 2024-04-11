@@ -373,6 +373,33 @@ that input and just let PredictAndBuild do the predictions.  Of course if you
 have RNA or DNA chains, you will need to supply predicted models for those
 chains.
 
+Rebuilding a model without prediction (morph and refine only):
+--------------------------------------------------------------
+
+You can use predict_and_build to just rebuild a model that is placed (in a
+cryo-EM map) like this:
+
+::
+
+  In the GUI, select PredictAndBuild (cryo-EM data)
+
+  Supply:  your map (call it “Map file”), your model (call it 
+  “predicted model”), your sequence.
+
+  Just below the inputs there is a line that starts with 
+  “Contents of b-value field”… Select “b_value” (not plddt), 
+  as this model has B values in its b-value field.
+
+  In Prediction and building settings, go to All parameters, 
+  the “Search parameters”, and search for “already”.  Tick 
+  the check box for “Models are already placed”.
+
+  In Prediction and building settings, select “Building” and check 
+  the box for “Refine only”.
+
+  Hit Run.  It should take your model, morph it to match 
+  the map, and refine it.
+
 
 Examples
 --------
