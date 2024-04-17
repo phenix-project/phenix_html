@@ -1,19 +1,20 @@
-================================================================================
-Tutorial: Fit Biomolecules into Cryo-EM Maps using MD Simulation (commandline)
-================================================================================
+===================================================================================
+Tutorial: Fitting Biomolecules into Cryo-EM Maps using MD Simulation (command-line)
+===================================================================================
 
 .. contents::
 
 Overview
 --------
-This tutorial will show you how to fit biomolecule atomic structures
-into cryo-EM maps using molecular dynamics simulation with PHENIX commandline
+This tutorial will show you how to fit biomolecular structures
+into cryo-EM maps using molecular dynamics simulation with Cryo_fit 
+under the PHENIX command-line environment.
 
-For GUI execution, please see the `cryo_fit_gui_tutorial <cryo_fit_gui.html>`__.
+For GUI tutorial, please see the `cryo_fit_gui_tutorial <cryo_fit_gui.html>`__.
 
-Theoretical explanation of cryo_fit is `here <../reference/cryo_fit.html>`_.
+Theoretical explanation of Cryo_fit is `here <../reference/cryo_fit.html>`_.
 
-For installation of cryo_fit, please see the `installation notes for cryo_fit <cryo_fit_install.html>`__.
+For Cryo_fit installation, please see `installation notes for cryo_fit <cryo_fit_install.html>`__.
 
 
 Input files
@@ -21,42 +22,37 @@ Input files
 <initial_model> and <target_map>
 
 
-Initial Model
--------------------
-Available format: .cif and .pdb
-
-The initial model is a guide or template structure (CIF/mmCIF/pdb) that is close to a
-target cryo EM map structurally.
-
-A user can use either `map_to_model <https://www.phenix-online.org/documentation/reference/map_to_model.html>`_
-or UCSF chimera (Tools -> Volume Data -> Fit in Map) to prepare the initial model.
+Initial Model: .cif or .pdb
+ The initial model is a guide or template structure (CIF/mmCIF/pdb) that is close to the model representing the target cryo EM map structurally.
 
 
-Target Map
--------------------
-Available format: .ccp4 and .map (MRC style in binary file) and .sit (Situs style in text file)
+Target Map: .ccp4, .map/.mrc (MRC style binary file), or .sit (Situs style text file)
 
 
 
-Running the program
--------------------
+Basic command-line syntax
+--------------------------
 - phenix.cryo_fit <initial_model> <target_map>
 
  - For example, phenix.cryo_fit model.pdb map.ccp4
 
 
-Running the tutorial
-----------------------------
-- Use files in <user phenix>/modules/cryo_fit/tutorial_input_files
+Running the tutorial with provided strucure and map
+-----------------------------------------------------
+- Use the map and model files in $PHENIX/modules/cryo_fit/tutorial_input_files
 
- - For example, phenix.cryo_fit GTPase_activation_center_tutorial.pdb GTPase_activation_center_tutorial_gaussian_1p5.mrc
+Command:
+
+::
+
+    phenix.cryo_fit GTPase_activation_center_tutorial.pdb GTPase_activation_center_tutorial_gaussian_1p5.mrc
 
 
 Output
 -------------------
-- "Output" folder has all useful output files
+The "Output" folder has all the useful output files
 
-- By default, cryo_fit reports the 3 highest cc files:
+Cryo_fit saves 3 structures with the highest correlation coefficients (CC):
 
  - cryo_fitted_chain_recovered_cleaned_for_real_space_refine_molprobity.pdb
 
@@ -64,40 +60,32 @@ Output
 
  - extracted_<y>_ps.pdb
 
+These are 
+ - The final cryo_fitted structure (The PDB file with the highest CC): 
 
-- A final cryo_fitted structure (The highest cc file): 
-
- - cryo_fitted_chain_recovered_cleaned_for_real_space_refine_molprobity.pdb
-
-
-- <x>.gro file is for vmd visualization.
+  - cryo_fitted_chain_recovered_cleaned_for_real_space_refine_molprobity.pdb
 
 
-
-- Geometry extracted files at certain (x) pico second during MD simualtion: 
-
- - extracted_<x>_ps.pdb
+ - A <x>.gro file is for vmd visualization.
 
 
-- The user provided file: 
 
- - user_provided.pdb (when cryo_fit doesn't find higher cc than a user provided.pdb, this file exists in output folder)
+ - A geometry extracted PDB file at certain (x) pico second during MD simualtion: 
+
+  - extracted_<x>_ps.pdb
 
 
-- Correlation coefficients (CC) between cryo_fitted structures and cryo-EM maps: 
+If Cryo_fit cannot find a structure with higher CC than that of the starting model, the input PDB file will exist in the output folder.
 
- - cc_record
 
-- If a user wants the highest cc file, then use either
+Also, the history of the CCs between cryo_fitted structures and the cryo-EM map is stored in the "cc_record" file.
+
+- In summary, the PDB file with the highest structure-map CC after a successful run is 
 
  - cryo_fitted_chain_recovered_cleaned_for_real_space_refine_molprobity.pdb
 
- - or 
 
- - user_provided.pdb
-
-
-- If a user wants other files among the highest cc valued files, then use
+- For structure samples among those with top-ranked CCs, use
 
  - extracted_<x>_ps.pdb
 
@@ -110,11 +98,10 @@ Example
 
 Limitation
 -------------------
-gromacs4.5.5 seems to not handle H2O (water) heteroatom. cryo_fit will
-remove water molecules (if any) from the input .cif/.pdb and fit to cryo electron microscopy map.
+Gromacs4.5.5 does not handle water molecules in structure files. Cryo_fit will remove any water from the input coordinate before starting.
 
-cryo_fit doesn't handle non-canonical "residue"s such as 7C4, BMA,
-GDP, ILX, NAG, SEP, TRX. The cryo_fit will simply exclude those residues
+Cryo_fit doesn't handle less commom monomers such as 7C4, BMA,
+GDP, ILX, NAG, SEP, TRX. It will simply exclude those monomers
 and report what are excluded.
 
 
@@ -127,11 +114,11 @@ How to generate and record movie?
 
 Options
 -------------------
-All options will be used as default if unspecified. Gromacs expert users are welcome to
-customize those options if they wish.
+Default options will be used if unspecified. Expert users of Gromacs may want to
+customize some options if needed.
 
 
-List of most useful options
+List of the most useful options
 ---------------------------------
 
 +------------------------+--------------+-------------------------------------------------------+
@@ -169,3 +156,8 @@ List of most useful options
 |                        |              | cryo_fit. Enough minimization will prevent "blow-up"  |
 |                        |              | during MD simulation later.                           |
 +------------------------+--------------+-------------------------------------------------------+
+
+List of all available keywords
+------------------------------
+
+{{phil:cryo_fit.command_line.run}}

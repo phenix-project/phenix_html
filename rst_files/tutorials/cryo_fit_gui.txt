@@ -1,18 +1,18 @@
 ================================================================================
-Tutorial: Fit Biomolecules into Cryo-EM Maps using MD Simulation (GUI)
+Tutorial: Fitting Biomolecules into Cryo-EM Maps using MD Simulation (GUI)
 ================================================================================
 
 .. contents::
 
 Overview
 --------
-This tutorial will show you how to fit biomolecule atomic structures into cryo-EM maps using molecular dynamics simulation within the `PHENIX graphical user interface (GUI) <../phenix_gui.html>`_.
+This tutorial will show you how to fit biomolecular structures into cryo-EM maps with molecular dynamics (MD) simulation using Cryo_fit in the `PHENIX graphical user interface (GUI) <../phenix_gui.html>`_.
 
-For commandline execution, please see the `cryo_fit_commandline_tutorial <cryo_fit_cmdline.html>`__
+For command-line tutorial, please see the `cryo_fit_commandline_tutorial <cryo_fit_cmdline.html>`__
 
 Theoretical explanation of cryo_fit is `here <https://www.phenix-online.org/documentation/reference/cryo_fit.html>`_
 
-For installation of cryo_fit, please see the `installation notes for cryo_fit <cryo_fit_install.html>`__
+For Cryo_fit installation, please see the `installation notes for cryo_fit <cryo_fit_install.html>`__
 
 
 Input files
@@ -20,22 +20,11 @@ Input files
 <initial_model> and <target_map>
 
 
-Initial Model
--------------------
-Available format: .cif and .pdb
-
-The initial model is a guide or template structure (CIF/mmCIF/pdb) that is close to a
-target cryo EM map structurally.
-
-You can use either `map_to_model
-<https://www.phenix-online.org/documentation/reference/map_to_model.html>`_
-or UCSF chimera (Tools -> Volume Data -> Fit in Map)) to prepare the initial model.
+Initial Model: .cif or .pdb
+ The initial model is a guide or template structure (CIF/mmCIF/pdb) that is close to the model representing the target cryo EM map structurally.
 
 
-Target Map
--------------------
-Available format: .ccp4 and .map (MRC style in binary file) and .sit (Situs style in text file)
-
+Target Map: .ccp4, .map/.mrc (MRC style binary file), or .sit (Situs style text file)
 
 
 Launch cryo_fit
@@ -48,16 +37,18 @@ Enter Input Files
 -------------------
 Click browse buttons.
 
-(Tutorial input files live in <User_phenix>/modules/cryo_fit/tutorial_input_files)
+(Tutorial input files are in $PHENIX/modules/cryo_fit/tutorial_input_files)
 
 .. image:: ../images/cryo_fit_gui_enter_input_files.jpg
 
 
 Specify cryo_fit executable location
 ----------------------------------------------
+(This step is optional if you've already setup your Cryo_fit environment in your .cshrc/.bashrc as instructed during Cryo_fit installation.)
+
 Click browse buttons.
 
-(select for exampple, /Users/doonam/bin/cryo_fit/bin)
+(select for example, $PHENIX/modules/cryo_fit/gromacs/bin)
 
 .. image:: ../images/cryo_fit_gui_specify_bin.jpg
 
@@ -88,14 +79,14 @@ Result
 .. image:: ../images/cryo_fit_gui_result1.png
 .. image:: ../images/cryo_fit_gui_result2.png
 
-Output files are in steps/8_cryo_fit folder
+Output files are in steps/8_cryo_fit folder. These include --
 
-A finally fitted atomic model: cryo_fitted.pdb
+The final fitted atomic model: cryo_fitted.pdb
 
-.gro and .pdb files from the highest 3 cc values: extracted_x_steps_x_ps.gro/pdb
-(.gro files are for vmd)
+The .gro and .pdb files from the structures with the highest 3 map-model correlation coefficients (CC): extracted_x_steps_x_ps.gro/pdb
+(.gro files are for visualization with vmd)
 
-CC means 'correlation coefficient between atomic structure and cryo-EM map': steps/8_cryo_fit/cc_record
+The history of CC values: steps/8_cryo_fit/cc_record
 
 
 
@@ -106,11 +97,10 @@ Output Example
 
 Limitation
 -------------------
-gromacs 4.5.5 seems to not handle H2O (water) heteroatom. cryo_fit will
-remove water molecules (if any) from the input .cif/.pdb and fit to cryo EM map.
+Gromacs4.5.5 does not handle water molecules in structure files. Cryo_fit will remove any water from the input coordinate before starting.
 
-cryo_fit doesn't handle non-canonical "residue"s such as 7C4, BMA,
-GDP, ILX, NAG, SEP, TRX. The cryo_fit will simply exclude those residues
+Cryo_fit doesn't handle less commom monomers such as 7C4, BMA,
+GDP, ILX, NAG, SEP, TRX. It will simply exclude those monomers
 and report what are excluded.
 
 
