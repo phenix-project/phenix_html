@@ -1,36 +1,20 @@
-==============================================
-Fitting to a Cryo-EM Map using MD Simulation
-==============================================
+==============================================================
+Cryo_fit: Fitting Structure to Cryo-EM Map Using MD Simulation
+==============================================================
 
 .. contents::
 
 Overview
 --------
-Cryo_fit fits biomolecule (protein and nucleic acids) to cryo-EM map
-that is reconstructed by single particle analysis using molecular dynamics simulation
+Cryo_fit fits biomolecular (protein and nucleic acids) structures to cryo-EM maps using molecular dynamics (MD) simulation.
 
 
-Abstract
--------------------
-With many crystallography groups shifting to cryogenic electron
-microscopy (cryo-EM), there is a high demand for software that can
-produce atomistic models for high resolution cryo-EM
-datasets. Therefore, we are incorporating our automated cryo-EM
-density fitting method (cryo_fit) into a widely used software suite
-for macromolecular structure determination (PHENIX). Cryo_fit produces
-all-atom models highly consistent with the EM density and is being
-used to construct models for many functional complexes (including one
-of the first all-atom models of the human ribosome, revealing a new
-conformational change specific to eukaryotic ribosomes: subunit
-rolling). Two key advantages of the cryo_fit are its speed and the
-preservation of stereochemistry information. Its fast speed allows
-cryo-EM scientists to run on a single laptop (several hours for a
-ribosome modeling without the need for GPU) instead of thousands of
-cores. It uses a reduced model molecular dynamics potential that allows us to preserve
-stereochemistry information. As an additional advantage, secondary and
-tertiary contact potentials can be specified to place additional
-restraints on contacts within a cutoff keeping them intact during the
-fitting process.
+Introduction
+------------
+Cryo_fit is an automated cryo-EM density fitting program using MD simulation to guide models into maps. Cryo_fit produces all-atom models highly consistent with the EM density and is being
+used to optimize models for many functional molecular complexes including one
+of the first all-atom models of the human ribosome revealing the 'subunit
+rolling' mechnism unique to eukaryotic ribosomes. Two key advantages of Cryo_fit are: speed and stereochemistry preservation. Its fast speed allows reseachers to optimize ribosome structures on a laptop instead of the need of a computing server with thousands of CPU/GPU cores. It uses a reduced model molecular dynamics potential allowing the preservation of stereochemistry information. In addition, secondary and tertiary contact potentials can be specified to place additional restraints on contacts to keep molecules intact during the fitting process.
 
 
 How to Fit Cryo EM Maps
@@ -41,15 +25,6 @@ How to Fit Cryo EM Maps
 Advantages
 -------------------
 .. image:: ../images/cryo_fit_advantage.jpg
-
-When cryo_fit1 and cryo_fit2 are useful?
---------------------------------------------------
-See the `When cryo_fit1 and cryo_fit2 are useful? in FAQ <../faqs/cryo_fit2_FAQ.html#when-cryo-fit1-and-cryo-fit2-are-useful>`__
-
-
-When cryo_fit1 is useful?
---------------------------------------------------
-See the `When cryo_fit1 is useful? in FAQ <../faqs/cryo_fit_FAQ.html#when-cryo-fit1-is-useful>`__
 
 
 How Cryo_fit Works
