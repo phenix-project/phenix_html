@@ -1,0 +1,99 @@
+Evaluating a model with Holton geometry validation
+==================================================
+
+Author(s)
+---------
+
+-  holton_geometry_validation: James Holton (Python coding by Tom Terwilliger) 
+
+Purpose
+-------
+
+Summarize geometric quality of a model
+
+How holton_geometry_validation works:
+-------------------------------------
+
+This tool summarizes the geometric quality of a model by calculating
+pseudo-energies for every aspect of a model (each bond length, angle, 
+rotamer, Ramachandran value, etc). For each metric (such as angles),
+the mean value and worst value of the pseudo-energy are calculated, and 
+the probabilities of this mean and this worst value not occurring by chance
+are estimated.  To reduce the dominance of very poor values, energy values
+over 10 are filtered by reducing them toward 10 with a logarithmic function.
+
+The weighted energy for each metric is sum of the mean energy and
+the filtered worst energy for that metric, each weighted by their 
+probabilities of not occurring by chance.
+
+The overall energy is the sum of weighted energies for all metrics.  The
+metrics used are: 
+
+::
+
+  CBetadev: Deviation of CB position from ideal (A)
+  Clash:    Clash of non-bonded atoms (A)
+  Omega:    Peptide omega angle deviation (degrees)
+  Rama:     Ramachandran outlier probability
+  Rota:     Rotamer outlier probability
+  Angle:    Angle deviation (degrees)
+  Bond:     Bond length deviation (A)
+  Chir:     Chirality deviation (A**3)
+  Torsion:  Torsion angle deviation (degrees)
+  Full-nonbond: Non-bonded deviations, including all instances
+  Nonbond:  Non-bonded deviations (using Lennard-Jones potential, 
+            excluding bonds that are plausible and have low energies)
+  Plane:    Planarity deviations (A)
+
+
+
+Uses
+----
+
+You can use holton_geometry_validation to compare models for the same structure
+and identify which has fewer overall geometric problems.
+
+Examples
+--------
+
+Standard run of holton_geometry_validation:
+-------------------------------------------
+
+Running holton_geometry_validation is easy. From the command-line you can type:
+
+::
+
+  phenix.holton_geometry_validation 1ss8_A.pdb
+
+where 1ss8_A.pdb is the model you would like to evaluate.
+
+Possible Problems
+-----------------
+
+If your structure has hydrogen positions that do not match those expected
+by Phenix, you can ignore them in all metrics except non-bonded interactions
+with ignore_h_except_in_nonbond=True.  Alternatively you can redo their
+positions with keep_hydrogens=False.
+
+If you want to ignore just hydrogen positions in Arginine residues, you can
+specify ignore_arg_h_nonbond=True.
+
+If you want to exclude hydrogen nonbond contacts involving waters, use
+ignore_water_h_bonds, and if you want to exclude all bonds involving hydrogen,
+ignore_bond_lengths_with_h=True
+
+Literature
+----------
+
+The method is described at 
+https://bl831.als.lbl.gov/~jamesh/challenge/twoconf/#score
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.programs.holton_geometry_validation}}
+
