@@ -46,12 +46,45 @@ metrics used are:
   Plane:    Planarity deviations (A)
 
 
+Estimate of expected energy for ideal structure
+-----------------------------------------------
+
+This tool estimates the expected energy for a structure that has all 
+bonds, angles, etc, distributed as normal distributions with the sigmas
+used in the geometry validation step above.  That is, if the structure
+had a normal distribution of errors, it would have about this energy. The
+energy is estimated by sampling from a normal distribution when calculating
+the energy terms instead of taking the actual deviations.  The sampling 
+process is carried out many times (20) and the averages are reported.
+
+Estimate of ratio of deviations to sigmas
+-----------------------------------------
+
+The tool estimates the overall ratio of deviations to sigmas in three steps 
+
+First it lists all the values deviation/sigma for all the metrics. If the
+deviations were drawn from random Gaussian distributions with standard 
+deviations of their corresponding sigmas, these values of deviation/sigma
+would be normally distributed with a standard deviation of one.
+
+Then the 99.7th percentile of values of deviation/sigma is noted.  
+For a Gaussian distribution, this percentile corresponds to 3 standard 
+deviations. The estimated ratio of deviations/sigma overall is 
+then 1/3 of this 99.7th percentile value,
+or 1 standard deviation of the ratios of deviation to sigma.
 
 Uses
 ----
 
 You can use holton_geometry_validation to compare models for the same structure
 and identify which has fewer overall geometric problems.
+
+You can use the expected energy to see if your structure has errors that
+are about what is expected based on ideal model geometry and uncertainties.
+
+You can use the estimate of ratio of deviations to sigmas to further examine
+whether the deviations from ideality in your structure are about what is
+expected based on the expected variation in geometric values.
 
 Examples
 --------
