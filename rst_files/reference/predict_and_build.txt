@@ -438,6 +438,12 @@ The most common problem in running Predict and build is that
 the Phenix server is not working as expected.  Normally the first thing
 to try is just let the program retry (it will do this for a while normally).
 
+Here is a test you can run to see if everything is ok:
+In the GUI, hit AlphaFold/AlphaFold model prediction/Prediction settings/  
+and check the box for “Run test job on server and stop”.  Then hit Run. 
+In about 10 sec it should say “Test job completed successfully” if everything
+is ok.
+
 If the server is still not working, you can take the files in the packaged
 .tgz file (listed in the GUI output), use them to get your own prediction with
 any server, and put the resulting predicted models in the place specified in 
