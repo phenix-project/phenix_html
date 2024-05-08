@@ -146,6 +146,10 @@ Possible Problems
 Specific limitations and problems:
 ----------------------------------
 
+Sequence_from_map does not recognize insertion codes, so if your model uses 
+these, first run phenix.pdb_tools with the "renumber=True" keyword to remove 
+them (actually to renumber the residues and leave the insertion codes in place).
+
 Literature
 ----------
 
