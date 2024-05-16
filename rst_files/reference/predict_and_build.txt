@@ -350,7 +350,7 @@ use a command like this:
   phenix.predict_and_build predicted_model=replacements.pdb \
  input_files.b_value_field_is=b_value scaffold_model=existing.pdb \
  seq_file=seq.dat cycles=1 refine_only=True refine_cycles=0 \
- resolution=3 full_map=full_map.ccp4
+ crystal_info.resolution=3 full_map=full_map.ccp4
 
 Here existing.pdb is the model you have already created (wrong sequences).
 The model replacements.pdb contains your predicted models for each unique
@@ -508,6 +508,18 @@ either build those chains separately or supply predicted models (homology
 models, for example) for those chains. If you supply predicted models for some 
 chains and not others, predict_and_build will try to predict the missing
 chains and build with all the available models. 
+
+The predict_and_build tool has two command-line parameters for nproc 
+(prediction.nproc and control.nproc), two for resolution
+(prediction.resolution and crystal_info.resolution), and two for random_seed
+(prediction.random_seed and control.random_seed).
+Normally use the control.nproc, crystal_info.resolution and 
+control.random_seed parameters.  However if you want to change the number
+of processors (on the server, nproc only used for getting templates 
+with structure_search and limited to 4 processors) you can set prediction.nproc.
+If you want to set the random seed used in prediction to a particular value
+you can set prediction.random_seed (and also usually set
+use_supplied_random_seed_in_prediction=True).
 
 Literature
 ----------
