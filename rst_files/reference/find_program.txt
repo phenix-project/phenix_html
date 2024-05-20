@@ -18,6 +18,10 @@ Alternatively, find_program can search for a regression test based on
 words in the name of the test or based on the name of a module that
 is tested by that regression test.
 
+Lastly, find_program can find all the Python programs that have changed
+since last checking in programs to github and list all the regression
+tests that test those programs.
+
 Usage
 -----
 
@@ -51,6 +55,17 @@ regression tests that use that module).
 The search for regression tests by module is a way to find a test that
 will run a module that you are interested in.
 
+Search for regression tests affecting all changed programs:
+-----------------------------------------------------------
+
+Find_program can find all the Python programs that have changed since the last
+check-in to github (it uses git to do this). Then for each of these programs,
+it finds all the regression tests that are affected.  Then it lists all
+the regression tests it finds.
+
+This search is a way to find all the tests that could possibly fail due
+to any changed Python module. Note that this search will not find C++
+code that is affected.
 
 Standard run of find_program:
 ----------------------------------
@@ -105,6 +120,10 @@ Possible Problems
 
 Specific limitations and problems:
 ----------------------------------
+
+The search_tests and git_affected_tests features of find_program do not find 
+C++ code that is affected by a test (only Python code).
+
 
 Literature
 ----------
