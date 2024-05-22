@@ -14,8 +14,8 @@ General
 - phenix.help: Load Phenix documentation (same as phenix.doc)
 - phenix.version: Print version of Phenix
 - phenix.find_program: Find a program or regression test
-- phenix.list: Print list of Phenix commands 
-- phenix_regression.list: Print list of Phenix regression commands 
+- phenix.list: Print list of Phenix commands
+- phenix_regression.list: Print list of Phenix regression commands
 
 Assessing data quality
 ----------------------
@@ -40,7 +40,6 @@ Experimental Phasing
 
 Molecular Replacement
 ---------------------
-- phenix.adjust_robetta_resid: Apply sequence offset to a fragments file
 - phenix.automr: Automated MR and model-building
 - phenix.cut_out_density: Create MTZ coeffs with density cut out from a map
 - phenix.find_alt_orig_sym_mate: Superimpose structures allowing origin shifts (see also map_to_object)
@@ -154,7 +153,7 @@ Map tools
 - phenix.dock_in_map: Dock a model into a map
 - phenix.map_symmetry: Identify symmetry in a map
 - phenix.resolve_cryo_em: Density modify a cryo-EM map
-- phenix.map_model_correlations: Map and map-model correlation allowing translations 
+- phenix.map_model_correlations: Map and map-model correlation allowing translations
 - phenix.guess_molecular_centers: Guess molecular centers from local RMS density
 - phenix.map_box: Simple cut out map around a PDB file
 - phenix.map_to_model_histogram: Compute averaged radial density distribution
@@ -165,7 +164,7 @@ Map tools
 - phenix.maximum_entropy_map: Compute maximum entropy map from map coefficients
 - phenix.polder: Compute omit map which excludes the bulk solvent around the omitted region
 - phenix.remove_free_from_map: Set all map coeffs of free reflections to zero
-- phenix.resolve_cryo_em: Density modify a cryo-EM map 
+- phenix.resolve_cryo_em: Density modify a cryo-EM map
 - phenix.superpose_maps: Superimpose PDB files and transform map to match
 - phenix.mtriage: Tool to analyse cryo-EM map (resolution, etc)
 
@@ -190,9 +189,9 @@ Model tools
 - phenix.process_predicted_model: Process AlphaFold2 and other predicted models
 - phenix.pulchra: PULCHRA conversion from CA to full chain
 - phenix.replace_with_fragments_from_pdb: Replace model with fragments from the PDB
-- phenix.search_and_morph: Find Structures in PDB using SSM matching and morphing 
+- phenix.search_and_morph: Find Structures in PDB using SSM matching and morphing
 - phenix.simple_ncs_from_pdb: NCS from a PDB file (use instead phenix.find_ncs)
-- phenix.structure_search: Find Similar Structures in PDB using phi-psi angles and sequence 
+- phenix.structure_search: Find Similar Structures in PDB using phi-psi angles and sequence
 - phenix.superpose_ligands: Superimpose two ligands
 - phenix.superpose_models: Superimpose models using aligned sequences or SSM
 - phenix.trim_overlapping: Remove residues in a PDB file overlapping another

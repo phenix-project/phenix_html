@@ -38,9 +38,9 @@ resulting models with Rosetta, select the highest and score with LLG,
 verify that the top solutions are all about the same (electron density
 maps are correlated), and rebuild the top models with autobuild.
 
-During both the Rosetta and phenix.autobuild model-building the starting 
+During both the Rosetta and phenix.autobuild model-building the starting
 model may be modified by insertion and deletion of loops based on the
-sequence provided. The extent of loop fitting will normally depend on 
+sequence provided. The extent of loop fitting will normally depend on
 the quality of the map that is obtained by mr\_rosetta.
 
 mr\_rosetta can handle a single copy of a single chain, or multiple
@@ -439,11 +439,7 @@ To obtain the two optional fragments files:
    the sequence to the Robetta server. Then you will get several 3-mer
    and 9-mer fragments files, one for each piece that you submit. You
    can then simply paste these together after editing all but the first
-   to fix the residue numbers. To edit the files just use
-
-::
-
-    phenix.phenix.adjust_robetta_resid <fragment_file_name> <new_fragment_file_name> <offset-for-residue numbers>
+   to fix the residue numbers.
 
 -  NOTE2: if you have multiple chain types in your structure then you
    will want to have a separate set of fragments files for each chain
@@ -486,7 +482,7 @@ Here is what to do:
 -  Optionally repeat the run of hhpred (hit "Rerun job"), this time selecting
    Alignment mode as global in the middle of the page. Save the
    resulting .hhr file as well. This creates an alternative, but also
-   plausible, alignment file. 
+   plausible, alignment file.
 -  The HHR analysis file from hhpred contains PDB entries similar in
    sequence to your target and sequence alignments. It is used to create
    a list of search models and alignment files. If you supply this file
