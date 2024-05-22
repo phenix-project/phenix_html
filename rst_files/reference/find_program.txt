@@ -58,14 +58,16 @@ will run a module that you are interested in.
 Search for regression tests affecting all changed programs:
 -----------------------------------------------------------
 
-Find_program can find all the Python programs that have changed since the last
+Find_program can find all the Python programs that have changed since the lastn
 check-in to github (it uses git to do this). Then for each of these programs,
 it finds all the regression tests that are affected.  Then it lists all
 the regression tests it finds.
 
 This search is a way to find all the tests that could possibly fail due
 to any changed Python module. Note that this search will not find C++
-code that is affected.
+code that is affected. It will also not find code that is accessed in tests
+using the easy_run command which uses a system call that does not pass back
+traceback information.
 
 Standard run of find_program:
 ----------------------------------
