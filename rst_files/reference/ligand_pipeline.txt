@@ -107,7 +107,7 @@ molecular replacement:
 - **Rigid-body refinement**.  If the input model is already close enough to
   the target structure, rigid-body refinement alone will be suitable.
 
-Currently MR is run by default, but this will be changed in the future; if 
+Currently MR is run by default, but this will be changed in the future; if
 you are confident that the model can be correctly placed without MR, add
 ``mr=False`` or ``skip_mr=True`` or ``--skip_mr`` to jump straight to
 refinement.  (This will automatically turn on rigid-body refinement in the
@@ -439,11 +439,6 @@ this protocol and are also available as separate command-line programs:
 - **phenix.sort_hetatms**: group heteroatoms (ligands, water, etc.) with the
   closest macromolecule(s) in the PDB file, similar to the procedure used at
   PDB deposition.
-- **phenix.development.optimize_model**: this is essentially the final
-  refinement step as a standalone program.  It was originally developed as an
-  automated tool for re-refining structures in the PDB, and may be useful
-  both for preparing starting models and for additional refinement of
-  pipeline-built structures after manual fixes.
 
 References
 ----------
