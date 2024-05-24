@@ -1,0 +1,59 @@
+Running Phenix regression tests
+===============================
+
+Author(s)
+---------
+
+-  : All
+
+Purpose
+-------
+
+It is important to run regression tests any time a change is made in the
+Phenix code to make sure that the change does not break something that is
+already written.
+
+Also regression tests can be used by users to make sure everything is working
+correctly.
+
+
+Framework
+---------
+
+Regression tests are located in many places in the Phenix and CCTBX
+codebase.  They are typically either in subdirectories called regression
+or in the phenix_regression directory, or are specified in a run_tests.py
+file that can be anywhere in the CCTBX codebase.
+
+Regression tests for GUI programs are created specifically for each program
+and can be run as a group in the GUI.  These tests and their setup is
+described in `Setting up GUI tests <set_up_gui_tests.html>`_).
+
+Running regression tests
+------------------------
+
+You can run all the regression tests (usually on a machine with many 
+processors) with a simple command:
+
+::
+
+   phenix_regression.test_all_parallel nproc=96
+
+There are some simple keywords that you might want to add to this:
+
+::
+
+   sort:  sort the tests by timings, run the longest ones first
+   git:   identify all tests that use any files that are changed in the git
+          database
+
+   tests_to_run="xx,yy":  Run only tests that include the words "xx" or "yy"
+   tests_to_skip="aa bb":  Skip any tests that include the words "aa" or bb"
+
+These keywords can be combined:
+
+::
+
+   phenix_regression.test_all_parallel nproc=96 sort tests_to_run=refine
+
+
