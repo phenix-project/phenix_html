@@ -1,0 +1,154 @@
+Generating alternative conformations matching a map with create_alt_conf
+========================================================================
+
+Author(s)
+---------
+
+-  create_alt_conf: Tom Terwilliger, Pavel Afonine, 
+    Nigel Moriarty, Dorothee Liebschner
+
+Purpose
+-------
+
+The purpose of create_alt_conf is to create alternative side-chain 
+conformations for a structure using very high-resolution X-ray data or
+a very high-resolution cryo-EM map as a guide.
+
+How create_alt_conf works:
+--------------------------
+
+Generating alternative conformations:
+-------------------------------------
+
+The starting point for create_alt_conf is normally a model with a single
+conformation (no A or B altlocs). 
+
+The first step is to generate a set of plausible conformations for each 
+side chain based on the current model and the X-ray data or cryo-EM map.
+
+For X-ray data, a 4mFo-3DFc map is created. This map is expected to 
+show conformations that are not represented in the model. 
+For cryo-EM data, the input map is used.
+
+In either case, plausible conformations for at each side chain position
+are found by testing each rotamer in a rotamer library for the side chain
+type present at that position and choosing those that fit the density.
+The conformer that best fits the density and that is different from the
+current conformer at that position is chosen. If no suitable alternative
+is found, the original is used.  Conformers that clash with all conformers
+at any other position are discarded. The new side chain conformers are then
+used to create a new model with side chains that match the density map and
+that are as different as possible from the starting side chains. This model
+is refined using the X-ray data or cryo-EM map. The result of this step is 
+a pair of models, the original and one that has alternative side-chain
+conformations. Each model has just one conformer.
+
+If you want, you can instead supply a model with multiple conformations and 
+it will just split that model into separate models, one for each conformation
+(each altloc A or B).
+
+Optimizing assignment of side-chain conformers to models:
+---------------------------------------------------------
+
+The key step in create_alt_conf is creating a set of models in which 
+each model has good geometry and the models collectively fit the density.
+The starting point for this step is a set of models that have different
+side-chain conformations at some or all positions. The challenging part 
+of this step is arranging the side-chain conformers in a way that minimizes
+clashes but that uses all the supplied side chain conformers.
+
+The procedure used is to generate a diverse set of refined
+multi-conformer models, to score each model, then to find an optimized model
+by recombination among the multi-conformer models. The procedure is
+complicated somewhat by the need to select a small number of test models
+for scoring, as scoring requires refinement and is therefore a slow process.
+
+Scoring function:
+-----------------
+
+The scoring function used to group side-chain conformers is the
+`Holton geometry validation score <holton_validation.html>`__ .  This score is
+a composite of geometry restraints used in refinement and validation metrics
+and it is a rather good indication of the overall geometric quality of
+a model.  The scoring function requires a refined model, as unrefined models
+will generally have very poor geometry.
+
+The scoring function is also calculated on a per-residue basis. This per-residue
+score is the Holton geometry validation score, only including interactions that
+involve this residue.  Note that the sum of per-residue scores calculated in
+this way does not equal the total score, both because of the way in which
+scores are calculated, and because some interactions are only within a residue
+and others are between residues. Even so, the sum of per-residue scores is
+closely related to the total score. This allows estimation of the total
+score from per-residue scores.
+
+Probabilistic estimation of score for a new arrangement of side chains:
+-----------------------------------------------------------------------
+
+To reduce the number of models that need to be fully scored, a procedure
+for probabilistic estimation of the expected score for a model with
+a new arrangement of side chains is used. In this estimation process, it is
+assumed that many of the most significant contacts between residues will be
+with nearby residues (segments of length group_length are considered).
+
+The starting point for this estimation is a set of scored models with varying
+arrangements of alternative conformations.  These arrangments of
+alternative conformations are set up so that for any stretch of group_length
+residues, there will be models that match at all other positions but that 
+differ in all possible ways at this set of group_length residues. The
+differences in per-residue scores among these models are then used to 
+estimate the expected effect of changing the arrangement of conformers for
+any one residue, in the context of the conformers surrounding that residue.
+Additionally, an error estimate in this expected effect is estimated.
+
+With these predictors for the effects of changes in alternative conformations
+at any one residue in the context of its neighbors, an estimate can be made for
+the expected score for a model with any arrangement of conformations. The
+score for the most similar model is taken as a starting value, then the
+minimal set of changes in arrangement is applied and the expected change in
+score for each change is noted, along with its uncertainty. This yields a
+probabilistic estimate of the expected score for this arrangement.
+
+Recombination procedure:
+------------------------
+
+The recombination procedure is targeted (not random recombination).
+The reason for this is that scoring requires refinement, a relatively slow
+process. The current set of scored models is used as described above
+to create a probabilistic estimate of the score that would be found for 
+any new arrangement of side chains as conformers in a model. A simple
+recombination and mutation procedure is used to find arrangements that are
+predicted to have good Holton geometry validation scores.  The arrangements 
+with good predicted scores are then generated, refined and scored to 
+identify optimized arrangements that actually do have good scores.
+
+Examples
+--------
+
+Standard run of create_alt_conf:
+--------------------------------
+
+Running create_alt_conf is easy. From the command-line you can type:
+
+::
+
+  phenix.create_alt_conf model.pdb data.mtz
+
+where model.pdb is the model you would like to use as a starting point and
+data.mtz is an X-ray data file.
+
+Possible Problems
+-----------------
+
+Literature
+----------
+
+Additional information
+----------------------
+
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.create_alt_conf}}
+
