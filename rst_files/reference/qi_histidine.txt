@@ -1,5 +1,5 @@
 =========================================
-QI Tautamers
+QM Flipping (QMF)
 =========================================
 
 .. contents::
@@ -12,9 +12,114 @@ Nigel W. Moriarty
 Introduction
 ============
 
-Under Construction
+Histidine can be protonated on either or both of the two nitrogen atoms of the
+imidazole moiety. Each of the three possible forms occur as a result of the
+stereochemical environment of the histidine sidechain. In an atomic model,
+comparing the possible protonation states *in situ*, looking at possible
+H-bonding and metal coordination, it is possible to predict which is most
+likely correct. We describe a more direct method that uses quantum mechanical
+methods to calculate – also *in situ* – the minimum geometry and energy for
+comparison, and therefore more accurate identification of the most likely
+protonation state.
+
+QMF is part of the Quantum Interface (QI) module that covers the interaction of
+Phenix with QM packages.
+
+Running an example
+==================
+
+QMF can only be run stand-alone in the mmtbx.quantum_interface procedure as it's
+not reasonable to do this during refinement. Using the same example as QMR of
+PDB:**4w53**, download from the PDB website using::
+
+  ~> phenix.fetch_pdb 4w53 --mtz
+
+Command to produce PHIL scope for QM minimisation using
+mmtbx.quantum_interface is::
+
+  ~> mmtbx.quantum_interface 4w53.pdb iterate_NQH=HIS
+
+which will fail because of the bulk test for hydrogen atoms.
+
+::
+
+   Sorry: Model must have Hydrogen atoms
+
+Also note that the
+write_qmr_phil=True option writes a PHIL file. In this example, the format of
+the PHIL file works for QI interface but the default works for phenix.refine.Add Hydrogen atoms to the model using::
+
+  ~> phenix.ready_set 4w53.pdb
+
+which produces a file with hydrogens atoms – 4w53.updated.pdb. It also may
+produce a restraints file that needs to be used next but in this case
+because the restraints for BNZ (benzene) are shipped with Phenix it is not
+necessary to supply to the program unless you want a different list of restraints
+(not ideal values).
+This file can be created cheaply but is needed as the skeleton for the QMR
+values to be inserted in the bond, angle and torsion restraints. So, we
+can repeat the quantum interface command with the new files.::
+
+  ~> mmtbx.quantum_interface 4w53.updated.pdb iterate_NQH=HIS
+
+This will prompt for the selection of the ligand which in this case is “1”.
+
+::
+
+     1 : "chain A and resid   31  and resname HIS"
+     2 : "chain A and resid  200  and resname MBN"
+     3 : "chain A and resid  201  and resname EPE"
+
+  Enter selection by choosing number or typing a new one ~>
+
+The result is a PHIL scope for MBN QMR restraints::
+
+  4w53.updated_A_31_HIS.phil.
+
+There is also a command given to run the six configurations.
+
+::
+
+  ~> mmtbx.quantum_interface 4w53.updated.pdb iterate_NQH=HIS 4w53.updated_A_31_HIS.phil  run_qmr=True qi.nproc=6
+
+Note that you can edit the number of nproc to run all six configurations at once.
+
+Once the jobs are done the important metrics are listed in the table::
+
+  Energies in units of kcal/mol
+    Proton energy used : 94.5100 kcal/mol
+
+  0. HD1                  : rotamer "t70"
+  1. HD1, HE2             :    -1272.239 kcal/mol ~>       3.19 kcal/mol. H-Bonds : 14 rmsd :    0.03 rotamer "t70"
+  2. HD1 only             :    -1275.425 kcal/mol ~>       0.00 kcal/mol. H-Bonds : 14 rmsd :    0.03 rotamer "t70"
+  3. HE2 only             :    -1249.172 kcal/mol ~>      26.25 kcal/mol. H-Bonds : 13 rmsd :    0.10 rotamer "t70"
+  4. HD1, HE2 flipped     :    -1258.856 kcal/mol ~>      16.57 kcal/mol. H-Bonds : 12 rmsd :    0.18 rotamer "t-90"
+  5. HD1 only flipped     :    -1265.615 kcal/mol ~>       9.81 kcal/mol. H-Bonds : 13 rmsd :    0.22 rotamer "t-90"
+  6. HE2 only flipped     :    -1254.390 kcal/mol ~>      21.03 kcal/mol. H-Bonds : 12 rmsd :    0.20 rotamer "t-90"
+
+A Coot command is supplied::
+
+  phenix.start_coot qm_work_dir/iterate_HIS_01_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pdb qm_work_dir/iterate_HIS_02_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pdb qm_work_dir/iterate_HIS_03_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pdb qm_work_dir/iterate_HIS_04_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pdb qm_work_dir/iterate_HIS_05_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pdb qm_work_dir/iterate_HIS_06_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pdb
+
+And a list of PyMOL commands::
+
+  phenix.pymol qm_work_dir/iterate_HIS_01_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pml &
+  phenix.pymol qm_work_dir/iterate_HIS_02_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pml &
+  phenix.pymol qm_work_dir/iterate_HIS_03_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pml &
+  phenix.pymol qm_work_dir/iterate_HIS_04_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pml &
+  phenix.pymol qm_work_dir/iterate_HIS_05_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pml &
+  phenix.pymol qm_work_dir/iterate_HIS_06_cluster_final_A_31_HIS_3.5_C_D_T_PM6-D3H4_EPS_equals_78.4.pml &
+
+Finally the information about the lowest (and near) energy configuration::
+
+  !!!   2. HD1 only             :    -1275.425 kcal/mol ~>       0.00 kcal/mol. H-Bonds : 14 rmsd :    0.03 rotamer "t70" SAME
+
+  Close
+    ><   1. HD1, HE2             :    -1272.239 kcal/mol ~>       3.19 kcal/mol. H-Bonds : 14 rmsd :    0.03 rotamer "t70"
 
 Literature
 ==========
+
+{{citation:qmr_nqh}}
 
 {{citation:qmr_ligand}}
