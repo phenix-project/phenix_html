@@ -24,7 +24,7 @@ sudo apt-get install \
   libglu1-mesa-dev \
   libgtk2.0-0 \
   libxxf86vm1 \
-  mesa-common-dev
+  mesa-common-dev \
   mesa-utils \
   openssl \
   x11-apps
