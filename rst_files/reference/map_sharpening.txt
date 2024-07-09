@@ -16,6 +16,14 @@ be carried out be smoothed shell-scaling or by B-factor sharpening,
 applying an overall B-factor, optionally downweighting all data past 
 a resolution cutoff.
 
+Input maps
+----------
+
+Your input maps can be full-size or boxed (for example using Map Box).  For
+local anisotropic sharpening, boxed maps are recommended as the procedure can
+take a long time for full size maps.  In other cases boxed maps are quicker to
+work with but are not required.
+
 Should I use shell-sharpening or B-factor sharpening?
 -----------------------------------------------------
 
@@ -230,6 +238,9 @@ the map, and corresponding sharpened maps are calculated.  The map that
 is produced is a weighted map where the density at a particular point 
 comes most from the sharpened map based on a box near that point.
 
+Note that this takes a long time for large maps. It is usually best to box
+your map with MapBox before running local sharpening.
+
 *Half-map-based sharpening in B-factor sharpening*
 --------------------------------------------------
 
@@ -338,15 +349,16 @@ The resolution is required here as the resolution of the map is not
 well-defined. 
 
 
-
-
-
-
 Possible Problems
 -----------------
 
+If a full-size map is supplied and local anisotropic sharpening 
+(using shell-sharpening) is applied,
+the procedure can take a very long time.  It is recommended that the map be
+boxed around the model or around density beforehand using Map Box.
+
 If half-maps are not actually independent half-map sharpening
-will not work well
+will not work well.
 
 If the model is very poor model-sharpening will not work well
 
@@ -358,10 +370,10 @@ Specific limitations and problems:
 ----------------------------------
 
 Maps produced with the extract-unique option of map_box should not be 
-sharpened with map_sharpening.  These maps are closely masked around the 
+sharpened with B-sharpening.  These maps are closely masked around the 
 density of a single molecule and are set to zero in much of the map, 
 so the information about noise in the map that normally is available 
-is missing and auto-sharpen does not work properly.
+is missing and the B-sharpening method of auto-sharpen does not work properly.
 
 Literature
 ----------
