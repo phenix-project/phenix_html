@@ -14,6 +14,14 @@ The purpose of create_alt_conf is to create alternative side-chain
 conformations for a structure using very high-resolution X-ray data or
 a very high-resolution cryo-EM map as a guide.
 
+The problem that it solves is that if you have multiple conformations present
+in a structure, residues that have the same altloc (A or B or C etc)
+should have plausible relationships, and in particular, the
+should not clash.  Residues with different altloc (A vs B) can have any
+relationship as they are in different conformers. Finding the assignment of
+side chain conformations to conformers A, B, C etc that yields good 
+geometry for all the conformers can be difficult.
+
 How create_alt_conf works:
 --------------------------
 
@@ -122,6 +130,13 @@ predicted to have good Holton geometry validation scores.  The arrangements
 with good predicted scores are then generated, refined and scored to 
 identify optimized arrangements that actually do have good scores.
 
+Quick run:
+----------
+
+You can skip the extensive optimization procedure and use a shorter one
+instead with the keyword quick=True.  This is still not that fast, but it is
+a lot faster than the full version.
+
 Examples
 --------
 
@@ -139,6 +154,19 @@ data.mtz is an X-ray data file.
 
 Possible Problems
 -----------------
+
+The procedure takes a long time. You would not normally
+want to run this on a machine with just a few processors.  Running with
+quick=True is much faster, but not as comprehensive.
+
+This procedure creates N full conformers (altlocs A, B, C etc), with all
+atoms in the macromolecule present in all the conformers.  If you want to
+only have multiple conformations in a few places, you will need to use
+`phenix.pdbtools  <pdbtools.html>`__  or another method 
+to remove multiple conformations from the rest of the structure.
+
+This method is only suitable if you have very high-resolution data. Normally
+1.5 A is about the lowest resolution data you would want to use.
 
 Literature
 ----------
