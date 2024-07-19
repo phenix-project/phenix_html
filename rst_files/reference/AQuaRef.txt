@@ -1,0 +1,82 @@
+AQuaRef: AI-enabled Quantum Refinement of macromolecular models
+===============================================================
+
+Authors
+-------
+
+Roman Zubatyuk,
+Malgorzata Biczysko,
+Kavindri Ranasinghe,
+Nigel W. Moriarty,
+Hatice Gokcan,
+Holger Kruse,
+Billy K. Poon,
+Paul D. Adams,
+Mark P. Waller,
+Adrian E. Roitberg,
+Olexandr Isayev,
+Pavel V. Afonine
+
+Purpose
+-------
+
+The purpose of AQuaRef is to refine atomic model coordinates using geometric
+restraints derived from AI-accelerated quantum-mechanical calculations. 
+Real- and reciprocal-space refinements are supported using crystallographic or 
+cryo-EM experimental data.
+
+Expectations
+------------
+
+Atomic models resulting from AQuaRef refinement are expected to have improved 
+geometry, as evaluated by standard validation tools such as MolProbity, Rama-Z, 
+and hydrogen bond skew-kurtosis plots. They should also maintain a similar or 
+improved fit to the experimental data compared to standard classic refinement.
+
+Requirements and Current Limitations
+------------------------------------
+
+Protein-only (plus water) models are supported at the moment. Static disorder 
+(i.e., alternative conformations) is not supported.
+
+The atomic model needs to be nearly final (in the later stages of standard 
+classic refinement) and atom-complete (e.g., all hydrogen atoms are present 
+explicitly). The model is also expected to have meaningful geometry, such as 
+being devoid of overlapping (clashing) atoms or severely distorted covalent bonds.
+
+Hardware: While this can possibly work on both CPU and GPU computers, currently 
+available builds are specific to Linux machines with CUDA 11 or 12. Additionally, 
+runtimes on CPU-based computers are expected to be much slower compared to GPUs.
+
+No GUI: Command line only.
+
+Availability
+------------
+
+AQuaRef is available as part of Phenix or separately from Phenix as part of 
+Q|R refinement project (www.qrefine.com or https://github.com/qrefine/qrefine).
+
+Examples
+--------
+
+Reciprocal space refinenemt:
+
+::
+
+  qr.refine model.pdb data.mtz engine=aimnet2
+
+Real space refinenemt:
+
+::
+
+  qr.refine model.pdb map.mrc engine=aimnet2
+  
+Optimization of model geometry (no experiemntal data used):
+
+::
+
+  qr.refine model.pdb engine=aimnet2
+
+Literature
+----------
+
