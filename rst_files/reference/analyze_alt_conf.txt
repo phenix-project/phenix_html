@@ -9,8 +9,9 @@ Author(s)
 Purpose
 -------
 
-The purpose of analyze_alt_conf is to analyze alternative side-chain 
-conformations for a structure and an optional comparison structure.
+The purpose of analyze_alt_conf is to analyze alternative 
+conformations (focusing on side-chains)
+for a structure and an optional comparison structure.
 
 The problem that it solves is that if you have multiple conformations present
 in two structures, identifying which ones match and which ones are unique
@@ -20,13 +21,13 @@ How analyze_alt_conf works:
 --------------------------
 
 This tool first superposes all models that are supplied.  Then
-it analyzes the unique side-chain conformations in each 
-model that is supplied.  Side chains that superpose with an rmsd of
+it analyzes the unique residue conformations in each 
+model that is supplied.  Residues that superpose with an rmsd of
 min_rotamer_rmsd (default of 0.25 A) or better are considered the same
-rotamer; those with a larger rmsd are considered different.
+conformer; those with a larger rmsd are considered different.
 
 If there are two models supplied, the tool then compares the unique 
-side-chain conformers in the first and second models.  It identifies
+conformers in the first and second models.  It identifies
 which altlocs in the first model (m1) match which altlocs in the
 second model (m2), and which are unique in one model or the other.
 
