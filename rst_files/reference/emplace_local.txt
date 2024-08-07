@@ -46,6 +46,8 @@ Note that the search center can be specified explicitly with the sphere_center
 keyword (the usual approach) or by translating the search model to the desired
 search region and not providing a sphere_center keyword.
 
+It is also possible to provide a fixed model as prior information.
+
 Standard run of emplace_local
 -----------------------------
 

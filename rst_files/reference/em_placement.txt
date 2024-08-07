@@ -41,7 +41,7 @@ the following, in which a model derived from the membrane domain of PDB entry
 
 ::
 
-  voyager
+  em_placement
   {
     remove_phasertng_folder = True
 
@@ -58,7 +58,7 @@ the following, in which a model derived from the membrane domain of PDB entry
       molecule
       {
         molecule_name = 4cofA_membrane
-        map_or_model_file = 4cofA_membrane.pdb
+        model_file = 4cofA_membrane.pdb
         starting_model_vrms = 0.8
       }
     }
