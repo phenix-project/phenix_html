@@ -168,6 +168,11 @@ to remove multiple conformations from the rest of the structure.
 This method is only suitable if you have very high-resolution data. Normally
 1.5 A is about the lowest resolution data you would want to use.
 
+The procedure only creates alternative side-chain conformers, not main-chain.
+If you main chain has substantial alternative conformations (not just
+slight adjustments to match the side chain conformers), you will need to use
+another approach.
+
 Literature
 ----------
 
