@@ -15,13 +15,14 @@ How holton_geometry_validation works:
 -------------------------------------
 
 This tool summarizes the geometric quality of a model by calculating
-pseudo-energies for every aspect of a model (each bond length, angle, 
+pseudo-energies (square of the value of the deviation from ideality 
+divided by sigma) for every aspect of a model (each bond length, angle, 
 rotamer, Ramachandran value, etc). For each metric (such as angles),
-the mean value and worst value of the pseudo-energy are calculated, and 
+the mean energy and worst energy are noted, and 
 the probabilities of this mean and this worst value not occurring by chance
-are estimated.  To reduce the dominance of very poor values, energy values
+are estimated.
+To reduce the dominance of very poor values, energy values E
 over 10 are filtered by reducing them toward 10 with a logarithmic function.
-
 The weighted energy for each metric is sum of the mean energy and
 the filtered worst energy for that metric, each weighted by their 
 probabilities of not occurring by chance.
