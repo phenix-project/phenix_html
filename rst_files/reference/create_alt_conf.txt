@@ -22,6 +22,11 @@ relationship as they are in different conformers. Finding the assignment of
 side chain conformations to conformers A, B, C etc that yields good 
 geometry for all the conformers can be difficult.
 
+Note that the model that is produced is not intended to be a final model, rather
+it is a model that has some plausible alternative conformations.  It is 
+recommended that you use the conformers in the output model as suggestions
+for your model.
+
 How create_alt_conf works:
 --------------------------
 
@@ -150,7 +155,14 @@ Running create_alt_conf is easy. From the command-line you can type:
   phenix.create_alt_conf model.pdb data.mtz
 
 where model.pdb is the model you would like to use as a starting point and
-data.mtz is an X-ray data file.
+data.mtz is an X-ray data file.  The tool will run (for a long time) and
+create a model named model_overall_best.pdb that will contain alternative
+conformations based on the X-ray data.  If you want to use more processors,
+specify nproc=32 or whatever number you would like.  If you want to create
+more than two conformers, you can specify the number with conformers=3 or
+whatever you like.  If you want to use the conformers present in model.pdb
+as starting points, rearranging them as needed, you can specify
+use_existing_altlocs=True.
 
 Possible Problems
 -----------------
