@@ -149,7 +149,7 @@ cannot be solved automatically in this way, then you will want to take your
 trimmed predicted models, solve your structure separately by molecular 
 replacement (e.g., by using `phenix.phaser <phaser.html>`_ but 
 changing some parameters), then supplying the molecular replacement model
-to Predict and build as a "docked model". After molecular replacement,
+to Predict and build as a "scaffold model". After molecular replacement,
 domains are rearranged if necessary to allow sequential parts to be connected,
 creating a scaffold model for use in the morphing step to follow.
 
