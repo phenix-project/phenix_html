@@ -142,6 +142,20 @@ You can skip the extensive optimization procedure and use a shorter one
 instead with the keyword quick=True.  This is still not that fast, but it is
 a lot faster than the full version.
 
+Ligands:
+--------
+
+If you supply a single model with no alternate conformations, it may contain ligands.
+Any ligands are separated out and added in (one copy of each ligand for each conformer 
+created) just before refinement.
+
+Anisotropic refinement:
+-----------------------
+
+You can specify anisotropic_refinement=True or supply a single model previously refined
+with anisotropic refinement. This will instruct create_alt_conf to use anisotropic
+refinement.
+
 Examples
 --------
 
@@ -162,7 +176,8 @@ specify nproc=32 or whatever number you would like.  If you want to create
 more than two conformers, you can specify the number with conformers=3 or
 whatever you like.  If you want to use the conformers present in model.pdb
 as starting points, rearranging them as needed, you can specify
-use_existing_altlocs=True.
+use_existing_altlocs=True (or say nothing, this is the default).  If you want 
+to throw them away, say use_existing_altlocs=False.
 
 Possible Problems
 -----------------
