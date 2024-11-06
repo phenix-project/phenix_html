@@ -175,9 +175,9 @@ conformations based on the X-ray data.  If you want to use more processors,
 specify nproc=32 or whatever number you would like.  If you want to create
 more than two conformers, you can specify the number with conformers=3 or
 whatever you like.  If you want to use the conformers present in model.pdb
-as starting points, rearranging them as needed, you can specify
-use_existing_altlocs=True (or say nothing, this is the default).  If you want 
-to throw them away, say use_existing_altlocs=False.
+as starting points, rearranging them as needed but not creating any new ones,
+you can specify use_existing_altlocs=True (or say nothing, this is the 
+default).  If you want to throw them away, say use_existing_altlocs=False.
 
 Possible Problems
 -----------------
