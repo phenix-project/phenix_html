@@ -1,25 +1,27 @@
-Model completion by extraction of secondary structure and reassembly
+Reassemble model cryo EM by extraction of secondary structure and reassembly
 ====================================================================
 
 Author(s)
 ---------
 
--  model_completion: Tom Terwilliger
+-  reassemble_model_cryo_em: Tom Terwilliger
 
 Purpose
 -------
 
-Try to complete a model by extracting all the secondary structure elements
-(helices and strands), rearranging and reconnecting them into a new model.
+Try to reassemble a model by extracting all the secondary structure elements
+(helices and strands), rearranging and reconnecting them into a new model. 
+Normally used for a very bad model in which connections may be completely
+wrong.
 
 How Model Completion works:
 ---------------------------
 
-Model completion is based on the idea that the helices and strands in 
+Reassemble model cryo EM is based on the idea that the helices and strands in 
 protein model are generally correct, while the loops connecting them may be
 inaccurate or even connect the wrong helices and strands.
 
-Model completion first identifies secondary structure in a model. Then it
+Reassemble model cryo EM first identifies secondary structure in a model. Then it
 examines all the loops connecting these helices and strands in the model
 and keeps the best-fitting and most plausible loops intact.  All the other loops
 are removed from the model, resulting in a set of fragments representing part
@@ -27,7 +29,7 @@ of the structure.  The sequence assignments and connectivities of these
 fragments are then removed so that any fragment can potentially be connected
 to any other fragment.
 
-The core step in model completion is identification of all plausible connections
+The core step in reassemble model cryo EM is identification of all plausible connections
 between ends of fragments in this partial model.  Connections that were present
 in the supplied model are considered in this step along with potential
 connections that are found by tracing from one fragment to another through high
@@ -61,14 +63,14 @@ rescored and the top resulting chains are provided.
 Examples
 --------
 
-Standard run of model_completion:
+Standard run of reassemble_model_cryo_em:
 ------------------------------------
 
-Running model_completion is easy. From the command-line you can type:
+Running reassemble_model_cryo_em is easy. From the command-line you can type:
 
 ::
 
-    phenix.model_completion my_model.pdb my_map.mrc resolution=3 nproc=8
+    phenix.reassemble_model_cryo_em my_model.pdb my_map.mrc resolution=3 nproc=8
 
 
 This will attempt to complete my_model.pdb based on the map my_map.mrc at 
@@ -91,4 +93,4 @@ Additional information
 List of all available keywords
 ------------------------------
 
-{{phil:phenix.programs.model_completion}}
+{{phil:phenix.programs.reassemble_model_cryo_em}}
