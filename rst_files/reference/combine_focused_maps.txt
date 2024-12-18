@@ -134,19 +134,6 @@ use rigid_body_refinement=False.
 
 You cannot use region_selection with use_model_symmetry.
 
-If your maps and model(s) are very big and the models have many chains,
-rigid-body refinement run separately on each chain can use a huge amount 
-of memory in this tool.  Best approaches are:
-
-::
-
-  1. Use the keyword rigid_body_refinement_single_unit=True to just run one
-  big refinement
-
-  2. Run rigid-body refinement with RealSpaceRefine first on each combination
-  of map and model that you plan to use, then either turn off rigid-body 
-  refinement or set rigid_body_refinement_single_unit=True.
-
 Literature
 ----------
 
