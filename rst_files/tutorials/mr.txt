@@ -1,3 +1,4 @@
+--------------------------------------------
 Tutorial: solving a structure with Phaser-MR
 --------------------------------------------
 
@@ -55,7 +56,7 @@ a single ensemble; if you instead want to try multiple equally likely
 ensembles and let Phaser pick the best one, use the advanced interface
 (described below).
 
-Start the GUI by clicking "Phaser-MR (simple one-component interface)", the second 
+Start the GUI by clicking "Phaser-MR (simple one-component interface)", the second
 item in the list under "Molecular replacement."  This interface has a single input
 field for all file types, and on most operating systems you can simply drag
 the three files from the project folder into the input field.  Alternatively,
@@ -94,7 +95,7 @@ about the precise space group, for instance if the data were processed as
 P222 but the exact combination of screw axes is unknown, or the space group
 could be either P6(1) or P6(5), Phaser can try multiple space groups and
 identify the best one at the translation function stage.  The default is to
-try only the original space group and its enantiomer (if any); this will 
+try only the original space group and its enantiomer (if any); this will
 have no effect for the examples used here
 (the MTZ files already contain the correct symmetry), but it would be
 appropriate for the P6(1) versus P6(5) case.  The most permissive setting is
@@ -133,10 +134,10 @@ homologous proteins, running AutoBuild would be a better choice.
 Multi-component searches
 ------------------------
 
-The interface for multi-component and other more difficult searches is considerably 
-more complicated, especially since the ensemble and ASU contents inputs are split 
-up. The tutorial data for this example is 
-"TEM-1 Beta-lactamase/beta-lactamase inhibitor complex" (or "beta-blip"), and 
+The interface for multi-component and other more difficult searches is considerably
+more complicated, especially since the ensemble and ASU contents inputs are split
+up. The tutorial data for this example is
+"TEM-1 Beta-lactamase/beta-lactamase inhibitor complex" (or "beta-blip"), and
 includes five files: an MTZ file and two each of search models and sequence files.
 
 Start the standard Phaser-MR GUI by clicking "Phaser-MR" under the "Molecular
@@ -187,12 +188,12 @@ ASU contents is input really is unimportant.)
 The final configuration tab, "Search procedure", is where we tell Phaser
 how to use the ensembles we input. Initially only the "Component 1" branch
 is shown. Click on the triple dotted button to its right and a menu will appear
-allowing us to select which of the two ensembles defined earlier Phaser should 
-search for. The up-down spin button in the rightmost column lets us specify how 
+allowing us to select which of the two ensembles defined earlier Phaser should
+search for. The up-down spin button in the rightmost column lets us specify how
 many copies of this component we want Phaser to attempt to place in the ASU.
 We select the beta ensemble for the first component and choose to search
 for one copy. To specify the blip component we press the "Add Search"
-button, which will add another Component branch to the Search GUI. As before 
+button, which will add another Component branch to the Search GUI. As before
 we instruct Phaser to search for one component but with the blip ensemble.
 
 Note: Selecting both ensembles to be searched for in one component would
