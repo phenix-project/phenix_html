@@ -194,6 +194,14 @@ Possible Problems
 Specific limitations and problems:
 ----------------------------------
 
+ProcessPredictedModel is designed for processing single chains (a model with
+a single chain ID).  
+
+ProcessPredictedModel can be used for models with multiple chain
+IDs, but you cannot supply a reference structure or a PAE matrix if there
+are multiple chain IDs.  In this case it  will run each chain individually,
+then simply combine them to form the output processed model.
+
 Literature
 ----------
 
