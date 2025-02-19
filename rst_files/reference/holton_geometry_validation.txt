@@ -74,6 +74,23 @@ deviations. The estimated ratio of deviations/sigma overall is
 then 1/3 of this 99.7th percentile value,
 or 1 standard deviation of the ratios of deviation to sigma.
 
+Comparing two models
+--------------------
+
+If you want to be quite sure about whether model A.pdb is better than B.pdb,
+you can supply both models to holton_geometry_validation (one as model and
+the other as other_models). The tool will 
+calculate scores for A.pdb and B.pdb using not just the standard parameters,
+but all reasonable values of these parameters. The overall
+estimate of the difference in scores is obtained by averaging over the 
+differences in scores using the sets of varied parameters.  An overall
+difference and SD of the difference is supplied.  If A.pdb consistently has
+a better score than B.pdb, you can be relatively confident that it really 
+is better.
+
+You can supply a list of models as well (or a model and a set of other_models),
+and each will be compared to the first model in the list.
+
 Uses
 ----
 
@@ -86,6 +103,8 @@ are about what is expected based on ideal model geometry and uncertainties.
 You can use the estimate of ratio of deviations to sigmas to further examine
 whether the deviations from ideality in your structure are about what is
 expected based on the expected variation in geometric values.
+
+Comparing a series of models to see how each compares to the first model.
 
 Examples
 --------
