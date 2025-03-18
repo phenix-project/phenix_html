@@ -202,6 +202,28 @@ IDs, but you cannot supply a reference structure or a PAE matrix if there
 are multiple chain IDs.  In this case it  will run each chain individually,
 then simply combine them to form the output processed model.
 
+The defaults for some parameters are changed as of 18-Mar-2025.  The previous
+values were:
+
+::
+
+    minimum_domain_length = 10
+    minimum_sequential_residues = 5
+    pae_power = 1
+    pae_cutoff = 5
+    pae_graph_resolution = 0.5
+
+Current values are:
+
+::
+
+    minimum_domain_length = 20
+    minimum_sequential_residues = 10
+    pae_power = 2
+    pae_cutoff = 4
+    pae_graph_resolution = 4
+
+
 Literature
 ----------
 
