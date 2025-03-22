@@ -202,8 +202,8 @@ IDs, but you cannot supply a reference structure or a PAE matrix if there
 are multiple chain IDs.  In this case it  will run each chain individually,
 then simply combine them to form the output processed model.
 
-The defaults for some parameters are changed as of 18-Mar-2025.  The previous
-values were:
+A new set of default parameters for some parameters are available for use
+with a pae matrix. The original values are:
 
 ::
 
@@ -213,7 +213,7 @@ values were:
     pae_cutoff = 5
     pae_graph_resolution = 0.5
 
-Current values are:
+Alternative parameters available with the keyword "alt_pae_params=True" are:
 
 ::
 
@@ -222,6 +222,8 @@ Current values are:
     pae_power = 2
     pae_cutoff = 4
     pae_graph_resolution = 4
+
+These parameters can also be set directly.
 
 
 Literature
