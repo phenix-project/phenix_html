@@ -37,12 +37,18 @@ Requirements and Current Limitations
 ------------------------------------
 
 Protein-only (plus water) models are supported at the moment. Static disorder 
-(i.e., alternative conformations) is not supported.
+(i.e., alternative conformations) is not supported, except for exchangeable H/D
+sites in case of refinement against neutron diffraction data.
+
+If a model contains unsupported entity (e.g., a metal ion) or alternative 
+conformations, it is still possible to refine it but unsupporte entities need to
+be excluded using 'exclude' keyword, as shown below in Examples.
 
 The atomic model needs to be nearly final (in the later stages of standard 
 classic refinement) and atom-complete (e.g., all hydrogen atoms are present 
-explicitly). The model is also expected to have meaningful geometry, such as 
-being devoid of overlapping (clashing) atoms or severely distorted covalent bonds.
+explicitly, no missing side chains). The model is also expected to have 
+meaningful geometry, such as being devoid of overlapping (clashing) atoms or 
+severely distorted covalent bonds.
 
 Hardware: While this can possibly work on both CPU and GPU computers, currently 
 available builds are specific to Linux machines with CUDA 11 or 12. Additionally, 
@@ -59,24 +65,37 @@ Q|R refinement project (www.qrefine.com or https://github.com/qrefine/qrefine).
 Examples
 --------
 
+A self-consistent, quck to run, simple example is distributed with the software 
+(Phenix, Q|R) and located in phenix/modules/qrefine/examples/AQuaRef folder.
+Check README file for details. If using AQuaRef for the first time, we suggest
+to run this example first in order to make sure all works as expected.
+
 Reciprocal space refinenemt:
 
 ::
 
-  qr.refine model.pdb data.mtz engine=aimnet2
+  qr.aquaref model.pdb data.mtz
 
 Real space refinenemt:
 
 ::
 
-  qr.refine model.pdb map.mrc engine=aimnet2
+  qr.aquaref model.pdb map.mrc
   
 Optimization of model geometry (no experiemntal data used):
 
 ::
 
-  qr.refine model.pdb engine=aimnet2
+  qr.aquaref model.pdb
+  
+Reciprocal space refinenemt exclusing Mg and ligand ATP:
+
+::
+
+  qr.aquaref model.pdb data.mtz exclude="element MG or name ATP"
 
 Literature
 ----------
 
+AQuaRef: Machine learning accelerated quantum refinement of protein structures
+https://doi.org/10.1101/2024.07.21.604493
