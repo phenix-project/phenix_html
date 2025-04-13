@@ -41,7 +41,7 @@ Protein-only (plus water) models are supported at the moment. Static disorder
 sites in case of refinement against neutron diffraction data.
 
 If a model contains unsupported entity (e.g., a metal ion) or alternative 
-conformations, it is still possible to refine it but unsupporte entities need to
+conformations, it is still possible to refine it but unsupported entities need to
 be excluded using 'exclude' keyword, as shown below in Examples.
 
 The atomic model needs to be nearly final (in the later stages of standard 
@@ -70,13 +70,13 @@ A self-consistent, quck to run, simple example is distributed with the software
 Check README file for details. If using AQuaRef for the first time, we suggest
 to run this example first in order to make sure all works as expected.
 
-Reciprocal space refinenemt:
+Reciprocal space refinement:
 
 ::
 
   qr.aquaref model.pdb data.mtz
 
-Real space refinenemt:
+Real space refinement:
 
 ::
 
@@ -88,7 +88,7 @@ Optimization of model geometry (no experiemntal data used):
 
   qr.aquaref model.pdb
   
-Reciprocal space refinenemt exclusing Mg and ligand ATP:
+Reciprocal space refinement exclusing Mg and ligand ATP:
 
 ::
 
