@@ -78,6 +78,19 @@ the chain that each is to represent.
 
 Finally all the weighted average maps are combined to form a composite map.
 
+Normalization and scaling of input maps
+---------------------------------------
+
+With the default value of the keyword normalize (True), maps will be normalized
+by subtracting their mean value and scaling to yield an rms value of 1.0.
+
+If values of map_scale are supplied (one per map; cannot duplicate values
+so use 0.9999,  1.000, and 1.0001 to if you want the same value of 1 for
+three maps), the maps will be scaled by these values after normalization.
+
+If you want to just scale and not normalize, set normalize to False. (This
+was the behaviour before phenix version 5705)
+
 Additional output files
 -----------------------
 
