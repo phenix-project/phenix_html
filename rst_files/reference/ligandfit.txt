@@ -353,7 +353,8 @@ map will be shifted to place its origin at (0,0,0) in a working map.  Then
 the ligand will be fitted, and finally the fitted ligand will be shifted 
 back to match the location of the original map.  If you supply 
 search_center coordinates, these will be shifted to match the location 
-of the working map.
+of the working map. If you supply a partial model, it will also be shifted
+to match the location of the working map.
 
 If your map has an origin offset that is specified by an external origin,
 the external origin is normally converted into an origin offset as in the
