@@ -341,6 +341,25 @@ Phenix and you do not need to do anything special. If you have any other
 convention (for example values of 0 to 19 and test set is 1) then you
 can specify this with test\_flag\_value.
 
+Using LigandFit with an mrc map as input
+----------------------------------------
+
+You can run ligand fitting using an mrc (or ccp4) map file as input instead
+of using map coefficients.  If you supply a map, it will be converted into
+map coefficients and then ligand fitting will proceed as usual.
+
+If you supply a map that has an origin offset (a boxed map), then the
+map will be shifted to place its origin at (0,0,0) in a working map.  Then
+the ligand will be fitted, and finally the fitted ligand will be shifted 
+back to match the location of the original map.  If you supply 
+search_center coordinates, these will be shifted to match the location 
+of the working map.
+
+If your map has an origin offset that is specified by an external origin,
+the external origin is normally converted into an origin offset as in the
+above case. Note that not all display programs can properly display maps with
+external origins.
+
 Possible Problems
 -----------------
 
