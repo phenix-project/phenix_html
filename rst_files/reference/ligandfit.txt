@@ -346,17 +346,14 @@ Using LigandFit with an mrc map as input
 
 You can run ligand fitting using an mrc (or ccp4) map file as input instead
 of using map coefficients.  If you supply a map, it will be converted into
-map coefficients and then ligand fitting will proceed as usual.
+map coefficients and then ligand fitting will proceed as usual.  If you
+supply a model file, it will be trimmed to remove all atoms outside of the
+original boxed map before using it.
 
 If you supply a map that has an origin offset (a boxed map), then the
-map will be shifted to place its origin at (0,0,0) in a working map.  Then
-the ligand will be fitted, and finally the fitted ligand will be shifted 
-back to match the location of the original map.  The fitted ligand matching
-the original map will have unshifted in its name (ligand_fit_1_unshifted.pdb).
-If you supply 
-search_center coordinates, these will be shifted to match the location 
-of the working map. If you supply a partial model, it will also be shifted
-to match the location of the working map.
+map will be converted to map coefficients that keep the density in the
+same place as the original map.  Then the ligand will be fitted in the
+usual way.
 
 If your map has an origin offset that is specified by an external origin,
 the external origin is normally converted into an origin offset as in the
