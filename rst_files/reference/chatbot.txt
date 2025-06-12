@@ -45,6 +45,12 @@ a source in the Sources section and highlights text at the point where it got
 its information.  If the source is a video, you can scroll to the top of 
 that source and the youtube video will be visible there.
 
+This type of AI does not save or learn from your questions.  If you close
+the chat or hit Refresh, it will be in the same state as it started in.
+The AI does answer in the context of previous questions or requests, so
+if you ask it to give you instructions suitable for the GUI, it will
+try to do that throughout the session.
+
 
 What kind of questions you can ask the chatbot
 ----------------------------------------------
@@ -56,6 +62,10 @@ For example:
 ::
 
   "How do I solve my structure?"
+
+  "I have an mtz file and a sequence file. What do I do next?"
+
+  "What is the difference between an mtz file and an mrc file?"
 
   "Can I use AlphaFold with X-ray data?"
 
