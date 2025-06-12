@@ -13,6 +13,8 @@ The Phenix `chatbot <https://phenix-online.org/chatbot>`__ is designed to guide 
 in structure determination, to provide help with running Phenix
 programs and interpreting their output, to help with debugging
 problems, and as a reference for the theory behind Phenix tools.
+The chatbot can be accessed in the Phenix GUI with the Chat button on the
+toolbar.
 
 How the chatbot works
 ----------------------
@@ -93,7 +95,7 @@ knows about Phenix, and it only knows what is in the documentation, the
 videos and newsletters, and the papers we have supplied. 
 
 AI chatbots like this one can also just make mistakes and give incorrect
-answers. This does not seem to happen very often with this chatbot, but
+answers. This does not seem to happen too often with this chatbot, but
 you need to always be on alert when using it.  Use the chatbot as a helper,
 don't expect it to always be right.
 
@@ -110,3 +112,11 @@ For example, it might say that density modification improves resolution
 slightly.  While that may be true for cryoEM, density modification does
 not change the resolution in X-ray crystallography, it only improves the
 phase information.
+
+Similarly, when the atom selection example above is given to the chatbot,
+it may give an answer like: "backbone and chain A", 
+instead of "backbone and (not protein) and chain A".  Further, the chatbot 
+may suggest testing atom selections with
+phenix.pdb_atom_selection, but can miss the detail that 
+phenix.pdb_atom_selection does not recognize the "backbone" smart 
+selection string.
