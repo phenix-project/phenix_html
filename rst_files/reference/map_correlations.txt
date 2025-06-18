@@ -19,7 +19,8 @@ can be any shifts (translational_offsets=Any).
 Maps can be supplied as map files or as map coefficients. Maps and 
 map coefficients may not be both used at the same time.
 
-If a model is supplied, the local correlation for each residue is calculated
+If a model is supplied, the local correlation for each residue is calculated.
+
 
 The total number of files supplied must be exactly two.  
 
@@ -81,6 +82,9 @@ Possible Problems
 
 Specific limitations and problems:
 ----------------------------------
+
+If map and model are supplied, normally you must supply a value for the
+resolution to which map-model correlations are calculated.
 
 References
 ----------
