@@ -1,0 +1,98 @@
+Helpful hints for using AI in coding for Phenix and CCTBX 
+=========================================================
+
+Try a new mindset: Start with an AI chat for all your coding
+------------------------------------------------------------
+
+What if you could write pretty good code without knowing the details
+of the tools you are going to use?
+
+AI tools are great for creating scripts that do something pretty close to what
+you ask for.  Then if you have a way of noticing what is not perfect about
+the results, you can iteratively ask the AI tools to fix your scripts.
+This can be an incredibly powerful, and relatively easy, process even if
+the AI is using tools that you do not know a lot about. The AI tools are
+great at explaining what the code is doing as well, so it can be great for
+learning how to use available tools.
+
+How to write code with an AI chatbot
+------------------------------------
+
+First, the AI has to have been trained on programming with the tools that 
+you need to use. For general scripting,
+tools such as Gemini and ChatGPT are already trained on most common tools, so
+you are all set.  For writing scripts in a specialized environment such as
+Phenix or CCTBX, your AI tool may need to have imported the codebase that you 
+are going to base your work on. And no worries:  there are already AI tools
+all set up to work with CCTBX or with Phenix and CCTBX.
+
+Second, you need to communicate clearly what you want the AI chatbot to create.
+If you want a script written in a certain way or with 
+certain tools, you need to tell it
+these things. A good way to do this is to have a discussion with the AI tool,
+asking it how to go about carrying out the task you want, choosing a
+path that you like, and asking it to write a script to do the task in that way.
+
+Third, and very importantly, you have to have a way of determining whether the
+code that the AI tool creates is actually doing what you want.  There are 
+several ways to do this. One is to specify just what it is supposed to do
+up front, and then take the script that the AI produces for you, run it, and
+see if it does what you want.  Another is to ask the AI to create a set of
+unit tests for the script.  Then you can look through the unit tests and make
+sure they are what you want and that they all pass.
+
+Fourth, you have to expect that the AI will not get it right the first time.
+The amazing thing is that it is often quite close. If you run the script that
+the AI creates and it crashes, you can just paste the traceback text in to
+the AI chat and in most cases it will try to figure out what it did wrong and
+it will create an updated script fixing that problem.  You can do this with
+anything that you don't like. If the formatting of your output is not to your
+liking, just ask the AI to change it.  If you would like more input parameters,
+just ask it to add them.  While this process is a little tedious, it is very
+often a lot faster than writing a script by yourself.  Once the AI version of
+your script is pretty close to what you want, you can also just edit it yourself
+to make it do just what you want.
+
+How to use the Phenix developer AI chatbot to write a ProgramTemplate script
+----------------------------------------------------------------------------
+
+While AI chatbots are quite amazing at writing code, they are (so far) not that
+great at following instructions to the letter.  Consequently writing very
+specialized code that has to follow specific formatting is sometimes a little
+difficult with AI.
+
+One way to get around this it to first specify everything that you want the
+AI chatbot to consider, then ask it to write code, then repeat instructions
+that the chatbot did not follow correctly and ask it to fix the code 
+accordingly.
+
+In the Phenix developer AI chatbot this process can be carried out when you
+want to write a script that uses the ProgramTemplate, the standard 
+Phenix script for gathering information from a user and running a program.
+An important element of this is that the chatbot has already been pre-loaded
+with a source that tells it the rules for the ProgramTemplate.  This source
+contains the text "Chatbot Program Template", and you can tell the chatbot
+to focus on the contents of this source.
+
+Here is how you do this:
+
+::
+
+  First chat with the AI bot about what you want to do and decide which
+  of the possibilities that the AI gives you that you want to follow.
+
+  Then, supposing you want to write a script to calculate MolProbity
+  scores, type a command like this:
+
+  1. Describe in detail all the instructions in the source that contains 
+  the exact text: "Chatbot Program Template". 2. Following these 
+  instructions, write a script that reads in model.pdb and prints 
+  out its molprobity score."
+
+
+Now the AI will try to follow the Program Template rules and write you 
+a script. Although it may not be perfect, it is likely to be close. Then
+if it does not run, you can paste in the traceback or incorrect outputs
+and let it figure out what it did wrong. If there are specific things that
+you notice that it did wrong, you can point those out and ask for a new
+script.
