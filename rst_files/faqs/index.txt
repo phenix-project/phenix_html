@@ -533,6 +533,15 @@ on program behavior.  (The lone exception is Phaser, which by default sets the
 occupancies of HETATMs to zero unless they are part of a protein polymer.)
 The PDB annotators will change ATOM to HETATM as needed upon deposition.
 
+Clarifications
+--------------
+
+This section is used to clarify subjects.
+
+**Can I use Polder for cryo-EM data?**
+
+No, Polder is only suitable for crystallographic data
+
 Rosetta
 -------
 
@@ -578,3 +587,4 @@ and data?**
 There is `a program specifically for this purpose
 <../reference/reciprocal_space_arrays.html>`__; you can find in in the Phenix
 GUI under "Reflection tools".
+
