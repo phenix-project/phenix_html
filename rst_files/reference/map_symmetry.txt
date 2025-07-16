@@ -59,6 +59,17 @@ Running map_symmetry is easy. From the command-line you can type:
 
 where emd_8750.map is a map (CCP4, mrc or other related format), and in
 this case you are specifying that only D7 symmetry should be considered.
+An output file containing the symmetry (also known as NCS in Phenix) 
+operators will be created (map_symmetry.ncs_spec). 
+
+You can leave the symmetry as default (symmetry=ALL), or 
+you can specify symmetry
+with the name of a symmetry (symmetry=D7) or with a file with symmetry 
+operators in the same format as
+map_symmetry.ncs_spec (symmetry_file=sym.ncs_spec).
+
+Note that to find helical symmetry, you have to explicitly set the
+keyword include_helical_symmetry=True.
 
 
 Possible Problems
@@ -68,6 +79,44 @@ Specific limitations and problems:
 ----------------------------------
 
 Helical symmetry is assumed to be along the z-axis.
+
+
+Notes on map symmetry in Phenix:
+--------------------------------
+
+
+Helical symmetry is more difficult to analyze than other symmetries.  
+(a) Having the helical parameters (rotation about z, rise) is very 
+helpful because finding these is not so easy and takes some time with 
+map_symmetry.  
+(b) Helical symmetry has several different forms as well. There is 
+1-start (normal) and 2-start (two sets of helices, not handled 
+automatically in Phenix).  Helical symmetry is usually identified 
+using a Fourier transform along Z.
+(c) As helical symmetry is not common and takes longer to find automatically,
+finding helical symmetry is off by default and requires setting the 
+keyword include_helical_symmetry to True to look for it.
+(d) Only one-start helical symmetry is found automatically. For other
+symmetries, a symmetry file (.ncs_spec) would need to be supplied.
+
+For other symmetries, having the information about symmetry type (D, O, etc) 
+is slightly useful, but generally it is quick to identify these symmetries 
+by direct testing.  Note that knowing that symmetry is D2 (for example) 
+does not actually define the matrices. There are two settings for D2 (and 
+many others), one with the two-fold along x and one with the two-fold 
+along the x=y, z=0 line. It is even more complicated for icosahedral 
+symmetries.
+
+Phenix uses the method mmtbx/ncs/ncs/generate_ncs_ops to generate NCS 
+operators for all the common symmetries that are found in cyo-EM maps.  
+If there are symmetries that we do not recognize, this is the place to 
+put them.
+
+In Phenix map analysis and model building and manipulation code, 
+the mmtbx.ncs.ncs object is used to handle the symmetry relationships for 
+cryo-EM symmetry.  There is another NCS object that is used inside the 
+model object.
+
 
 Literature
 ----------
