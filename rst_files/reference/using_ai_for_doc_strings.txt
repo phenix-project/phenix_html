@@ -1,0 +1,92 @@
+Using AI to help generate doc strings
+=====================================
+
+Documenting your code with doc strings or other helpful information makes
+it easier for you and others to understand, use, and modify your code 
+later.
+
+Additionally, doc strings can help AI tools identify what code would be
+useful in a new situation and to document the way to use your code.
+
+libtbx.add_docstrings_with_ai: a tool to automatically add doc strings
+----------------------------------------------------------------------
+
+There are many ways to add doc strings to your code, but even most AI tools
+will not add doc strings to large files.  The CCTBX tool
+libtbx.add_docstrings_with_ai will break up a file into pieces, send each one
+to gemini-1.5 for doc string generation, catch problems and resend,
+and assemble the result into a new file that has all the coding lines from
+the original file and a new set of documentation strings.
+
+Here is an example.  This is code supplied to libtbx.add_docstrings_with_ai::
+
+  class xh_connectivity_table2(object):
+    def __init__(self, geometry, xray_structure):
+      bond_proxies_simple, asu = geometry.geometry.get_all_bond_proxies(
+          sites_cart=xray_structure.sites_cart())
+      scatterers = xray_structure.scatterers()
+  
+The AI tool analyzes this, figures out something about what it is doing,
+and summarizes the arguments and any return values::
+
+
+  class xh_connectivity_table2(object):
+    """
+    Stores X-H connectivity information, including angle information.
+    """
+    def __init__(self, geometry, xray_structure):
+      """
+      Initialize the X-H connectivity table.
+  
+      Args:
+        geometry (mmtbx.geometry_restraints.manager): Geometry restraints manager.
+        xray_structure (cctbx.xray.structure.structure): X-ray structure object.
+      """
+      bond_proxies_simple, asu = geometry.geometry.get_all_bond_proxies(
+          sites_cart=xray_structure.sites_cart())
+      scatterers = xray_structure.scatterers()
+      ...
+  
+  
+Preparing to run libtbx.add_docstrings_with_ai
+----------------------------------------------
+  
+To run this tool, you will need a Google API key, as the tool talks to
+Google directly.  You can get a free key like this:
+
+..
+
+  Go to Google AI Studio: Navigate to makersuite.google.com/app/apikey. 
+  You may need to sign in with your Google account.
+
+  Create a New Key: Click the button labeled "Create API key in new project".
+
+  Copy Your Key: A pop-up window will appear displaying your new API key. 
+  Click the copy icon next to the key to copy it to your clipboard.
+
+  Set the GOOGLE_API_KEY environment variable:
+
+  csh:   setenv GOOGLE_API_KEY <your-api-key>
+  bash:  set GOOGLE_API_KEY=<your-api-key>
+
+How to run libtbx.add_docstrings_with_ai
+----------------------------------------
+
+You can run the tool with:
+
+  libtbx.add_docstrings_with_ai input_dir output_dir
+
+You put the files you want documented in input_dir and it will write them to 
+output_dir (creating output_dir if necessary).
+
+Be safe: check the results
+--------------------------
+
+While this tool is designed to only change doc strings, you should carefully
+review the new version of each of your files.  You can use
+
+  diff input_dir/my_file.py output_dir/my_file.py
+
+to see what is changed, for example.  Also just have a look at each new
+file.
+
