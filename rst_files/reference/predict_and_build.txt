@@ -140,11 +140,30 @@ the correct solution.  Splitting into compact domains increases the chance
 of correctly placing parts of chains that have different orientations in the
 predicted model compared to the actual structure.
 
+Predict and build uses 
+`phenix.process_predicted_model <process_predicted_model.html>`_ to estimate 
+suitable VRMS values from the pLDDT values in a processed chain to be used 
+in molecular replacement (the next step below). The VRMS values are estimates
+of the RMSD between the model and the true structure.
+Process predicted model first converts average pLDDT to estimated 
+RMS error using an empirical formula from RoseTTAFold:
+
+rmsd_est = 1.5 * exp(4*(0.7-pLDDT))  where pLDDT is fractional (0 to 1)
+
+Then it uses a second empirical formula to suggest a value of VRMS based on the RMS error:
+
+vrms = vrms_from_rmsd_slope * rms + vrms_from_rmsd_intercept
+where the slope is 1 and intercept is 0.25 A.
+
 Structure determination by molecular replacement (X-ray data)
 -------------------------------------------------------------
 
 Predict and build uses `phenix.phaser <phaser.html>`_ with all default
-parameters to solve a structure by molecular replacement. If your structure
+parameters to solve a structure by molecular replacement, except that
+the value of VRMS (estimated RMSD between model and true structure)
+is estimated from the pLDDT values as described above. You can also
+set the value of VRMS directly with the keyword vrms_value.
+If your structure
 cannot be solved automatically in this way, then you will want to take your
 trimmed predicted models, solve your structure separately by molecular 
 replacement (e.g., by using `phenix.phaser <phaser.html>`_ but 
