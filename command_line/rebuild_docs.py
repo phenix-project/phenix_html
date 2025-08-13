@@ -180,7 +180,7 @@ class PublishRST(Publish):
       with codecs.open(self.filename, 'r', encoding='utf-8') as f:
         self.data = f.read()
     else:
-      with open(self.filename, 'r') as f:
+      with open(self.filename, 'r', encoding='utf-8') as f:
         self.data = f.read()
 
   def render(self, root=''):
@@ -432,7 +432,7 @@ def run (args, out=sys.stdout) :
           raise libtbx.utils.Sorry('''
         Something is wrong with input. Please correct syntax.
         ''')
-        with open(outfile, "w") as f:
+        with open(outfile, "w", encoding='utf-8') as f:
           f.write(doc)
 
   if params.top_dir: return
