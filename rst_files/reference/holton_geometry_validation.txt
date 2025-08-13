@@ -61,6 +61,13 @@ process is carried out many times (20) and the averages are reported.
 Estimate of ratio of deviations to sigmas
 -----------------------------------------
 
+An ideal model would have all individual energies distributed normally 
+with variances approximately equal to the corresponding parent variances. 
+The exact parent distributions for different structures would therefore
+be different.  The distribution of overall scores for ideal models can 
+be estimated by sampling all the contributions using normal 
+distributions with appropriate parent variances.
+
 The tool estimates the overall ratio of deviations to sigmas in three steps 
 
 First it lists all the values deviation/sigma for all the metrics. If the
@@ -77,7 +84,7 @@ or 1 standard deviation of the ratios of deviation to sigma.
 Comparing two models
 --------------------
 
-If you want to be quite sure about whether model A.pdb is better than B.pdb,
+If you want to be more certain about whether model A.pdb is better than B.pdb,
 you can supply both models to holton_geometry_validation (one as model and
 the other as other_models). The tool will 
 calculate scores for A.pdb and B.pdb using not just the standard parameters,
@@ -104,7 +111,7 @@ You can use the estimate of ratio of deviations to sigmas to further examine
 whether the deviations from ideality in your structure are about what is
 expected based on the expected variation in geometric values.
 
-Comparing a series of models to see how each compares to the first model.
+You can compare a series of models to see how each compares to the first model.
 
 Examples
 --------
@@ -134,6 +141,24 @@ specify ignore_arg_h_nonbond=True.
 If you want to exclude hydrogen nonbond contacts involving waters, use
 ignore_water_h_bonds, and if you want to exclude all bonds involving hydrogen,
 ignore_bond_lengths_with_h=True
+
+Limitations
+-----------
+
+The value of the score depends strongly on the worst energy in each category.
+This makes it possible to game the score (down to the next-worst values) by 
+focusing attention on those individual energies.  This limitation means that
+in the current implementation, refinement against the score is not useful.
+This limitation might be reduced by including not just the worst energy in
+each category, but rather weighted values of several or all the worst energies.
+
+Parameters in the score function are somewhat arbitrary, and those that are 
+not arbitrary do not have a perfect value. If parameters have ranges of 
+reasonable values,  the difference in score between two models cannot be 
+known more accurately than the range of differences in score associated 
+with reasonable values of the parameters.
+
+
 
 Literature
 ----------
