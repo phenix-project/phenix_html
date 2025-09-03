@@ -353,6 +353,27 @@ predicted model (note the difference between a template -- a model to guide
 AlphaFold prediction, and a predicted model -- the prediction or an alternative
 to a prediction.)
 
+For example, suppose you already have a model with 4 DNA chains and four
+protein chains called model_ABGH_CDEF.pdb with a sequence file
+model_ABGH_CDEF.seq, and you have copied the 4 DNA chains to
+model_C.pdb, model_D.pdb, model_E.pdb, and model_F.pdb.  You
+can run PredictAndBuild, using the DNA chains as is, and
+predicting models for the 4 protein chains (A, B, G, H) like 
+this if you have xray data in data.mtz: 
+
+::
+
+    phenix.predict_and_build seq_file=model_ABGH_CDEF.seq \
+      scaffold_model=model_ABGH_CDEF.pdb data.mtz \
+      control.nproc=4 crystal_info.resolution=2 \
+      predicted_model=model_C.pdb \
+      predicted_model=model_D.pdb \
+      predicted_model=model_E.pdb \
+      predicted_model=model_F.pdb
+
+This command will use model_ABGH_CDEF.pdb as a scaffold, superposing
+all predicted protein models and the DNA models on it before rebuilding.
+
 Using PredictAndBuild to change the sequences in a model
 --------------------------------------------------------
 
