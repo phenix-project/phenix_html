@@ -471,6 +471,28 @@ it up. If you are unsure if the program is running, have a look at the log
 file, where the status and current time are printed out periodically. Also
 you can just see if any Python processes are running on your machine.
 
+
+R and Rfree values for density modification and for refinement for Xray data
+----------------------------------------------------------------------------
+
+If you are running predict_and_build with Xray data, you will obtain R values
+for both density modification and refinement. These are quite different. A good
+R value for density modification is in the range of 0.3-0.4, while a good value
+for refinement is in the range of 0.2-0.25 for high-resolution data (2 A or
+better) and 0.25-0.3 for lower resolution data.
+
+
+What to do next after predict_and_build?
+----------------------------------------
+
+If predict_and_build yields a largely-complete model with reasonable R-value for
+X-ray data or reasonable fit to the map with cryo-EM data, the next step is 
+usually refinement (phenix.refine for X-ray data and phenix.real_space_refine
+for cryo-EM data).  Carry out refinement and iterate with model-building
+and validation to further improve your model.  If your structure contains
+ligands, once you have a very good model you can use LigandFit to find the
+location and orientation of your ligand for either X-ray or cryo-EM data.
+
 Server problems
 ---------------
 

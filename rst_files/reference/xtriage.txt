@@ -43,6 +43,43 @@ Output files from xtriage
    style graphs
 -  (2) optional: an mtz file with massaged data
 
+Key items to look for in Xtriage output
+---------------------------------------
+
+-  You want to know if your data has any serious problems such as
+   a large number of implausible values, a large amount of missing data
+   or high values in regions corresponding to ice rings.
+-  You need to know if your data indicate translational non-crystallographic
+   symmetry.
+-  You need to know if your data indicate twinning.
+-  You want to know the most likely space group of the data.
+
+
+Key actions based on Xtriage output
+-----------------------------------
+
+-  If your data has serious problems, you may need to reprocess it or recollect
+   it.
+-  If there is translational non-crystallographic symmetry, you will want to 
+   check to make sure that is included in molecular replacement and refinement.
+-  If twinning is indicated, you will want to examine your space group, 
+   non-crystallographic symmetry, and twinning very carefully, as these
+   characteristics have overlapping effects on the data.  Note that you cannot
+   use R values from refinement to determine whether a twin law is correct
+   because refinement with a twin law can lower R values even if there is no
+   twinning. Normally you want to use the statistics of the data to identify
+   the space group, non-crystallographic symmetry, and twinning.
+-  If the space group is uncertain, work with the most likely one, but 
+   keep all the possibilities in mind as you go ahead in case you need to 
+   backtrack and try another one. Note that pairs of space groups that are
+   enantiomeric (mirror images, such as P61 and P65) cannot be distinguished
+   from the data alone, so you have to try both when determining your structure.
+   Sets of space groups in the same point group (same rotations, different
+   translations) can be distinguished by analyzing systematic absences, however
+   if the reflections that might show systematic absences are not measured,
+   these space groups might not be distinguishable based on the data alone and
+   you would have to try more than one.
+
 Xtriage keywords in detail
 --------------------------
 

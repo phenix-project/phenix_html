@@ -17,7 +17,8 @@ Purpose of the AutoBuild Wizard
 -------------------------------
 
 The purpose of the AutoBuild Wizard is to provide a highly automated
-system for model rebuilding and completion. The Wizard design allows the
+system for model rebuilding and completion using X-ray crystallographic
+data. The Wizard design allows the
 user to specify data files and parameters through an interactive GUI, or
 alternatively through a parameters file. The AutoBuild Wizard begins
 with datafiles with structure factor amplitudes and uncertainties, along
@@ -244,6 +245,41 @@ with:
 ::
 
     phenix.autobuild  my_autobuild.eff
+
+What to do after running AutoBuild
+----------------------------------
+
+After you run AutoBuild, have a close look at the output files and summary
+statistics.
+
+Notice whether non-crystallographic symmetry (NCS) has been found.  If so,
+notice whether the NCS-related copies are very similar (normally they should
+be quite similar.)
+
+Note the R-factor for density modification.  These R values are not the same as those for refinement.  A good R-factor for density modification will be in the
+range of 0.3-0.4, and an ok one from 0.4-0.5.
+
+If you have high-resolution data (better than 2 A), you should
+obtain a very complete model containing waters, with R/Rfree values near
+0.2-0.25.  For lower-resolution data (2-3 A), expect a partial model with
+R/Rfree values in the range of 0.25-0.3, and for low resolution data (worse
+that 3 A), expect a partial model without waters and with R/Rfree values
+in the range of 0.3-0.35.  Have a look at your model and the overall best
+density-modified map.  These should agree closely, with perhaps some parts
+of the map that show density not yet accounted for by the model (either not
+built or representing ligands).
+
+If your results are in expected ranges and your map looks good, the next step
+is usually to run refinement and validation, iterating with  rebuilding any
+poorly-modeled regions in Coot or Isolde.  Then once you have obtained a model
+that agrees well with your map and data, you may want to find ligands
+with LigandFit.
+
+If your data extend only to 3 A or worse, the model obtained after AutoBuild
+will generally be rather incomplete and you will need to do a lot of manual
+rebuilding.  For high-resolution data, you will need to do much less by
+yourself.
+
 
 Picking waters in AutoBuild
 ---------------------------

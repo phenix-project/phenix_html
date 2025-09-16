@@ -17,7 +17,7 @@ PHENIX GUI: Nathaniel Echols
 Purpose
 -------
 
-The AutoSol Wizard uses HYSS, SOLVE, Phaser, RESOLVE, xtriage and phenix.refine to solve a structure and generate experimental phases with the MAD, MIR, SIR, or SAD methods. The Wizard begins with datafiles (.sca, .hkl, etc) containing amplitidues (or intensities) of structure factors, identifies heavy-atom sites, calculates phases, carries out density modification and NCS identification, and builds and refines a preliminary model.
+The AutoSol Wizard uses HYSS, SOLVE, Phaser, RESOLVE, xtriage and phenix.refine to solve a macromolecular crystallographic structure and generate experimental phases with the MAD, MIR, SIR, or SAD methods. The Wizard begins with datafiles (.sca, .hkl, etc) containing amplitidues (or intensities) of structure factors, identifies heavy-atom sites, calculates phases, carries out density modification and NCS identification, and builds and refines a preliminary model.
 
 
 Usage
@@ -290,6 +290,46 @@ You'll also notice that AutoSol uses the new parallel HySS and that it can find 
 
 The key idea is to use the density-modified map (and later, the model built by AutoSol) to iterate the identification of the substructure. This feature is amazingly powerful in cases where only some of the sites can be identified at the start by HySS and by initial Phaser completion. Phaser LLG completion is more powerful if an estimate of part of the structure (from the map or from a model) is available. The new AutoSol may take a little longer than the old one due to the heavy-atom iteration, but you may find that it gives a much improved map and model.
 
+What to do next after AutoSol
+-----------------------------
+
+After you have run AutoSol, have a close look at the output files and summary
+statistics.  
+
+Note any non-crystallographic symmetry found.  If you know something about your
+molecule, this may match or not match what you expect.
+
+Evaluate the plausibility of the number of sites found by HySS (if it is a 
+SeMet structure you know about how many to find, for example).  Note whether
+the sites show non-crystallographic symmetry if it was found.
+
+Note the R-factor for density modification.  These R values are not the same as
+those for refinement.  A good R-factor for density modification will be in the
+range of 0.3-0.4, and an ok one from 0.4-0.5.
+
+If you have high-resolution data (better than 2 A), you should
+obtain a nearly-complete model containing waters, with R/Rfree values near 
+0.2-0.25.  For lower-resolution data (2-3 A), expect a partial model with
+R/Rfree values in the range of 0.25-0.3, and for low resolution data (worse
+that 3 A), expect a partial model without waters and with R/Rfree values 
+in the range of 0.3-0.35.  Have a look at your model and the overall best
+density-modified map.  These should agree closely, with perhaps some parts
+of the map that show density not yet accounted for by the model (either not
+built or representing ligands).  
+
+If your results are in expected ranges and your map looks good, the next step
+is usually to run AutoBuild to try and obtain a more complete model.
+
+If results are not ok, recheck your Xtriage analysis and see if you have 
+considered the right space group.  You might try varying the resolution of
+data considered, either overall or just for HySS (finding sites).  You can
+try running with thorough defaults or even try the extreme parameters.
+
+If you have MIR data, try different combinations of derivatives.  If you have
+native data and SAD data, try both together.  
+
+If attempts at experimental structure solution fail, try molecular replacement
+with a homology model or an AlphaFold model.
 
 Examples
 --------

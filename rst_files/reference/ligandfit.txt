@@ -17,7 +17,7 @@ Purpose of the LigandFit Wizard
 -------------------------------
 
 The LigandFit Wizard carries out fitting of flexible ligands to electron
-density maps.
+density maps.  It can be used with X-ray or cryo-EM data.
 
 Usage
 -----
@@ -359,6 +359,21 @@ If your map has an origin offset that is specified by an external origin,
 the external origin is normally converted into an origin offset as in the
 above case. Note that not all display programs can properly display maps with
 external origins.
+
+What to do next after LigandFit
+-------------------------------
+
+Normally the next step after LigandFit is refinement (with phenix.refine
+for X-ray data or phenix.real_space_refine for cryo-EM data) and validation,
+iterating with manual rebuilding.
+
+If LigandFit fails to find a ligand, have a close look at your map to see
+whether there is clear density for a ligand. If not, then you should not try
+to fit a ligand. If there is clear density but LigandFit does not find it,
+try increasing the number of conformers of the ligand that are tried, try 
+varying the resolution, and check to make sure that you are looking for the
+right ligand.
+
 
 Possible Problems
 -----------------
