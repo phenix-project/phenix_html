@@ -19,6 +19,14 @@ The AI analysis tool can be accessed in the Phenix GUI in the Results
 section of most Phenix GUI runs, next to the Log file button.  You can
 also access it under the Tools menu.
 
+Google and Cohere API Keys
+--------------------------
+
+To run the AI analysis, you will need Google and Cohere API keys. The
+Google key will let you run gemini from the Phenix server, and the Cohere
+key will let you run Cohere Langchain tools.  Both are free. You can
+get the keys from the AI section of the Preferences menu in the Phenix GUI.
+
 How the AI analysis works
 -------------------------
 
@@ -63,10 +71,3 @@ don't expect it to always be right.
 
 If a detail is missing in the documentation, the AI analysis will not know it.
 
-Google and Cohere API Keys
---------------------------
-
-To run the AI analysis, you will need Google and Cohere API keys. The
-Google key will let you run gemini from the Phenix server, and the Cohere
-key will let you run Cohere Langchain tools.  Both are free. You can
-get the keys from the AI section of the Preferences menu in the Phenix GUI.
