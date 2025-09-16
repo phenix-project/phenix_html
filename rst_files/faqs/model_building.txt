@@ -577,3 +577,10 @@ to omit chain L residues 100-200 and then separately chain M residues
 It shouldn't matter much if you turn off ncs while doing an omit map
 because the ncs copy won't be used in density modification during the
 process. However NCS will be used to restrain any coordinates.
+
+**Why does AutoSol or AutoBuild say my R/Rfree is 999?**
+
+f AutoBuild is used to carry out density modification you may see a line like:
+Cycle 2  R/Rfree=999.90/999.90  Built=0  Placed=0. This just means that
+cycle 2 did not involve any refinement in maps_only mode. It does not say
+anything about your model.

@@ -487,7 +487,7 @@ What to do next after predict_and_build?
 
 If predict_and_build yields a largely-complete model with reasonable R-value for
 X-ray data or reasonable fit to the map with cryo-EM data, the next step is 
-usually refinement (phenix.refine for X-ray data and phenix.real_space_refine
+usually refinement (phenix.refine for X-ray data or phenix.real_space_refine
 for cryo-EM data).  Carry out refinement and iterate with model-building
 and validation to further improve your model.  If your structure contains
 ligands, once you have a very good model you can use LigandFit to find the

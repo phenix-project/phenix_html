@@ -419,6 +419,21 @@ are some things you can do:
   overall FSC may be better.
 
 
+What to do next after cryo EM density modification
+--------------------------------------------------
+
+You can use your density-modified cryo-EM map anywhere that you need your
+clearest map (refinement, model-building, ligand fitting, validation). Do
+keep in mind that this is map can have some bias, or systematic errors. For
+example density that is in the solvent region can be flattened somewhat. If a
+model is used in density modification, be careful in interpreting any features
+that are not present at all without density modification.
+
+Often the next step after resolve_cryo_em will be model-building with
+predict_and_build or map_to_model.  Alternatively you might carry out
+docking with EmPlacement or DockInMap. You might also try map sharpening with
+the map_sharpening tool and compare that map with the density-modified one.
+
 
 Possible Problems
 -----------------

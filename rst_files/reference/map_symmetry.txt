@@ -10,7 +10,8 @@ Purpose
 -------
 
 The routine map_symmetry will identify the symmetry in a map and create a
-file with the symmetry operations.
+file with the symmetry operations. Normally this is used to identify the
+symmetry used in processing a cryo-EM map.
 
 Usage
 -----
@@ -71,6 +72,17 @@ map_symmetry.ncs_spec (symmetry_file=sym.ncs_spec).
 Note that to find helical symmetry, you have to explicitly set the
 keyword include_helical_symmetry=True.
 
+
+What to do after map_symmetry
+-----------------------------
+
+Map symmetry will provide you with a symmetry file that shows the symmetry
+of your cryo-EM map.  You can use this symmetry file in many later steps in
+cryo-EM structure determination, such as in density modification and
+model-building.  You can use it as well to identify the asymmetric unit
+of your map by supplying it along with your map to map_box.
+You can also use this symmetry file to construct a full
+model from just the asymmetric unit of your model using apply_ncs.
 
 Possible Problems
 -----------------

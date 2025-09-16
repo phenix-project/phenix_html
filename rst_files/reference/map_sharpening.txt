@@ -348,6 +348,17 @@ To run B-factor sharpening with a single map, you can say:
 The resolution is required here as the resolution of the map is not
 well-defined. 
 
+What to do next after map sharpening 
+------------------------------------
+
+You can use your sharpened cryo-EM map anywhere that you need your
+clearest map (refinement, model-building, ligand fitting, validation).
+
+Often the next step after map_sharpening will be model-building with
+predict_and_build or map_to_model.  Alternatively you might carry out
+docking with EmPlacement or DockInMap. You might also try density modification
+with resolve_cryo_em and compare that map with the sharpened one.
+
 
 Possible Problems
 -----------------

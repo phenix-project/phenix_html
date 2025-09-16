@@ -154,7 +154,7 @@ The principal scoring criteria are:
 
 - Correlation of map-phased electron density map with experimentally- phased map (CC_DENMOD). The statistical density modification in RESOLVE allows the calculation of map-based phases that are (mostly) independent of the experimental phases. The phase information in statistical density modification comes from two sources: your experimental phases and maximization of the agreement of the map with expectations (such as a flat solvent region). Normally the phase probabilities from these two sources are merged together, yielding your density-modified phases. This score is calculated based on the correlation of the phase information from these two sources before combining them, and is a good indication of the quality of the experimental phases. This criterion is used in scoring by default.
 
-- The R-factor for density modification (RFACTOR). Statistical density modification provides an estimate of structure factors that is (mostly) independent of the measured structure factors, so the R-factor between FC and Fobs is a good measure of the quality of experimental phases. This criterion is used in scoring by default.
+- The R-factor for density modification (RFACTOR). Statistical density modification provides an estimate of structure factors that is (mostly) independent of the measured structure factors, so the R-factor between FC and Fobs is a good measure of the quality of experimental phases. This criterion is used in scoring by default. Note that this is different from a refinement R value.
 
 - Non-crystallographic symmetry (NCS_OVERLAP). The presence of NCS in a map is a nearly-positive indication that the map is good, or has some correct features. The AutoSol Wizard uses symmetry in heavy-atom sites to suggest NCS, and RESOLVE identifies the actual correlation of NCS-related density for the NCS overlap score. This score is used by default if NCS is present in the Z-score method of scoring.
 
@@ -305,7 +305,10 @@ the sites show non-crystallographic symmetry if it was found.
 
 Note the R-factor for density modification.  These R values are not the same as
 those for refinement.  A good R-factor for density modification will be in the
-range of 0.3-0.4, and an ok one from 0.4-0.5.
+range of 0.3-0.4, and an ok one from 0.4-0.5. Note that if AutoBuild is used
+to carry out density modification you may see a line like:
+Cycle 2  R/Rfree=999.90/999.90  Built=0  Placed=0. This just means that
+cycle 2 did not involve any refinement in maps_only mode.
 
 If you have high-resolution data (better than 2 A), you should
 obtain a nearly-complete model containing waters, with R/Rfree values near 
