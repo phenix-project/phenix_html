@@ -2376,6 +2376,34 @@ these in the log file::
   (...)
 
 
+Interpreting the R values at the end of the phenix refinement log file
+**********************************************************************
+
+At the end of your phenix refinement log file you will find a table of R
+values like this:
+
+::
+
+                    start: r(all,work,free)=0.4314 0.4232 0.4972 n_refl.: 7217
+        re-set all scales: r(all,work,free)=0.4314 0.4232 0.4972 n_refl.: 7217
+          remove outliers: r(all,work,free)=0.4314 0.4232 0.4972 n_refl.: 7217
+  overall B=0.00 to atoms: r(all,work,free)=0.4314 0.4232 0.4972 n_refl.: 7217
+ bulk-solvent and scaling: r(all,work,free)=0.3404 0.3341 0.3962 n_refl.: 7217
+          remove outliers: r(all,work,free)=0.3404 0.3341 0.3962 n_refl.: 7217
+ 
+
+The way to interpret these R values is that each line contains R values
+for all reflections, for work reflections only, and for free (test set)
+reflections only, at a certain stage of processing.
+
+The first line, labeled start, corresponds to values before applying any
+scaling.  The next lines correspond to resetting scale values, removing
+outliers, applying B values, applying bulk solvent and scaling, and finall,
+removing outliers.
+
+Your final R values are the ones in the last line, labeled remove outliers.
+
+
 Depositing refined structure with PDB
 *************************************
 
