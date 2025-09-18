@@ -23,9 +23,12 @@ Google and Cohere API Keys
 --------------------------
 
 To run the AI analysis, you will need Google and Cohere API keys. The
-Google key will let you run gemini from the Phenix server, and the Cohere
+Google key will let you run Gemini from the Phenix server, and the Cohere
 key will let you run Cohere Langchain tools.  Both are free. You can
 get the keys from the AI section of the Preferences menu in the Phenix GUI.
+You can run a few AI analyses without getting your own key (a shared set
+of keys is supplied), but you should get your own set once you get going
+so that others can use the shared keys.
 
 How the AI analysis works
 -------------------------
@@ -70,4 +73,14 @@ you need to always be on alert when using it.  Use the tool as a helper,
 don't expect it to always be right.
 
 If a detail is missing in the documentation, the AI analysis will not know it.
+
+Privacy in the AI analysis
+--------------------------
+
+If you use the AI analysis tool, your log files are sent to the Phenix server,
+and from there on to Cohere and Gemini.  That means the data could potentially
+be used by Cohere and Google in any way that they use other AI data that is
+sent to them.
+
+Note that access to Cohere and Gemini is non-commerical only.
 
