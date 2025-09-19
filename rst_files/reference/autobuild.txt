@@ -250,7 +250,10 @@ What to do after running AutoBuild
 ----------------------------------
 
 After you run AutoBuild, have a close look at the output files and summary
-statistics.
+statistics. You are hoping to find that AutoBuild has built a mostly complete
+model with reasonable values of R and Rfree. At high resolution (better than
+2 A) you are expecting a very good model with waters placed. At lower resolution
+(lower than 3 A) you are expecting a moderately complete model.
 
 Notice whether non-crystallographic symmetry (NCS) has been found.  If so,
 notice whether the NCS-related copies are very similar (normally they should
