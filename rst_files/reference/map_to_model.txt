@@ -511,6 +511,13 @@ memory and use it to create a final model.  Here are the steps for doing this:
   to match the original map, apply any symmetry you used originally,
   refine the model, and write out a model map_to_model/map_to_model.pdb
 
+What to do after running map_to_model
+-------------------------------------
+
+In a typical case, the Map to model tool should yield a partial model that
+fits well with your cryo-EM map.  The next steps are usually to refine 
+and validate the model with RealSpaceRefine, and to rebuild or build parts
+of the model that are incomplete or that fit poorly using Coot or Isolde.
 
 Possible Problems
 -----------------
