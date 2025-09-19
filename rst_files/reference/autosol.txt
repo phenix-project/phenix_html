@@ -294,7 +294,10 @@ What to do next after AutoSol
 -----------------------------
 
 After you have run AutoSol, have a close look at the output files and summary
-statistics.  
+statistics. You are hoping to find that AutoSol has found the heavy atoms or
+anomalously-scattering atoms, carried out density modification, found 
+non-crystallographic symmetry if any, and has built a partial or mostly-complete
+model.
 
 Note any non-crystallographic symmetry found.  If you know something about your
 molecule, this may match or not match what you expect.
