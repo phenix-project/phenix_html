@@ -511,6 +511,13 @@ memory and use it to create a final model.  Here are the steps for doing this:
   to match the original map, apply any symmetry you used originally,
   refine the model, and write out a model map_to_model/map_to_model.pdb
 
+How long does map_to_model take to run
+--------------------------------------
+
+Map to model can take quite a while to run. For a small structure (200 
+amino acids), expect a couple hours. For a large one (1000 amino acids
+or protein and RNA or DNA), expect a day or more.
+
 What to do after running map_to_model
 -------------------------------------
 
