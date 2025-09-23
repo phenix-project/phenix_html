@@ -1,6 +1,6 @@
-==========================
-Validation tools in Phenix
-==========================
+===========================================
+Crystallographic Validation tools in Phenix
+===========================================
 
 .. contents::
 
@@ -14,6 +14,11 @@ server <http://molprobity.biochem.duke.edu>`_.  Although it is possible to
 run validation with only a model, we recommend including experimental data,
 as interpreting geometry outliers only makes sense in the context of the
 electron density maps.
+
+For running with crystallographic data (X-ray or neutron), use the
+Comprehensive Validation GUI (X-ray).  For running with cryo-EM data,
+use the Comprehensive Validation GUI (Cryo-EM) (see
+`validation_cryo_em <validation_cryo_em.html>`_).
 
 The analyses performed by Phenix include:
 
@@ -41,8 +46,9 @@ the model and maps in the graphics programs.
 Running validation
 ==================
 
-If you are performing refinement with the `*phenix.refine* GUI
-<refine_gui.html>`_, the validation will be performed automatically as soon as
+If you are performing crystallographic refinement with the `*phenix.refine* GUI
+<refine_gui.html>`_, 
+or real-space refinement with the `*phenix.real_space_refine* GUI <real_spac_refine.html>`_ GUI, the validation will be performed automatically as soon as
 the final model is ready.  To validate a model with diffraction data, launch
 the "Comprehensive validation" app from the main GUI.  At a minimum, you will
 need a PDB file, and should probably add a reflections file containing
