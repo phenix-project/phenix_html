@@ -10,6 +10,14 @@ Note: questions specific to the GUI can be found in its
 General
 =======
 
+**What is the difference between phenix.refine and phenix.real_space_refine?**
+
+phenix.refine is reciprocal-space refinement and is normally used for
+crystallographic data (X-ray or neutron).
+
+phenix.real_space_refine is real space refinement and is normally used for
+cryo-EM data.
+
 **How can I make phenix.refine run faster?**
 
 There are currently two options for this:
