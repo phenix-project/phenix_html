@@ -485,8 +485,9 @@ better) and 0.25-0.3 for lower resolution data.
 What to do next after predict_and_build?
 ----------------------------------------
 
-What to do next after predict and build depends on whether you have cryo-EM
-data or X-ray data.  
+What to do next after predict and build depends on whether the input data
+for your run was cryo-EM data (i.e., my_map.ccp4), or X-ray crystallography
+data (i.e, my_reflection_data.mtz).
 
 For X-ray data, if predict_and_build yields a largely-complete model with 
 reasonable R-value, the next step is usually refinement with phenix.refine.
