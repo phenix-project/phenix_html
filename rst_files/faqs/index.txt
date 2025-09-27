@@ -38,6 +38,111 @@ that contains all the Phenix documentation and text from all the
 Phenix tutorial videos.  You can ask it any question about how to use Phenix.
 Note that it requires a Google account (any free account is fine).
 
+**Can I get an AI analysis of my results?**
+
+You can get an AI analysis of your results using the 'AI Analysis' button
+on the Results panel of the Phenix GUI for most programs.  This analysis will
+summarize your run and suggest next steps.
+
+**What is the normal sequence of steps in Phenix if I have X-ray
+crystallography data?**
+
+If you have X-ray crystallography data, you are normally starting with
+the sequences of the chains in your molecule, along with X-ray data. Your
+X-ray data might have an anomalous signal (for example if you have an
+anomalously-scattering atom like Se and you have collected anomalous data).
+Your overall strategy is to obtain crystallographic phases, either by
+experimental phasing (if you have anomalous data), or by molecular
+replacement (if you can find related structures or predict the structure).
+
+Your first step with X-ray data is analysis of your
+data with `Xtriage <../reference/xtriage.html>`__.  The next step is 
+usually to use 
+`PredictAndBuild <../reference/predict_and_build.html>`__
+to obtain a preliminary model and a density map starting with AlphaFold
+predictions, or if you have data with an anomalous signal,
+`AutoSol <../reference/autosol_gui.html>`__ and 
+`AutoBuild <../reference/autobuild_gui.html>`__ to solve your structure and get a map and model 
+with experimental phasing.
+
+Once you have a model, with X-ray data normally you will use 
+`PhenixRefine <../reference/refine_gui.html>`__ to improve the model and automatically carry out comprehensive 
+validation, iterating with 
+`Coot <../coot.html>`__ or `Isolde <https://youtu.be/limaUsNAVL8>`__
+to rebuild parts of the model 
+that do not fit the density map well.
+
+When you have a very good model with X-ray data, you might use 
+`Ligandfit <../reference/ligandfit_gui.html>`__ to 
+find the locations of ligands, followed by additional refinement and
+rebuilding steps.
+
+If you have X-ray data and your model is complete, you will carry out final
+validation steps.
+
+You can also split these steps in X-ray crystallographic structure
+determination into sub-steps so that you have more control.
+Instead of 
+`PredictAndBuild <../reference/predict_and_build.html>`__, you can use 
+`PredictModel <../reference/predict_model.html>`__
+to get AlphaFold models
+for each chain in your molecule, PhaserMR to find the location of each chain,
+and 
+`AutoBuild <../reference/autobuild_gui.html>`__ to rebuild the model.  If you have data with an anomalous
+signal, instead of 
+`AutoSol <../reference/autosol_gui.html>`__ you 
+can run 
+`HySS <../reference/hyss.html>`__
+to find the sites of 
+anomalously-scattering atoms, Phaser to calculate phases and a map, and
+`AutoBuild <../reference/autobuild_gui.html>`__ to build a model.
+
+**What is the normal sequence of steps in Phenix if I have cryo-EM data?**
+
+If you have cryo-EM data, you are normally starting with the sequences of
+the chains in your molecule and your data, two independent half-maps and 
+a full (averaged) map.  Your goal is to optimize the map and 
+create an atomic model that matches your sequences and maps. You can obtain
+your model by directly building into your map or by docking structures
+that are similar and adjusting them.
+
+Your first step with cryo-EM data is analysis of your data with 
+`Mtriage <../reference/mtriage.html>`__.
+
+The next step with cryo-EM data is usually to use 
+`PredictAndBuild <../reference/predict_and_build.html>`__ to 
+obtain a preliminary model and an improved density map based with 
+AlphaFold predictions.
+
+With cryo-EM data, once you have a model, normally you will use 
+`RealSpaceRefine <../reference/real_space_refine.html>`__ to improve the model and automatically carry out 
+comprehensive validation, iterating with 
+`Coot <../coot.html>`__ or `Isolde <https://youtu.be/limaUsNAVL8>`__
+to rebuild 
+parts of the model that do not fit the density map well.  
+
+When you have a very good model fitting your cryo-EM data, you might use 
+`Ligandfit <../reference/ligandfit_gui.html>`__ 
+to find the locations of ligands, followed by additional 
+refinement and rebuilding steps.  When your model is complete, 
+you will carry out final validation steps.
+
+You can also break down these steps in cryo-EM structure determination
+into sub-steps so that you have more control.  You can use 
+`MapSharpening <../reference/map_sharpening.html>`__
+or 
+`ResolveCryoEM <../reference/resolve_cryo_em.html>`__
+to improve the clarity of your cryo-EM map. You can predict
+the structures of the chains in your molecule with 
+`PredictModel <../reference/predict_model.html>`__
+or you can
+find a similar structure in the PDB, then you can use 
+`DockInMap <../reference/dock_in_map.html>`__ or 
+`EMPlacement <../reference/em_placement.html>`__
+to place these chains in your cryo-EM map.  You can rebuild a preliminary
+model or generate a new one from a map using 
+`MapToModel <../reference/map_to_model.html>`__.
+
 **What kind of hardware do I need to run Phenix?**
 
 A set of loose guidelines is `here
