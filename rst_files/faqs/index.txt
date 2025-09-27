@@ -51,9 +51,11 @@ If you have X-ray crystallography data, you are normally starting with
 the sequences of the chains in your molecule, along with X-ray data. Your
 X-ray data might have an anomalous signal (for example if you have an
 anomalously-scattering atom like Se and you have collected anomalous data).
-Your overall strategy is to obtain crystallographic phases, either by
-experimental phasing (if you have anomalous data), or by molecular
-replacement (if you can find related structures or predict the structure).
+Your overall strategy is to obtain crystallographic phases and a
+density map, either by experimental phasing (if you have anomalous data),
+or by molecular replacement (if you can find related structures 
+or predict the structure).  Once you have a map, you will build or rebuild
+a model, refine it, and find any ligands.
 
 Your first step with X-ray data is analysis of your
 data with `Xtriage <../reference/xtriage.html>`__.  The next step is 
@@ -62,8 +64,12 @@ usually to use
 to obtain a preliminary model and a density map starting with AlphaFold
 predictions, or if you have data with an anomalous signal,
 `AutoSol <../reference/autosol_gui.html>`__ and 
-`AutoBuild <../reference/autobuild_gui.html>`__ to solve your structure and get a map and model 
-with experimental phasing.
+`AutoBuild <../reference/autobuild_gui.html>`__ to solve your structure and get a map and model with experimental phasing.
+
+If there are more than one copies of some or all chains in the unique part
+of your structure (in the asymmetric unit of the crystal), you may want to
+find the relationships between these chains (non-crystallographic symmetry) with
+`FindNCS <../reference/find_ncs.html>`__.
 
 Once you have a model, with X-ray data normally you will use 
 `PhenixRefine <../reference/refine_gui.html>`__ to improve the model and automatically carry out comprehensive 
@@ -107,7 +113,9 @@ your model by directly building into your map or by docking structures
 that are similar and adjusting them.
 
 Your first step with cryo-EM data is analysis of your data with 
-`Mtriage <../reference/mtriage.html>`__.
+`Mtriage <../reference/mtriage.html>`__. You may also want to find the
+symmetry of your map with
+`MapSymmetry <../reference/map_symmetry.html>`__.
 
 The next step with cryo-EM data is usually to use 
 `PredictAndBuild <../reference/predict_and_build.html>`__ to 
@@ -242,9 +250,19 @@ you what to look for in the output files. For example, the
 tutorial uses the ``p9-sad`` dataset as example. It tells you how to
 run this example data in autosol and how to interpret the results.
 
-**How is non-crystallographic symmetry handled in PHENIX?**
+**How is non-crystallographic symmetry handled in PHENIX for X-ray structures?**
 
-The treatment of NCS depends on the specific program or task:
+Non-crystallographic symmetry (NCS) in a crystal structure refers to 
+local symmetry
+that is not part of the crystal lattice itself. For example, within the
+asymmetric unit of a crystal there might be two copies of a chain related to
+each other by a two-fold axis that does not align with any axis of the
+crystal. These two copies are related by local, or non-crystallographic
+symmetry.  Normally the NCS is represented by a set of matrices and translations
+that relate each copy to a reference copy. This may be written as an
+NCS file, often with the suffix, '.ncs_spec'.
+
+The treatment of NCS in crystallography depends on the specific program or task:
 
 - In density modification (performed internally by RESOLVE, and used in
   Autosol, autobuild, phenix.multi_crystal_average, and related programs),
@@ -274,6 +292,28 @@ NCS relationships.  Files ending in .ncs_spec contain rotation and translation
 matrices for use in RESOLVE.  Files ending in .phil contain atom selections
 for use in phenix.refine.  In most cases, however, you can ignore these files,
 as the NCS relationships will be detected automatically.
+
+**What does map symmetry mean in cryo-EM structure determination?**
+
+The symmetry of the map in a cryo-EM structure determination is normally
+referred to as 'map symmetry' or 'map reconstruction symmetry', as it is
+the symmetry that was applied during the reconstruction of the map.
+
+The symmetry of the map can be referred to by symbols such as C2 or O, and
+it can be stored as matrices and translations in the same form as 
+non-crystallographic symmetry us stored in crystallography (in files
+with names like 'map_symmetry.ncs_spec'). 
+
+In some cases it the words 'NCS symmetry' may refer to the map symmetry 
+in cryo-EM, but this usage should generally be avoided. Note that the file
+names with map symmetry do have the word 'ncs_spec'. This is because the
+format is identical to that used in crystallography for NCS.
+
+A cryo-EM map can have local symmetry (symmetry of the molecule that is 
+not present in the reconstruction symmetry) as well.  This local symmetry
+is similar to the local symmetry that can be present in crystal structures.
+Phenix does not have a system to handle local symmetry in cryo-EM
+structures at present.
 
 .. _pdb_mirror:
 
