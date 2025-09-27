@@ -262,27 +262,29 @@ The models produced by the Predict and build procedure are:
   poor geometry and you might want to use the final docked model as the
   starting point for refinement and continuation of building of your structure.
 
-Output reflection, map, and  and map coefficients files (X-ray data):
+Output data file, map file, and  and map coefficients files (X-ray data):
 -------------------------------------------------------------------------------
 
-After a run of PredictAndBuild with X-ray data, the principal output reflection
+After a run of PredictAndBuild with X-ray data, the principal output data
 file is PredictAndBuild_xxx_overall_best_refinement.mtz.  This is 
 essentially the same as the input data, though it has a test set 
 (R-free flags) even if the input file did not. This file can be used 
 in further refinement.
 
 The output file from PredictAndBuild with X-ray data containing map 
-coefficients (used to draw a map) 
-is PredictAndBuild_xxx_overall_best_map_coeffs.mtz.
+coefficients is PredictAndBuild_xxx_overall_best_map_coeffs.mtz. This 
+file should be used to draw an electron density map, for example in Coot.
 
 The output file from PredictAndBuild with X-ray data containing a map is
-PredictAndBuild_xxx_overall_best_map.ccp4
+PredictAndBuild_xxx_overall_best_map.ccp4.  This file can also be used to
+draw a map. It is most suitable for ChimeraX.
 
 Output map file (PredictAndBuild with cryo-EM data):
 ----------------------------------------------------
 
 The  output file from PredictAndBuild with cryo-EM data containing a map is
-PredictAndBuild_xxx_overall_best_map.ccp4
+PredictAndBuild_xxx_overall_best_map.ccp4.  This is suitable for drawing a 
+map in ChimeraX (or in Coot).
 
 
 The Carry-on directory and restarting or re-running jobs
