@@ -239,16 +239,19 @@ subsequent cycles is small.
 Output models
 -------------
 
-The results of the Predict and build procedure are:
+The models produced by the Predict and build procedure are:
 
 ::
 
-  A final docked model.  This model is the last scaffold model and is 
+  A final docked model 
+  (PredictAndBuild_xxx_overall_best_superposed_predicted_models.pdb)  This 
+  model is the last scaffold model and is 
   normally suitable for use as a reference model in further refinement.
   Normally this model will consist of pure predicted models, 
   placed appropriately to match the map.
 
-  A final trimmed rebuilt model. This model is obtained by rebuilding and 
+  A final trimmed rebuilt model (PredictAndBuild_xxx_overall_best.pdb).
+  This model is obtained by rebuilding and 
   refinement, followed by trimming residues that are in poor density.
   It is normally suitable for use as a 
   starting point for further model rebuilding, refinement, and addition of
@@ -258,6 +261,28 @@ The results of the Predict and build procedure are:
   In some cases (low-resolution data), the trimmed rebuilt model may have very
   poor geometry and you might want to use the final docked model as the
   starting point for refinement and continuation of building of your structure.
+
+Output reflection, map, and  and map coefficients files (X-ray data):
+-------------------------------------------------------------------------------
+
+After a run of PredictAndBuild with X-ray data, the principal output reflection
+file is PredictAndBuild_xxx_overall_best_refinement.mtz.  This is 
+essentially the same as the input data, though it has a test set 
+(R-free flags) even if the input file did not. This file can be used 
+in further refinement.
+
+The output file from PredictAndBuild with X-ray data containing map 
+coefficients (used to draw a map) 
+is PredictAndBuild_xxx_overall_best_map_coeffs.mtz.
+
+The output file from PredictAndBuild with X-ray data containing a map is
+PredictAndBuild_xxx_overall_best_map.ccp4
+
+Output map file (PredictAndBuild with cryo-EM data):
+----------------------------------------------------
+
+The  output file from PredictAndBuild with cryo-EM data containing a map is
+PredictAndBuild_xxx_overall_best_map.ccp4
 
 
 The Carry-on directory and restarting or re-running jobs
