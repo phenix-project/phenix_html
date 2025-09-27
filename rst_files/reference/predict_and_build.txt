@@ -269,7 +269,9 @@ After a run of PredictAndBuild with X-ray data, the principal output data
 file is PredictAndBuild_xxx_overall_best_refinement.mtz.  This is 
 essentially the same as the input data, though it has a test set 
 (R-free flags) even if the input file did not. This file can be used 
-in further refinement.
+in further refinement along with overall_best.pdb. This 
+overall_best_refinement.mtz file does not contain
+the results of refinement.  It is a refinement data file.
 
 The output file from PredictAndBuild with X-ray data containing map 
 coefficients is PredictAndBuild_xxx_overall_best_map_coeffs.mtz. This 
