@@ -433,7 +433,7 @@ are:
 You can view the density-modified map (denmod_map.ccp4), colored based on
 the resolution from denmod_resolution_map.ccp4, using ChimeraX.
 
-Note that ResolveCryoEM will output a model called "merged_model.pdb" if you
+Note that ResolveCryoEM may output a model called "merged_model.pdb" if you
 run it using a model. This merged_model.pdb is not necessarily an improved
 model. It is just a merged version of the input models.  If you do not
 supply a model ResolveCryoEM will not output any models.
