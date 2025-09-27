@@ -516,9 +516,14 @@ What to do next after predict_and_build?
 
 What to do next after predict and build depends on whether the input data
 for your run was cryo-EM data (i.e., my_map.ccp4), or X-ray crystallography
-data (i.e, my_reflection_data.mtz).
+data (i.e, my_reflection_data.mtz). For cryo-EM data, you are normally working
+with a map file (xxx.ccp4) and for X-ray crystallography data, you are 
+normally working with reflection data (xxx.mtz).  With cryo-EM data, you will
+use real-space refinement (RealSpaceRefine), and with X-ray data you will use
+reciprocal-space refinement (phenix.refine) 
 
-For X-ray data, if predict_and_build yields a largely-complete model with 
+For X-ray crystallography data, if predict_and_build yields a 
+largely-complete model with 
 reasonable R-value, the next step is usually refinement with phenix.refine.
 Inputs for crystallographic refinement will be your model 
 (overall_best.pdb) and your refinement data (overall_best_refinement.mtz).
