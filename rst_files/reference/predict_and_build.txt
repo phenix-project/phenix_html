@@ -520,17 +520,37 @@ data (i.e, my_reflection_data.mtz).
 
 For X-ray data, if predict_and_build yields a largely-complete model with 
 reasonable R-value, the next step is usually refinement with phenix.refine.
+Inputs for crystallographic refinement will be your model 
+(overall_best.pdb) and your refinement data (overall_best_refinement.mtz).
 
 For cryo-EM data, if predict_and_build yields a largely-complete model with 
 good fit to density, the next step is usually real-space refinement 
-with phenix.real_space_refine.
+with phenix.real_space_refine. Inputs for real-space refinement will be
+your model (overall_best.pdb) and your optimized map (overall_best_map.ccp4).
 
 For either X-ray or Cryo-EM data, another important step is validation 
-with "Comprehensive Validation (Cryo EM)". 
+with "Comprehensive Validation (Cryo EM)".   Inputs for validation for
+X-ray data will be your model (overall_best.pdb) and your refinement 
+data (overall_best_refinement.mtz.)   Inputs for validation for cryo_EM
+data will be your model and your optimized map (overall_best_map.ccp4) 
+
 You may also want to use Coot or Isolde to rebuild parts of your 
-model that do not fit the density well or that are incomplete.
+model that do not fit the density well or that are incomplete. For
+X-ray data your inputs to Coot or Isolde will be your map coefficients
+(overall_best_map_coeffs.mtz) and your model (overall_best.pdb)
+
+
 If your structure contains ligands, once you have a very good model you can 
-use LigandFit to find the placement and orientation of your ligand .
+use LigandFit to find the placement and orientation of your ligand.
+For X-ray data your inputs will be your map 
+coefficients (overall_best_map_coeffs.mtz) and your model (overall_best.pdb)
+and the name of your ligand.
+For cryo_EM data your inputs will be your map filel
+(overall_best_map.ccp4) and your model (overall_best.pdb)
+and the name of your ligand.
+
+
+-
 
 Server problems
 ---------------
