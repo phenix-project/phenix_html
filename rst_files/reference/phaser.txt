@@ -46,7 +46,7 @@ reflection provides a piece of information that helps to identify correct MR sol
 
 It is possible to make a reasonable prediction of whether or not a solution will be found. If the quality of the model (its accuracy and completeness)
 can be estimated, then the expected contribution of each reflection to the total LLG can also be estimated. From a large battery of tests, we know
-that an LLG of 40 or greater usually indicates a correct solution (at least in the absence of complicating factors such as translational
+that an LLG of 60 or greater usually indicates a correct solution (at least in the absence of complicating factors such as translational
 non-crystallographic symmetry, tNCS). Building on this understanding, if it is estimated that the LLG will be 60 or less, then Phaser will assume that
 the problem is a difficult one, and will implement search procedures optimised for difficult problems.
 
