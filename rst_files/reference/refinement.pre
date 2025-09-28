@@ -2379,6 +2379,15 @@ these in the log file::
      Sn4+     1     45.79       1
   (...)
 
+What is a reasonable gap between R and Rfree?
+*********************************************
+
+Normally the value of the Free R value (R-free, R value for the
+reflections in the test set) will be in the range of
+0.01 to 0.03 higher than the working R value (R-work, R value for the
+reflections used in refinement).  If the Rfree value is much higher
+than Rwork (more than about 0.05), this may indicate overfitting of
+the data.
 
 Interpreting the R values at the end of the phenix refinement log file
 **********************************************************************
