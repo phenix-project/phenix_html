@@ -79,7 +79,11 @@ with multiprocessing if you are running with denmod_with_models=True as this
 can take a long time (perhaps 1 day x 16 processors if you have 250
 residues in the unique part of your model).
 
-Half-maps: Supply two unmasked half maps. They can be sharpened but it does
+Half-maps: Supply two unmasked half maps. Half maps are maps created using
+half of the data. They are full-size, but just contain less accurate
+information. Normally half-maps are named something like my_map_1.ccp4 and
+my_map_2.ccp4, for half maps 1 and 2.
+The half-maps can be sharpened but it does
 not make much of a difference. They must be unmasked and they must still have
 noise in the solvent region.  They can be boxed with a soft boundary (if they
 are boxed specify box_before_analysis=False so it isn't done again)
