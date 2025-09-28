@@ -10,7 +10,7 @@ Description
 The program refines a model into a map. The map can be derived from
 X-ray or neutron crystallography, or Electron Microscopy, and its quality can
 vary from good to poor. The program aims at obtaining a model that fits the map
-as good as possible while possessing a meaningful geometry (no validation
+as well as possible while possessing a meaningful geometry (no validation
 outliers, such as Ramachandran plot or rotamer outliers).
 
 Contact author
@@ -358,6 +358,14 @@ Notes
     Normally this would be next to final step.
 
   - Part of the model can be refined against entire map.
+
+Half maps vs full map
+---------------------
+
+Real space refinement by phenix.real_space_refine uses a full map, not
+half-maps.  You can create a full (averaged) map from two half-maps
+by simple averaging, or by density modification with ResolveCryoEM.
+
 
 References
 ----------
