@@ -215,13 +215,23 @@ homology models.
 What to do next after Phaser-MR molecular replacement
 -----------------------------------------------------
 
-After Phaser-MR molecular replacement you will usually want to have a look
+After Phaser-MR molecular replacement if you have obtained a single solution 
+with a high value of LLG (over 60) and a high TFZ (7 or more) then you 
+will want to look at your solution in detail.  Have a look
 at the sigmaA-weighted map that you can draw with the Phaser output mtz file,
 along with the output Phaser model in the pdb file, for example using Coot.
 The map should match the model reasonably well, though you should not 
 expect an exact fit.  Next you may want to refine the model with PhenixRefine,
 or you may want to automatically rebuild the model with AutoBuild, or
 you may want to rebuild by hand.
+
+If you have obtained multiple solutions in Phaser-MR molecular replacement, or
+if your LLG value is low (under 40) or your TFZ is low (under 6), you may
+want to look carefully at your input data with Xtriage, check your data
+processing, and check your search models to make sure that you are 
+working with the best possible data, the right space group, and the best
+available search models.  You may want to try other sources of a search
+model, such as homology models or predicted models.
 
 Frequently Asked Questions
 --------------------------
