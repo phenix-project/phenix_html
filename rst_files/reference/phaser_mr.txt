@@ -165,25 +165,38 @@ this, where everything between "AUTOMATED MOLECULAR REPLACEMENT" and
   Citations for Phaser:
   
 Here are the elements of this Phaser-MR summary:
+
 1.  Summary:
-** SINGLE solution
+
+::
+
+  ** SINGLE solution
+
 This run yielded a single solution.  Typically a
 run with a single solution is a confident run.  A run with MULTIPLE solutions
 is typically low-confidence, and it is even common for the correct solution not
 to be among the solutions found.
 
 2.  Output model and reflections file from a Phaser-MR run:
-** Solution written to PDB file:  GUI_crystals_phaser.1.pdb 
-** Solution written to MTZ file:  GUI_crystals_phaser.1.mtz
-The mtz file will typically contain the input data as well as amplitudes and 
-phases for a sigmaA-weighted map.
+
+::
+
+  ** Solution written to PDB file:  GUI_crystals_phaser.1.pdb 
+  ** Solution written to MTZ file:  GUI_crystals_phaser.1.mtz
+
+The output mtz file from Phaser-MR molecular replacement will contain 
+the input X-ray data as well as coefficients for a sigmaA-weighted map.
 
 3. Table of information about the Phaser-MR solution and its history
-Solution annotation (history):
-SOLU SET  RF*0 TF*0 LLG=8776 TFZ==67.6 PAK=1 LLG=8779 TFZ==70.2
-SOLU SPAC I 4
-SOLU 6DIM ENSE ense_1 EULER    0.0    0.0    0.0 FRAC -1.00 -0.00 -1.00 BFAC -1.03 #TFZ==67.6
-SOLU ENSEMBLE ense_1 VRMS DELTA -0.1 #RMSD  0.7 #VRMS  0.6
+
+::
+
+  Solution annotation (history):
+  SOLU SET  RF*0 TF*0 LLG=8776 TFZ==67.6 PAK=1 LLG=8779 TFZ==70.2
+  SOLU SPAC I 4
+  SOLU 6DIM ENSE ense_1 EULER    0.0    0.0    0.0 FRAC -1.00 -0.00 -1.00 BFAC -1.03 #TFZ==67.6
+  SOLU ENSEMBLE ense_1 VRMS DELTA -0.1 #RMSD  0.7 #VRMS  0.6
+
 The first line of this history gives the initial LLG and TFZ of the solution
 (8776 and 67.6), followed by the values after refinement (8779 and 70.2).
 The space group of the solution was I4.  The rotation and translations are
