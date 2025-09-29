@@ -127,6 +127,88 @@ followed by the fast translation function using the previous result, and so
 on.  There are some restrictions on which modes may use which results, thus
 you may not follow a fast rotation function with packing analysis.
 
+How to read a Phaser molecular replacement log file (Phaser-MR)
+---------------------------------------------------------------
+
+A summary of your Phaser molecular replacement results can be found in the
+very last section of your Phaser-MR log file. It may look something like
+this, where everything between "AUTOMATED MOLECULAR REPLACEMENT" and
+"Citations for Phaser:" is part of the summary:
+
+::
+
+  *** Phaser Module: AUTOMATED MOLECULAR REPLACEMENT                               2.8.3 ***
+  ***************************************************************************
+  
+  ** SINGLE solution
+  
+  ** Solution written to PDB file:  GUI_crystals_phaser.1.pdb
+  ** Solution written to MTZ file:  GUI_crystals_phaser.1.mtz
+     Solution annotation (history):
+     SOLU SET  RF*0 TF*0 LLG=8776 TFZ==67.6 PAK=1 LLG=8776 TFZ==67.6
+     SOLU SPAC I 4
+     SOLU 6DIM ENSE ense_1 EULER    0.0    0.0    0.0 FRAC -1.00 -0.00 -1.00 BFAC -1.03 #TFZ==67.6
+     SOLU ENSEMBLE ense_1 VRMS DELTA -0.1435 #RMSD  0.45 #VRMS  0.24
+  
+  CPU Time: 0 days 0 hrs 0 mins 13.59 secs (     13.59 secs)
+  Finished: Sun Sep 28 10:32:36 2025
+  
+  --------------------
+  EXIT STATUS: SUCCESS
+  --------------------
+  
+  CPU Time: 0 days 0 hrs 0 mins 13.59 secs (     13.59 secs)
+  Finished: Sun Sep 28 10:32:36 2025
+  
+  </pre>
+  </html>
+  Citations for Phaser:
+  
+Here are the elements of this Phaser-MR summary:
+1.  Summary:
+** SINGLE solution
+This run yielded a single solution.  Typically a
+run with a single solution is a confident run.  A run with MULTIPLE solutions
+is typically low-confidence, and it is even common for the correct solution not
+to be among the solutions found.
+
+2.  Output model and reflections file from a Phaser-MR run:
+** Solution written to PDB file:  GUI_crystals_phaser.1.pdb 
+** Solution written to MTZ file:  GUI_crystals_phaser.1.mtz
+The mtz file will typically contain the input data as well as amplitudes and 
+phases for a sigmaA-weighted map.
+
+3. Table of information about the Phaser-MR solution and its history
+Solution annotation (history):
+SOLU SET  RF*0 TF*0 LLG=8776 TFZ==67.6 PAK=1 LLG=8779 TFZ==70.2
+SOLU SPAC I 4
+SOLU 6DIM ENSE ense_1 EULER    0.0    0.0    0.0 FRAC -1.00 -0.00 -1.00 BFAC -1.03 #TFZ==67.6
+SOLU ENSEMBLE ense_1 VRMS DELTA -0.1 #RMSD  0.7 #VRMS  0.6
+The first line of this history gives the initial LLG and TFZ of the solution
+(8776 and 67.6), followed by the values after refinement (8779 and 70.2).
+The space group of the solution was I4.  The rotation and translations are
+represented by the EULER and FRAC values. The VRMS is the refined RMS variance,
+RMSD is the input RMSD value, and DELTA is the shift with respect to this RMSD.
+
+After molecular replacement with Phser-MR, you are looking for a high 
+final LLG value (60 or more usually indicates a
+confident solution), and a high TFZ (a good value may be in the range of 7 
+or more).  Make sure the space group is plausible. You should expect your
+VRMS value to be similar to the input RMSD (small DELTA), and typically 
+the VRMS value will be in the range of 0.5-1 for AlphaFold models and 1-2 for
+homology models.
+
+What to do next after Phaser-MR molecular replacement
+-----------------------------------------------------
+
+After Phaser-MR molecular replacement you will usually want to have a look
+at the sigmaA-weighted map that you can draw with the Phaser output mtz file,
+along with the output Phaser model in the pdb file, for example using Coot.
+The map should match the model reasonably well, though you should not 
+expect an exact fit.  Next you may want to refine the model with PhenixRefine,
+or you may want to automatically rebuild the model with AutoBuild, or
+you may want to rebuild by hand.
+
 Frequently Asked Questions
 --------------------------
 
