@@ -43,6 +43,12 @@ here <../reference/phaser_mr.html>`__
 
 **Common issues**
 
+-  More than one solution is found with Phaser-MR.  This generally indicates
+   that the solutions are all very low-confidence. The more solutions (more
+   than 5 or ten is far too many), the lower the confidence in any of them.
+   In this case, normally you will want to try a different search model or
+   models.
+
 -  No solutions were found even with a good search model: There are multiple 
    causes, but a common one is that a multiple domain protein has undergone 
    a conformational change. In this case, you should split the structure and 
