@@ -220,6 +220,14 @@ To output PDB Ligand output
 
     phenix.elbow input_file.pdb --pdb-ligand
 
+Notes
+=====
+
+This program is used to generate restraints for either X-ray, CryoEM or MicroED.
+Next steps generally involve using the ligand geometry and restraints to
+fit a ligand into the model and experiemental data. Then proceeding to
+refinement in either phenix.refine or phenix.real_space_refine.
+
 Advanced options
 ================
 
