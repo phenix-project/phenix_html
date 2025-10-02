@@ -43,11 +43,18 @@ here <../reference/phaser_mr.html>`__
 
 **Common issues**
 
--  More than one solution is found with Phaser-MR.  This generally indicates
+-  If more than one solution is found with Phaser-MR, this generally indicates
    that the solutions are all very low-confidence. The more solutions (more
    than 5 or ten is far too many), the lower the confidence in any of them.
-   In this case, normally you will want to try a different search model or
-   models.
+   If you have more than one or two solutions, normally you will not want to
+   go on with these solutions.  Instead you will want to try a different 
+   search model or a different resolution or new data.
+
+-  If very low values of LLG (less than 30) or TFZ (less than 6) are obtained
+   with Phaser-MR, this also generally indicates that the solutions are
+   all very low confidence. Normally you will not want to go on with Phaser-MR
+   solutions that have very low values of LLG. Instead you will want to 
+   try a different search model or a different resolution or new data.
 
 -  No solutions were found even with a good search model: There are multiple 
    causes, but a common one is that a multiple domain protein has undergone 
