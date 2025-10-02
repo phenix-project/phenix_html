@@ -3,8 +3,9 @@ phenix.map_box: extract box with model and map around selected atoms
 
 **Description**
 
-The program carves out a box with model and map around selected atoms. Resulting
-map is output in three files: map coefficients in MTZ, and maps in CCP4 and
+The MapBox program is normally used with cryoEM data. MapBox 
+carves out a box with model and map around selected atoms. The output map
+is produced in three ways: map coefficients in MTZ, and maps in CCP4 and
 X-plor formatted files.
 
 **Contact author**
@@ -149,6 +150,12 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
       if another copy of the map were placed right next to your map.  You can
       turn this off and instead supply zeroes outside the map with the
       keyword restrict_map_size=True. 
+
+  7)  What to do after MapBox.  Normally you will have cut out part of the
+      map with MapBox for the purpose of working with just part of the map.
+      You might carry out automatic model-building with map_to_model or
+      with predict_and_build, or real-space refinement, or manual model-building
+      with Coot or Isolde after MapBox.
 
 **List of all parameters**
 
