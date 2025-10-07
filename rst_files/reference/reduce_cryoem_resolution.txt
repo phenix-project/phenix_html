@@ -1,0 +1,56 @@
+Reducing resolution of cryo-EM maps by adding random noise
+==========================================================
+
+Author
+------
+
+- Randy J Read
+
+Purpose
+-------
+
+The reduce_cryoem_resolution tool constructs a realistic set of lower-resolution
+maps by adding random noise to the half-maps. Noise is added as a function of
+resolution of the Fourier terms so that the resulting half-map FSC curve looks
+typical of an experimental map at that resolution.
+
+How reduce_cryoem_resolution works
+----------------------------------
+
+A study of hundreds of FSC curves from maps in the EMDB at different resolutions
+showed that these FSC curves could be approximated very well with a simple
+functional form that depends only on the nominal resolution of the map. To 
+reduce the resolution to match the generic curve requires evaluating the signal
+to noise ratio from the input half-maps, than adding resolution-dependent random
+noise to produce the desired FSC curve. To avoid including any information beyond
+the target resolution, the Fourier terms are filtered at the target resolution,
+where the half-map FSC is 0.143. The two half-maps and the corresponding averaged
+full map are produced, in addition to an optional plot showing half-map FSC curves
+for the original and reduced-resolution maps.
+
+Running reduce_cryoem_resolution
+--------------------------------
+
+This can be controlled by an input script using the phil syntax, either on the
+command line or in a phil file. The command to take two half-maps and limit a 
+starting resolution of 3A to 4A, while producing the FSC plot, looks like this:
+
+::
+
+  phenix.reduce_cryoEM_resolution hm1.mrc hm2.mrc d_min=3.0 target_d_min=4.0 plot=True
+
+Note that the starting d_min is optional, but is useful if you want to compare the
+maps over their full resolution ranges.
+
+It is recommended to start with half-maps when they are available, but it is also
+possible to reduce the resolution of a single full map. Here it is assumed that
+the map is close to perfect at the new resolution limit.
+
+::
+
+  phenix.reduce_cryoEM_resolution full.mrc target_d_min=4.0
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.programs.reduce_cryoem_resolution}}
