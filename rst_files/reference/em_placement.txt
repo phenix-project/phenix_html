@@ -30,6 +30,9 @@ significantly better than random.
 
 NB: the statistical analysis requires the half-maps to correspond to the
 full volume of the cryo-EM reconstruction, so cut-out boxes cannot be used.
+Half-maps are required for a search over the whole reconstruction volume,
+whereas just a single full map can be used optionally for a search over a
+local volume.
 
 Running em_placement
 --------------------
