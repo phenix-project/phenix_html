@@ -50,6 +50,10 @@ search region and not providing a sphere_center keyword.
 It is also possible to provide a fixed model as prior information, accounting
 for the contributions of the fixed model to the sphere.
 
+If the symmetry of a symmetric reconstruction is specified, the symmetry is
+applied to the output structure. Note that in the ChimeraX interface, ChimeraX
+functions are used to apply the symmetry.
+
 Standard run of emplace_local
 -----------------------------
 

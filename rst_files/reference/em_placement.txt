@@ -82,8 +82,8 @@ The remove_phasertng_folder parameter is activated to clean up the graph
 database produced by phasertng, which could be used in other circumstances as
 part of a larger automation framework or for debugging.
 
-The point_group_symmetry feature is only used at the moment to optionally
-generate a full assembly from a single copy.
+If the point_group_symmetry is provided, the symmetry detected in the
+reconstruction is applied to generate a full assembly from a single copy.
 
 The sequence_composition parameter specifies the name of a file containing the
 sequences of all the components in the reconstruction.
