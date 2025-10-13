@@ -2416,6 +2416,19 @@ removing outliers.
 
 Your final R values are the ones in the last line, labeled remove outliers.
 
+What to do next after running refinement with PhenixRefine
+**********************************************************
+
+The next step after refinement with PhenixRefine is usually validation with
+Comprehensive Validation.  A common step after successful refinement is
+looking for ligands with LigandFit. A common step after refinement that yields
+some non-optimal validation metrics is rebuilding manually with Coot
+or automatically with AutoBuild.
+
+After refinement you will want to examine your log file to make sure that
+there are no unusual circumstances and to check that you have obtained
+reasonable values of R and Rfree and reasonable values of all
+validation criteria.
 
 Depositing refined structure with PDB
 *************************************

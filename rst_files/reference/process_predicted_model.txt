@@ -143,32 +143,34 @@ keyword (less good).
 The pLDDT confidence measure
 ----------------------------
 
-AlphaFold provides residue-level estimates of model accuracy in the form of
-predicted values of the LDDT (Local Difference Distance Test, Mariani et al., 2013).
-These predicted
-values are referred to as pLDDT values (predicted Local Difference Distance Test).
-The LDDT measure is a number from zero to one that reflects the similarity of
-CA positions in two structures.
+AlphaFold provides residue-level estimates of model accuracy in the form of 
+predicted values of the LDDT (Local Difference Distance Test, 
+Mariani et al., 2013).  These predicted values are referred to as pLDDT 
+values (predicted Local Difference Distance Test).  The LDDT measure is a 
+number from zero to one that reflects the similarity of CA positions in 
+two structures.
 
-The LDDT is not a simple measure of accuracy, but rather a composite that is based on
-the CA distances between all pairs of CA atoms in one model and how similar these
-inter-atomic distances are to those in the other model. It is a local test, where
-only inter-atomic distances that are less than 15 Å are considered.
+The LDDT is not a simple measure of accuracy, but rather a composite that is 
+based on the CA distances between all pairs of CA atoms in one model and how 
+similar these inter-atomic distances are to those in the other model. It is a 
+local test, where only inter-atomic distances that are less than 15 Å are 
+considered.
 
-The LDDT is a composite that is generated from
-the fraction of CA-CA distances that are very accurate (less than 0.5 Å off), the fraction
-that are quite accurate (less than 1 Å off), moderately accurate (less than 2 Å off),
-and somewhat accurate (less than 4 Å off).  If all CA-CA distances are within 0.5 Å,
+The LDDT is a composite that is generated from the fraction of CA-CA distances 
+that are very accurate (less than 0.5 Å off), the fraction that are quite 
+accurate (less than 1 Å off), moderately accurate (less than 2 Å off), and 
+somewhat accurate (less than 4 Å off).  If all CA-CA distances are within 0.5 Å,
 the resulting score will be 1, if all are more than 4 Å off, the score is zero.
 Note that the LDDT is related to RMSD, but not in a simple way.
 
-The pLDDT values (predicted Local Difference Distance Test) provided by AlphaFold are
-estimates of the LDDT values.  The pLDDT values are essentially unbiased (just as likely
-to be too low as too high), and reasonably accurate. The correlation between pLDDT values
-and actual LDDT values calculated using AlphaFold models and models in the PDB
-is about 0.7 - 0.75, which means that the values of pLDDT you get are useful indicators
-of model quality but also that sometimes AlphaFold will have high confidence in
-an incorrect prediction or low confidence in a correct prediction.
+The pLDDT values (predicted Local Difference Distance Test) provided by 
+AlphaFold are estimates of the LDDT values.  The pLDDT values are essentially 
+unbiased (just as likely to be too low as too high), and reasonably accurate. 
+The correlation between pLDDT values and actual LDDT values calculated using 
+AlphaFold models and models in the PDB is about 0.7 - 0.75, which means that 
+the values of pLDDT you get are useful indicators of model quality but also 
+that sometimes AlphaFold will have high confidence in an incorrect prediction 
+or low confidence in a correct prediction.
 
 Examples
 --------
@@ -187,6 +189,24 @@ This will convert the B-value field in my_model.pdb based from LDDT to B-values,
 trim residues with LDDT less than 0.7, and write out a new model with 
 individual chains (separate chain ID values) corresponding to 
 compact domains.
+
+
+What to do next after ProcessPredictedModel
+-------------------------------------------
+
+If you have X-ray data, the next step after ProcessPredictedModel is 
+usually molecular replacement with 
+`Phaser <phaser_mr.html>`__ using your processed model as
+a search model, or automated molecular replacement and rebuilding 
+with 
+`PredictAndBuild <predict_and_build.html>`__.
+
+If you have cryo-EM data, the next step after ProcessPredictedModel is 
+usually docking your model with 
+`EMPlacement <em_placement.html>`__ or 
+`DockInMap <dock_in_map.html>`__ , or automated
+docking and rebuilding with 
+`PredictAndBuild <predict_and_build.html>`__.
 
 Possible Problems
 -----------------

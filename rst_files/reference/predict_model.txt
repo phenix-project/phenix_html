@@ -268,55 +268,58 @@ standard PDB (version 3.2) format.  It will contain all (non-hydrogen)
 atoms for all the residues.  The coordinates of the atoms have the usual meaning
 (locations of atoms in 3D space), but the orientation and position of the chain
 are arbitrary.  The B-value field (normally atomic displacement parameters) will
-contain the values of pLDDT (confidence), with one value per residue.  This means
-that some processing of this model is necessary before use (this is normally done by
+contain the values of pLDDT (confidence), with one value per residue.  
+This means that some processing of this model is necessary before 
+use (this is normally done by
 `phenix.process_predicted_model <process_predicted_model.html>`_).
 
 The pLDDT confidence measure
 ----------------------------
 
 AlphaFold provides residue-level estimates of model accuracy in the form of
-predicted values of the LDDT (Local Difference Distance Test, Mariani et al., 2013).
-These predicted
-values are referred to as pLDDT values (predicted Local Difference Distance Test).
-The LDDT measure is a number from zero to one that reflects the similarity of
-CA positions in two structures.
+predicted values of the LDDT (Local Difference Distance Test, 
+Mariani et al., 2013).
+These predicted values are referred to as pLDDT values (predicted 
+Local Difference Distance Test).  The LDDT measure is a number from 
+zero to one that reflects the similarity of CA positions in two structures.
 
-The LDDT is not a simple measure of accuracy, but rather a composite that is based on
-the CA distances between all pairs of CA atoms in one model and how similar these
-inter-atomic distances are to those in the other model. It is a local test, where
-only inter-atomic distances that are less than 15 Å are considered.
+The LDDT is not a simple measure of accuracy, but rather a composite that is 
+based on the CA distances between all pairs of CA atoms in one model and how 
+similar these inter-atomic distances are to those in the other model. It is a 
+local test, where only inter-atomic distances that are less than 15 Å are 
+considered.
 
-The LDDT is a composite that is generated from
-the fraction of CA-CA distances that are very accurate (less than 0.5 Å off), the fraction
-that are quite accurate (less than 1 Å off), moderately accurate (less than 2 Å off),
-and somewhat accurate (less than 4 Å off).  If all CA-CA distances are within 0.5 Å,
-the resulting score will be 1, if all are more than 4 Å off, the score is zero.  
-Note that the LDDT is related to RMSD, but not in a simple way.
+The LDDT is a composite that is generated from the fraction of CA-CA distances 
+that are very accurate (less than 0.5 Å off), the fraction that are quite 
+accurate (less than 1 Å off), moderately accurate (less than 2 Å off), and 
+somewhat accurate (less than 4 Å off).  If all CA-CA distances are within 0.5 Å,
+ the resulting score will be 1, if all are more than 4 Å off, the score is 
+zero.  Note that the LDDT is related to RMSD, but not in a simple way.
 
-The pLDDT values (predicted Local Difference Distance Test) provided by AlphaFold are
-estimates of the LDDT values.  The pLDDT values are essentially unbiased (just as likely
-to be too low as too high), and reasonably accurate. The correlation between pLDDT values
-and actual LDDT values calculated using AlphaFold models and models in the PDB 
-is about 0.7 - 0.75, which means that the values of pLDDT you get are useful indicators
-of model quality but also that sometimes AlphaFold will have high confidence in 
-an incorrect prediction or low confidence in a correct prediction.
+The pLDDT values (predicted Local Difference Distance Test) provided by 
+AlphaFold are estimates of the LDDT values.  The pLDDT values are essentially 
+unbiased (just as likely to be too low as too high), and reasonably accurate. 
+The correlation between pLDDT values and actual LDDT values calculated using 
+AlphaFold models and models in the PDB is about 0.7 - 0.75, which means that 
+the values of pLDDT you get are useful indicators of model quality but also 
+that sometimes AlphaFold will have high confidence in an incorrect prediction 
+or low confidence in a correct prediction.
 
-As the pLDDT metric is an estimate of local error, it does not tell you that much about
-long-range distortions or domain movements between the predicted and actual
-structure.  The PAE matrix does have some information about these features because
-it is not restricted to short distances.
+As the pLDDT metric is an estimate of local error, it does not tell you that 
+much about long-range distortions or domain movements between the predicted 
+and actual structure.  The PAE matrix does have some information about these 
+features because it is not restricted to short distances.
 
 
 The output MSA file
 -------------------
 
 The MSA file that was used in AlphaFold prediction is available if the Phenix
-server is used. This MSA file can be used in subsequent predictions (if the sequence
-is identical).  Normally there is no need to supply an MSA file because the MSA
-is saved by the Phenix server and it will just be re-used if the same sequence is
-supplied.  However if you want to edit this MSA file before running an AlphaFold
-prediction, you can do that.
+server is used. This MSA file can be used in subsequent predictions (if 
+the sequence is identical).  Normally there is no need to supply an MSA 
+file because the MSA is saved by the Phenix server and it will just 
+be re-used if the same sequence is supplied.  However if you want to edit 
+this MSA file before running an AlphaFold prediction, you can do that.
 
 The output PAE file
 -------------------
@@ -422,6 +425,14 @@ or less.
 If the Phenix server is full (typically 6 jobs can run at once), you can use
 the Server button on the Phenix GUI to see the expected wait time to
 start a job.
+
+What to do next after PredictModel
+----------------------------------
+
+Normally the next step after PredictModel is running 
+`ProcessPredictedModel <process_predicted_model.html>`_ to trim off
+low-confidence residues, identify compact domains, and convert pLDDT values
+to pseudo-B values.
 
 Server problems
 ---------------
