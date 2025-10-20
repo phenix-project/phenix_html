@@ -36,7 +36,7 @@ Sequence file
 The sequence file that you supply specifies what is going to be predicted and
 how many copies of each chain are present in the structure (one for every copy
 in the sequence file).  All models that are created and input will be associated
-with one or more of the chains in your sequence file based on sequence 
+with one or more of the chains in your sequence file based on sequence
 identity (normally every model should match a chain in the sequence file
 exactly).
 
@@ -44,7 +44,7 @@ Model prediction
 ----------------
 
 Predict model normally uses the Phenix server
-notebook to carry out AlphaFold prediction of one chain at a time. 
+notebook to carry out AlphaFold prediction of one chain at a time.
 
 You can specify what inputs the AlphaFold prediction should use.  These
 always include a sequence file, but it can include an optional multiple
@@ -119,13 +119,13 @@ between domains in different chunks, a contact map is created and domains that
 are in contact but in different chunks are re-predicted together. During
 assembly the domain pairs are used to adjust the positions of domains, and also
 positions of domains are adjusted to minimize overlaps.  The repositioned
-domains are then used as a template to morph the full reassembled prediction. 
+domains are then used as a template to morph the full reassembled prediction.
 The result of this procedure is to assemble a full-length prediction from
 overlapping chunk predictions and to distort this assembled prediction to
 minimize overlaps and make domain-domain contacts present between chunks.
 
 Note that if you have a sequence longer than the threshold for breaking into
-chunks then you can only include one sequence in a PredictModel run. 
+chunks then you can only include one sequence in a PredictModel run.
 
 Precalculated MSAs and models save time if you rerun with the same sequence
 ---------------------------------------------------------------------------
@@ -140,10 +140,10 @@ your sequence or parameters. It just makes a hash string from them so that
 if the same request is made again it can detect it. The results are simply saved
 in a file that has the hash string as a name.
 
-Precalculated MSAs and models allow you go get your result even if disconnected 
+Precalculated MSAs and models allow you go get your result even if disconnected
 -------------------------------------------------------------------------------
 
-If you get disconnected from the server during a prediction job, you can just 
+If you get disconnected from the server during a prediction job, you can just
 wait for the job to finish, then submit a new request with the same parameters.
 As the server saves the predictions, it will return the result to you right
 away (if it is finished).
@@ -173,10 +173,10 @@ Notes on using the Phenix server from the Phenix GUI for model prediction
 
 The Phenix GUI can automatically send a request to the Phenix server for an
 AlphaFold prediction.  This requires an internet connection, the Phenix server
-to be up, and a token that is supplied with Phenix. 
+to be up, and a token that is supplied with Phenix.
 
-If the Phenix GUI 
-successfully communicates with the server, it will wait for the server to 
+If the Phenix GUI
+successfully communicates with the server, it will wait for the server to
 carry out the prediction, showing the status of the prediction while it is
 being carried out. The status will usually start out as waiting in the queue for
 a place on the GPU. If this status lasts more than a few seconds, an estimated
@@ -195,7 +195,7 @@ less proportionally longer.  If you include templates from the PDB, it takes
 longer to run. If you specify that the number of AlphaFold models to use is more
 than the default (5), it will also take longer.
 
-If your prediction is successful, the Phenix GUI will list the 
+If your prediction is successful, the Phenix GUI will list the
 estimated confidence (pLDDT) and the output data files.  The output files include
 the AlphaFold model (named something like PredictAndBuild_10_ALPHAFOLD_A.pdb), the
 multiple sequence alignment used (PredictAndBuild_10_ALPHAFOLD_A_MSA.a3m),
@@ -206,9 +206,9 @@ Privacy of your data when using the Phenix server
 
 When you run the Phenix server to get an AlphaFold prediction, your data are
 uploaded by the Phenix GUI to the Phenix server, the prediction is carried out,
-and then the results are downloaded. 
+and then the results are downloaded.
 
-Normally your sequence is also 
+Normally your sequence is also
 sent to the mmseqs2 MSA server to obtain a multiple sequence alignment. You
 can also supply your own MSA and then the mmseqs2 server is not used. The
 MSA and the hashed sequence are sent to the Phenix server and are saved
@@ -219,7 +219,7 @@ deleted if you specify allow_precalculated_result_file=False.
 If you specify allow_precalculated_result_file=True (default),
 a hashed version of the
 inputs (sequence, number of models, etc) is saved along with the result
-(the AlphaFold model). In this way it is not possible to see the inputs, 
+(the AlphaFold model). In this way it is not possible to see the inputs,
 but if you run the exact same job again, the server will see that the
 hash of the inputs matches and it will return the model directly.
 
@@ -232,24 +232,24 @@ Phenix server:
 
    Password-protected (password supplied by Phenix)
 
-   Server provides Phenix with a passkey when data are uploaded.  
+   Server provides Phenix with a passkey when data are uploaded.
    That passkey allows download of the data. All this is done within Phenix.
 
    Phenix sends your IP address to the server. This is used as a unique
    identifier in the queueing system.  The IP address is deleted when the
    data are downloaded.
 
-   Server is accessible in two modes (user can choose, default is Mode 1 
+   Server is accessible in two modes (user can choose, default is Mode 1
    (save hashed inputs and results).
 
    A. Mode 1: hashed inputs and results saved on server
-     a. in this mode if anyone submits the identical job (identical 
-        sequence, identical parameters) later, they get back the 
+     a. in this mode if anyone submits the identical job (identical
+        sequence, identical parameters) later, they get back the
         result model from this job
      b. result model does not contain any information about the user
      c. inputs and log files are deleted after data are downloaded
      d. results removed from server after 1 year
-   B. Mode 2: nothing saved.  Input and results deleted from server 
+   B. Mode 2: nothing saved.  Input and results deleted from server
         after data are downloaded
 
    Server can only carry out pre-specified commands (i.e., model prediction),
@@ -262,14 +262,14 @@ Phenix server:
 The output predicted model
 --------------------------
 
-The predicted model produced by AlphaFold with Phenix will consist of a single 
+The predicted model produced by AlphaFold with Phenix will consist of a single
 chain with exactly the sequence that is supplied. It will be in the
 standard PDB (version 3.2) format.  It will contain all (non-hydrogen)
 atoms for all the residues.  The coordinates of the atoms have the usual meaning
 (locations of atoms in 3D space), but the orientation and position of the chain
 are arbitrary.  The B-value field (normally atomic displacement parameters) will
-contain the values of pLDDT (confidence), with one value per residue.  
-This means that some processing of this model is necessary before 
+contain the values of pLDDT (confidence), with one value per residue.
+This means that some processing of this model is necessary before
 use (this is normally done by
 `phenix.process_predicted_model <process_predicted_model.html>`_).
 
@@ -277,37 +277,37 @@ The pLDDT confidence measure
 ----------------------------
 
 AlphaFold provides residue-level estimates of model accuracy in the form of
-predicted values of the LDDT (Local Difference Distance Test, 
+predicted values of the LDDT (Local Difference Distance Test,
 Mariani et al., 2013).
-These predicted values are referred to as pLDDT values (predicted 
-Local Difference Distance Test).  The LDDT measure is a number from 
+These predicted values are referred to as pLDDT values (predicted
+Local Difference Distance Test).  The LDDT measure is a number from
 zero to one that reflects the similarity of CA positions in two structures.
 
-The LDDT is not a simple measure of accuracy, but rather a composite that is 
-based on the CA distances between all pairs of CA atoms in one model and how 
-similar these inter-atomic distances are to those in the other model. It is a 
-local test, where only inter-atomic distances that are less than 15 Å are 
+The LDDT is not a simple measure of accuracy, but rather a composite that is
+based on the CA distances between all pairs of CA atoms in one model and how
+similar these inter-atomic distances are to those in the other model. It is a
+local test, where only inter-atomic distances that are less than 15 Å are
 considered.
 
-The LDDT is a composite that is generated from the fraction of CA-CA distances 
-that are very accurate (less than 0.5 Å off), the fraction that are quite 
-accurate (less than 1 Å off), moderately accurate (less than 2 Å off), and 
+The LDDT is a composite that is generated from the fraction of CA-CA distances
+that are very accurate (less than 0.5 Å off), the fraction that are quite
+accurate (less than 1 Å off), moderately accurate (less than 2 Å off), and
 somewhat accurate (less than 4 Å off).  If all CA-CA distances are within 0.5 Å,
- the resulting score will be 1, if all are more than 4 Å off, the score is 
+the resulting score will be 1, if all are more than 4 Å off, the score is
 zero.  Note that the LDDT is related to RMSD, but not in a simple way.
 
-The pLDDT values (predicted Local Difference Distance Test) provided by 
-AlphaFold are estimates of the LDDT values.  The pLDDT values are essentially 
-unbiased (just as likely to be too low as too high), and reasonably accurate. 
-The correlation between pLDDT values and actual LDDT values calculated using 
-AlphaFold models and models in the PDB is about 0.7 - 0.75, which means that 
-the values of pLDDT you get are useful indicators of model quality but also 
-that sometimes AlphaFold will have high confidence in an incorrect prediction 
+The pLDDT values (predicted Local Difference Distance Test) provided by
+AlphaFold are estimates of the LDDT values.  The pLDDT values are essentially
+unbiased (just as likely to be too low as too high), and reasonably accurate.
+The correlation between pLDDT values and actual LDDT values calculated using
+AlphaFold models and models in the PDB is about 0.7 - 0.75, which means that
+the values of pLDDT you get are useful indicators of model quality but also
+that sometimes AlphaFold will have high confidence in an incorrect prediction
 or low confidence in a correct prediction.
 
-As the pLDDT metric is an estimate of local error, it does not tell you that 
-much about long-range distortions or domain movements between the predicted 
-and actual structure.  The PAE matrix does have some information about these 
+As the pLDDT metric is an estimate of local error, it does not tell you that
+much about long-range distortions or domain movements between the predicted
+and actual structure.  The PAE matrix does have some information about these
 features because it is not restricted to short distances.
 
 
@@ -315,18 +315,18 @@ The output MSA file
 -------------------
 
 The MSA file that was used in AlphaFold prediction is available if the Phenix
-server is used. This MSA file can be used in subsequent predictions (if 
-the sequence is identical).  Normally there is no need to supply an MSA 
-file because the MSA is saved by the Phenix server and it will just 
-be re-used if the same sequence is supplied.  However if you want to edit 
+server is used. This MSA file can be used in subsequent predictions (if
+the sequence is identical).  Normally there is no need to supply an MSA
+file because the MSA is saved by the Phenix server and it will just
+be re-used if the same sequence is supplied.  However if you want to edit
 this MSA file before running an AlphaFold prediction, you can do that.
 
 The output PAE file
 -------------------
 
-AlphaFold provides a Predicted Aligned Error matrix in the form of a PAE file. 
+AlphaFold provides a Predicted Aligned Error matrix in the form of a PAE file.
 The error that it is describing reflects the estimated error in CA positions
-in the predicted model compared to the (unknown) true structure.  
+in the predicted model compared to the (unknown) true structure.
 
 Suppose we had both the prediction and the true structure.  Then suppose we
 superpose the predicted model on the true structure, basing the superposition
@@ -345,10 +345,10 @@ The PAE matrix is useful for identifying domains within a predicted chain that
 are accurately predicted, along with connecting regions that are more
 uncertain.  In the Phenix GUI the PAE matrix is plotted with dark green indicating
 low PAE values (relationships between pairs of residues that are predicted
-to be accurate).  A domain that is accurately predicted can be seen in 
+to be accurate).  A domain that is accurately predicted can be seen in
 such a plot as a solid green square along the diagonal.  If your plot has
 just one big green square, it is probably all quite accurate. If it looks
-instead like a few squares along the diagonal, probably the individual 
+instead like a few squares along the diagonal, probably the individual
 domains are accurately predicted, but their relationship is not known.
 
 Relationship between the pLDDT values and the PAE matrix
@@ -357,11 +357,11 @@ Relationship between the pLDDT values and the PAE matrix
 The PAE matrix is related to the pLDDT values, but not in a simple way.
 
 The pLDDT value for a residue
-describes the expected errors in the distances between that CA atom 
+describes the expected errors in the distances between that CA atom
 and nearby CA atoms (compared to the true structure) on a scale of 0 to
 1, where 1 means all CA-CA distances are expected to match within 0.5 Å.
 
-The value of the PAE matrix for a pair of residues 
+The value of the PAE matrix for a pair of residues
 is the estimated error in Å in the position of the CA atom for the second
 residue if the model is superposed on the true structure using CA atoms
 near the first CA atom.
@@ -379,15 +379,15 @@ prediction to a superposed deposited model (see Terwilliger et al., 2023):
 ::
 
     pLDDT         Median prediction error     % with error over 2 Å
-  
+
   pLDDT > 90               0.6 Å                    10%
   pLDDT > 80-90            1.1 Å                    22%
   pLDDT > 70-80            1.5 Å                    33%
   pLDDT < 70               3.5 Å                    77%
 
-This table shows that high-confidence residues (pLDDT >90) are generally 
-incredibly accurate, but a few (10%) still are off by more than 2 Å. 
-Low-confidence residues (pLDDT < 70) are usually pretty far off 
+This table shows that high-confidence residues (pLDDT >90) are generally
+incredibly accurate, but a few (10%) still are off by more than 2 Å.
+Low-confidence residues (pLDDT < 70) are usually pretty far off
 (median of 3.5 Å) but still almost a quarter are better than 2 Å.
 
 
@@ -429,7 +429,7 @@ start a job.
 What to do next after PredictModel
 ----------------------------------
 
-Normally the next step after PredictModel is running 
+Normally the next step after PredictModel is running
 `ProcessPredictedModel <process_predicted_model.html>`_ to trim off
 low-confidence residues, identify compact domains, and convert pLDDT values
 to pseudo-B values.
@@ -442,7 +442,7 @@ server is not working as expected.  Normally the first thing
 to try is just let the program retry (it will do this for a while normally).
 If that does not work, you can take the files in the packaged
 .tgz file (listed in the GUI output), use them to get your own prediction with
-any server, and put the resulting predicted models in the place specified in 
+any server, and put the resulting predicted models in the place specified in
 the GUI or program output.
 
 Specific limitations and problems:
