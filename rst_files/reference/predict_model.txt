@@ -24,7 +24,8 @@ Purpose
 -------
 
 Predict model can be used to generate predicted models from a sequence file.
-One predicted model is generated for each unique sequence.
+One predicted model is generated for each unique sequence. It does not make
+predictions of a complex.
 
 You can choose whether to use a multiple sequence alignment (MSA), whether
 go use templates from the PDB, and whether to supply your own template to be
