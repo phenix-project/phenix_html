@@ -433,7 +433,27 @@ What to do next after PredictModel
 Normally the next step after PredictModel is running
 `ProcessPredictedModel <process_predicted_model.html>`_ to trim off
 low-confidence residues, identify compact domains, and convert pLDDT values
-to pseudo-B values.
+to pseudo-B values.  If you have cryo-EM data the next step after 
+`ProcessPredictedModel <process_predicted_model.html>`_ 
+is usually docking the trimmed model into your map with 
+`DockInMap <dock_in_map.html>`_  or 
+`EMPlacement <em_placement.html>`__ or automated docking and rebuilding with 
+`PredictAndBuild <predict_and_build.html>`__. 
+If you have X-ray data, the next step after
+`ProcessPredictedModel <process_predicted_model.html>`_ 
+is usually molecular replacement with
+`Phaser <phaser.html>`_ 
+or automated molecular replacement and rebuilding with 
+`PredictAndBuild <predict_and_build.html>`__. 
+
+Note that a model produced by 
+`PredictModel <predict_model.html>`_
+is not yet aligned with your density
+map for cryo-EM or for your crystal unit cell in crystallography. This means
+you must carry out some step for placing and orienting your 
+`PredictModel <predict_model.html>`_ model before carrying out refinement or
+any steps that involve comparing your model to data.
+
 
 Server problems
 ---------------

@@ -208,6 +208,16 @@ usually docking your model with
 docking and rebuilding with 
 `PredictAndBuild <predict_and_build.html>`__.
 
+Note that 
+`ProcessPredictedModel <process_predicted_model.html>`_ normally is applied
+to a model that  
+is not yet aligned with your density
+map for cryo-EM or for your crystal unit cell in crystallography. This means
+you normally must carry out some step for placing and orienting your 
+`ProcessPredictedModel <process_predicted_model.html>`_ 
+model before carrying out refinement or
+any steps that involve comparing your model to data.
+
 Possible Problems
 -----------------
 
