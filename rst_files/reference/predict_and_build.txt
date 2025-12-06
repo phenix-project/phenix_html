@@ -629,7 +629,8 @@ everything from the beginning.
 Specific limitations and problems:
 ----------------------------------
 
-AlphaFold only predicts protein structures, not RNA or DNA, so you will have to
+AlphaFold 2 only predicts protein structures, 
+not RNA or DNA, so you will have to
 either build those chains separately or supply predicted models (homology 
 models, for example) for those chains. If you supply predicted models for some 
 chains and not others, predict_and_build will try to predict the missing
