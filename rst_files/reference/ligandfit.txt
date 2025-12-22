@@ -407,6 +407,15 @@ Specific limitations and problems
    position where the ligand is to be built, then you may wish to remove
    them before building the ligand.
 
+-  If your ligand file has more than one ligand in it (or copies of the
+   same ligand with different residue numbers), they will be treated as
+   a single ligand. Typically this will result in part of the ligand (i.e.,
+   just one of the component ligands ) being fitted.  Normally supply 
+   instead a single ligand
+   in your ligand file (or multiple copies of your ligand with different
+   conformations and all the same residue number if you are trying to specify
+   allowed conformations.)
+
 -  If a ring in the ligand can have more than one conformation (e.g.,
    chair or boat conformation) then you need to do separate runs for
    each conformation of the ring (rings are taken as fixed units in
