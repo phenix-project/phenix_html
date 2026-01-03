@@ -1,0 +1,84 @@
+AI analysis of Phenix results
+=============================
+
+Authors
+-------
+
+- Nigel Moriarty, Peter Zwart, Thomas C Terwilliger
+
+Purpose
+-------
+
+The Phenix AI analysis tool is designed to help you interpret your output
+files from a run in the Phenix GUI. It analyzes your log file and any output
+written to the GUI and the names of any output files that are supplied to the
+GUI and creates a summary of the run.  Then it analyzes this summary in the
+context of the Phenix documentation to describe how this run fits into the
+framework of structure determination and suggests next steps.
+The AI analysis tool can be accessed in the Phenix GUI in the Results
+section of most Phenix GUI runs, next to the Log file button.  You can
+also access it under the Tools menu.
+
+Google, OpenAI and Cohere API Keys
+--------------------------
+
+To run the AI analysis, Google, OpenAI and Cohere API keys are used.
+You can run a AI analyses without getting your own key as a shared set
+of keys is supplied. The number of analyses with these shared keys
+is limited, however.
+
+How the AI analysis works
+-------------------------
+
+The AI analysis is carried out in two steps. In the first step, the log file,
+along with text written to the GUI and names of output files supplied to
+the GUI are summarized using a Cohere Langchain analysis.  In the second
+step, the summary from the first step is analyzed in the context of all
+the Phenix documentation, transcripts of Phenix tutorial videos, and Phenix
+publications to provide background and to suggest next steps to take.
+
+This type of AI does not save or learn from your questions.  However the 
+information in your log file is sent to the Phenix server, and from there,
+on to Cohere and Google gemini.
+
+What to do with the AI analysis
+-------------------------------
+
+The purpose of the AI analysis is to help you interpret your output and to
+suggest ideas for next steps.  You should keep in mind that this tools
+can make mistakes and give you incorrect interpretations and poor suggestions
+at times, so you want to just take the information as suggestions to think
+about.
+
+You can combine this AI analysis with the Phenix 
+`chatbot <https://phenix-online.org/chatbot>`__ .  The chatbot can give
+you interactive answers to your questions using the same database of information
+as the AI analysis. This allows you to follow up on the AI analysis with
+questions to the chatbot. You can also paste part of the output from the
+AI analysis into the chatbot along with a question to get more context.
+ 
+Limitations of the AI analysis 
+------------------------------
+
+The AI analysis is limited to the sources that is supplied with, so it only
+knows about Phenix, and it only knows what is in the documentation, the
+videos and newsletters, and the papers we have supplied. 
+
+AI tools like this one can also just make mistakes and give incorrect
+answers. This does not seem to happen too often with this tool, but
+you need to always be on alert when using it.  Use the tool as a helper,
+don't expect it to always be right.
+
+If a detail is missing in the documentation, the AI analysis will not know it.
+
+Privacy in the AI analysis
+--------------------------
+
+If you use the AI analysis tool, your log files are sent to the Phenix server,
+and from there on to Cohere, OpenAI and Gemini.  That means the data 
+could potentially
+be used by Cohere, OpenAI, and Google in any way that they use other 
+AI data that is sent to them.
+
+Note that access to Cohere, OpenAI and Gemini is non-commerical only.
+
