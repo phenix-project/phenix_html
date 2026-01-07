@@ -1,5 +1,5 @@
 ============================
-How to set up and use PHENIX
+How to set up and use Phenix
 ============================
 
 .. contents::
@@ -19,180 +19,130 @@ to help you with installation.
 Platform support
 ----------------
 
-PHENIX is supported on most common Linux platforms (kernel 2.6 or newer),
-Mac OS X version 10.7 or newer, and Windows 7 or newer.  Binary installers
-are built on the following systems:
-
-  - CentOS 6.10 (64-bit)
-  - Windows 7 (64-bit)
-  - macOS 10.11 (64-bit)
-
-Most of these installers should also run on newer systems and/or different
-Linux distributions such as Ubuntu, Linux Mint, or openSuSE, as long as the
-architecture is the same. Linux kernels prior to 2.6 are not supported, but
-kernel versions 3.x and later should be compatible with the installers built
-on 2.6. You should pick the architecture that matches the one for your operating
-system. For example, on Windows, only use the 64-bit version of Phenix if
-your version of Windows is also 64-bit.
-
-If you are running macOS 10.7 - 10.8, the command-line tools will work, but
-the GUI will have issues updating the display. Both the command-line tools and
-the GUI will work on macOS 10.9 and later.
+Phenix is supported on most common Linux platforms (glibc 2.17 or newer),
+macOS version 10.13 or newer for Intel and 11 or newer for Apple Silicon,
+and Windows 10 or newer.
 
 Space requirements
 -------------------
 
-For the complete PHENIX installation you will need approximately 4 GB
-of disk space.
+For the complete Phenix installation you will need approximately 15 GB
+of disk space. During installation, you will need approximately 25 GB
+for temporary files.
 
 Graphical installer - Mac
 -------------------------
 
-Installation by this method uses familiar interfaces provided by the operating
-system. 
+There are installers for Intel processors and for Apple Silicon processors.
+Choose the installer that matches the hardware on your system. Apple
+Silicon installers will not run on Intel systems and the Intel version of
+Phenix will run significantly slower on Apple Silicon systems.
 
-You will need administrative privileges to run the installer.
+After downloading the Phenix-xxxx.pkg file use "Open with" and choose
+"Installer.app". When asked about unknown applications go ahead and hit Open
+(if you just double-click on the file it will say that it is not approved
+by Apple and it will not give you the option to approve it yourself). On
+newer versions of macOS, you will get a message that the installer cannot
+be run. You must then go to System Preferences, and then Privacy & Security.
+At the bottom, you will get an option to run the .pkg installer anyway.
+Click that to run the installer.
 
-Note: after downloading the phenix-xxxx.pkg file use Open with and choose installer.app. When asked about unknown applications go ahead and hit Open (if you just double-click on the file it will say that it is not approved by Apple and it will not give you the option to approve it yourself).
+Alternatively, you can run ``xattr -c <GUI installer name>``, to skip
+the security checks by macOS.
 
-The destination directory is always in the **/Applications** folder. The application will be an app with a name like: **/Applications/phenix-1.21rc1-4907/phenix-1.21.1-4907.app**
+You will need administrative privileges to install Phenix into **/Applications**.
+For single user installation, the default location is in **${HOME}/Applications**.
+The Phenix application is found inside the Phenix-<version> folder in those
+directories.
 
 Graphical installer - Windows
 -----------------------------
 
-Installation:
-  - Download and run the PHENIX setup executable on your PC and follow the
-    instructions.
+Run the .exe installer and follow the prompts. Windows may have similar
+security prompts like in macOS. Click "More info" and then "Run anyway"
+to run the installer.
 
-For ordinary users the destination directory defaults to the folder defined
-by expanding the environment variables %HOMEDRIVE%%HOMEPATH%.
-If you want to install Phenix for all users you need admin privileges when you run
-the installer. PHENIX will then default to be installed in the folder defined
-by expanding the environment variables %SystemRoot%%ProgramFiles%.
-C/C++ sources are included for expert users wishing to recompile code.
+The destination folder should be a path without spaces.
 
-
-.. _download: http://www.phenix-online.org/download
-
+There will be a new Start Menu folder containing the Phenix GUI application
+and an item for starting a command-line prompt with the Phenix environment.
 
 Command-line installer (macOS and Linux)
 ----------------------------------------
 
-You should obtain the latest distribution of PHENIX including the
-binary bundles for your machine architectures. Unpack the tar file::
+On macOS and Linux, the command-line installers are packaged as ``.sh``
+files. To install, run
 
-  % tar xvf phenix-installer-<version>-<platform>.tar
+  ``% bash <installer name>``
 
-Change to the installer directory::
+for interactive installations. For batch mode (skips interactive prompts), run
 
-  % cd phenix-installer-<version>
+  ``% bash <installer name> -b -p <prefix>/phenix-<version>``
 
-To install::
+The ``phenix-<version>`` is needed to isolate the Phenix installation from
+``<prefix>``.
 
-  % ./install       [will install in /usr/local/phenix-<version> by default,
-                     requires root permissions]
+Installation time
+-----------------
 
-  % ./install --prefix=<directory>  [will make <directory>/phenix-<version> and install there]
+Installation of the binary version of Phenix requires no compilation, only
+the extraction of compressed packages and then the generation of some data
+files. You will probably have to wait about 15 minutes for the installation
+to complete, depending on the performance of your installation platform.
+However, installation may take upwards of 30 minutes or more if you have
+antivirus software or slow disk speeds.
 
-Note: ``<directory>`` must be a absolute path (i.e. starts with a /). A
-relative path starting with ../ will not work correctly.
-
-Installation of the binary version of PHENIX requires no compilation, only
-the generation of some data files, so you will probably have to wait about
-5-10 minutes for the installation to complete (depending on the performance of
-your installation platform).
-
-For license information please see ``LICENSE`` file.  For source of components
-see ``SOURCES``.
-
-Rosetta Installation
---------------------
-
-Installation of Rosetta, software developed from the Baker laboratory at the University of Washington, is required for running
-
-- `phenix.mr\_rosetta <reference/rosetta_refine.html>`__
-
-- `phenix.rosetta\_refine <reference/rosetta_refine.html>`__
-
-- `phenix.simple\_homology_model <reference/simple_homology_model.html>`__
-
-See the central `installation notes for Rosetta <reference/rosetta_install.html>`__
 
 Running Phenix
 ==============
 
 If you intend to use the graphical interface and installed Phenix using the
-Mac or Windows graphical installers, no further configuration is necessary -
+macOS or Windows graphical installers, no further configuration is necessary -
 just double-click the icon for the main Phenix GUI.  Instructions below are
 for users of the command-line installer and/or programs.
 
 Setting up the command-line environment
 ---------------------------------------
 
-Once you have successfully installed PHENIX, to set up your environment
-please source the ``phenix_env`` file in the phenix installation directory
+Once you have successfully installed Phenix, to set up your environment
+please source the ``phenix_env`` file in the Phenix installation directory
 (for example - replace "<version>" with the actual installed version,
-such as "1.8.4-1496"):
+such as "2.0-5933"):
 
-::
+    ``% source <prefix>/phenix-<version>/phenix_env.sh`` for sh users
 
-    % source /usr/local/phenix-<version>/phenix_env [sh/tcsh users]
+    ``% source <prefix>/phenix-<version>/phenix_env.csh`` for csh users
 
-or
+To simplify the set up of Phenix, you can add this step to your shell
+startup script.
 
-::
-
-    % . /usr/local/phenix-<version>/phenix_env.sh [sh/bash users]
-
-To run jobs remotely, you need to source the ``phenix_env`` in your .cshrc
-(or equivalent) file.
-
-If you used the graphical Mac installer, you can find the files here:
-
-::
-
-  /Applications/PHENIX-<version>/Contents/phenix-<version>/phenix_env*
+If you used the graphical Mac installer, you can find the files in the
+phenix-<version> folder in /Applications or ${HOME}/Applications.
 
 The following environmental variables should now be defined (here with
 example values)::
 
-   PHENIX=/usr/local/phenix
-   PHENIX_INSTALLER_DATE=080920070957
-   PHENIX_VERSION=1.3
-   PHENIX_RELEASE_TAG=final
-   PHENIX_ENVIRONMENT=1
-   PHENIX_MTYPE=intel-linux-2.6-x86_64
-   PHENIX_MVERSION=linux
-   PHENIX_USE_MTYPE=intel-linux-2.6-x86_64
+   PHENIX=<installation location>
+   PHENIX_PREFIX=<installation location>
+   PHENIX_VERSION=<version>
 
-It is not necessary (or useful) to define environmental variables for
-SOLVE/RESOLVE for PHENIX.  If you have them set in your environment they
-are ignored by PHENIX.
+The ``$PATH`` is also updated to put Phenix executables before your other
+commands.
 
 Documentation
 -------------
 
-You can find documentation in the PHENIX GUI (under the Help menu).
+You can find documentation in the Phenix GUI (under the Help menu).
 Alternatively, you can use a web browser to view the documentation
-supplied with PHENIX, by typing:
+supplied with Phenix, by typing:
 
-::
+    ``% phenix.doc``
 
-    % phenix.doc
-
-If this doesn't work because of browser installation issues then you can
-point a web browser to the correct location in your PHENIX installation
+If this does not work because of browser installation issues then you can
+point a web browser to the correct location in your Phenix installation
 (for example):
 
-::
-
-    % firefox /usr/local/phenix-<version>/doc/index.html
-
-or:
-
-::
-
-    % mozilla $PHENIX/doc/index.html
+    ``% firefox ${PHENIX_PREFIX}/share/phenix/doc/index.html``
 
 For license information please see the LICENSE file.
 
@@ -201,11 +151,11 @@ For the source of the components see SOURCES.
 Help
 ----
 
-You can join the PHENIX bulletin board and/or view the archives:
+You can join the Phenix bulletin board and/or view the archives:
 
 ::
 
-    http://www.phenix-online.org/mailman/listinfo/phenixbb
+    https://phenix-online.org/mailman3/lists/phenixbb.phenix-online.org/
 
 Alternatively you can send email to:
 
@@ -222,7 +172,7 @@ a graphical user interface (GUI) or as command-line programs.
 For new users (and those without experience
 with Unix/Linux systems), we recommend using the graphical interface.
 
-The PHENIX GUI
+The Phenix GUI
 --------------
 
 For new users and anyone unfamiliar with Unix command lines, we recommend
@@ -233,7 +183,7 @@ using the graphical interface.  To run, simply type this command:
     % phenix &
 
 Please see the other documentation files to get more details about the
-`PHENIX GUI <phenix_gui.html>`__.
+`Phenix GUI <phenix_gui.html>`__.
 
 Command Line Interface
 ----------------------
@@ -254,22 +204,16 @@ available as command-line tools.
 To illustrate the command line interface, the command used to run the
 program that carries out a data quality and twinning analyses is:
 
-::
-
-    phenix.xtriage my_data.sca [options]
+  ``phenix.xtriage my_data.sca [options]``
 
 Further options can be given on the command line, or can be specified
 via a parameter file:
 
-::
-
-    phenix.xtriage my_parameters.def
+  ``phenix.xtriage my_parameters.def``
 
 A similar interface is used for macromolecular refinement:
 
-::
-
-    phenix.refine my_model.pdb my_data.mtz
+  ``phenix.refine my_model.pdb my_data.mtz``
 
 Although SCALEPACK and MTZ formats are indicated in the above example,
 reflection file formats such as D\*TREK, CNS/XPLOR or SHELX can be used,
@@ -278,21 +222,16 @@ as the format is detected automatically.
 Help for all command line applications can be obtained by use of the
 flag --help :
 
-::
-
-    phenix.refine --help
+  ``phenix.refine --help``
 
 There are also many other command line tools (described in detail
 elsewhere in this documentation). You can list them all with
 
-::
+  ``phenix.list``
 
-   phenix.list
+or alternatively,
 
-or alternatively:
-
-::
-   phenix.list ave
+  ``phenix.list ave``
 
 to list all methods that contain the characters ave in their names or
 descriptions.
@@ -300,9 +239,9 @@ descriptions.
 Note: all commands have their regular name and name qualified with the
 version. You can always use the version-qualified name to ensure which
 version of a command you are using (in case you have multiple versions
-of PHENIX or related applications installed).
+of Phenix or related applications installed).
 
-The runtime options for most PHENIX tools are controlled using a lightweight
+The runtime options for most Phenix tools are controlled using a lightweight
 syntax called PHIL (Python Hierarchial Interface Language), which is designed
 to work both as command-line arguments or as more verbose parameter files.
 A basic overview of PHIL is available in the `overview of file formats
@@ -311,11 +250,13 @@ A basic overview of PHIL is available in the `overview of file formats
 Troubleshooting
 ===============
 
-Problems starting the GUI
--------------------------
+Problems installing on Linux
+----------------------------
 
-Ubuntu tends to be installed without an important library that is linked to
-by the GUI code.  If you encounter an error message about a missing library
-upon starting the GUI, you can add it to your system with this command::
+The command-line installer extracts some files into the temporary
+directory and then runs those files. On systems where the temporary
+directory is mounted to be non-executable, you will have to provide
+an alternate temporary directory. To do so, prepend the TMPDIR environment
+variable to the installation command.
 
-  sudo apt-get install libjpeg62
+  ``TMPDIR=<executable temporary directory> bash <installer name>``
