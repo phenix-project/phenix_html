@@ -403,6 +403,8 @@ If you are carrying out SAD phasing with Phaser, you can carry out a combination
 
  input_partpdb_file=MR.pdb
 
+NOTE: You must run molecular replacement separately first before you run autosol.  MR.pdb is the result from your molecular replacement run.
+
 You can optionally also specify an estimate of the RMSD between your model and the true structure with a command like: ::
 
   partpdb_rms=1.5

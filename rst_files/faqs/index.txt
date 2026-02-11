@@ -150,6 +150,13 @@ to place these chains in your cryo-EM map.  You can rebuild a preliminary
 model or generate a new one from a map using 
 `MapToModel <../reference/map_to_model.html>`__.
 
+**How do I run MR-SAD in Phenix?**
+
+To run MR-SAD in Phenix, you first run MR (molecular replacement) with
+Phaser, then you run autosol (experimental phasing), including the placed
+model you obtained with MR with the keyword partpdb_file=MR.1.pdb (or
+whatever your placed model is called).
+
 **What kind of hardware do I need to run Phenix?**
 
 A set of loose guidelines is `here
