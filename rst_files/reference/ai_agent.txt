@@ -1,0 +1,109 @@
+AI automation of structure determination
+========================================
+
+Authors
+-------
+
+- Thomas C Terwilliger
+
+Purpose
+-------
+
+The Phenix AI agent will carry out an automated analysis of your X-ray or
+cryo-EM data. Its purpose is to help beginners see how to run Phenix tools,
+and to help experienced users to quickly evaluate their data and standard
+approaches to structure determination.
+The AI analysis tool can be accessed in the Phenix GUI.
+
+How the AI Agent works
+----------------------
+
+The AI Agent expects to be given data files from crystallography (mtz files)
+or from cryo-EM (mrc or ccp4 maps), a sequence file, and optional model files
+or ligand files.  You can tell it what files to use by specifying a directory
+containing the files or by loading the files in the AI Agent GUI window.
+
+The AI Agent also accepts instructions like "first run xtriage and then 
+molecular replacement", or "solve the structure", 
+or "use 1 macro-cycle in phenix refine" or whatever else you want
+to tell it to do with your X-ray or cryo-EM data.
+You can supply those directions in the GUI. 
+If your directory contains a README file it can read that file 
+and do (more or less) what it says.
+
+The AI Agent is supplied with a number of standard structure solution
+pathways. It will try to fit your data into one of these, guided additionally
+by any instructions you supply.  A typical pathway for X-ray data, for
+example, might be xtriage -> autosol -> autobuild if the data are found to
+have an anomalous signal in xtriage, or xtriage -> predict_and_build -> refine
+if they do not.  For cryo-EM data, a typical pathway might be
+mtriage -> resolve_cryo_em -> dock_in_map -> real_space_refine.  If you 
+supply a ligand the pathways would end up with fitting the ligand and
+refining the model with the ligand.  
+
+You can modify most aspects of the structure solution pathways with your
+instructions, as long as the necessary data is available.
+
+When you run the agent in the GUI, it will load all the successful runs in
+the normal way, so you have a complete record of what was done and so you
+can restore any of the runs that it made for you.
+
+This type of AI does not save or learn from your questions.  However the 
+information in your log file is sent to the Phenix server, and from there,
+on to Google gemini and OpenAI.
+
+
+What to do with the AI analysis
+-------------------------------
+
+The purpose of the AI Agent is to help you interpret your data and to
+suggest ways to analyze it. The agent will also suggest next steps.
+You should keep in mind that these tools
+can make mistakes and give you incorrect interpretations and poor suggestions
+at times, so you want to just take the information as suggestions to think
+about.
+
+You can combine this AI analysis with the Phenix 
+`chatbot <https://phenix-online.org/chatbot>`__ .  The chatbot can give
+you interactive answers to your questions using the same database of information
+as the AI analysis. This allows you to follow up on the AI analysis with
+questions to the chatbot. You can also paste part of the output from the
+AI analysis into the chatbot along with a question to get more context.
+ 
+Limitations of the AI Agent
+---------------------------
+
+The AI analysis is limited to the sources that is supplied with, so it only
+knows about Phenix, and it only knows what is in the documentation, the
+videos and newsletters, and the papers we have supplied. 
+
+AI tools like this one can also just make mistakes and give incorrect
+answers. This does not seem to happen too often with this tool, but
+you need to always be on alert when using it.  Use the tool as a helper,
+don't expect it to always be right.
+
+If a detail is missing in the documentation, the AI may not know about it.
+
+Privacy in the AI Agent
+-----------------------
+
+If you use the AI Agent tool, your log files are sent to the Phenix server,
+and from there on to OpenAI and Gemini.  That means the data 
+could potentially
+be used by OpenAI, and Google in any way that they use other 
+AI data that is sent to them.
+
+Note that access to OpenAI and Gemini is non-commerical only.
+
+Running with Google, Ollama, or OpenAI
+--------------------------------------
+
+Normally you will use Google (gemini) as the AI LLM for your AI agent.  This
+requires an API key for google (supplied with Phenix).  You can also use Ollama,
+which is run on the Phenix server, or OpenAI, which also uses a supplied 
+API key.  You can run AI analyses with Google or OpenAI without 
+getting your own key, as a shared set
+of keys is supplied. The number of analyses with these shared keys
+is limited, however.
+
+

@@ -19,11 +19,14 @@ The AI analysis tool can be accessed in the Phenix GUI in the Results
 section of most Phenix GUI runs, next to the Log file button.  You can
 also access it under the Tools menu.
 
-Google, OpenAI and Cohere API Keys
+Google and OpenAI API Keys
 ----------------------------------
 
-To run the AI analysis, Google, OpenAI and Cohere API keys are used.
-You can run a AI analyses without getting your own key as a shared set
+You can use Ollama (run on the Phenix server) to run the AI analysis, or
+you can use Google (gemini) or OpenAI. If you use Google or OpenAI,
+API keys for these servers are used.
+You can run AI analyses with Google or OpenAI without 
+getting your own key, as a shared set
 of keys is supplied. The number of analyses with these shared keys
 is limited, however.
 
@@ -32,20 +35,21 @@ How the AI analysis works
 
 The AI analysis is carried out in two steps. In the first step, the log file,
 along with text written to the GUI and names of output files supplied to
-the GUI are summarized using a Cohere Langchain analysis.  In the second
+the GUI are summarized using a Langchain analysis with reranking using
+FlashRank.  In the second
 step, the summary from the first step is analyzed in the context of all
 the Phenix documentation, transcripts of Phenix tutorial videos, and Phenix
 publications to provide background and to suggest next steps to take.
 
 This type of AI does not save or learn from your questions.  However the 
 information in your log file is sent to the Phenix server, and from there,
-on to Cohere and Google gemini.
+on to Google gemini.
 
 What to do with the AI analysis
 -------------------------------
 
 The purpose of the AI analysis is to help you interpret your output and to
-suggest ideas for next steps.  You should keep in mind that this tools
+suggest ideas for next steps.  You should keep in mind that these tools
 can make mistakes and give you incorrect interpretations and poor suggestions
 at times, so you want to just take the information as suggestions to think
 about.
@@ -75,10 +79,10 @@ Privacy in the AI analysis
 --------------------------
 
 If you use the AI analysis tool, your log files are sent to the Phenix server,
-and from there on to Cohere, OpenAI and Gemini.  That means the data 
+and from there on to OpenAI and Gemini.  That means the data 
 could potentially
-be used by Cohere, OpenAI, and Google in any way that they use other 
+be used by OpenAI, and Google in any way that they use other 
 AI data that is sent to them.
 
-Note that access to Cohere, OpenAI and Gemini is non-commerical only.
+Note that access to OpenAI and Gemini is non-commerical only.
 
