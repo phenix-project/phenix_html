@@ -73,8 +73,11 @@ AI analysis into the chatbot along with a question to get more context.
 Limitations of the AI Agent
 ---------------------------
 
-The AI analysis is limited to the sources that is supplied with, so it only
-knows about Phenix, and it only knows what is in the documentation, the
+The AI agent is limited to the programs that it has been set up to use,
+so some Phenix programs cannot be run with the AI agent.
+The LLMs used in choosing programs to run have varying capabilities, and they
+can sometimes suggest doing steps that might not be the best choices.
+The AI analysis used in the agent only knows what is in the documentation, the
 videos and newsletters, and the papers we have supplied. 
 
 AI tools like this one can also just make mistakes and give incorrect
