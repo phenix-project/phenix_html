@@ -26,8 +26,24 @@ containing the files or by loading the files in the AI Agent GUI window.
 The AI Agent also accepts instructions. You can say things
 like "first run xtriage and then 
 molecular replacement", or "solve the structure", 
-or "use 1 macro-cycle in phenix refine" or whatever else you want
+or "use main.number_of_macro_cycles=1 in phenix refine" 
+or whatever else you want
 to tell it to do with your X-ray or cryo-EM data.
+
+Note on instructions to the AI Agent:  if you are supplying keywords for the
+agent, then you usually need to specify them exactly as you would on the
+command-line. For example you can say for phenix.refine:
+
+  use main.number_of_macro_cycles=1 in refinement
+
+but you should not usually say:
+
+  use one macro_cycle in refinement
+
+(Actually macro-cycles is a special case that the agent will recognize and
+convert to main.number_of_macro_cycles=1, but most commands are not 
+converted like this.)
+
 You can supply those directions in the GUI. 
 If your directory contains a README file it can read that file 
 and do (more or less) what it says.
