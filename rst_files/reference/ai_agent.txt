@@ -23,7 +23,8 @@ or from cryo-EM (mrc or ccp4 maps), a sequence file, and optional model files
 or ligand files.  You can tell it what files to use by specifying a directory
 containing the files or by loading the files in the AI Agent GUI window.
 
-The AI Agent also accepts instructions like "first run xtriage and then 
+The AI Agent also accepts instructions. You can say things
+like "first run xtriage and then 
 molecular replacement", or "solve the structure", 
 or "use 1 macro-cycle in phenix refine" or whatever else you want
 to tell it to do with your X-ray or cryo-EM data.
@@ -69,7 +70,31 @@ you interactive answers to your questions using the same database of information
 as the AI analysis. This allows you to follow up on the AI analysis with
 questions to the chatbot. You can also paste part of the output from the
 AI analysis into the chatbot along with a question to get more context.
- 
+
+Job control with the AI Agent
+-----------------------------
+
+If you have already run an AI agent job, you can restore it in the GUI
+in the usual way by clicking on Job History and then clicking on the 
+run you are interested in. At the bottom of the Configure panel of the restored
+AI Agent job, there are keywords you can set for:
+
+  Restart mode: Fresh (start a new job)  or Resume (keep going with this job)
+
+  Display Session and stop: None (do not do this) or Basic (show basic info
+  and stop or Detailed (show a lot of info and stop)
+
+  Remove last N cycles and stop: blank (do not do this) or a number like 5 
+  (remove last 5 cycles and stop).
+
+You can use these commands to see what the AI Agent has done, to remove
+the last few jobs, or to go on from where you are now.  
+
+You can change the advice for the AI Agent when 
+you run with Restart mode = Resume if you want.  It will try to do what you
+ask it to do.
+
+
 Limitations of the AI Agent
 ---------------------------
 
@@ -108,5 +133,31 @@ API key.  You can run AI analyses with Google or OpenAI without
 getting your own key, as a shared set
 of keys is supplied. The number of analyses with these shared keys
 is limited, however.
+
+Running locally with Ollama
+---------------------------
+
+If you install Ollama on your machine (normally this is if you have a GPU
+machine), you can use you local installation of Ollama for all the LLM calls
+that the AI Agent makes. In this way, you can run everything locally and
+not send any data outside of your machine.
+
+Once you install Ollama, 
+you will want to it set up like this to get the right models 
+(note: these may change with Phenix versions):
+
+  ollama pull llama3.1:70b
+
+  ollama pull llama3.1:8b
+
+  ollama pull nomic-embed-text
+
+You will want to run it with environmental variables like these:
+
+  setenv CUDA_VISIBLE_DEVICES 0,1,2
+
+  setenv OLLAMA_NUM_PARALLEL 6
+
+  setenv OLLAMA_HOST 0.0.0.0:11434
 
 
