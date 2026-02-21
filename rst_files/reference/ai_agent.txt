@@ -160,4 +160,6 @@ You will want to run it with environmental variables like these:
 
   setenv OLLAMA_HOST 0.0.0.0:11434
 
+Then when you run the agent, use the setting:
 
+  run_on_server=False
