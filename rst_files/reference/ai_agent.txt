@@ -9,248 +9,507 @@ Authors
 Purpose
 -------
 
-The Phenix AI agent will carry out an automated analysis of your X-ray or
-cryo-EM data. Its purpose is to help beginners see how to run Phenix tools,
-and to help experienced users to quickly evaluate their data and standard
-approaches to structure determination.
-The AI analysis tool can be accessed in the Phenix GUI.
+The Phenix AI Agent automates macromolecular structure determination.
+You give it your experimental data and (optionally) some guidance, and it
+figures out which PHENIX programs to run, in what order, with what
+settings — and then runs them for you automatically.
+
+Think of it as an experienced crystallographer sitting next to you at the
+computer.  It looks at your data, decides what to do first, checks the
+results, and decides what to do next.  If something goes wrong, it tries
+a different approach.  When it's done, it tells you what it found and
+where to look.
+
+
+Quickest way to try it: run a tutorial
+--------------------------------------
+
+The fastest way to see the AI Agent in action is to run one of the
+built-in PHENIX tutorials:
+
+1. In the PHENIX GUI, go to **File → Tutorials**
+2. Pick a tutorial (e.g. "p9-sad" for Se-SAD phasing, or any MR
+   tutorial with diffraction data)
+3. Open the **AI Agent** from the main program list
+4. The GUI will detect the tutorial automatically — you'll see a blue
+   banner with the tutorial name
+
+All you need to do is click **Run**.  The agent reads the tutorial's
+README file, extracts the experiment parameters (wavelength, atom type,
+resolution, etc.), selects a plan template, and runs the entire workflow
+automatically.  No advice, no settings changes, no file selection needed.
+
+The p9-sad tutorial, for example, completes in 5 cycles with 0 failures,
+producing a model with R-free 0.247 at 1.74 Å resolution.
+
 
 How the AI Agent works
 ----------------------
 
-The AI Agent expects to be given data files from crystallography (mtz files)
-or from cryo-EM (mrc or ccp4 maps), a sequence file, and optional model files
-or ligand files.  You can tell it what files to use by specifying a directory
-containing the files or by loading the files in the AI Agent GUI window.
+The AI Agent expects to be given data files from crystallography (mtz
+files) or from cryo-EM (mrc or ccp4 maps), a sequence file, and
+optional model files or ligand files.  You can tell it what files to
+use by specifying a directory containing the files or by loading the
+files in the AI Agent GUI window.
 
-The AI Agent also accepts instructions. You can say things
-like "first run xtriage and then 
-molecular replacement", or "solve the structure", 
-or "use main.number_of_macro_cycles=1 in phenix refine" 
-or whatever else you want
-to tell it to do with your X-ray or cryo-EM data.
+The AI Agent also accepts instructions.  You can say things like "first
+run xtriage and then molecular replacement", or "solve the structure",
+or "use main.number_of_macro_cycles=1 in phenix refine", or whatever
+else you want to tell it to do with your X-ray or cryo-EM data.
 
-Note on instructions to the AI Agent:  if you are supplying keywords for the
-agent, then you usually need to specify them exactly as you would on the
-command-line. For example you can say for phenix.refine:
+**Note on instructions:** if you are supplying PHIL keywords for the
+agent, specify them exactly as you would on the command line.  For
+example::
 
-  use main.number_of_macro_cycles=1 in refinement
+    use main.number_of_macro_cycles=1 in refinement
 
-but you should not usually say:
+but not::
 
-  use one macro_cycle in refinement
+    use one macro_cycle in refinement
 
-(Actually macro-cycles is a special case that the agent will recognize and
-convert to main.number_of_macro_cycles=1, but most commands are not 
-converted like this.)
+(``macro_cycles`` happens to be a special case that the agent
+recognizes, but most parameters are not converted like this.)
 
-You can supply those directions in the GUI. 
-If your directory contains a README file it can read that file 
-and do (more or less) what it says.
+You can supply instructions in the GUI.  If your directory contains a
+README file the agent can read it and follow the instructions in it.
 
-The AI Agent is supplied with a number of standard structure solution
-pathways. It will try to fit your data into one of these, guided additionally
-by any instructions you supply.  A typical pathway for X-ray data, for
-example, might be xtriage -> autosol -> autobuild if the data are found to
-have an anomalous signal in xtriage, or xtriage -> predict_and_build -> refine
-if they do not.  For cryo-EM data, a typical pathway might be
-mtriage -> resolve_cryo_em -> dock_in_map -> real_space_refine.  If you 
-supply a ligand the pathways would end up with fitting the ligand and
-refining the model with the ligand.  
+**Structure solution pathways.**  The AI Agent selects from 17 plan
+templates covering X-ray MR, SAD, MAD, cryo-EM, ligand fitting, and
+other workflows.  A typical pathway for X-ray data might be::
 
-You can modify most aspects of the structure solution pathways with your
-instructions, as long as the necessary data is available.
+    xtriage → autosol → autobuild → refine → molprobity
 
-When you run the agent in the GUI, it will load all the successful runs in
-the normal way, so you have a complete record of what was done and so you
-can restore any of the runs that it made for you.
+if the data have anomalous signal, or::
 
-This type of AI does not save or learn from your questions.  However the 
-information in your log file is sent to the Phenix server, and from there,
-on to Google gemini and OpenAI.
+    xtriage → predict_and_build → refine
+
+if they do not.  For cryo-EM data::
+
+    mtriage → resolve_cryo_em → dock_in_map → real_space_refine
+
+If you supply a ligand, the pathway will end with ligand fitting and
+model refinement.  You can modify most aspects of the pathway with
+your instructions, as long as the necessary data is available.
+
+**How decisions are made.** Each cycle, the agent runs a six-node
+decision pipeline: PERCEIVE (extract metrics, categorize files) →
+THINK (analyze logs with crystallographic expertise) → PLAN (select
+next program) → BUILD (construct the command) → VALIDATE (check
+workflow rules) → OUTPUT (update session).  The LLM participates in
+two nodes (THINK and PLAN); the other four are deterministic.  The LLM
+sets the *intent*; deterministic code enforces the *accuracy*.
+
+In Expert mode (the default), the agent also creates a multi-stage
+strategy plan at the start of the session.  After each cycle, a
+deterministic gate compares metrics to the stage's success criteria
+and decides whether to advance, retreat, or stop.
+
+**What the LLM does not control.**  The LLM cannot write arbitrary
+command-line strings.  It sets strategy flags (e.g. ``atom_type=Se``,
+``resolution=2.5``) which the BUILD node expands through
+``programs.yaml`` into validated PHIL parameters.  File paths,
+resolution values, R-free flags, and output prefixes are all injected
+by deterministic code.  Any parameter not in the program's allowlist
+is stripped by the command sanitizer.
+
+
+What the agent shows you while it runs
+--------------------------------------
+
+Once you click Run, the PHENIX GUI switches to the Agent Progress tab.
+Here is what you'll see, illustrated with real output from the p9-sad
+tutorial.
+
+**The plan.** In Expert mode, the first thing you see is the strategy
+plan::
+
+    ==================================================
+     STRATEGY PLAN: SAD/MAD experimental phasing (X-ray)
+    ==================================================
+     ○ Stage 1: Analyze data quality and anomalous signal
+              Goal: Data quality analysis complete
+     ○ Stage 2: SAD/MAD phasing and initial model building
+              Goal: Experimental phasing complete
+     ○ Stage 3: Rebuild and refine model
+              Goal: R-free <0.30
+     ○ Stage 4: Final refinement with ordered solvent
+              Goal: R-free <0.25
+     ○ Stage 5: Final model validation
+    ==================================================
+
+Each stage has a goal.  The symbols show status: ○ pending, ● active,
+✓ complete, ⊘ skipped, ✗ failed.
+
+**Cycle output.**  Each program the agent runs appears as a numbered
+cycle with its decision, reasoning, and result.  Here is cycle 2
+(autosol) from the same run::
+
+    Cycle 2: phenix.autosol
+
+    Decision: phenix.autosol
+      Reasoning: User requested SeMet SAD with additional
+      sulfur search using AutoSol, truncating to 2.5 Å,
+      wavelength 0.9792 Å, and ~5 Se sites. Xtriage
+      indicates usable anomalous signal, so experimental
+      phasing is appropriate.
+      Source: llm (openai)
+
+    File Selection:
+      Data_Mtz: p9.sca     (Reason: llm_selected)
+      Sequence: seq.dat     (Reason: llm_selected)
+
+    Command:
+      phenix.autosol autosol.data=p9.sca seq_file=seq.dat
+        autosol.lambda=0.9792 resolution=2.5
+        autosol.atom_type=Se mad_ha_add_list=S
+        autosol.sites=5 nproc=4
+
+    Running: phenix.autosol ... [OK]
+
+    [GATE] Phase complete: experimental_phasing →
+           build_and_refine
+
+The **Reasoning** field shows exactly why the agent made this choice.
+The **Source** field tells you whether the LLM or the rules engine made
+the decision.  The **GATE** line shows the plan advancing to the next
+stage.
+
+**Stage transitions.** When the agent completes or retreats from a
+stage::
+
+     ✓ STAGE COMPLETE: Analyze data quality
+       All steps completed (1/1 cycles) — advancing
+
+     ⚠ RETREAT: initial_refinement → molecular_replacement
+       R-free stuck above 0.45 after 3 cycles
+
+A retreat is not a failure — it means the agent recognized that its
+current approach isn't working and is trying something different.
+
+
+What success looks like
+-----------------------
+
+Here is the complete output from the p9-sad tutorial (5 cycles,
+0 failures)::
+
+    Cycle 1: phenix.xtriage   → Data quality OK
+      Resolution: 1.74 Å, Space group: I 4
+      Anomalous measurability: 0.198
+
+    Cycle 2: phenix.autosol   → SAD phasing succeeds
+
+    Cycle 3: phenix.autobuild → R-free: 0.230
+
+    Cycle 4: phenix.molprobity → Clashscore: 12.46
+
+    Cycle 5: STOP
+      R-free = 0.2466 (< 0.25 target). Stopping.
+
+    Final Quality:
+      R-free            0.2466     Good
+      R-work            0.2295
+      Clashscore        12.5       Acceptable
+      Rama Outliers     2.4%
+      Rotamer Outliers  1.9%
+
+    Key Output Files:
+      overall_best_final_refine_001.pdb  (model)
+      overall_best_refine_data.mtz       (data)
+      overall_best_refine_map_coeffs.mtz (map coefficients)
+
+
+Understanding the metrics
+-------------------------
+
+================= ==================================================== ======= ===========
+Metric            What it means                                        Good    Concerning
+================= ==================================================== ======= ===========
+R-free            Agreement between model and data (lower is better)    <0.25   >0.35
+R-work            Like R-free on working set (always lower)             <0.20   >0.30
+Clashscore        Atomic clashes per 1000 atoms (lower is better)       <5      >20
+Ramachandran fav  Residues in ideal backbone geometry                    >97%    <90%
+Map CC            Map-model correlation, cryo-EM (higher is better)     >0.7    <0.5
+================= ==================================================== ======= ===========
+
+If R-free is going down cycle by cycle, things are working.
+
+
+Output files
+------------
+
+All output files are in the agent's working directory (usually
+``ai_agent_directory/`` inside your project folder).
+
+**Your refined model:** The ``.pdb`` file from the last successful
+refinement cycle.  The Results panel in the GUI shows you exactly
+where each output file is.
+
+**Map coefficients:** The ``.mtz`` file from the last refinement,
+containing 2Fo-Fc and Fo-Fc maps.  Open this in Coot alongside the
+refined model to inspect the electron density.
+
+**HTML structure report:** ``structure_report.html`` — a self-contained
+report with final metrics, an R-free trajectory chart, a workflow
+timeline, and output file locations.  Click the **Open Structure
+Report** button in the Results tab to view it.
+
+**Text structure report:** ``structure_determination_report.txt`` —
+a human-readable summary of the entire determination.
+
+**Session summary:** ``session_summary.json`` — a machine-readable
+summary with final metrics, stage outcomes, and metric trajectory.
+Useful for comparing multiple runs programmatically.
+
+
+What to do with the results: the Coot checklist
+------------------------------------------------
+
+The agent produces a model, but you are the scientist.  Before
+depositing or publishing, always inspect the model manually:
+
+1. **Inspect the difference density map.**  Display the Fo-Fc map
+   (green/red).  Large positive peaks (green) may indicate missing
+   atoms, alternate conformations, or unmodeled ligands.
+
+2. **Check Ramachandran outliers.**  In Coot, go to Validate →
+   Ramachandran Plot.  Decide whether the density supports each
+   unusual backbone conformation.
+
+3. **Verify ligand placement.**  If the agent fit a ligand, examine
+   it in the density.  If the real-space correlation (RSCC) is below
+   0.7, inspect closely.
+
+4. **Look at B-factor distribution.**  Regions with very high
+   B-factors may be poorly ordered or incorrectly built.
+
+5. **Check crystal contacts.**  Use Coot's symmetry display to verify
+   sensible crystal contacts and correct handling of special positions.
+
 
 When the AI Agent cannot resolve a problem
 ------------------------------------------
 
-If the AI Agent encounters a problem that it cannot solve, normally it will
-put up an html error window that describes the problem and what you can do
-to overcome it.
+If the AI Agent encounters a fatal error (such as a crystal symmetry
+mismatch between your files, or a missing SHELX installation), it
+stops the run and produces an HTML diagnosis page that describes the
+problem and what you can do to fix it.  The diagnosis contains three
+sections: "What went wrong," "Most likely cause," and "How to fix it."
 
-What to do with the AI analysis
--------------------------------
+If the agent is unable to produce an LLM-generated diagnosis (e.g. in
+rules-only mode), a simpler deterministic diagnosis is produced
+instead.
 
-The purpose of the AI Agent is to help you interpret your data and to
-suggest ways to analyze it. The agent will also suggest next steps.
-You should keep in mind that these tools
-can make mistakes and give you incorrect interpretations and poor suggestions
-at times, so you want to just take the information as suggestions to think
-about.
 
-You can combine this AI analysis with the Phenix 
-`chatbot <https://phenix-online.org/chatbot>`__ .  The chatbot can give
-you interactive answers to your questions using the same database of information
-as the AI analysis. This allows you to follow up on the AI analysis with
-questions to the chatbot. You can also paste part of the output from the
-AI analysis into the chatbot along with a question to get more context.
+Common problems and what to do
+------------------------------
 
-Running the AI agent with Phenix tutorials
-------------------------------------------
+**"R-free stuck above 0.40."** The model isn't fitting the data.
+Check the xtriage output for warnings about space group or twinning.
+Try a different search model or let the agent use AlphaFold (provide
+only the sequence).
 
-You can have the AI agent run most Phenix tutorials automatically.  Just
-set up a tutorial in the GUI (New project/Set up tutorial data/...) and 
-when it is ready, open the AI Agent in the GUI. The agent should recognize
-the tutorial and let you know that you can just hit Run to run the
-tutorial.  Note that this may not duplicate the tutorial exactly; the
-agent will read the tutorial instructions and try to follow them.
+**"Trying a different approach" (RETREAT).** The agent recognized
+that its current strategy isn't working and is backtracking.  This is
+expected behavior — not a failure.
+
+**"No matching plan template."** The agent couldn't find a strategy
+for your combination of files and advice.  It will still run in
+reactive mode (choosing programs one at a time).  Check that you've
+provided the right files for your experiment type.
+
+**"Safety Stop" or "Agent stopped."** Something is fundamentally wrong
+that the agent cannot fix by trying different programs.  The stop
+message will explain the issue.  Check the xtriage output, verify
+your input files, and look at the failure diagnosis if one was
+produced.
+
+
+Settings reference
+------------------
+
+**Analysis Depth** (``thinking_level``).  The most important setting:
+
+=============== ====================================================
+Setting         What it does
+=============== ====================================================
+None            Fastest.  No expert reasoning.
+Basic           Adds AI reasoning about each step.
+Advanced        Full structural validation, expert knowledge base.
+Expert          (Default) Everything in Advanced, plus a multi-stage
+                strategy plan with goal tracking.
+=============== ====================================================
+
+For most runs, **Expert** (the default) is the best choice.
+
+**Max cycles.**  Maximum programs to run (default: 20).  A typical
+structure determination takes 5–15 cycles.
+
+**Restart mode.**  Fresh (start new) or Resume (continue from where
+the previous run left off).
+
+**Provider.**  Which AI to use: Google (default), OpenAI, or Ollama
+(local).
+
+**Verbosity.**  Quiet (errors only), Normal (decisions and metrics),
+or Verbose (full detail including file selection).
+
 
 Job control with the AI Agent
 -----------------------------
 
-If you have already run an AI agent job, you can restore it in the GUI
-in the usual way by clicking on Job History and then clicking on the 
-run you are interested in. At the bottom of the Configure panel of the restored
-AI Agent job, there are keywords you can set for:
+If you have already run an AI Agent job, you can restore it in the
+GUI by clicking on Job History and then clicking on the run.  At the
+bottom of the Configure panel, you can set:
 
-- Restart mode: Fresh (start a new job)  or Resume (keep going with this job)
+- **Restart mode:** Fresh (start a new job) or Resume (keep going)
+- **Display Session and stop:** None, Basic, or Detailed — shows what
+  the agent has done so far without running anything
+- **Remove last N cycles and stop:** Enter a number to roll back that
+  many cycles (e.g. 5 to remove the last 5 decisions)
 
-- Display Session and stop: None (do not do this) or Basic (show basic info and stop or Detailed (show a lot of info and stop)
-
-- Remove last N cycles and stop: blank (do not do this) or a number like 5 (remove last 5 cycles and stop).
-
-You can use these commands to see what the AI Agent has done, to remove
-the last few jobs, or to go on from where you are now.  
-
-You can change the advice for the AI Agent when 
-you run with Restart mode = Resume if you want.  It will try to do what you
-ask it to do.
+You can change the advice when you resume.  The agent will try to
+follow your new instructions.
 
 
 Limitations of the AI Agent
----------------------------
+----------------------------
 
-The AI agent is limited to the programs that it has been set up to use,
-so some Phenix programs cannot be run with the AI agent.
-The LLMs used in choosing programs to run have varying capabilities, and they
-can sometimes suggest doing steps that might not be the best choices.
-The AI analysis used in the agent only knows what is in the documentation, the
-videos and newsletters, and the papers we have supplied. 
+- The agent processes program logs and numerical metrics.  It does
+  not see density maps directly — spatial information (ligand shape,
+  disorder) that an experienced crystallographer would see at a glance
+  is not available to the agent.
+- One dataset per session.  No multi-crystal merging, serial
+  crystallography, or ensemble strategies.
+- 23 PHENIX programs are currently registered.  Some programs
+  (``ensemble_refinement``, local sharpening) are not yet available.
+- The LLMs used in choosing programs have varying capabilities and
+  can sometimes suggest steps that might not be the best choices.
+- AI tools can make mistakes.  Use the agent as a helper; don't
+  expect it to always be right.  Always inspect the model in Coot.
 
-AI tools like this one can also just make mistakes and give incorrect
-answers. This does not seem to happen too often with this tool, but
-you need to always be on alert when using it.  Use the tool as a helper,
-don't expect it to always be right.
 
-If a detail is missing in the documentation, the AI may not know about it.
+Privacy
+-------
 
-Privacy in the AI Agent
------------------------
+If you use the AI Agent, your log files are sent to the Phenix server,
+and from there to OpenAI or Google Gemini.  That means the data could
+potentially be used by those providers in any way that they use other
+data sent to them.
 
-If you use the AI Agent tool, your log files are sent to the Phenix server,
-and from there on to OpenAI and Gemini.  That means the data 
-could potentially
-be used by OpenAI, and Google in any way that they use other 
-AI data that is sent to them.
+Running locally with Ollama keeps all data on your machine.  See below
+for setup instructions.
 
-Note that access to OpenAI and Gemini is non-commerical only.
+Note that access to OpenAI and Gemini through Phenix is non-commercial
+only.
 
-Running with the Phenix server with Google, Ollama, or OpenAI
--------------------------------------------------------------
 
-Normally you will use Google (gemini) as the AI LLM for your AI agent.  This
-requires an API key for google (supplied with Phenix).  You can also use Ollama,
-which is run on the Phenix server, or OpenAI, which also uses a supplied 
-API key.  You can run AI analyses with Google or OpenAI without 
-getting your own key, as a shared set
-of keys is supplied. The number of analyses with these shared keys
-is limited, however.
+Running with the Phenix server
+------------------------------
 
-Running locally with Google, Ollama, or OpenAI
-----------------------------------------------
+Normally you will use Google (Gemini) as the LLM provider.  This
+requires an API key for Google (supplied with Phenix).  You can also
+use Ollama (run on the Phenix server) or OpenAI (also uses a supplied
+API key).
 
-You can run on your own machine (not using the Phenix server) if you wish.
-You can select this in the GUI or on the command line with the keyword
-run_on_server=False.
+A shared set of keys is supplied, so you can run without getting your
+own key.  The number of analyses with shared keys is limited, however.
 
-Your options when running locally are to use Ollama (fully local, using your
-own installation of Ollama), or to use Google or OpenAI (your machine makes
-calls to Google or OpenAI to run their LLMs). See below for setting up API
-keys. 
+
+Running locally
+---------------
+
+You can run on your own machine (not using the Phenix server) by
+unchecking "Run on server" in the GUI or setting
+``run_on_server=False`` on the command line.
+
+Your options when running locally:
+
+- **Ollama** — fully local, requires your own Ollama installation
+- **Google** — your machine calls Google's API (needs your API key)
+- **OpenAI** — your machine calls OpenAI's API (needs your API key)
+
 
 Running locally with Ollama
 ---------------------------
 
-If you install Ollama on your machine (normally this is if you have a GPU
-machine), you can use you local installation of Ollama for all the LLM calls
-that the AI Agent makes. In this way, you can run everything locally and
-not send any data outside of your machine.
+If you install Ollama on your machine (typically with a GPU), you can
+run everything locally without sending any data outside your machine.
 
-Once you install Ollama, 
-you will want to it set up like this to get the right models 
-(note: these may change with Phenix versions):
+After installing Ollama, set up the required models::
 
-- ollama pull llama3.1:70b
-- ollama pull llama3.1:8b
-- ollama pull nomic-embed-text
+    ollama pull llama3.1:70b
+    ollama pull llama3.1:8b
+    ollama pull nomic-embed-text
 
-You will want to run it with environmental variables like these:
+Set the environment variables::
 
-- setenv CUDA_VISIBLE_DEVICES 0,1,2
-- setenv OLLAMA_NUM_PARALLEL 6
-- setenv OLLAMA_HOST 0.0.0.0:11434
+    setenv CUDA_VISIBLE_DEVICES 0,1,2
+    setenv OLLAMA_NUM_PARALLEL 6
+    setenv OLLAMA_HOST 0.0.0.0:11434
 
-Then when you run the agent, use the settings:
+Then run the agent with::
 
-- run_on_server=False
-- provider=ollama
+    run_on_server=False
+    provider=ollama
 
-Running the AI agent with an API key
-------------------------------------
-
-If you have a Google API key and set the environmental variable
-GOOGLE_API_KEY, (or an OpenAI API key and you set the
-variable OPENAI_API_KEY),
-you can set run_on_server=False and provider=google (or provider=openai) and
-the AI agent will use your key.
-
-You can use the command-line tool:
-
-  phenix.python $PHENIX/modules/cctbx_project/libtbx/langchain/tests/test_api_keys.py
-
-to check and see what API keys (OpenAI or Google) are working for you.
-(Note the path to this test could change.)
-
-Running locally with Google
----------------------------
-
-Getting and setting up a Google API key is not simple.  There are very 
-complicated on-line tools to set it up and you need to make very sure that
-you include safeguards to prevent unauthorized use of your API key.
-
-Here are instructions for setting up a Google API key (current as of 3/2026):
-
-- Set up google account:  Go to gmail.com and set up a new account
-- Activate your account:  Log in to your google account, then go to https://console.cloud.google.com/billing and click on activate to activate your billing account. You will need to put in a credit card.  It will not be charged unless you convert your account to a paid account.
-- Set up an API Key:  Go to https://console.cloud.google.com/apis/credentials and create a new API credential and copy the API key that you get.
-- Enable the API:  Go to https://console.cloud.google.com/apis/library. In the search bar, type "Generative Language API" and select the result which will load the Generative Language API page. Click the ENABLE button to enable this service.
-- Restrict the API key to your IP addresses:  Go to https://console.cloud.google.com/apis/credentials and click on your API key. Under "Application Restrictions" select "IP Addresses".  Then enter the IP addresses that you want to be allowed to use your API key, one at a time, with "Add".  Then under "API restrictions", select "Restrict key", and in the pull-down menu, select "Generative Language API".  Note if this does not appear, it means that step #4 did not work. 
-- To use your API key on a mac or linux machine, set an environmental variable in your csh or bash account with the value being the API key.  Like this for csh: setenv GOOGLE_API_KEY xxxxxxxx where xxxxxxxx is your API key
-- In the Phenix GUI, uncheck the button "Run on server" in order to use your key directly. Select provider=google to use this key.
-- Google gives you some credits good for 90 days when you start. Beyond the credits you will need to pay for access with your API key.
+Note: the required models may change with Phenix versions.
 
 
-Running locally with an OpenAI API key
---------------------------------------
+Running with an API key
+------------------------
 
-Setting up an OpenAI API key is simpler than a Google key, but there is no
-free trial period, so you pay for your key from the start.  Here is the 
-procedure:
+If you have a Google API key (set ``GOOGLE_API_KEY``) or an OpenAI
+API key (set ``OPENAI_API_KEY``), you can run locally with::
 
-- Log into openai.com (or create an account and log in)
-- Once logged in, look for the navigation menu on the left side of the screen and click on the "API keys" tab.
-- On the API keys page, click the "+ Create new secret key" button.
-- A pop-up will appear asking for an optional name for your key, such as "My Phenix Project," then click "Create secret key."
-- Your new API key (starting with `sk-...`) will be displayed. This is the only time it will be shown, so copy it immediately and store it in a secure location.
-- To use your API key on a mac or linux machine, set an environmental variable in your csh or bash account with the value being the API key.  Like this for csh: setenv OPENAI_API_KEY xxxxxxxx where xxxxxxxx is your API key
-- In the Phenix GUI, uncheck the button "Run on server" in order to use your key directly.  Select provider=openai to use this key.
-- You will need to pay for access with your API key.
+    run_on_server=False
+    provider=google     (or provider=openai)
 
+You can test your API keys with::
+
+    phenix.python $PHENIX/modules/cctbx_project/libtbx/langchain/tests/test_api_keys.py
+
+(Note: the path to this test could change.)
+
+
+Setting up a Google API key
+----------------------------
+
+Getting a Google API key requires several steps:
+
+1. **Set up a Google account:** Go to gmail.com and create an account.
+2. **Activate billing:** Log in, go to
+   https://console.cloud.google.com/billing and click Activate.  You
+   need a credit card but it won't be charged unless you convert to
+   a paid account.
+3. **Create an API key:** Go to
+   https://console.cloud.google.com/apis/credentials and create a new
+   credential.  Copy the API key.
+4. **Enable the API:** Go to
+   https://console.cloud.google.com/apis/library, search for
+   "Generative Language API", select it, and click ENABLE.
+5. **Restrict the key:** Go back to your credentials, click your key.
+   Under "Application Restrictions" select "IP Addresses" and enter
+   your IP addresses.  Under "API restrictions" select "Restrict key"
+   and choose "Generative Language API".
+6. **Set the environment variable:**
+   ``setenv GOOGLE_API_KEY xxxxxxxx``
+7. In the GUI, uncheck "Run on server" and set ``provider=google``.
+
+Google gives you credits good for 90 days.  Beyond that you pay for
+access.
+
+
+Setting up an OpenAI API key
+-----------------------------
+
+Setting up an OpenAI key is simpler but there is no free trial:
+
+1. Log into openai.com (or create an account).
+2. In the left menu, click "API keys".
+3. Click "+ Create new secret key".  Give it a name.
+4. Copy the key immediately (it's shown only once).  Store it
+   securely.
+5. ``setenv OPENAI_API_KEY sk-xxxxxxxx``
+6. In the GUI, uncheck "Run on server" and set ``provider=openai``.
+7. You pay for access from the start.
