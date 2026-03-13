@@ -16,8 +16,8 @@ to get help on any Phenix program.
 
 .. contents::
 
-General
--------
+Citing Phenix
+-------------
 
 **How should I cite PHENIX?**
 
@@ -29,6 +29,14 @@ Acta Cryst. (2019). D75, 861-877
 
 Individual programs may have additional citations.
 
+Clarifications
+--------------
+
+This section is used to clarify subjects.
+
+**Can I use Polder for cryo-EM data?**
+
+No, Polder is only suitable for crystallographic data
 
 **Is there a chatbot for Phenix help?**
 
@@ -156,6 +164,14 @@ To run MR-SAD in Phenix, you first run MR (molecular replacement) with
 Phaser, then you run autosol (experimental phasing), including the placed
 model you obtained with MR with the keyword partpdb_file=MR.1.pdb (or
 whatever your placed model is called).
+
+**Is there an AI agent for Phenix?**
+
+Yes,there is a Phenix AI agent. You can run it in the GUI or from the
+command line.  It will automatically run many Phenix programs for you.
+
+General
+-------
 
 **What kind of hardware do I need to run Phenix?**
 
@@ -684,14 +700,6 @@ on program behavior.  (The lone exception is Phaser, which by default sets the
 occupancies of HETATMs to zero unless they are part of a protein polymer.)
 The PDB annotators will change ATOM to HETATM as needed upon deposition.
 
-Clarifications
---------------
-
-This section is used to clarify subjects.
-
-**Can I use Polder for cryo-EM data?**
-
-No, Polder is only suitable for crystallographic data
 
 Rosetta
 -------
