@@ -304,6 +304,22 @@ instead.
 Common problems and what to do
 ------------------------------
 
+**Error message saying "Daily API usage limit reached. 
+Please try again tomorrow or run with your own API key."**  This 
+happens after you run the ai_agent or the ai_analysis tool on
+the server several times on the same day. The quotas reset each day,
+so you can try the next day. Alternatively, you can set up your
+own API key (see section below) and run locally instead of on
+the server.
+
+**Error message saying "API quota exceeded, please try another provider 
+(eg provider=openai) or wait for quota reset".**  This happens if you run on
+the server and the quota for all users for a particular provider is exceeded.
+The best solution for this situation is to select a different provider
+(if you were running with provider=google, try provider=openai or
+provider=ollama).  Alternatively you can wait for this
+quota to reset (typically the next day). 
+
 **"R-free stuck above 0.40."** The model isn't fitting the data.
 Check the xtriage output for warnings about space group or twinning.
 Try a different search model or let the agent use AlphaFold (provide
