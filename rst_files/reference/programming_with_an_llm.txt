@@ -1,17 +1,35 @@
-How to Program with an LLM
-==========================
+LLM-Assisted Development in PHENIX/cctbx
+==========================================
 
-A practical guide for programmers who are new to using large language
-models as coding partners. The quick-start below gets you going
-immediately. Part 1 covers general principles that apply to any LLM and
-any codebase, with the project-specific prompts shown in context where
-each principle is introduced. Part 2 covers the project workflow: rules
-of engagement, which guideline files to attach and when, and checklists
-for the human side of the process.
+*This document serves as both the official CCTBX LLM Developer Policy
+and the implementation guide.*
 
-All prompt files live in libtbx/langchain/docs/prompts/. The small ones are
-reproduced in full throughout this document so you can read the guide
-without opening anything else.
+
+HINT:  Open a separate LLM window and supply this document with a 
+prompt like this...the LLM will guide you through this whole process.
+
+  Role: Act as my Senior Reviewer following and enforcing the attached PHENIX/cctbx LLM Development Policy. I am using a separate LLM for coding; your job is to audit and guide me.Protocol:Initialize: Ask me for the Phase 1 details: Bug description, affected files, and if an ARCHITECTURE.md exists.Plan Audit: Critique my coding plan for flaws, the 3-file limit, and test coverage before I start.Verification: After each code change, remind me to run ast.parse() and relevant PHENIX validation tools (e.g., phenix.molprobity).Audit: Ensure no placeholder comments are used and conduct the "What Did We Miss?" check at the end. Acknowledge and ask the Phase 1 questions to begin.
+
+
+
+This document describes the workflow that PHENIX/cctbx developers follow when
+using LLMs to write or modify code in the PHENIX/cctbx ecosystem. The
+goal is not to restrict LLM use — it is to ensure that LLM-generated
+code meets the same standards as hand-written code: correct, tested,
+portable, and maintainable.
+
+The quick-start below gets you going immediately. Part 1 covers general
+principles that apply to any LLM and any codebase, with the
+project-specific prompts shown in context where each principle is
+introduced. Part 2 covers the project workflow: rules of engagement,
+which guideline files to attach and when, and checklists for the human
+side of the process. The appendices contain a file reference, the full
+text of the opening prompt, a prompt reference card, and a pull request
+checklist.
+
+All prompt files live in ``libtbx/langchain/docs/prompts/``. The small
+ones are reproduced in full throughout this document so you can read the
+guide without opening anything else.
 
 --------------
 
@@ -22,32 +40,33 @@ If you want to start using these files right now, here is the recipe.
 Everything referenced here is explained in detail in Parts 1 and 2.
 
 1. **Gather your materials.** You need the code files to be changed, a
-   description of the task, and the prompt files 
+   description of the task, and the prompt files
    from libtbx/langchain/docs/prompts/.
 
-2. **Open a new LLM session.** Attach as files:
-   CCTBX_LLM_PROGRAMMING_GUIDELINES.md, WORKFLOW.md. 
+2. **Open a new LLM session.** *Attach* as files (do NOT paste):
+   CCTBX_LLM_PROGRAMMING_GUIDELINES.md, WORKFLOW.md.
    These are located in libtbx/langchain/docs/prompts.
-   and HANDOFF.json if resuming. 
-   Also ARCHITECTURE.md (if you have one — see §1.11), and your code archive,
+   Also attach HANDOFF.json if resuming,
+   ARCHITECTURE.md (if you have one — see §1.11), and your code archive.
    (See §2.2 for when to use which file.)
-   
 
-3. **Paste WORKFLOW_PROMPT.txt** as the first message. The LLM will
-   acknowledge the rules and ask for HANDOFF.json or begin reading
-   it.
+3. ***Paste* WORKFLOW_PROMPT.txt** into the chat as the first message.
+   The LLM will acknowledge the rules and ask for HANDOFF.json or begin
+   reading it.
 
-4. **Describe the task and paste PLAN_PROMPT.txt.** Wait for the
+4. **Describe the task and *paste* PLAN_PROMPT.txt.** Wait for the
    plan. Read it carefully.
 
-5. **Optionally review the plan.** Copy the plan to a second LLM with
-   REVIEW.txt. Feed the critique back. Revise once or twice.
+5. **Optionally review the plan.** Copy the plan to a second LLM and
+   *paste* REVIEW.txt. Feed the critique back. Revise once or twice.
 
 6. **Let the LLM implement.** Verify each step (see §1.5). Make sure it
    updates HANDOFF.json after each step.
 
 7. **If the session dies,** start a new session with the same
-   attachments and paste CONTINUE_PROMPT.txt.
+   file attachments and *paste* the verification prompt from §1.7.
+   (Or use the shorthand CONTINUE_PROMPT.txt if you trust the
+   checkpoint.)
 
 8. **Ask “what did we miss?”** Before closing out, ask the LLM (or a
    second LLM) whether there are side effects, callers, edge cases, or
@@ -80,6 +99,16 @@ consequences:
 Your job is to be the **verifier and navigator**. The LLM generates; you
 validate. This division of labor is the foundation of everything else in
 this document.
+
+**A special note on scientific code.** LLMs have no understanding of
+physical correctness. They will write code that compiles and passes naive
+tests but is scientifically wrong — wrong units, stale caches,
+numerically unstable formulas. In crystallographic code, be especially
+alert to: unit confusion (distances in Å vs fractional coordinates,
+R-factors as fractions vs percentages, B-factors in Å²), spatial caches
+that must invalidate on symmetry changes, and division by values that can
+be zero in pathological cases. The LLM will not catch these; you must.
+See §1.5 for the full verification checklist.
 
 1.2 Context is Everything
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,8 +143,15 @@ or it effectively does not exist.
 
 **Practical tips:**
 
--  Attach files rather than pasting them into the chat when possible.
-   Pasted text makes the conversation harder to follow.
+-  **Attach vs. paste.** This is a critical distinction for context
+   window management. **Attach** large reference files (guidelines,
+   source code, YAML definitions, architecture documents) as file
+   attachments. **Paste** only short, immediate context (error messages,
+   a specific plan step, a task description, small prompts) into the chat
+   window. Attached files are available for the LLM to consult on demand
+   without crowding its active reasoning space, while pasted text
+   competes directly with the conversation for the LLM's attention. When
+   in doubt, attach.
 -  If the conversation is getting long and the LLM seems confused, start
    a fresh session with a clean summary rather than continuing. (See
    §1.7 on session management and §1.6 on conversation drift.)
@@ -179,10 +215,19 @@ The recommended cycle:
     WORKFLOW_PROMPT
 
 **Step 1 — Plan.** Ask the LLM to produce a written plan: problem
-description, approach, implementation steps, risks. If you have an
-ARCHITECTURE.md (see §1.11), provide it here so the plan accounts
-for the system’s structure. If you don’t have one and the task is
-substantial, ask the LLM to draft one first — review and correct it,
+description, approach, implementation steps, risks, **and a test plan.**
+The test plan is not an afterthought — it is a first-class deliverable
+equal in importance to the implementation steps. It must specify which
+test files will be created or modified, one entry per test function
+(name, what it exercises, what edge cases it covers), and how the tests
+verify correctness (specific expected values, not just “is not None”).
+Every implementation step must have corresponding tests identified in
+the plan. Missing test coverage is the most common plan deficiency —
+pay particular attention to it during review.
+
+If you have an ARCHITECTURE.md (see §1.11), provide it here so the plan
+accounts for the system’s structure. If you don’t have one and the task
+is substantial, ask the LLM to draft one first — review and correct it,
 then use it as input to the plan. When you are ready to request the
 plan, use this prompt:
 
@@ -222,15 +267,26 @@ important thing is a different model from the one that wrote the plan.)
 1–2 revision rounds — diminishing returns set in fast.
 
 **Step 4 — Implement.** Only now does the LLM write code, following the
-agreed plan step by step. The LLM should checkpoint after each step so
-that work is recoverable if interrupted (see §1.7).
+agreed plan step by step. Each step includes both the code change and its
+tests — **tests are written alongside the code, not after it.** The
+3-file rule applies: each step must modify no more than 3 files. If a
+change requires more, split it into multiple atomic steps with a
+verification pass (review + test) between them. The LLM should
+checkpoint after each step so that work is recoverable if interrupted
+(see §1.7).
+
+After each step, ask the LLM: **“Are there any other fixes or additions
+you would like to make to this change before we move on?”** This is the
+single most effective quality gate — it catches oversights while the
+context is still fresh.
 
 **Step 5 — Verify.** You run the code, run the tests, and confirm
 correctness. The LLM cannot do this for you (see §1.5).
 
-**Step 6 — Ask “what did we miss?”** Before closing out, ask the LLM to
-consider whether the changes have unaddressed side effects, untouched
-callers, missing test coverage, or downstream consequences. This is
+**Step 6 — Ask “what did we miss?”** Before closing out, ask the LLM
+to consider whether the changes have unaddressed side effects, untouched
+callers, missing test coverage, or downstream consequences. Do not skip
+this — it catches problems that verification (§1.5) does not. It is
 especially valuable with a second LLM that wasn’t involved in the
 implementation. See §1.12.
 
@@ -262,10 +318,32 @@ Concrete verification steps:
    while claiming to only reformat.
 -  **Check edge cases** the LLM may not have considered: None values,
    empty collections, missing keys, unexpected types, concurrent access.
+-  **Negative tests.** Confirm that invalid input raises the expected
+   error, not just that valid input produces the right output.
+-  **Revert test.** If you undo the code change, at least one new test
+   must fail. If no test fails, the tests aren’t actually testing the
+   change.
+-  **No placeholders.** Never accept code containing comments like
+   ``# ... rest of function stays the same`` or ``# unchanged``. The
+   LLM must provide the full content of any function or block it
+   modifies to ensure no logic is accidentally deleted. If a file is too
+   large for the LLM to reproduce in full, require it to show the exact
+   old and new text so the change is unambiguous. Placeholder comments
+   are one of the most common ways LLMs silently corrupt a codebase —
+   when the output is pasted in, everything after the placeholder
+   vanishes.
+-  **Scientific validation.** If the change affects structural data or
+   maps, the verification step must include running domain-specific
+   validation tools (e.g., ``phenix.model_vs_data``,
+   ``phenix.molprobity``, or ``phenix.mtriage``) on the output to ensure the scientific
+   integrity of the result, even if the code passes its unit tests.
+   Unit tests verify that code behaves correctly; validation tools verify
+   that the scientific output is correct. Both are required for changes
+   that touch crystallographic or cryo-EM logic.
 
 **Project-specific checks** (see §2.4 for the full checklist):
 
--  **Command check:** If the code builds PHENIX commands, verify every
+-  **Command check:** If the code builds PHENIX/cctbx commands, verify every
    parameter against the program’s PHIL definition or programs.yaml
    strategy flags. The LLM will hallucinate parameters that don’t exist.
 -  **Import check:** If the code is in agent/, verify every
@@ -364,15 +442,36 @@ a fresh start on the instructions you provide.
 Resuming after interruption
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When a session dies (timeout, context limit, crash), here is the exact
-recovery procedure:
+When a session dies (timeout, context limit, crash), **do not** attempt
+to resume by asking the LLM to "continue where you left off" — it has no
+memory of the prior session and will guess (often incorrectly). Instead,
+follow this exact recovery procedure:
 
 1. Open a new LLM session.
-2. Attach the same reference documents as before
+2. *Attach* the same reference documents as before
    (CCTBX_LLM_PROGRAMMING_GUIDELINES.md, WORKFLOW.md, and
    AI_AGENT_LLM_PROGRAMMING_GUIDELINES.md if applicable).
-3. Attach the current HANDOFF.json and the code archive.
-4. Paste this prompt as the opening message:
+3. *Attach* the current HANDOFF.json and the code archive.
+4. *Paste* this prompt as the opening message:
+
+::
+
+   I am resuming a previous session. Read the attached
+   HANDOFF.json and the current state of the code to
+   determine exactly where we left off. Do not guess;
+   verify against the file contents.
+
+5. **Verify before proceeding.** When the LLM summarizes the state,
+   check it against what you know. If HANDOFF.json was stale or the LLM
+   misinterprets the state, correct it now — before it writes code based
+   on a wrong assumption.
+
+The LLM will read HANDOFF.json, tell you where things stand, and
+propose the next step. Confirm before it proceeds.
+
+**Shorthand alternative.** If you are confident that HANDOFF.json is
+current and complete, you can use the shorter CONTINUE_PROMPT.txt
+instead:
 
 ::
 
@@ -390,10 +489,8 @@ recovery procedure:
    If anything is unclear or missing, ask before
    proceeding.
 
-(This is CONTINUE_PROMPT.txt.)
-
-The LLM will read HANDOFF.json, tell you where things stand, and
-propose the next step. Confirm before it proceeds.
+(This is CONTINUE_PROMPT.txt.) Use the full verification prompt above
+when you have any doubt about the checkpoint's accuracy.
 
 Starting a new session (not a resume)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -523,7 +620,9 @@ the three other files that must stay in sync with it.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After the code is written and the tests pass, there is one more step
-before you close out: ask the LLM whether anything was missed.
+before you close out: ask the LLM whether anything was missed. This is
+Step 6 in the Plan–Review–Implement cycle (§1.4). Do not skip it — it
+is cheap to do and occasionally catches expensive mistakes.
 
 This catches a class of problems that verification (§1.5) does not: side
 effects, downstream consequences, and unstated assumptions that neither
@@ -573,14 +672,19 @@ in the Appendix), the LLM is instructed to follow these rules. Knowing
 them helps you understand why the LLM behaves the way it does — and when
 to correct it.
 
-**Small steps.** The LLM must modify at most 3 files per step unless it
-justifies more. Work is broken into micro-steps: understand the problem,
-identify files, create a plan, implement one change, validate, repeat.
+**Small steps (the 3-file rule).** The LLM must modify at most 3 files
+per implementation step. If a change requires more, it must be split
+into atomic steps with a verification pass between them. Work proceeds
+in micro-steps: understand the problem, identify files, create a plan,
+implement one change, validate, repeat.
 
 **No placeholders.** The LLM must provide full copies of all changed
-files, never diffs-only or # ... rest of code stays the same ...
+files, never diffs-only or “# ... rest of code stays the same ...”
 comments. You should be able to drop the output directly into the
-codebase.
+codebase. If the LLM produces output containing placeholder comments,
+reject it immediately and ask for the complete code. This is a hard
+rule, not a preference — placeholder comments silently delete code when
+pasted. See §1.5 for details.
 
 **Mandatory checkpoints.** The LLM must update HANDOFF.json after
 every micro-step — after reasoning, after each code change, before
@@ -615,7 +719,7 @@ wastes context window space. Here is when to use each:
    dict.get(), R-free as fraction not percentage, hardcoded path
    separators), error handling rules (“never raises” pattern, no bare
    excepts), and a pre-submission checklist. Use for any code involving
-   crystallographic logic, PHIL parameters, or standard PHENIX
+   crystallographic logic, PHIL parameters, or standard PHENIX/cctbx
    utilities.
 
 -  **WORKFLOW.md** — Defines the checkpoint discipline, plan format,
@@ -725,12 +829,12 @@ for itself. Use this checklist to make sure you are holding up your end.
 
 **At session start:**
 
--  ☐ Did I attach CCTBX_LLM_PROGRAMMING_GUIDELINES.md and
+-  ☐ Did I *attach* (not paste) CCTBX_LLM_PROGRAMMING_GUIDELINES.md and
    WORKFLOW.md?
--  ☐ Did I attach ARCHITECTURE.md (if I have one)?
--  ☐ Did I also attach AI_AGENT_LLM_PROGRAMMING_GUIDELINES.md (if
+-  ☐ Did I *attach* ARCHITECTURE.md (if I have one)?
+-  ☐ Did I also *attach* AI_AGENT_LLM_PROGRAMMING_GUIDELINES.md (if
    working on agent code)?
--  ☐ Did I attach HANDOFF.json (if resuming)?
+-  ☐ Did I *attach* HANDOFF.json (if resuming)?
 -  ☐ Did I provide only the relevant code files, not the entire
    codebase?
 
@@ -742,12 +846,30 @@ for itself. Use this checklist to make sure you are holding up your end.
 
 **After each implementation step:**
 
+-  ☐ Did I ask “Any other fixes before we move on?”
+-  ☐ Were the tests written alongside the code (not after)?
 -  ☐ Did I run ast.parse() (or equivalent) on every changed file?
 -  ☐ Did I run the tests that exercise the changed code?
 -  ☐ Did I read the diff and reject unrelated changes?
--  ☐ Did the LLM hallucinate any PHENIX parameters? (Check against the
-   actual PHIL definition or programs.yaml strategy flags.)
+-  ☐ Did the step modify no more than 3 files?
+-  ☐ Does the output contain any placeholder comments? If so, reject it.
 -  ☐ Is the LLM keeping HANDOFF.json current? If not, remind it.
+
+**Additional checks for scientific or algorithmic changes:**
+
+-  ☐ Did I check the math against the published literature?
+-  ☐ Are units correct? (Distances in Å, R-factors as fractions, angles
+   in degrees, B-factors in Å².)
+-  ☐ Did the LLM hallucinate any PHENIX/cctbx parameters? (Check against the
+   actual PHIL definition or programs.yaml strategy flags.)
+-  ☐ Do the tests include negative tests (invalid input raises expected
+   error)?
+-  ☐ Would at least one new test fail if the code change were reverted?
+-  ☐ If the change involves spatial operations (KD-trees, neighbor
+   searches), does the code invalidate caches on unit cell or symmetry
+   changes?
+-  ☐ If the change affects structural data or maps, did I run
+   phenix.model_vs_data / phenix.molprobity / phenix.mtriage?
 
 **Agent-specific checks (when working on agent code):**
 
@@ -776,7 +898,7 @@ for itself. Use this checklist to make sure you are holding up your end.
 Appendix A: File Reference
 --------------------------
 
-All files live in docs/prompts/.
+All files live in ``libtbx/langchain/docs/prompts/``.
 
 **Attach as files** — these are large reference documents. Do NOT paste
 their contents into the chat; that crowds out the LLM’s reasoning space
@@ -834,8 +956,10 @@ fine.
 -  **CONTINUE_PROMPT.txt**
 
    -  Size: ~11 lines
-   -  Purpose: Resume after interruption
-   -  When to paste: When resuming a dead session (full text in §1.7)
+   -  Purpose: Shorthand resumption (see §1.7)
+   -  When to paste: When resuming a dead session and you trust the
+      checkpoint. Use the full verification prompt from §1.7 when in
+      doubt.
 
 **Carried between sessions** — the LLM creates and maintains this file;
 you save it and provide it to the next session.
@@ -900,7 +1024,7 @@ than inline in Part 1.
 
    ## Constraints
 
-   * Modify at most 3 files unless justified
+   * Modify at most 3 files per implementation step unless justified
    * Prefer minimal diffs over rewrites
    * Preserve public APIs unless explicitly required
 
@@ -913,3 +1037,98 @@ than inline in Part 1.
    3. Brief explanation
 
    Acknowledge these rules and begin by reading HANDOFF.json or requesting it.
+
+--------------
+
+Appendix C: Prompt Reference Card
+----------------------------------
+
+A quick reference for which prompt to use at each point in the workflow.
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+
+   * - When
+     - Prompt
+   * - Start
+     - *Attach* guidelines + source files + test files
+   * - Resuming
+     - *Attach* same files + HANDOFF.json. *Paste:* “Read HANDOFF.json
+       and the current code to determine where we left off. Do not guess;
+       verify against file contents.”
+   * - Before coding
+     - “Create a plan as a markdown file, including a detailed test plan”
+   * - Plan review
+     - “What could go wrong? Are the tests sufficient?”
+   * - Each step
+     - “Write the code and its tests together. No more than 3 files.”
+   * - Each step
+     - “Any other fixes before we move on?”
+   * - Each step
+     - “Run all relevant tests (new and existing)”
+   * - Each step
+     - Update HANDOFF.json before proceeding
+   * - Scientific changes
+     - “Run phenix.model_vs_data / phenix.molprobity / phenix.mtriage on
+       the output”
+   * - All done
+     - “Run a full audit of all changes”
+   * - All done
+     - “What did we miss? Any side effects, callers, or gaps?”
+   * - All done
+     - “Verify every test in the plan has been implemented”
+   * - Final
+     - “Check changed files for Common Pitfalls”
+
+--------------
+
+Appendix D: Pull Request Checklist
+------------------------------------
+
+Use this checklist when reviewing an LLM-assisted pull request. It
+reorganizes the session checklist from §2.4 for the commit-time review
+moment.
+
+**Planning and review**
+
+-  ☐ A plan was created and reviewed
+-  ☐ The plan includes a detailed test plan with specific test functions
+-  ☐ Each step was reviewed individually
+-  ☐ “Any other fixes?” asked after each step
+
+**Tests**
+
+-  ☐ Every implementation step has corresponding tests
+-  ☐ Tests written alongside code, not after
+-  ☐ Tests assert specific expected values, not just absence of errors
+-  ☐ Edge cases covered (None, empty, boundary, error paths)
+-  ☐ Negative tests confirm invalid input raises expected errors
+-  ☐ At least one new test would fail if the code change were reverted
+-  ☐ approx_equal() for all float comparisons
+-  ☐ Full test suite passes (not just new tests)
+
+**Code quality**
+
+-  ☐ All changed files parse cleanly
+-  ☐ Diff contains only intentional changes
+-  ☐ No more than 3 files modified per step
+-  ☐ No placeholder comments (“# ... rest stays the same”)
+-  ☐ No hardcoded path separators
+-  ☐ No bare except: statements
+-  ☐ No .get("key", "").lower() on potentially-None values
+
+**Scientific correctness (when applicable)**
+
+-  ☐ Algorithms checked against published literature
+-  ☐ Units correct (Å, fractions, degrees, Å²)
+-  ☐ Spatial caches (KD-trees) invalidate on symmetry/unit cell changes
+-  ☐ Scientific validation tools run for changes affecting structural
+   data or maps
+
+**Process**
+
+-  ☐ Documentation updated
+-  ☐ HANDOFF.json reflects final state
+-  ☐ “What did we miss?” asked before closing out
+-  ☐ Commit message describes the change, not the tool
