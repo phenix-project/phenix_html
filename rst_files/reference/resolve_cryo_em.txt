@@ -320,6 +320,10 @@ If density modification is working well, you should see:
   An improvement in reported resolution. Typically this is small..from 0.05 A
   to 0.5 A.  If it is zero...it probably did not work.
 
+  Note on Estimated improvement: A negative number is good here.  For example,
+  Estimated improvement: -0.081 A means that the resolution is
+  0.081 A finer (a lower number, better resolution ).
+
   More fine detail. Density modification mostly changes
   the high-resolution part of your map. (The low-resolution part of your map
   is generally already very good, and usually if it is not then density
