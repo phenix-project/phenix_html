@@ -174,6 +174,13 @@ command line.  It will automatically run many Phenix programs for you.
 
 You can use phenix.pdbtools on the command line to combine two models. 
 
+**Is a negative value for Estimated improvement good or bad in resolve_cryo_em?**
+
+A negative number for Estimated improvement is good in resolve_cryo_em.
+  For example, Estimated improvement: -0.081 A means that the resolution is
+  0.081 A finer (Starting at 2.981 A and reduced to 2.900 A).
+
+
 General
 -------
 
