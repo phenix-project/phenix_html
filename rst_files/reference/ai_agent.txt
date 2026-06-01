@@ -441,11 +441,20 @@ You can run on your own machine (not using the Phenix server) by
 unchecking "Run on server" in the GUI or setting
 ``run_on_server=False`` on the command line.
 
+You can also force this by setting the environmental variable FORCE_NO_AI_SERVER to a value of 1.
+
 Your options when running locally:
 
 - **Ollama** — fully local, requires your own Ollama installation
 - **Google** — your machine calls Google's API (needs your API key)
 - **OpenAI** — your machine calls OpenAI's API (needs your API key)
+- **Anthropic** — your machine calls Claude's API (needs your API key)
+- **PortKey** — your machine calls your PortKey API (needs your API key and setup)
+
+If you want to run locally, you may need to install additional packages on your machine.  You can do this with a phenix command:
+
+  ``phenix.install_ai_tools``
+
 
 
 Running locally with Ollama
