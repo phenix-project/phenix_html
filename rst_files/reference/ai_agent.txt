@@ -451,9 +451,11 @@ Your options when running locally:
 - **Anthropic** — your machine calls Claude's API (needs your API key)
 - **PortKey** — your machine calls your PortKey API (needs your API key and setup)
 
-If you want to run locally, you may need to install additional packages on your machine.  You can do this with a phenix command:
+If you want to run locally, you may need to install additional packages on your machine.  You can do this with these phenix commands (substitute your provider name (ollama/google/openai/anthropic/portkey):
 
   ``phenix.install_ai_tools``
+
+  ``phenix.rebuild_ai_database google``
 
 
 
@@ -496,7 +498,7 @@ You can test your API keys with::
 
     phenix.python $PHENIX/modules/cctbx_project/libtbx/langchain/tests/test_api_keys.py
 
-(Note: the path to this test could change.)
+(Note: the path to this test could change and it only tests google and openai keys at the moment..)
 
 
 Setting up a Google API key
