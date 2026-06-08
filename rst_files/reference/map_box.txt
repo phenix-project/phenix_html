@@ -144,12 +144,15 @@ For questions, bug reports, feature requests: Pavel Afonine (PAfonine@lbl.gov)
 
   6)  Running map_box with bounds that are outside the map.  You can specify
       any lower and upper bounds for your output map, but if the bounds are
-      outside the map you supply the values may not make any sense.  By 
+      outside the map you supply the values may not make any sense.  
+      If you are running with a full-size crystallographic map, by 
       default the map you supply is wrapped so that the value for a point 
       outside the map is taken from the grid point that would be in this place
       if another copy of the map were placed right next to your map.  You can
       turn this off and instead supply zeroes outside the map with the
-      keyword restrict_map_size=True. 
+      keywords wrapping=False and restrict_map_size=True.  For cryo-EM maps,
+      the default for wrapping is False, and values for points outside the
+      supplied map will normally be set to zero.
 
   7)  What to do after MapBox.  Normally you will have cut out part of the
       map with MapBox for the purpose of working with just part of the map.
