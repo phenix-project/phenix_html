@@ -78,6 +78,47 @@ the chain that each is to represent.
 
 Finally all the weighted average maps are combined to form a composite map.
 
+Weighting by half-map correlation instead of map-model correlation
+------------------------------------------------------------------
+
+By default (weight_by=map_model) the maps are weighted using the map-model
+correlation described above. Alternatively, if you supply half-maps for every
+map, you can set weight_by=half_map to weight each map in each region by the
+correlation between its two half-maps in that region, instead of by the
+map-model correlation.
+
+The half-map correlation is calculated in the same local regions and in each
+map's own frame, exactly parallel to the map-model correlation, except that it
+compares the two half-maps to each other rather than comparing the map to the
+model. This has two advantages: it does not depend on the model (so it is not
+affected by how well the model fits or whether the model is in the correct
+register), and it measures the local reproducibility (signal-to-noise) of each
+map directly. The map with the more reproducible (higher half-map correlation)
+density in a region is given more weight there.
+
+If apply_cc_star=True (the default in this mode), the half-map correlation r is
+converted to CC* = sqrt(2r/(1+r))  before
+weighting. CC* is an estimate of the correlation that the full map would have
+with the true (noise-free) map.
+
+The half-map correlation is evaluated on copies of the half-maps that have been
+low-pass filtered to the working resolution (half_map_cc_resolution, which
+defaults to the value of resolution). This matches the resolution range used by
+the map-model correlation and keeps high-resolution noise from dominating the
+correlation. Set half_map_cc_resolution to 0 (or a negative value) to use the
+full band with no filtering.
+
+The same exponential weighting scheme is used as for map-model correlation, but
+with a separate, tighter scale (half_map_delta_cc_norm, default 0.02), because
+half-map correlations and CC* values cluster near 1 and have a smaller dynamic
+range than map-model correlations. The half_map_cc_min keyword sets a floor on
+the half-map correlation (and on r before CC*).
+
+When half-maps are supplied, a model-independent quality metric is also
+reported at the end of the run: the correlation between the two composite
+half-maps over the model region, together with its CC*. Unlike the map-model
+correlations of the composite half-maps, this metric does not require a model.
+
 Normalization and scaling of input maps
 ---------------------------------------
 
@@ -150,6 +191,7 @@ You cannot use region_selection with use_model_symmetry.
 Literature
 ----------
 
+{{citation:cc_star}}
 
 Additional information
 ----------------------
@@ -174,6 +216,10 @@ at the end of the procedure.  You can use these half-maps to estimate the
 local resolution of the final composite map (using phenix.local_resolution)
 or for other procedures requiring half maps. Note that the half maps could
 have discontinuities so they may not be appropriate for all uses of half maps.
+
+The half-maps can also be used to decide how to weight the maps, instead of
+using the map-model correlation, by setting weight_by=half_map (see "Weighting
+by half-map correlation" above).
 
 List of all available keywords
 ------------------------------
