@@ -1,0 +1,132 @@
+Finding reference models with phenix.find_reference
+===================================================
+
+Author(s)
+---------
+
+-  find_reference: Oleg Sobolev
+
+Purpose
+-------
+
+phenix.find_reference finds suitable reference models for a supplied
+macromolecular model. For each chain of the input model it searches the RCSB
+PDB by sequence, selects the best-matching high-quality structure(s), and
+writes out per-chain reference model files together with a parameter file that
+switches on reference-model restraints in phenix.refine or
+phenix.real_space_refine.
+
+Reference-model restraints bias the torsion angles of the working model toward
+a related, typically higher-quality structure. This is especially helpful at
+low resolution, where it reduces overfitting. phenix.find_reference automates
+the otherwise manual task of locating an appropriate reference and preparing it
+for refinement.
+
+How it works
+------------
+
+1. The input model is split into chains, and NCS is detected so that identical
+   chains are searched only once.
+
+2. Each unique chain sequence is used to query the RCSB PDB by sequence. Both
+   experimental structures (X-ray) and computational models (Computed Structure
+   Models, e.g. AlphaFold) may be returned; this is controlled by
+   **include_models**.
+
+3. Candidates are filtered on quality. Experimental structures are judged on
+   resolution, R-work/R-free and the wwPDB validation statistics (percentage of
+   Ramachandran and rotamer outliers, and clashscore). Computational models,
+   which have no experimental validation report, are ranked instead by their
+   pLDDT confidence.
+
+4. The best candidate(s) per chain are fetched, optionally superposed onto the
+   target and trimmed back to the region that aligns to the target chain.
+
+5. For each target chain a reference model file is written, and a single
+   ``reference_model`` parameter file is written that references those files and
+   records the per-chain target-to-reference pairing.
+
+Output
+------
+
+- One reference model file per target chain, named
+  ``reference_for_chain_<chain>_<pdb_id>.pdb`` (or ``.cif`` when the reference
+  does not fit the PDB format).
+
+- A parameter file, ``<model>_references_NNN.eff``, containing a
+  ``reference_model`` scope that lists the reference files and the per-chain
+  ``reference_group`` mapping. Pass this file to phenix.refine or
+  phenix.real_space_refine to apply reference-model restraints, e.g.::
+
+      phenix.refine model.pdb data.mtz model_references_001.eff
+
+  Whether the parameter file is written in phenix.refine scope or
+  phenix.real_space_refine scope is selected with **output_phil_format**.
+
+Options
+-------
+
+  **identity_cutoff** - minimum fractional sequence identity for a PDB hit to be
+  accepted as a reference.
+
+  **include_models** - which classes of reference to consider: ``xray``
+  (experimental) and/or ``csm`` (computational structure models). Both are
+  enabled by default.
+
+  **resolution_cutoff**, **rama_outliers_cutoff**, **rota_outliers_cutoff**,
+  **clashscore_cutoff** - quality cutoffs applied to experimental references.
+
+  **overall_coverage_cutoff** - minimum fraction of the target macromolecule
+  (protein/RNA/DNA residues) that the assembled references must cover. If the
+  result falls below this value, no references are returned.
+
+  **backbone_rmsd_cutoff** - maximum backbone superposition RMSD (Angstrom)
+  allowed between a reference chain and its target chain (None disables it).
+
+  **superpose_reference_on_target** - superpose each reference onto the target
+  before writing it (default True).
+
+  **trim_reference_to_target** - trim each reference chain to the region that
+  aligns to the target, dropping non-overlapping terminal residues
+  (default True).
+
+  **output_phil_format** - write the reference_model parameter file in
+  phenix.refine (``refine``) or phenix.real_space_refine (``rsr``) scope.
+
+Examples
+--------
+
+From the command line::
+
+    phenix.find_reference model.pdb
+
+This searches the PDB for each chain of ``model.pdb`` and writes the per-chain
+reference model files and a ``model_references_NNN.eff`` parameter file.
+
+To consider only experimental references at a stricter sequence identity::
+
+    phenix.find_reference model.pdb include_models=xray identity_cutoff=0.95
+
+In the GUI the tool is available under **Models -> Superpose, search, compare,
+analyze symmetry -> Find reference model**. After a run, the Results tab lists
+the reference found for each chain with its quality metrics; the found
+references and the input model can be opened together in Coot or ChimeraX, and
+the run can be continued directly in phenix.refine or phenix.real_space_refine
+with the target model and references preloaded.
+
+Possible Problems
+-----------------
+
+-  phenix.find_reference queries the RCSB PDB over the network; a working
+   internet connection is required.
+
+-  If no reference passes the quality and coverage cutoffs, no parameter file is
+   written. Loosen the cutoffs (for example lower **identity_cutoff**, or raise
+   the outlier/clashscore cutoffs) and run again.
+
+-  Multi-model files (multiple MODEL/ENDMDL records) are not supported.
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.find_reference}}
