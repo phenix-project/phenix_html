@@ -33,8 +33,12 @@ currently recommended:
 
 **Related programs**
 
--  `phenix.validation_cryoem <../reference/validation_cryo_em.html>`_: This program 
+-  `phenix.validation_cryoem <../reference/validation_cryo_em.html>`_: This program
    can be used to generate the table of statistics.
+-  `phenix.pdb\_deposition <../reference/pdb_deposition.html>`__: This program
+   uploads your model, maps and half maps to the wwPDB OneDep system and tracks
+   processing, so that you can finish the deposition in the OneDep depositor
+   interface.
 -  `phenix.get_pdb_validation_report <../reference/get_pdb_validation_report.html>`__:
    This program submits your model and data in CIF format to the PDB OneDep
    server to get a validation report in PDF an XML formats.

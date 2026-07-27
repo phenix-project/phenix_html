@@ -1,0 +1,162 @@
+phenix.pdb_deposition
+=====================
+
+Description
+-----------
+
+This tool deposits a finished X-ray or cryo-EM structure to the wwPDB OneDep
+system. It creates the deposition, uploads your model, experimental data and
+(for cryo-EM) maps, asks OneDep to process them, and then reports the outcome
+together with a link to the deposition in the OneDep depositor interface
+(DepUI).
+
+The model must be in mmCIF format. An X-ray deposition also needs a
+structure-factor file (MTZ or mmCIF); a cryo-EM deposition needs at least a
+primary map, and may include half maps, a mask and an entry image.
+
+**This tool does not finish your deposition.** Uploading the files only
+triggers file processing on the OneDep servers. The remaining metadata -
+authors, citations, sample details and so on - must still be entered in the
+DepUI, and you submit the entry for annotation from there. Think of
+phenix.pdb_deposition as the step that gets your files onto OneDep correctly,
+not as the whole deposition.
+
+Processing can take a while, so the tool polls until it reaches a final state.
+If it runs out of patience it prints a session id you can use to pick the same
+deposition up again later, rather than starting a second one.
+
+WARNING
+-------
+
+This tool sends your model, data and maps to wwPDB servers for processing.
+Please refer to their privacy policy for details:
+
+https://www.wwpdb.org/about/privacy
+
+Credentials
+-----------
+
+Phenix identifies you to OneDep with a key that you generate yourself in the
+DepUI. You only need to do this once.
+
+1. Log in to OneDep at https://deposit.wwpdb.org/deposition with your ORCID
+   iD, as you would to start a deposition by hand.
+2. On the deposition list page, look at the panel headed **Deposition API** in
+   the column down the left-hand side, below "wwPDB regions".
+3. Tick the box confirming that you have read and accepted the wwPDB policy on
+   personal data privacy.
+4. Click **Generate Key**.
+5. Copy the key that OneDep gives you. This is what Phenix needs.
+
+In the GUI, click "Set credentials...", paste the key and save it. On the
+command line, pass it once as ``refresh_token=``. Either way it is saved to
+``~/.config/onedep/config.toml`` and reused automatically afterwards, so you
+do not supply it again. It is never written to the log.
+
+If OneDep later rejects the stored key, generate a new one the same way and
+paste it again.
+
+Every deposition also requires a depositor e-mail address, at least one ORCID
+iD, and a country.
+
+GUI
+---
+
+The graphical interface is in the "PDB Deposition" section of tools, listed as
+"Deposit structure to the PDB (OneDep)".
+
+Start by storing your key, as described above, using the "Set credentials..."
+button. The same dialog lets you check what is currently stored, test the
+connection and clear it again. The panel tells you whether usable credentials
+are stored, and distinguishes a key that OneDep has rejected from simply not
+being able to reach the server.
+
+Fill in your e-mail address, ORCID iD and country, and choose the experiment
+type. Add your model, data and maps to the input file list; maps are
+recognised as maps, and half maps and masks can be typed explicitly there.
+Which options are shown follows the experiment type you pick, and the less
+commonly needed parameters are behind the "Other options..." button.
+
+While a deposition runs, its log appears in the run panel, including the
+upload progress reported by OneDep. When it ends, the result panel shows the
+deposition identifier, the processing status and a link that opens the entry
+in the DepUI, where you finish the metadata and submit. A "Check status"
+button re-polls OneDep on demand, which is useful for a deposition that was
+still processing when the job finished. The job can be aborted; the deposition
+itself continues to exist on the server.
+
+Cryo-EM inputs
+--------------
+
+Set ``experiment_type`` to one of ``em_single``, ``em_helical``,
+``em_subtomogram`` or ``em_tomography``; this also tells OneDep which cryo-EM
+subtype the entry is.
+
+The primary map is taken from ``em.full_map=``, or, if that is unset, from the
+first map given on the command line. Give ``em.half_map=`` twice for the two
+half maps, and use ``em.mask=`` for a mask. ``em.image=`` accepts a PNG or
+JPEG entry image; it is a picture, not a map, and is kept out of the map input
+list.
+
+Voxel spacing is read from each map header automatically, so you only need
+``em.voxel.spacing_x/y/z`` if you must override it. A recommended contour
+level can be given with ``em.voxel.contour=``; it is checked against the
+density range of the map it applies to, so a value that could never display
+anything is rejected up front rather than accepted and ignored. If you leave
+the contour unset you can choose it later in the DepUI.
+
+To deposit maps without atomic coordinates, set ``em.coordinates=False``; no
+model file is then required.
+
+Monitoring, timeouts and interruptions
+--------------------------------------
+
+By default the tool waits and polls until OneDep reports that processing has
+either finished or failed, printing the status as it goes. ``ping_frequency``
+controls how often it asks (default 10 seconds, minimum 5) and ``timeout`` how
+long it keeps asking (default 1800 seconds). Setting ``wait=False`` returns as
+soon as the files are uploaded.
+
+If processing fails, the tool reports the failure rather than exiting quietly,
+and the reason OneDep gave is included in the message. If the timeout expires
+first, the deposition is untouched on the server and the printed session id
+lets you resume.
+
+Interrupting a run does not delete anything: the deposition already exists on
+OneDep, and the tool tells you so along with its identifier, so you can carry
+on in the DepUI or resume with the session id.
+
+Command line usage examples
+---------------------------
+
+X-ray, supplying the key for the first time:
+
+  % phenix.pdb_deposition model.cif data.mtz email=me@example.org \
+      orcid=0000-0002-1825-0097 country="United States" \
+      refresh_token=<key from the DepUI>
+
+The same deposition once the key has been saved:
+
+  % phenix.pdb_deposition model.cif data.mtz email=me@example.org \
+      orcid=0000-0002-1825-0097 country="United States"
+
+Cryo-EM single-particle, with half maps and a mask:
+
+  % phenix.pdb_deposition model.cif experiment_type=em_single \
+      em.full_map=emd_map.ccp4 em.half_map=half1.ccp4 em.half_map=half2.ccp4 \
+      em.mask=mask.ccp4 email=me@example.org orcid=0000-0002-1825-0097 \
+      country=Japan
+
+Reconnecting to a deposition that was still processing when the tool stopped
+waiting:
+
+  % phenix.pdb_deposition session_id=<id printed by the earlier run>
+
+Resuming this way polls the existing deposition only. It does not upload
+anything again and does not create a second entry, so it is always the right
+way to check back on a run that timed out.
+
+List of all available keywords
+------------------------------
+
+{{phil:phenix.programs.pdb_deposition.Program}}

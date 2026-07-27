@@ -32,10 +32,14 @@ To generate a model file suitable for deposition, we recommend a two-stage proce
 
 **Related programs**
 
+-  `phenix.pdb\_deposition <../reference/pdb_deposition.html>`__: This program
+   uploads your model and data to the wwPDB OneDep system and tracks
+   processing, so that you can finish the deposition in the OneDep depositor
+   interface.
 -  `phenix.get_pdb_validation_report <../reference/get_pdb_validation_report.html>`__:
    This program submits your model and data in CIF format to the PDB OneDep
    server to get a validation report in PDF and XML formats.
--  `phenix.table\_one <../reference/table_one.html>`__: This program generates the  
+-  `phenix.table\_one <../reference/table_one.html>`__: This program generates the
    table of crystallographic statistics required by most scientific journals.
 
 **References**
