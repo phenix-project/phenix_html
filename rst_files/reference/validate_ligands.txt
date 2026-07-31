@@ -1,0 +1,242 @@
+Validating ligands with phenix.validate_ligands
+===============================================
+
+Author(s)
+---------
+
+-  validate_ligands: Dorothee Liebschner
+
+Purpose
+-------
+
+phenix.validate_ligands assesses the ligands in a model, one ligand instance at
+a time. For every ligand it reports how well the ligand is supported by the
+density, how it interacts with its environment, and whether its geometry,
+B-factors, occupancies and alternate conformations are sensible.
+
+A ligand here is any residue that is not an amino acid, a nucleotide, a water or
+a single element (ion). Each alternate conformation of a ligand is treated as a
+separate entry.
+
+Usage
+-----
+
+phenix.validate_ligands runs with a model alone, or with a model and X-ray
+data::
+
+    phenix.validate_ligands model.pdb
+    phenix.validate_ligands model.pdb data.mtz
+
+Without data, only the metrics that do not need a map are computed (geometry,
+B-factors, occupancies, clashes, missing atoms, alternate conformations). With
+reflection data, the real-space metrics are added; these are usually the most
+informative ones, so supplying data is strongly recommended.
+
+Hydrogen atoms are required for the contact analysis. By default the tool places
+them itself with reduce2 (**run_reduce2**), discarding any hydrogens already
+present. The model used for all calculations is therefore the
+hydrogen-completed one, not the input file as-is.
+
+How it works
+------------
+
+1. The model is scanned for ligands. If none are found, the run stops. The
+   search can be restricted to particular compounds with **ligand_code**.
+
+2. Hydrogen atoms are placed and optimized with reduce2, unless
+   **run_reduce2=False**.
+
+3. If reflection data were supplied, an fmodel is built and scaled, and R-work
+   and R-free are reported.
+
+4. Each ligand is split into rigid fragments. Fragments are the unit at
+   which locally poor density is detected -- a ligand can have a good overall
+   RSCC while one end of it has no density at all.
+
+5. Per-ligand metrics are computed and printed as a summary table.
+
+Metrics
+-------
+
+**Real-space fit.** The ligand RSCC is the correlation, over grid points within
+1.5 A of the ligand's non-hydrogen atoms, between a 2mFo-DFc map computed with
+the ligand *omitted* from the model and a DFmodel map computed with it present.
+Using an omit map means the reported value is not biased by the ligand itself.
+
+  **RSCC overall** - for the whole ligand.
+
+  **RSCC fragments** - the same quantity computed separately for each rigid
+  fragment.
+
+  **RSCC sites** - the same quantity for the surrounding protein, DNA and RNA
+  atoms within 3 A, printed on the ``sites`` line beneath the ligand. This is
+  the reference value that matters most: a ligand RSCC of 0.75 means something
+  quite different when its environment is at 0.95 than when the environment is
+  also at 0.75.
+
+  **fragment flag** - ``OK``, or ``inspect`` when either (A) a fragment's RSCC
+  falls **delta_weak** below the whole-ligand RSCC (localized weak density), or
+  (B) the ratio of modelled to observed density differs by at least
+  **balance_ratio** between fragments (an occupancy or B-factor imbalance,
+  i.e. parts of the ligand modelled at inconsistent levels). The flag is only
+  raised for ligands whose overall RSCC is at least 0.70; below that the ligand
+  is already suspect as a whole.
+
+**Difference density.** Computed from an mFo-DFc map with the ligand present.
+
+  **% bad map values Fo-Fc** - the percentage of ligand non-hydrogen atoms
+  sitting at a difference density value at or beyond +/-3 sigma. Note this is
+  **unsigned**: it counts positive and negative peaks together, so it ranks
+  ligands for inspection but does not by itself say whether the ligand is too
+  heavy or too light.
+
+  **bad blobs #** and **bad blobs % grid** - the number of connected difference
+  density blobs beyond +/-3 sigma within 2 A of the ligand, and the fraction of
+  the sampled grid points they occupy.
+
+**Contacts.** From nonbonded overlaps, using the hydrogen-completed model.
+
+  **clashes** and **H-bonds** - the number of steric clashes and hydrogen bonds
+  between the ligand and everything within 3 A. A ligand with several clashes
+  deserves a look.
+
+**B-factors and occupancies.**
+
+  **ADPs min/max/mean** - for the ligand, with the corresponding values for the
+  environment within 3 A on the ``sites`` line. A ligand whose mean B is far
+  above its surroundings is a classic signature of a partially occupied, wrongly
+  identified, or absent compound.
+
+  **occupancies min/max/mean** - for the ligand.
+
+**Geometry.** Bond, angle and dihedral RMSZ, each with the number of outliers
+(beyond 4 sigma) and the total number of restraints of that type, written
+``rmsz  n_outliers(n_total)``. Poor geometry usually points at the restraint
+dictionary rather than at the fit, so check the CIF before rebuilding.
+
+**Completeness and disorder.**
+
+  **missing heavy atoms** - non-hydrogen atoms present in the chemical
+  component definition but absent from the model, listed by name.
+
+  **alt conf** - the alternate-conformation state: ``-`` (single conformation),
+  ``A/B`` (proper alternate conformations), ``lone X`` (an altloc with no
+  partner conformation), ``split X -> chain resseq altloc`` (the partner
+  conformation is modelled under a *different* residue number), or ``sym``
+  (the ligand overlaps its own symmetry mate, i.e. it sits on or near a special
+  position). A leading ``!`` marks a case worth inspecting: a lone altloc, a
+  ligand-ligand split, alternate conformations that model chemically different
+  compounds, occupancies that do not sum to 1.0 (within **occ_tol**), or a
+  symmetry overlap.
+
+Output
+------
+
+The results are written to the log as a summary table, preceded by the list of
+rigid fragments per ligand and the residues within 3 A of each ligand. For
+example, for ATP in the ``nsf-d2-ligand`` example::
+
+                    |         |     RSCC     | fragment |  % bad  |   bad   |
+         ligand     | overall |  fragments   |   flag   |  Fo-Fc  | blobs # | ...
+    ----------------------------------------------------------------------------
+       ATP A 858    |  0.97   | 0.97, 0.97,  |    OK    |   0.0   |    4    | ...
+         sites      |  0.89   |              |          |         |         | ...
+    ----------------------------------------------------------------------------
+
+Optional files:
+
+- **save_reduce2_model** - write the hydrogen-completed model used for the
+  calculations, as ``<basename>_newH.cif``.
+
+- **save_map_coeffs** - write 2mFo-DFc and mFo-DFc map coefficients to
+  ``<basename>_map_coeffs.mtz``, with column labels that Coot recognizes
+  automatically. Requires reflection data.
+
+Options
+-------
+
+  **ligand_code** - restrict the analysis to the given compound code(s). May be
+  given more than once. By default all ligands are analyzed.
+
+  **nproc** - number of processors to use.
+
+  **scattering_table** - scattering table for the structure factor calculation
+  (``n_gaussian``, ``wk1995``, ``it1992``, ``neutron``, ``electron``).
+
+  **run_reduce2** - place hydrogen atoms with reduce2 before analysis
+  (default True). Turning this off disables the clash and hydrogen bond
+  analysis, which needs hydrogens.
+
+  **save_reduce2_model**, **save_map_coeffs** - write the optional output files
+  described above.
+
+  **resolution** - override the resolution taken from the data.
+
+  **frag_consistency.delta_weak**, **.obs_floor**, **.balance_ratio** - control
+  the fragment consistency flag. The defaults are provisional and may be
+  recalibrated in a future version.
+
+  **alt_conf.overlap_dist**, **.sym_overlap_dist**, **.occ_tol** - control the
+  alternate conformation analysis: the search distance used to pair a
+  conformation modelled under a different residue number, the coincidence
+  distance used to detect a symmetry mate overlapping the ligand, and the
+  tolerance on the summed occupancy of an alternate conformation set.
+
+Examples
+--------
+
+Validate every ligand in a model against X-ray data::
+
+    phenix.validate_ligands model.pdb data.mtz
+
+Look at one compound only, and keep the maps for inspection in Coot::
+
+    phenix.validate_ligands model.pdb data.mtz ligand_code=ATP save_map_coeffs=True
+
+Geometry and environment only, without any experimental data::
+
+    phenix.validate_ligands model.pdb
+
+GUI
+---
+
+The tool is available in the Phenix GUI under **Ligands -> Validate Ligands**.
+Supply a model and, optionally, reflection data; for reflection data, select the
+data and R-free column labels.
+
+The Results tab shows one row per ligand. Ligands whose RSCC is at or below 0.6
+are highlighted in yellow; this is a deliberately conventional cutoff meant to
+draw the eye to the clearest problem cases, not a pass/fail criterion. Ligands
+for which no RSCC could be computed (no data supplied) are not highlighted.
+
+Selecting a row shows the full set of metrics for that ligand together with a
+diagram of its rigid fragments, and recentres Coot on the ligand if Coot is
+open. **Save CSV** writes every metric for every ligand, including the values
+not shown in the summary table.
+
+Possible Problems
+-----------------
+
+-  phenix.validate_ligands is intended for models refined against X-ray data.
+
+-  Multi-model files (multiple MODEL/ENDMDL records) are not supported.
+
+-  Without reflection data, all real-space metrics are reported as ``NA``. This
+   is the expected behaviour, not a failure.
+
+-  If reduce2 cannot place hydrogens the run stops. Use **run_reduce2=False** to
+   continue without hydrogens, at the cost of the clash and hydrogen bond
+   analysis.
+
+-  Poor geometry RMSZ values usually indicate a problem with the restraint
+   dictionary rather than with the fit to density. Supply the correct CIF for
+   the ligand and run again.
+
+-  RSCC depends on resolution and on data quality. Compare a ligand against the
+   ``sites`` value for its own environment rather than against an absolute
+   threshold taken from another structure.
+
+List of all available keywords
+------------------------------
+
+{{phil:mmtbx.programs.validate_ligands}}
