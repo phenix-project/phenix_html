@@ -113,7 +113,7 @@ Monitoring, timeouts and interruptions
 
 By default the tool waits and polls until OneDep reports that processing has
 either finished or failed, printing the status as it goes. ``ping_frequency``
-controls how often it asks (default 10 seconds, minimum 5) and ``timeout`` how
+controls how often it asks (default 10 seconds, minimum 6) and ``timeout`` how
 long it keeps asking (default 1800 seconds). Setting ``wait=False`` returns as
 soon as the files are uploaded.
 
