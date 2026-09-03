@@ -21,16 +21,22 @@ separate entry.
 Usage
 -----
 
-phenix.validate_ligands runs with a model alone, or with a model and X-ray
-data::
+phenix.validate_ligands runs with a model alone, with a model and X-ray data,
+or with a model and a cryo-EM map::
 
     phenix.validate_ligands model.pdb
     phenix.validate_ligands model.pdb data.mtz
+    phenix.validate_ligands model.pdb map.mrc
 
 Without data, only the metrics that do not need a map are computed (geometry,
 B-factors, occupancies, clashes, missing atoms, alternate conformations). With
-reflection data, the real-space metrics are added; these are usually the most
+experimental data, the real-space metrics are added; these are usually the most
 informative ones, so supplying data is strongly recommended.
+
+The resolution of a cryo-EM map is estimated from the map itself. Override it
+with **resolution** when the estimate is wrong::
+
+    phenix.validate_ligands model.pdb map.mrc validate_ligands.resolution=3.2
 
 Hydrogen atoms are required for the contact analysis. By default the tool places
 them itself with reduce2 (**run_reduce2**), discarding any hydrogens already
@@ -58,10 +64,12 @@ How it works
 Metrics
 -------
 
-**Real-space fit.** The ligand RSCC is the correlation, over grid points within
-1.5 A of the ligand's non-hydrogen atoms, between a 2mFo-DFc map computed with
-the ligand *omitted* from the model and a DFmodel map computed with it present.
-Using an omit map means the reported value is not biased by the ligand itself.
+**Real-space fit.** With reflection data, the ligand RSCC is the correlation,
+over grid points within 1.5 A of the ligand's non-hydrogen atoms, between a
+2mFo-DFc map computed with the ligand *omitted* from the model and a DFmodel map
+computed with it present. Using an omit map means the reported value is not
+biased by the ligand itself. For a cryo-EM map the quantity is different; see
+`Real-space fit for cryo-EM maps`_.
 
   **RSCC overall** - for the whole ligand.
 
@@ -80,7 +88,16 @@ Using an omit map means the reported value is not biased by the ligand itself.
   **balance_ratio** between fragments (an occupancy or B-factor imbalance,
   i.e. parts of the ligand modelled at inconsistent levels). The flag is only
   raised for ligands whose overall RSCC is at least 0.70; below that the ligand
-  is already suspect as a whole.
+  is already suspect as a whole. On a cryo-EM map only check (A) is applied.
+
+.. _`Real-space fit for cryo-EM maps`:
+
+**Real-space fit for cryo-EM maps.** The ligand RSCC is the
+correlation between the experimental map and a calculated map of the whole
+model, over grid points within **2 A** of the ligand's non-hydrogen atoms.
+
+The difference-density metrics (% bad map values Fo-Fc, bad blobs) are computed
+from an mFo-DFc map and are reported for reflection data only.
 
 **Difference density.** Computed from an mFo-DFc map with the ligand present.
 
@@ -161,7 +178,8 @@ Options
   **nproc** - number of processors to use.
 
   **scattering_table** - scattering table for the structure factor calculation
-  (``n_gaussian``, ``wk1995``, ``it1992``, ``neutron``, ``electron``).
+  (``n_gaussian``, ``wk1995``, ``it1992``, ``neutron``, ``electron``). Applies
+  to the reflection-data path only; a map input always uses ``electron``.
 
   **run_reduce2** - place hydrogen atoms with reduce2 before analysis
   (default True). Turning this off disables the clash and hydrogen bond
@@ -170,7 +188,9 @@ Options
   **save_reduce2_model**, **save_map_coeffs** - write the optional output files
   described above.
 
-  **resolution** - override the resolution taken from the data.
+  **resolution** - resolution used for the calculated map. With reflection data
+  it comes from the data. With a cryo-EM map it is estimated from the map;
+  set this to override that estimate.
 
   **frag_consistency.delta_weak**, **.obs_floor**, **.balance_ratio** - control
   the fragment consistency flag. The defaults are provisional and may be
@@ -193,6 +213,14 @@ Look at one compound only, and keep the maps for inspection in Coot::
 
     phenix.validate_ligands model.pdb data.mtz ligand_code=ATP save_map_coeffs=True
 
+Validate against a cryo-EM map, letting the resolution be estimated from it::
+
+    phenix.validate_ligands model.pdb map.mrc
+
+The same, with the resolution given explicitly::
+
+    phenix.validate_ligands model.pdb map.mrc validate_ligands.resolution=3.2
+
 Geometry and environment only, without any experimental data::
 
     phenix.validate_ligands model.pdb
@@ -201,8 +229,10 @@ GUI
 ---
 
 The tool is available in the Phenix GUI under **Ligands -> Validate Ligands**.
-Supply a model and, optionally, reflection data; for reflection data, select the
-data and R-free column labels.
+Supply a model and, optionally, reflection data or a cryo-EM map. For reflection
+data, select the data and R-free column labels. For a map, the **Cryo-EM map**
+section holds the map resolution; leave it blank to have it estimated from the
+map. Reflection data and a map cannot be used together.
 
 The Results tab shows one row per ligand. Ligands whose RSCC is at or below 0.6
 are highlighted in yellow; this is a deliberately conventional cutoff meant to
@@ -217,12 +247,18 @@ not shown in the summary table.
 Possible Problems
 -----------------
 
--  phenix.validate_ligands is intended for models refined against X-ray data.
+-  phenix.validate_ligands is aimed primarily at models refined against X-ray
+   data. The cryo-EM map path is newer and reports fewer metrics.
+
+-  A map input is assumed to be a cryo-EM map.
 
 -  Multi-model files (multiple MODEL/ENDMDL records) are not supported.
 
 -  Without reflection data, all real-space metrics are reported as ``NA``. This
    is the expected behaviour, not a failure.
+
+-  With a cryo-EM map, no difference-density metrics (% bad map values Fo-Fc,
+   bad blobs) are reported.
 
 -  If reduce2 cannot place hydrogens the run stops. Use **run_reduce2=False** to
    continue without hydrogens, at the cost of the clash and hydrogen bond
@@ -234,7 +270,9 @@ Possible Problems
 
 -  RSCC depends on resolution and on data quality. Compare a ligand against the
    ``sites`` value for its own environment rather than against an absolute
-   threshold taken from another structure.
+   threshold taken from another structure. This matters more on the cryo-EM
+   path, where the ligand is in the calculated map and the value is not an omit
+   map result.
 
 List of all available keywords
 ------------------------------
