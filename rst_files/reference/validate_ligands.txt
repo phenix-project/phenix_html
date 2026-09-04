@@ -128,7 +128,7 @@ from an mFo-DFc map and are reported for reflection data only.
 
 **Geometry.** Bond, angle and dihedral RMSZ, each with the number of outliers
 (beyond 4 sigma) and the total number of restraints of that type, written
-``rmsz  n_outliers(n_total)``. Poor geometry usually points at the restraint
+``rmsz n_outliers(n_total)``. Poor geometry usually points at the restraint
 dictionary rather than at the fit, so check the CIF before rebuilding.
 
 **Completeness and disorder.**

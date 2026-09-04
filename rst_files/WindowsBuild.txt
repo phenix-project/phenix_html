@@ -223,20 +223,20 @@ flags ``--sfuser=`` and ``--cciuser=``.
   )
   
   REM Get latest bootstrap.py from Githup
-  curl https://raw.githubusercontent.com/cctbx/cctbx_project/master/libtbx/auto_build/bootstrap.py > bootstrap.py 2>&1 | mtee build.log
+  curl https://raw.githubusercontent.com/cctbx/cctbx_project/master/libtbx/auto_build/bootstrap.py > bootstrap.py 2>&amp;1 | mtee build.log
   IF ERRORLEVEL 1 (
     EXIT
   ) 
   
   REM             hot update base build
-  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 2>&1 | mtee ..\build%PHENIXVERSION%-%PLATFORM%.log
+  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 2>&amp;1 | mtee ..\build%PHENIXVERSION%-%PLATFORM%.log
   IF ERRORLEVEL 1 (
     EXIT
   ) 
 
   
   REM            run tests
-  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 tests 2>&1 | mtee ..\tests%PHENIXVERSION%-%PLATFORM%.log
+  %PYTHONEXE% bootstrap.py --builder=phenix --sfuser=oeffner --cciuser=rdo20 --nproc=10 tests 2>&amp;1 | mtee ..\tests%PHENIXVERSION%-%PLATFORM%.log
   IF ERRORLEVEL 1 (
     EXIT
   ) 
@@ -244,7 +244,7 @@ flags ``--sfuser=`` and ``--cciuser=``.
   REM            create installer
   call build\bin\libtbx.create_installer.bat --binary --version %PHENIXVERSION% --install_script modules\phenix\phenix\installer\phenix_installer.py ^
    --license modules\phenix\LICENSE.txt --readme modules\phenix\CHANGES --readme modules\phenix\phenix\installer\README --readme modules\phenix\phenix\installer\SOURCES ^
-   --dist_dir dist\%PHENIXVERSION% tmp\phenix-installer-%PHENIXVERSION%-win7vc90 2>&1 | mtee ..\CreateInstaller%PHENIXVERSION%-%PLATFORM%.log
+   --dist_dir dist\%PHENIXVERSION% tmp\phenix-installer-%PHENIXVERSION%-win7vc90 2>&amp;1 | mtee ..\CreateInstaller%PHENIXVERSION%-%PLATFORM%.log
   
   </pre>
   </div>
