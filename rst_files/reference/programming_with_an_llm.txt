@@ -13,15 +13,15 @@ This document describes the workflow that PHENIX/cctbx developers follow when us
 
 The quick-start below gets you going immediately. Part 1 covers general principles that apply to any LLM and any codebase, with the project-specific prompts shown in context where each principle is introduced. Part 2 covers the project workflow: rules of engagement, which guideline files to attach and when, and checklists for the human side of the process. The appendices contain a file reference, the full text of the opening prompt, a prompt reference card, and a pull request checklist.
 
-All prompt files live in ``libtbx/langchain/docs/prompts/``. The small ones are reproduced in full throughout this document so you can read the guide without opening anything else.
+All prompt files live in ``libtbx/langchain/docs/prompts/``, except the two programming guidelines (CCTBX_LLM_PROGRAMMING_GUIDELINES.md and AI_AGENT_LLM_PROGRAMMING_GUIDELINES.md), which live in ``libtbx/langchain/docs/``. The small ones are reproduced in full throughout this document so you can read the guide without opening anything else.
 
 Quick-Start Checklist
 =====================
 
 If you want to start using these files right now, here is the recipe. Everything referenced here is explained in detail in Parts 1 and 2.
 
-1. **Gather your materials.** You need the code files to be changed, a description of the task, and the prompt files from libtbx/langchain/docs/prompts/.
-2. **Open a new LLM session.** *Attach* as files (do NOT paste): CCTBX_LLM_PROGRAMMING_GUIDELINES.md, WORKFLOW.md. These are located in libtbx/langchain/docs/prompts. Also attach HANDOFF.json if resuming, ARCHITECTURE.md (if you have one — see §1.11), and your code archive. (See §2.2 for when to use which file.)
+1. **Gather your materials.** You need the code files to be changed, a description of the task, and the prompt files from libtbx/langchain/docs/prompts/, plus the programming guidelines from libtbx/langchain/docs/.
+2. **Open a new LLM session.** *Attach* as files (do NOT paste): CCTBX_LLM_PROGRAMMING_GUIDELINES.md (in libtbx/langchain/docs) and WORKFLOW.md (in libtbx/langchain/docs/prompts). Also attach HANDOFF.json if resuming, ARCHITECTURE.md (if you have one — see §1.11), and your code archive. (See §2.2 for when to use which file.)
 3. **\*Paste\* WORKFLOW_PROMPT.txt** into the chat as the first message. The LLM will acknowledge the rules and ask for HANDOFF.json or begin reading it.
 4. **Describe the task and \*paste\* PLAN_PROMPT.txt.** Wait for the plan. Read it carefully.
 5. **Optionally review the plan.** Copy the plan to a second LLM and *paste* REVIEW.txt. Feed the critique back. Revise once or twice.
@@ -591,7 +591,7 @@ The full workflow rules are in WORKFLOW.md, which the LLM reads at session start
 
 Attaching the right guideline files gives the LLM the conventions and pitfalls specific to the code it will touch. Attaching the wrong ones wastes context window space. Here is when to use each:
 
-**Always attach (every session):** These are in libtbx/langchain/docs/prompts/.
+**Always attach (every session):** CCTBX_LLM_PROGRAMMING_GUIDELINES.md is in libtbx/langchain/docs/; WORKFLOW.md is in libtbx/langchain/docs/prompts/.
 
 -  **CCTBX_LLM_PROGRAMMING_GUIDELINES.md** — The base layer. Covers coding standards (2-space indent, 80-char lines, naming conventions), cctbx/PHENIX patterns (PHIL parameters, flex arrays, space group conventions, import patterns), common pitfalls (None-safety on dict.get(), R-free as fraction not percentage, hardcoded path separators), error handling rules (“never raises” pattern, no bare excepts), and a pre-submission checklist. Use for any code involving crystallographic logic, PHIL parameters, or standard PHENIX utilities.
 -  **WORKFLOW.md** — Defines the checkpoint discipline, plan format, interruption protocol, and output requirements. This is what makes sessions recoverable.
@@ -732,7 +732,7 @@ Your job is verification and navigation. The LLM cannot do these things for itse
 Appendix A: File Reference
 ==========================
 
-All files live in ``libtbx/langchain/docs/prompts/``.
+All files live in ``libtbx/langchain/docs/prompts/``, except the two programming guidelines, which live in ``libtbx/langchain/docs/``.
 
 **Attach as files** — these are large reference documents. Do NOT paste their contents into the chat; that crowds out the LLM’s reasoning space and leaves less room for your actual code.
 
