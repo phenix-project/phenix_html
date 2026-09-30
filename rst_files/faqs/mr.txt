@@ -273,10 +273,11 @@ MR-Rosetta
 **Why does mr_rosetta bomb and say "error while loading shared libraries:
 libdevel.so: cannot open shared object file: No such file or directory"?**
 
-This may indicate that somewhere your system is defining the shared libraries
-that Rosetta needs, and these are for a place that is not where Rosetta
-expects them to be. You can try to ignore the previous definitions
-this way:
+This usually means Rosetta cannot find its shared libraries. Phenix commands
+start from a cleaned environment: they clear library search paths such as
+LD_LIBRARY_PATH that your shell or site setup defines, and a Rosetta
+installation that relies on them then loses them. You can tell Phenix to keep
+your environment instead:
 
 If you are using the bash or sh shells::
 
@@ -287,7 +288,10 @@ or csh (C-shell)::
   setenv PHENIX_TRUST_OTHER_ENV 1
 
 in the script where you run mr_rosetta, or before you run it from the command
-line.
+line. This keeps your whole environment for every Phenix command started from
+that shell, not only the library paths: PYTHONPATH, per-user Python packages
+and GUI-toolkit settings from other software are kept as well. Set it only
+where you run mr_rosetta.
 
 **Why does mr_rosetta or mr_model_preparation bomb and say
 "RuntimeError: Cannot contact EBI DbFetch service"?**
