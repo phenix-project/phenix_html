@@ -8,6 +8,7 @@ General
 -------
 - phenix: Run Phenix graphical user interface
 - phenix.about: Summarize contributors, packages, and info for phenix
+- phenix.agent: LLM agent that runs Phenix programs in a project directory
 - phenix.acknowledgments: Summarize third-party components of Phenix
 - phenix.commands: List command line Phenix methods
 - phenix.doc: Phenix documentation
@@ -15,6 +16,7 @@ General
 - phenix.version: Print version of Phenix
 - phenix.find_program: Find a program or regression test
 - phenix.list: Print list of Phenix commands
+- phenix.mcp_server: Model Context Protocol server that exposes Phenix programs to AI agents
 - phenix_regression.list: Print list of Phenix regression commands
 
 Assessing data quality

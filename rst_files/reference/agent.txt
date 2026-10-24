@@ -1,0 +1,484 @@
+phenix.agent: an LLM agent that runs Phenix
+===========================================
+
+Author(s)
+---------
+
+- phenix.agent: Billy K. Poon
+
+Purpose
+-------
+
+phenix.agent opens a chat window in which you talk to a large language
+model that has direct access to Phenix. The assistant can look up which
+Phenix programs exist and which parameters they take, start jobs in your
+project directory, follow them to completion, read their logs and output
+files, and report what it found. It is given structural-biology guidance
+("skills") for the common workflows: data quality, phasing, model
+building, refinement, ligands, maps, validation, and deposition. You stay
+in control: every job start is shown to you as an approval card before it
+runs, unless you choose otherwise.
+
+phenix.agent is a different tool from two other AI tools in Phenix:
+
+- The `Phenix AI Agent <ai_agent.html>`__ (phenix.ai_agent) is a
+  plan-driven pipeline that solves a structure from your data with little
+  interaction. phenix.agent is conversational: you ask for one thing at a
+  time, and you can ask questions, change direction, and inspect results
+  as you go.
+- The `Phenix chatbot <chatbot.html>`__ answers questions about Phenix
+  from the documentation. It does not see your files and cannot run
+  programs.
+
+Requirements
+------------
+
+- A Phenix installation. phenix.agent is run from the command line; it is
+  not yet started from the Phenix GUI.
+- Access to a language-model provider. The default backend uses the Claude
+  Code command-line tool (``claude``), which must be installed and logged
+  in (``claude login``). The other backends use an API key from the
+  provider. Nothing in phenix.agent runs on a Phenix server: the agent,
+  the jobs it starts, and your conversations all live on your machine, and
+  only the exchange with the model provider leaves it.
+
+Quick start
+-----------
+
+Start phenix.agent from the directory that holds your data and models.
+That directory becomes the project directory::
+
+    cd /path/to/my_project
+    phenix.agent
+
+The window has three parts. The list on the left holds the project's
+conversations. The transcript in the middle shows the exchange with the
+assistant, including every tool it calls and the result that came back.
+The artifacts panel on the right collects images that a tool or a Phenix
+program produced. Both side panels can be hidden from the **View** menu.
+Below the transcript, the input row has buttons for **Save chat** (write
+the conversation as a Markdown file), **Auto-approve** (see Tool approval
+below), showing the model's thinking summaries, searching the
+conversation (Ctrl+F / Cmd+F), and attaching an image to your message.
+
+Some prompts to start with::
+
+    What reflection files are in this directory, and what is the resolution of each?
+
+    Run phenix.xtriage on data.mtz and tell me whether there is usable anomalous signal.
+
+    Refine model.pdb against data.mtz with phenix.refine and report R-work and R-free before and after.
+
+    Validate model.pdb with phenix.molprobity and list the worst Ramachandran outliers.
+
+    Fit the ligand in ligand.cif into the difference density in refine_001.mtz.
+
+When the assistant wants to start a job it shows an approval card naming
+the program and its arguments, with **Approve**, **Deny**, and **Stop**
+buttons and an **Always allow this tool** checkbox. Approving runs
+the job in a fresh subdirectory of the project directory named after the
+program with a short unique suffix, for example ``refine_3f1a9c2e/``. The
+assistant follows the job on later turns and reports its results, naming
+the files they came from.
+
+Give the assistant concrete file names and a concrete goal. It can list
+files and read formats itself, but it will ask you when the request is
+ambiguous, through a question card in the transcript.
+
+Backends and credentials
+------------------------
+
+One chat window, five interchangeable backends. The default is
+``claude_code``.
+
+================ ============================================= ====================================================
+Backend          Provider                                      Authentication
+================ ============================================= ====================================================
+``claude_code``  Claude Agent SDK, driving the ``claude`` tool  Claude Code login (``claude login``) or Anthropic API key
+``anthropic``    Anthropic Messages API                        API key
+``openai``       OpenAI API                                    API key
+``portkey``      Portkey gateway (OpenAI-compatible)           API key and a Portkey virtual key
+``google``       Google Gemini                                 API key
+================ ============================================= ====================================================
+
+Select a backend with ``--backend``; this also selects the matching
+built-in profile so the model id fits the provider::
+
+    phenix.agent                          # claude_code, profile claude_assistant
+    phenix.agent --backend google         # Gemini, profile gemini_assistant
+    phenix.agent --backend openai --model gpt-5.5
+
+``--model`` overrides the profile's model for the session; ``--list-models``
+prints the ids the selected backend accepts and exits (the API backends ask
+the provider, so they need a key; ``claude_code`` prints a curated list
+that includes the aliases ``opus``, ``sonnet``, and ``haiku``).
+
+**API keys.** Phenix reads a ``PHENIX_``-prefixed variable first and falls
+back to the provider's standard variable. It never writes the standard
+variable. A ``--api-key`` on the command line wins over both and lasts only
+for the session.
+
+================ ========================================================================
+Backend          Key sources, highest precedence first
+================ ========================================================================
+``claude_code``  ``--api-key``, ``PHENIX_ANTHROPIC_API_KEY``, ``ANTHROPIC_API_KEY``,
+                 then the ``claude`` login
+``anthropic``    ``--api-key``, ``PHENIX_ANTHROPIC_API_KEY``, ``ANTHROPIC_API_KEY``,
+                 an existing Claude Code API-key login, then the key saved from the
+                 in-app dialog
+``openai``       ``--api-key``, ``PHENIX_OPENAI_API_KEY``, ``OPENAI_API_KEY``
+``portkey``      ``--api-key``, ``PHENIX_PORTKEY_API_KEY``, ``PORTKEY_API_KEY``; virtual
+                 key from ``PHENIX_PORTKEY_VIRTUAL_KEY``, ``PORTKEY_VIRTUAL_KEY``, or
+                 the profile
+``google``       ``--api-key``, ``PHENIX_GOOGLE_API_KEY``, ``GOOGLE_API_KEY``,
+                 ``GEMINI_API_KEY``
+================ ========================================================================
+
+If an API backend finds no key it opens a credentials dialog; the key you
+enter is saved in the system keyring (or Qt settings) for later sessions,
+and **Help > Update API Key...** replaces it. The ``claude_code`` backend
+has no dialog: if it is not logged in, run ``claude login`` in a terminal
+and start phenix.agent again.
+
+**Endpoints.** ``--base-url`` (or ``PHENIX_<PROVIDER>_BASE_URL``) points a
+backend at a proxy or enterprise deployment for the session. The
+``claude_code``, ``anthropic``, and ``openai`` backends also fall back to
+the provider's standard ``ANTHROPIC_BASE_URL`` or ``OPENAI_BASE_URL``;
+``google`` reads only ``PHENIX_GOOGLE_BASE_URL``. The ``portkey`` backend
+always talks to its gateway; redirect it through its Portkey
+configuration instead.
+
+What the assistant can do
+-------------------------
+
+**Phenix tools.** The assistant reaches Phenix through phenix.mcp_server,
+a Model Context Protocol (MCP) server that phenix.agent starts for each
+conversation. Its tools are:
+
+- ``phenix_list_programs``, ``phenix_get_program_help``,
+  ``phenix_get_phil``, ``phenix_validate_args``: discover programs, their
+  input types, and their PHIL parameters at a chosen expert level, and
+  check arguments before a run.
+- ``phenix_start_job``: start a program in its own work directory. Any
+  Phenix command works; programs built on the Phenix program template
+  additionally return structured JSON results.
+- ``phenix_get_status``, ``phenix_list_jobs``, ``phenix_cancel_job``:
+  follow and manage running jobs.
+- ``phenix_tail_log``, ``phenix_get_log_summary``, ``phenix_get_results``,
+  ``phenix_get_phil_output``, ``phenix_get_output_files``: read a job's
+  log, its structured results, the PHIL parameters it actually used, and
+  the files it wrote.
+- ``phenix_read_query``: read-only queries over a file in the project
+  without a shell: a digest, line counts, a grep, per-atom fields such as
+  B-factors and occupancies, chain termini, and symmetry.
+
+**Skills.** Skills are written guidance that the assistant loads when a
+workflow calls for it. An orientation skill is always present and tells
+the assistant which skill to load before which action. The workflow
+skills are:
+
+======================================= =====================================================
+Skill                                    Covers
+======================================= =====================================================
+``phenix-data-quality``                  xtriage, twinning, anisotropy, anomalous signal,
+                                         format conversion
+``phenix-phasing-mr``                    Phaser, AutoMR, MRage
+``phenix-phasing-experimental``          AutoSol, HySS, density modification
+``phenix-predicted-models``              AlphaFold and other predictions in Phenix
+``phenix-docking``                       dock_in_map, dock_and_rebuild
+``phenix-model-building``                AutoBuild, map_to_model, fit_loops, rebuilding
+``phenix-refinement``                    phenix.refine, real_space_refine, strategy choices
+``phenix-ligands``                       eLBOW restraints, LigandFit, metals and ions
+``phenix-maps``                          sharpening, polder and omit maps, density
+                                         modification, map_box
+``phenix-validation``                    MolProbity, cryo-EM map-model validation
+``phenix-deposition``                    the checks a model must pass before deposition
+``phenix-running-jobs``                  how to start, poll, and report jobs
+``phenix-guided-workflow``               planning a multi-step structure determination
+``phenix-autonomous-workflow``           working without checking in, with independent
+                                         review rounds
+``phenix-adversarial-review``            a refutation pass over a model, run by a subagent
+``phenix-coot-fixing``                   hand edits in Coot through its MCP server
+``phenix-handoff``                       writing a handoff so a new conversation can continue
+======================================= =====================================================
+
+You can add skills of your own in ``<project>/.phenix_agent/skills/`` and
+list them by name under ``skills.additional`` in a profile; a built-in
+skill wins on a name collision. ``--no-skills`` starts without any.
+
+**Built-in tools.** A few tools run inside phenix.agent itself. The
+question card the assistant uses to ask you something, and the
+per-conversation job history it reads and annotates so a resumed
+conversation does not rerun finished jobs, never ask for approval. Three
+more show an approval card the first time, which you can answer with
+**Always allow this tool**: ``run_subagent``, which runs a child
+conversation on a task and returns its final report (children cannot
+spawn children, and a child's tool calls that would need approval are
+denied); the tools that list and read past adversarial reviews; and a
+handoff tool with which a long run can continue itself in a new
+conversation.
+
+**Coot.** ``--coot`` adds Coot's MCP server and Coot skills to the session,
+launches Coot from the current conda environment, and starts its
+JSON-RPC listener on port 9090. A Coot already listening on 9090 is reused.
+Pass a path to use a different Coot environment::
+
+    phenix.agent --coot
+    phenix.agent --coot /path/to/miniforge3/envs/coot
+
+With this the assistant can inspect density, measure fit, and make the
+hand edits that Phenix workflows leave to Coot. Coot stays running when
+phenix.agent exits.
+
+Tool approval
+-------------
+
+Each tool call is governed by a policy with three possible decisions:
+**allow** (run without asking), **ask** (show an approval card), and
+**deny** (refuse automatically). The policy comes from the profile (see
+Profiles below). The shipped profiles allow every Phenix tool except
+``phenix_start_job`` and ``phenix_cancel_job``, which ask; the global
+fallback for anything else is ask.
+
+An approval card offers **Approve**, **Deny**, and **Stop** (deny and end
+the turn). When several calls arrive together, one card offers **Approve
+all**, **Deny all**, and **Stop**. Checking **Always allow this tool**
+approves the same tool for the rest of the session without further cards.
+
+The ``claude_code`` backend is the only one that also exposes the Claude
+Agent SDK's general-purpose tools (``Bash``, ``Read``, ``Write``,
+``Edit``, and so on). These always ask, regardless of the policy, so a
+broad allow written for the Phenix tools cannot silently grant shell or
+file-system access. The other four backends have only the Phenix tools,
+the skill tools, and the built-in tools.
+
+**Auto-approve** (``--auto-approve`` on the command line, or the toggle in
+the input row) is a separate, blanket override: it skips the card for
+every tool, including the general-purpose tools of ``claude_code``. A
+persistent indicator shows while it is on. Use it with care. The one
+exception is a tool registered as destructive, such as force-closing
+Coot, which always asks.
+
+Conversations and project data
+------------------------------
+
+Everything phenix.agent keeps is stored in the project directory under
+``.phenix_agent/``, created on the first write:
+
+========================================================== ============================================
+Path                                                       Contents
+========================================================== ============================================
+``.phenix_agent/index.json``                               list of conversations
+``.phenix_agent/conversations/<id>/messages.json``         the transcript
+``.phenix_agent/conversations/<id>/meta.json``             title, profile, and timestamps
+``.phenix_agent/conversations/<id>/attachments/``          images sent or received
+``.phenix_agent/conversations/<id>/subagents/``            child conversation records
+``.phenix_agent/conversations/<id>/job_history.json``      the Phenix jobs this conversation ran
+``.phenix_agent/conversations/<id>/claude_session.jsonl``  the Claude Agent SDK session (``claude_code``)
+``.phenix_agent/logs/``                                    ``--debug`` logs
+``.phenix_agent/profiles/``                                project-level profiles
+``.phenix_agent/skills/``                                  project-level skills
+========================================================== ============================================
+
+Job output is not stored here. Each job runs in its own subdirectory of
+the project directory, and ``.phenix_agent/`` is refused as a work
+directory.
+
+**Resuming.** Select a conversation in the list, or pass
+``--conversation <id>`` on the command line, to pick up where you left
+off. The API backends re-send the stored transcript. The ``claude_code``
+backend also restores its own session file, so the model keeps its
+context; that file embeds absolute paths, so it resumes on the same
+machine only, and falls back to the text transcript otherwise. On resume
+the assistant is pointed at the conversation's job history so it builds
+on finished jobs instead of repeating them.
+
+**Several windows.** You can run phenix.agent more than once in the same
+project. A conversation that is open in another window is locked in the
+list; select it to see an **Unlock** button if that window is gone.
+
+**Saving.** **Save chat** writes the conversation as a Markdown file, with
+the model's thinking summaries as quoted blocks. The **Delete** button in
+the conversation list removes a conversation and its records, including
+the reviews and child conversations under it.
+
+Profiles
+--------
+
+A profile is a JSON file of defaults: backend, model, system prompt, MCP
+servers, skills, and tool policy. Command-line flags override individual
+settings for one session. The built-in profiles are:
+
+========================== ============== ===========================================
+Profile                    Backend        Notes
+========================== ============== ===========================================
+``claude_assistant``       claude_code    default; may spawn subagents
+``claude_assistant_oauth`` claude_code    as above, but caps the SDK at 30 turns per message
+``gpt_assistant``          openai         OpenAI model
+``gemini_assistant``       google         Gemini model
+``portkey_assistant``      portkey        Portkey gateway
+========================== ============== ===========================================
+
+All of them inherit from a hidden ``phenix_base`` profile that holds the
+structural-biology system prompt and the Phenix MCP server, so the
+assistant behaves the same way on every backend. Two further hidden
+profiles, ``claude_assistant_subagent`` and ``phenix_reviewer``, are used
+by ``run_subagent`` for child conversations and adversarial reviews.
+
+The system prompt tells the assistant to ground every claim in tool
+output, never to report a number it has not read from a log or result
+file, to confirm a fix by measuring before and after, to work on copies
+and never to regenerate or extend the R-free set, to put physical realism
+ahead of a marginally better R-free, and to do what was asked and no more.
+
+**Settings resolution.** At launch the project directory is taken from
+``--project-dir``, then ``PHENIX_PROJECT_DIR``, then the current working
+directory. The profile is ``--profile`` if given; otherwise the backend's
+canonical profile if ``--backend`` is given; otherwise ``claude_assistant``.
+``--backend`` given together with ``--profile`` overrides that profile's
+backend field, in which case also pass ``--model`` so the model id fits the
+new provider. The model is ``--model``, then the profile's. Credentials
+and endpoints follow the tables above.
+
+**Your own profile.** Put ``<name>.json`` in ``<project>/.phenix_agent/profiles/``
+and select it with ``--profile <name>``, or keep it anywhere and pass the
+path. A profile can inherit another with ``based_on``. For example, to
+raise the number of concurrent jobs and add a second MCP server::
+
+    {
+      "name": "my_assistant",
+      "based_on": "claude_assistant",
+      "mcp_servers": [
+        { "name": "phenix", "command": "phenix.mcp_server",
+          "args": ["--max-concurrent-jobs", "16"], "auto_start": true,
+          "tool_policy": { "phenix_start_job": "ask", "*": "allow" } },
+        { "name": "my_server", "command": "my-mcp-server",
+          "auto_start": true, "tool_policy": { "*": "ask" } }
+      ]
+    }
+
+Then::
+
+    phenix.agent --profile my_assistant
+
+A profile that sets ``mcp_servers`` replaces the inherited list rather
+than adding to it, so re-list the ``phenix`` entry to keep the Phenix
+server. Strings in ``mcp_servers`` may use ``${env:NAME}``,
+``${PROJECT_DIR}``, ``${PROFILE_DIR}``, and ``${AGENT_ROOT}``. Each
+server's ``tool_policy`` maps tool names, or ``"*"``, to allow, ask, or
+deny; ``tool_policy_default`` at the top level is the fallback. ``--no-mcp``
+starts without any MCP server.
+
+**Running jobs on a cluster.** phenix.mcp_server can submit jobs to SLURM
+instead of running them locally. Pass its options through the ``args`` of
+the ``phenix`` server entry in a profile::
+
+    "args": ["--backend", "slurm",
+             "--slurm-template", "/site/phenix_slurm.sh",
+             "--slurm-defaults", "{\"partition\": \"short\"}"]
+
+``phenix.mcp_server --help`` lists the SLURM options, and
+``phenix.mcp_server --backend slurm --slurm-template ... --check-backend``
+renders the batch script and runs ``sbatch --test-only`` to validate the
+configuration.
+
+Non-interactive (headless) mode
+-------------------------------
+
+``-p`` (``--prompt``) runs one prompt without the window and exits. It
+requires ``--auto-approve``, since no one is there to answer an approval
+card::
+
+    phenix.agent -p "run phenix.refine on model.pdb and data.mtz" --auto-approve
+    phenix.agent -p "validate 1yjp.pdb" --conversation 1yjp --auto-approve
+    echo "summarize the maps in this directory" | phenix.agent -p --auto-approve
+
+- Bare ``-p`` reads the prompt from standard input.
+- Standard output carries the model's thinking summaries as they arrive
+  (``claude_code``) and, last, the final answer. Everything else, including
+  tool narration and errors, goes to standard error. The exit code is 0
+  on a clean answer and non-zero otherwise.
+- Each run creates a new conversation, titled by ``--conversation`` if
+  given, which you can open later in the window.
+- ``--max-turns`` caps the number of agentic rounds (default 100, unless
+  the profile sets one) and ``--timeout`` the wall-clock time in seconds
+  (default 1800).
+- When its context runs deep the assistant may hand off to itself and
+  continue in a fresh conversation, up to ``--max-continuations`` times
+  (default 5; 0 withholds the handoff tool) within the one ``--timeout``.
+- ``--coot`` in headless mode connects Coot's headless tools without
+  launching the Coot window.
+- Headless mode needs no display, so it runs on a server.
+
+Troubleshooting
+---------------
+
+- *Claude Code is not logged in.* The default backend needs the ``claude``
+  tool installed and authenticated. Run ``claude login``, or switch to an
+  API-key backend with ``--backend``.
+- *A rate-limit or quota banner appears.* The provider refused the
+  request. Wait, change model with ``--model``, or use a different
+  backend. The conversation is saved and can be resumed.
+- *Something failed and you cannot tell why.* Start with ``--debug`` to
+  write uncaught exceptions, runtime agent errors, and (for ``claude_code``)
+  the SDK's error stream to ``.phenix_agent/logs/debug-<timestamp>.log``.
+  **Help > Diagnostics** shows platform, package versions, profile, and
+  storage details to include in a bug report.
+- *A tool was denied without asking.* The profile's policy set it to deny,
+  or a subagent tried a tool that needs approval; subagents cannot ask.
+- Long options must be typed in full; abbreviations such as ``--ver`` are
+  not accepted. The short forms ``-h`` and ``-p`` work.
+
+Privacy
+-------
+
+Your prompts, the assistant's replies, and the output of every tool it
+calls (file listings, log excerpts, measured values, images) are sent to
+the language-model provider you selected, under that provider's terms.
+Choose the backend and account accordingly. Jobs run locally, and nothing
+is sent to a Phenix server. Conversations are stored unencrypted under
+``.phenix_agent/`` in the project directory.
+
+Limitations
+-----------
+
+- The assistant works from logs, structured results, and the measurements
+  its tools return. Without Coot (``--coot``) it does not see density.
+- A job is tracked by polling on later turns: start a job, then keep the
+  conversation going or ask for its status. The window does not run
+  turns by itself while you are away, unless you ask the assistant to
+  wait for a job, in which case it blocks the chat until the job ends;
+  headless mode runs on its own.
+- The ``claude_code`` backend streams per block, so its replies arrive in
+  larger pieces than the API backends' token-by-token output.
+- Language models make mistakes. Read the evidence the assistant cites,
+  inspect models in Coot, and treat its conclusions as a starting point.
+
+Command-line options
+--------------------
+
+=============================== ==================================================================
+Option                          Meaning
+=============================== ==================================================================
+``--project-dir DIR``           project directory (default: current directory)
+``--profile NAME_OR_PATH``      built-in or project profile by name, or a path to a ``.json``
+``--conversation ID``           resume a stored conversation (headless: title the new one)
+``--backend NAME``              ``claude_code``, ``anthropic``, ``openai``, ``portkey``, or
+                                ``google``
+``--model ID``                  model id for this session
+``--api-key KEY``               API key for this session only; not saved
+``--base-url URL``              API endpoint override for this session
+``--list-models``               print the models the selected backend accepts and exit
+``--coot [ENV]``                add Coot's MCP server and skills, launching Coot from ENV
+``--verbose``                   ask the assistant to justify each claim and cite its evidence
+``--no-mcp``                    start without MCP servers (also skips the Coot launch)
+``--no-skills``                 start without skills
+``--auto-approve``              approve every tool request; required with ``-p``
+``-p [PROMPT]``, ``--prompt``   run one prompt headless and exit; bare ``-p`` reads stdin
+``--max-turns N``               headless: cap on agentic rounds (default 100 unless the profile
+                                sets one)
+``--timeout SECONDS``           headless: wall-clock limit (default 1800)
+``--max-continuations N``       headless: self-handoffs allowed (default 5)
+``--debug``                     write a debug log under ``.phenix_agent/logs/``
+``--version``                   print the version and exit
+=============================== ==================================================================
