@@ -14,6 +14,11 @@ To add a new page:
 To update an existing document, just edit the corresponding file in
 phenix_html/rst_files, and then execute phenix_html.rebuild_docs.
 
+The voyager pages (voyager.txt, phasertng.txt and one for each voyager program)
+are written by the phasertng build from phasertng/doc/pre and copied into
+rst_files/reference by phenix_html.rebuild_docs. Edit the .pre files in
+phasertng, not the copies here.
+
 Some steps expect that the environment variables PHENIX, PHENIX_VERSION, and
 PHENIX_RELEASE_TAG be defined.  If you are working out of a Phenix
 installation updated to use SVN, this should not be a problem.  Note that you

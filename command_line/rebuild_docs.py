@@ -78,10 +78,29 @@ class FormatPHIL(object):
       except Exception:
         pass
 
+    # PHIL converters for additional types, from the ProgramTemplate as
+    # iotbx.cli_parser.CCTBXParser adds them
+    converter_registry = iotbx.phil.default_converter_registry
+    try:
+      program = libtbx.utils.import_python_object(
+        import_path='%s' % command,
+        error_prefix="",
+        target_must_be="",
+        where_str="").object
+      if not hasattr(program, 'phil_converters'):
+        program = program.Program
+      if len(program.phil_converters) > 0:
+        converter_registry = libtbx.phil.extended_converter_registry(
+          additional_converters=program.phil_converters,
+          base_registry=converter_registry)
+    except Exception:
+      pass
+
     # Check if the module attribute is a string, a scope, ...
     if (sys.version_info.major == 2 and isinstance(master_params, (str, unicode))) \
       or isinstance(master_params, str):
-      master_params = iotbx.phil.parse(master_params, process_includes=True)
+      master_params = iotbx.phil.parse(master_params, process_includes=True,
+        converter_registry=converter_registry)
     elif hasattr(master_params, '__call__'):
       master_params = master_params()
     assert isinstance(master_params, libtbx.phil.scope)
@@ -336,10 +355,12 @@ def auto_generate_rst_files(out):
   import create_phenix_maps
   import create_model_vs_data_txt
   import create_citations_txt
+  import create_voyager_txt
   create_refinement_txt.run()
   create_phenix_maps.run()
   create_model_vs_data_txt.run()
   create_citations_txt.run()
+  create_voyager_txt.run()
   for module_name, rst_file in create_rst_from_modules :
     print("    %s" % rst_file, file=out)
     legend = libtbx.utils.import_python_object(
