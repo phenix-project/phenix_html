@@ -45,8 +45,8 @@ Requirements
 Quick start
 -----------
 
-Start phenix.agent from the directory that holds your data and models.
-That directory becomes the project directory::
+Start phenix.agent from the directory that holds your data and sequence or
+model. That directory becomes the project directory::
 
     cd /path/to/my_project
     phenix.agent
@@ -62,6 +62,8 @@ below), showing the model's thinking summaries, searching the
 conversation (Ctrl+F / Cmd+F), and attaching an image to your message.
 
 Some prompts to start with::
+
+    Autonomously solve the structure. Here are the crystallization conditions ...
 
     What reflection files are in this directory, and what is the resolution of each?
 
