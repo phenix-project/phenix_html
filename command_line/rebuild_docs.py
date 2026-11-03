@@ -406,6 +406,10 @@ def run (args, out=sys.stdout) :
   print("  creating restructured text files", file=out)
   os.chdir(rst_dir)
   if not params.top_dir: auto_generate_rst_files(out=out)
+  if not params.top_dir:
+    import create_voyager_txt
+    print("  running the example of the sitrep page", file=out)
+    create_voyager_txt.example(docs_dir)
   os.chdir(rst_dir)
 
   print("  building HTML files from restructured text files", file=out)
