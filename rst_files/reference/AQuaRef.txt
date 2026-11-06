@@ -94,6 +94,18 @@ Reciprocal space refinement exclusing Mg and ligand ATP:
 
   qr.aquaref model.pdb data.mtz exclude="element MG or name ATP"
 
+Inside phenix.refine
+--------------------
+
+The same quantum-mechanical restraints can be used for the coordinate step of
+the last macro-cycle of phenix.refine (the model must be prepared with
+``mmtbx.reduce2 qmready=true``). See the section "Coordinate refinement with
+quantum-mechanical restraints (qr.refine)" of the phenix.refine reference.
+
+::
+
+  phenix.refine model.pdb data.mtz main.use_qrefine=True
+
 Literature
 ----------
 

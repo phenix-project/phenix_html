@@ -522,6 +522,61 @@ rigid body group selection containing no atoms on special positions.
   Results of global real-space refinement may or may not be accepted by the
   program, which is based on comparison of R factors before and after refinement.
 
+Coordinate refinement with quantum-mechanical restraints (qr.refine)
+--------------------------------------------------------------------
+
+With ``main.use_qrefine=True`` the coordinate refinement step of the last
+macro-cycle is performed by ``qr.refine`` (the qrefine module): the standard
+geometry restraints are replaced by restraints from a quantum-mechanical (QM)
+engine, in the same way as in standalone AQuaRef (see the AQuaRef page).
+All other steps (bulk-solvent and scaling, ADP, occupancy refinement, and so
+on) run as usual::
+
+  % phenix.refine model.pdb data.mtz main.use_qrefine=True
+  % phenix.refine model.pdb data.mtz main.use_qrefine=True qrefine.qm_engine=mopac
+
+Settings (scope ``qrefine``):
+
+ - ``qrefine.restraints`` = *qm* | cctbx. *qm*: restraints from the QM engine;
+   *cctbx*: standard restraints evaluated through qrefine (fast, intended for
+   testing).
+ - ``qrefine.qm_engine`` = *aquaref* (default) | mopac | xtb | orca | pyscf |
+   torchani | terachem | turbomole | gaussian | server. AQuaRef needs the
+   AIMNet2 installation described on the AQuaRef page; MOPAC and xTB can be
+   installed from conda-forge.
+ - ``qrefine.clustering``: fragment the model (default: the engine's default,
+   off for AQuaRef).
+ - ``qrefine.max_bond_rmsd``: bond rmsd accepted during the weight search of
+   qr.refine (default: qrefine's own, resolution-dependent for AQuaRef).
+
+Requirements and behavior:
+
+ - The model must be prepared as for standalone qr.refine, with
+   ``mmtbx.reduce2 qmready=true`` (add ``capping=true`` if the model contains
+   truncated residues). With ``qrefine.restraints=qm`` the program refuses to
+   start if the model is not complete (truncated residues without caps,
+   missing hydrogens, waters without hydrogens, unsupported elements);
+   incomplete alternative conformations are refused with either restraints.
+   The program also refuses to start if qrefine or the chosen QM engine is
+   not available, or in unsupported situations: joint X-ray/neutron
+   refinement, twinned data, ``main.ias``, the DEN strategy, the
+   ``group_anomalous`` strategy (qr.refine ignores f' and f''), a strategy
+   without ``individual_sites`` (or ``main.max_number_of_iterations=0``),
+   NCS constraints (``ncs.type=constraints``), the quantum interface
+   (``qi``) scope, Amber restraints, and any partial selection in
+   ``refine.sites.individual`` (not supported yet).
+ - In the qr.refine step the restraints come entirely from qrefine: NCS
+   restraints, reference-model and secondary-structure restraints and custom
+   geometry edits are not in effect in that step.
+ - ``main.ordered_solvent`` and ``main.place_ions`` are switched off
+   automatically (a boxed "Automatic adjustment" message is printed).
+ - In the last macro-cycle the riding hydrogen setup and re-idealization, NCS
+   rotamer correction, real-space fits, simulated annealing and DEN are off.
+ - Capping hydrogen atoms (occupancy 0) remain in the output model. To remove
+   them use ``phenix.pdbtools model.pdb remove=capping_h``.
+ - The GUI does not expose the ``qrefine`` scope yet; the parameters are
+   available in the "All parameters" tree and on the command line.
+
 Refinement of Atomic Displacement Parameters (ADP or B-factors)
 ---------------------------------------------------------------
 
