@@ -37,7 +37,7 @@ Requirements
   not yet started from the Phenix GUI.
 - Access to a language-model provider. The default backend uses the Claude
   Code command-line tool (``claude``), which must be installed and logged
-  in (``claude login``). The other backends use an API key from the
+  in (``claude auth login``). The other backends use an API key from the
   provider. Nothing in phenix.agent runs on a Phenix server: the agent,
   the jobs it starts, and your conversations all live on your machine, and
   only the exchange with the model provider leaves it.
@@ -96,7 +96,7 @@ One chat window, five interchangeable backends. The default is
 ================ ============================================= ====================================================
 Backend          Provider                                      Authentication
 ================ ============================================= ====================================================
-``claude_code``  Claude Agent SDK, driving the ``claude`` tool  Claude Code login (``claude login``) or Anthropic API key
+``claude_code``  Claude Agent SDK, driving the ``claude`` tool  Claude Code login (``claude auth login``) or Anthropic API key
 ``anthropic``    Anthropic Messages API                        API key
 ``openai``       OpenAI API                                    API key
 ``portkey``      Portkey gateway (OpenAI-compatible)           API key and a Portkey virtual key
@@ -139,8 +139,9 @@ Backend          Key sources, highest precedence first
 If an API backend finds no key it opens a credentials dialog; the key you
 enter is saved in the system keyring (or Qt settings) for later sessions,
 and **Help > Update API Key...** replaces it. The ``claude_code`` backend
-has no dialog: if it is not logged in, run ``claude login`` in a terminal
-and start phenix.agent again.
+has no dialog: if it is not logged in, run ``claude auth login`` in a
+terminal and start phenix.agent again. On Windows the login can stop
+working after a few hours; see Troubleshooting.
 
 **Endpoints.** ``--base-url`` (or ``PHENIX_<PROVIDER>_BASE_URL``) points a
 backend at a proxy or enterprise deployment for the session. The
@@ -416,8 +417,22 @@ Troubleshooting
 ---------------
 
 - *Claude Code is not logged in.* The default backend needs the ``claude``
-  tool installed and authenticated. Run ``claude login``, or switch to an
-  API-key backend with ``--backend``.
+  tool installed and authenticated. Run ``claude auth login``, or switch to
+  an API-key backend with ``--backend``.
+- *On Windows, every message fails with an authentication error after a
+  few hours.* The ``claude`` tool on Windows can fail to renew its access
+  token, so the login stops working when the token expires (reports put
+  this at about 8 hours). This is a Claude Code bug (see
+  `issue 68398 <https://github.com/anthropics/claude-code/issues/68398>`__
+  and `issue 12447 <https://github.com/anthropics/claude-code/issues/12447>`__).
+  The window retries once, and the retry fails too. Restarting
+  phenix.agent does not help. Instead, run ``claude auth login`` in a
+  terminal (or start ``claude`` and type ``/login``), finish the sign-in in
+  the browser, and send the message again. If it still fails, restart
+  phenix.agent and reopen the conversation with ``--conversation``; a
+  restart stops any local job that is still running. The conversation is
+  kept: the steps that ran before the error stay in the window. A headless
+  (``-p``) run stops with a login message; sign in and run it again.
 - *A rate-limit or quota banner appears.* The provider refused the
   request. Wait, change model with ``--model``, or use a different
   backend. The conversation is saved and can be resumed.
