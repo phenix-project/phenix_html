@@ -91,12 +91,12 @@ Backends and credentials
 ------------------------
 
 One chat window, five interchangeable backends. The default is
-``claude_code``.
+``claude_agent`` (the older name ``claude_code`` is still accepted).
 
 ================ ============================================= ====================================================
 Backend          Provider                                      Authentication
 ================ ============================================= ====================================================
-``claude_code``  Claude Agent SDK, driving the ``claude`` tool  Claude Code login (``claude auth login``) or Anthropic API key
+``claude_agent`` Claude Agent SDK, driving the ``claude`` tool  ``claude`` login (``claude auth login``) or Anthropic API key
 ``anthropic``    Anthropic Messages API                        API key
 ``openai``       OpenAI API                                    API key
 ``portkey``      Portkey gateway (OpenAI-compatible)           API key and a Portkey virtual key
@@ -106,13 +106,13 @@ Backend          Provider                                      Authentication
 Select a backend with ``--backend``; this also selects the matching
 built-in profile so the model id fits the provider::
 
-    phenix.agent                          # claude_code, profile claude_assistant
+    phenix.agent                          # claude_agent, profile claude_assistant
     phenix.agent --backend google         # Gemini, profile gemini_assistant
     phenix.agent --backend openai --model gpt-5.5
 
 ``--model`` overrides the profile's model for the session; ``--list-models``
 prints the ids the selected backend accepts and exits (the API backends ask
-the provider, so they need a key; ``claude_code`` prints a curated list
+the provider, so they need a key; ``claude_agent`` prints a curated list
 that includes the aliases ``opus``, ``sonnet``, and ``haiku``).
 
 **API keys.** Phenix reads a ``PHENIX_``-prefixed variable first and falls
@@ -123,10 +123,10 @@ for the session.
 ================ ========================================================================
 Backend          Key sources, highest precedence first
 ================ ========================================================================
-``claude_code``  ``--api-key``, ``PHENIX_ANTHROPIC_API_KEY``, ``ANTHROPIC_API_KEY``,
+``claude_agent`` ``--api-key``, ``PHENIX_ANTHROPIC_API_KEY``, ``ANTHROPIC_API_KEY``,
                  then the ``claude`` login
 ``anthropic``    ``--api-key``, ``PHENIX_ANTHROPIC_API_KEY``, ``ANTHROPIC_API_KEY``,
-                 an existing Claude Code API-key login, then the key saved from the
+                 an existing ``claude`` API-key login, then the key saved from the
                  in-app dialog
 ``openai``       ``--api-key``, ``PHENIX_OPENAI_API_KEY``, ``OPENAI_API_KEY``
 ``portkey``      ``--api-key``, ``PHENIX_PORTKEY_API_KEY``, ``PORTKEY_API_KEY``; virtual
@@ -138,14 +138,14 @@ Backend          Key sources, highest precedence first
 
 If an API backend finds no key it opens a credentials dialog; the key you
 enter is saved in the system keyring (or Qt settings) for later sessions,
-and **Help > Update API Key...** replaces it. The ``claude_code`` backend
+and **Help > Update API Key...** replaces it. The ``claude_agent`` backend
 has no dialog: if it is not logged in, run ``claude auth login`` in a
 terminal and start phenix.agent again. On Windows the login can stop
 working after a few hours; see Troubleshooting.
 
 **Endpoints.** ``--base-url`` (or ``PHENIX_<PROVIDER>_BASE_URL``) points a
 backend at a proxy or enterprise deployment for the session. The
-``claude_code``, ``anthropic``, and ``openai`` backends also fall back to
+``claude_agent``, ``anthropic``, and ``openai`` backends also fall back to
 the provider's standard ``ANTHROPIC_BASE_URL`` or ``OPENAI_BASE_URL``;
 ``google`` reads only ``PHENIX_GOOGLE_BASE_URL``. The ``portkey`` backend
 always talks to its gateway; redirect it through its Portkey
@@ -248,7 +248,7 @@ the turn). When several calls arrive together, one card offers **Approve
 all**, **Deny all**, and **Stop**. Checking **Always allow this tool**
 approves the same tool for the rest of the session without further cards.
 
-The ``claude_code`` backend is the only one that also exposes the Claude
+The ``claude_agent`` backend is the only one that also exposes the Claude
 Agent SDK's general-purpose tools (``Bash``, ``Read``, ``Write``,
 ``Edit``, and so on). These always ask, regardless of the policy, so a
 broad allow written for the Phenix tools cannot silently grant shell or
@@ -257,7 +257,7 @@ the skill tools, and the built-in tools.
 
 **Auto-approve** (``--auto-approve`` on the command line, or the toggle in
 the input row) is a separate, blanket override: it skips the card for
-every tool, including the general-purpose tools of ``claude_code``. A
+every tool, including the general-purpose tools of ``claude_agent``. A
 persistent indicator shows while it is on. Use it with care. The one
 exception is a tool registered as destructive, such as force-closing
 Coot, which always asks.
@@ -277,7 +277,7 @@ Path                                                       Contents
 ``.phenix_agent/conversations/<id>/attachments/``          images sent or received
 ``.phenix_agent/conversations/<id>/subagents/``            child conversation records
 ``.phenix_agent/conversations/<id>/job_history.json``      the Phenix jobs this conversation ran
-``.phenix_agent/conversations/<id>/claude_session.jsonl``  the Claude Agent SDK session (``claude_code``)
+``.phenix_agent/conversations/<id>/claude_session.jsonl``  the Claude Agent SDK session (``claude_agent``)
 ``.phenix_agent/logs/``                                    ``--debug`` logs
 ``.phenix_agent/profiles/``                                project-level profiles
 ``.phenix_agent/skills/``                                  project-level skills
@@ -289,7 +289,7 @@ directory.
 
 **Resuming.** Select a conversation in the list, or pass
 ``--conversation <id>`` on the command line, to pick up where you left
-off. The API backends re-send the stored transcript. The ``claude_code``
+off. The API backends re-send the stored transcript. The ``claude_agent``
 backend also restores its own session file, so the model keeps its
 context; that file embeds absolute paths, so it resumes on the same
 machine only, and falls back to the text transcript otherwise. On resume
@@ -315,8 +315,8 @@ settings for one session. The built-in profiles are:
 ========================== ============== ===========================================
 Profile                    Backend        Notes
 ========================== ============== ===========================================
-``claude_assistant``       claude_code    default; may spawn subagents
-``claude_assistant_oauth`` claude_code    as above, but caps the SDK at 30 turns per message
+``claude_assistant``       claude_agent   default; may spawn subagents
+``claude_assistant_oauth`` claude_agent   as above, but caps the SDK at 30 turns per message
 ``gpt_assistant``          openai         OpenAI model
 ``gemini_assistant``       google         Gemini model
 ``portkey_assistant``      portkey        Portkey gateway
@@ -398,7 +398,7 @@ card::
 
 - Bare ``-p`` reads the prompt from standard input.
 - Standard output carries the model's thinking summaries as they arrive
-  (``claude_code``) and, last, the final answer. Everything else, including
+  (``claude_agent``) and, last, the final answer. Everything else, including
   tool narration and errors, goes to standard error. The exit code is 0
   on a clean answer and non-zero otherwise.
 - Each run creates a new conversation, titled by ``--conversation`` if
@@ -416,13 +416,13 @@ card::
 Troubleshooting
 ---------------
 
-- *Claude Code is not logged in.* The default backend needs the ``claude``
-  tool installed and authenticated. Run ``claude auth login``, or switch to
-  an API-key backend with ``--backend``.
+- *The ``claude`` tool is not logged in.* The default backend needs the
+  ``claude`` tool installed and authenticated. Run ``claude auth login``,
+  or switch to an API-key backend with ``--backend``.
 - *On Windows, every message fails with an authentication error after a
   few hours.* The ``claude`` tool on Windows can fail to renew its access
   token, so the login stops working when the token expires (reports put
-  this at about 8 hours). This is a Claude Code bug (see
+  this at about 8 hours). This is a bug in the ``claude`` tool (see
   `issue 68398 <https://github.com/anthropics/claude-code/issues/68398>`__
   and `issue 12447 <https://github.com/anthropics/claude-code/issues/12447>`__).
   The window retries once, and the retry fails too. Restarting
@@ -437,7 +437,7 @@ Troubleshooting
   request. Wait, change model with ``--model``, or use a different
   backend. The conversation is saved and can be resumed.
 - *Something failed and you cannot tell why.* Start with ``--debug`` to
-  write uncaught exceptions, runtime agent errors, and (for ``claude_code``)
+  write uncaught exceptions, runtime agent errors, and (for ``claude_agent``)
   the SDK's error stream to ``.phenix_agent/logs/debug-<timestamp>.log``.
   **Help > Diagnostics** shows platform, package versions, profile, and
   storage details to include in a bug report.
@@ -466,7 +466,7 @@ Limitations
   turns by itself while you are away, unless you ask the assistant to
   wait for a job, in which case it blocks the chat until the job ends;
   headless mode runs on its own.
-- The ``claude_code`` backend streams per block, so its replies arrive in
+- The ``claude_agent`` backend streams per block, so its replies arrive in
   larger pieces than the API backends' token-by-token output.
 - Language models make mistakes. Read the evidence the assistant cites,
   inspect models in Coot, and treat its conclusions as a starting point.
@@ -480,7 +480,7 @@ Option                          Meaning
 ``--project-dir DIR``           project directory (default: current directory)
 ``--profile NAME_OR_PATH``      built-in or project profile by name, or a path to a ``.json``
 ``--conversation ID``           resume a stored conversation (headless: title the new one)
-``--backend NAME``              ``claude_code``, ``anthropic``, ``openai``, ``portkey``, or
+``--backend NAME``              ``claude_agent``, ``anthropic``, ``openai``, ``portkey``, or
                                 ``google``
 ``--model ID``                  model id for this session
 ``--api-key KEY``               API key for this session only; not saved
