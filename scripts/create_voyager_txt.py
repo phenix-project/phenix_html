@@ -30,6 +30,15 @@ def run():
         if (not f.readline().startswith(marker)):
           continue
     shutil.copyfile(op.join(doc_dir, file_name), dest)
+  # a page of a program that phasertng no longer has is removed
+  for file_name in sorted(os.listdir(dest_dir)):
+    if (not file_name.endswith(".txt") or op.isfile(op.join(doc_dir, file_name))):
+      continue
+    dest = op.join(dest_dir, file_name)
+    with open(dest) as f:
+      written = f.readline().startswith(marker)
+    if written:
+      os.remove(dest)
 
 # the graph on the sitrep page is the picard run on the toxd regression data,
 # with the logs its nodes link to
