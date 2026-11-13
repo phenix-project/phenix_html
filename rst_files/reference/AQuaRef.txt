@@ -37,12 +37,14 @@ Requirements and Current Limitations
 ------------------------------------
 
 Protein-only (plus water) models are supported at the moment. Static disorder 
-(i.e., alternative conformations) is not supported, except for exchangeable H/D
-sites in case of refinement against neutron diffraction data.
+(i.e., alternative conformations) is supported, with every refinement mode and 
+every restraints source, once the model is completed with 
+'mmtbx.reduce2 qmready=true'. Exchangeable H/D sites are handled in case of 
+refinement against neutron diffraction data.
 
-If a model contains unsupported entity (e.g., a metal ion) or alternative 
-conformations, it is still possible to refine it but unsupported entities need to
-be excluded using 'exclude' keyword, as shown below in Examples.
+If a model contains unsupported entity (e.g., a metal ion), it is still 
+possible to refine it but unsupported entities need to be excluded using 
+'exclude' keyword, as shown below in Examples.
 
 The atomic model needs to be nearly final (in the later stages of standard 
 classic refinement) and atom-complete (e.g., all hydrogen atoms are present 
