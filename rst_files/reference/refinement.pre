@@ -552,8 +552,8 @@ Settings (scope ``qrefine``):
 Requirements and behavior:
 
  - The model must be prepared as for standalone qr.refine, with
-   ``mmtbx.reduce2 qmready=true`` (add ``capping=true`` if the model contains
-   truncated residues). With ``qrefine.restraints=qm`` the program refuses to
+   ``mmtbx.reduce2 qmready=true`` (its default ``capping=Auto`` caps truncated
+   residues). With ``qrefine.restraints=qm`` the program refuses to
    start if the model is not complete (truncated residues without caps,
    missing hydrogens, waters without hydrogens, unsupported elements);
    incomplete alternative conformations are refused with either restraints.
