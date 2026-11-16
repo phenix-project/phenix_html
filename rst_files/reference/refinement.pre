@@ -1417,6 +1417,68 @@ annealing, TLS refinement, and more. Some useful commands are:
    1.0 and 25.0 correspondingly. If b_iso = None, then b_iso will be the mean
    atomic B-factor.
 
+4. Water in alternative conformations.
+
+   If the model has alternative conformations, water is built in alternative
+   conformations where it has to be; there is no parameter to switch this
+   on. A water site that cannot be occupied at the same time as an atom of
+   conformer B (it is too close to it) is given another altloc of the model,
+   preferably that of a conformer it can make a hydrogen bond with. Two
+   water sites closer than 2.2 A to each other are built as alternatives of
+   each other if the resolution supports two sites (they are at least
+   0.7*d_min apart, and at least 1 A apart if new water is anisotropic);
+   otherwise only the stronger one is built. Only altloc
+   identifiers that the model (not counting water) has are used: if the
+   model has no alternative conformations, neither has the water.
+   Occupancies of such water are refined individually. Existing water is
+   subject to the same rules: of two waters without altlocs that are closer
+   than 2.2 A to each other the weaker one is removed.
+
+5. Chain ID of water.
+
+   At the end of each update every water molecule is moved to the symmetry
+   copy that is nearest to a macromolecule chain and gets the ID of that
+   chain (and the next free residue number in it). This applies to water of
+   the input model too. Water bonded to something (a link to a metal) is
+   left as it is.
+
+6. Keep water of the input model::
+
+     % phenix.refine data.hkl model.pdb ordered_solvent=true \
+       ordered_solvent.keep_input_water=true
+
+   Water that comes with the input model is then never removed, and the
+   water update does not change its coordinates, occupancies, B-factors and
+   altlocs (only its chain ID, residue number and symmetry copy may change).
+   New water is still added, and refinement of coordinates and B-factors
+   applies to all water as usual.
+
+7. B-factors of new water: ``ordered_solvent.new_solvent=Auto`` (default),
+   ``isotropic`` or ``anisotropic``. With ``Auto`` new water is anisotropic
+   if resolution is better than ``ordered_solvent.anisotropic_d_min`` (1.2 A)
+   and the model is refined with anisotropic B-factors, isotropic otherwise.
+
+8. Water coordination restraints.
+
+   With ``ordered_solvent=true`` each water is restrained to the atom that
+   coordinates it (the nearest N, O, S or metal, symmetry copies included;
+   another water if there is nothing else): the distance between the two is
+   restrained to its current value with sigma of 0.5 A
+   (``ordered_solvent.coordination_restraints.sigma``). This keeps water in
+   weak density from drifting away and removes nonbonded repulsion between
+   the two atoms. The restraints are rebuilt after each water update, they
+   are listed in the .geo file under "Water coordination" and do not count
+   in bond r.m.s.d. To switch them off::
+
+     % phenix.refine data.hkl model.pdb ordered_solvent=true \
+       ordered_solvent.coordination_restraints.enabled=false
+
+   Water on a special position gets no such restraint.
+
+9. Water on special positions (for example, on a 2-fold axis) is built on
+   the special position and stays there. Water that is closer than 2.2 A to
+   its own symmetry copy without being on the special position is removed.
+
 Hydrogens in refinement
 -----------------------
 
@@ -1642,10 +1704,12 @@ Guidelines for structure refinement at high resolution:
   - it is a good idea to constantly monitor the existing solvent molecules and
     check for new ones by using ``ordered_solvent=true`` keyword. If it's
     decided to refine waters with anisotropic ADP then make sure that the newly
-    added ones are also anisotropic; use
-    ``ordered_solvent.new_solvent=anisotropic`` (default is ``isotropic``). One
-    can also ask phenix.refine to refine occupancies of water:
-    ``ordered_solvent.refine_occupancies=true`` (default is False).
+    added ones are also anisotropic. By default
+    (``ordered_solvent.new_solvent=Auto``) they are if resolution is better
+    than 1.2 A and the model is anisotropic; use
+    ``ordered_solvent.new_solvent=anisotropic`` to have it so in any case.
+    Occupancies of newly added water are refined
+    (``ordered_solvent.refine_occupancies=true``, the default).
 
   - at high resolution the alternative conformations can be visible for more
     than 20% of residues. phenix.refine automatically recognizes atoms in
