@@ -159,12 +159,63 @@ Wilson B will be 10 times the resolution of the data (e.g., if the
 resolution is 3 A then b\_iso=30.), or the actual Wilson B of the data,
 whichever is lower.
 
-If an anisotropy correction is applied then the entire AutoBuild run
-will be carried out with anisotropy-corrected and sharpened data. At the
-very end of the run the final model will be re-refined against the
-uncorrected refinement data and this re-refined model and the
-uncorrected refinement data (with freeR flags) will be written out as
-overall\_best.pdb and overall\_best\_refine\_data.mtz.
+With the default ``refinement_data=sharpened``, if an anisotropy
+correction is applied then the entire AutoBuild run, including all
+refinements during building, is carried out with anisotropy-corrected
+and sharpened data. At the very end of the run, if the final refinement
+is carried out (``refine=True`` and
+``refine_final_model_vs_orig_data=True``, the defaults), the final model
+is re-refined (overall B only) against the uncorrected refinement
+amplitudes, and this re-refined model and the uncorrected refinement
+data (with freeR flags) are written out as overall\_best.pdb and
+overall\_best\_refine\_data.mtz.
+
+Set ``refinement_data=original`` to ask for refinement against the
+original observations. If they can be prepared (see below for what
+happens if they cannot), every refinement and R-only evaluation in the
+run uses the original observations, with the run's FreeR assignment and
+test-flag value. Input intensities, including negative values, are
+retained. Density modification and model building still use the
+sharpened data. The ``refine_final_model_vs_orig_data`` option continues
+to control the final overall-B refinement.
+
+When original observations are used, AutoBuild saves them with the
+flags in ``refinement_orig_PHX.mtz``. Use ``input_refinement_file`` and
+``input_refinement_labels`` to choose the source when the automatic
+choice is ambiguous.
+
+In a few cases an input that is allowed, but from which the original
+observations cannot be prepared automatically, does not stop the run.
+These cases are: no usable observation array or an ambiguous automatic
+choice of one; an unsupported layout or transformation of anomalous-difference columns;
+conflicting auxiliary columns; and free-R flags that cannot be traced to
+the run's assignment or to the source file. Before the first refinement
+or R-only evaluation the wizard then selects the sharpened amplitudes for the whole run, as
+in the default mode, and reports::
+
+    Original refinement data: not usable (reason); this run uses the sharpened amplitudes
+
+The data actually used, and the reason, appear in the log and the
+summary, are saved with the run, and are inherited by its sub-processes
+and restarts.
+
+All other problems still stop a run that asked for original data: a
+file or labels that you named explicitly with ``input_refinement_file``
+or ``input_refinement_labels`` that are missing or ambiguous; known
+free-R assignments that conflict; saved original data or a saved choice
+that is missing or damaged; a failed refinement; and an ordinary
+amplitude input that is itself invalid. Output from an older AutoSol or
+AutoBuild run that has no saved original-data record cannot be continued
+in original mode.
+
+The data choice is fixed for a run: to change ``refinement_data`` start
+a new run rather than restarting a saved one.
+
+R values from the two modes refer to different observations. The
+``acceptable_r`` and ``semi_acceptable_r`` thresholds were tuned for
+sharpened data. The GUI's Refine and MolProbity hand-offs still use
+``overall_best_refine_data.mtz``, and ``phenix.ai_agent`` does not yet
+select inputs by refinement mode.
 
 Specifying which columns of data to use from input data files
 -------------------------------------------------------------
@@ -621,11 +672,15 @@ The key output files that are produced are:
     overall_best.pdb
 
 NOTE 1: The "working\_best.pdb" file is the current working best model.
-If an anisotropy correction and sharpening are applied
-(remove\_aniso=True) then working\_best.pdb will be refined against the
-corrected data. At the end of the run the last working\_best.pdb will be
-re-refined against the original data (overall B refined only) and
-written out as overall\_best.pdb.
+During the run working\_best.pdb is refined against the working data:
+the sharpened amplitudes (anisotropy-corrected if remove\_aniso=True) in
+the default mode or after a fallback to amplitudes, or the original
+observations if those are being used. If the final refinement is
+carried out (see ``refine_final_model_vs_orig_data``), the last
+working\_best.pdb is re-refined (overall B only) and written out as
+overall\_best.pdb. This final refinement uses the uncorrected amplitudes
+when the run used sharpened amplitudes, and the original observations
+when the run used those.
 
 NOTE 2: If there are multiple chains or multiple ncs copies, each chain
 will be given its own chainID (A B C D...). Segments that are not
@@ -661,6 +716,12 @@ S.
 ::
 
     overall_best_refine_data.mtz
+
+For manual refinement after a run that used the original observations,
+use ``refinement_orig_PHX.mtz`` with its observation labels and
+``FreeR_flag``, and keep the test-flag value from the wizard run. If the
+run asked for original data but reported that it used the sharpened
+amplitudes, use ``overall_best_refine_data.mtz`` instead.
 
 NOTE: The labels for this mtz file are typically:
 

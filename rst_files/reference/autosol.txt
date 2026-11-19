@@ -113,7 +113,55 @@ Note on anisotropy corrections:
 
 The AutoSol wizard will apply an anistropy correction and B-factor sharpening to all the raw experimental data by default (controlled by they keyword remove_aniso=True). The target overall Wilson B factor can be set with the keyword b_iso, as in b_iso=25. By default the target Wilson B will be 10 times the resolution of the data (e.g., if the resolution is 3 A then b_iso=30.), or the actual Wilson B of the data, whichever is lower.
 
-If an anisotropy correction is applied then the entire AutoSol run will be carried out with anisotropy-corrected and sharpened data. At the very end of the run the final model will be re-refined against the uncorrected refinement data and this re-refined model and the uncorrected refinement data (with freeR flags) will be written out. For the top solution this will be as overall_best.pdb and overall_best_refine_data.mtz; for all other solutions the files will be listed at the end of the log file.
+With the default ``refinement_data=sharpened``, if an anisotropy
+correction is applied then the entire AutoSol run, including all
+refinements during model-building, is carried out with
+anisotropy-corrected and sharpened data. At the very end of the run, if
+model refinement is carried out (``refine=True``, the default), the
+final model is re-refined (overall B only) against the uncorrected
+refinement amplitudes, and this re-refined model and the uncorrected
+refinement data (with freeR flags) are written out. For the top solution
+these are overall_best.pdb and overall_best_refine_data.mtz; for all
+other solutions the files are listed at the end of the log file.
+
+Set ``refinement_data=original`` to ask for refinement against the
+original observations. For each solution for which they can be prepared,
+every refinement uses that solution's original observations, with the
+run's FreeR assignment and test-flag value. Density modification and
+model building continue to use the sharpened data. ``refine=False``
+continues to skip model refinement. Use ``input_refinement_file`` and
+``input_refinement_labels`` to specify the source when automatic
+selection is ambiguous.
+
+In a few cases an input that is allowed, but from which the original
+observations cannot be prepared automatically, does not stop the run:
+no usable observation array or an ambiguous automatic choice of one; an
+unsupported layout or transformation of anomalous-difference columns; conflicting
+auxiliary columns; and free-R flags that cannot be traced to the run's
+assignment or to the source file. Before the first refinement or R-only
+evaluation of that solution AutoSol then selects the sharpened amplitudes for it, as in the
+default mode, and reports::
+
+    Original refinement data: not usable (reason); this run uses the sharpened amplitudes
+
+All other problems still stop a run that asked for original data,
+including explicitly named files or labels that are missing or
+ambiguous, conflicting known free-R assignments, and missing or damaged
+saved original data.
+
+Each solution keeps its own data choice, and the data actually used are
+listed with the solution (``Refinement data used for solution n: ...``).
+AutoBuild sub-processes run for a solution inherit that solution's
+choice. A new, separate AutoBuild run started from AutoSol output
+prepares the saved original observations again with its own run's FreeR
+assignment; a refinement file that you name explicitly takes precedence.
+
+R values from original and sharpened mode refer to different observations.
+The GUI hand-offs still select ``overall_best_refine_data.mtz`` for the
+best solution. A new AutoBuild run in original mode can use its saved
+companion. If the companion is unavailable, rerun AutoSol or provide
+the original data and labels explicitly. ``phenix.ai_agent`` does not
+yet select inputs by refinement mode.
 
 
 Finding heavy-atom (anomalously-scattering atom) sites
@@ -227,6 +275,15 @@ NOTE: If there are multiple chains or multiple ncs copies, each chain will be gi
 - An mtz file for use in refinement NOTE 1: not aniso corrected and not sharpened. NOTE 2: Two sets of HL coefficients may be present. Normally use HLA HLB etc . However, if you supplied a model with input_partpdb_file=my_model.pdb then use instead HLanomA HLanomB etc. The reason is that HL coeffs contain phase information from my_model.pdb in this case and you do not want that information passed to your refinement program.
 
 -  overall_best_refine_data.mtz # F Sigma HL coeffs, freeR-flags for refinement NOTE: if this is a SAD or MAD dataset then the overall_best_refine_data.mtz file will normally have your original anomalous data.For MAD data this will be from the wavelength of data with the highest-resolution data present.
+
+- ``refinement_orig_<n>.mtz`` holds the original observations and the
+  saved FreeR assignment for solution ``n``, if they were prepared for
+  that solution. If the top solution used original observations, its
+  copy is ``overall_best_refine_data_orig.mtz``. For manual refinement,
+  first check which data the solution used (the ``Refinement data used
+  for solution n: ...`` line); if it used original observations, use
+  the corresponding original file with its observation labels,
+  ``FreeR_flag``, and the wizard's test-flag value.
 
 - Heavy atom sites in PDB format: overall_best_ha_pdb.pdb # ha file for top solution
 

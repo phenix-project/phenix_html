@@ -478,9 +478,29 @@ models are ok)::
 file should I give as input: the original .sca file from HKL2000, or the file
 overall_best_refine_data.mtz from AutoSol?**
 
-Always use the MTZ file output by AutoSol.  This contains a new set of R-free
-flags that have been used to refine the model; starting over with the .sca
-file will result in a new set of flags being generated, which biases R-free.
+Always use an MTZ file output by AutoSol, not the .sca file. The AutoSol
+files contain the set of R-free flags that was used to refine the model;
+starting over with the .sca file generates a new set of flags, which
+biases R-free.
+
+For a default run (``refinement_data=sharpened``) use
+``overall_best_refine_data.mtz``.
+
+If you ran AutoSol with ``refinement_data=original``, which file to use
+depends on the data AutoSol actually used to refine the best solution.
+For such a run this is reported in the log and summary in the line
+``Refinement data used for solution n: ...``.
+
+- If that line says the solution was refined against original
+  observations: use ``overall_best_refine_data_orig.mtz``, with its
+  observation labels and ``FreeR_flag``, and keep AutoSol's test-flag
+  value.
+- If it says the solution was refined against the sharpened amplitudes:
+  use ``overall_best_refine_data.mtz``, as for a default run.
+
+Go by the reported line for the best solution, not by whether a file
+with ``_orig`` in its name is present, and not by a message about a
+different solution.
 
 **I have a partial model that I used as input for AutoBuild.  The output model
 contains the same atoms and hasn't added anything.  Why doesn't it build
