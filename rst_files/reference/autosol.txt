@@ -137,7 +137,9 @@ In a few cases an input that is allowed, but from which the original
 observations cannot be prepared automatically, does not stop the run:
 no usable observation array or an ambiguous automatic choice of one; an
 unsupported layout or transformation of anomalous-difference columns; conflicting
-auxiliary columns; and free-R flags that cannot be traced to the run's
+auxiliary columns; observation columns that cannot be represented or
+written in the saved file (as for some Scalepack inputs); and free-R
+flags that cannot be traced to the run's
 assignment or to the source file. Before the first refinement or R-only
 evaluation of that solution AutoSol then selects the sharpened amplitudes for it, as in the
 default mode, and reports::
@@ -147,7 +149,9 @@ default mode, and reports::
 All other problems still stop a run that asked for original data,
 including explicitly named files or labels that are missing or
 ambiguous, conflicting known free-R assignments, and missing or damaged
-saved original data.
+saved original data. A refinement that fails after the data choice has
+been made is reported and skipped, as in the default mode; the data are
+not switched.
 
 Each solution keeps its own data choice, and the data actually used are
 listed with the solution (``Refinement data used for solution n: ...``).
@@ -157,11 +161,18 @@ prepares the saved original observations again with its own run's FreeR
 assignment; a refinement file that you name explicitly takes precedence.
 
 R values from original and sharpened mode refer to different observations.
-The GUI hand-offs still select ``overall_best_refine_data.mtz`` for the
-best solution. A new AutoBuild run in original mode can use its saved
+
+In the GUI the choice is "Refinement data" under "Runtime options" in
+the AutoSol window (also under "All parameters"). The GUI hand-offs
+still select ``overall_best_refine_data.mtz`` for the
+best solution. An AutoBuild job started from the results of an AutoSol
+job that was run with ``refinement_data=original`` starts with
+``original`` selected and uses the saved
 companion. If the companion is unavailable, rerun AutoSol or provide
-the original data and labels explicitly. ``phenix.ai_agent`` does not
-yet select inputs by refinement mode.
+the original data and labels explicitly. ``phenix.ai_agent`` passes
+``refinement_data`` to AutoSol and AutoBuild when original data are
+requested. Programs it runs afterwards, such as phenix.refine, are
+still given ``overall_best_refine_data.mtz``.
 
 
 Finding heavy-atom (anomalously-scattering atom) sites

@@ -188,7 +188,9 @@ In a few cases an input that is allowed, but from which the original
 observations cannot be prepared automatically, does not stop the run.
 These cases are: no usable observation array or an ambiguous automatic
 choice of one; an unsupported layout or transformation of anomalous-difference columns;
-conflicting auxiliary columns; and free-R flags that cannot be traced to
+conflicting auxiliary columns; observation columns that cannot be
+represented or written in the saved file (as for some Scalepack inputs);
+and free-R flags that cannot be traced to
 the run's assignment or to the source file. Before the first refinement
 or R-only evaluation the wizard then selects the sharpened amplitudes for the whole run, as
 in the default mode, and reports::
@@ -203,19 +205,31 @@ All other problems still stop a run that asked for original data: a
 file or labels that you named explicitly with ``input_refinement_file``
 or ``input_refinement_labels`` that are missing or ambiguous; known
 free-R assignments that conflict; saved original data or a saved choice
-that is missing or damaged; a failed refinement; and an ordinary
+that is missing or damaged; and an ordinary
 amplitude input that is itself invalid. Output from an older AutoSol or
 AutoBuild run that has no saved original-data record cannot be continued
 in original mode.
+
+A refinement that fails after the data choice has been made is reported
+and skipped, as in the default mode. The data are not switched.
 
 The data choice is fixed for a run: to change ``refinement_data`` start
 a new run rather than restarting a saved one.
 
 R values from the two modes refer to different observations. The
 ``acceptable_r`` and ``semi_acceptable_r`` thresholds were tuned for
-sharpened data. The GUI's Refine and MolProbity hand-offs still use
-``overall_best_refine_data.mtz``, and ``phenix.ai_agent`` does not yet
-select inputs by refinement mode.
+sharpened data.
+
+In the GUI the choice is "Refinement data" in the "Model-building and
+refinement" section of the AutoBuild window (also under "All
+parameters"). An AutoBuild job started from the results of an AutoSol
+job that was run with ``refinement_data=original`` starts with
+``original`` selected, and uses the original observations saved by
+AutoSol. The GUI's Refine and MolProbity hand-offs still use
+``overall_best_refine_data.mtz``. ``phenix.ai_agent`` passes
+``refinement_data`` to AutoSol and AutoBuild when original data are
+requested. Programs it runs afterwards, such as phenix.refine, are
+still given ``overall_best_refine_data.mtz``.
 
 Specifying which columns of data to use from input data files
 -------------------------------------------------------------
