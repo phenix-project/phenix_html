@@ -298,6 +298,39 @@ NOTE: If there are multiple chains or multiple ncs copies, each chain will be gi
   the corresponding original file with its observation labels,
   ``FreeR_flag``, and the wizard's test-flag value.
 
+**How a later run finds the saved original observations.** When AutoSol
+saves original observations for a solution, it also adds a short record
+to the header (the history lines) of the refinement data file for that
+solution, including ``overall_best_refine_data.mtz``. The record lines
+begin with ``PHENIX_ORIG_DATA``. They give the name of the file that
+holds the original observations (for example
+``overall_best_refine_data_orig.mtz``), a checksum of that file, and the
+labels of the observations. The reflection data in the marked file are
+not changed. If original observations could not be saved, the record
+says so and gives the reason. These files and records are written in
+the default mode as well, so that a later run can ask for original data.
+
+When AutoBuild is run with ``refinement_data=original`` and is given a
+marked file as its data file, it looks for the named file in the same
+directory as the data file, checks it against the checksum, and uses it
+for refinement. You do not name the original file yourself. Without
+``refinement_data=original`` the record is ignored.
+
+To keep this working:
+
+- keep the marked data file and the file it names together in one
+  directory, and copy or move them together;
+- do not rename or edit the file that holds the original observations;
+- avoid rewriting the marked data file with other programs, which may
+  drop the record from the header.
+
+If the named file is missing or has changed, or the record has been
+lost, a run that asks for original data stops with a message to rerun
+AutoSol or to name the original data. In that case supply them with
+``input_refinement_file`` and ``input_refinement_labels``. An ordinary
+data file with no record is not affected: its own observations are the
+original data.
+
 - Heavy atom sites in PDB format: overall_best_ha_pdb.pdb # ha file for top solution
 
 - NCS information (if any): overall_best_ncs_file.ncs_spec # NCS information for top solution

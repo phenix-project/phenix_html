@@ -216,6 +216,14 @@ are not switched. Incompatible free-R flags, a refinement that writes no
 new model, and errors in checking or saving the result still stop the
 run.
 
+When the data file comes from AutoSol (for example
+``overall_best_refine_data.mtz``), AutoBuild finds the original
+observations that AutoSol saved through a record in the header of that
+file, which names the file holding them
+(``overall_best_refine_data_orig.mtz``) in the same directory. Keep the
+two files together and unchanged. See "How a later run finds the saved
+original observations" in the AutoSol documentation.
+
 The data choice is fixed for a run: to change ``refinement_data`` start
 a new run rather than restarting a saved one.
 
