@@ -210,8 +210,11 @@ amplitude input that is itself invalid. Output from an older AutoSol or
 AutoBuild run that has no saved original-data record cannot be continued
 in original mode.
 
-A refinement that fails after the data choice has been made is reported
-and skipped, as in the default mode. The data are not switched.
+If the refinement program itself ends with an ordinary error, that
+refinement is reported and skipped, as in the default mode, and the data
+are not switched. Incompatible free-R flags, a refinement that writes no
+new model, and errors in checking or saving the result still stop the
+run.
 
 The data choice is fixed for a run: to change ``refinement_data`` start
 a new run rather than restarting a saved one.
@@ -227,9 +230,9 @@ job that was run with ``refinement_data=original`` starts with
 ``original`` selected, and uses the original observations saved by
 AutoSol. The GUI's Refine and MolProbity hand-offs still use
 ``overall_best_refine_data.mtz``. ``phenix.ai_agent`` passes
-``refinement_data`` to AutoSol and AutoBuild when original data are
-requested. Programs it runs afterwards, such as phenix.refine, are
-still given ``overall_best_refine_data.mtz``.
+requests for original data to AutoSol and AutoBuild. A later
+phenix.refine step does not automatically inherit this choice; check
+the data file selected for that step.
 
 Specifying which columns of data to use from input data files
 -------------------------------------------------------------

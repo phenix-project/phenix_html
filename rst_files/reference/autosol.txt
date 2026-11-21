@@ -149,9 +149,11 @@ default mode, and reports::
 All other problems still stop a run that asked for original data,
 including explicitly named files or labels that are missing or
 ambiguous, conflicting known free-R assignments, and missing or damaged
-saved original data. A refinement that fails after the data choice has
-been made is reported and skipped, as in the default mode; the data are
-not switched.
+saved original data. If the refinement program itself ends with an
+ordinary error, that refinement is reported and skipped, as in the
+default mode, and the data are not switched; incompatible free-R flags,
+a refinement that writes no new model, and errors in checking or saving
+the result still stop the run.
 
 Each solution keeps its own data choice, and the data actually used are
 listed with the solution (``Refinement data used for solution n: ...``).
@@ -170,9 +172,9 @@ job that was run with ``refinement_data=original`` starts with
 ``original`` selected and uses the saved
 companion. If the companion is unavailable, rerun AutoSol or provide
 the original data and labels explicitly. ``phenix.ai_agent`` passes
-``refinement_data`` to AutoSol and AutoBuild when original data are
-requested. Programs it runs afterwards, such as phenix.refine, are
-still given ``overall_best_refine_data.mtz``.
+requests for original data to AutoSol and AutoBuild. A later
+phenix.refine step does not automatically inherit this choice; check
+the data file selected for that step.
 
 
 Finding heavy-atom (anomalously-scattering atom) sites
