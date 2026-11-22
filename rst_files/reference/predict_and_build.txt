@@ -227,6 +227,35 @@ new working map (2mFo-DFc or density modified, as in the molecular
 replacement step).
 
 
+Refinement data in the AutoBuild step (X-ray data)
+--------------------------------------------------
+
+With X-ray data at a resolution of 3.5 A or better (``autobuild_resolution``),
+Predict and build normally uses AutoBuild for density modification and
+rebuilding in the first cycle. By default AutoBuild refines against
+anisotropy-corrected, sharpened amplitudes. With
+``refinement_data=original`` AutoBuild refines against your X-ray data as
+supplied (intensities if you supplied intensities). The option applies
+to the AutoBuild step only; the other refinements in Predict and build
+use unsharpened amplitudes derived from your data in either case. R
+values are always calculated with amplitudes; with the default setting
+those reported by the AutoBuild step are for sharpened amplitudes and
+can differ from those of the other refinements for that reason.
+
+At the end of a run with ``refinement_data=original`` the log lists, for
+each AutoBuild call, whether it ran and which data it refined against
+(``Refinement data in AutoBuild (refinement_data=original): ...``). If
+AutoBuild was not run (for example with the Quick strategy, or once the
+R value is good enough), the option has no effect on that run. If the
+original data cannot be prepared for AutoBuild, or the AutoBuild run
+itself ends with an error, Predict and build reports this, skips that
+step and continues; the run can then finish without any refinement
+against the original data.
+
+In a run with X-ray data, the resolution used to choose the defaults
+for rebuilding and for the AutoBuild step is taken from the data if you
+do not supply ``crystal_info.resolution``.
+
 Iteration of model prediction using the rebuilt models as templates
 -------------------------------------------------------------------
 
