@@ -227,30 +227,56 @@ new working map (2mFo-DFc or density modified, as in the molecular
 replacement step).
 
 
-Refinement data in the AutoBuild step (X-ray data)
---------------------------------------------------
+Refinement data (X-ray data)
+----------------------------
 
-With X-ray data at a resolution of 3.5 A or better (``autobuild_resolution``),
-Predict and build normally uses AutoBuild for density modification and
-rebuilding in the first cycle. By default AutoBuild refines against
-anisotropy-corrected, sharpened amplitudes. With
-``refinement_data=original`` AutoBuild refines against your X-ray data as
-supplied (intensities if you supplied intensities). The option applies
-to the AutoBuild step only; the other refinements in Predict and build
-use unsharpened amplitudes derived from your data in either case. R
-values are always calculated with amplitudes; with the default setting
+Predict and build refines models at several points itself, and with
+X-ray data at a resolution of 3.5 A or better (``autobuild_resolution``)
+it normally also uses AutoBuild for density modification and rebuilding
+in the first cycle.
+
+By default the refinements in Predict and build use unsharpened
+amplitudes derived from your data (intensities are converted with a
+square root, which leaves out negative intensities), and AutoBuild
+refines against anisotropy-corrected, sharpened amplitudes.
+
+With ``refinement_data=original`` the refinements in Predict and build
+use your X-ray data as read (intensities if you supplied intensities,
+negative ones included), and AutoBuild refines against your data as
+supplied. For the refinements in Predict and build the data as read are
+given the crystal symmetry of the run, Bijvoet mates are averaged and
+equivalent reflections are merged, so they are not the unchanged
+records of your file. If you supplied amplitudes, these refinements use
+amplitudes in both settings and mainly the AutoBuild step changes.
+
+The procedures of the other steps (molecular replacement, density
+modification and model building) are not changed by this option.
+Molecular replacement uses the converted amplitudes in both settings.
+The steps after a refinement use the amplitudes that the refinement
+wrote out, so with intensity data and ``refinement_data=original`` they
+work with amplitudes derived from all your intensities by the refinement
+program, with its outlier rejection, in place of the square-root
+amplitudes.
+
+R values are always calculated with amplitudes; with the default setting
 those reported by the AutoBuild step are for sharpened amplitudes and
 can differ from those of the other refinements for that reason.
 
-At the end of a run with ``refinement_data=original`` the log lists, for
-each AutoBuild call, whether it ran and which data it refined against
+At the end of a run with ``refinement_data=original`` the log lists how
+many refinement inputs were prepared from the data as read
+(``Refinement data in predict_and_build (refinement_data=original):
+...``. This counts inputs prepared, not refinements completed) and, for each
+AutoBuild call, whether it ran and which data it refined against
 (``Refinement data in AutoBuild (refinement_data=original): ...``). If
 AutoBuild was not run (for example with the Quick strategy, or once the
-R value is good enough), the option has no effect on that run. If the
-original data cannot be prepared for AutoBuild, or the AutoBuild run
-itself ends with an error, Predict and build reports this, skips that
-step and continues; the run can then finish without any refinement
-against the original data.
+R value is good enough), the option affects only the refinements in
+Predict and build. If the data as read cannot be prepared for a
+refinement, the converted amplitudes are used and this is reported. The
+refinement itself can still fail, as it can with the default setting.
+If the original data cannot be prepared for AutoBuild, or the AutoBuild
+run itself ends with an error, Predict and build reports this, skips
+that step and continues, so a run can finish without any AutoBuild
+refinement against the original data.
 
 In a run with X-ray data, the resolution used to choose the defaults
 for rebuilding and for the AutoBuild step is taken from the data if you
