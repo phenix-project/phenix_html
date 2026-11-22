@@ -227,7 +227,13 @@ original observations" in the AutoSol documentation.
 The data choice is fixed for a run: to change ``refinement_data`` start
 a new run rather than restarting a saved one.
 
-R values from the two modes refer to different observations. The
+R values are always calculated with amplitudes. With original data
+they are calculated with amplitudes from the original observations
+(converted from intensities in refinement where intensities were
+supplied); in the default mode with the anisotropy-corrected, sharpened
+amplitudes. R values from the two modes can therefore differ, because
+of the anisotropy correction and sharpening, not because intensities
+are used. The
 ``acceptable_r`` and ``semi_acceptable_r`` thresholds were tuned for
 sharpened data.
 

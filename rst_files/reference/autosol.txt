@@ -162,7 +162,13 @@ choice. A new, separate AutoBuild run started from AutoSol output
 prepares the saved original observations again with its own run's FreeR
 assignment; a refinement file that you name explicitly takes precedence.
 
-R values from original and sharpened mode refer to different observations.
+R values are always calculated with amplitudes. With original data
+they are calculated with amplitudes from the original observations
+(converted from intensities in refinement where intensities were
+supplied); in the default mode with the anisotropy-corrected, sharpened
+amplitudes. R values from the two modes can therefore differ, because
+of the anisotropy correction and sharpening, not because intensities
+are used.
 
 In the GUI the choice is "Refinement data" under "Runtime options" in
 the AutoSol window (also under "All parameters"). The GUI hand-offs
