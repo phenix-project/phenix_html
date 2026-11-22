@@ -314,7 +314,8 @@ When AutoBuild is run with ``refinement_data=original`` and is given a
 marked file as its data file, it looks for the named file in the same
 directory as the data file, checks it against the checksum, and uses it
 for refinement. You do not name the original file yourself. Without
-``refinement_data=original`` the record is ignored.
+``refinement_data=original`` the record does not select original data
+for refinement.
 
 To keep this working:
 
@@ -324,12 +325,20 @@ To keep this working:
 - avoid rewriting the marked data file with other programs, which may
   drop the record from the header.
 
-If the named file is missing or has changed, or the record has been
-lost, a run that asks for original data stops with a message to rerun
-AutoSol or to name the original data. In that case supply them with
-``input_refinement_file`` and ``input_refinement_labels``. An ordinary
-data file with no record is not affected: its own observations are the
-original data.
+If the named file is missing or has changed, a run that asks for
+original data stops with a message to rerun AutoSol or to name the
+original data. The same happens if the record has been lost from a file
+that still has its AutoSol name (``..._refine_data.mtz`` or
+``exptl_fobs_phases_freeR_flags_...mtz``). In these cases supply the
+original data with ``input_refinement_file`` and
+``input_refinement_labels``.
+
+A data file with no record and another name is treated as an ordinary
+data file: its own observations are taken as the original data. So if a
+marked file is both renamed and rewritten without its record, the
+program cannot tell that it came from AutoSol, and a run that asks for
+original data would use the amplitudes in that file. Keep the record
+and both files, or name the original data explicitly.
 
 - Heavy atom sites in PDB format: overall_best_ha_pdb.pdb # ha file for top solution
 
