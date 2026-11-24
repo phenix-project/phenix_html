@@ -1,0 +1,206 @@
+==============================
+Mosaic bulk-solvent model
+==============================
+
+.. contents::
+
+Overview
+--------
+
+The standard (flat) bulk-solvent model fills every part of the unit cell that
+is not occupied by the atomic model with the same solvent. The solvent mask
+usually consists of one large connected region and a number of isolated
+regions: pockets and cavities of the macromolecule. Their content differs
+from one to another. Some are empty, some are filled with disordered solvent
+partially or fully, and some contain something that is not in the atomic
+model yet. Filling all of them like the main solvent puts negative difference
+density into the empty ones and is one of the reasons for high R-factors at
+low resolution.
+
+The mosaic bulk-solvent model gives each isolated region its own occupancy
+relative to the main bulk solvent::
+
+  F_bulk = k_mask * [ F_whole + sum over regions (q_n - 1) * F_n ]
+
+``F_whole`` are the structure factors of the whole mask, as used by the flat
+model, ``F_n`` are the structure factors of region n and ``q_n`` is its
+occupancy: 0 for an empty region, 1 for a region filled like the main
+solvent.
+
+- Regions smaller than ``volume_min`` (50 cubic Angstrom by default, about
+  the volume of two water molecules) cannot hold disordered solvent and are
+  emptied.
+- The occupancies of all other regions are fitted to the data, between 0
+  and 1. Only work reflections are used.
+
+The model is used by default in ``phenix.refine`` (final statistics and
+maps), ``phenix.maps``, ``phenix.model_vs_data``,
+``phenix.model_vs_xray_data``, ``phenix.molprobity``, FEM maps,
+``phenix.validate_ligands`` and ``phenix.reciprocal_space_arrays``.
+``phenix.mosaic`` is a tool to look at the model for one structure.
+
+Reference: Afonine, P.V., Adams, P.D., Sobolev, O.V. & Urzhumtsev, A.G.
+(2024). Accounting for nonuniformity of bulk-solvent: A mosaic model.
+*Protein Science* **33**, e4909.
+
+Atoms that are not in the model yet
+-----------------------------------
+
+A pocket that contains a ligand that has not been built yet is denser than
+bulk solvent. Fitted without a limit, its occupancy comes out above 1, and
+the solvent model then takes the ligand density out of the difference map.
+The program cannot tell reliably whether a region contains a ligand, so it
+does not try. Instead the occupancy is limited to 1: no region gets more
+solvent than the flat model gives it. A region that hits the limit is
+treated exactly as the flat model treats it, and what it contains in excess
+of bulk solvent stays in the difference map. The limit also gives better
+R-free at low resolution than a fit without it.
+
+Regions with occupancy 1.00 in the table of regions are either filled like
+the main solvent or hold something denser. They are worth a look in the
+difference map.
+
+In phenix.refine
+----------------
+
+The model is on by default::
+
+  refinement.main.mosaic = True
+
+Refinement itself is done with the flat model. Regions and occupancies are
+determined once, at the final bulk-solvent correction and scaling step: the
+final R-factors and the output maps are those of the mosaic model. Doing it
+at every macro-cycle instead takes about 15 % more time and gives the same
+R-free within error (29 test refinements). The regions are listed in the
+log (the 20 largest)::
+
+  Mosaic bulk-solvent model (alg4)
+    isolated regions of the solvent mask: 82
+    smaller than 50 A^3, emptied: 73 (1007 A^3 in total)
+    occupancy fitted: 9
+    Occupancy is relative to the main bulk solvent: 0 - empty, 1 - same
+    (upper limit).
+      #  volume(A^3)  occupancy          nearest residues (distance, A)
+      1          221       1.00          A GLN84 (2.8), A TYR121 (3.6), ...
+      2          136       0.00          A CYS272 (2.8), A LEU157 (2.9), ...
+      3          115       0.04          A LEU307 (2.4), A ILE8 (3.1), ...
+
+The volume of a region counts all its symmetry copies in the unit cell. The
+residues are those nearest to the centre of the region, with the distance
+from the centre to the nearest atom of the residue.
+
+To use the flat model for all of the solvent::
+
+  phenix.refine model.pdb data.mtz main.mosaic=False
+
+Settings are in ``refinement.bulk_solvent_and_scale.mosaic``:
+
+- ``volume_min = 50``: regions smaller than this are emptied. Increase to
+  fit fewer regions.
+- ``algorithm = alg4``: search for occupancies. ``alg4`` uses the phases of
+  the current model and finds all occupancies at once. ``alg2`` uses no
+  phases; it is slower and gave about half of the R-factor improvement in
+  tests.
+
+The model is not used for twinned data and for neutron data; the log says
+so.
+
+phenix.mosaic
+-------------
+
+::
+
+  % phenix.mosaic model.pdb data.mtz
+
+Inputs: atomic model (PDB or mmCIF) and X-ray data, with free-R flags if
+available. The program scales the data with the flat model and with the
+mosaic model and reports R-factors of both (all data and d > 4 A), the table
+of regions, and writes ``<prefix>.mtz`` with map coefficients ``2mFo-DFc``,
+``mFo-DFc`` (flat model) and ``2mFo-DFc_mosaic``, ``mFo-DFc_mosaic``. The
+default prefix is the name of the model file without its extension followed
+by ``_mosaic``.
+
+Parameters:
+
+- ``mosaic.volume_min``, ``mosaic.algorithm``: as above;
+- ``scattering_table``: ``n_gaussian`` (default), ``wk1995``, ``it1992`` or
+  ``electron``;
+- ``output.prefix``;
+- ``output.write_map_coefficients = True``;
+- ``output.write_region_mask = False``: write ``<prefix>_regions.ccp4``, a
+  map that shows the fitted regions. The map value in a region is its number
+  in the table.
+
+For programmers
+---------------
+
+::
+
+  fmodel.update_all_scales(mosaic=True)   # regions and occupancies now
+  fmodel.update_all_scales()              # keeps the stored result
+  fmodel.remove_mosaic()                  # back to the flat model
+  fmodel.mosaic_result()                  # table of regions, or None
+
+``mosaic=True`` is the only switch. Settings are read from ``params.mosaic``
+of the bulk-solvent and scaling parameters if ``params`` is given. A call
+without ``mosaic=True`` computes nothing new: a stored correction stays part
+of F_model, like the mask does, and is dropped when the number of atoms
+changes or the mask is optimized. ``fmodel.f_bulk()`` and the ``FMASK``
+column written by ``fmodel.export()`` include the mosaic part.
+``mmtbx.command_line.load_model_and_data(..., mosaic=True)`` asks for the
+model in programs that use this loader (the default is the flat model).
+The code is in ``mmtbx/bulk_solvent/mosaic.py``; region structure factors
+are computed by direct summation, ``cctbx.maptbx.loft``, or by FFT,
+whichever is faster. Symmetry copies of a region are found with
+``cctbx.maptbx.connectivity.merge_symmetry_related_regions``.
+
+What to expect
+--------------
+
+Numbers below are from 96 structures of the PDB at 0.8 to 4.2 A resolution
+(12-13 per resolution range), deposited models and data.
+
+- Without refinement, R-work and R-free are both lower than with the flat
+  model by 0.15 percentage points on average. Most of the change is at low
+  resolution: for reflections with d > 4 A R-free is lower by 0.46.
+- ``phenix.refine`` (29 structures, three macro-cycles): final R-work and
+  R-free are both lower by 0.17 on average (R-free better for 24
+  structures, worse for 3), with the same R-free/R-work gap.
+- At 3.5 A and worse the gain is small and R-free can go either way.
+- About 60 % of the fitted regions come out with an occupancy below 0.5.
+  The flat model fills them and leaves negative difference density there:
+  the number of regions with mean mFo-DFc below -1 sigma goes from 886 to
+  147 (of 1840).
+- Ligands omitted from the model keep their difference density: for 82
+  ligands the mean change is +0.05 sigma, the worst case -0.22 sigma.
+- The step takes about three times as long as flat bulk-solvent scaling
+  (median 4 s against 1.3 s), mostly because scaling is done twice: with the
+  flat model and again with the fitted regions. It is done once in
+  ``phenix.refine``, which makes a refinement about 3 % longer. Very large
+  unit cells take longer: 150 s against 10 s for a virus capsid with 234
+  fitted regions.
+- Memory: the search for regions needs the solvent mask of the whole unit
+  cell, as the flat model does. Peak memory is the same as with the flat
+  model for most structures and up to 1.5 times that for very large unit
+  cells (4.8 GB against 3.2 GB for a virus capsid in a 336 million point
+  grid).
+
+Data simulated with the flat model (``phenix.fmodel``) contain bulk solvent
+in the small regions that the mosaic model empties. Use
+``main.mosaic=False`` with such data.
+
+Limitations
+-----------
+
+- X-ray (and electron) data only; not for twinned or neutron data.
+- At most 300 regions are fitted, the largest ones, and fewer if the
+  structure factors of the regions would take more than about 1 GB (very
+  many reflections); the smaller regions then stay as in the flat model and
+  the log says so. Only virus capsids reached these limits in tests.
+- Skipped, with a message in the log, if there are fewer than 20 work
+  reflections with bulk-solvent contribution per fitted region, or if bulk
+  solvent correction is switched off.
+- Occupancies are relative to the scales of the flat model and are
+  approximate. An occupancy of 0.1 and one of 0 should not be told apart.
+- Negative difference density in a cavity that is already empty (occupancy
+  0) is not caused by the solvent model and is not removed by it.

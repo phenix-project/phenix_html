@@ -62,7 +62,8 @@ Available features at a glance
 - Occupancy refinement: individual, group, constrained for alternative
   conformations
 - Anomalous f' and f'' refinement
-- Bulk solvent correction (flat model using a mask) and anisotropic scaling
+- Bulk solvent correction (flat model using a mask, mosaic model for the
+  final statistics and maps) and anisotropic scaling
 - Refinement target functions: least-squares (ls), maximum-likelihood (ml),
   phased maximum-likelihood (mlhl)
 - FFT and direct summation
@@ -2002,8 +2003,16 @@ Bulk solvent correction and anisotropic scaling
 -----------------------------------------------
 
 By default phenix.refine always starts with bulk solvent modeling and
-anisotropic scaling. Here is the list of command that may be of use in some
-cases:
+anisotropic scaling. Refinement uses the flat bulk-solvent model. At the
+final bulk-solvent and scaling step the mosaic model is used: isolated
+regions of the solvent mask (pockets and cavities) get their own occupancy
+between 0 and 1, so the final R-factors and output maps are those of the
+mosaic model. See `mosaic bulk-solvent model <mosaic.html>`__ for details. To
+use the flat model throughout::
+
+     % phenix.refine data.hkl model.pdb main.mosaic=False
+
+Here is the list of command that may be of use in some cases:
 
 1. Perform bulk-solvent modeling and anisotropic scaling only::
 
