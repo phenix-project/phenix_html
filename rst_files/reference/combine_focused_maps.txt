@@ -15,6 +15,10 @@ identify which are the best parts of each map and the relationships
 among the models in the different maps to superpose the best parts
 of each map and create a composite map.
 
+If the maps already superimpose and you have half-maps for each of them,
+combine_focused_maps can also be run without a model, using the local
+agreement of the half-maps to weight the maps.
+
 Usage
 -----
 
@@ -114,10 +118,59 @@ half-map correlations and CC* values cluster near 1 and have a smaller dynamic
 range than map-model correlations. The half_map_cc_min keyword sets a floor on
 the half-map correlation (and on r before CC*).
 
-When half-maps are supplied, a model-independent quality metric is also
-reported at the end of the run: the correlation between the two composite
-half-maps over the model region, together with its CC*. Unlike the map-model
-correlations of the composite half-maps, this metric does not require a model.
+When half-maps are supplied with a model, a model-independent quality metric
+is also reported at the end of the run: the correlation between the two
+composite half-maps over the model region, together with its CC*.
+
+Running without a model
+-----------------------
+
+If you have two half-maps for every map and all the maps already superimpose
+on the same grid (same unit cell, gridding and origin), you do not need a
+model. Leave out model_file and supply half_map_1_file and half_map_2_file for
+every map_file. The program then uses weight_by=half_map automatically. If you
+leave out both the model and the half-maps, the program stops with a message
+saying that one or the other is needed.
+
+Without a model there are no chains or regions, so the weighting is done
+separately at every grid point:
+
+-  The agreement between the two half-maps of each map is measured in a small
+   window around each grid point (half_map_cc_local_radius, default 1.5 times
+   the resolution), using half-maps low-pass filtered to the working
+   resolution.
+
+-  By default (half_map_weighting=inverse_variance) each map is weighted at
+   each point by its local signal divided by its local noise variance, both
+   estimated from the two half-maps. This is the weighting that gives the
+   least noise in the combined map, and it has no adjustable parameter:
+   half_map_delta_cc_norm, half_map_cc_min and apply_cc_star are not used.
+
+-  Alternatively, half_map_weighting=exponential uses the same exponential
+   scheme as with a model, applied to the local half-map correlation (or CC*)
+   with half_map_delta_cc_norm.
+
+-  A map gets no weight where its half-maps are flat (for example, outside a
+   mask). A region that contains only noise is not flat. It is scored like
+   any other region and normally gets a low weight.
+
+-  The first map is the template. Where no map has usable half-map
+   information, the composite map is the first map.
+
+The same weights are applied to the half-maps to give two composite
+half-maps. Because the weights were derived from both half-maps, the composite
+half-maps are not fully independent, and no half-map correlation of the
+composite is reported in this mode.
+
+What is not done without a model: rigid-body refinement, alignment of maps
+that do not superimpose, region_selection, use_model_symmetry and
+symmetry_chains, the map-model correlation and cc_map.ccp4, and the output
+model. If your maps do not superimpose, supply models as described above.
+
+A limitation of weighting by half-map correlation (with or without a model):
+a map that is blurred in some region but has little noise there can have a
+high half-map correlation, so it may be given more weight in that region than
+a sharper map with more noise.
 
 Normalization and scaling of input maps
 ---------------------------------------
@@ -170,6 +223,29 @@ model will be rigid-body refined against all three maps (keeping chains
 fixed as rigid bodies).  The best parts of each map will be selected and
 combined to create a composite map.
 
+Running without a model, using half-maps:
+-----------------------------------------
+
+If your maps already superimpose on the same grid and you have half-maps for
+each of them, you can leave out the model:
+
+::
+
+    phenix.combine_focused_maps \
+       map_file=reference_map.map \
+       half_map_1_file=reference_half_1.map \
+       half_map_2_file=reference_half_2.map \
+       map_file=focused_map_1.map \
+       half_map_1_file=focused_half_1.map \
+       half_map_2_file=focused_half_2.map \
+       resolution=4
+
+Each half_map_1_file and half_map_2_file goes with the map_file in the same
+position in the list. The output is the composite map, two composite
+half-maps, and one contribution map per input map. The tutorial data in
+phenix_examples/combine-focused-maps include synthetic half-maps for trying
+this (see the README file there).
+
 
 Possible Problems
 -----------------
@@ -187,6 +263,10 @@ refinement process. Then in combine_focused_maps
 use rigid_body_refinement=False.
 
 You cannot use region_selection with use_model_symmetry.
+
+Running without a model requires half-maps for every map and maps that are
+on the same grid. Maps with different unit cells, gridding or origins are
+refused in this mode. Use models to combine such maps.
 
 Literature
 ----------
@@ -219,7 +299,9 @@ have discontinuities so they may not be appropriate for all uses of half maps.
 
 The half-maps can also be used to decide how to weight the maps, instead of
 using the map-model correlation, by setting weight_by=half_map (see "Weighting
-by half-map correlation" above).
+by half-map correlation" above). If the maps superimpose on the same grid,
+the half-maps also allow a run with no model at all (see "Running without a
+model" above).
 
 List of all available keywords
 ------------------------------
