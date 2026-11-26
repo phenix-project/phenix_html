@@ -19,6 +19,56 @@ If the maps already superimpose and you have half-maps for each of them,
 combine_focused_maps can also be run without a model, using the local
 agreement of the half-maps to weight the maps.
 
+The normal ways to run
+----------------------
+
+There are three normal ways to run combine_focused_maps. In all of them the
+first map file is the target map and the composite map is in its position.
+
+**With a model (the standard run).** Supply the map files and one model that
+fits all of them, or one model per map if the maps do not superimpose. The
+model is used to align the maps and to weight them, by map-model
+correlation. Half-maps are not needed. If you do supply them they are
+combined in the same way to give two composite half-maps, but they are not
+used for the weights. Leave weight_by (Weighting source) at Auto.
+
+**With a model and half-maps, weighting by the half-maps.** Supply the maps,
+the model or models, and two half-maps for every map, and set
+weight_by=half_map. The model is still used to align the maps and to define
+the regions (chains), but each region of each map is weighted by the
+correlation of its two half-maps and not by the model.
+
+**Without a model, with half-maps.** Supply the maps and two half-maps for
+every map, and no model. Leave weight_by at Auto. Every grid point of each
+map is weighted by the local agreement of its two half-maps. Nothing aligns
+the maps, so all the maps and half-maps must already superimpose on the same
+grid. Use this only for maps from the same reconstruction frame; for maps
+that were moved, boxed or refined separately, supply models.
+
+The choices for weight_by (Weighting source in the GUI) are:
+
+-  Auto (default): map_model if a model is supplied, half_map if no model
+   is supplied.
+
+-  map_model: weight by map-model correlation. Needs a model; without one
+   the program stops.
+
+-  half_map: weight by half-map correlation. Needs two half-maps for every
+   map.
+
+Rules for half-maps, in every kind of run:
+
+-  Supply one half_map_1_file and one half_map_2_file for every map_file,
+   in the same order as the map files.
+
+-  Each map file must be the map that its two half-maps add up to, in the
+   same position. The program compares each map with the average of its
+   half-maps and stops if their correlation is below min_cc_map_half_maps
+   (default 0.3).
+
+If you supply neither a model nor half-maps, the program stops with a
+message saying that one or the other is needed.
+
 Usage
 -----
 
@@ -85,7 +135,8 @@ Finally all the weighted average maps are combined to form a composite map.
 Weighting by half-map correlation instead of map-model correlation
 ------------------------------------------------------------------
 
-By default (weight_by=map_model) the maps are weighted using the map-model
+When a model is supplied the maps are by default (weight_by=Auto, the same
+as weight_by=map_model in this case) weighted using the map-model
 correlation described above. Alternatively, if you supply half-maps for every
 map, you can set weight_by=half_map to weight each map in each region by the
 correlation between its two half-maps in that region, instead of by the
@@ -128,9 +179,11 @@ Running without a model
 If you have two half-maps for every map and all the maps already superimpose
 on the same grid (same unit cell, gridding and origin), you do not need a
 model. Leave out model_file and supply half_map_1_file and half_map_2_file for
-every map_file. The program then uses weight_by=half_map automatically. If you
-leave out both the model and the half-maps, the program stops with a message
-saying that one or the other is needed.
+every map_file. With the default weight_by=Auto the program then uses
+weight_by=half_map. If you leave out both the model and the half-maps, the
+program stops with a message saying that one or the other is needed. If you
+set weight_by=map_model and leave out the model, the program stops, because
+map_model weighting needs a model.
 
 Without a model there are no chains or regions, so the weighting is done
 separately at every grid point:
@@ -171,6 +224,43 @@ A limitation of weighting by half-map correlation (with or without a model):
 a map that is blurred in some region but has little noise there can have a
 high half-map correlation, so it may be given more weight in that region than
 a sharper map with more noise.
+
+Using half-maps in the GUI
+--------------------------
+
+The main window of the GUI has lines for map files, half-map 1 files,
+half-map 2 files and model files. Each kind of line has a + to add another.
+
+-  Enter one half-map 1 file and one half-map 2 file for every map file, in
+   the same order as the map files.
+
+-  Each map file must be the map that its two half-maps add up to. Do not
+   combine a map file with the half-maps of another map or of the same map
+   in another position. The program compares each map with the average of
+   its half-maps and stops if their correlation is below
+   min_cc_map_half_maps (default 0.3). A map that was sharpened, filtered or
+   masked differently from its half-maps normally passes. The check cannot
+   detect a small misplacement.
+
+-  To run without a model: leave the model file lines empty and leave
+   "Weighting source" at Auto (or set it to half_map). The log then contains
+   the line "No model supplied and half maps supplied: using
+   weight_by=half_map". All the map files and half-maps must already
+   superimpose on the same grid. With "Weighting source" set to map_model
+   and no model, the program stops.
+
+-  To weight by half-maps with models: enter the models as usual and set
+   "Weighting source" to half_map (in the main window or in the "Weighting
+   and refinement" window). If it is left at Auto or map_model, the half-maps are
+   only carried along to give composite half-maps and are not used for the
+   weights. Each model must match its own map file and half-maps.
+
+-  To check a run, look in the log for each "Map file read from" line, the
+   "Matching half-maps read from" line that follows it, and the correlation
+   of the map with the average of its half-maps.
+
+The tutorial data in phenix_examples/combine-focused-maps (README.txt,
+section IV) list the files to use for each kind of run.
 
 Normalization and scaling of input maps
 ---------------------------------------
@@ -222,6 +312,27 @@ some part of the map (and the remainder of those maps may be poor). The
 model will be rigid-body refined against all three maps (keeping chains
 fixed as rigid bodies).  The best parts of each map will be selected and
 combined to create a composite map.
+
+Weighting by half-maps, with models:
+------------------------------------
+
+If you have half-maps for every map and want the weights to come from the
+half-maps and not from the model:
+
+::
+
+    phenix.combine_focused_maps \
+       model_file=model.pdb \
+       map_file=reference_map.map \
+       half_map_1_file=reference_half_1.map \
+       half_map_2_file=reference_half_2.map \
+       map_file=focused_map_1.map \
+       half_map_1_file=focused_half_1.map \
+       half_map_2_file=focused_half_2.map \
+       weight_by=half_map resolution=4
+
+If the maps do not superimpose, supply one model_file per map_file, in the
+same order.
 
 Running without a model, using half-maps:
 -----------------------------------------
